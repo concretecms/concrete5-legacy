@@ -72,7 +72,7 @@ foreach($posts as $p) { ?>
 					<? } ?>
                 </div>
 			<? } ?>
-			<div class="contentByLine">
+			<div class="guestBook-entry<?php if ($c->getVersionObject()->getVersionAuthorUserName() == $u->getUserName()) {?> authorPost <?php }?>">
 				<?=t('Posted by')?>
 				<span class="userName">
 					<?
