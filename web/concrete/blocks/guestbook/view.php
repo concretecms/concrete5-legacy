@@ -60,7 +60,7 @@ $posts = $controller->getEntries();
 $bp = $controller->getPermissionsObject(); 
 foreach($posts as $p) { ?>
 	<? if($p['approved'] || $bp->canWrite()) { ?>
-    <div class="guestBook-entry">
+    <div class="guestBook-entry<?php if ($c->getVersionObject()->getVersionAuthorUserName() == $u->getUserName()) {?> authorPost <?php }?>">
     	<? if($bp->canWrite()) { ?> 
 				<div class="guestBook-manage-links">
                 	<a href="<?=$this->action('loadEntry')."&entryID=".$p['entryID'];?>#guestBookForm"><?=t('Edit')?></a> | 
@@ -72,7 +72,7 @@ foreach($posts as $p) { ?>
 					<? } ?>
                 </div>
 			<? } ?>
-			<div class="guestBook-entry<?php if ($c->getVersionObject()->getVersionAuthorUserName() == $u->getUserName()) {?> authorPost <?php }?>">
+			<div class="contentByLine">
 				<?=t('Posted by')?>
 				<span class="userName">
 					<?
