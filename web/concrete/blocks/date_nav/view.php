@@ -72,7 +72,7 @@ foreach($postsByDate as $year=>$postsByMonth ){
 	
 	
 	//don't show the inner months UL with flat display
-	if(!$controller->flatDisplay) echo "\t <ul class=\"months collapsible ".$hideMonths."\"> \r \n";
+	if(!$controller->flatDisplay) echo "\t <ul class='months collapsible ".$hideMonths."'> \r \n";
 	
 	//print the months that have postings
 	foreach($postsByMonth as $month=>$pagesArray){
