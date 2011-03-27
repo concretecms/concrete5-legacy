@@ -57,8 +57,10 @@
 			$fullPath = $f->getPath();
 			$relPath = $f->getRelativePath();			
 			$size = @getimagesize($fullPath);
+			$size = @getimagesize($fullPath);
 			if (empty($size)) {
-				return '';
+				echo "The image you selected could not be found. This may mean that someone deleted the image. Please confirm that the image is still in the file manager.";
+			    return '';
 			}	
 			
 			if ($this->maxWidth > 0 || $this->maxHeight > 0) {
