@@ -57,6 +57,9 @@
 			$fullPath = $f->getPath();
 			$relPath = $f->getRelativePath();			
 			$size = @getimagesize($fullPath);
+			if (empty($size)) {
+				return '';
+			}	
 			
 			if ($this->maxWidth > 0 || $this->maxHeight > 0) {
 				$mw = $this->maxWidth > 0 ? $this->maxWidth : $size[0];
