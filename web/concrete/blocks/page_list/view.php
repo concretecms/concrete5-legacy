@@ -34,7 +34,7 @@
 			$rssUrl = $controller->getRssUrl($b);
 			?>
 			<div class="ccm-page-list-rss-icon">
-				<a href="<?=$rssUrl?>" target="_blank"><img src="<?=$uh->getBlockTypeAssetsURL($bt, 'rss.png')?>" width="14" height="14" /></a>
+				<a href="<?=$rssUrl?>" target="_blank"><img src="<?=$uh->getBlockTypeAssetsURL($bt, 'rss.png')?>" width="14" height="14" alt="rss icon"/></a>
 			</div>
 			<link href="<?=BASE_URL . $rssUrl?>" rel="alternate" type="application/rss+xml" title="<?=$controller->rssTitle?>" />
 		<? 
