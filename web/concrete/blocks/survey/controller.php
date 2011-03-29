@@ -40,7 +40,19 @@ class SurveyBlockController extends BlockController {
 	public function getBlockTypeName() {
 		return t("Survey");
 	} 
-	
+	public function on_page_view() {
+		
+	$this->addheaderitem('<style type="text/css">#surveyResults .surveySwatch {
+	background:#999999 none repeat scroll 0%;
+	border:1px solid #666666;
+	float:left;
+	font-size:1px;
+	height:10px;
+	line-height:1px;
+	margin:3px 4px 0px 0px;
+	width:10px;
+	}</style>');
+		}
 	function __construct($obj = NULL) {
 		parent::__construct($obj);
 		$c = $this->getCollectionObject();
