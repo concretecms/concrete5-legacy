@@ -147,7 +147,7 @@ foreach($nav as $n2) {
 				$isActive = false;
 			}
 			
-		?><li <? if ($isActive) { ?> class="nav-selected" <? } ?>><a href="<?=$nh->getLinkToCollection($sc, false, true)?>"><?=t($sc->getCollectionName())?></a></li><? } ?></ul>
+		?><li <? if ($isActive) { ?> class="nav-selected" <? } ?>><a href="<?=$nh->getLinkToCollection($sc, false, true)?>"><?=htmlentities(t($sc->getCollectionName()), ENT_COMPAT, APP_CHARSET)?></a></li><? } ?></ul>
 		<br/><div class="ccm-spacer">&nbsp;</div>
 		</div>
 	
