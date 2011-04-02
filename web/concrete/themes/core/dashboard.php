@@ -100,7 +100,7 @@ foreach($nav as $n2) {
 			$isActive = false;
 		}
 ?>
-	<li <? if ($isActive) { ?> class="ccm-nav-active" <? } ?>><a href="<?=$nh->getLinkToCollection($n2, false, true)?>"><?=t($n2->getCollectionName())?> <span><?=t($n2->getCollectionDescription())?></span></a></li>
+	<li <? if ($isActive) { ?> class="ccm-nav-active" <? } ?>><a href="<?=$nh->getLinkToCollection($n2, false, true)?>"><?=htmlentities(t($n2->getCollectionName()), ENT_COMPAT, APP_CHARSET)?> <span><?=htmlentities(t($n2->getCollectionDescription()), ENT_COMPAT, APP_CHARSET)?></span></a></li>
 <? }
 
 }?>
