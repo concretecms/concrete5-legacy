@@ -4,7 +4,7 @@
 <br/><br/>
 
 <form method="post" action="<?=$this->url('/dashboard/', 'module', 'notes', 'save')?>">
-<textarea style="width: 190px; height: 170px" name="dashboard_notes"><?=$myNotes?></textarea>
+<textarea cols="29" rows="15" name="dashboard_notes"><?=$myNotes?></textarea>
 
 
 <input type="submit" class="accept" name="submit" value="<?=t('Save')?>" />
