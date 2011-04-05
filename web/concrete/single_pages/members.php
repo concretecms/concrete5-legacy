@@ -3,7 +3,7 @@
 	<form method="get" action="<?=DIR_REL?>/<?=DISPATCHER_FILENAME?>">
 			Search  		
 			<input type="hidden" name="cID" value="<?=$c->getCollectionID()?>" />
-			<input name="keywords" type="text" value="<?=$keywords?>" size="20" />		
+			<input name="keywords" type="search" value="<?=$keywords?>" size="20" />		
 			<input name="submit" type="submit" value="<?=t('Search')?>" />	
 
 	</form>

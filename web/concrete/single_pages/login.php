@@ -152,10 +152,13 @@
 	<div>
 	<label for="uName"><? if (USER_REGISTRATION_WITH_EMAIL_ADDRESS == true) { ?>
 		<?=t('Email Address')?>
+		</label><br/>
+		<input type="email" name="uName" id="uName" <?= (isset($uName)?'value="'.$uName.'"':'');?> class="ccm-input-email">
 	<? } else { ?>
 		<?=t('Username')?>
-	<? } ?></label><br/>
-	<input type="text" name="uName" id="uName" <?= (isset($uName)?'value="'.$uName.'"':'');?> class="ccm-input-text">
+		</label><br/>
+		<input type="text" name="uName" id="uName" <?= (isset($uName)?'value="'.$uName.'"':'');?> class="ccm-input-text">
+	<?php } ?>
 	</div>
 	<br>
 	<div>
@@ -197,7 +200,7 @@
 	
 	<label for="uEmail"><?=t('Email Address')?></label><br/>
 	<input type="hidden" name="rcID" value="<?=$rcID?>" />
-	<input type="text" name="uEmail" value="" class="ccm-input-text" >
+	<input type="email" name="uEmail" value="" class="ccm-input-text" >
 
 	<div class="ccm-button">
 	<?=$form->submit('submit', t('Reset and Email Password') . ' &gt;')?>

@@ -108,7 +108,7 @@ foreach($searchFieldAttributes as $ak) {
 				<tr>
 					<td width="100%">
 					<strong><?=$form->label('cvName', t('Page Name'))?></strong>
-					<?=$form->text('cvName', $searchRequest['cvName'], array('style' => 'width:200px')); ?>
+					<?=$form->search('cvName', $searchRequest['cvName'], array('style' => 'width:200px')); ?>
 					</td>
 				</tr>
 				</table>
@@ -122,7 +122,7 @@ foreach($searchFieldAttributes as $ak) {
 						<a style="float: right; font-weight: bold" href="<?=$this->url('/dashboard/sitemap/search', 'manage_index')?>"><?=t('Setup Index')?></a>
 					<? } ?>
 					<strong><?=$form->label('keywords', t('Full Page Index'))?></strong>
-					<?=$form->text('keywords', $searchRequest['keywords'], array('style' => 'width:200px')); ?>
+					<?=$form->search('keywords', $searchRequest['keywords'], array('style' => 'width:200px')); ?>
 					</td>
 				</tr>
 				</table>

@@ -1,4 +1,4 @@
-<?php 
+<?php  
 defined('C5_EXECUTE') or die("Access Denied.");
 class FormBlockController extends BlockController {
 
@@ -299,8 +299,18 @@ class FormBlockController extends BlockController {
 				}elseif($row['inputType']=='text'){
 					$answerLong=$txt->sanitize($_POST['Question'.$row['msqID']]);
 					$answer='';
-				}elseif($row['inputType']=='fileupload'){
-					 $answer=intval( $tmpFileIds[intval($row['msqID'])] );
+				}elseif($row['inputType']=='telephone'){
+					$answerLong=$txt->sanitize($_POST['Question'.$row['msqID']]);
+					$answer='';
+				}elseif($row['inputType']=='url'){
+					$answerLong="";
+					$answer=$txt->sanitize($_POST['Question'.$row['msqID']]);
+				}elseif($row['inputType']=='email'){
+					$answerLong="";
+					$answer=$txt->sanitize($_POST['Question'.$row['msqID']]);
+				}elseif($row['inputType']=='telephone'){
+					$answerLong="";
+					$answer=$txt->sanitize($_POST['Question'.$row['msqID']]);
 				}else{
 					$answerLong="";
 					$answer=$txt->sanitize($_POST['Question'.$row['msqID']]);
@@ -627,7 +637,7 @@ class MiniSurvey{
    				
    			}
 			
-				echo '<tr><td>&nbsp;</td><td><input class="formBlockSubmitButton ccm-input-button" name="Submit" type="submit" value="'.t('Submit').'" /></td></tr>';
+				echo '<tr><td>&nbsp;</td><td><input class="formBlockSubmitButton" name="Submit" type="submit" value="'.t('Submit').'" /></td></tr>';
 				echo '</table>';
 				
 			}else{
@@ -640,20 +650,20 @@ class MiniSurvey{
 				
 					$requiredSymbol=($questionRow['required'])?'<span class="required">*</span>':'';				
 					?>
-					<div id="miniSurveyQuestionRow<?php echo $questionRow['msqID']?>" class="miniSurveyQuestionRow">
-						<div class="miniSurveyQuestion"><?php echo $questionRow['question'].' '.$requiredSymbol?></div>
-						<?php  /* <div class="miniSurveyResponse"><?php echo $this->loadInputType($questionRow,$showEdit)?></div> */ ?>
+					<div id="miniSurveyQuestionRow<?php  echo $questionRow['msqID']?>" class="miniSurveyQuestionRow">
+						<div class="miniSurveyQuestion"><?php  echo $questionRow['question'].' '.$requiredSymbol?></div>
+						<?php   /* <div class="miniSurveyResponse"><?php  echo $this->loadInputType($questionRow,$showEdit)?></div> */ ?>
 						<div class="miniSurveyOptions">
 							<div style="float:right">
-								<a href="#" onclick="miniSurvey.moveUp(this,<?php echo $questionRow['msqID']?>);return false" class="moveUpLink"></a> 
-								<a href="#" onclick="miniSurvey.moveDown(this,<?php echo $questionRow['msqID']?>);return false" class="moveDownLink"></a>						  
+								<a href="#" onclick="miniSurvey.moveUp(this,<?php  echo $questionRow['msqID']?>);return false" class="moveUpLink"></a> 
+								<a href="#" onclick="miniSurvey.moveDown(this,<?php  echo $questionRow['msqID']?>);return false" class="moveDownLink"></a>						  
 							</div>						
-							<a href="#" onclick="miniSurvey.reloadQuestion(<?=intval($questionRow['qID']) ?>);return false"><?php echo t('edit')?></a> &nbsp;&nbsp; 
-							<a href="#" onclick="miniSurvey.deleteQuestion(this,<?=intval($questionRow['msqID']) ?>,<?=intval($questionRow['qID'])?>);return false"><?= t('remove')?></a>
+							<a href="#" onclick="miniSurvey.reloadQuestion(<?php echo intval($questionRow['qID']) ?>);return false"><?php  echo t('edit')?></a> &nbsp;&nbsp; 
+							<a href="#" onclick="miniSurvey.deleteQuestion(this,<?php echo intval($questionRow['msqID']) ?>,<?php echo intval($questionRow['qID'])?>);return false"><?php echo  t('remove')?></a>
 						</div>
 						<div class="miniSurveySpacer"></div>
 					</div>
-				<?php  }			 
+				<?php   }			 
 				echo '</div></div>';
 			}
 		}
@@ -683,11 +693,11 @@ class MiniSurvey{
 
 				case 'select':
 					if($this->frontEndMode){
-						$selected=(!$_REQUEST['Question'.$msqID])?'selected="selected"':'';
+						$selected=(!$_REQUEST['Question'.$msqID])?'selected':'';
 						$html.= '<option value="" '.$selected.'>----</option>';					
 					}
 					foreach($options as $option){
-						$checked=($_REQUEST['Question'.$msqID]==trim($option))?'selected="selected':'';
+						$checked=($_REQUEST['Question'.$msqID]==trim($option))?'selected':'';
 						$html.= '<option '.$checked.'>'.trim($option).'</option>';
 					}
 					return '<select name="Question'.$msqID.'" >'.$html.'</select>';
@@ -701,7 +711,7 @@ class MiniSurvey{
 					return $html;
 					
 				case 'fileupload': 
-					$html='<input type="file" name="Question'.$msqID.'" />'; 				
+					$html='<input type="file" name="Question'.$msqID.'" id="" />'; 				
 					return $html;
 					
 				case 'text':
@@ -712,6 +722,18 @@ class MiniSurvey{
 				default:
 					$val=($_REQUEST['Question'.$msqID])?$_REQUEST['Question'.$msqID]:'';
 					return '<input name="Question'.$msqID.'" type="text" value="'.stripslashes(htmlspecialchars($val)).'" />';
+				case 'url':
+				default:
+					$val=($_REQUEST['Question'.$msqID])?$_REQUEST['Question'.$msqID]:'';
+					return '<input name="Question'.$msqID.'" type="url" value="'.stripslashes(htmlspecialchars($val)).'" />';
+				case 'telephone':
+				default:
+					$val=($_REQUEST['Question'.$msqID])?$_REQUEST['Question'.$msqID]:'';
+					return '<input name="Question'.$msqID.'" type="tel" value="'.stripslashes(htmlspecialchars($val)).'" />';
+				case 'email':
+				default:
+					$val=($_REQUEST['Question'.$msqID])?$_REQUEST['Question'.$msqID]:'';
+					return '<input name="Question'.$msqID.'" type="email" value="'.stripslashes(htmlspecialchars($val)).'" />';
 			}
 		}
 		

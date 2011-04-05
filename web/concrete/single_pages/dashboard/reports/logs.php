@@ -9,7 +9,7 @@ $th = Loader::helper('text');
 
 	<form method="post" id="ccm-log-search"  action="<?=$pageBase?>">
 	<?=t('Keywords')?>
-	<?=$form->text('keywords', $keywords)?>
+	<?=$form->search('keywords', $keywords)?>
 	&nbsp;&nbsp;
 	<?=t('Type')?>
 	<?=$form->select('logType', $logTypes)?>

@@ -24,7 +24,7 @@
                 <fieldset>
                 <div class="ccm-profile-attribute">
                     <?=$form->label('uEmail', t('Email'))?> <span class="ccm-required">*</span><br/>
-                    <?=$form->text('uEmail',$ui->getUserEmail())?>
+                    <?=$form->email('uEmail',$ui->getUserEmail())?>
                 </div>
                 <? if(ENABLE_USER_TIMEZONES) { ?>
                     <div class="ccm-profile-attribute">

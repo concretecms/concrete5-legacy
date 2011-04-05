@@ -104,7 +104,7 @@ if ($tp->canAccessGroupSearch()) { ?>
 
 <form id="ccm-group-search" method="get" style="top: -30px; left: 10px" action="<?=$this->url('/dashboard/users/groups')?>">
 <div id="ccm-group-search-fields">
-<input type="text" id="ccm-group-search-keywords" name="gKeywords" value="<?=htmlentities($_REQUEST['gKeywords'])?>" class="ccm-text" style="width: 100px" />
+<input type="search" id="ccm-group-search-keywords" name="gKeywords" value="<?=htmlentities($_REQUEST['gKeywords'])?>" class="ccm-text" style="width: 100px" />
 <input type="submit" value="<?=t('Search')?>" />
 <input type="hidden" name="group_submit_search" value="1" />
 </div>

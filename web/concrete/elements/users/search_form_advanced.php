@@ -52,7 +52,7 @@ foreach($searchFieldAttributes as $ak) {
 				<tr>
 					<td width="100%">
 					<?=$form->label('keywords', t('Username/Email Address'))?>
-					<?=$form->text('keywords', array('style' => 'width:200px')); ?>
+					<?=$form->search('keywords', array('style' => 'width:200px')); ?>
 					</td>
 				</tr>
 				</table>

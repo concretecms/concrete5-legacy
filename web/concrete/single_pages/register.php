@@ -40,7 +40,7 @@ if($success) {
 	
 	<div>
 	<?=$form->label('uEmail', t('Email Address') )?>
-	<?=$form->text('uEmail')?>
+	<?=$form->email('uEmail')?>
 	</div>
 	<br/>
 	

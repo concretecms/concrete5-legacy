@@ -254,7 +254,7 @@ if (is_object($uo)) {
 		</tr>	
 		<tr>
 			<td><input type="text" name="uName" autocomplete="off" value="<?=$uName?>" style="width: 94%"></td>
-			<td><input type="text" name="uEmail" autocomplete="off" value="<?=$uEmail?>" style="width: 94%"></td>
+			<td><input type="email" name="uEmail" autocomplete="off" value="<?=$uEmail?>" style="width: 94%"></td>
 			<td><input type="file" name="uAvatar" style="width: 94%" /> <input type="hidden" name="uHasAvatar" value="<?=$uo->hasAvatar()?>" />
 			
 			<? if ($uo->hasAvatar()) { ?>

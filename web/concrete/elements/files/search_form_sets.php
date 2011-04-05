@@ -15,7 +15,7 @@ if (count($s1) > 0) { ?>
 		<td>
 
 		<div class="ccm-file-sets-search-wrapper-input">
-			<?=$form->text('fsSearchName', $searchRequest['fsSearchName'], array('autocomplete' => 'off'))?>
+			<?=$form->search('fsSearchName', $searchRequest['fsSearchName'], array('autocomplete' => 'off'))?>
 		</div>
 		
 		</td>

@@ -152,7 +152,7 @@ if (count($s2) > 0) {
 				<table border="0" cellspacing="0" cellpadding="0">
 				<tr>
 					<td width="100%">
-					<?=$form->text('fKeywords', $searchRequest['fKeywords'], array('style' => 'width:200px')); ?>
+					<?=$form->search('fKeywords', $searchRequest['fKeywords'], array('style' => 'width:200px')); ?>
 					</td>
 				</tr>
 				</table>

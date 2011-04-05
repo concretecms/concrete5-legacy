@@ -132,7 +132,7 @@ if ($_POST['create']) {
 		<td class="subheader"><?=t('User Avatar')?></td>
 	</tr>	
 	<tr>
-		<td><input type="text" name="uEmail" autocomplete="off" value="<?=$_POST['uEmail']?>" style="width: 95%"></td>
+		<td><input type="email" name="uEmail" autocomplete="off" value="<?=$_POST['uEmail']?>" style="width: 95%"></td>
 		<td><input type="file" name="uAvatar" style="width: 95%"/></td>
 	</tr>
 	</table>

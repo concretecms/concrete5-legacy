@@ -16,7 +16,7 @@
 	<?  }
 	} ?>
 	
-	<input name="query" type="text" value="<?=htmlentities($query, ENT_COMPAT, APP_CHARSET)?>" class="ccm-search-block-text" />
+	<input name="query" type="search" value="<?=htmlentities($query, ENT_COMPAT, APP_CHARSET)?>" class="ccm-search-block-text" />
 	
 	<input name="submit" type="submit" value="<?=$buttonText?>" class="ccm-search-block-submit" />
 

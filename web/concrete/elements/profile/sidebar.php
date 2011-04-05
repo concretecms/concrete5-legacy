@@ -51,7 +51,7 @@
 		<h4><?=t('Search Members')?></h4>
 		<?
 		$form = Loader::helper('form');
-		print $form->text('keywords', array('style' => 'width: 80px'));
+		print $form->search('keywords', array('style' => 'width: 80px'));
 		print '&nbsp;&nbsp;';
 		print $form->submit('submit', t('Search'));
 		?>

@@ -230,7 +230,7 @@
 		
 		<strong><?=t('Keywords')?></strong>
 		
-		<input type="text" id="ccm-group-search-keywords" name="fsKeywords" value="<?=Loader::helper('text')->entities($_REQUEST['fsKeywords'])?>" class="ccm-text" style="width: 100px" />
+		<input type="search" id="ccm-group-search-keywords" name="fsKeywords" value="<?=Loader::helper('text')->entities($_REQUEST['fsKeywords'])?>" class="ccm-text" style="width: 100px" />
 		<input type="submit" value="<?=t('Search')?>" />
 		<input type="hidden" name="group_submit_search" value="1" />
 		</div>
