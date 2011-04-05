@@ -25,11 +25,6 @@ $al = Loader::helper('concrete/asset_library');
 <h2><?=t('Alt Text/Caption')?></h2>
 <?= $form->text('altText', array('style' => 'width: 250px')); ?>
 </div>
-<div class="ccm-block-field-group">
-<h2><?php echo t('Image Text')?></h2>
-<?= $form->text('imageText', array('style' => 'width: 250px')); ?>
-</div>
-
 
 <div class="ccm-block-field-group">
 <h2><?=t('Maximum Dimensions')?></h2>
