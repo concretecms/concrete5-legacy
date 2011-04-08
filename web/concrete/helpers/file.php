@@ -22,7 +22,7 @@ class FileHelper {
 	/**
 	 * @access private
 	 */
-	protected $ignoreFiles = array('__MACOSX', DIRNAME_CONTROLLERS);
+	protected $ignoreFiles = array('__MACOSX', DIRNAME_CONTROLLERS, '.DS_STORE', '.svn', 'Thumbs.db', '.gitignore');
 	
 	/** 
 	 * Returns the contents of a directory in an array.
