@@ -41,7 +41,7 @@ div.ccm-scrapbook-item-handle:hover {cursor: move}
 
 </style> 
 
-<script>
+<script type="text/javascript">
 var GlobalScrapbook = { 
 	init:function(){
 		this.enableSorting();
