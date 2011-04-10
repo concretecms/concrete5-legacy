@@ -10,7 +10,7 @@ div.survey-block-option img {
 
 </style>
 
-<script>
+<script type="text/javascript">
 var currentOption = 0;
 </script>
 

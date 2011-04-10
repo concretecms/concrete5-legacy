@@ -11,7 +11,7 @@ if( strlen(trim($miniSurveyInfo['recipientEmail']))==0 )
 	$miniSurveyInfo['recipientEmail']=$ui->uEmail;
 ?>
 
-<script>
+<script type="text/javascript">
 var thisbID=parseInt(<?php echo $b->getBlockID()?>); 
 var thisbtID=parseInt(<?php echo $b->getBlockTypeID()?>); 
 </script>
