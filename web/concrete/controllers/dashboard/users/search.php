@@ -138,9 +138,8 @@ class DashboardUsersSearchController extends Controller {
 	public function delete($delUserId, $token = null){
 		$u=new User();
 		try {
-		
-			$tp = new TaskPermission();
-			if (!$tp->canDeleteUser()) { 
+
+			if(!$u->isSuperUser()) {
 				throw new Exception(t('You do not have permission to perform this action.'));
 			}
 

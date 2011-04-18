@@ -24,8 +24,7 @@ if ($tp1->can()) {
 		TaskPermission::getByHandle('install_packages'),
 		TaskPermission::getByHandle('uninstall_packages'),
 		TaskPermission::getByHandle('backup'),
-		TaskPermission::getByHandle('sudo'),
-		TaskPermission::getByHandle('delete_user')
+		TaskPermission::getByHandle('sudo')		
 	);
 	$tpl = new TaskPermissionList();
 	foreach($tps as $tp) {
