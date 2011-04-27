@@ -37,7 +37,16 @@
 		
 		public function getBlockTypeName() {
 			return t("Guestbook");
-		}			
+		}	
+		function save($args){
+			$args['closedComments'] = isset($args['closedComments']) ? 1 : 0;
+			$args['inHours'] = ($args['inHours'] === '') ? '0' : $args['inHours'];
+			$args['inDays'] = ($args['inDays'] === '') ? '0' : $args['inDays'];
+			$args['inWeeks'] = ($args['inWeeks'] === '') ? '0' : $args['inWeeks'];
+			$args['inMonths'] = ($args['inMonths'] === '') ? '0' : $args['inMonths'];
+			$args['inYears'] = ($args['inYears'] === '') ? '0' : $args['inYears'];
+			parent::save($args);
+		}		
 			
 		function delete() {
 			$ip = Loader::helper('validation/ip');

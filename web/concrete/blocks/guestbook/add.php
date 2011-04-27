@@ -27,4 +27,27 @@
 
 <?=t('Alert Email Address when Comment Posted')?><br/>
 <input name="notifyEmail" type="text" value="<?=$notifyEmail?>" size="30" /><br /><br />
+<?php echo t('Enable Closed Comments'); ?><br />
+<input id="ccm-guestbook-closed-comments-on" type="checkbox" name="closedComments" class="closedComments" value="1" <?php echo ($closedComments?"checked=\"checked\"":"")?>/> <?=t('Yes')?> 
+	   &nbsp;&nbsp;
+	   <br /><br />
+<div id="ccm-guestbook-closed-comments">
+<?php echo t('Close comments in:');?>
+<table>
+<tr>
+<td><?php echo t('Years')?></td>
+<td><?php echo t('Months')?></td>
+<td><?php echo t('Weeks')?></td>
+<td><?php echo t('Days')?></td>
+<td><?php echo t('Hours')?></td>
+</tr>
+<tr>
+<td><input name="inYears" type="number" min="0" type="text" value="0" size="3"/></td>
+<td><input name="inMonths" type="number" min="0" type="text" value="0"size="3"/></td>
+<td><input name="inWeeks" type="number" min="0" type="text" value="0" size="3"/></td>
+<td><input name="inDays" type="number" min="0" type="text" value="0" size="3"/></td>
+<td><input name="inHours" type="number" min="0" type="text" value="0" size="3"/></td>
+</tr>
+</table>
+</div>
 

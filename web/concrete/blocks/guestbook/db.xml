@@ -23,6 +23,24 @@
 			<default value="0"/>
 		</field>
 		<field name="notifyEmail" type="C" size="100">
+		</field>	
+		<field name="closedComments" type="I">
+			<default value="1"/>
+		</field>	
+		<field name="inHours" type="I" size="3">
+			<default value="0"/>
+		</field>
+		<field name="inDays" type="I" size="3">
+			<default value="0"/>
+		</field>
+		<field name="inWeeks" type="I" size="3">
+			<default value="0"/>
+		</field>
+		<field name="inMonths" type="I" size="3">
+			<default value="0"/>
+		</field>
+		<field name="inYears" type="I" size="3">
+			<default value="0"/>
 		</field>				
 	</table>
 	<table name="btGuestBookEntries">

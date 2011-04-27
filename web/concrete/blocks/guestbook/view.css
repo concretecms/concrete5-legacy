@@ -43,3 +43,6 @@ div.guestBook-entry {
 	color:#990000;
 	text-align:left;
 }
+.comments-closed-true, .comments-closed-error-false {
+	display: none;
+}
