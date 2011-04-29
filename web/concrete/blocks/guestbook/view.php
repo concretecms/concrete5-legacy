@@ -54,9 +54,11 @@ foreach($posts as $p) { ?>
 	<?	
 	if( $controller->authenticationRequired && !$u->isLoggedIn() ){ ?>
 		<div><?=t('You must be logged in to leave a reply.')?> <a href="<?=View::url("/login","forward",$c->getCollectionID())?>"><?=t('Login')?> &raquo;</a></div>
-	<? }else{ ?>	
+	<? }else{ 
+		if($closedComments==1){
+	$closeAt= strtotime($c->getCollectionDateAdded() . "+ $inHours hour +$inDays days + $inWeeks weeks + $inMonths months + $inYears years"); } ?>	
 		<a name="guestBookForm-<?=$controller->bID?>"></a>
-		<div id="guestBook-formBlock-<?=$controller->bID?>" class="guestBook-formBlock">
+		<div id="guestBook-formBlock-<?=$controller->bID?>" class="guestBook-formBlock <?php if($closedComments==1){if(time()>$closeAt) { echo "comments-closed-true"; }} ?>">
 			<h5 class="guestBook-formBlock-title"><?php echo t('Leave a Reply')?></h5>
 			<form method="post" action="<?=$this->action('form_save_entry', '#guestBookForm-'.$controller->bID)?>">
 			<? if(isset($Entry->entryID)) { ?>
@@ -90,5 +92,12 @@ foreach($posts as $p) { ?>
 			<input type="submit" name="Post Comment" value="<?=t('Post Comment')?>" class="button"/>
 			</form>
 		</div>
+		<?php if($closedComments==1){?>
+		<div class="comments-closed <?php if(time()<$closeAt) { 
+        	echo "comments-closed-error-false";
+        } ?>">
+        	<?php echo t('Comments for this Discussion Have Been Closed.'); ?>
+        	</div>
+        	<?php } ?>
 	<? } ?>
 <? } ?>
