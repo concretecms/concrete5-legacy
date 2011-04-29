@@ -234,7 +234,7 @@ $uh = Loader::helper('concrete/urls');
 	</div>
 </div>
 
-<script>
+<script type="text/javascript">
 //safari was loading the auto.js too late. This ensures it's initialized
 function initFormBlockWhenReady(){
 	if(miniSurvey && typeof(miniSurvey.init)=='function'){

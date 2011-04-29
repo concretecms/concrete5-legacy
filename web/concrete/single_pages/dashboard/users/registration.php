@@ -32,7 +32,7 @@ $h = Loader::helper('concrete/interface');
 				?> 
 				</div>
 				
-				<script>			
+				<script type="text/javascript">			
 				$(function(){ 
 					$("#login_redirect_custom_cid_wrap .dialog-launch").dialog(); 
 				
