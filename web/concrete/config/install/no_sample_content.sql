@@ -284,7 +284,9 @@ INSERT INTO PageTypeAttributes VALUES(1,1)
  ,(1,3)
  ,(1,4);
 
-INSERT INTO PageTypes VALUES(1,'page','template3.png','Page',0);
+INSERT INTO PageTypes VALUES(1,'right_sidebar','template3.png','Right Sidebar',0)
+ ,(2,'left_sidebar','template1.png','Left Sidebar',0)
+ ,(3,'full','main.png','Full Width',0);
 
 INSERT INTO Pages VALUES(1,1,'0',1,1,1,NOW(),NOW(),NULL,NOW(),NULL,NULL,1,1,'OVERRIDE',NULL,0,NULL,0,7,0,0,0,1,-1,'0',0)
 ,(2,1,'1',NULL,0,NULL,NULL,NULL,NULL,NOW(),NULL,NULL,1,0,'PARENT',NULL,0,NULL,0,0,0,0,0,0,-1,'0',0)
