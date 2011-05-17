@@ -142,11 +142,16 @@ class TextHelper {
 	/** 
 	 * Scans passed text and automatically hyperlinks any URL inside it
 	 * @param string $input
+	 * @param bool $newWindow
+	 * @param string $title
+	 * @param string $rel
 	 * @return string $output
 	 */
-	public function autolink($input,$newWindow=0) {
-		$target=($newWindow)?' target="_blank" ':'';
-		$output = preg_replace("/(http:\/\/|https:\/\/|(www\.))(([^\s<]{4,80})[^\s<]*)/", '<a href="http://$2$3" '.$target.' rel="nofollow">http://$2$4</a>', $input);
+	public function autolink($input, $newWindow=0, $title='', $rel='') {
+		$target=($newWindow)?' target="_blank"':'';
+		$ctitle=($title)?' title="'.$this->entities($title).'"':'';
+		$crel=($rel)?' rel="'.$this->entities($rel).'"':'';
+		$output = preg_replace("/(http:\/\/|https:\/\/|(www\.))(([^\s<]{4,80})[^\s<]*)/", '<a href="http://$2$3" '.$target.$ctitle.$crel.'>http://$2$4</a>', $input);
 		return ($output);
 	}
 	
