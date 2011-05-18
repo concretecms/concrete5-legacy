@@ -670,6 +670,7 @@ class MiniSurvey{
 		function loadInputType($questionData,$showEdit){
 			$options=explode('%%',$questionData['options']);
 			$msqID=intval($questionData['msqID']);
+                        $_REQUEST['Question'.$msqID] = htmlspecialchars($_REQUEST['Question'.$msqID], ENT_QUOTES, 'UTF-8');
 			switch($questionData['inputType']){			
 				case 'checkboxlist': 
 					// this is looking really crappy so i'm going to make it behave the same way all the time - andrew
