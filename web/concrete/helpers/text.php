@@ -1,14 +1,23 @@
 <?
-/**
- * @package Helpers
- * @category Concrete
- * @author Andrew Embler <andrew@concrete5.org>
- * @copyright  Copyright (c) 2003-2008 Concrete5. (http://www.concrete5.org)
- * @license    http://www.concrete5.org/license/     MIT License
- */
 
 /**
+ * Text helper
+ * 
  * Functions useful for working with text.
+ * 
+ * Used as follows:
+ * <code>
+ * $txt = Loader::helper('text');
+ * $string = 'This is some random text.';
+ * $linked = $txt->shortText($string, 15);
+ * echo $linked;
+ * </code>
+ *     
+ * Which will then output: 
+ * <code>
+ * This is some ra...
+ * </code>      
+ *   
  * @package Helpers
  * @category Concrete
  * @author Andrew Embler <andrew@concrete5.org>
@@ -22,6 +31,7 @@ class TextHelper {
 	/** 
 	 * Takes text and returns it in the "lowercase_and_underscored_with_no_punctuation" format
 	 * @param string $handle
+	 * @param bool $leaveSlashes
 	 * @return string
 	 */
 	function sanitizeFileSystem($handle, $leaveSlashes=false) {
@@ -75,8 +85,8 @@ class TextHelper {
 
 	/** 
 	 * Strips tags and optionally reduces string to specified length.
-	 * @param string $string
-	 * @param int $maxlength
+	 * @param string $string String to sanitize
+	 * @param int $maxlength First x characters to keep
 	 * @return string
 	 */
 	function sanitize($string, $maxlength = 0) {
@@ -96,6 +106,8 @@ class TextHelper {
 
 	/**
 	 * always use in place of htmlentites(), so it works with different langugages
+	 * @param string $v String to use htmlentities on
+	 * @return string
 	**/
 	public function entities($v){
 		return htmlentities( $v, ENT_COMPAT, APP_CHARSET); 
@@ -103,17 +115,22 @@ class TextHelper {
 	 
 	 
 	/**
-	 * Like sanitize, but requiring a certain number characters, and assuming a tail
+	 * An alias for shorten()
 	 * @param string $textStr
 	 * @param int $numChars
 	 * @param string $tail
+	 * @return string
 	 */
 	public function shorten($textStr, $numChars = 255, $tail = '...') {
 		return $this->shortText($textStr, $numChars, $tail);
 	}
 	
 	/** 
-	 * An alias for shorten()
+	 * Like sanitize, but requiring a certain number characters, and assuming a tail
+	 * @param string $textStr String to shorten
+	 * @param int $numChars Number of characters until the string its trimmed
+	 * @param string $tail Text to put after the shortend text (default '...')
+	 * @return string
 	 */	
 	function shortText($textStr, $numChars=255, $tail='...') {
 		if (intval($numChars)==0) $numChars=255;
@@ -141,10 +158,10 @@ class TextHelper {
 	
 	/** 
 	 * Scans passed text and automatically hyperlinks any URL inside it
-	 * @param string $input
-	 * @param bool $newWindow
-	 * @param string $title
-	 * @param string $rel
+	 * @param string $input Text to parse
+	 * @param bool $newWindow Open link in a new window
+	 * @param string $title Title attribute
+	 * @param string $rel Rel attribute
 	 * @return string $output
 	 */
 	public function autolink($input, $newWindow=0, $title='', $rel='') {
@@ -157,7 +174,9 @@ class TextHelper {
 	
 	/** 
 	 * automatically add hyperlinks to any twitter style @usernames in a string
-	 * @param string $input
+	 * @param string $input Text to parse
+	 * @param bool $newWindow Open link in a new window
+	 * @param bool $withSearch Instead of a link to the profile, search with the profile.
 	 * @return string $output
 	 */	
 	public function twitterAutolink($input,$newWindow=0,$withSearch=0) {
@@ -171,7 +190,7 @@ class TextHelper {
 	/**
 	 * Runs a number of text functions, including autolink, nl2br, strip_tags. Assumes that you want simple
 	 * text comments but witih a few niceties.
-	 * @param string $input
+	 * @param string $input Text to make nice
 	 * @return string $output
 	 */
 	public function makenice($input) {
@@ -183,6 +202,9 @@ class TextHelper {
 	
 	/** 
 	 * A wrapper for PHP's fnmatch() function, which some installations don't have.
+	 * @param string $pattern regex to use
+	 * @param string $string String to match
+	 * @return bool
 	 */
 	public function fnmatch($pattern, $string) {
 		if(!function_exists('fnmatch')) {
@@ -195,6 +217,8 @@ class TextHelper {
 	
 	/** 
 	 * Takes a CamelCase string and turns it into camel_case
+	 * @param string String to uncamel_case
+	 * @return string $a
 	 */
 	public function uncamelcase($string) {
 		$v = preg_split('/([A-Z])/', $string, false, PREG_SPLIT_DELIM_CAPTURE);
@@ -215,7 +239,7 @@ class TextHelper {
 	/**
 	 * Takes a handle-based string like "blah_blah" and turns it into "Blah Blah"
 	 * @param string $string
-	 * @return string
+	 * @return string $r1
 	 */
 	public function unhandle($string) {
 		// takes something like collection_types and turns it into "Collection Types"
@@ -226,12 +250,15 @@ class TextHelper {
 	/**
 	 * Strips out non-alpha-numeric characters
 	 * @param string $val
-	 * @return string
+	 * @return string $val
 	 */
 	public function filterNonAlphaNum($val){ return preg_replace('/[^[:alnum:]]/', '', $val);  }
 	
 	/** 
 	 * Useful for highlighting search strings within results (for nice display)
+	 * @param string $value Value to search for
+	 * @param string $searchString string to search through
+	 * @return string
 	 */
 	 
 	public function highlightSearch($value, $searchString) {
