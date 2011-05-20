@@ -162,11 +162,15 @@ jQuery.fn.dialog.load = function(fnd) {
 		$.ajax({
 			type: 'GET',
 			url: durl,
-			success: function(resp) {
+			success: function(resp, text, jqXHR) {
 				//jQuery.fn.dialog.loadShell(fnd);
 				jQuery.fn.dialog.position(fnd);
 				jQuery.fn.dialog.hideLoader();
-				$("#ccm-dialog-content" + fnd.n).html(resp);
+                                if (jqXHR.getResponseHeader('Content-Type').split('/')[0] == 'image') {
+                                    $("#ccm-dialog-content" + fnd.n).html('<img src="' + durl + '" alt="Image" />');
+                                } else {
+                                    $("#ccm-dialog-content" + fnd.n).html(resp);
+                                }
 				$("#ccm-dialog-content" + fnd.n + " .ccm-dialog-close").click(function() {
 					jQuery.fn.dialog.close(fnd);
 				});
