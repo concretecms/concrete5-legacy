@@ -9,6 +9,8 @@ class DashboardSettingsController extends Controller {
 		$rewriteRules = "<IfModule mod_rewrite.c>\n";
 		$rewriteRules .= "RewriteEngine On\n";
 		$rewriteRules .= "RewriteBase " . DIR_REL . "/\n";
+		$rewriteRules .= "RewriteCond %{THE_REQUEST} ^[A-Z]{3,9}\ /([^/]+/)*index\.php\ HTTP/\n";
+		$rewriteRules .= "RewriteRule ^(([^/]+/)*)index\.php$ $1 [R=301,L]\n";
 		$rewriteRules .= "RewriteCond %{REQUEST_FILENAME} !-f\n";
 		$rewriteRules .= "RewriteCond %{REQUEST_FILENAME} !-d\n";
 		$rewriteRules .= "RewriteRule ^(.*)$ " . DISPATCHER_FILENAME . "/$1 [L]\n";
