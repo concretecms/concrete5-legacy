@@ -131,7 +131,7 @@
 	require(dirname(__FILE__) . '/startup/tools.php');
 	
 	# site events
-	if (defined('ENABLE_APPLICATION_EVENTS') && ENABLE_APPLICATION_EVENTS == true) {
+	if (defined('ENABLE_APPLICATION_EVENTS') && ENABLE_APPLICATION_EVENTS == true && file_exists(DIR_CONFIG_SITE . '/site_events.php')) {
 		@include(DIR_CONFIG_SITE . '/site_events.php');
 	}	
 	
