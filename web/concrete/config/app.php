@@ -16,6 +16,24 @@ if (!ENABLE_CACHE) {
 	Cache::disableCache();
 }
 
+if (!defined('LOCALE')) {
+	Config::getOrDefine('LOCALE', 'en_US');
+}
+
+if (strpos(LOCALE, '_') > -1) {
+	$loc = explode('_', LOCALE);
+	if (is_array($loc) && count($loc) == 2) {
+		define('LANGUAGE', $loc[0]);
+	}
+}
+
+if (!defined("LANGUAGE")) {
+	define("LANGUAGE", LOCALE);
+}
+
+// initialize localization immediately following defining locale
+Localization::init();
+
 if (ENABLE_CACHE) {
 	Config::getOrDefine('FULL_PAGE_CACHE_GLOBAL', 'blocks');	
 }
@@ -247,7 +265,7 @@ define('UVTYPE_CHANGE_PASSWORD', 1);
 
 
 if (!defined('UPLOAD_FILE_EXTENSIONS_ALLOWED')) {
-	Config::getOrDefine('UPLOAD_FILE_EXTENSIONS_ALLOWED','*.flv;*.jpg;*.gif;*.jpeg;*.ico;*.docx;*.xla;*.png;*.psd;*.swf;*.doc;*.txt;*.xls;*.csv;*.pdf;*.tiff;*.rtf;*.m4a;*.mov;*.wmv;*.mpeg;*.mpg;*.wav;*.avi;*.mp4;*.mp3;*.qt;*.ppt;*.kml;*.xml');
+	Config::getOrDefine('UPLOAD_FILE_EXTENSIONS_ALLOWED','*.flv;*.jpg;*.gif;*.jpeg;*.ico;*.docx;*.xla;*.png;*.psd;*.swf;*.doc;*.txt;*.xls;*.xlsx;*.csv;*.pdf;*.tiff;*.rtf;*.m4a;*.mov;*.wmv;*.mpeg;*.mpg;*.wav;*.avi;*.mp4;*.mp3;*.qt;*.ppt;*.pptx;*.kml;*.xml');
 	define('UPLOAD_FILE_EXTENSIONS_CONFIGURABLE', true);
 } else {
 	define('UPLOAD_FILE_EXTENSIONS_CONFIGURABLE', false);
