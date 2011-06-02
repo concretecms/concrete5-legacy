@@ -79,7 +79,8 @@ class DatabaseItemList extends ItemList {
 						$q .= $db->quote($value[$i]);
 					}
 					$q .= ') ';			
-				} else { 
+				} else {
+					$comp = is_null($value) ? 'IS' : $comp;
 					$q .= 'and ' . $column . ' ' . $comp . ' ' . $db->quote($value) . ' ';
 				}
 			}
