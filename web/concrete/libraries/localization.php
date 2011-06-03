@@ -4,6 +4,30 @@
 	
 		public function init() {Localization::getTranslate();}
 		
+		public function getTranslate() {
+			if (ACTIVE_LOCALE != 'en_US') {
+				static $translate;
+				if (!isset($translate)) {
+					Loader::library('3rdparty/Zend/Translate');
+					$cache = Cache::getLibrary();
+					if (is_object($cache)) {
+						Zend_Translate::setCache($cache);
+					}
+					if (ACTIVE_LOCALE != 'en_US') {
+						if (is_dir(DIR_BASE . '/languages/' . ACTIVE_LOCALE)) {
+							$translate = new Zend_Translate('gettext', DIR_BASE . '/languages/' . ACTIVE_LOCALE, ACTIVE_LOCALE);
+						}
+					}
+					
+					if (!isset($translate)) {
+						$translate = false;
+					}
+				}
+				return $translate;
+			}
+		}
+	
+	
 		public static function getAvailableInterfaceLanguages() {
 			$languages = array();
 			$fh = Loader::helper('file');
@@ -17,31 +41,10 @@
 			
 			return $languages;
 		}
-
-		public function getTranslate() {
-			if (LOCALE != 'en_US') {
-				static $translate;
-				if (!isset($translate)) {
-					Loader::library('3rdparty/Zend/Translate');
-					$cache = Cache::getLibrary();
-					if (is_object($cache)) {
-						Zend_Translate::setCache($cache);
-					}
-					if (LOCALE != 'en_US') {
-						if (is_dir(DIR_BASE . '/languages/' . LOCALE)) {
-							$translate = new Zend_Translate('gettext', DIR_BASE . '/languages/' . LOCALE, LOCALE);
-						}
-					}
-					
-					if (!isset($translate)) {
-						$translate = false;
-					}
-				}
-				return $translate;
-			}
-		}
-	}
 	
+
+	}
+
 	function t($text) {
 		$zt = Localization::getTranslate();
 		if (func_num_args() == 1) {
