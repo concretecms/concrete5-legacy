@@ -80,7 +80,8 @@ class DatabaseItemList extends ItemList {
 					}
 					$q .= ') ';			
 				} else {
-					$comp = is_null($value) ? 'IS' : $comp;
+					//if the value is null and the comparer isn't already IS/IS NOT, then: set comparer to IS NOT if comparer includes != / <>, or IS otherwise
+					$comp = (is_null($value) && stripos($comp, 'is') === false) ? (($comp == '!=' || $comp == '<>') ? 'IS NOT' : 'IS') : $comp;
 					$q .= 'and ' . $column . ' ' . $comp . ' ' . $db->quote($value) . ' ';
 				}
 			}
