@@ -3,14 +3,14 @@
 defined('C5_EXECUTE') or die("Access Denied.");
 
 class Marketplace {
-	
+
 	const E_INVALID_BASE_URL = 20;
 	const E_MARKETPLACE_SUPPORT_MANUALLY_DISABLED = 21;
 	const E_GENERAL_CONNECTION_ERROR = 99;
 
 	protected $isConnected = false;
 	protected $connectionError = false;
-	
+
 	public static function getInstance() {
 		static $instance;
 		if (!isset($instance)) {
@@ -19,7 +19,7 @@ class Marketplace {
 		}
 		return $instance;
 	}
-	
+
 	public function __construct() {
 		if (defined('ENABLE_MARKETPLACE_SUPPORT') && ENABLE_MARKETPLACE_SUPPORT == false) {
 			$this->connectionError = Marketplace::E_MARKETPLACE_SUPPORT_MANUALLY_DISABLED;
@@ -43,32 +43,32 @@ class Marketplace {
 				$this->isConnected = false;
 				$this->connectionError = self::E_GENERAL_CONNECTION_ERROR;
 			}
-		}		
+		}
 	}
-	
+
 	public function isConnected() {
 		return $this->isConnected;
 	}
-	
+
 	public function hasConnectionError() {
 		return $this->connectionError != false;
 	}
-	
+
 	public function getConnectionError() {
 		return $this->connectionError;
 	}
-	
+
 	public function generateSiteToken() {
 		$fh = Loader::helper('file');
 		$token = $fh->getContents(MARKETPLACE_URL_CONNECT_TOKEN_NEW);
-		return $token;	
+		return $token;
 	}
 
 	public function getSiteToken() {
 		$token = Config::get('MARKETPLACE_SITE_TOKEN');
 		return $token;
 	}
-	
+
 	public function getSitePageURL() {
 		$token = Config::get('MARKETPLACE_SITE_URL_TOKEN');
 		return MARKETPLACE_BASE_URL_SITE_PAGE . '/' . $token;
@@ -77,25 +77,21 @@ class Marketplace {
 	public static function downloadRemoteFile($file) {
 		$fh = Loader::helper('file');
 		$file .= '?csiURL=' . urlencode(BASE_URL . DIR_REL);
-		$pkg = $fh->getContents($file);
-		if (empty($pkg)) {
-			return Package::E_PACKAGE_DOWNLOAD;
-		}
 
 		$file = time();
 		// Use the same method as the Archive library to build a temporary file name.
 		$tmpFile = $fh->getTemporaryDirectory() . '/' . $file . '.zip';
-		$fp = fopen($tmpFile, "wb");
-		if ($fp) {
-			fwrite($fp, $pkg);
-			fclose($fp);
-		} else {
-			return Package::E_PACKAGE_SAVE;
+
+		if($fh->copy($file, $tmpFile)) {
+
+		    return $file;
 		}
-		
-		return $file;
+		else {
+
+		    return Package::E_PACKAGE_DOWNLOAD;
+		}
 	}
-	
+
 	public function getMarketplaceFrame($width = '100%', $height = '530', $completeURL = false) {
 		// if $mpID is passed, we are going to either
 		// a. go to its purchase page
@@ -112,7 +108,7 @@ class Marketplace {
 				if ($this->hasConnectionError()) {
 					$csToken = $this->getSiteToken();
 				} else {
-					// new connection 
+					// new connection
 					$csToken = Marketplace::generateSiteToken();
 				}
 				$url = $url . '?ts=' . time() . '&csiURL=' . $csiURL . '&csToken=' . $csToken . '&csReferrer=' . $csReferrer . '&csName=' . htmlspecialchars(SITE, ENT_QUOTES, APP_CHARSET);
@@ -126,9 +122,9 @@ class Marketplace {
 			return '<div class="ccm-error">' . t('You do not have permission to connect this site to the marketplace.') . '</div>';
 		}
 	}
-	
-	
-	/** 
+
+
+	/**
 	 * Runs through all packages on the marketplace, sees if they're installed here, and updates the available version number for them
 	 */
 	public static function checkPackageUpdates() {
@@ -148,18 +144,18 @@ class Marketplace {
 
 	public function getAvailableMarketplaceItems($filterInstalled=true) {
 		Loader::model('marketplace_remote_item');
-		
-		$fh = Loader::helper('file'); 
+
+		$fh = Loader::helper('file');
 		if (!$fh) return array();
 
-		// Retrieve the URL contents 
+		// Retrieve the URL contents
 		$csToken = Config::get('MARKETPLACE_SITE_TOKEN');
 		$csiURL = urlencode(BASE_URL . DIR_REL);
 		$url = MARKETPLACE_PURCHASES_LIST_WS."?csToken={$csToken}&csiURL=" . $csiURL . "&csiVersion=" . APP_VERSION;
 		$json = $fh->getContents($url);
 
 		$addons=array();
-		
+
 		$objects = @Loader::helper('json')->decode($json);
 		if (is_array($objects)) {
 			try {
@@ -172,7 +168,7 @@ class Marketplace {
 					}
 				}
 			} catch (Exception $e) {}
-	
+
 			if ($filterInstalled && is_array($addons)) {
 				Loader::model('package');
 				$handles = Package::getInstalledHandles();
@@ -187,7 +183,7 @@ class Marketplace {
 				}
 			}
 		}
-		
+
 		return $addons;
 	}
 
