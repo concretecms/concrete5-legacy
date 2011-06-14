@@ -204,21 +204,7 @@ class FileHelper {
 	 */
 	public function copy($source, $destination)
 	{
-        $source_file = fopen ($source, "rb");
-        if ($source_file) {
-            $destination_file = fopen ($newfname, "wb");
-            if ($destination_file) {
-                while(!feof($source_file)) {
-                  fwrite($destination_file, fread($source_file, 1024 * 8 ), 1024 * 8 );
-                }
-                fclose($destination_file);
-
-                return true;
-            }
-            fclose($source_file);
-        }
-
-        return false;
+        return copy($source, $destination);
 	}
 
 	/**
