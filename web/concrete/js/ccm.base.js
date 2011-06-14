@@ -17,19 +17,19 @@ ccm_deactivateSite = function(onDone) {
 		return false;
 	}
 	
-	if ($("#ccm-overlay").length < 1) {
-		$(document.body).append('<div id="ccm-overlay"></div>');
+	if (jQuery("#ccm-overlay").length < 1) {
+		jQuery(document.body).append('<div id="ccm-overlay"></div>');
 	}
 	
-	$("embed,object").each(function() {
-		$(this).attr('ccm-style-old-visibility', $(this).css('visibility'));
-		$(this).css('visibility', 'hidden');
+	jQuery("embed,object").each(function() {
+		jQuery(this).attr('ccm-style-old-visibility', jQuery(this).css('visibility'));
+		jQuery(this).css('visibility', 'hidden');
 	});
 	
 	if (ccm_animEffects) {
-		$("#ccm-overlay").fadeIn(100);
+		jQuery("#ccm-overlay").fadeIn(100);
 	} else {
-		$("#ccm-overlay").show();
+		jQuery("#ccm-overlay").show();
 	}
 	
 	ccm_siteActivated = false;
@@ -40,13 +40,13 @@ ccm_deactivateSite = function(onDone) {
 
 ccm_activateSite = function() {
 	if (ccm_animEffects) {
-		$("#ccm-overlay").fadeOut(100);
+		jQuery("#ccm-overlay").fadeOut(100);
 	} else {
-		$("#ccm-overlay").hide();
+		jQuery("#ccm-overlay").hide();
 	}
 	
-	$("embed,object").each(function() {
-		$(this).css('visibility', $(this).attr('ccm-style-old-visibility'));
+	jQuery("embed,object").each(function() {
+		jQuery(this).css('visibility', jQuery(this).attr('ccm-style-old-visibility'));
 	});
 
 	ccm_siteActivated = true;
@@ -55,12 +55,12 @@ ccm_activateSite = function() {
 
 ccm_addHeaderItem = function(item, type) {
 	if (type == 'CSS') {
-		if (!($('head').children('link[href*=' + item + ']').length)) {
-			$('head').append('<link rel="stylesheet" type="text/css" href="' + item + '?ts=' + new Date().getTime() + '" />');
+		if (!(jQuery('head').children('link[href*=' + item + ']').length)) {
+			jQuery('head').append('<link rel="stylesheet" type="text/css" href="' + item + '?ts=' + new Date().getTime() + '" />');
 		}
 	} else if (type == 'JAVASCRIPT') {
-		if (!($('head').children('script[src*=' + item + ']').length)) {
-			$('head').append('<script type="text/javascript" src="' + item + '?ts=' + new Date().getTime() + '"></script>');
+		if (!(jQuery('head').children('script[src*=' + item + ']').length)) {
+			jQuery('head').append('<script type="text/javascript" src="' + item + '?ts=' + new Date().getTime() + '"></script>');
 		}
 
 	}

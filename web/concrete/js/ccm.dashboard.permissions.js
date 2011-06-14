@@ -6,29 +6,29 @@ ccm_triggerSelectGroup = function (gID, gName) {
 	ccm_sitemapSelectPermissionsEntity('gID', gID, gName);
 }
 
-$(function() {	
-	$("#ug-selector").dialog();	
+jQuery(function() {	
+	jQuery("#ug-selector").dialog();	
 	ccm_sitemapActivatePermissionsSelector();	
 });
 
 ccm_sitemapSelectPermissionsEntity = function(selector, id, name) {
-	var html = $('#ccm-permissions-entity-base').html();
-	$('#ccm-permissions-entities-wrapper').append('<div class="ccm-permissions-entity">' + html + '<\/div>');
-	var p = $('.ccm-permissions-entity');
+	var html = jQuery('#ccm-permissions-entity-base').html();
+	jQuery('#ccm-permissions-entities-wrapper').append('<div class="ccm-permissions-entity">' + html + '<\/div>');
+	var p = jQuery('.ccm-permissions-entity');
 	var ap = p[p.length - 1];
-	$(ap).find('h2 span').html(name);
-	$(ap).find('input[type=hidden]').val(selector + '_' + id);
-	$(ap).find('input[type=radio]').each(function() {
-		$(this).attr('name', selector + '_' + id + '_' + $(this).attr('name'));
+	jQuery(ap).find('h2 span').html(name);
+	jQuery(ap).find('input[type=hidden]').val(selector + '_' + id);
+	jQuery(ap).find('input[type=radio]').each(function() {
+		jQuery(this).attr('name', selector + '_' + id + '_' + jQuery(this).attr('name'));
 	});
 	
 	ccm_sitemapActivatePermissionsSelector();	
 }
 
 ccm_sitemapActivatePermissionsSelector = function() {
-	$("a.ccm-permissions-remove").click(function() {
-		$(this).parent().parent().fadeOut(100, function() {
-			$(this).remove();
+	jQuery("a.ccm-permissions-remove").click(function() {
+		jQuery(this).parent().parent().fadeOut(100, function() {
+			jQuery(this).remove();
 		});
 	});
 }

@@ -1,8 +1,8 @@
 /* Norwegian initialisation for the jQuery UI date picker plugin. */
 /* Written by Naimdjon Takhirov (naimdjon@gmail.com). */
 
-$(document).ready(function(){
-    $.datepicker.regional['no'] = {clearText: 'Tøm', clearStatus: '',
+jQuery(document).ready(function(){
+    jQuery.datepicker.regional['no'] = {clearText: 'Tøm', clearStatus: '',
 		closeText: 'Lukk', closeStatus: '',
         prevText: '&laquo;Forrige',  prevStatus: '',
 		nextText: 'Neste&raquo;', nextStatus: '',
@@ -19,5 +19,5 @@ $(document).ready(function(){
 		dayStatus: 'DD', dateStatus: 'D, M d',
         dateFormat: 'yy-mm-dd', firstDay: 0, 
 		initStatus: '', isRTL: false};
-    $.datepicker.setDefaults($.datepicker.regional['no']); 
+    jQuery.datepicker.setDefaults(jQuery.datepicker.regional['no']); 
 });

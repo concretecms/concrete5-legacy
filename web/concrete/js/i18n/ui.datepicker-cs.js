@@ -1,7 +1,7 @@
 ﻿/* Czech initialisation for the jQuery UI date picker plugin. */
 /* Written by Tomas Muller (tomas@tomas-muller.net). */
 jQuery(function($){
-	$.datepicker.regional['cs'] = {clearText: 'Vymazat', clearStatus: 'Vymaže zadané datum',
+	jQuery.datepicker.regional['cs'] = {clearText: 'Vymazat', clearStatus: 'Vymaže zadané datum',
 		closeText: 'Zavřít',  closeStatus: 'Zavře kalendář beze změny',
 		prevText: '&#x3c;Dříve', prevStatus: 'Přejít na předchozí měsí',
 		nextText: 'Později&#x3e;', nextStatus: 'Přejít na další měsíc',
@@ -18,5 +18,5 @@ jQuery(function($){
 		dayStatus: 'Nastavit DD jako první den v týdnu', dateStatus: '\'Vyber\' DD, M d',
 		dateFormat: 'dd.mm.yy', firstDay: 1, 
 		initStatus: 'Vyberte datum', isRTL: false};
-	$.datepicker.setDefaults($.datepicker.regional['cs']);
+	jQuery.datepicker.setDefaults(jQuery.datepicker.regional['cs']);
 });

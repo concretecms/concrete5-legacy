@@ -5,7 +5,7 @@ var videoBlock ={
 	validate:function(){
 		var failed=0; 
 		
-		var urlF=$('#YouTubeVideoURL');
+		var urlF=jQuery('#YouTubeVideoURL');
 		var urlV=urlF.val();
 		if(!urlV || urlV.length==0 || urlV.toLowerCase().indexOf('youtube')==-1  ){
 			alert(ccm_t('youtube-required'));

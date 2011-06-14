@@ -1,7 +1,7 @@
 /* Turkish initialisation for the jQuery UI date picker plugin. */
 /* Written by Izzet Emre Erkan (kara@karalamalar.net). */
 jQuery(function($){
-	$.datepicker.regional['tr'] = {clearText: 'temizle', clearStatus: 'geçerli tarihi temizler',
+	jQuery.datepicker.regional['tr'] = {clearText: 'temizle', clearStatus: 'geçerli tarihi temizler',
 		closeText: 'kapat', closeStatus: 'sadece göstergeyi kapat',
 		prevText: '&#x3c;geri', prevStatus: 'önceki ayı göster',
 		nextText: 'ileri&#x3e', nextStatus: 'sonraki ayı göster',
@@ -18,5 +18,5 @@ jQuery(function($){
 		dayStatus: 'Haftanın ilk gününü belirleyin', dateStatus: 'D, M d seçiniz',
 		dateFormat: 'dd.mm.yy', firstDay: 1, 
 		initStatus: 'Bir tarih seçiniz', isRTL: false};
-	$.datepicker.setDefaults($.datepicker.regional['tr']);
+	jQuery.datepicker.setDefaults(jQuery.datepicker.regional['tr']);
 });

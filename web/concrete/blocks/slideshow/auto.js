@@ -7,22 +7,22 @@ var SlideshowBlock = {
 	},
 	
 	showImages:function(){
-		$("#ccm-slideshowBlock-imgRows").show();
-		$("#ccm-slideshowBlock-chooseImg").show();
-		$("#ccm-slideshowBlock-fsRow").hide();
+		jQuery("#ccm-slideshowBlock-imgRows").show();
+		jQuery("#ccm-slideshowBlock-chooseImg").show();
+		jQuery("#ccm-slideshowBlock-fsRow").hide();
 	},
 
 	showFileSet:function(){
-		$("#ccm-slideshowBlock-imgRows").hide();
-		$("#ccm-slideshowBlock-chooseImg").hide();
-		$("#ccm-slideshowBlock-fsRow").show();
+		jQuery("#ccm-slideshowBlock-imgRows").hide();
+		jQuery("#ccm-slideshowBlock-chooseImg").hide();
+		jQuery("#ccm-slideshowBlock-fsRow").show();
 	},
 
 	selectObj:function(obj){
 		if (obj.fsID != undefined) {
-			$("#ccm-slideshowBlock-fsRow input[name=fsID]").attr("value", obj.fsID);
-			$("#ccm-slideshowBlock-fsRow input[name=fsName]").attr("value", obj.fsName);
-			$("#ccm-slideshowBlock-fsRow .ccm-slideshowBlock-fsName").text(obj.fsName);
+			jQuery("#ccm-slideshowBlock-fsRow input[name=fsID]").attr("value", obj.fsID);
+			jQuery("#ccm-slideshowBlock-fsRow input[name=fsName]").attr("value", obj.fsName);
+			jQuery("#ccm-slideshowBlock-fsRow .ccm-slideshowBlock-fsName").text(obj.fsName);
 		} else {
 			this.addNewImage(obj.fID, obj.thumbnailLevel1, obj.height, obj.title);
 		}
@@ -32,7 +32,7 @@ var SlideshowBlock = {
 	addNewImage: function(fID, thumbPath, imgHeight, title) { 
 		this.addImages--; //negative counter - so it doesn't compete with real slideshowImgIds
 		var slideshowImgId=this.addImages;
-		var templateHTML=$('#imgRowTemplateWrap .ccm-slideshowBlock-imgRow').html().replace(/tempFID/g,fID);
+		var templateHTML=jQuery('#imgRowTemplateWrap .ccm-slideshowBlock-imgRow').html().replace(/tempFID/g,fID);
 		templateHTML=templateHTML.replace(/tempThumbPath/g,thumbPath);
 		templateHTML=templateHTML.replace(/tempFilename/g,title);
 		templateHTML=templateHTML.replace(/tempSlideshowImgId/g,slideshowImgId).replace(/tempHeight/g,imgHeight);
@@ -41,29 +41,29 @@ var SlideshowBlock = {
 		imgRow.id='ccm-slideshowBlock-imgRow'+parseInt(slideshowImgId);	
 		imgRow.className='ccm-slideshowBlock-imgRow';
 		document.getElementById('ccm-slideshowBlock-imgRows').appendChild(imgRow);
-		var bgRow=$('#ccm-slideshowBlock-imgRow'+parseInt(fID)+' .backgroundRow');
+		var bgRow=jQuery('#ccm-slideshowBlock-imgRow'+parseInt(fID)+' .backgroundRow');
 		bgRow.css('background','url('+escape(thumbPath)+') no-repeat left top');
 	},
 	
 	removeImage: function(fID){
-		$('#ccm-slideshowBlock-imgRow'+fID).remove();
+		jQuery('#ccm-slideshowBlock-imgRow'+fID).remove();
 	},
 	
 	moveUp:function(fID){
-		var thisImg=$('#ccm-slideshowBlock-imgRow'+fID);
+		var thisImg=jQuery('#ccm-slideshowBlock-imgRow'+fID);
 		var qIDs=this.serialize();
 		var previousQID=0;
 		for(var i=0;i<qIDs.length;i++){
 			if(qIDs[i]==fID){
 				if(previousQID==0) break; 
-				thisImg.after($('#ccm-slideshowBlock-imgRow'+previousQID));
+				thisImg.after(jQuery('#ccm-slideshowBlock-imgRow'+previousQID));
 				break;
 			}
 			previousQID=qIDs[i];
 		}	 
 	},
 	moveDown:function(fID){
-		var thisImg=$('#ccm-slideshowBlock-imgRow'+fID);
+		var thisImg=jQuery('#ccm-slideshowBlock-imgRow'+fID);
 		var qIDs=this.serialize();
 		var thisQIDfound=0;
 		for(var i=0;i<qIDs.length;i++){
@@ -72,7 +72,7 @@ var SlideshowBlock = {
 				continue;
 			}
 			if(thisQIDfound){
-				$('#ccm-slideshowBlock-imgRow'+qIDs[i]).after(thisImg);
+				jQuery('#ccm-slideshowBlock-imgRow'+qIDs[i]).after(thisImg);
 				break;
 			}
 		} 
@@ -92,18 +92,18 @@ var SlideshowBlock = {
 	validate:function(){
 		var failed=0; 
 		
-		if ($("#newImg select[name=type]").val() == 'FILESET')
+		if (jQuery("#newImg select[name=type]").val() == 'FILESET')
 		{
-			if ($("#ccm-slideshowBlock-fsRow input[name=fsID]").val() <= 0) {
+			if (jQuery("#ccm-slideshowBlock-fsRow input[name=fsID]").val() <= 0) {
 				alert(ccm_t('choose-fileset'));
-				$('#ccm-slideshowBlock-AddImg').focus();
+				jQuery('#ccm-slideshowBlock-AddImg').focus();
 				failed=1;
 			}	
 		} else {
 			qIDs=this.serialize();
 			if( qIDs.length<2 ){
 				alert(ccm_t('choose-min-2'));
-				$('#ccm-slideshowBlock-AddImg').focus();
+				jQuery('#ccm-slideshowBlock-AddImg').focus();
 				failed=1;
 			}	
 		}
@@ -119,16 +119,16 @@ var SlideshowBlock = {
 ccmValidateBlockForm = function() { return SlideshowBlock.validate(); }
 ccm_chooseAsset = function(obj) { SlideshowBlock.selectObj(obj); }
 
-$(function() {
-	if ($("#newImg select[name=type]").val() == 'FILESET') {
-		$("#newImg select[name=type]").val('FILESET');
+jQuery(function() {
+	if (jQuery("#newImg select[name=type]").val() == 'FILESET') {
+		jQuery("#newImg select[name=type]").val('FILESET');
 		SlideshowBlock.showFileSet();
 	} else {
-		$("#newImg select[name=type]").val('CUSTOM');
+		jQuery("#newImg select[name=type]").val('CUSTOM');
 		SlideshowBlock.showImages();
 	}
 
-	$("#newImg select[name=type]").change(function(){
+	jQuery("#newImg select[name=type]").change(function(){
 		if (this.value == 'FILESET') {
 			SlideshowBlock.showFileSet();
 		} else {

@@ -1,7 +1,7 @@
 ﻿/* Thai initialisation for the jQuery UI date picker plugin. */
 /* Written by pipo (pipo@sixhead.com). */
 jQuery(function($){
-	$.datepicker.regional['th'] = {clearText: 'ลบ', clearStatus: '',
+	jQuery.datepicker.regional['th'] = {clearText: 'ลบ', clearStatus: '',
 		closeText: 'ปิด', closeStatus: '',
 		prevText: '&laquo;&nbsp;ย้อน', prevStatus: '',
 		nextText: 'ถัดไป&nbsp;&raquo;', nextStatus: '',
@@ -18,5 +18,5 @@ jQuery(function($){
 		dayStatus: 'DD', dateStatus: 'D, M d',
 		dateFormat: 'dd/mm/yy', firstDay: 0, 
 		initStatus: '', isRTL: false};
-	$.datepicker.setDefaults($.datepicker.regional['th']);
+	jQuery.datepicker.setDefaults(jQuery.datepicker.regional['th']);
 });

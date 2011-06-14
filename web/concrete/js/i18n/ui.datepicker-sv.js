@@ -1,7 +1,7 @@
 ﻿/* Swedish initialisation for the jQuery UI date picker plugin. */
 /* Written by Anders Ekdahl ( anders@nomadiz.se). */
 jQuery(function($){
-    $.datepicker.regional['sv'] = {clearText: 'Rensa', clearStatus: '',
+    jQuery.datepicker.regional['sv'] = {clearText: 'Rensa', clearStatus: '',
 		closeText: 'Stäng', closeStatus: '',
         prevText: '&laquo;Förra',  prevStatus: '',
 		nextText: 'Nästa&raquo;', nextStatus: '',
@@ -18,5 +18,5 @@ jQuery(function($){
 		dayStatus: 'DD', dateStatus: 'D, M d',
         dateFormat: 'yy-mm-dd', firstDay: 1, 
 		initStatus: '', isRTL: false};
-    $.datepicker.setDefaults($.datepicker.regional['sv']); 
+    jQuery.datepicker.setDefaults(jQuery.datepicker.regional['sv']); 
 });

@@ -1,5 +1,5 @@
 var pageList ={
-	servicesDir: $("input[name=pageListToolsDir]").val(),
+	servicesDir: jQuery("input[name=pageListToolsDir]").val(),
 	init:function(){
 		this.blockForm=document.forms['ccm-block-form'];
 		this.cParentIDRadios=this.blockForm.cParentID;
@@ -14,14 +14,14 @@ var pageList ={
 			this.rss[i].onchange = function(){ pageList.rssInfoShown(); }			
 		}
 		
-		this.truncateSwitch=$('#ccm-pagelist-truncateSummariesOn');
+		this.truncateSwitch=jQuery('#ccm-pagelist-truncateSummariesOn');
 		this.truncateSwitch.click(function(){ pageList.truncationShown(this); });
 		this.truncateSwitch.change(function(){ pageList.truncationShown(this); });
 		
 		this.tabSetup();
 	},	
 	tabSetup: function(){
-		$('ul#ccm-pagelist-tabs li a').each( function(num,el){ 
+		jQuery('ul#ccm-pagelist-tabs li a').each( function(num,el){ 
 			el.onclick=function(){
 				var pane=this.id.replace('ccm-pagelist-tab-','');
 				pageList.showPane(pane);
@@ -29,8 +29,8 @@ var pageList ={
 		});		
 	},
 	truncationShown:function(cb){ 
-		var truncateTxt=$('#ccm-pagelist-truncateTxt');
-		var f=$('#ccm-pagelist-truncateChars');
+		var truncateTxt=jQuery('#ccm-pagelist-truncateTxt');
+		var f=jQuery('#ccm-pagelist-truncateChars');
 		if(cb.checked){
 			truncateTxt.removeClass('faintText');
 			f.attr('disabled',false);
@@ -40,44 +40,44 @@ var pageList ={
 		}
 	},
 	showPane:function(pane){
-		$('ul#ccm-pagelist-tabs li').each(function(num,el){ $(el).removeClass('ccm-nav-active') });
-		$(document.getElementById('ccm-pagelist-tab-'+pane).parentNode).addClass('ccm-nav-active');
-		$('div.ccm-pagelistPane').each(function(num,el){ el.style.display='none'; });
-		$('#ccm-pagelistPane-'+pane).css('display','block');
+		jQuery('ul#ccm-pagelist-tabs li').each(function(num,el){ jQuery(el).removeClass('ccm-nav-active') });
+		jQuery(document.getElementById('ccm-pagelist-tab-'+pane).parentNode).addClass('ccm-nav-active');
+		jQuery('div.ccm-pagelistPane').each(function(num,el){ el.style.display='none'; });
+		jQuery('#ccm-pagelistPane-'+pane).css('display','block');
 		if(pane=='preview') this.loadPreview();
 	},
 	locationOtherShown:function(){
 		for(var i=0;i<this.cParentIDRadios.length;i++){
 			if( this.cParentIDRadios[i].checked && this.cParentIDRadios[i].value=='OTHER' ){
-				$('div.ccm-page-list-page-other').css('display','block');
+				jQuery('div.ccm-page-list-page-other').css('display','block');
 				return; 
 			}				
 		}
-		$('div.ccm-page-list-page-other').css('display','none');
+		jQuery('div.ccm-page-list-page-other').css('display','none');
 	},
 	rssInfoShown:function(){
 		for(var i=0;i<this.rss.length;i++){
 			if( this.rss[i].checked && this.rss[i].value=='1' ){
-				$('#ccm-pagelist-rssDetails').css('display','block');
+				jQuery('#ccm-pagelist-rssDetails').css('display','block');
 				return; 
 			}				
 		}
-		$('#ccm-pagelist-rssDetails').css('display','none');
+		jQuery('#ccm-pagelist-rssDetails').css('display','none');
 	},
 	loadPreview:function(){
 		var loaderHTML = '<div style="padding: 20px; text-align: center"><img src="' + CCM_IMAGE_PATH + '/throbber_white_32.gif"></div>';
-		$('#ccm-pagelistPane-preview').html(loaderHTML);
-		var qStr=$(this.blockForm).formSerialize();
-		$.ajax({ 
+		jQuery('#ccm-pagelistPane-preview').html(loaderHTML);
+		var qStr=jQuery(this.blockForm).formSerialize();
+		jQuery.ajax({ 
 			url: this.servicesDir+'preview_pane.php?'+qStr,
-			success: function(msg){ $('#ccm-pagelistPane-preview').html(msg); }
+			success: function(msg){ jQuery('#ccm-pagelistPane-preview').html(msg); }
 		});
 	},
 	validate:function(){
 			var failed=0;
 			
-			var rssOn=$('#ccm-pagelist-rssSelectorOn');
-			var rssTitle=$('#ccm-pagelist-rssTitle');
+			var rssOn=jQuery('#ccm-pagelist-rssSelectorOn');
+			var rssTitle=jQuery('#ccm-pagelist-rssTitle');
 			if( rssOn && rssOn.attr('checked') && rssTitle && rssTitle.val().length==0 ){
 				alert(ccm_t('feed-name'));
 				rssTitle.focus();
@@ -91,6 +91,6 @@ var pageList ={
 			return true;
 	}	
 }
-$(function(){ pageList.init(); });
+jQuery(function(){ pageList.init(); });
 
 ccmValidateBlockForm = function() { return pageList.validate(); }

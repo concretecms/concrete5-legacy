@@ -1,16 +1,16 @@
 var ccmNextPrevious ={ 
 
 	init:function(){   
-		$('input[name=linkStyle]').each(function(i,el){ 
+		jQuery('input[name=linkStyle]').each(function(i,el){ 
 			el.onclick=function(){ ccmNextPrevious.nextPrevLabelsShown(this); }
 			el.onchange=function(){ ccmNextPrevious.nextPrevLabelsShown(this); }							   
 		})
 	},
 	
 	nextPrevLabelsShown:function(){
-		var el=$('input[name="linkStyle"]:checked')
+		var el=jQuery('input[name="linkStyle"]:checked')
 		var displayed=(el.val()=='next_previous')?'block':'none'; 
-		$('#ccm_edit_pane_nextPreviousWrap').css('display',displayed);
+		jQuery('#ccm_edit_pane_nextPreviousWrap').css('display',displayed);
 	},
 	
 	validate:function(){
@@ -25,6 +25,6 @@ var ccmNextPrevious ={
 	
 }
 
-$(function(){ ccmNextPrevious.init(); });
+jQuery(function(){ ccmNextPrevious.init(); });
  
 ccmValidateBlockForm = function() { return ccmNextPrevious.validate(); }

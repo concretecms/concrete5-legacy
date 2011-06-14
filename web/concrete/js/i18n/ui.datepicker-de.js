@@ -1,7 +1,7 @@
 ﻿/* German initialisation for the jQuery UI date picker plugin. */
 /* Written by Milian Wolff (mail@milianw.de). */
 jQuery(function($){
-	$.datepicker.regional['de'] = {clearText: 'löschen', clearStatus: 'aktuelles Datum löschen',
+	jQuery.datepicker.regional['de'] = {clearText: 'löschen', clearStatus: 'aktuelles Datum löschen',
 		closeText: 'schließen', closeStatus: 'ohne Änderungen schließen',
 		prevText: '&#x3c;zurück', prevStatus: 'letzten Monat zeigen',
 		nextText: 'Vor&#x3e;', nextStatus: 'nächsten Monat zeigen',
@@ -18,5 +18,5 @@ jQuery(function($){
 		dayStatus: 'Setze DD als ersten Wochentag', dateStatus: 'Wähle D, M d',
 		dateFormat: 'dd.mm.yy', firstDay: 1, 
 		initStatus: 'Wähle ein Datum', isRTL: false};
-	$.datepicker.setDefaults($.datepicker.regional['de']);
+	jQuery.datepicker.setDefaults(jQuery.datepicker.regional['de']);
 });

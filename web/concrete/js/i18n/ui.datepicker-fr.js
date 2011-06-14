@@ -1,7 +1,7 @@
 ﻿/* French initialisation for the jQuery UI date picker plugin. */
 /* Written by Keith Wood (kbwood@virginbroadband.com.au) and Stéphane Nahmani (sholby@sholby.net). */
 jQuery(function($){
-	$.datepicker.regional['fr'] = {clearText: 'Effacer', clearStatus: '',
+	jQuery.datepicker.regional['fr'] = {clearText: 'Effacer', clearStatus: '',
 		closeText: 'Fermer', closeStatus: 'Fermer sans modifier',
 		prevText: '&lt;Préc', prevStatus: 'Voir le mois précédent',
 		nextText: 'Suiv&gt;', nextStatus: 'Voir le mois suivant',
@@ -18,5 +18,5 @@ jQuery(function($){
 		dayStatus: 'Utiliser DD comme premier jour de la semaine', dateStatus: 'Choisir le DD, MM d',
 		dateFormat: 'dd/mm/yy', firstDay: 0, 
 		initStatus: 'Choisir la date', isRTL: false};
-	$.datepicker.setDefaults($.datepicker.regional['fr']);
+	jQuery.datepicker.setDefaults(jQuery.datepicker.regional['fr']);
 });
