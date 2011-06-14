@@ -1,7 +1,7 @@
 ﻿/* Bulgarian initialisation for the jQuery UI date picker plugin. */
 /* Written by Stoyan Kyosev (http://svest.org). */
 jQuery(function($){
-    $.datepicker.regional['bg'] = {clearText: 'изчисти', clearStatus: 'изчисти актуалната дата',
+    jQuery.datepicker.regional['bg'] = {clearText: 'изчисти', clearStatus: 'изчисти актуалната дата',
         closeText: 'затвори', closeStatus: 'затвори без промени',
         prevText: '&#x3c;назад', prevStatus: 'покажи последния месец',
         nextText: 'напред&#x3e;', nextStatus: 'покажи следващия месец',
@@ -18,5 +18,5 @@ jQuery(function($){
         dayStatus: 'Сложи DD като първи ден от седмицата', dateStatus: 'Избери D, M d',
         dateFormat: 'dd.mm.yy', firstDay: 1,
         initStatus: 'Избери дата', isRTL: false};
-    $.datepicker.setDefaults($.datepicker.regional['bg']);
+    jQuery.datepicker.setDefaults(jQuery.datepicker.regional['bg']);
 });

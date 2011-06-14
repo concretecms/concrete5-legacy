@@ -4,7 +4,7 @@ var SpellChecker={
 		
 		
 		if(field.toString() === field) { // if it's a string, we'll consider it an id
-			var f = $('#'+field); 
+			var f = jQuery('#'+field); 
 		} else {
 			var f = field; // expecting jquery element
 			field = f.attr('id');
@@ -17,7 +17,7 @@ var SpellChecker={
 		if( trigger.innerHTML.indexOf(ccmi18n_spellchecker.resumeEditing)>=0 ) {
 			trigger.innerHTML=trigger.initTxt;
 			f.css('display','block');
-			$('#'+field+'SuggestBox').css('display','none');
+			jQuery('#'+field+'SuggestBox').css('display','none');
 			return false;
 		}
 		
@@ -28,7 +28,7 @@ var SpellChecker={
 		qStr='fieldId='+field+'&txt='+f.val();	
 		var url=CCM_TOOLS_PATH+"/spellchecker_service.php";
 		//CCM_REL+'/concrete/tools/spellchecker_service.php'
-		$.ajax({type:"POST",url:url,data:qStr,
+		jQuery.ajax({type:"POST",url:url,data:qStr,
 			success: function(json){
 				eval('var jobj='+json);
 				SpellChecker.suggestMode(jobj,f);
@@ -51,7 +51,7 @@ var SpellChecker={
 			suggestBox.className='spellingSuggestBox';
 			suggestBox.onclick=function(){ 
 				if(this.popupShown!=true) return false;
-				var pu=$('#suggestPopup',this); 
+				var pu=jQuery('#suggestPopup',this); 
 				if(pu.css('display')=='block'){  
 					pu.css('display','none'); 
 				}
@@ -63,14 +63,14 @@ var SpellChecker={
 			f.after(suggestBox);
 		}else suggestBox.style.display='block';
 		suggestBox.innerHTML=jobj.html;
-		var correctedHTML=$('.correctedHTML',suggestBox);
+		var correctedHTML=jQuery('.correctedHTML',suggestBox);
 		correctedHTML.css('height',f.height()+'px' ); 
 		correctedHTML.css('width',f.width() );
 		f.css('display','none');
 		suggestBox.suggestions = jobj.suggestions;
 		
 		//add misspelled words suggestions
-		$('.misspelled',suggestBox).each( function(pos,el){
+		jQuery('.misspelled',suggestBox).each( function(pos,el){
 			el.wordNumber=el.id.substring(14);
 			el.onclick=function(){ SpellChecker.suggestPopup( this ) }; 
 		});
@@ -78,9 +78,9 @@ var SpellChecker={
 
 	suggestPopup:function(el){
 		el.parentNode.parentNode.popupShown=false;		
-		var pos=$(el).position();
-		var popup=$('#suggestPopup',el.parentNode.parentNode);
-		popup.css('top',pos.top+$(el).height()+2);
+		var pos=jQuery(el).position();
+		var popup=jQuery('#suggestPopup',el.parentNode.parentNode);
+		popup.css('top',pos.top+jQuery(el).height()+2);
 		popup.css('left',pos.left);
 		//eval('var suggestions=el.parentNode.parentNode.suggestions.'+el.innerHTML); 
 		eval('var suggestions=el.parentNode.parentNode.suggestions.word'+el.wordNumber); 
@@ -101,19 +101,19 @@ var SpellChecker={
 
 	replaceWord:function(suggestBoxId,originalWord,newWord,wordNumber){
 		var suggestBox=document.getElementById(suggestBoxId);
-		var word=$('#misspelledWord'+wordNumber,suggestBox);
+		var word=jQuery('#misspelledWord'+wordNumber,suggestBox);
 		word.html(newWord);
 		word.addClass("fixed");
 		word.click(function(){})
-		var popup=$('#suggestPopup',suggestBox);
+		var popup=jQuery('#suggestPopup',suggestBox);
 		popup.html('');
 		var tarea = document.createElement('textarea');
 		
 		var tempDiv=document.createElement('div');
 		tempDiv.innerHTML=suggestBox.innerHTML;
-		$('.correctedHTML',tempDiv).each(function(i,el){ $(el).after(el.innerHTML); $(el).remove() })
-		$('.misspelled',tempDiv).each(function(i,el){ $(el).after(el.innerHTML); $(el).remove() })
-		$('#suggestPopup',tempDiv).each(function(i,el){ $(el).remove() })		
+		jQuery('.correctedHTML',tempDiv).each(function(i,el){ jQuery(el).after(el.innerHTML); jQuery(el).remove() })
+		jQuery('.misspelled',tempDiv).each(function(i,el){ jQuery(el).after(el.innerHTML); jQuery(el).remove() })
+		jQuery('#suggestPopup',tempDiv).each(function(i,el){ jQuery(el).remove() })		
 		tarea.innerHTML = tempDiv.innerHTML.replace(/(<(br[^>]?)>)/ig," \r\n");	
 		suggestBox.masterRegion.val( tarea.value ); 
 		popup.css('display','none'); 

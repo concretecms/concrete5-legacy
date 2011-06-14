@@ -1,7 +1,7 @@
 /* Icelandic initialisation for the jQuery UI date picker plugin. */
 /* Written by Haukur H. Thorsson (haukur@eskill.is). */
 jQuery(function($){
-	$.datepicker.regional['is'] = {clearText: 'Hreinsa', clearStatus: '',
+	jQuery.datepicker.regional['is'] = {clearText: 'Hreinsa', clearStatus: '',
 		closeText: 'Loka', closeStatus: '',
 		prevText: '< Fyrri', prevStatus: '',
 		nextText: 'N&aelig;sti >', nextStatus: '',
@@ -18,5 +18,5 @@ jQuery(function($){
 		dayStatus: 'DD', dateStatus: 'D, M d',
 		dateFormat: 'dd/mm/yy', firstDay: 0, 
 		initStatus: '', isRTL: false};
-	$.datepicker.setDefaults($.datepicker.regional['is']);
+	jQuery.datepicker.setDefaults(jQuery.datepicker.regional['is']);
 });

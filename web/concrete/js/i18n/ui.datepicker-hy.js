@@ -1,7 +1,7 @@
 /* Armenian(UTF-8) initialisation for the jQuery UI date picker plugin. */
 /* Written by Levon Zakaryan (levon.zakaryan@gmail.com)*/
 jQuery(function($){
-	$.datepicker.regional['hy'] = {clearText: 'Մաքրել', clearStatus: '',
+	jQuery.datepicker.regional['hy'] = {clearText: 'Մաքրել', clearStatus: '',
 		closeText: 'Փակել', closeStatus: '',
 		prevText: '&lt;Նախ.',  prevStatus: '',
 		nextText: 'Հաջ.&gt;', nextStatus: '',
@@ -18,5 +18,5 @@ jQuery(function($){
 		dayStatus: 'DD', dateStatus: 'D, M d',
 		dateFormat: 'dd.mm.yy', firstDay: 1, 
 		initStatus: '', isRTL: false};
-	$.datepicker.setDefaults($.datepicker.regional['hy']);
+	jQuery.datepicker.setDefaults(jQuery.datepicker.regional['hy']);
 });

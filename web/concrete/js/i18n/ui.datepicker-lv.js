@@ -3,7 +3,7 @@
  * @author Arturas Paleicikas <arturas.paleicikas@metasite.net>
  */
 jQuery(function($){
-	$.datepicker.regional['lv'] = {
+	jQuery.datepicker.regional['lv'] = {
 		clearText: 'Notīrīt', clearStatus: '',
 		closeText: 'Aizvērt', closeStatus: '',
 		prevText: 'Iepr',  prevStatus: '',
@@ -21,5 +21,5 @@ jQuery(function($){
 		dayStatus: 'DD', dateStatus: 'D, M d',
 		dateFormat: 'dd-mm-yy', firstDay: 1, 
 		initStatus: '', isRTL: false};
-	$.datepicker.setDefaults($.datepicker.regional['lv']);
+	jQuery.datepicker.setDefaults(jQuery.datepicker.regional['lv']);
 });

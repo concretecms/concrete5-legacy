@@ -10,14 +10,14 @@ ccm_triggerSelectFile = function(fID, af) {
 		var af = ccm_alActiveAssetField;
 	}
 	//alert(af);
-	var obj = $('#' + af + "-fm-selected");
-	var dobj = $('#' + af + "-fm-display");
+	var obj = jQuery('#' + af + "-fm-selected");
+	var dobj = jQuery('#' + af + "-fm-display");
 	dobj.hide();
 	obj.show();
 	obj.load(CCM_TOOLS_PATH + '/files/selector_data?fID=' + fID + '&ccm_file_selected_field=' + af, function() {
 		/*
-		$(this).find('a.ccm-file-manager-clear-asset').click(function(e) {
-			var field = $(this).attr('ccm-file-manager-field');
+		jQuery(this).find('a.ccm-file-manager-clear-asset').click(function(e) {
+			var field = jQuery(this).attr('ccm-file-manager-field');
 			ccm_clearFile(e, field);
 		});
 		*/
@@ -29,29 +29,29 @@ ccm_triggerSelectFile = function(fID, af) {
 		
 		obj.click(function(e) {
 			e.stopPropagation();
-			ccm_alActivateMenu($(this),e);
+			ccm_alActivateMenu(jQuery(this),e);
 		});
 		
 		if (typeof(ccm_triggerSelectFileComplete)  == 'function') {
 			ccm_triggerSelectFileComplete(fID, af);
 		}
 	});
-	var vobj = $('#' + af + "-fm-value");
+	var vobj = jQuery('#' + af + "-fm-value");
 	vobj.attr('value', fID);
 	ccm_alSetupFileProcessor();
 }
 
 ccm_alGetFileData = function(fID, onComplete) {
-	$.getJSON(CCM_TOOLS_PATH + '/files/get_data.php?fID=' + fID, function(resp) {
+	jQuery.getJSON(CCM_TOOLS_PATH + '/files/get_data.php?fID=' + fID, function(resp) {
 		onComplete(resp);
 	});
 }
 
 ccm_clearFile = function(e, af) {
 	e.stopPropagation();
-	var obj = $('#' + af + "-fm-selected");
-	var dobj = $('#' + af + "-fm-display");
-	var vobj = $('#' + af + "-fm-value");
+	var obj = jQuery('#' + af + "-fm-selected");
+	var dobj = jQuery('#' + af + "-fm-display");
+	var vobj = jQuery('#' + af + "-fm-value");
 	vobj.attr('value', 0);
 	obj.hide();
 	dobj.show();
@@ -62,7 +62,7 @@ ccm_activateFileManager = function(altype, searchInstance) {
 	//to our star don't interfer with clicks to our rows
 	ccm_alSetupSelectFiles(searchInstance);
 	
-	$(document).click(function(e) {		
+	jQuery(document).click(function(e) {		
 		e.stopPropagation();
 		ccm_alSelectNone();
 	});
@@ -70,7 +70,7 @@ ccm_activateFileManager = function(altype, searchInstance) {
 	ccm_setupAdvancedSearch(searchInstance);
 	
 	if (altype == 'DASHBOARD') {
-		$(".dialog-launch").dialog();
+		jQuery(".dialog-launch").dialog();
 	}
 	
 	ccm_alLaunchType[searchInstance] = altype;
@@ -79,30 +79,30 @@ ccm_activateFileManager = function(altype, searchInstance) {
 	ccm_alSetupFileProcessor();
 	ccm_alSetupSingleUploadForm();
 	
-	$("form#ccm-" + searchInstance + "-advanced-search select[name=fssID]").change(function() {
+	jQuery("form#ccm-" + searchInstance + "-advanced-search select[name=fssID]").change(function() {
 		if (altype == 'DASHBOARD') { 
-			window.location.href = CCM_DISPATCHER_FILENAME + '/dashboard/files/search?fssID=' + $(this).val();
+			window.location.href = CCM_DISPATCHER_FILENAME + '/dashboard/files/search?fssID=' + jQuery(this).val();
 		} else {
 			jQuery.fn.dialog.showLoader();
-			var url = $("div#ccm-" + searchInstance + "-overlay-wrapper input[name=dialogAction]").val() + "&refreshDialog=1&fssID=" + $(this).val();
-			$.get(url, function(resp) {
+			var url = jQuery("div#ccm-" + searchInstance + "-overlay-wrapper input[name=dialogAction]").val() + "&refreshDialog=1&fssID=" + jQuery(this).val();
+			jQuery.get(url, function(resp) {
 				jQuery.fn.dialog.hideLoader();
-				$("div#ccm-" + searchInstance + "-overlay-wrapper").html(resp);
-				$("div#ccm-" + searchInstance + "-overlay-wrapper a.dialog-launch").dialog();
+				jQuery("div#ccm-" + searchInstance + "-overlay-wrapper").html(resp);
+				jQuery("div#ccm-" + searchInstance + "-overlay-wrapper a.dialog-launch").dialog();
 			});
 		}
 	});
 
-	$("form#ccm-" + searchInstance + "-advanced-search a.ccm-search-saved-exit").click(function() {
+	jQuery("form#ccm-" + searchInstance + "-advanced-search a.ccm-search-saved-exit").click(function() {
 		if (altype == 'DASHBOARD') { 
 			window.location.href = CCM_DISPATCHER_FILENAME + '/dashboard/files/search';
 		} else {
 			jQuery.fn.dialog.showLoader();
-			var url = $("div#ccm-" + searchInstance + "-overlay-wrapper input[name=dialogAction]").val() + "&refreshDialog=1";
-			$.get(url, function(resp) {
+			var url = jQuery("div#ccm-" + searchInstance + "-overlay-wrapper input[name=dialogAction]").val() + "&refreshDialog=1";
+			jQuery.get(url, function(resp) {
 				jQuery.fn.dialog.hideLoader();
-				$("div#ccm-" + searchInstance + "-overlay-wrapper").html(resp);
-				$("div#ccm-" + searchInstance + "-overlay-wrapper a.dialog-launch").dialog();
+				jQuery("div#ccm-" + searchInstance + "-overlay-wrapper").html(resp);
+				jQuery("div#ccm-" + searchInstance + "-overlay-wrapper a.dialog-launch").dialog();
 			});
 		}
 	});
@@ -117,16 +117,16 @@ ccm_activateFileManager = function(altype, searchInstance) {
 }
 
 ccm_alSetupSingleUploadForm = function() {
-	$(".ccm-file-manager-submit-single").submit(function() {  
-		$(this).attr('target', ccm_alProcessorTarget);
-		ccm_alSubmitSingle($(this).get(0));	 
+	jQuery(".ccm-file-manager-submit-single").submit(function() {  
+		jQuery(this).attr('target', ccm_alProcessorTarget);
+		ccm_alSubmitSingle(jQuery(this).get(0));	 
 	});
 }
 
 ccm_activateFileSelectors = function() {
-	$(".ccm-file-manager-launch").unbind();
-	$(".ccm-file-manager-launch").click(function() {
-		ccm_alLaunchSelectorFileManager($(this).parent().attr('ccm-file-manager-field'));	
+	jQuery(".ccm-file-manager-launch").unbind();
+	jQuery(".ccm-file-manager-launch").click(function() {
+		ccm_alLaunchSelectorFileManager(jQuery(this).parent().attr('ccm-file-manager-field'));	
 	});
 }
 
@@ -134,10 +134,10 @@ ccm_alLaunchSelectorFileManager = function(selector) {
 	ccm_alActiveAssetField = selector;
 	var filterStr = "";
 	
-	var types = $('#' + selector + '-fm-display input.ccm-file-manager-filter');
+	var types = jQuery('#' + selector + '-fm-display input.ccm-file-manager-filter');
 	if (types.length) {
 		for (i = 0; i < types.length; i++) {
-			filterStr += '&' + $(types[i]).attr('name') + '=' + $(types[i]).attr('value');		
+			filterStr += '&' + jQuery(types[i]).attr('name') + '=' + jQuery(types[i]).attr('value');		
 		}
 	}
 	
@@ -146,7 +146,7 @@ ccm_alLaunchSelectorFileManager = function(selector) {
 
 // public method - do not remove or rename
 ccm_launchFileManager = function(filters) {
-	$.fn.dialog.open({
+	jQuery.fn.dialog.open({
 		width: '90%',
 		height: '70%',
 		modal: false,
@@ -156,7 +156,7 @@ ccm_launchFileManager = function(filters) {
 }
 
 ccm_launchFileSetPicker = function(fsID) {
-	$.fn.dialog.open({
+	jQuery.fn.dialog.open({
 		width: 500,
 		height: 160,
 		modal: false,
@@ -168,11 +168,11 @@ ccm_launchFileSetPicker = function(fsID) {
 ccm_alSubmitSetsForm = function(searchInstance) {
 	ccm_deactivateSearchResults(searchInstance);
 	jQuery.fn.dialog.showLoader();
-	$("#ccm-" + searchInstance + "-add-to-set-form").ajaxSubmit(function(resp) {
+	jQuery("#ccm-" + searchInstance + "-add-to-set-form").ajaxSubmit(function(resp) {
 		jQuery.fn.dialog.closeTop();
 		jQuery.fn.dialog.hideLoader();		
-		$("#ccm-" + searchInstance + "-advanced-search").ajaxSubmit(function(resp) {
-			$("#ccm-" + searchInstance + "-sets-search-wrapper").load(CCM_TOOLS_PATH + '/files/search_sets_reload', {'searchInstance': searchInstance}, function() {
+		jQuery("#ccm-" + searchInstance + "-advanced-search").ajaxSubmit(function(resp) {
+			jQuery("#ccm-" + searchInstance + "-sets-search-wrapper").load(CCM_TOOLS_PATH + '/files/search_sets_reload', {'searchInstance': searchInstance}, function() {
 				ccm_parseAdvancedSearchResponse(resp, searchInstance);
 			});
 		});
@@ -181,9 +181,9 @@ ccm_alSubmitSetsForm = function(searchInstance) {
 
 ccm_alSubmitPasswordForm = function(searchInstance) {
 	ccm_deactivateSearchResults(searchInstance);
-	$("#ccm-" + searchInstance + "-password-form").ajaxSubmit(function(resp) {
+	jQuery("#ccm-" + searchInstance + "-password-form").ajaxSubmit(function(resp) {
 		jQuery.fn.dialog.closeTop();
-		$("#ccm-" + searchInstance + "-advanced-search").ajaxSubmit(function(resp) {
+		jQuery("#ccm-" + searchInstance + "-advanced-search").ajaxSubmit(function(resp) {
 			ccm_parseAdvancedSearchResponse(resp, searchInstance);
 		});
 	});
@@ -191,9 +191,9 @@ ccm_alSubmitPasswordForm = function(searchInstance) {
 
 ccm_alSubmitStorageForm = function(searchInstance) {
 	ccm_deactivateSearchResults(searchInstance);
-	$("#ccm-" + searchInstance + "-storage-form").ajaxSubmit(function(resp) {
+	jQuery("#ccm-" + searchInstance + "-storage-form").ajaxSubmit(function(resp) {
 		jQuery.fn.dialog.closeTop();
-		$("#ccm-" + searchInstance + "-advanced-search").ajaxSubmit(function(resp) {
+		jQuery("#ccm-" + searchInstance + "-advanced-search").ajaxSubmit(function(resp) {
 			ccm_parseAdvancedSearchResponse(resp, searchInstance);
 		});
 	});
@@ -201,9 +201,9 @@ ccm_alSubmitStorageForm = function(searchInstance) {
 
 ccm_alSubmitPermissionsForm = function(searchInstance) {
 	ccm_deactivateSearchResults(searchInstance);
-	$("#ccm-" + searchInstance + "-permissions-form").ajaxSubmit(function(resp) {
+	jQuery("#ccm-" + searchInstance + "-permissions-form").ajaxSubmit(function(resp) {
 		jQuery.fn.dialog.closeTop();
-		$("#ccm-" + searchInstance + "-advanced-search").ajaxSubmit(function(resp) {
+		jQuery("#ccm-" + searchInstance + "-advanced-search").ajaxSubmit(function(resp) {
 			ccm_parseAdvancedSearchResponse(resp, searchInstance);
 		});
 	});
@@ -212,14 +212,14 @@ ccm_alSubmitPermissionsForm = function(searchInstance) {
 		
 ccm_alSetupSetsForm = function(searchInstance) {
 	// activate file set search
-	$('#fsAddToSearchName').liveUpdate('ccm-file-search-add-to-sets-list', 'fileset');
+	jQuery('#fsAddToSearchName').liveUpdate('ccm-file-search-add-to-sets-list', 'fileset');
 
 	// Setup the tri-state checkboxes
-	$(".ccm-file-set-add-cb a").each(function() {
-		var cb = $(this);
+	jQuery(".ccm-file-set-add-cb a").each(function() {
+		var cb = jQuery(this);
 		var startingState = cb.attr("ccm-tri-state-startup");
-		$(this).click(function() {
-			var selectedState = $(this).attr("ccm-tri-state-selected");
+		jQuery(this).click(function() {
+			var selectedState = jQuery(this).attr("ccm-tri-state-selected");
 			var toSetState = 0;
 			switch(selectedState) {
 				case '0':
@@ -237,19 +237,19 @@ ccm_alSetupSetsForm = function(searchInstance) {
 					break;
 			}
 			
-			$(this).attr('ccm-tri-state-selected', toSetState);
-			$(this).find('input').val(toSetState);
-			$(this).find('img').attr('src', CCM_IMAGE_PATH + '/checkbox_state_' + toSetState + '.png');
+			jQuery(this).attr('ccm-tri-state-selected', toSetState);
+			jQuery(this).find('input').val(toSetState);
+			jQuery(this).find('img').attr('src', CCM_IMAGE_PATH + '/checkbox_state_' + toSetState + '.png');
 		});
 	});
-	$("#ccm-" + searchInstance + "-add-to-set-form").submit(function() {
+	jQuery("#ccm-" + searchInstance + "-add-to-set-form").submit(function() {
 		ccm_alSubmitSetsForm(searchInstance);
 		return false;
 	});
 }
 
 ccm_alSetupPasswordForm = function() {
-	$("#ccm-file-password-form").submit(function() {
+	jQuery("#ccm-file-password-form").submit(function() {
 		ccm_alSubmitPasswordForm();
 		return false;
 	});
@@ -260,7 +260,7 @@ ccm_alRescanFiles = function() {
 	for (i = 0; i < files.length; i++) {
 		turl += 'fID[]=' + files[i] + '&';
 	}
-	$.fn.dialog.open({
+	jQuery.fn.dialog.open({
 		title: ccmi18n_filemanager.rescan,
 		href: turl,
 		width: 350,
@@ -268,13 +268,13 @@ ccm_alRescanFiles = function() {
 		height: 200,
 		onClose: function() {
 			if (files.length == 1) {
-				$('#ccm-file-properties-wrapper').html('');
+				jQuery('#ccm-file-properties-wrapper').html('');
 				jQuery.fn.dialog.showLoader();
 				
 				// open the properties window for this bad boy.
-				$("#ccm-file-properties-wrapper").load(CCM_TOOLS_PATH + '/files/properties?fID=' + files[0] + '&reload=1', false, function() {
+				jQuery("#ccm-file-properties-wrapper").load(CCM_TOOLS_PATH + '/files/properties?fID=' + files[0] + '&reload=1', false, function() {
 					jQuery.fn.dialog.hideLoader();
-					$(this).find(".dialog-launch").dialog();
+					jQuery(this).find(".dialog-launch").dialog();
 
 				});				
 			}
@@ -284,58 +284,58 @@ ccm_alRescanFiles = function() {
 
 	
 ccm_alSelectPermissionsEntity = function(selector, id, name) {
-	var html = $('#ccm-file-permissions-entity-base').html();
-	$('#ccm-file-permissions-entities-wrapper').append('<div class="ccm-file-permissions-entity">' + html + '<\/div>');
-	var p = $('.ccm-file-permissions-entity');
+	var html = jQuery('#ccm-file-permissions-entity-base').html();
+	jQuery('#ccm-file-permissions-entities-wrapper').append('<div class="ccm-file-permissions-entity">' + html + '<\/div>');
+	var p = jQuery('.ccm-file-permissions-entity');
 	var ap = p[p.length - 1];
-	$(ap).find('h2 span').html(name);
-	$(ap).find('input[type=hidden]').val(selector + '_' + id);
-	$(ap).find('input[type=radio]').each(function() {
-		$(this).attr('name', $(this).attr('name') + '_' + selector + '_' + id);
+	jQuery(ap).find('h2 span').html(name);
+	jQuery(ap).find('input[type=hidden]').val(selector + '_' + id);
+	jQuery(ap).find('input[type=radio]').each(function() {
+		jQuery(this).attr('name', jQuery(this).attr('name') + '_' + selector + '_' + id);
 	});
-	$(ap).find('div.ccm-file-access-extensions input[type=checkbox]').each(function() {
-		$(this).attr('name', $(this).attr('name') + '_' + selector + '_' + id + '[]');
+	jQuery(ap).find('div.ccm-file-access-extensions input[type=checkbox]').each(function() {
+		jQuery(this).attr('name', jQuery(this).attr('name') + '_' + selector + '_' + id + '[]');
 	});
 	
 	ccm_alActivateFilePermissionsSelector();	
 }
 
 ccm_alActivateFilePermissionsSelector = function() {
-	$("tr.ccm-file-access-add input").unbind();
-	$("tr.ccm-file-access-add input").click(function() {
-		var p = $(this).parents('div.ccm-file-permissions-entity')[0];
-		if ($(this).val() == ccmi18n_filemanager.PTYPE_CUSTOM) {
-			$(p).find('div.ccm-file-access-add-extensions').show();				
+	jQuery("tr.ccm-file-access-add input").unbind();
+	jQuery("tr.ccm-file-access-add input").click(function() {
+		var p = jQuery(this).parents('div.ccm-file-permissions-entity')[0];
+		if (jQuery(this).val() == ccmi18n_filemanager.PTYPE_CUSTOM) {
+			jQuery(p).find('div.ccm-file-access-add-extensions').show();				
 		} else {
-			$(p).find('div.ccm-file-access-add-extensions').hide();				
+			jQuery(p).find('div.ccm-file-access-add-extensions').hide();				
 		}
 	});
-	$("tr.ccm-file-access-file-manager input").click(function() {
-		var p = $(this).parents('div.ccm-file-permissions-entity')[0];
-		if ($(this).val() != ccmi18n_filemanager.PTYPE_NONE) {
-			$(p).find('tr.ccm-file-access-add').show();				
-			$(p).find('tr.ccm-file-access-edit').show();				
-			$(p).find('tr.ccm-file-access-admin').show();
-			//$(p).find('div.ccm-file-access-add-extensions').show();				
+	jQuery("tr.ccm-file-access-file-manager input").click(function() {
+		var p = jQuery(this).parents('div.ccm-file-permissions-entity')[0];
+		if (jQuery(this).val() != ccmi18n_filemanager.PTYPE_NONE) {
+			jQuery(p).find('tr.ccm-file-access-add').show();				
+			jQuery(p).find('tr.ccm-file-access-edit').show();				
+			jQuery(p).find('tr.ccm-file-access-admin').show();
+			//jQuery(p).find('div.ccm-file-access-add-extensions').show();				
 		} else {
-			$(p).find('tr.ccm-file-access-add').hide();				
-			$(p).find('tr.ccm-file-access-edit').hide();				
-			$(p).find('tr.ccm-file-access-admin').hide();				
-			$(p).find('div.ccm-file-access-add-extensions').hide();				
+			jQuery(p).find('tr.ccm-file-access-add').hide();				
+			jQuery(p).find('tr.ccm-file-access-edit').hide();				
+			jQuery(p).find('tr.ccm-file-access-admin').hide();				
+			jQuery(p).find('div.ccm-file-access-add-extensions').hide();				
 		}
 	});
 
 
-	$("a.ccm-file-permissions-remove").click(function() {
-		$(this).parent().parent().fadeOut(100, function() {
-			$(this).remove();
+	jQuery("a.ccm-file-permissions-remove").click(function() {
+		jQuery(this).parent().parent().fadeOut(100, function() {
+			jQuery(this).remove();
 		});
 	});
-	$("input[name=toggleCanAddExtension]").unbind();
-	$("input[name=toggleCanAddExtension]").click(function() {
-		var ext = $(this).parent().parent().find('div.ccm-file-access-extensions');
+	jQuery("input[name=toggleCanAddExtension]").unbind();
+	jQuery("input[name=toggleCanAddExtension]").click(function() {
+		var ext = jQuery(this).parent().parent().find('div.ccm-file-access-extensions');
 		
-		if ($(this).attr('checked') == 1) {
+		if (jQuery(this).attr('checked') == 1) {
 			ext.find('input').attr('checked', true);
 		} else {
 			ext.find('input').attr('checked', false);
@@ -344,14 +344,14 @@ ccm_alActivateFilePermissionsSelector = function() {
 }
 
 ccm_alSetupVersionSelector = function() {
-	$("#ccm-file-versions-grid input[type=radio]").click(function() {
-		$('#ccm-file-versions-grid tr').removeClass('ccm-file-versions-grid-active');
+	jQuery("#ccm-file-versions-grid input[type=radio]").click(function() {
+		jQuery('#ccm-file-versions-grid tr').removeClass('ccm-file-versions-grid-active');
 		
-		var trow = $(this).parent().parent();
+		var trow = jQuery(this).parent().parent();
 		var fID = trow.attr('fID');
 		var fvID = trow.attr('fvID');
 		var postStr = 'task=approve_version&fID=' + fID + '&fvID=' + fvID;
-		$.post(CCM_TOOLS_PATH + '/files/properties', postStr, function(resp) {
+		jQuery.post(CCM_TOOLS_PATH + '/files/properties', postStr, function(resp) {
 			trow.addClass('ccm-file-versions-grid-active');
 			trow.find('td').show('highlight', {
 				color: '#FFF9BB'
@@ -359,12 +359,12 @@ ccm_alSetupVersionSelector = function() {
 		});
 	});
 	
-	$(".ccm-file-versions-remove").click(function() {
-		var trow = $(this).parent().parent();
+	jQuery(".ccm-file-versions-remove").click(function() {
+		var trow = jQuery(this).parent().parent();
 		var fID = trow.attr('fID');
 		var fvID = trow.attr('fvID');
 		var postStr = 'task=delete_version&fID=' + fID + '&fvID=' + fvID;
-		$.post(CCM_TOOLS_PATH + '/files/properties', postStr, function(resp) {
+		jQuery.post(CCM_TOOLS_PATH + '/files/properties', postStr, function(resp) {
 			trow.fadeOut(200, function() {
 				trow.remove();
 			});
@@ -374,11 +374,11 @@ ccm_alSetupVersionSelector = function() {
 }
 
 ccm_alDeleteFiles = function(searchInstance) {
-	$("#ccm-" + searchInstance + "-delete-form").ajaxSubmit(function(resp) {
+	jQuery("#ccm-" + searchInstance + "-delete-form").ajaxSubmit(function(resp) {
 		ccm_parseJSON(resp, function() {	
 			jQuery.fn.dialog.closeTop();
 			ccm_deactivateSearchResults(searchInstance);
-			$("#ccm-" + searchInstance + "-advanced-search").ajaxSubmit(function(resp) {
+			jQuery("#ccm-" + searchInstance + "-advanced-search").ajaxSubmit(function(resp) {
 				ccm_parseAdvancedSearchResponse(resp, searchInstance);
 			});
 		});
@@ -386,13 +386,13 @@ ccm_alDeleteFiles = function(searchInstance) {
 }
 
 ccm_alDuplicateFiles = function(searchInstance) {
-	$("#ccm-" + searchInstance + "-duplicate-form").ajaxSubmit(function(resp) {
+	jQuery("#ccm-" + searchInstance + "-duplicate-form").ajaxSubmit(function(resp) {
 		ccm_parseJSON(resp, function() {	
 			jQuery.fn.dialog.closeTop();
 			ccm_deactivateSearchResults(searchInstance);
 			var r = eval('(' + resp + ')');
 
-			$("#ccm-" + searchInstance + "-advanced-search").ajaxSubmit(function(resp) {
+			jQuery("#ccm-" + searchInstance + "-advanced-search").ajaxSubmit(function(resp) {
 				ccm_parseAdvancedSearchResponse(resp, searchInstance);
 				var highlight = new Array();
 				for (i = 0; i < r.fID.length; i++ ){
@@ -408,36 +408,36 @@ ccm_alDuplicateFiles = function(searchInstance) {
 }
 
 ccm_alSetupSelectFiles = function() {
-	$('.ccm-file-list').unbind();
+	jQuery('.ccm-file-list').unbind();
 	/*
-	$('.ccm-file-list').click(function(e){
+	jQuery('.ccm-file-list').click(function(e){
 		e.stopPropagation();
-		if ($(e.target).is('img.ccm-star')) {	
-			var fID = $(e.target).parents('tr.ccm-list-record')[0].id;
+		if (jQuery(e.target).is('img.ccm-star')) {	
+			var fID = jQuery(e.target).parents('tr.ccm-list-record')[0].id;
 			fID = fID.substring(3);
 			ccm_starFile(e.target,fID);
 		}
 		else{
-			$(e.target).parents('tr.ccm-list-record').each(function(){
-				ccm_alActivateMenu($(this), e);		
+			jQuery(e.target).parents('tr.ccm-list-record').each(function(){
+				ccm_alActivateMenu(jQuery(this), e);		
 			});
 		}
 	});
 	*/
 	
-	$('.ccm-file-list tr.ccm-list-record').click(function(e) {
+	jQuery('.ccm-file-list tr.ccm-list-record').click(function(e) {
 		e.stopPropagation();
-		ccm_alActivateMenu($(this), e);
+		ccm_alActivateMenu(jQuery(this), e);
 	});
-	$('.ccm-file-list img.ccm-star').click(function(e) {
+	jQuery('.ccm-file-list img.ccm-star').click(function(e) {
 		e.stopPropagation();
-		var fID = $(e.target).parents('tr.ccm-list-record')[0].id;
+		var fID = jQuery(e.target).parents('tr.ccm-list-record')[0].id;
 		fID = fID.substring(3);
 		ccm_starFile(e.target,fID);
 	});
-	$("div.ccm-file-list-thumbnail-image img").hover(function(e) { 
-		var fID = $(this).parent().attr('fID');
-		var obj = $('#fID' + fID + 'hoverThumbnail'); 
+	jQuery("div.ccm-file-list-thumbnail-image img").hover(function(e) { 
+		var fID = jQuery(this).parent().attr('fID');
+		var obj = jQuery('#fID' + fID + 'hoverThumbnail'); 
 		if (obj.length > 0) { 
 			var tdiv = obj.find('div');
 			var pos = obj.position();
@@ -446,50 +446,50 @@ ccm_alSetupSelectFiles = function() {
 			tdiv.show();
 		}
 	}, function() {
-		var fID = $(this).parent().attr('fID');
-		var obj = $('#fID' + fID + 'hoverThumbnail');
+		var fID = jQuery(this).parent().attr('fID');
+		var obj = jQuery('#fID' + fID + 'hoverThumbnail');
 		var tdiv = obj.find('div');
 		tdiv.hide(); 
 	});
 }
 
 ccm_alSetupCheckboxes = function(searchInstance) {
-	$("#ccm-" + searchInstance + "-list-cb-all").unbind();	
-	$("#ccm-" + searchInstance + "-list-cb-all").click(function() {
+	jQuery("#ccm-" + searchInstance + "-list-cb-all").unbind();	
+	jQuery("#ccm-" + searchInstance + "-list-cb-all").click(function() {
 		ccm_hideMenus();
-		if ($(this).attr('checked') == true) {
-			$('#ccm-' + searchInstance + '-search-results td.ccm-file-list-cb input[type=checkbox]').attr('checked', true);
-			$("#ccm-" + searchInstance + "-list-multiple-operations").attr('disabled', false);
+		if (jQuery(this).attr('checked') == true) {
+			jQuery('#ccm-' + searchInstance + '-search-results td.ccm-file-list-cb input[type=checkbox]').attr('checked', true);
+			jQuery("#ccm-" + searchInstance + "-list-multiple-operations").attr('disabled', false);
 		} else {
-			$('#ccm-' + searchInstance + '-search-results td.ccm-file-list-cb input[type=checkbox]').attr('checked', false);
-			$("#ccm-" + searchInstance + "-list-multiple-operations").attr('disabled', true);
+			jQuery('#ccm-' + searchInstance + '-search-results td.ccm-file-list-cb input[type=checkbox]').attr('checked', false);
+			jQuery("#ccm-" + searchInstance + "-list-multiple-operations").attr('disabled', true);
 		}
 	});
-	$("#ccm-" + searchInstance + "-search-results td.ccm-file-list-cb input[type=checkbox]").click(function(e) {
+	jQuery("#ccm-" + searchInstance + "-search-results td.ccm-file-list-cb input[type=checkbox]").click(function(e) {
 		e.stopPropagation();
 		ccm_hideMenus();
 		ccm_alRescanMultiFileMenu(searchInstance);
 	});
-	$("#ccm-" + searchInstance + "-search-results td.ccm-file-list-cb").click(function(e) {
+	jQuery("#ccm-" + searchInstance + "-search-results td.ccm-file-list-cb").click(function(e) {
 		e.stopPropagation();
 		ccm_hideMenus();
-		$(this).find('input[type=checkbox]').click();
+		jQuery(this).find('input[type=checkbox]').click();
 		ccm_alRescanMultiFileMenu(searchInstance);
 	});
 	
 	// if we're not in the dashboard, add to the multiple operations select menu
 	if (ccm_alLaunchType[searchInstance] != 'DASHBOARD' && ccm_alLaunchType[searchInstance] != 'BROWSE') {
 		var chooseText = ccmi18n_filemanager.select;
-		$("#ccm-" + searchInstance + "-list-multiple-operations option:eq(0)").after("<option value=\"choose\">" + chooseText + "</option>");
+		jQuery("#ccm-" + searchInstance + "-list-multiple-operations option:eq(0)").after("<option value=\"choose\">" + chooseText + "</option>");
 	}
-	$("#ccm-" + searchInstance + "-list-multiple-operations").change(function() {
-		var action = $(this).val();
+	jQuery("#ccm-" + searchInstance + "-list-multiple-operations").change(function() {
+		var action = jQuery(this).val();
 		var fIDstring = ccm_alGetSelectedFileIDs(searchInstance);
 		switch(action) {
 			case 'choose':
 				var fIDs = new Array();
-				$("#ccm-" + searchInstance + "-search-results td.ccm-file-list-cb input[type=checkbox]:checked").each(function() {
-					fIDs.push($(this).val());
+				jQuery("#ccm-" + searchInstance + "-search-results td.ccm-file-list-cb input[type=checkbox]:checked").each(function() {
+					fIDs.push(jQuery(this).val());
 				});
 				ccm_alSelectFile(fIDs, true);
 				break;
@@ -537,7 +537,7 @@ ccm_alSetupCheckboxes = function(searchInstance) {
 					href: CCM_TOOLS_PATH + '/files/rescan?' + fIDstring + '&searchInstance=' + searchInstance,
 					title: ccmi18n_filemanager.rescan,
 					onClose: function() {
-						$("#ccm-" + searchInstance + "-advanced-search").submit();			
+						jQuery("#ccm-" + searchInstance + "-advanced-search").submit();			
 					}
 				});
 				break;
@@ -546,7 +546,7 @@ ccm_alSetupCheckboxes = function(searchInstance) {
 				break;
 		}
 		
-		$(this).get(0).selectedIndex = 0;
+		jQuery(this).get(0).selectedIndex = 0;
 	});
 
 	// activate the file sets checkboxes
@@ -554,40 +554,40 @@ ccm_alSetupCheckboxes = function(searchInstance) {
 }
 
 ccm_alSetupFileSetSearch = function(searchInstance) {
-	$(".ccm-" + searchInstance + "-search-advanced-sets-cb input[type=checkbox]").unbind();
-	$(".ccm-" + searchInstance + "-search-advanced-sets-cb input[type=checkbox]").click(function() {
-		$("input[name=fsIDNone][instance=" + searchInstance + "]").attr('checked', false);
-		$("#ccm-" + searchInstance + "-advanced-search").submit();
+	jQuery(".ccm-" + searchInstance + "-search-advanced-sets-cb input[type=checkbox]").unbind();
+	jQuery(".ccm-" + searchInstance + "-search-advanced-sets-cb input[type=checkbox]").click(function() {
+		jQuery("input[name=fsIDNone][instance=" + searchInstance + "]").attr('checked', false);
+		jQuery("#ccm-" + searchInstance + "-advanced-search").submit();
 	});
 	
 	// activate file set search
-	$('div.ccm-file-sets-search-wrapper-input input').liveUpdate('ccm-file-search-advanced-sets-list', 'fileset');
+	jQuery('div.ccm-file-sets-search-wrapper-input input').liveUpdate('ccm-file-search-advanced-sets-list', 'fileset');
 	
-	$("input[name=fsIDNone][instance=" + searchInstance + "]").unbind();
-	$("input[name=fsIDNone][instance=" + searchInstance + "]").click(function() {
-		if ($(this).attr('checked')) {
-			$(".ccm-" + searchInstance + "-search-advanced-sets-cb input[type=checkbox]").attr('checked', false);
-			$(".ccm-" + searchInstance + "-search-advanced-sets-cb input[type=checkbox]").attr('disabled', true);
+	jQuery("input[name=fsIDNone][instance=" + searchInstance + "]").unbind();
+	jQuery("input[name=fsIDNone][instance=" + searchInstance + "]").click(function() {
+		if (jQuery(this).attr('checked')) {
+			jQuery(".ccm-" + searchInstance + "-search-advanced-sets-cb input[type=checkbox]").attr('checked', false);
+			jQuery(".ccm-" + searchInstance + "-search-advanced-sets-cb input[type=checkbox]").attr('disabled', true);
 		} else {
-			$(".ccm-" + searchInstance + "-search-advanced-sets-cb input[type=checkbox]").attr('disabled', false);
+			jQuery(".ccm-" + searchInstance + "-search-advanced-sets-cb input[type=checkbox]").attr('disabled', false);
 		}
-		$("#ccm-" + searchInstance + "-advanced-search").submit();
+		jQuery("#ccm-" + searchInstance + "-advanced-search").submit();
 	});
 }
 
 ccm_alGetSelectedFileIDs = function(searchInstance) {
 	var fidstr = '';
-	$("#ccm-" + searchInstance + "-search-results td.ccm-file-list-cb input[type=checkbox]:checked").each(function() {
-		fidstr += 'fID[]=' + $(this).val() + '&';
+	jQuery("#ccm-" + searchInstance + "-search-results td.ccm-file-list-cb input[type=checkbox]:checked").each(function() {
+		fidstr += 'fID[]=' + jQuery(this).val() + '&';
 	});
 	return fidstr;
 }
 
 ccm_alRescanMultiFileMenu = function(searchInstance) {
-	if ($("#ccm-" + searchInstance + "-search-results td.ccm-file-list-cb input[type=checkbox]:checked").length > 0) {
-		$("#ccm-" + searchInstance + "-list-multiple-operations").attr('disabled', false);
+	if (jQuery("#ccm-" + searchInstance + "-search-results td.ccm-file-list-cb input[type=checkbox]:checked").length > 0) {
+		jQuery("#ccm-" + searchInstance + "-list-multiple-operations").attr('disabled', false);
 	} else {
-		$("#ccm-" + searchInstance + "-list-multiple-operations").attr('disabled', true);
+		jQuery("#ccm-" + searchInstance + "-list-multiple-operations").attr('disabled', true);
 	}
 }
 
@@ -619,19 +619,19 @@ ccm_alSetupFileProcessor = function() {
 }
 
 ccm_alSubmitSingle = function(form) {
-	if ($(form).find(".ccm-al-upload-single-file").val() == '') { 
+	if (jQuery(form).find(".ccm-al-upload-single-file").val() == '') { 
 		alert(ccmi18n_filemanager.uploadErrorChooseFile);
 		return false;
 	} else { 
-		$(form).find('.ccm-al-upload-single-submit').hide();
-		$(form).find('.ccm-al-upload-single-loader').show();
+		jQuery(form).find('.ccm-al-upload-single-submit').hide();
+		jQuery(form).find('.ccm-al-upload-single-loader').show();
 	}
 }
 
 ccm_alResetSingle = function () {
-	$('.ccm-al-upload-single-file').val('');
-	$('.ccm-al-upload-single-loader').hide();
-	$('.ccm-al-upload-single-submit').show();
+	jQuery('.ccm-al-upload-single-file').val('');
+	jQuery('.ccm-al-upload-single-loader').hide();
+	jQuery('.ccm-al-upload-single-submit').show();
 }
 
 var ccm_uploadedFiles=[];
@@ -648,7 +648,7 @@ ccm_filesUploadedDialog = function(searchInstance) {
 		href: CCM_TOOLS_PATH + '/files/bulk_properties/?'+fIDstring + '&uploaded=true&searchInstance=' + searchInstance,
 		onClose: function() {
 			ccm_deactivateSearchResults(searchInstance);
-			$("#ccm-" + searchInstance + "-advanced-search").ajaxSubmit(function(resp) {
+			jQuery("#ccm-" + searchInstance + "-advanced-search").ajaxSubmit(function(resp) {
 				ccm_parseAdvancedSearchResponse(resp, searchInstance);
 			});
 		},
@@ -658,7 +658,7 @@ ccm_filesUploadedDialog = function(searchInstance) {
 }
 
 ccm_alSetupUploadDetailsForm = function(searchInstance) {
-	$("#ccm-" + searchInstance + "-update-uploaded-details-form").submit(function() {
+	jQuery("#ccm-" + searchInstance + "-update-uploaded-details-form").submit(function() {
 		ccm_alSubmitUploadDetailsForm(searchInstance);
 		return false;
 	});
@@ -666,12 +666,12 @@ ccm_alSetupUploadDetailsForm = function(searchInstance) {
 
 ccm_alSubmitUploadDetailsForm = function(searchInstance) {
 	jQuery.fn.dialog.showLoader();
-	$("#ccm-" + searchInstance + "-update-uploaded-details-form").ajaxSubmit(function(r1) {
+	jQuery("#ccm-" + searchInstance + "-update-uploaded-details-form").ajaxSubmit(function(r1) {
 		var r1a = eval('(' + r1 + ')');
-		var form = $("#ccm-" + searchInstance + "-advanced-search");
+		var form = jQuery("#ccm-" + searchInstance + "-advanced-search");
 		if (form.length > 0) {
 			form.ajaxSubmit(function(resp) {
-				$("#ccm-" + searchInstance + "-sets-search-wrapper").load(CCM_TOOLS_PATH + '/files/search_sets_reload', {'searchInstance': searchInstance}, function() {
+				jQuery("#ccm-" + searchInstance + "-sets-search-wrapper").load(CCM_TOOLS_PATH + '/files/search_sets_reload', {'searchInstance': searchInstance}, function() {
 					jQuery.fn.dialog.hideLoader();
 					jQuery.fn.dialog.closeTop();
 					ccm_parseAdvancedSearchResponse(resp, searchInstance);
@@ -688,7 +688,7 @@ ccm_alSubmitUploadDetailsForm = function(searchInstance) {
 ccm_alRefresh = function(highlightFIDs, searchInstance, fileSelector) {
 	var ids = highlightFIDs;
 	ccm_deactivateSearchResults(searchInstance);
-	$("#ccm-" + searchInstance + "-search-results").load(CCM_TOOLS_PATH + '/files/search_results', {
+	jQuery("#ccm-" + searchInstance + "-search-results").load(CCM_TOOLS_PATH + '/files/search_results', {
 		'ccm_order_by': 'fvDateAdded',
 		'ccm_order_dir': 'desc', 
 		'fileSelector': fileSelector,
@@ -705,7 +705,7 @@ ccm_alRefresh = function(highlightFIDs, searchInstance, fileSelector) {
 
 ccm_alHighlightFileIDArray = function(ids) {
 	for (i = 0; i < ids.length; i++) {
-		var td = $('tr[fID=' + ids[i] + '] td');
+		var td = jQuery('tr[fID=' + ids[i] + '] td');
 		var oldBG = td.css('backgroundColor');
 		td.animate({ backgroundColor: '#FFF9BB'}, { queue: true, duration: 1000 }).animate( {backgroundColor: oldBG}, 500);
 	}
@@ -723,7 +723,7 @@ ccm_alSelectFile = function(fID) {
 			qstring += 'fID=' + fID;
 		}
 		
-		$.getJSON(CCM_TOOLS_PATH + '/files/get_data.php?' + qstring, function(resp) {
+		jQuery.getJSON(CCM_TOOLS_PATH + '/files/get_data.php?' + qstring, function(resp) {
 			ccm_parseJSON(resp, function() {
 				for(i = 0; i < resp.length; i++) {
 					ccm_chooseAsset(resp[i]);
@@ -750,15 +750,15 @@ ccm_alActivateMenu = function(obj, e) {
 	// Is this a file that's already been chosen that we're selecting?
 	// If so, we need to offer the reset switch
 	
-	var selectedFile = $(obj).find('div[ccm-file-manager-field]');
+	var selectedFile = jQuery(obj).find('div[ccm-file-manager-field]');
 	var selector = '';
 	if(selectedFile.length > 0) {
 		selector = selectedFile.attr('ccm-file-manager-field');
 	}
 	ccm_hideMenus();
 	
-	var fID = $(obj).attr('fID');
-	var searchInstance = $(obj).attr('ccm-file-manager-instance');
+	var fID = jQuery(obj).attr('fID');
+	var searchInstance = jQuery(obj).attr('ccm-file-manager-instance');
 
 	// now, check to see if this menu has been made
 	var bobj = document.getElementById("ccm-al-menu" + fID + searchInstance + selector);
@@ -781,8 +781,8 @@ ccm_alActivateMenu = function(obj, e) {
 		el.style.display = "none";
 		document.body.appendChild(el);
 		
-		var filepath = $(obj).attr('al-filepath'); 
-		bobj = $("#ccm-al-menu" + fID + searchInstance + selector);
+		var filepath = jQuery(obj).attr('al-filepath'); 
+		bobj = jQuery("#ccm-al-menu" + fID + searchInstance + selector);
 		bobj.css("position", "absolute");
 		
 		//contents  of menu
@@ -802,29 +802,29 @@ ccm_alActivateMenu = function(obj, e) {
 		if (ccm_alLaunchType[searchInstance] != 'DASHBOARD'  && ccm_alLaunchType[searchInstance] != 'BROWSE' && selectedFile.length > 0) {
 			html += '<li class="header"></li>';	
 		}
-		if ($(obj).attr('ccm-file-manager-can-view') == '1') {
+		if (jQuery(obj).attr('ccm-file-manager-can-view') == '1') {
 			html += '<li><a class="ccm-icon dialog-launch" dialog-modal="false" dialog-width="90%" dialog-height="75%" dialog-title="' + ccmi18n_filemanager.view + '" id="menuView' + fID + '" href="' + CCM_TOOLS_PATH + '/files/view?fID=' + fID + '"><span style="background-image: url(' + CCM_IMAGE_PATH + '/icons/design_small.png)">'+ ccmi18n_filemanager.view + '<\/span><\/a><\/li>';
 		} else {
 			html += '<li><a class="ccm-icon" id="menuDownload' + fID + '" target="' + ccm_alProcessorTarget + '" href="' + CCM_TOOLS_PATH + '/files/download?fID=' + fID + '"><span style="background-image: url(' + CCM_IMAGE_PATH + '/icons/design_small.png)">'+ ccmi18n_filemanager.download + '<\/span><\/a><\/li>';	
 		}
-		if ($(obj).attr('ccm-file-manager-can-edit') == '1') {
+		if (jQuery(obj).attr('ccm-file-manager-can-edit') == '1') {
 			html += '<li><a class="ccm-icon dialog-launch" dialog-modal="false" dialog-width="90%" dialog-height="75%" dialog-title="' + ccmi18n_filemanager.edit + '" id="menuEdit' + fID + '" href="' + CCM_TOOLS_PATH + '/files/edit?fID=' + fID + '"><span style="background-image: url(' + CCM_IMAGE_PATH + '/icons/edit_small.png)">'+ ccmi18n_filemanager.edit + '<\/span><\/a><\/li>';
 		}
 		html += '<li><a class="ccm-icon dialog-launch" dialog-modal="false" dialog-width="680" dialog-height="450" dialog-title="' + ccmi18n_filemanager.properties + '" id="menuProperties' + fID + '" href="' + CCM_TOOLS_PATH + '/files/properties?searchInstance=' + searchInstance + '&fID=' + fID + '"><span style="background-image: url(' + CCM_IMAGE_PATH + '/icons/wrench.png)">'+ ccmi18n_filemanager.properties + '<\/span><\/a><\/li>';
-		if ($(obj).attr('ccm-file-manager-can-replace') == '1') {
+		if (jQuery(obj).attr('ccm-file-manager-can-replace') == '1') {
 			html += '<li><a class="ccm-icon dialog-launch" dialog-modal="false" dialog-width="300" dialog-height="250" dialog-title="' + ccmi18n_filemanager.replace + '" id="menuFileReplace' + fID + '" href="' + CCM_TOOLS_PATH + '/files/replace?searchInstance=' + searchInstance + '&fID=' + fID + '"><span style="background-image: url(' + CCM_IMAGE_PATH + '/icons/paste_small.png)">'+ ccmi18n_filemanager.replace + '<\/span><\/a><\/li>';
 		}
-		if ($(obj).attr('ccm-file-manager-can-duplicate') == '1') {
+		if (jQuery(obj).attr('ccm-file-manager-can-duplicate') == '1') {
 			html += '<li><a class="ccm-icon" id="menuFileDuplicate' + fID + '" href="javascript:void(0)" onclick="ccm_alDuplicateFile(' + fID + ',\'' + searchInstance + '\')"><span style="background-image: url(' + CCM_IMAGE_PATH + '/icons/add.png)">'+ ccmi18n_filemanager.duplicate + '<\/span><\/a><\/li>';
 		}
 		html += '<li><a class="ccm-icon dialog-launch" dialog-modal="false" dialog-width="500" dialog-height="400" dialog-title="' + ccmi18n_filemanager.sets + '" id="menuFileSets' + fID + '" href="' + CCM_TOOLS_PATH + '/files/add_to?searchInstance=' + searchInstance + '&fID=' + fID + '"><span style="background-image: url(' + CCM_IMAGE_PATH + '/icons/window_new.png)">'+ ccmi18n_filemanager.sets + '<\/span><\/a><\/li>';
-		if ($(obj).attr('ccm-file-manager-can-admin') == '1' || $(obj).attr('ccm-file-manager-can-delete') == '1') {
+		if (jQuery(obj).attr('ccm-file-manager-can-admin') == '1' || jQuery(obj).attr('ccm-file-manager-can-delete') == '1') {
 			html += '<li class="header"></li>';
 		}
-		if ($(obj).attr('ccm-file-manager-can-admin') == '1') {
+		if (jQuery(obj).attr('ccm-file-manager-can-admin') == '1') {
 			html += '<li><a class="ccm-icon dialog-launch" dialog-modal="false" dialog-width="400" dialog-height="380" dialog-title="' + ccmi18n_filemanager.permissions + '" id="menuFilePermissions' + fID + '" href="' + CCM_TOOLS_PATH + '/files/permissions?searchInstance=' + searchInstance + '&fID=' + fID + '"><span style="background-image: url(' + CCM_IMAGE_PATH + '/icons/permissions_small.png)">'+ ccmi18n_filemanager.permissions + '<\/span><\/a><\/li>';
 		}
-		if ($(obj).attr('ccm-file-manager-can-delete') == '1') {
+		if (jQuery(obj).attr('ccm-file-manager-can-delete') == '1') {
 			html += '<li><a class="ccm-icon dialog-launch" dialog-modal="false" dialog-width="500" dialog-height="400" dialog-title="' + ccmi18n_filemanager.deleteFile + '" id="menuDeleteFile' + fID + '" href="' + CCM_TOOLS_PATH + '/files/delete?searchInstance=' + searchInstance + '&fID=' + fID + '"><span style="background-image: url(' + CCM_IMAGE_PATH + '/icons/delete_small.png)">'+ ccmi18n_filemanager.deleteFile + '<\/span><\/a><\/li>';
 		}
 		html += '</ul>';
@@ -832,15 +832,15 @@ ccm_alActivateMenu = function(obj, e) {
 		html += '<div class="ccm-menu-bl"><div class="ccm-menu-br"><div class="ccm-menu-b"></div></div></div>';
 		bobj.append(html);
 		
-		$("#ccm-al-menu" + fID + searchInstance + selector + " a.dialog-launch").dialog();
+		jQuery("#ccm-al-menu" + fID + searchInstance + selector + " a.dialog-launch").dialog();
 		
-		$('a#menuClearFile' + fID + searchInstance + selector).click(function(e) {
+		jQuery('a#menuClearFile' + fID + searchInstance + selector).click(function(e) {
 			ccm_clearFile(e, selector);
 			ccm_hideMenus();
 		});
 
 	} else {
-		bobj = $("#ccm-al-menu" + fID + searchInstance + selector);
+		bobj = jQuery("#ccm-al-menu" + fID + searchInstance + selector);
 	}
 	
 	ccm_fadeInMenu(bobj, e);
@@ -874,7 +874,7 @@ toggleCheckboxStatus = function(form) {
 ccm_alDuplicateFile = function(fID, searchInstance) {
 	var postStr = 'fID=' + fID + '&searchInstance=' + searchInstance;
 	
-	$.post(CCM_TOOLS_PATH + '/files/duplicate', postStr, function(resp) {
+	jQuery.post(CCM_TOOLS_PATH + '/files/duplicate', postStr, function(resp) {
 		var r = eval('(' + resp + ')');
 		
 		if (r.error == 1) {
@@ -894,25 +894,25 @@ ccm_alDuplicateFile = function(fID, searchInstance) {
 }
 
 ccm_alSelectMultipleIncomingFiles = function(obj) {
-	if ($(obj).attr('checked')) {
-		$("input.ccm-file-select-incoming").attr('checked', true);
+	if (jQuery(obj).attr('checked')) {
+		jQuery("input.ccm-file-select-incoming").attr('checked', true);
 	} else {
-		$("input.ccm-file-select-incoming").attr('checked', false);
+		jQuery("input.ccm-file-select-incoming").attr('checked', false);
 	}
 }
 
 ccm_starFile = function (img,fID) {				
 	var action = '';
-	if ($(img).attr('src').indexOf(CCM_STAR_STATES.unstarred) != -1) {
-		$(img).attr('src',$(img).attr('src').replace(CCM_STAR_STATES.unstarred,CCM_STAR_STATES.starred));
+	if (jQuery(img).attr('src').indexOf(CCM_STAR_STATES.unstarred) != -1) {
+		jQuery(img).attr('src',jQuery(img).attr('src').replace(CCM_STAR_STATES.unstarred,CCM_STAR_STATES.starred));
 		action = 'star';
 	}
 	else {
-		$(img).attr('src',$(img).attr('src').replace(CCM_STAR_STATES.starred,CCM_STAR_STATES.unstarred));
+		jQuery(img).attr('src',jQuery(img).attr('src').replace(CCM_STAR_STATES.starred,CCM_STAR_STATES.unstarred));
 		action = 'unstar';
 	}
 	
-	$.post(CCM_TOOLS_PATH + '/' + CCM_STAR_ACTION,{'action':action,'file-id':fID},function(data, textStatus){
+	jQuery.post(CCM_TOOLS_PATH + '/' + CCM_STAR_ACTION,{'action':action,'file-id':fID},function(data, textStatus){
 		//callback, in case we want to do some post processing
 	});
 }

@@ -3,7 +3,7 @@
 /* خالد الحوراني -- koko.dw@gmail.com */
 /* NOTE: monthNames are the original months names and thez are the Arabic names, not the new months name فبراير - يناير and there isnät any Arabic roots for these months */
 jQuery(function($){
-	$.datepicker.regional['ar'] = {
+	jQuery.datepicker.regional['ar'] = {
 		clearText: 'مسح', clearStatus: 'امسح التاريخ الحالي',
 		closeText: 'إغلاق', closeStatus: 'إغلاق بدون حفظ',
 		prevText: '<السابق', prevStatus: 'عرض الشهر السابق',
@@ -19,5 +19,5 @@ jQuery(function($){
 		dayStatus: 'اختر DD لليوم الأول من الأسبوع', dateStatus: 'اختر D, M d',
 		dateFormat: 'dd/mm/yy', firstDay: 0, 
 		initStatus: 'اختر يوم', isRTL: true};
-	$.datepicker.setDefaults($.datepicker.regional['ar']);
+	jQuery.datepicker.setDefaults(jQuery.datepicker.regional['ar']);
 });

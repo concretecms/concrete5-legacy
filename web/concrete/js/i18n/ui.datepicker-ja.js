@@ -1,7 +1,7 @@
 /* Japanese (UTF-8) initialisation for the jQuery UI date picker plugin. */
 /* Written by Milly. */
 jQuery(function($){
-	$.datepicker.regional['ja'] = {clearText: '&#21066;&#38500;', clearStatus: '',
+	jQuery.datepicker.regional['ja'] = {clearText: '&#21066;&#38500;', clearStatus: '',
 		closeText: '&#38281;&#12376;&#12427;', closeStatus: '',
 		prevText: '&lt;&#21069;&#26376;', prevStatus: '',
 		nextText: '&#27425;&#26376;&gt;', nextStatus: '',
@@ -18,5 +18,5 @@ jQuery(function($){
 		dayStatus: 'DD', dateStatus: 'D, M d',
 		dateFormat: 'yy/mm/dd', firstDay: 0, 
 		initStatus: '', isRTL: false};
-	$.datepicker.setDefaults($.datepicker.regional['ja']);
+	jQuery.datepicker.setDefaults(jQuery.datepicker.regional['ja']);
 });

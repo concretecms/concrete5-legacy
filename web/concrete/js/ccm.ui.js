@@ -17,14 +17,14 @@ ccm_menuInit = function(obj) {
 	if (CCM_EDIT_MODE && (!CCM_ARRANGE_MODE)) {
 		switch(obj.type) {
 			case "BLOCK":
-				$("#b" + obj.bID + "-" + obj.aID).mouseover(function(e) {
+				jQuery("#b" + obj.bID + "-" + obj.aID).mouseover(function(e) {
 					if (!ccm_menuActivated) {
 						ccm_activate(obj, "#b" + obj.bID + "-" + obj.aID);
 					}
 				});
 				break;
 			case "AREA":
-				$("#a" + obj.aID + "controls").mouseover(function(e) {
+				jQuery("#a" + obj.aID + "controls").mouseover(function(e) {
 				if (!ccm_menuActivated) {
 					ccm_activate(obj, "#a" + obj.aID + "controls");
 				}
@@ -50,7 +50,7 @@ ccm_showBlockMenu = function(obj, e) {
 		el.style.display = "none";
 		document.body.appendChild(el);
 		
-		bobj = $("#ccm-block-menu" + obj.bID + "-" + obj.aID);
+		bobj = jQuery("#ccm-block-menu" + obj.bID + "-" + obj.aID);
 		bobj.css("position", "absolute");
 		
 		//contents  of menu
@@ -102,23 +102,23 @@ ccm_showBlockMenu = function(obj, e) {
 		
 		// add dialog elements where necessary
 		if (obj.canWrite && (!obj.editInline)) {
-			$('a#menuEdit' + obj.bID + '-' + obj.aID).dialog();
-			$('a#menuChangeTemplate' + obj.bID + '-' + obj.aID).dialog();
-			$('a#menuChangeCSS' + obj.bID + '-' + obj.aID).dialog();	
+			jQuery('a#menuEdit' + obj.bID + '-' + obj.aID).dialog();
+			jQuery('a#menuChangeTemplate' + obj.bID + '-' + obj.aID).dialog();
+			jQuery('a#menuChangeCSS' + obj.bID + '-' + obj.aID).dialog();	
 		}
 		if (obj.canAliasBlockOut) {
-			$('a#menuBlockAliasOut' + obj.bID + '-' + obj.aID).dialog();
+			jQuery('a#menuBlockAliasOut' + obj.bID + '-' + obj.aID).dialog();
 		}
 		if (obj.canSetupComposer) {
-			$('a#menuBlockSetupComposer' + obj.bID + '-' + obj.aID).dialog();
+			jQuery('a#menuBlockSetupComposer' + obj.bID + '-' + obj.aID).dialog();
 		}
 		if (obj.canModifyGroups) {
-			$("#menuBlockGroups" + obj.bID + '-' + obj.aID).dialog();
+			jQuery("#menuBlockGroups" + obj.bID + '-' + obj.aID).dialog();
 		}
-		$("#menuAddToScrapbook" + obj.bID + '-' + obj.aID).dialog(); 
+		jQuery("#menuAddToScrapbook" + obj.bID + '-' + obj.aID).dialog(); 
 
 	} else {
-		bobj = $("#ccm-block-menu" + obj.bID + '-' + obj.aID);
+		bobj = jQuery("#ccm-block-menu" + obj.bID + '-' + obj.aID);
 	}
 	
 	ccm_fadeInMenu(bobj, e);
@@ -130,7 +130,7 @@ ccm_openAreaAddBlock = function(arHandle, addOnly) {
 		addOnly = 0;
 	}
 	
-	$.fn.dialog.open({
+	jQuery.fn.dialog.open({
 		title: ccmi18n.blockAreaMenu,
 		href: CCM_TOOLS_PATH + '/edit_area_popup.php?cID=' + CCM_CID + '&atask=add&arHandle=' + arHandle + '&addOnly=' + addOnly,
 		width: 550,
@@ -163,7 +163,7 @@ ccm_showAreaMenu = function(obj, e) {
 			el.style.display = "none";
 			document.body.appendChild(el);
 			
-			aobj = $("#ccm-area-menu" + obj.aID);
+			aobj = jQuery("#ccm-area-menu" + obj.aID);
 			aobj.css("position", "absolute");
 			
 			//contents  of menu
@@ -198,19 +198,19 @@ ccm_showAreaMenu = function(obj, e) {
 			
 			// add dialog elements where necessary
 			if (obj.canAddBlocks) {
-				$('a#menuAddNewBlock' + obj.aID).dialog();
-				$('a#menuAddPaste' + obj.aID).dialog(); 
+				jQuery('a#menuAddNewBlock' + obj.aID).dialog();
+				jQuery('a#menuAddPaste' + obj.aID).dialog(); 
 			}
 			if (obj.canWrite) {
-				$('a#menuAreaStyle' + obj.aID).dialog();
-				$('a#menuAreaLayout' + obj.aID).dialog();
+				jQuery('a#menuAreaStyle' + obj.aID).dialog();
+				jQuery('a#menuAreaLayout' + obj.aID).dialog();
 			}
 			if (obj.canModifyGroups) {
-				$('a#menuAreaGroups' + obj.aID).dialog();
+				jQuery('a#menuAreaGroups' + obj.aID).dialog();
 			}
 		
 		} else {
-			aobj = $("#ccm-area-menu" + obj.aID);
+			aobj = jQuery("#ccm-area-menu" + obj.aID);
 		}
 
 		ccm_fadeInMenu(aobj, e);		
@@ -219,7 +219,7 @@ ccm_showAreaMenu = function(obj, e) {
 }
 
 ccm_hideHighlighter = function() {
-	$("#ccm-highlighter").css('display', 'none');
+	jQuery("#ccm-highlighter").css('display', 'none');
 }
 
 ccm_addError = function(err) {
@@ -242,13 +242,13 @@ ccm_deleteBlock = function(bID, aID, arHandle, msg) {
 		// got to grab the message too, eventually
 		ccm_hideHighlighter();
 		ccm_menuActivated = true;
-		$.ajax({
+		jQuery.ajax({
  		type: 'POST',
  		url: CCM_DISPATCHER_FILENAME,
  		data: 'cID=' + CCM_CID + '&ccm_token=' + CCM_SECURITY_TOKEN + '&isAjax=true&btask=remove&bID=' + bID + '&arHandle=' + arHandle,
  		success: function(resp) {
  			ccm_hideHighlighter();
- 			$("#b" + bID + '-' + aID).fadeOut(100, function() {
+ 			jQuery("#b" + bID + '-' + aID).fadeOut(100, function() {
  				ccm_menuActivated = false;
  			});
  			ccmAlert.hud(ccmi18n.deleteBlockMsg, 2000, 'delete_small', ccmi18n.deleteBlock);
@@ -258,7 +258,7 @@ ccm_deleteBlock = function(bID, aID, arHandle, msg) {
 
 ccm_hideMenus = function() {
 	/* 1st, hide all items w/the css menu class */
-	$("div.ccm-menu").hide();
+	jQuery("div.ccm-menu").hide();
 	ccm_menuActivated = false;
 }
 
@@ -284,19 +284,19 @@ ccm_parseBlockResponse = function(r, currentBlockID, task) {
 				cID = CCM_CID;
 			}
 			var action = CCM_TOOLS_PATH + '/edit_block_popup?cID=' + cID + '&isGlobal=' + isGlobal + '&bID=' + resp.bID + '&arHandle=' + encodeURIComponent(resp.arHandle) + '&btask=view_edit_mode';	 
-			$.get(action, 		
+			jQuery.get(action, 		
 				function(r) { 
-					if ($("#ccm-scrapbook-list").length > 0) {
+					if (jQuery("#ccm-scrapbook-list").length > 0) {
 						window.location.reload();
 					} 
 					if (task == 'add') {
-						if ($("#a" + resp.aID + " div.ccm-area-styles-a"+ resp.aID).length > 0) {
-							$("#a" + resp.aID + " div.ccm-area-styles-a"+ resp.aID).append(r);
+						if (jQuery("#a" + resp.aID + " div.ccm-area-styles-a"+ resp.aID).length > 0) {
+							jQuery("#a" + resp.aID + " div.ccm-area-styles-a"+ resp.aID).append(r);
 						} else {
-							$("#a" + resp.aID).append(r);
+							jQuery("#a" + resp.aID).append(r);
 						}
 					} else {
-						$('#b' + currentBlockID + '-' + resp.aID).before(r).remove();
+						jQuery('#b' + currentBlockID + '-' + resp.aID).before(r).remove();
 					}
 					jQuery.fn.dialog.hideLoader();
 					ccm_mainNavDisableDirectExit();
@@ -320,9 +320,9 @@ ccm_parseBlockResponse = function(r, currentBlockID, task) {
 
 ccm_mainNavDisableDirectExit = function(disableShow) {
 	// make sure that exit edit mode is enabled
-	$("li.ccm-main-nav-exit-edit-mode-direct").remove();
+	jQuery("li.ccm-main-nav-exit-edit-mode-direct").remove();
 	if (!disableShow) {
-		$("li.ccm-main-nav-exit-edit-mode").show();
+		jQuery("li.ccm-main-nav-exit-edit-mode").show();
 	}
 }
 
@@ -332,7 +332,7 @@ ccm_setupBlockForm = function(form, currentBlockID, task) {
 		iframe: true,
 		beforeSubmit: function() {
 			ccm_hideHighlighter();
-			$('input[name=ccm-block-form-method]').val('AJAX');
+			jQuery('input[name=ccm-block-form-method]').val('AJAX');
 			jQuery.fn.dialog.showLoader();
 			ccm_menuActivated = true;
 			return ccm_blockFormSubmit();
@@ -350,8 +350,8 @@ ccm_setupBlockForm = function(form, currentBlockID, task) {
 		jQuery.fn.dialog.showLoader();
 		ccm_menuActivated = true;
 		if (ccm_blockFormSubmit()) {
-			$('input[name=ccm-block-form-method]').val('AJAX');
-			$(this).ajaxSubmit({
+			jQuery('input[name=ccm-block-form-method]').val('AJAX');
+			jQuery(this).ajaxSubmit({
 				success: function(r) {ccm_parseBlockResponse(r, currentBlockID, task); }
 			});
 		}
@@ -373,10 +373,10 @@ ccm_activate = function(obj, domID) {
 	}
 	
 	if (ccm_selectedDomID) {
-		$(ccm_selectedDomID).removeClass('selected');
+		jQuery(ccm_selectedDomID).removeClass('selected');
 	}
 	
-	aobj = $(domID);
+	aobj = jQuery(domID);
 	aobj.addClass('selected');
 	ccm_selectedDomID = domID;
 	
@@ -384,18 +384,18 @@ ccm_activate = function(obj, domID) {
 
 	/* put highlighter over item. THanks dimensions plugin! */
 	
-	$("#ccm-highlighter").css("width", aobj.outerWidth());
-	$("#ccm-highlighter").css("height", aobj.outerHeight());
-	$("#ccm-highlighter").css("top", offs.top);
-	$("#ccm-highlighter").css("left", offs.left);
-	$("#ccm-highlighter").css("display", "block");
+	jQuery("#ccm-highlighter").css("width", aobj.outerWidth());
+	jQuery("#ccm-highlighter").css("height", aobj.outerHeight());
+	jQuery("#ccm-highlighter").css("top", offs.top);
+	jQuery("#ccm-highlighter").css("left", offs.left);
+	jQuery("#ccm-highlighter").css("display", "block");
 	/*
-	$("#ccmMenuHighlighter").mouseover(
+	jQuery("#ccmMenuHighlighter").mouseover(
 		function() {clearTimeout(ccm_deactivateTimer)}
 	);
 	*/
-	$("#ccm-highlighter").unbind('click');
-	$("#ccm-highlighter").click(
+	jQuery("#ccm-highlighter").unbind('click');
+	jQuery("#ccm-highlighter").click(
 		function(e) {
 			switch(obj.type) {
 				case "BLOCK":
@@ -417,55 +417,55 @@ ccm_editInit = function() {
 		void(0);
 	}
 
-	$(document.body).append('<div style="position: absolute; display:none" id="ccm-highlighter">&nbsp;</div>');
-	$(document).click(function() {ccm_hideMenus();});
-	$(document.body).css('user-select', 'none');
-	$(document.body).css('-khtml-user-select', 'none');
-	$(document.body).css('-webkit-user-select', 'none');
-	$(document.body).css('-moz-user-select', 'none');
+	jQuery(document.body).append('<div style="position: absolute; display:none" id="ccm-highlighter">&nbsp;</div>');
+	jQuery(document).click(function() {ccm_hideMenus();});
+	jQuery(document.body).css('user-select', 'none');
+	jQuery(document.body).css('-khtml-user-select', 'none');
+	jQuery(document.body).css('-webkit-user-select', 'none');
+	jQuery(document.body).css('-moz-user-select', 'none');
 
-	$("a").click(function(e) {
+	jQuery("a").click(function(e) {
 		ccm_hideMenus();
 		return false;	
 	});
 	
 	/* setup header actions */
 	/*
-	$('#ccm-main-nav li').each(function(){
+	jQuery('#ccm-main-nav li').each(function(){
 		//this.onmouseover=function(){alert('this')}							
 	});
 	*/
 	
-	$("a#ccm-nav-mcd").click(function() {
+	jQuery("a#ccm-nav-mcd").click(function() {
 		ccm_showPane(this, CCM_TOOLS_PATH + "/edit_collection_popup.php?ctask=mcd&cID=" + CCM_CID);
 	});
 	
-	$("a#ccm-nav-versions").click(function() {
+	jQuery("a#ccm-nav-versions").click(function() {
 		ccm_showPane(this, CCM_TOOLS_PATH + "/versions.php?cID=" + CCM_CID);
 	});
 	
-	$("a#ccm-nav-exit-edit").click(function() {
+	jQuery("a#ccm-nav-exit-edit").click(function() {
 		ccm_showPane(this, CCM_TOOLS_PATH + "/check_in.php?cID=" + CCM_CID);
 	});
 	
-	$("a#ccm-nav-exit-edit-direct").click(function() {
-		window.location.href=$(this).attr('href');
+	jQuery("a#ccm-nav-exit-edit-direct").click(function() {
+		window.location.href=jQuery(this).attr('href');
 	});
 	
 
-	$("a#ccm-nav-permissions").click(function() {
+	jQuery("a#ccm-nav-permissions").click(function() {
 		ccm_showPane(this, CCM_TOOLS_PATH + "/edit_collection_popup.php?ctask=edit_permissions&cID=" + CCM_CID);
 	});
 
-	$("a#ccm-nav-design").click(function() {
+	jQuery("a#ccm-nav-design").click(function() {
 		ccm_showPane(this, CCM_TOOLS_PATH + "/edit_collection_popup.php?ctask=set_theme&cID=" + CCM_CID);
 	});
 
-	$("a#ccm-nav-properties").click(function() {
+	jQuery("a#ccm-nav-properties").click(function() {
 		ccm_showPane(this, CCM_TOOLS_PATH + "/edit_collection_popup.php?ctask=edit_metadata&cID=" + CCM_CID);
 	});
 	
-	$("#ccm-highlighter").mouseout(function() {
+	jQuery("#ccm-highlighter").mouseout(function() {
 		if (!ccm_menuActivated) {
 			ccm_hideHighlighter();
 		}
@@ -474,13 +474,13 @@ ccm_editInit = function() {
 }
 
 ccm_hidePane = function(onDone) {
-	var wrappane = $("#ccm-page-detail");
-	$("li.ccm-nav-active").removeClass('ccm-nav-active');
+	var wrappane = jQuery("#ccm-page-detail");
+	jQuery("li.ccm-nav-active").removeClass('ccm-nav-active');
 	if (ccm_animEffects) {
 		wrappane.fadeOut(60, function() {
 			if(!ccm_onPaneCloseObj) ccm_activateSite();
 			else ccm_siteActivated = true;
-			$(window).unbind('keypress');
+			jQuery(window).unbind('keypress');
 			ccm_activateHeader();
 			if (typeof onDone == 'function') {
 				onDone();
@@ -490,7 +490,7 @@ ccm_hidePane = function(onDone) {
 		wrappane.hide();
 		if(!ccm_onPaneCloseObj) ccm_activateSite();
 		else ccm_siteActivated = true;
-		$(window).unbind('keypress');
+		jQuery(window).unbind('keypress');
 	
 		ccm_activateHeader();
 	
@@ -502,21 +502,21 @@ ccm_hidePane = function(onDone) {
 
 ccm_deactivateHeader = function(obj) { 
 	ccm_topPaneDeactivated = true;
-	$("ul#ccm-main-nav").addClass('ccm-pane-open'); 
-	if(ccm_dialogOpen) $("ul#ccm-main-nav li").addClass('ccm-nav-rolloversOff');	
-	else $("ul#ccm-main-nav li").addClass('ccm-nav-inactive');		
+	jQuery("ul#ccm-main-nav").addClass('ccm-pane-open'); 
+	if(ccm_dialogOpen) jQuery("ul#ccm-main-nav li").addClass('ccm-nav-rolloversOff');	
+	else jQuery("ul#ccm-main-nav li").addClass('ccm-nav-inactive');		
 	ccm_hideBreadcrumb();
 	if (obj) {
-		$(obj).parent().removeClass('ccm-nav-inactive');
-		$(obj).parent().addClass('ccm-nav-active');
+		jQuery(obj).parent().removeClass('ccm-nav-inactive');
+		jQuery(obj).parent().addClass('ccm-nav-active');
 	}
 }
 
 ccm_activateHeader = function() {
 	ccm_topPaneDeactivated = false;
-	$("ul#ccm-main-nav").removeClass('ccm-pane-open');
-	$("ul#ccm-main-nav li").removeClass('ccm-nav-inactive');
-	$("ul#ccm-main-nav li").removeClass('ccm-nav-rolloversOff');
+	jQuery("ul#ccm-main-nav").removeClass('ccm-pane-open');
+	jQuery("ul#ccm-main-nav li").removeClass('ccm-nav-inactive');
+	jQuery("ul#ccm-main-nav li").removeClass('ccm-nav-rolloversOff');
 }
 var ccm_onPaneCloseObj=null;
 var ccm_onPaneCloseTargetURL=null;
@@ -545,23 +545,23 @@ ccm_doShowPane = function(obj, targetURL) {
 	ccm_deactivateHeader(obj);
 
 	ccm_deactivateSite(function() {;
-		var wrappane = $("#ccm-page-detail");
-		var conpane = $("#ccm-page-detail-content");
+		var wrappane = jQuery("#ccm-page-detail");
+		var conpane = jQuery("#ccm-page-detail-content");
 		ccm_hideMenus();
 		ccm_hideHighlighter();
 		ccm_topPaneTargetURL = targetURL;
-		$(window).keypress(function(e) {
+		jQuery(window).keypress(function(e) {
 			if (e.keyCode == 27) {
 				ccm_hidePane();
 			}
 		});
 		
-		$.ajax({
+		jQuery.ajax({
 			type: 'GET',
 			url: targetURL + "&random=" + (new Date().getTime()),
 			success: function(msg) {
 				conpane.html(msg);
-				$("#ccm-page-detail-content .dialog-launch").dialog();			
+				jQuery("#ccm-page-detail-content .dialog-launch").dialog();			
 				if (ccm_animEffects) {
 					wrappane.fadeIn(60, function() {
 						ccm_removeHeaderLoading();
@@ -582,39 +582,39 @@ ccm_triggerSelectUser = function(uID, uName, uEmail) {
 }
 
 ccm_setupUserSearch = function() {
-	$("#ccm-user-list-cb-all").click(function() {
-		if ($(this).attr('checked') == true) {
-			$('.ccm-list-record td.ccm-user-list-cb input[type=checkbox]').attr('checked', true);
-			$("#ccm-user-list-multiple-operations").attr('disabled', false);
+	jQuery("#ccm-user-list-cb-all").click(function() {
+		if (jQuery(this).attr('checked') == true) {
+			jQuery('.ccm-list-record td.ccm-user-list-cb input[type=checkbox]').attr('checked', true);
+			jQuery("#ccm-user-list-multiple-operations").attr('disabled', false);
 		} else {
-			$('.ccm-list-record td.ccm-user-list-cb input[type=checkbox]').attr('checked', false);
-			$("#ccm-user-list-multiple-operations").attr('disabled', true);
+			jQuery('.ccm-list-record td.ccm-user-list-cb input[type=checkbox]').attr('checked', false);
+			jQuery("#ccm-user-list-multiple-operations").attr('disabled', true);
 		}
 	});
-	$("td.ccm-user-list-cb input[type=checkbox]").click(function(e) {
-		if ($("td.ccm-user-list-cb input[type=checkbox]:checked").length > 0) {
-			$("#ccm-user-list-multiple-operations").attr('disabled', false);
+	jQuery("td.ccm-user-list-cb input[type=checkbox]").click(function(e) {
+		if (jQuery("td.ccm-user-list-cb input[type=checkbox]:checked").length > 0) {
+			jQuery("#ccm-user-list-multiple-operations").attr('disabled', false);
 		} else {
-			$("#ccm-user-list-multiple-operations").attr('disabled', true);
+			jQuery("#ccm-user-list-multiple-operations").attr('disabled', true);
 		}
 	});
 	
 	// if we're not in the dashboard, add to the multiple operations select menu
 
-	$("#ccm-user-list-multiple-operations").change(function() {
-		var action = $(this).val();
+	jQuery("#ccm-user-list-multiple-operations").change(function() {
+		var action = jQuery(this).val();
 		switch(action) {
 			case 'choose':
 				var idstr = '';
-				$("td.ccm-user-list-cb input[type=checkbox]:checked").each(function() {
-					ccm_triggerSelectUser($(this).val(), $(this).attr('user-name'), $(this).attr('user-email'));
+				jQuery("td.ccm-user-list-cb input[type=checkbox]:checked").each(function() {
+					ccm_triggerSelectUser(jQuery(this).val(), jQuery(this).attr('user-name'), jQuery(this).attr('user-email'));
 				});
 				jQuery.fn.dialog.closeTop();
 				break;
 			case "properties": 
 				uIDstring = '';
-				$("td.ccm-user-list-cb input[type=checkbox]:checked").each(function() {
-					uIDstring=uIDstring+'&uID[]='+$(this).val();
+				jQuery("td.ccm-user-list-cb input[type=checkbox]:checked").each(function() {
+					uIDstring=uIDstring+'&uID[]='+jQuery(this).val();
 				});
 				jQuery.fn.dialog.open({
 					width: 630,
@@ -626,12 +626,12 @@ ccm_setupUserSearch = function() {
 				break;				
 		}
 		
-		$(this).get(0).selectedIndex = 0;
+		jQuery(this).get(0).selectedIndex = 0;
 	});
 
-	$("div.ccm-user-search-advanced-groups-cb input[type=checkbox]").unbind();
-	$("div.ccm-user-search-advanced-groups-cb input[type=checkbox]").click(function() {
-		$("#ccm-user-advanced-search").submit();
+	jQuery("div.ccm-user-search-advanced-groups-cb input[type=checkbox]").unbind();
+	jQuery("div.ccm-user-search-advanced-groups-cb input[type=checkbox]").click(function() {
+		jQuery("#ccm-user-advanced-search").submit();
 	});
 
 }
@@ -642,33 +642,33 @@ ccm_triggerSelectGroup = function(gID, gName) {
 }
 
 ccm_setupGroupSearch = function() {
-	$('div.ccm-group a').unbind();
-	$('div.ccm-group a').each(function(i) {
-		var gla = $(this);
-		$(this).click(function() {
+	jQuery('div.ccm-group a').unbind();
+	jQuery('div.ccm-group a').each(function(i) {
+		var gla = jQuery(this);
+		jQuery(this).click(function() {
 			ccm_triggerSelectGroup(gla.attr('group-id'), gla.attr('group-name'));
-			$.fn.dialog.closeTop();
+			jQuery.fn.dialog.closeTop();
 			return false;
 		});
 	});	
-	$("#ccm-group-search").ajaxForm({
+	jQuery("#ccm-group-search").ajaxForm({
 		beforeSubmit: function() {
-			$("#ccm-group-search-wrapper").html("");	
+			jQuery("#ccm-group-search-wrapper").html("");	
 		},
 		success: function(resp) {
-			$("#ccm-group-search-wrapper").html(resp);	
+			jQuery("#ccm-group-search-wrapper").html(resp);	
 		}
 	});
 	
 	/* setup paging */
-	$("div#ccm-group-paging a").click(function() {
-		$("#ccm-group-search-wrapper").html("");	
-		$.ajax({
+	jQuery("div#ccm-group-paging a").click(function() {
+		jQuery("#ccm-group-search-wrapper").html("");	
+		jQuery.ajax({
 			type: "GET",
-			url: $(this).attr('href'),
+			url: jQuery(this).attr('href'),
 			success: function(resp) {
-				//$("#ccm-dialog-throbber").css('visibility','hidden');
-				$("#ccm-group-search-wrapper").html(resp);
+				//jQuery("#ccm-dialog-throbber").css('visibility','hidden');
+				jQuery("#ccm-group-search-wrapper").html(resp);
 			}
 		});
 		return false;
@@ -679,34 +679,34 @@ ccm_saveArrangement = function() {
 	
 	ccm_mainNavDisableDirectExit(true);
 	var serial = '';
-	$('div.ccm-area').each(function() {
-		areaStr = '&area[' + $(this).attr('id').substring(1) + '][]=';
+	jQuery('div.ccm-area').each(function() {
+		areaStr = '&area[' + jQuery(this).attr('id').substring(1) + '][]=';
 		
-		bArray = $(this).sortable('toArray');
+		bArray = jQuery(this).sortable('toArray');
 		for (i = 0; i < bArray.length; i++ ) {
 			if (bArray[i] != '' && bArray[i].substring(0, 1) == 'b') {
 				// make sure to only go from b to -, meaning b28-9 becomes "28"
 				var bID = bArray[i].substring(1, bArray[i].indexOf('-'));
-				var bObj = $('#' + bArray[i]);
+				var bObj = jQuery('#' + bArray[i]);
 				bID += '-' + bObj.attr('custom-style');
 				serial += areaStr + bID;
 			}
 		}
 	});
 	
- 	$.ajax({
+ 	jQuery.ajax({
  		type: 'POST',
  		url: CCM_DISPATCHER_FILENAME,
  		data: 'cID=' + CCM_CID + '&ccm_token=' + CCM_SECURITY_TOKEN + '&btask=ajax_do_arrange' + serial,
  		success: function(msg) {
-			$("div.ccm-area").removeClass('ccm-move-mode');
-			$('div.ccm-block-arrange').each(function() {
-				$(this).addClass('ccm-block');
-				$(this).removeClass('ccm-block-arrange');
+			jQuery("div.ccm-area").removeClass('ccm-move-mode');
+			jQuery('div.ccm-block-arrange').each(function() {
+				jQuery(this).addClass('ccm-block');
+				jQuery(this).removeClass('ccm-block-arrange');
 			});
 			ccm_arrangeMode = false;
-			$("li.ccm-main-nav-arrange-option").fadeOut(300, function() {
-				$("li.ccm-main-nav-edit-option").fadeIn(300, function() {
+			jQuery("li.ccm-main-nav-arrange-option").fadeOut(300, function() {
+				jQuery("li.ccm-main-nav-edit-option").fadeIn(300, function() {
 					ccm_removeHeaderLoading();
 				});
 			});
@@ -715,34 +715,34 @@ ccm_saveArrangement = function() {
 }
 
 ccm_arrangeInit = function() {
-	//$(document.body).append('<img src="' + CCM_IMAGE_PATH + '/topbar_throbber.gif" width="16" height="16" id="ccm-topbar-loader" />');
+	//jQuery(document.body).append('<img src="' + CCM_IMAGE_PATH + '/topbar_throbber.gif" width="16" height="16" id="ccm-topbar-loader" />');
 	
 	ccm_arrangeMode = true;
 	
 	ccm_hideHighlighter();
 	ccm_menuActivated = true;
 	
-	$('div.ccm-block').each(function() {
-		$(this).addClass('ccm-block-arrange');
-		$(this).removeClass('ccm-block');
+	jQuery('div.ccm-block').each(function() {
+		jQuery(this).addClass('ccm-block-arrange');
+		jQuery(this).removeClass('ccm-block');
 	});
 	
 	ccm_setupHeaderMenu();
-	$("li.ccm-main-nav-edit-option").fadeOut(300, function() {
-		$("li.ccm-main-nav-arrange-option").fadeIn(300);
+	jQuery("li.ccm-main-nav-edit-option").fadeOut(300, function() {
+		jQuery("li.ccm-main-nav-arrange-option").fadeIn(300);
 	});
 	
-	$("div.ccm-area").each(function() {
-		$(this).addClass('ccm-move-mode');
-		$(this).sortable({
+	jQuery("div.ccm-area").each(function() {
+		jQuery(this).addClass('ccm-move-mode');
+		jQuery(this).sortable({
 			items: 'div.ccm-block-arrange',
-			connectWith: $("div.ccm-area"),
+			connectWith: jQuery("div.ccm-area"),
 			accept: 'div.ccm-block-arrange',
 			opacity: 0.5
 		});
 	});
 	
-	$("a#ccm-nav-save-arrange").click(function() {
+	jQuery("a#ccm-nav-save-arrange").click(function() {
 		ccm_saveArrangement();
 	});
 }
@@ -750,8 +750,8 @@ ccm_arrangeInit = function() {
 ccm_init = function() {
 	ccm_setupHeaderMenu();
 	// blink notification if it exists
-	//$("#ccm-notification").fadeIn();
-	$("a#ccm-nav-edit").click(function() {
+	//jQuery("#ccm-notification").fadeIn();
+	jQuery("a#ccm-nav-edit").click(function() {
 		if (!ccm_topPaneDeactivated) {
 			setTimeout(function() {
 				// stupid safari? wtf?
@@ -759,7 +759,7 @@ ccm_init = function() {
 			}, 50);
 		}
 	});
-	$("a#ccm-nav-add").click(function() {
+	jQuery("a#ccm-nav-add").click(function() {
 		ccm_showPane(this, CCM_TOOLS_PATH + "/edit_collection_popup.php?ctask=add&cID=" + CCM_CID);
 	});
 }
@@ -779,13 +779,13 @@ ccm_fadeInMenu = function(bobj, e) {
 	var posX = e.pageX + 2;
 	var posY = e.pageY + 2;
 	
-	if ($(window).height() < e.clientY + mheight) {
+	if (jQuery(window).height() < e.clientY + mheight) {
 		posY = e.pageY - mheight + 20;
 	} else {
 		posY = posY - 20;
 	}
 	
-	if ($(window).width() < e.clientX + mwidth) {
+	if (jQuery(window).width() < e.clientX + mwidth) {
 		posX = e.pageX - mwidth + 15;
 	} else {
 		posX = posX - 15;
@@ -830,12 +830,12 @@ ccm_blockFormSubmit = function() {
 }
 
 ccm_setupGridStriping = function(tbl) {
-	$("#" + tbl + " tr").removeClass();
+	jQuery("#" + tbl + " tr").removeClass();
 	var j = 0;
-	$("#" + tbl + " tr").each(function() {
-		if ($(this).css('display') != 'none') {					
+	jQuery("#" + tbl + " tr").each(function() {
+		if (jQuery(this).css('display') != 'none') {					
 			if (j % 2 == 0) {
-				$(this).addClass('ccm-row-alt');
+				jQuery(this).addClass('ccm-row-alt');
 			}
 			j++;
 		}
@@ -852,11 +852,11 @@ ccm_headerMenuPreloads = function(){
 
 ccm_setupDashboardHeaderMenu = function(){	
 	ccm_headerMenuPreloads();
-	$("#ccm-nav-dashboard-help").dialog();
+	jQuery("#ccm-nav-dashboard-help").dialog();
 }
 
 ccm_dashboardRequestRemoteInformation = function() {
-	$.get(CCM_TOOLS_PATH + '/dashboard/get_remote_information');
+	jQuery.get(CCM_TOOLS_PATH + '/dashboard/get_remote_information');
 }
 
 
@@ -877,11 +877,11 @@ ccm_getMarketplaceItem = function(args) {
 	// first, we check our local install to ensure that we're connected to the
 	// marketplace, etc..
 	params = {'mpID': mpID};
-	$.getJSON(CCM_TOOLS_PATH + '/marketplace/connect', params, function(resp) {
+	jQuery.getJSON(CCM_TOOLS_PATH + '/marketplace/connect', params, function(resp) {
 		jQuery.fn.dialog.hideLoader();
 		if (resp.isConnected) {
 			if (!resp.purchaseRequired) {
-				$.fn.dialog.open({
+				jQuery.fn.dialog.open({
 					title: ccmi18n.community,
 					href:  CCM_TOOLS_PATH + '/marketplace/download?install=1&mpID=' + mpID,
 					width: 350,
@@ -891,7 +891,7 @@ ccm_getMarketplaceItem = function(args) {
 			}
 
 		} else {
-			$.fn.dialog.open({
+			jQuery.fn.dialog.open({
 				title: ccmi18n.community,
 				href:  CCM_TOOLS_PATH + '/marketplace/frame?mpID=' + mpID,
 				width: '90%',
@@ -906,19 +906,19 @@ ccm_setupHeaderMenu = function() {
 	
 	ccm_headerMenuPreloads();
 
-	$("ul#ccm-main-nav a").click(function() {
+	jQuery("ul#ccm-main-nav a").click(function() {
 		if (!ccm_topPaneDeactivated) {
-			$(this).addClass('ccm-nav-loading');
+			jQuery(this).addClass('ccm-nav-loading');
 		}
 	});
-	$("ul#ccm-system-nav a").click(function() {
-		$(this).addClass('ccm-nav-loading');
+	jQuery("ul#ccm-system-nav a").click(function() {
+		jQuery(this).addClass('ccm-nav-loading');
 	});
-	$("#ccm-nav-help").dialog();
-	$("#ccm-nav-sitemap").dialog();
-	$("#ccm-nav-file-manager").dialog();
-	$("a#ccm-nav-dashboard").click(function() {
-		var dash = $(this).attr('href');
+	jQuery("#ccm-nav-help").dialog();
+	jQuery("#ccm-nav-sitemap").dialog();
+	jQuery("#ccm-nav-file-manager").dialog();
+	jQuery("a#ccm-nav-dashboard").click(function() {
+		var dash = jQuery(this).attr('href');
 		setTimeout(function() {
 			// stupid safari? wtf?
 			window.location.href = dash;
@@ -926,8 +926,8 @@ ccm_setupHeaderMenu = function() {
 		
 	});
 	
-	$("a#ccm-nav-logout").click(function() {
-		var href = $(this).attr('href');
+	jQuery("a#ccm-nav-logout").click(function() {
+		var href = jQuery(this).attr('href');
 		setTimeout(function() {
 			// stupid safari? wtf?
 			window.location.href = href;
@@ -938,38 +938,38 @@ ccm_setupHeaderMenu = function() {
 }
 
 ccm_removeHeaderLoading = function() {
-	$("a.ccm-nav-loading").removeClass('ccm-nav-loading');
+	jQuery("a.ccm-nav-loading").removeClass('ccm-nav-loading');
 }
 
 ccm_showBreadcrumb = function() {
-/*$("#ccm-bc").animate({
+/*jQuery("#ccm-bc").animate({
 	top: '50x',
 	}, {
 		duration: 200,
 		easing: 'easeInBounce'
 	});*/
-	$("#ccm-bc").show();
-	$("#ccm-bc").css('top', '49px');
+	jQuery("#ccm-bc").show();
+	jQuery("#ccm-bc").css('top', '49px');
 }
 
 ccm_hideBreadcrumb = function() {
 	/*
-	$("#ccm-bc").animate({
+	jQuery("#ccm-bc").animate({
 	top: '0px',
 	}, {
 		duration: 200,
 		easing: 'easeOutQuad'
 	});*/
-	$("#ccm-bc").css('top', '0px');
-	$("#ccm-bc").hide();
+	jQuery("#ccm-bc").css('top', '0px');
+	jQuery("#ccm-bc").hide();
 	ccm_bcEnabled = false;
 
 }
 
 ccm_setupBreadcrumb = function() {
 	
-	if ($("#ccm-bc").get().length > 0) {
-		$("#ccm-page-controls").mouseover(function() {
+	if (jQuery("#ccm-bc").get().length > 0) {
+		jQuery("#ccm-page-controls").mouseover(function() {
 			if (ccm_siteActivated) { 
 				if (!ccm_bcEnabled) {
 					ccm_showBreadcrumb();
@@ -977,14 +977,14 @@ ccm_setupBreadcrumb = function() {
 				ccm_bcEnabled = true;
 			}
 		});
-		$("#ccm-bc").mouseover(function() {
+		jQuery("#ccm-bc").mouseover(function() {
 			ccm_bcEnabled = true;
 			if (ccm_bcEnabledTimer) {
 				clearTimeout(ccm_bcEnabledTimer);
 				ccm_bcEnabledTimer = false;
 			}
 		});
-		$("#ccm-bc").mouseout(function() {
+		jQuery("#ccm-bc").mouseout(function() {
 			ccm_bcEnabled = false;
 			ccm_bcEnabledTimer = setTimeout(function() {
 				if (!ccm_bcEnabled) {
@@ -999,10 +999,10 @@ ccm_setupBreadcrumb = function() {
  * JavaScript localization. Provide a key and then reference that key in PHP somewhere (where it will be translated)
  */
 ccm_t = function(key) {
-	return $("input[name=ccm-string-" + key + "]").val();
+	return jQuery("input[name=ccm-string-" + key + "]").val();
 }
 
-$(function() {
+jQuery(function() {
 	/*
 	
 	b1 = new Image();// preload image
@@ -1038,7 +1038,7 @@ $(function() {
 		
 	*/
 	
-	if ($.browser.msie) {
+	if (jQuery.browser.msie) {
 		ccm_animEffects = false;
 	} else {
 		ccm_animEffects = true;
@@ -1050,8 +1050,8 @@ $(function() {
 
 //make sure the user isn't using internet explorer 6
 /*
-$(function(){
-	if( $.browser.msie ){
+jQuery(function(){
+	if( jQuery.browser.msie ){
 		var versionParts = jQuery.browser.version.split('.'); 
 		if( parseInt(versionParts[0])==6 ) 
 			alert( ccmi18n.noIE6 );
@@ -1062,10 +1062,10 @@ $(function(){
 /* Block Styles Customization Popup */
 var ccmCustomStyle = {   
 	tabs:function(aLink,tab){
-		$('.ccm-styleEditPane').hide();
-		$('#ccm-styleEditPane-'+tab).show();
-		$(aLink.parentNode.parentNode).find('li').removeClass('ccm-nav-active');
-		$(aLink.parentNode).addClass('ccm-nav-active');
+		jQuery('.ccm-styleEditPane').hide();
+		jQuery('#ccm-styleEditPane-'+tab).show();
+		jQuery(aLink.parentNode.parentNode).find('li').removeClass('ccm-nav-active');
+		jQuery(aLink.parentNode).addClass('ccm-nav-active');
 		return false;
 	},
 	resetAll:function(){
@@ -1074,77 +1074,77 @@ var ccmCustomStyle = {
 		}
 		jQuery.fn.dialog.showLoader();
 
-		$('#ccm-reset-style').val(1);
-		$('#ccmCustomCssForm').get(0).submit();
+		jQuery('#ccm-reset-style').val(1);
+		jQuery('#ccmCustomCssForm').get(0).submit();
 		return true;
 	},
 	showPresetDeleteIcon: function() {
-		if ($('select[name=cspID]').val() > 0) {
-			$("#ccm-style-delete-preset").show();		
+		if (jQuery('select[name=cspID]').val() > 0) {
+			jQuery("#ccm-style-delete-preset").show();		
 		} else {
-			$("#ccm-style-delete-preset").hide();
+			jQuery("#ccm-style-delete-preset").hide();
 		}	
 	},
 	deletePreset: function() {
-		var cspID = $('select[name=cspID]').val();
+		var cspID = jQuery('select[name=cspID]').val();
 		if (cspID > 0) {
 			
 			if( !confirm(ccmi18n.confirmCssPresetDelete) ) return false;
 			
-			var action = $('#ccm-custom-style-refresh-action').val() + '&deleteCspID=' + cspID + '&subtask=delete_custom_style_preset';
+			var action = jQuery('#ccm-custom-style-refresh-action').val() + '&deleteCspID=' + cspID + '&subtask=delete_custom_style_preset';
 			jQuery.fn.dialog.showLoader();
 			
-			$.get(action, function(r) {
-				$("#ccm-custom-style-wrapper").html(r);
+			jQuery.get(action, function(r) {
+				jQuery("#ccm-custom-style-wrapper").html(r);
 				jQuery.fn.dialog.hideLoader();
 			});
 		}
 	},
 	initForm: function() {
-		if ($("#cspFooterPreset").length > 0) {
-			$("#ccmCustomCssFormTabs input, #ccmCustomCssFormTabs select, #ccmCustomCssFormTabs textarea").bind('change click', function() {
-				$("#cspFooterPreset").show();
-				$("#cspFooterNoPreset").remove();
-				$("#ccmCustomCssFormTabs input, #ccmCustomCssFormTabs select").unbind('change click');
+		if (jQuery("#cspFooterPreset").length > 0) {
+			jQuery("#ccmCustomCssFormTabs input, #ccmCustomCssFormTabs select, #ccmCustomCssFormTabs textarea").bind('change click', function() {
+				jQuery("#cspFooterPreset").show();
+				jQuery("#cspFooterNoPreset").remove();
+				jQuery("#ccmCustomCssFormTabs input, #ccmCustomCssFormTabs select").unbind('change click');
 			});		
 		}
-		$('input[name=cspPresetAction]').click(function() {
-			if ($(this).val() == 'create_new_preset' && $(this).attr('checked')) {
-				$('input[name=cspName]').attr('disabled', false).focus();
+		jQuery('input[name=cspPresetAction]').click(function() {
+			if (jQuery(this).val() == 'create_new_preset' && jQuery(this).attr('checked')) {
+				jQuery('input[name=cspName]').attr('disabled', false).focus();
 			} else { 
-				$('input[name=cspName]').val('').attr('disabled', true); 
+				jQuery('input[name=cspName]').val('').attr('disabled', true); 
 			}
 		});
 		ccmCustomStyle.showPresetDeleteIcon();
 		
-		ccmCustomStyle.lastPresetID=parseInt($('select[name=cspID]').val());
+		ccmCustomStyle.lastPresetID=parseInt(jQuery('select[name=cspID]').val());
 		
-		$('select[name=cspID]').change(function(){ 
-			var cspID = parseInt($(this).val());
-			var selectedCsrID = parseInt($('input[name=selectedCsrID]').val());
+		jQuery('select[name=cspID]').change(function(){ 
+			var cspID = parseInt(jQuery(this).val());
+			var selectedCsrID = parseInt(jQuery('input[name=selectedCsrID]').val());
 			
 			if(ccmCustomStyle.lastPresetID==cspID) return false;
 			ccmCustomStyle.lastPresetID=cspID;
 			
 			jQuery.fn.dialog.showLoader();
 			if (cspID > 0) {
-				var action = $('#ccm-custom-style-refresh-action').val() + '&cspID=' + cspID;
+				var action = jQuery('#ccm-custom-style-refresh-action').val() + '&cspID=' + cspID;
 			} else {
-				var action = $('#ccm-custom-style-refresh-action').val() + '&csrID=' + selectedCsrID;
+				var action = jQuery('#ccm-custom-style-refresh-action').val() + '&csrID=' + selectedCsrID;
 			}
 			
 			
-			$.get(action, function(r) {
-				$("#ccm-custom-style-wrapper").html(r);
+			jQuery.get(action, function(r) {
+				jQuery("#ccm-custom-style-wrapper").html(r);
 				jQuery.fn.dialog.hideLoader();
 			});
 			
 		});
 		
-		$('#ccmCustomCssForm').submit(function() {
-			if ($('input[name=cspCreateNew]').attr('checked') == true) {
-				if ($('input[name=cspName]').val() == '') { 
-					$('input[name=cspName]').focus();
+		jQuery('#ccmCustomCssForm').submit(function() {
+			if (jQuery('input[name=cspCreateNew]').attr('checked') == true) {
+				if (jQuery('input[name=cspName]').val() == '') { 
+					jQuery('input[name=cspName]').focus();
 					alert(ccmi18n.errorCustomStylePresetNoName);
 					return false;
 				}
@@ -1156,14 +1156,14 @@ var ccmCustomStyle = {
 		
 		//IE bug fix 0 can't focus on txt fields if new block just added 
 		if(!parseInt(ccmCustomStyle.lastPresetID))  
-			setTimeout('$("#ccmCustomCssFormTabs input").attr("disabled", false).get(0).focus()',500);
+			setTimeout('jQuery("#ccmCustomCssFormTabs input").attr("disabled", false).get(0).focus()',500);
 	},
 	validIdCheck:function(el,prevID){
-		var selEl = $('#'+el.value); 
+		var selEl = jQuery('#'+el.value); 
 		if( selEl && selEl.get(0) && selEl.get(0).id!=prevID ){		
-			$('#ccm-styles-invalid-id').css('display','block');
+			jQuery('#ccm-styles-invalid-id').css('display','block');
 		}else{
-			$('#ccm-styles-invalid-id').css('display','none');
+			jQuery('#ccm-styles-invalid-id').css('display','none');
 		}
 	}
 }

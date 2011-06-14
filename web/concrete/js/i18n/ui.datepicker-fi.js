@@ -1,8 +1,8 @@
 /* Finnish initialisation for the jQuery UI date picker plugin. */
 /* Written by Harri Kilpiö (harrikilpio@gmail.com). */
 
-$(document).ready(function(){
-    $.datepicker.regional['fi'] = {
+jQuery(document).ready(function(){
+    jQuery.datepicker.regional['fi'] = {
 		clearText: 'Tyhjenn&auml;', clearStatus: '',
 		closeText: 'Sulje', closeStatus: '',
 		prevText: '&laquo;Edellinen', prevStatus: '',
@@ -20,5 +20,5 @@ $(document).ready(function(){
 		dayStatus: 'DD', dateStatus: 'D, M d',
         dateFormat: 'dd.mm.yy', firstDay: 1,
 		initStatus: '', isRTL: false};
-    $.datepicker.setDefaults($.datepicker.regional['fi']);
+    jQuery.datepicker.setDefaults(jQuery.datepicker.regional['fi']);
 });

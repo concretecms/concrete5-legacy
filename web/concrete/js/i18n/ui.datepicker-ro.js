@@ -1,7 +1,7 @@
 /* Romanian initialisation for the jQuery UI date picker plugin. */
 /* Written by Edmond L. (ll_edmond@walla.com). */
 jQuery(function($){
-	$.datepicker.regional['ro'] = {clearText: 'Curat', clearStatus: 'Sterge data curenta',
+	jQuery.datepicker.regional['ro'] = {clearText: 'Curat', clearStatus: 'Sterge data curenta',
 		closeText: 'Inchide', closeStatus: 'Inchide fara schimbare',
 		prevText: '&#x3c;Anterior', prevStatus: 'Arata luna trecuta',
 		nextText: 'Urmator&#x3e;', nextStatus: 'Arata luna urmatoare',
@@ -18,5 +18,5 @@ jQuery(function($){
 		dayStatus: 'Seteaza DD ca prima saptamana zi', dateStatus: 'Selecteaza D, M d',
 		dateFormat: 'mm/dd/yy', firstDay: 0, 
 		initStatus: 'Selecteaza o data', isRTL: false};
-	$.datepicker.setDefaults($.datepicker.regional['ro']);
+	jQuery.datepicker.setDefaults(jQuery.datepicker.regional['ro']);
 });

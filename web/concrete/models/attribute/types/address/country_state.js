@@ -1,12 +1,12 @@
 var ccm_attributeTypeAddressStates;
 
-$(function() {
+jQuery(function() {
 	ccm_attributeTypeAddressStates = ccm_attributeTypeAddressStatesTextList.split('|');
 });
 
 ccm_attributeTypeAddressSelectCountry = function(cls, country) {
-	var ss = $('.' + cls + ' .ccm-attribute-address-state-province select');
-	var si = $('.' + cls + ' .ccm-attribute-address-state-province input[type=text]');
+	var ss = jQuery('.' + cls + ' .ccm-attribute-address-state-province select');
+	var si = jQuery('.' + cls + ' .ccm-attribute-address-state-province input[type=text]');
 
 	var foundStateList = false;
 	ss.html("");
@@ -35,17 +35,17 @@ ccm_attributeTypeAddressSelectCountry = function(cls, country) {
 
 ccm_setupAttributeTypeAddressSetupStateProvinceSelector = function(cls) {
 	
-	var cs = $('.' + cls + ' .ccm-attribute-address-country select');
+	var cs = jQuery('.' + cls + ' .ccm-attribute-address-country select');
 	cs.change(function() {
-		var v = $(this).val();
+		var v = jQuery(this).val();
 		ccm_attributeTypeAddressSelectCountry(cls, v);
 	});
 	
 	if (cs.attr('ccm-passed-value') != '') {
-		$(function() {
+		jQuery(function() {
 			cs.find('option[value=' + cs.attr('ccm-passed-value') + ']').attr('selected', true);
 			ccm_attributeTypeAddressSelectCountry(cls, cs.attr('ccm-passed-value'));
-			var ss = $('.' + cls + ' .ccm-attribute-address-state-province select');
+			var ss = jQuery('.' + cls + ' .ccm-attribute-address-state-province select');
 			if (ss.attr('ccm-passed-value') != '') {
 				ss.find('option[value=' + ss.attr('ccm-passed-value') + ']').attr('selected', true);
 			}

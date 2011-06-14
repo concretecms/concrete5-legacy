@@ -1,11 +1,11 @@
 jQuery.fn.dialog = function(settings) {
 	// this is probably woefully inefficient. 
-	return $(this).each(function() {
-		$(this).click(function(e) {
+	return jQuery(this).each(function() {
+		jQuery(this).click(function(e) {
 			ccm_dialogOpen=1;
-			options = jQuery.fn.dialog.getOptions(settings, $(this));
+			options = jQuery.fn.dialog.getOptions(settings, jQuery(this));
 			jQuery.fn.dialog._create(options);
-			$(this).blur();
+			jQuery(this).blur();
 			return false;
 		});	
 	});
@@ -40,7 +40,7 @@ jQuery.fn.dialog.open = function(settings) {
 
 jQuery.fn.dialog.replaceTop = function(html) {
 	var num = jQuery.fn.dialog.totalDialogs-1;
-	$("#ccm-dialog-content" + num).html(html);
+	jQuery("#ccm-dialog-content" + num).html(html);
 }
 
 jQuery.fn.dialog.getOptions = function(settings, node) {
@@ -111,13 +111,13 @@ jQuery.fn.dialog.getOptions = function(settings, node) {
 	if (typeof(options.width) == 'string') {
 		if (options.width.lastIndexOf('%') > -1) {
 			var mod = "." + options.width.substring(0, options.width.lastIndexOf('%'));
-			options.width = $(window).width() * mod;
+			options.width = jQuery(window).width() * mod;
 		}
 	}
 	if (typeof(options.height) == 'string') {
 		if (options.height.lastIndexOf('%') > -1) {
 			var mod = "." + options.height.substring(0, options.height.lastIndexOf('%'));
-			options.height = $(window).height() * mod;
+			options.height = jQuery(window).height() * mod;
 		}
 	}
 	
@@ -142,14 +142,14 @@ jQuery.fn.dialog.load = function(fnd) {
 		//jQuery.fn.dialog.loadShell(fnd);
 		jQuery.fn.dialog.position(fnd);
 		jQuery.fn.dialog.hideLoader();
-		$("#ccm-dialog-content" + fnd.n).append($(fnd.element));
-		if ($(fnd.element).css('display') == 'none') {
-			$(fnd.element).show();
+		jQuery("#ccm-dialog-content" + fnd.n).append(jQuery(fnd.element));
+		if (jQuery(fnd.element).css('display') == 'none') {
+			jQuery(fnd.element).show();
 		}
-		$("#ccm-dialog-content" + fnd.n + " .ccm-dialog-close").click(function() {
+		jQuery("#ccm-dialog-content" + fnd.n + " .ccm-dialog-close").click(function() {
 			jQuery.fn.dialog.close(fnd);
 		});
-		$("#ccm-dialog-content" + fnd.n + " .dialog-launch").dialog();
+		jQuery("#ccm-dialog-content" + fnd.n + " .dialog-launch").dialog();
 	} else {
 		var qsi = "?";
 		if (fnd.href.indexOf('?') > -1) {
@@ -159,18 +159,18 @@ jQuery.fn.dialog.load = function(fnd) {
 		//this encodeURI may lead to double encoding problems, especially ampersands & spaces. recommend removal - Tony   
 		var durl = fnd.href + qsi + 'random=' + (new Date().getTime());
 		
-		$.ajax({
+		jQuery.ajax({
 			type: 'GET',
 			url: durl,
 			success: function(resp) {
 				//jQuery.fn.dialog.loadShell(fnd);
 				jQuery.fn.dialog.position(fnd);
 				jQuery.fn.dialog.hideLoader();
-				$("#ccm-dialog-content" + fnd.n).html(resp);
-				$("#ccm-dialog-content" + fnd.n + " .ccm-dialog-close").click(function() {
+				jQuery("#ccm-dialog-content" + fnd.n).html(resp);
+				jQuery("#ccm-dialog-content" + fnd.n + " .ccm-dialog-close").click(function() {
 					jQuery.fn.dialog.close(fnd);
 				});
-				$("#ccm-dialog-content" + fnd.n + " .dialog-launch").dialog();
+				jQuery("#ccm-dialog-content" + fnd.n + " .dialog-launch").dialog();
 	
 				if (typeof fnd.onOpen != "undefined") {
 					if ((typeof fnd.onOpen) == 'function') {
@@ -190,36 +190,36 @@ jQuery.fn.dialog.load = function(fnd) {
 }
 
 jQuery.fn.dialog.hideLoader = function() {
-	$("#ccm-dialog-loader-wrapper").hide();
+	jQuery("#ccm-dialog-loader-wrapper").hide();
 }
 
 jQuery.fn.dialog.showLoader = function(fnd) {
 	if (typeof(imgLoader)=='undefined' || !imgLoader || !imgLoader.src) return false; 
-	if ($('#ccm-dialog-loader').length < 1) {
-		$("body").append("<div id='ccm-dialog-loader-wrapper'><img id='ccm-dialog-loader' src='"+imgLoader.src+"' /></div>");//add loader to the page
+	if (jQuery('#ccm-dialog-loader').length < 1) {
+		jQuery("body").append("<div id='ccm-dialog-loader-wrapper'><img id='ccm-dialog-loader' src='"+imgLoader.src+"' /></div>");//add loader to the page
 	}
-	$('#ccm-dialog-loader-wrapper').css('opacity', 0.8);
-	$('#ccm-dialog-loader-wrapper').show();//show loader
-	//$('#ccm-dialog-loader-wrapper').fadeTo('slow', 0.2);
+	jQuery('#ccm-dialog-loader-wrapper').css('opacity', 0.8);
+	jQuery('#ccm-dialog-loader-wrapper').show();//show loader
+	//jQuery('#ccm-dialog-loader-wrapper').fadeTo('slow', 0.2);
 }
 
 jQuery.fn.dialog.deactivate = function(w) {
 	// w = window number. typically the previous window below the current active one
-	$("#ccm-dialog-window" + w).css('z-index', '6');
+	jQuery("#ccm-dialog-window" + w).css('z-index', '6');
 	
 }
 
 jQuery.fn.dialog.activate = function(w) {
 	// w = window number. typically the previous window below the current active one
 	var obj = jQuery.fn.dialog.dialogs[w];
-	$("#ccm-dialog-window" + w).css('z-index', obj.realZ);
+	jQuery("#ccm-dialog-window" + w).css('z-index', obj.realZ);
 }
 
 jQuery.fn.dialog.close = function(fnd) {
 	jQuery.fn.dialog.totalDialogs--;
 	jQuery.fn.dialog.dialogs.splice(jQuery.fn.dialog.totalDialogs, 1);
-	$("#TB_imageOff").unbind("click");
-	$("#TB_closeWindowButton" + fnd.n).unbind("click");
+	jQuery("#TB_imageOff").unbind("click");
+	jQuery("#TB_closeWindowButton" + fnd.n).unbind("click");
 
 	if (typeof fnd.onClose != "undefined") {
 		if ((typeof fnd.onClose) == 'function') {
@@ -230,17 +230,17 @@ jQuery.fn.dialog.close = function(fnd) {
 	}
 
 	if (fnd.onDestroy == "undefined" && ccm_animEffects) {
-		$("#ccm-dialog-window" + jQuery.fn.dialog.totalDialogs).fadeOut("fast",function(){
-			$('#ccm-dialog-window' + jQuery.fn.dialog.totalDialogs).remove();
+		jQuery("#ccm-dialog-window" + jQuery.fn.dialog.totalDialogs).fadeOut("fast",function(){
+			jQuery('#ccm-dialog-window' + jQuery.fn.dialog.totalDialogs).remove();
 		});
 	} else {
-		$("#ccm-dialog-window" + jQuery.fn.dialog.totalDialogs).hide();
-		$('#ccm-dialog-window' + jQuery.fn.dialog.totalDialogs).remove();
+		jQuery("#ccm-dialog-window" + jQuery.fn.dialog.totalDialogs).hide();
+		jQuery('#ccm-dialog-window' + jQuery.fn.dialog.totalDialogs).remove();
 	}
 	
 	if (jQuery.fn.dialog.totalDialogs == 0) {
-		$("#TB_HideSelect").trigger("unload").unbind().remove();
-		$("div." + fnd.wrapperClass).remove();
+		jQuery("#TB_HideSelect").trigger("unload").unbind().remove();
+		jQuery("div." + fnd.wrapperClass).remove();
 		if (ccm_initialSiteActivated) {
 			ccm_activateSite();
 		}
@@ -279,9 +279,9 @@ jQuery.fn.dialog.position = function(fnd) {
 	
 	fnd.contentHeight = fnd.modifiedHeight;
 	
-	$("#ccm-dialog-window" + fnd.n).css({marginLeft: '-' + parseInt((fnd.modifiedWidth / 2),10) + 'px', width: fnd.modifiedWidth + 'px'});
+	jQuery("#ccm-dialog-window" + fnd.n).css({marginLeft: '-' + parseInt((fnd.modifiedWidth / 2),10) + 'px', width: fnd.modifiedWidth + 'px'});
 	if ( !(jQuery.browser.msie && jQuery.browser.version < 7)) { // take away IE6
-		$("#ccm-dialog-window" + fnd.n).css({marginTop: '-' + parseInt((fnd.contentHeight / 2),10) + 'px'});
+		jQuery("#ccm-dialog-window" + fnd.n).css({marginTop: '-' + parseInt((fnd.contentHeight / 2),10) + 'px'});
 	}
 }
 
@@ -296,28 +296,28 @@ jQuery.fn.dialog.loadShell = function(fnd) {
 		cwt = ccmi18n.closeWindow;
 	}
 	
-	if($("#ccm-dialog-window" + fnd.n).css("display") != "block"){
+	if(jQuery("#ccm-dialog-window" + fnd.n).css("display") != "block"){
 		if(fnd.modal == false){//ajax no modal
-			$("#ccm-dialog-window" + fnd.n).append("<div class='ccm-dialog-title-bar-l' " + dragCursor + "><div class='ccm-dialog-title-bar-r'><div class='ccm-dialog-title-bar' id='ccm-dialog-title-bar" + fnd.n + "'><div class='ccm-dialog-title' id='ccm-dialog-title" + fnd.n + "'>"+fnd.title+"</div><a href='javascript:void(0)' class='ccm-dialog-close'>" + cwt + "</a></div></div></div><div id='ccm-dialog-content-wrapper'><div class='ccm-dialog-content-l'><div class='ccm-dialog-content-r'><div class='ccm-dialog-content' id='ccm-dialog-content" + fnd.n + "' style='width:"+fnd.contentWidth+"px;height:"+fnd.contentHeight+"px'></div></div></div></div>");
+			jQuery("#ccm-dialog-window" + fnd.n).append("<div class='ccm-dialog-title-bar-l' " + dragCursor + "><div class='ccm-dialog-title-bar-r'><div class='ccm-dialog-title-bar' id='ccm-dialog-title-bar" + fnd.n + "'><div class='ccm-dialog-title' id='ccm-dialog-title" + fnd.n + "'>"+fnd.title+"</div><a href='javascript:void(0)' class='ccm-dialog-close'>" + cwt + "</a></div></div></div><div id='ccm-dialog-content-wrapper'><div class='ccm-dialog-content-l'><div class='ccm-dialog-content-r'><div class='ccm-dialog-content' id='ccm-dialog-content" + fnd.n + "' style='width:"+fnd.contentWidth+"px;height:"+fnd.contentHeight+"px'></div></div></div></div>");
 		}else{//ajax modal
-			$("#ccm-dialog-window" + fnd.n).append("<div class='ccm-dialog-title-bar-l' " + dragCursor + "><div class='ccm-dialog-title-bar-r'><div class='ccm-dialog-title-bar' id='ccm-dialog-title-bar" + fnd.n + "'><div class='ccm-dialog-title' id='ccm-dialog-title" + fnd.n + "'>"+fnd.title+"</div></div></div></div><div id='ccm-dialog-content-wrapper'><div class='ccm-dialog-content-l'><div class='ccm-dialog-content-r'><div class='ccm-dialog-content' id='ccm-dialog-content" + fnd.n + "' class='TB_modal' style='width:"+fnd.contentWidth+"px;height:"+fnd.contentHeight+"px;'>");	
+			jQuery("#ccm-dialog-window" + fnd.n).append("<div class='ccm-dialog-title-bar-l' " + dragCursor + "><div class='ccm-dialog-title-bar-r'><div class='ccm-dialog-title-bar' id='ccm-dialog-title-bar" + fnd.n + "'><div class='ccm-dialog-title' id='ccm-dialog-title" + fnd.n + "'>"+fnd.title+"</div></div></div></div><div id='ccm-dialog-content-wrapper'><div class='ccm-dialog-content-l'><div class='ccm-dialog-content-r'><div class='ccm-dialog-content' id='ccm-dialog-content" + fnd.n + "' class='TB_modal' style='width:"+fnd.contentWidth+"px;height:"+fnd.contentHeight+"px;'>");	
 		}
 	}else{//this means the window is already up, we are just loading new content via ajax
-		$("#ccm-dialog-content" + fnd.n)[0].style.width = fnd.contentWidth +"px";
-		$("#ccm-dialog-content" + fnd.n)[0].style.height = fnd.contentHeight +"px";
-		$("#ccm-dialog-content" + fnd.n)[0].scrollTop = 0;
-		$("#ccm-dialog-title" + fnd.n).html(fnd.title);
+		jQuery("#ccm-dialog-content" + fnd.n)[0].style.width = fnd.contentWidth +"px";
+		jQuery("#ccm-dialog-content" + fnd.n)[0].style.height = fnd.contentHeight +"px";
+		jQuery("#ccm-dialog-content" + fnd.n)[0].scrollTop = 0;
+		jQuery("#ccm-dialog-title" + fnd.n).html(fnd.title);
 	}
-	$("#ccm-dialog-window" + fnd.n + " .ccm-dialog-close").click(function() {
+	jQuery("#ccm-dialog-window" + fnd.n + " .ccm-dialog-close").click(function() {
 		jQuery.fn.dialog.close(fnd);
 	});
-	$("#ccm-dialog-window" + fnd.n).append("<div class='ccm-dialog-content-bl'><div class='ccm-dialog-content-br'><div class='ccm-dialog-content-b'></div></div></div>");
+	jQuery("#ccm-dialog-window" + fnd.n).append("<div class='ccm-dialog-content-bl'><div class='ccm-dialog-content-br'><div class='ccm-dialog-content-b'></div></div></div>");
 	// finish loading wrapper
-	$("#ccm-dialog-window" + fnd.n).append("</div>");
-	$("#ccm-dialog-window" + fnd.n).show();
+	jQuery("#ccm-dialog-window" + fnd.n).append("</div>");
+	jQuery("#ccm-dialog-window" + fnd.n).show();
 	
 	if (fnd.draggable && ccm_dialogCanDrag) {
-		$("#ccm-dialog-window" + fnd.n).draggable({'handle': $('#ccm-dialog-title-bar' + fnd.n)});
+		jQuery("#ccm-dialog-window" + fnd.n).draggable({'handle': jQuery('#ccm-dialog-title-bar' + fnd.n)});
 	}
 
 }
@@ -351,12 +351,12 @@ jQuery.fn.dialog.overlay = function(fnd) {
 	}
 	
 	fnd.realZ = sz;
-	$("body").append("<div class=\"" + fnd.wrapperClass + " " + transparentClass + " \"><div class='ccm-dialog-window' id='ccm-dialog-window" + fnd.n + "' style='display: none; z-index: " + sz + "'></div>");
+	jQuery("body").append("<div class=\"" + fnd.wrapperClass + " " + transparentClass + " \"><div class='ccm-dialog-window' id='ccm-dialog-window" + fnd.n + "' style='display: none; z-index: " + sz + "'></div>");
 
 	if(jQuery.fn.dialog.isMacFF(fnd)){
-		$("#TB_overlay" + fnd.n).addClass("TB_overlayMacFFBGHack");//use png overlay so hide flash
+		jQuery("#TB_overlay" + fnd.n).addClass("TB_overlayMacFFBGHack");//use png overlay so hide flash
 	}else{
-		$("#TB_overlay" + fnd.n).addClass("TB_overlayBG");//use background and opacity
+		jQuery("#TB_overlay" + fnd.n).addClass("TB_overlayBG");//use background and opacity
 	}
 }
 
@@ -385,7 +385,7 @@ jQuery.fn.dialog.loaderImage = CCM_IMAGE_PATH + "/throbber_white_32.gif";
 
 var ccm_initialHeaderDeactivated;
 var ccm_initialOverlay;
-var ccm_dialogCanDrag = (typeof($.fn.draggable) == 'function' && (!jQuery.browser.safari));
+var ccm_dialogCanDrag = (typeof(jQuery.fn.draggable) == 'function' && (!jQuery.browser.safari));
 var ccm_dialogSkinMode = 'v2';
 
 if (jQuery.browser.msie) {
@@ -398,22 +398,22 @@ if (jQuery.browser.msie) {
 var imgLoader;
 var ccmAlert = {  
     notice : function(title, message, onCloseFn) {
-        $.fn.dialog.open({
+        jQuery.fn.dialog.open({
             href: CCM_TOOLS_PATH + '/alert',
             title: title,
             width: 320,
             height: 160,
             modal: false, 
 			onOpen: function () {
-        		$("#ccm-popup-alert-message").html(message);
+        		jQuery("#ccm-popup-alert-message").html(message);
 			},
 			onDestroy: onCloseFn
         }); 
     },
     
     hud: function(message, time, icon, title) {
-    	if ($('#ccm-notification-inner').length == 0) { 
-    		$(document.body).append('<div id="ccm-notification"><div id="ccm-notification-inner"></div></div>');
+    	if (jQuery('#ccm-notification-inner').length == 0) { 
+    		jQuery(document.body).append('<div id="ccm-notification"><div id="ccm-notification-inner"></div></div>');
     	}
     	
     	if (icon == null) {
@@ -425,23 +425,23 @@ var ccmAlert = {
 	    } else {
 	    	var messageText = '<h3>' + title + '</h3>' + message;
 	    }
-    	$('#ccm-notification-inner').html('<table border="0" cellspacing="0" cellpadding="0"><tr><td valign="top"><img id="ccm-notification-icon" src="' + CCM_IMAGE_PATH + '/icons/' + icon + '.png" width="16" height="16" /></td><td valign="top">' + messageText + '</td></tr></table>');
+    	jQuery('#ccm-notification-inner').html('<table border="0" cellspacing="0" cellpadding="0"><tr><td valign="top"><img id="ccm-notification-icon" src="' + CCM_IMAGE_PATH + '/icons/' + icon + '.png" width="16" height="16" /></td><td valign="top">' + messageText + '</td></tr></table>');
 		
-		$('#ccm-notification').fadeIn({easing: 'easeInQuart', duration: 100});
+		jQuery('#ccm-notification').fadeIn({easing: 'easeInQuart', duration: 100});
     	if (time > 0) {
     		setTimeout(function() {
-    			$('#ccm-notification').fadeOut({easing: 'easeOutExpo', duration: 800});
+    			jQuery('#ccm-notification').fadeOut({easing: 'easeOutExpo', duration: 800});
     		}, time);
     	}
     	
     }
 }       
 
-$(document).ready(function(){   
+jQuery(document).ready(function(){   
 	imgLoader = new Image();// preload image
 	imgLoader.src = jQuery.fn.dialog.loaderImage;
 	
-	$(document.body).keypress(function(e) {
+	jQuery(document.body).keypress(function(e) {
 		if (e.keyCode == 27 && jQuery.fn.dialog.totalDialogs > 0) {
 			var obj = jQuery.fn.dialog.dialogs[jQuery.fn.dialog.totalDialogs-1];
 			if (!obj.modal) {

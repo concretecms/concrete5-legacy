@@ -1,7 +1,7 @@
 /* Korean initialisation for the jQuery calendar extension. */
 /* Written by DaeKwon Kang (ncrash.dk@gmail.com). */
 jQuery(function($){
-	$.datepicker.regional['ko'] = {clearText: '지우기', clearStatus: '',
+	jQuery.datepicker.regional['ko'] = {clearText: '지우기', clearStatus: '',
 		closeText: '닫기', closeStatus: '',
 		prevText: '이전달', prevStatus: '',
 		nextText: '다음달', nextStatus: '',
@@ -18,5 +18,5 @@ jQuery(function($){
 		dayStatus: 'DD', dateStatus: 'D, M d',
 		dateFormat: 'yy-mm-dd', firstDay: 0, 
 		initStatus: '', isRTL: false};
-	$.datepicker.setDefaults($.datepicker.regional['ko']);
+	jQuery.datepicker.setDefaults(jQuery.datepicker.regional['ko']);
 });

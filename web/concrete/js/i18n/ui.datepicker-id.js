@@ -1,7 +1,7 @@
 /* Indonesian initialisation for the jQuery UI date picker plugin. */
 /* Written by Deden Fathurahman (dedenf@gmail.com). */
 jQuery(function($){
-	$.datepicker.regional['id'] = {clearText: 'kosongkan', clearStatus: 'bersihkan tanggal yang sekarang',
+	jQuery.datepicker.regional['id'] = {clearText: 'kosongkan', clearStatus: 'bersihkan tanggal yang sekarang',
 		closeText: 'Tutup', closeStatus: 'Tutup tanpa mengubah',
 		prevText: '&lt;mundur', prevStatus: 'Tampilkan bulan sebelumnya',
 		nextText: 'maju&gt;', nextStatus: 'Tampilkan bulan berikutnya',
@@ -18,5 +18,5 @@ jQuery(function($){
 		dayStatus: 'gunakan DD sebagai awal hari dalam minggu', dateStatus: 'pilih le DD, MM d',
 		dateFormat: 'dd/mm/yy', firstDay: 0, 
 		initStatus: 'Pilih Tanggal', isRTL: false};
-	$.datepicker.setDefaults($.datepicker.regional['id']);
+	jQuery.datepicker.setDefaults(jQuery.datepicker.regional['id']);
 });

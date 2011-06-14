@@ -1,7 +1,7 @@
 /* Chinese initialisation for the jQuery UI date picker plugin. */
 /* Written by Cloudream (cloudream@gmail.com). */
 jQuery(function($){
-	$.datepicker.regional['zh-CN'] = {clearText: '清除', clearStatus: '清除已选日期',
+	jQuery.datepicker.regional['zh-CN'] = {clearText: '清除', clearStatus: '清除已选日期',
 		closeText: '关闭', closeStatus: '不改变当前选择',
 		prevText: '&lt;上月', prevStatus: '显示上月',
 		nextText: '下月&gt;', nextStatus: '显示下月',
@@ -18,5 +18,5 @@ jQuery(function($){
 		dayStatus: '设置 DD 为一周起始', dateStatus: '选择 m月 d日, DD',
 		dateFormat: 'yy-mm-dd', firstDay: 1, 
 		initStatus: '请选择日期', isRTL: false};
-	$.datepicker.setDefaults($.datepicker.regional['zh-CN']);
+	jQuery.datepicker.setDefaults(jQuery.datepicker.regional['zh-CN']);
 });

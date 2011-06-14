@@ -4,9 +4,9 @@ var ccmDateNav={
 	currentPgNum:0,
 	loadCurrentPage:1,
 	init:function(){ 
-		this.navs=$('.ccmDateNav');
+		this.navs=jQuery('.ccmDateNav');
 		this.navs.each(function(i,nav){ 
-			nav=$(nav);
+			nav=jQuery(nav);
 			if(nav.prepared) return;
 			nav.find('.trigger').each(function(i,trig){
 				trig.onclick=function(){
@@ -16,8 +16,8 @@ var ccmDateNav={
 			/*
 			var pNs=nav.find('.pageNode');
 			pNs.each(function(i,n){
-				n.pNs=$(pNs);
-				$(n).click(function(el){
+				n.pNs=jQuery(pNs);
+				jQuery(n).click(function(el){
 					el.pNs.removeClass('selected');
 					el.addClass('selected');
 				})
@@ -29,15 +29,15 @@ var ccmDateNav={
 		this.setPg( this.loadPg, this.dateKey ); 
 	},
 	triggered:function(trig,mode){ 
-		var c='closed',ul=$(trig.parentNode).find('ul');
-		var trigEl=$(trig);
-		ul=$(ul.get(0));
+		var c='closed',ul=jQuery(trig.parentNode).find('ul');
+		var trigEl=jQuery(trig);
+		ul=jQuery(ul.get(0));
 		if( mode!='close' && (trigEl.hasClass(c) || mode=='open') ){ 
-			//$(trig.parentNode.parentNode).find('ul .trigger').addClass(c);
-			$(trig.parentNode.parentNode).find('ul').each( function(i,sibling){
+			//jQuery(trig.parentNode.parentNode).find('ul .trigger').addClass(c);
+			jQuery(trig.parentNode.parentNode).find('ul').each( function(i,sibling){
 				if(sibling!=ul.get(0)){
-					$(sibling).hide(500);				
-					$(sibling.parentNode).find('.trigger').addClass(c);
+					jQuery(sibling).hide(500);				
+					jQuery(sibling.parentNode).find('.trigger').addClass(c);
 				}
 			});			
 			trigEl.removeClass(c); 
@@ -52,13 +52,13 @@ var ccmDateNav={
 	setPg:function( id, dateKey ){  
 		var y = dateKey.substr(dateKey.indexOf('_')+1, dateKey.length); 
 		this.navs.each( function(i,nav){
-			nav=$(nav);
+			nav=jQuery(nav);
 			nav.find('.pageNode').removeClass('selected');
 			var p=nav.find('.pageId'+id);
 			if(p) p.addClass('selected');
 			var trigs=nav.find('.trigger');
 			trigs.each(function(i,t){
-				trigEl=$(t);
+				trigEl=jQuery(t);
 				if( ccmDateNav.loadCurrentPage && trigEl.hasClass('closed') && (trigEl.hasClass('month'+dateKey) || trigEl.hasClass('year'+y)) ){ 
 					//alert(trigEl.html() + 'open')
 					ccmDateNav.triggered( t ,'open');

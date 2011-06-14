@@ -1,7 +1,7 @@
 /* Polish initialisation for the jQuery UI date picker plugin. */
 /* Written by Jacek Wysocki (jacek.wysocki@gmail.com). */
 jQuery(function($){
-	$.datepicker.regional['pl'] = {clearText: 'Wyczyść', clearStatus: 'Wyczyść obecną datę',
+	jQuery.datepicker.regional['pl'] = {clearText: 'Wyczyść', clearStatus: 'Wyczyść obecną datę',
 		closeText: 'Zamknij', closeStatus: 'Zamknij bez zapisywania',
 		prevText: '&#x3c;Poprzedni', prevStatus: 'Pokaż poprzedni miesiąc',
 		nextText: 'Następny&#x3e;', nextStatus: 'Pokaż następny miesiąc',
@@ -18,5 +18,5 @@ jQuery(function($){
 		dayStatus: 'Ustaw DD jako pierwszy dzień tygodnia', dateStatus: 'Wybierz D, M d',
 		dateFormat: 'yy-mm-dd', firstDay: 1, 
 		initStatus: 'Wybierz datę', isRTL: false};
-	$.datepicker.setDefaults($.datepicker.regional['pl']);
+	jQuery.datepicker.setDefaults(jQuery.datepicker.regional['pl']);
 });

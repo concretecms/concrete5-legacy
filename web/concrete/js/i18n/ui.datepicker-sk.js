@@ -1,7 +1,7 @@
 /* Slovak initialisation for the jQuery UI date picker plugin. */
 /* Written by Vojtech Rinik (vojto@hmm.sk). */
 jQuery(function($){
-	$.datepicker.regional['sk'] = {clearText: 'Zmazať', clearStatus: '',
+	jQuery.datepicker.regional['sk'] = {clearText: 'Zmazať', clearStatus: '',
 		closeText: 'Zavrieť', closeStatus: '',
 		prevText: '&lt;Predchádzajúci',  prevStatus: '',
 		nextText: 'Nasledujúci&gt;', nextStatus: '',
@@ -18,5 +18,5 @@ jQuery(function($){
 		dayStatus: 'DD', dateStatus: 'D, M d',
 		dateFormat: 'dd.mm.yy', firstDay: 0, 
 		initStatus: '', isRTL: false};
-	$.datepicker.setDefaults($.datepicker.regional['sk']);
+	jQuery.datepicker.setDefaults(jQuery.datepicker.regional['sk']);
 });

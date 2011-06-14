@@ -18,5 +18,5 @@ jQuery(document).ready(function(){
 		dayStatus: 'DD', dateStatus: 'DD, M d',
 		dateFormat: 'dd/mm/yy', firstDay: 0, 
 		initStatus: '', isRTL: true};
-	jQuery.datepicker.setDefaults($.datepicker.regional['he']);
+	jQuery.datepicker.setDefaults(jQuery.datepicker.regional['he']);
 });

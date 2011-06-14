@@ -1,7 +1,7 @@
 ﻿/* Danish initialisation for the jQuery UI date picker plugin. */
 /* Written by Jan Christensen ( deletestuff@gmail.com). */
 jQuery(function($){
-    $.datepicker.regional['da'] = {clearText: 'Nulstil', clearStatus: 'Nulstil den aktuelle dato',
+    jQuery.datepicker.regional['da'] = {clearText: 'Nulstil', clearStatus: 'Nulstil den aktuelle dato',
 		closeText: 'Luk', closeStatus: 'Luk uden ændringer',
         prevText: '&#x3c;Forrige', prevStatus: 'Vis forrige måned',
 		nextText: 'Næste&#x3e;', nextStatus: 'Vis næste måned',
@@ -18,5 +18,5 @@ jQuery(function($){
 		dayStatus: 'Sæt DD som første ugedag', dateStatus: 'Vælg D, M d',
         dateFormat: 'dd-mm-yy', firstDay: 0, 
 		initStatus: 'Vælg en dato', isRTL: false};
-    $.datepicker.setDefaults($.datepicker.regional['da']); 
+    jQuery.datepicker.setDefaults(jQuery.datepicker.regional['da']); 
 });

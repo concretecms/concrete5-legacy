@@ -50,19 +50,19 @@ function FileProgress(file, targetID) {
 		this.fileProgressWrapper.appendChild(this.fileProgressElement2);
 		*/
 
-		$("#" + targetID).append('<tr id="' + this.fileProgressID + '"><td><div style="word-wrap: break-word; width: 150px">' + file.name + '</div></td><td><div style="width: 250px" class="ccm-file-manager-progress-bar-pending">' + ccmi18n_filemanager.pending + '</div><div class="ccm-file-manager-progress-bar" style="display: none"></div></tr>');
-		this.fileProgressWrapper = $("#" + this.fileProgressID).get(0);
-		$("#" + this.fileProgressID).find('div.ccm-file-manager-progress-bar').progressbar();
+		jQuery("#" + targetID).append('<tr id="' + this.fileProgressID + '"><td><div style="word-wrap: break-word; width: 150px">' + file.name + '</div></td><td><div style="width: 250px" class="ccm-file-manager-progress-bar-pending">' + ccmi18n_filemanager.pending + '</div><div class="ccm-file-manager-progress-bar" style="display: none"></div></tr>');
+		this.fileProgressWrapper = jQuery("#" + this.fileProgressID).get(0);
+		jQuery("#" + this.fileProgressID).find('div.ccm-file-manager-progress-bar').progressbar();
 		
 //		document.getElementById(targetID).appendChild(this.fileProgressWrapper);
 	} else {
-		this.fileProgressElement = $(this.fileProgressWrapper).find('div.ccm-file-manager-progress-bar').get(0);
-		this.fileProgressPendingElement = $(this.fileProgressWrapper).find('div.ccm-file-manager-progress-bar-pending').get(0);
+		this.fileProgressElement = jQuery(this.fileProgressWrapper).find('div.ccm-file-manager-progress-bar').get(0);
+		this.fileProgressPendingElement = jQuery(this.fileProgressWrapper).find('div.ccm-file-manager-progress-bar-pending').get(0);
 		this.reset();
 	}
 
-	this.fileProgressElement = $(this.fileProgressWrapper).find('div.ccm-file-manager-progress-bar').get(0);
-	this.fileProgressPendingElement = $(this.fileProgressWrapper).find('div.ccm-file-manager-progress-bar-pending').get(0);
+	this.fileProgressElement = jQuery(this.fileProgressWrapper).find('div.ccm-file-manager-progress-bar').get(0);
+	this.fileProgressPendingElement = jQuery(this.fileProgressWrapper).find('div.ccm-file-manager-progress-bar-pending').get(0);
 
 	this.height = this.fileProgressWrapper.offsetHeight;
 	this.setTimer(null);
@@ -77,8 +77,8 @@ FileProgress.prototype.getTimer = function (timer) {
 };
 
 FileProgress.prototype.reset = function () {
-	$(this.fileProgressPendingElement).hide();
-	$(this.fileProgressElement).show();
+	jQuery(this.fileProgressPendingElement).hide();
+	jQuery(this.fileProgressElement).show();
 	
 	/*
 	this.fileProgressElement.className = "progressContainer";
@@ -95,19 +95,19 @@ FileProgress.prototype.reset = function () {
 };
 
 FileProgress.prototype.setProgress = function (percentage) {
-	$(this.fileProgressElement).progressbar('option', 'value', percentage);
+	jQuery(this.fileProgressElement).progressbar('option', 'value', percentage);
 	this.appear();	
 };
 FileProgress.prototype.setComplete = function () {
-	var pendingBar = $(this.fileProgressWrapper).find('div.ccm-file-manager-progress-bar-pending');
-	$(this.fileProgressElement).fadeOut(200, function() {
+	var pendingBar = jQuery(this.fileProgressWrapper).find('div.ccm-file-manager-progress-bar-pending');
+	jQuery(this.fileProgressElement).fadeOut(200, function() {
 		pendingBar.html(ccmi18n_filemanager.uploadComplete);
 		pendingBar.show();
 	});
 };
 FileProgress.prototype.setError = function (msg) {
-	var pendingBar = $(this.fileProgressWrapper).find('div.ccm-file-manager-progress-bar-pending');
-	$(this.fileProgressElement).fadeOut(200, function() {
+	var pendingBar = jQuery(this.fileProgressWrapper).find('div.ccm-file-manager-progress-bar-pending');
+	jQuery(this.fileProgressElement).fadeOut(200, function() {
 		pendingBar.addClass('ccm-error');
 		pendingBar.html(msg);
 		pendingBar.show();
@@ -125,7 +125,7 @@ FileProgress.prototype.setCancelled = function () {
 	*/
 };
 FileProgress.prototype.setStatus = function (status) {
-	var pendingBar = $(this.fileProgressWrapper).find('div.ccm-file-manager-progress-bar-pending');
+	var pendingBar = jQuery(this.fileProgressWrapper).find('div.ccm-file-manager-progress-bar-pending');
 	pendingBar.html(status);
 };
 

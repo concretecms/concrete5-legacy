@@ -1,7 +1,7 @@
 /* Hungarian initialisation for the jQuery UI date picker plugin. */
 /* Written by Istvan Karaszi (jquerycalendar@spam.raszi.hu). */
 jQuery(function($){
-	$.datepicker.regional['hu'] = {clearText: 'törlés', clearStatus: '',
+	jQuery.datepicker.regional['hu'] = {clearText: 'törlés', clearStatus: '',
 		closeText: 'bezárás', closeStatus: '',
 		prevText: '&laquo;&nbsp;vissza', prevStatus: '',
 		nextText: 'előre&nbsp;&raquo;', nextStatus: '',
@@ -18,5 +18,5 @@ jQuery(function($){
 		dayStatus: 'DD', dateStatus: 'D, M d',
 		dateFormat: 'yy-mm-dd', firstDay: 1, 
 		initStatus: '', isRTL: false};
-	$.datepicker.setDefaults($.datepicker.regional['hu']);
+	jQuery.datepicker.setDefaults(jQuery.datepicker.regional['hu']);
 });
