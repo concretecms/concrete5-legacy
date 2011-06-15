@@ -18,7 +18,7 @@ ccmPrepareScrapbookItemsDelete=function(){
 			var pcID = id.substring(2);
 			qStr='pcID=' + pcID + qStr;
 		}  
-		$.ajax({
+		jQuery.ajax({
 			type: 'POST',
 			url: CCM_DISPATCHER_FILENAME,
 			data: qStr,
@@ -36,7 +36,7 @@ ccmChangeDisplayedScrapbook = function(sel){
 	var scrapbook=jQuery(sel).val(); 
 	if(!scrapbook) return false;
 	jQuery('#ccm-scrapbookListsWrap').html("<div style='padding:16px;'><?=t('Loading...')?></div>");
-	$.ajax({
+	jQuery.ajax({
 	type: 'POST',
 	url: CCM_TOOLS_PATH+"/edit_area_scrapbook_refresh.php",
 	data: 'cID=<?=intval($_REQUEST['cID'])?>&arHandle=<?=urlencode($_REQUEST['arHandle'])?>&scrapbookName='+scrapbook+'&<?=$token?>',

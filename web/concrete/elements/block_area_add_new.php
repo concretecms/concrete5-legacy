@@ -15,7 +15,7 @@ function ccm_updateMarketplaceTab() {
 	if (!ccm_blocksLoaded) {
 		jQuery("#ccm-add-marketplace-tab div.ccm-block-type-list").html('');
 		jQuery.fn.dialog.showLoader();
-		$.ajax({
+		jQuery.ajax({
 			url: CCM_TOOLS_PATH+'/marketplace/refresh_block',
 			type: 'POST',
 			data: {'arHandle': '<?=$a->getAreaHandle()?>'},
