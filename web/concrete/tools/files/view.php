@@ -37,7 +37,7 @@ if ($to->getPackageHandle() != '') {
 </div>
 
 <script type="text/javascript">
-$(function() {
-	$("#ccm-file-manager-download-form").attr('target', ccm_alProcessorTarget);
+jQuery(function() {
+	jQuery("#ccm-file-manager-download-form").attr('target', ccm_alProcessorTarget);
 });
 </script>

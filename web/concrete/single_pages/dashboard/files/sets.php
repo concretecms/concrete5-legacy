@@ -139,18 +139,18 @@
 	<script type="text/javascript">
 	
 	ccm_saveFileSetDisplayOrder = function() {
-		var fslist = $('.ccm-file-set-file-list').sortable('serialize');
-		$('form#ccm-file-set-save-sort-order input[name=fsDisplayOrder]').val(fslist);
-		$('form#ccm-file-set-save-sort-order').submit();
+		var fslist = jQuery('.ccm-file-set-file-list').sortable('serialize');
+		jQuery('form#ccm-file-set-save-sort-order input[name=fsDisplayOrder]').val(fslist);
+		jQuery('form#ccm-file-set-save-sort-order').submit();
 	}
 	
-	$(function() {
-		$(".ccm-file-set-file-list").sortable({
+	jQuery(function() {
+		jQuery(".ccm-file-set-file-list").sortable({
 			cursor: 'move',
 			opacity: 0.5
 		});
 		
-		//var ualist = $(this).sortable('serialize');
+		//var ualist = jQuery(this).sortable('serialize');
 /*				
 				$.post('<?=REL_DIR_FILES_TOOLS_REQUIRED?>/dashboard/user_attributes_update.php', ualist, function(r) {
 	
@@ -196,15 +196,15 @@
 			ccm_alSelectPermissionsEntity('gID', gID, gName);
 		}
 		
-		$(function() {	
-			$("#ug-selector").dialog();	
+		jQuery(function() {	
+			jQuery("#ug-selector").dialog();	
 			ccm_alActivateFilePermissionsSelector();	
 			
-			$("#fsOverrideGlobalPermissions").click(function() {
-				if ($(this).attr('checked')) {
-					$('#ccm-file-set-permissions-wrapper').show();
+			jQuery("#fsOverrideGlobalPermissions").click(function() {
+				if (jQuery(this).attr('checked')) {
+					jQuery('#ccm-file-set-permissions-wrapper').show();
 				} else { 
-					$('#ccm-file-set-permissions-wrapper').hide();
+					jQuery('#ccm-file-set-permissions-wrapper').hide();
 				}
 			});
 		});
@@ -220,10 +220,10 @@
 
 		<strong><?=t('Type')?></strong>
 		
-		<input type="radio" id="fsTypePublic" name="fsType" value="<?=FileSet::TYPE_PUBLIC?>" <? if ($fsType != FileSet::TYPE_PRIVATE) { ?> checked <? } ?> onclick="$('#ccm-file-set-search').submit()" />
+		<input type="radio" id="fsTypePublic" name="fsType" value="<?=FileSet::TYPE_PUBLIC?>" <? if ($fsType != FileSet::TYPE_PRIVATE) { ?> checked <? } ?> onclick="jQuery('#ccm-file-set-search').submit()" />
 		<label for="fsTypePublic"><?=t('Public Sets')?></label>
 		&nbsp;&nbsp;&nbsp;
-		<input type="radio" id="fsTypePublic" name="fsType" value="<?=FileSet::TYPE_PRIVATE?>" <? if ($fsType == FileSet::TYPE_PRIVATE) { ?> checked <? } ?> onclick="$('#ccm-file-set-search').submit()"  />
+		<input type="radio" id="fsTypePublic" name="fsType" value="<?=FileSet::TYPE_PRIVATE?>" <? if ($fsType == FileSet::TYPE_PRIVATE) { ?> checked <? } ?> onclick="jQuery('#ccm-file-set-search').submit()"  />
 		<label for="fsTypePublic"><?=t('My Sets')?></label>
 		
 		<span style="margin-left: 40px">&nbsp;</span>
@@ -288,18 +288,18 @@
 	<script type="text/javascript">
 		var editFileSet = function(fsID){	
 			//set id
-			$('#fsID').attr('value',fsID);		
-			$('#file-sets-edit-or-delete-action').attr('value','edit-form');
+			jQuery('#fsID').attr('value',fsID);		
+			jQuery('#file-sets-edit-or-delete-action').attr('value','edit-form');
 			//submit form
-			$("#file-sets-edit-or-delete").get(0).submit();		
+			jQuery("#file-sets-edit-or-delete").get(0).submit();		
 		}
 		
 		var deleteFileSet = function(fsID){
 			//set id
-			$('#fsID').attr('value',fsID);		
-			$('#file-sets-edit-or-delete-action').attr('value','delete');		
+			jQuery('#fsID').attr('value',fsID);		
+			jQuery('#file-sets-edit-or-delete-action').attr('value','delete');		
 			if(confirm("<?=t('Are you sure you want to delete this file set?')?>")){
-				$("#file-sets-edit-or-delete").get(0).submit();
+				jQuery("#file-sets-edit-or-delete").get(0).submit();
 			}
 		}
 		

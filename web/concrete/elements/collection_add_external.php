@@ -36,7 +36,7 @@ $dh = Loader::helper('date');
 	</div>
 
 	<div class="ccm-buttons">
-	<a href="javascript:void(0)" onclick="$('#ccmAddPage').get(0).submit()" class="ccm-button-right accept"><span><?=t('Add')?></span></a>
+	<a href="javascript:void(0)" onclick="jQuery('#ccmAddPage').get(0).submit()" class="ccm-button-right accept"><span><?=t('Add')?></span></a>
 	</div>	
 	<input type="hidden" name="add_external" value="1" />
 	<input type="hidden" name="processCollection" value="1">

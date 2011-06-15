@@ -33,18 +33,18 @@ $h = Loader::helper('concrete/interface');
 				</div>
 				
 				<script>			
-				$(function(){ 
-					$("#login_redirect_custom_cid_wrap .dialog-launch").dialog(); 
+				jQuery(function(){ 
+					jQuery("#login_redirect_custom_cid_wrap .dialog-launch").dialog(); 
 				
-					$("input[name='LOGIN_REDIRECT']").each(function(i,el){ 
+					jQuery("input[name='LOGIN_REDIRECT']").each(function(i,el){ 
 						el.onchange=function(){isLoginRedirectCustom();}
 					})	 	
 				});	
 				function isLoginRedirectCustom(){
-					if($("input[name='LOGIN_REDIRECT']:checked").val()=='CUSTOM'){
-						$('#login_redirect_custom_cid_wrap').css('display','block');
+					if(jQuery("input[name='LOGIN_REDIRECT']:checked").val()=='CUSTOM'){
+						jQuery('#login_redirect_custom_cid_wrap').css('display','block');
 					}else{
-						$('#login_redirect_custom_cid_wrap').css('display','none');
+						jQuery('#login_redirect_custom_cid_wrap').css('display','none');
 					}
 				}			
 				</script>
@@ -123,17 +123,17 @@ $h = Loader::helper('concrete/interface');
     
    
  <script type="text/javascript">
- $(function() {
- 	var val = $("input[name=registration_type]:checked").val();
+ jQuery(function() {
+ 	var val = jQuery("input[name=registration_type]:checked").val();
 	if (val == 'disabled') {
-		$("input[name=enable_registration_captcha]").attr('disabled', true);
+		jQuery("input[name=enable_registration_captcha]").attr('disabled', true);
 	}
-	$("input[name=registration_type]").click(function() {
-		if ($(this).val() == 'disabled') { 
-			$("input[name=enable_registration_captcha]").attr('disabled', true);
-			$("input[name=enable_registration_captcha]").attr('checked', false);
+	jQuery("input[name=registration_type]").click(function() {
+		if (jQuery(this).val() == 'disabled') { 
+			jQuery("input[name=enable_registration_captcha]").attr('disabled', true);
+			jQuery("input[name=enable_registration_captcha]").attr('checked', false);
 		} else {
-			$("input[name=enable_registration_captcha]").attr('disabled', false);
+			jQuery("input[name=enable_registration_captcha]").attr('disabled', false);
 		}	
 	});
  });

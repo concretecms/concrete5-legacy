@@ -138,26 +138,26 @@ class FormDateTimeHelper {
 		}
 		$html .= '</span>';
 		if ($calendarAutoStart) { 
-			$html .= '<script type="text/javascript">$(function() { $("#' . $id . '_dt").datepicker({ changeYear: true, showAnim: \'fadeIn\' }); });</script>';
+			$html .= '<script type="text/javascript">jQuery(function() { jQuery("#' . $id . '_dt").datepicker({ changeYear: true, showAnim: \'fadeIn\' }); });</script>';
 		}
 		// first we add a calendar input
 		
 		if ($includeActivation) {
 			$html .=<<<EOS
-			<script type="text/javascript">$("#{$id}_activate").click(function() {
-				if ($(this).get(0).checked) {
-					$("#{$id}_dw input").each(function() {
-						$(this).get(0).disabled = false;
+			<script type="text/javascript">jQuery("#{$id}_activate").click(function() {
+				if (jQuery(this).get(0).checked) {
+					jQuery("#{$id}_dw input").each(function() {
+						jQuery(this).get(0).disabled = false;
 					});
-					$("#{$id}_tw select").each(function() {
-						$(this).get(0).disabled = false;
+					jQuery("#{$id}_tw select").each(function() {
+						jQuery(this).get(0).disabled = false;
 					});
 				} else {
-					$("#{$id}_dw input").each(function() {
-						$(this).get(0).disabled = true;
+					jQuery("#{$id}_dw input").each(function() {
+						jQuery(this).get(0).disabled = true;
 					});
-					$("#{$id}_tw select").each(function() {
-						$(this).get(0).disabled = true;
+					jQuery("#{$id}_tw select").each(function() {
+						jQuery(this).get(0).disabled = true;
 					});
 				}
 			});
@@ -195,7 +195,7 @@ EOS;
 		$html .= '<span class="ccm-input-date-wrapper" id="' . $id . '_dw"><input id="' . $id . '" name="' . $field . '" class="ccm-input-date" value="' . $dt . '"  /></span>';
 
 		if ($calendarAutoStart) { 
-			$html .= '<script type="text/javascript">$(function() { $("#' . $id . '").datepicker({ changeYear: true, showAnim: \'fadeIn\' }); });</script>';
+			$html .= '<script type="text/javascript">jQuery(function() { jQuery("#' . $id . '").datepicker({ changeYear: true, showAnim: \'fadeIn\' }); });</script>';
 		}
 		return $html;
 	

@@ -47,8 +47,8 @@ if (count($s1) > 0) { ?>
 </div>
 
 	<script type="text/javascript">
-	$(function() {
-		$('a.ccm-file-set-delete-window').dialog();
+	jQuery(function() {
+		jQuery('a.ccm-file-set-delete-window').dialog();
 	});	
 	</script>
 <? } ?>

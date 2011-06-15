@@ -51,7 +51,7 @@ var ccm_themesLoaded = false;
 
 function ccm_updateMoreThemesTab() {
 	if (!ccm_themesLoaded) {
-        $("#ccm-more-themes-interface-tab").html('<div style="height: 204px">&nbsp;<\/div>');
+        jQuery("#ccm-more-themes-interface-tab").html('<div style="height: 204px">&nbsp;<\/div>');
 		jQuery.fn.dialog.showLoader();
 		$.ajax({
 			url: CCM_TOOLS_PATH + '/marketplace/refresh_theme',
@@ -59,7 +59,7 @@ function ccm_updateMoreThemesTab() {
 			data: 'cID=<?=$c->getCollectionID()?>',
 			success: function(html){
 				jQuery.fn.dialog.hideLoader();
-		        $("#ccm-more-themes-interface-tab").html(html);
+		        jQuery("#ccm-more-themes-interface-tab").html(html);
 				ccm_enable_scrollers();
 			},
 		});
@@ -168,7 +168,7 @@ function ccm_updateMoreThemesTab() {
 	
 			<div class="ccm-buttons">
 			<!--	<a href="javascript:void(0)" onclick="ccm_hidePane()" class="ccm-button-left cancel"><span><em class="ccm-button-close">Cancel</em></span></a>//-->
-				<a href="javascript:void(0)" onclick="$('form[name=ccmThemeForm]').submit()" class="ccm-button-right accept"><span><?=t('Save')?></span></a>
+				<a href="javascript:void(0)" onclick="jQuery('form[name=ccmThemeForm]').submit()" class="ccm-button-right accept"><span><?=t('Save')?></span></a>
 			</div>	
 			<input type="hidden" name="update_theme" value="1" class="accept">
 			<input type="hidden" name="processCollection" value="1">
@@ -181,28 +181,28 @@ function ccm_updateMoreThemesTab() {
 <script type="text/javascript">
 
 var ccm_areaActiveThemeTab = "ccm-current-themes-interface";
-$(".ccm-area-theme-tabs a").click(function() {
-	$(".ccm-area-theme-tabs li.ccm-nav-active").removeClass('ccm-nav-active');
-	$("#" + ccm_areaActiveThemeTab + "-tab").hide();
-	ccm_areaActiveThemeTab = $(this).attr('id'); 
-	$('.ccm-area-theme-tabs .'+this.id).parent().addClass("ccm-nav-active");
-	$("#" + ccm_areaActiveThemeTab + "-tab").show();
+jQuery(".ccm-area-theme-tabs a").click(function() {
+	jQuery(".ccm-area-theme-tabs li.ccm-nav-active").removeClass('ccm-nav-active');
+	jQuery("#" + ccm_areaActiveThemeTab + "-tab").hide();
+	ccm_areaActiveThemeTab = jQuery(this).attr('id'); 
+	jQuery('.ccm-area-theme-tabs .'+this.id).parent().addClass("ccm-nav-active");
+	jQuery("#" + ccm_areaActiveThemeTab + "-tab").show();
 	if (ccm_areaActiveThemeTab == 'ccm-more-themes-interface') {
 		ccm_updateMoreThemesTab();	
 	}
 });
 
 ccm_enable_scrollers = function() {
-	$("a.ccm-scroller-l").hover(function() {
-		$(this).children('img').attr('src', '<?=ASSETS_URL_IMAGES?>/button_scroller_l_active.png');
+	jQuery("a.ccm-scroller-l").hover(function() {
+		jQuery(this).children('img').attr('src', '<?=ASSETS_URL_IMAGES?>/button_scroller_l_active.png');
 	}, function() {
-		$(this).children('img').attr('src', '<?=ASSETS_URL_IMAGES?>/button_scroller_l.png');
+		jQuery(this).children('img').attr('src', '<?=ASSETS_URL_IMAGES?>/button_scroller_l.png');
 	});
 
-	$("a.ccm-scroller-r").hover(function() {
-		$(this).children('img').attr('src', '<?=ASSETS_URL_IMAGES?>/button_scroller_r_active.png');
+	jQuery("a.ccm-scroller-r").hover(function() {
+		jQuery(this).children('img').attr('src', '<?=ASSETS_URL_IMAGES?>/button_scroller_r_active.png');
 	}, function() {
-		$(this).children('img').attr('src', '<?=ASSETS_URL_IMAGES?>/button_scroller_r.png');
+		jQuery(this).children('img').attr('src', '<?=ASSETS_URL_IMAGES?>/button_scroller_r.png');
 	});
 	
 	var numThumbs = 4;	
@@ -210,81 +210,81 @@ ccm_enable_scrollers = function() {
 
 
 	
-	$('a.ccm-scroller-r').unbind();
-	$('a.ccm-scroller-l').unbind();
+	jQuery('a.ccm-scroller-r').unbind();
+	jQuery('a.ccm-scroller-l').unbind();
 	
-	$('a.ccm-scroller-r').click(function() {
-		var item = $(this).parent().children('div.ccm-scroller-inner').children('ul');
+	jQuery('a.ccm-scroller-r').click(function() {
+		var item = jQuery(this).parent().children('div.ccm-scroller-inner').children('ul');
 
-		var currentPage = $(this).parent().attr('current-page');
-		var currentPos = $(this).parent().attr('current-pos');
-		var numPages = $(this).parent().attr('num-pages');
+		var currentPage = jQuery(this).parent().attr('current-page');
+		var currentPos = jQuery(this).parent().attr('current-pos');
+		var numPages = jQuery(this).parent().attr('num-pages');
 		
 		var migratePos = numThumbs * thumbWidth;
 		currentPos = parseInt(currentPos) - migratePos;
 		currentPage++;
 		
-		$(this).parent().attr('current-page', currentPage);
-		$(this).parent().attr('current-pos', currentPos);
+		jQuery(this).parent().attr('current-page', currentPage);
+		jQuery(this).parent().attr('current-pos', currentPos);
 		
 		if (currentPage == numPages) {
-			$(this).hide();
+			jQuery(this).hide();
 		}
 		if (currentPage > 1) {
-			$(this).siblings('a.ccm-scroller-l').show();
+			jQuery(this).siblings('a.ccm-scroller-l').show();
 		}
 		/*
-		$(item).animate({
+		jQuery(item).animate({
 			left: currentPos + 'px'
 		}, 300);*/
 		
-		$(item).css('left', currentPos + 'px');
+		jQuery(item).css('left', currentPos + 'px');
 		
 		
 	});
 
-	$('a.ccm-scroller-l').click(function() {
-		var item = $(this).parent().children('div.ccm-scroller-inner').children('ul');
-		var currentPage = $(this).parent().attr('current-page');
-		var currentPos = $(this).parent().attr('current-pos');
-		var numPages = $(this).parent().attr('num-pages');
+	jQuery('a.ccm-scroller-l').click(function() {
+		var item = jQuery(this).parent().children('div.ccm-scroller-inner').children('ul');
+		var currentPage = jQuery(this).parent().attr('current-page');
+		var currentPos = jQuery(this).parent().attr('current-pos');
+		var numPages = jQuery(this).parent().attr('num-pages');
 		
 		var migratePos = numThumbs * thumbWidth;
 		currentPos = parseInt(currentPos) + migratePos;
 		currentPage--;
 
-		$(this).parent().attr('current-page', currentPage);
-		$(this).parent().attr('current-pos', currentPos);
+		jQuery(this).parent().attr('current-page', currentPage);
+		jQuery(this).parent().attr('current-pos', currentPos);
 		
 		if (currentPage == 1) {
-			$(this).hide();
+			jQuery(this).hide();
 		}
 		
 		if (currentPage < numPages) {
-			$(this).siblings('a.ccm-scroller-r').show();
+			jQuery(this).siblings('a.ccm-scroller-r').show();
 		}
 		
 		/*
-		$(item).animate({
+		jQuery(item).animate({
 			left: currentPos + 'px'
 		}, 300);*/
 
-		$(item).css('left', currentPos + 'px');
+		jQuery(item).css('left', currentPos + 'px');
 		
 		
 	});
-	$('a.ccm-scroller-l').hide();
-	$('a.ccm-scroller-r').each(function() {
-		if (parseInt($(this).parent().attr('num-pages')) == 1) {
-			$(this).hide();
+	jQuery('a.ccm-scroller-l').hide();
+	jQuery('a.ccm-scroller-r').each(function() {
+		if (parseInt(jQuery(this).parent().attr('num-pages')) == 1) {
+			jQuery(this).hide();
 		}
 	});
 }
 
-$(function() {
+jQuery(function() {
 	ccm_enable_scrollers();
 	<? if ($_REQUEST['rel'] == 'SITEMAP') { ?>
-		$("form[name=ccmThemeForm]").ajaxForm({
+		jQuery("form[name=ccmThemeForm]").ajaxForm({
 		type: 'POST',
 		iframe: true,
 		beforeSubmit: function() {
@@ -306,24 +306,24 @@ $(function() {
 	});
 
 	<? } else { ?>
-		$('form[name=ccmThemeForm]').submit(function() {
+		jQuery('form[name=ccmThemeForm]').submit(function() {
 			jQuery.fn.dialog.showLoader();
 		});
 	<? } ?>
-	$("#ccm-select-page-type a").click(function() {
-		$("#ccm-select-page-type li").each(function() {
-			$(this).removeClass('ccm-item-selected');
+	jQuery("#ccm-select-page-type a").click(function() {
+		jQuery("#ccm-select-page-type li").each(function() {
+			jQuery(this).removeClass('ccm-item-selected');
 		});
-		$(this).parent().addClass('ccm-item-selected');
-		$("input[name=ctID]").val($(this).attr('ccm-page-type-id'));
+		jQuery(this).parent().addClass('ccm-item-selected');
+		jQuery("input[name=ctID]").val(jQuery(this).attr('ccm-page-type-id'));
 	});
 
-	$("#ccm-select-theme a").click(function() {
-		$("#ccm-select-theme li").each(function() {
-			$(this).removeClass('ccm-item-selected');
+	jQuery("#ccm-select-theme a").click(function() {
+		jQuery("#ccm-select-theme li").each(function() {
+			jQuery(this).removeClass('ccm-item-selected');
 		});
-		$(this).parent().addClass('ccm-item-selected');
-		$("input[name=plID]").val($(this).attr('ccm-theme-id'));
+		jQuery(this).parent().addClass('ccm-item-selected');
+		jQuery("input[name=plID]").val(jQuery(this).attr('ccm-theme-id'));
 	});
 
 

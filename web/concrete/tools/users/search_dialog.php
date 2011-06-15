@@ -42,7 +42,7 @@ if (!isset($mode)) {
 </div>
 
 <script type="text/javascript">
-$(function() {
+jQuery(function() {
 	ccm_setupAdvancedSearch('user');
 });
 </script>

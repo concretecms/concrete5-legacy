@@ -49,24 +49,24 @@ $cList = $ct->getPages();
 	
 	<div class="ccm-buttons">
 	<a href="#" class="ccm-dialog-close ccm-button-left cancel"><span><em class="ccm-button-close"><?=t('Cancel')?></em></span></a>
-	<a href="javascript:void(0)" onclick="$('#ccmBlockMasterCollectionForm').submit()" class="ccm-button-right accept"><span><?=t('Update')?></span></a>
+	<a href="javascript:void(0)" onclick="jQuery('#ccmBlockMasterCollectionForm').submit()" class="ccm-button-right accept"><span><?=t('Update')?></span></a>
 	</div>
 
 <script type="text/javascript">
-$(function() {
-	$('#mc-cb-all').click(function() {
+jQuery(function() {
+	jQuery('#mc-cb-all').click(function() {
 		if (this.checked) {
-			$('input.mc-cb').each(function() {
-				$(this).get(0).checked = true;
+			jQuery('input.mc-cb').each(function() {
+				jQuery(this).get(0).checked = true;
 			});
 		} else {
-			$('input.mc-cb').each(function() {
-				$(this).get(0).checked = false;
+			jQuery('input.mc-cb').each(function() {
+				jQuery(this).get(0).checked = false;
 			});
 		}
 	});
-	$('#ccmBlockMasterCollectionForm').each(function() {
-		ccm_setupBlockForm($(this), '<?=$b->getBlockID()?>', 'edit');
+	jQuery('#ccmBlockMasterCollectionForm').each(function() {
+		ccm_setupBlockForm(jQuery(this), '<?=$b->getBlockID()?>', 'edit');
 	});
 
 });

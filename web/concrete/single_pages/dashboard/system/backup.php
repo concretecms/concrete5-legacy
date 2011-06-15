@@ -4,13 +4,13 @@ $ifHelper = Loader::helper('concrete/interface');
 <script type="text/javascript">
 dNum = 0;
 function confirmDelete(strFn) {
-   //   var ele = $('#confirmDelete').clone().attr('id','confirmDelete'+dNum);
-   //   $('body').append($('#confirmDelete'+dNum)); 
-   $('#confirmDelete').clone().attr('id', 'confirmDelete'+dNum).appendTo('body');
-   var alink = $('#confirmDelete' + dNum + ' input[name=backup_file]').val(strFn); 
+   //   var ele = jQuery('#confirmDelete').clone().attr('id','confirmDelete'+dNum);
+   //   jQuery('body').append(jQuery('#confirmDelete'+dNum)); 
+   jQuery('#confirmDelete').clone().attr('id', 'confirmDelete'+dNum).appendTo('body');
+   var alink = jQuery('#confirmDelete' + dNum + ' input[name=backup_file]').val(strFn); 
    confirmdlg = $.fn.dialog.open({
             title: 'Are you sure?',
-            'element': $('#confirmDelete' + dNum), 
+            'element': jQuery('#confirmDelete' + dNum), 
             width: 300,
             modal: false,
             height: 50
@@ -20,35 +20,35 @@ function confirmDelete(strFn) {
 
 rNum = 0;
 function confirmRestore(strFn) {
-   //   var ele = $('#confirmDelete').clone().attr('id','confirmDelete'+rNum);
-   //   $('body').append($('#confirmDelete'+rNum)); 
-   $('#confirmRestore').clone().attr('id', 'confirmRestore'+rNum).appendTo('body');
-   var alink = $('#confirmRestore' + rNum + ' input[name=backup_file]').val(strFn); 
-   $('#confirmRestore' + rNum + ' .confirmActionBtn a').attr('href',alink); 
+   //   var ele = jQuery('#confirmDelete').clone().attr('id','confirmDelete'+rNum);
+   //   jQuery('body').append(jQuery('#confirmDelete'+rNum)); 
+   jQuery('#confirmRestore').clone().attr('id', 'confirmRestore'+rNum).appendTo('body');
+   var alink = jQuery('#confirmRestore' + rNum + ' input[name=backup_file]').val(strFn); 
+   jQuery('#confirmRestore' + rNum + ' .confirmActionBtn a').attr('href',alink); 
    confirmdlg = $.fn.dialog.open({
             title: 'Are you sure?',
-            'element': $('#confirmRestore' + rNum), 
+            'element': jQuery('#confirmRestore' + rNum), 
             width: 300,
             modal: false,
             height: 50
       });   
       rNum++;
 }
-$(document).ready(function () {
-   $('#executeBackup').click( function() { 
-      if ($('#useEncryption').is(':checked')) {
-         window.location.href = $(this).attr('href')+$('#useEncryption').val();
+jQuery(document).ready(function () {
+   jQuery('#executeBackup').click( function() { 
+      if (jQuery('#useEncryption').is(':checked')) {
+         window.location.href = jQuery(this).attr('href')+jQuery('#useEncryption').val();
          return false;
       }
    });
 
 
    if ($.cookie('useEncryption') == "1" ) {
-      $('#useEncryption').attr('checked','checked');
+      jQuery('#useEncryption').attr('checked','checked');
    }
 
-   $('#useEncryption').change(function() {
-      if ($('#useEncryption').is(':checked')) {
+   jQuery('#useEncryption').change(function() {
+      if (jQuery('#useEncryption').is(':checked')) {
          $.cookie('useEncryption','1');
       } else {
          $.cookie('useEncryption','0');
@@ -93,9 +93,9 @@ $(document).ready(function () {
 <!-- End of Dialog //-->
 
 <script type="text/javascript">
-$(document).ready( function() { 
-   $('a.dialog-launch').click( function() {
-      $.fn.dialog.open({ href: $(this).attr('href'),modal:false });
+jQuery(document).ready( function() { 
+   jQuery('a.dialog-launch').click( function() {
+      $.fn.dialog.open({ href: jQuery(this).attr('href'),modal:false });
 
       return false;
       

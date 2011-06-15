@@ -136,14 +136,14 @@ if(!$layout ){
 	<div class="ccm-buttons">
 		<a href="#" class="ccm-button-left cancel" onclick="jQuery.fn.dialog.closeTop()"><span><em class="ccm-button-close"><?=t('Cancel')?></em></span></a>
 		
-		<a href="javascript:void(0)" onclick="$('#ccmAreaLayoutForm').submit()" class="ccm-button-right accept"><span><?=intval($layout->layoutID)?t('Save Changes'):t('Create Layout')?></span></a>
+		<a href="javascript:void(0)" onclick="jQuery('#ccmAreaLayoutForm').submit()" class="ccm-button-right accept"><span><?=intval($layout->layoutID)?t('Save Changes'):t('Create Layout')?></span></a>
 	</div>	 
 	
 
 </form>
 
 <script type="text/javascript">
-$(function() { ccmLayoutEdit.init(); });
+jQuery(function() { ccmLayoutEdit.init(); });
 </script>
 
 <? if (!$_REQUEST['refresh']) { ?>

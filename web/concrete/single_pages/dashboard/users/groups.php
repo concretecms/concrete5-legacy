@@ -357,50 +357,50 @@ $style = 'width: 60px';
 
 <script type="text/javascript">
 ccm_checkGroupExpirationOptions = function() {
-	var sel = $("select[name=gUserExpirationMethod]");
-	var cb = $("input[name=gUserExpirationIsEnabled]");
+	var sel = jQuery("select[name=gUserExpirationMethod]");
+	var cb = jQuery("input[name=gUserExpirationIsEnabled]");
 	if (cb.attr('checked')) {
 		sel.attr('disabled', false);
 		switch(sel.val()) {
 			case 'SET_TIME':
-				$("#gUserExpirationSetTimeOptions").show();
-				$("#gUserExpirationIntervalOptions").hide();
+				jQuery("#gUserExpirationSetTimeOptions").show();
+				jQuery("#gUserExpirationIntervalOptions").hide();
 				break;
 			case 'INTERVAL': 
-				$("#gUserExpirationSetTimeOptions").hide();
-				$("#gUserExpirationIntervalOptions").show();
+				jQuery("#gUserExpirationSetTimeOptions").hide();
+				jQuery("#gUserExpirationIntervalOptions").show();
 				break;				
 		}
-		$("#gUserExpirationAction").show();
+		jQuery("#gUserExpirationAction").show();
 	} else {
 		sel.attr('disabled', true);	
-		$("#gUserExpirationSetTimeOptions").hide();
-		$("#gUserExpirationIntervalOptions").hide();
-		$("#gUserExpirationAction").hide();
+		jQuery("#gUserExpirationSetTimeOptions").hide();
+		jQuery("#gUserExpirationIntervalOptions").hide();
+		jQuery("#gUserExpirationAction").hide();
 	}
 }
 
-$(function() {
-	$("input[name=gUserExpirationIsEnabled]").click(ccm_checkGroupExpirationOptions);
-	$("select[name=gUserExpirationMethod]").change(ccm_checkGroupExpirationOptions);
+jQuery(function() {
+	jQuery("input[name=gUserExpirationIsEnabled]").click(ccm_checkGroupExpirationOptions);
+	jQuery("select[name=gUserExpirationMethod]").change(ccm_checkGroupExpirationOptions);
 	ccm_checkGroupExpirationOptions();
 	/*
-	$("div#gUserExpirationIntervalOptions input").focus(function() {
-		if ($('input[name=gUserExpirationIntervalDays]').val() == '<?=t("Days")?>' &&
-			$('input[name=gUserExpirationIntervalHours]').val() == '<?=t("Hours")?>' &&
-			$('input[name=gUserExpirationIntervalMinutes]').val() == '<?=t("Minutes")?>') {
-			$("div#gUserExpirationIntervalOptions input").val("");
-			$("div#gUserExpirationIntervalOptions input").css('color', '#000');
+	jQuery("div#gUserExpirationIntervalOptions input").focus(function() {
+		if (jQuery('input[name=gUserExpirationIntervalDays]').val() == '<?=t("Days")?>' &&
+			jQuery('input[name=gUserExpirationIntervalHours]').val() == '<?=t("Hours")?>' &&
+			jQuery('input[name=gUserExpirationIntervalMinutes]').val() == '<?=t("Minutes")?>') {
+			jQuery("div#gUserExpirationIntervalOptions input").val("");
+			jQuery("div#gUserExpirationIntervalOptions input").css('color', '#000');
 		}
 	});
-	$("div#gUserExpirationIntervalOptions input").blur(function() {
-		if ($('input[name=gUserExpirationIntervalDays]').val() == '' &&
-			$('input[name=gUserExpirationIntervalHours]').val() == '' &&
-			$('input[name=gUserExpirationIntervalMinutes]').val() == '') {
-			$('input[name=gUserExpirationIntervalDays]').val('<?=t("Days")?>');
-			$('input[name=gUserExpirationIntervalHours]').val('<?=t("Hours")?>');
-			$('input[name=gUserExpirationIntervalMinutes]').val('<?=t("Minutes")?>');
-			$("div#gUserExpirationIntervalOptions input").css('color', '#aaa');
+	jQuery("div#gUserExpirationIntervalOptions input").blur(function() {
+		if (jQuery('input[name=gUserExpirationIntervalDays]').val() == '' &&
+			jQuery('input[name=gUserExpirationIntervalHours]').val() == '' &&
+			jQuery('input[name=gUserExpirationIntervalMinutes]').val() == '') {
+			jQuery('input[name=gUserExpirationIntervalDays]').val('<?=t("Days")?>');
+			jQuery('input[name=gUserExpirationIntervalHours]').val('<?=t("Hours")?>');
+			jQuery('input[name=gUserExpirationIntervalMinutes]').val('<?=t("Minutes")?>');
+			jQuery("div#gUserExpirationIntervalOptions input").css('color', '#aaa');
 		}
 	});
 	*/

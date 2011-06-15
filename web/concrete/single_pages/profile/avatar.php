@@ -43,7 +43,7 @@
 			tint -- the amount of strength to apply when tinting the background of the editor (default is 0)
 			*/ ?> */
 			
-            $(function(){   
+            jQuery(function(){   
                 var params = { 
                     bgcolor: "#ffffff",
                     wmode:  "transparent",

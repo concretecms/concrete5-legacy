@@ -183,11 +183,11 @@ if (!isset($_REQUEST['reload'])) { ?>
 
 <script type="text/javascript">
 //var ccm_fiActiveTab = "ccm-file-properties-details-<?=$f->getFileID()?>-<?=$fv->getFileVersionID()?>";
-$("#ccm-file-properties-tab-<?=$f->getFileID()?>-<?=$fv->getFileVersionID()?> ul a").click(function() {
-	$("#ccm-file-properties-tab-<?=$f->getFileID()?>-<?=$fv->getFileVersionID()?> li").removeClass('ccm-nav-active');
-	$("#ccm-file-properties-tab-<?=$f->getFileID()?>-<?=$fv->getFileVersionID()?> .ccm-file-properties-details-tab").hide();
-	$(this).parent().addClass("ccm-nav-active");
-	$('#' + $(this).attr('id') + '-tab').show();
+jQuery("#ccm-file-properties-tab-<?=$f->getFileID()?>-<?=$fv->getFileVersionID()?> ul a").click(function() {
+	jQuery("#ccm-file-properties-tab-<?=$f->getFileID()?>-<?=$fv->getFileVersionID()?> li").removeClass('ccm-nav-active');
+	jQuery("#ccm-file-properties-tab-<?=$f->getFileID()?>-<?=$fv->getFileVersionID()?> .ccm-file-properties-details-tab").hide();
+	jQuery(this).parent().addClass("ccm-nav-active");
+	jQuery('#' + jQuery(this).attr('id') + '-tab').show();
 });
 </script>
 
@@ -448,7 +448,7 @@ foreach($attribs as $at) {
 </div>
 
 <script type="text/javascript">
-$(function() { 
+jQuery(function() { 
 	ccm_activateEditablePropertiesGrid(); 
 	ccm_alSetupVersionSelector();
 });

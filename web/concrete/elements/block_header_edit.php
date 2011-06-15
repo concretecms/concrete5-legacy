@@ -28,9 +28,9 @@ if (is_array($headerItems[$identifier])) {
 	}
 }
 ?>
-$(function() {
-	$('#ccm-block-form').each(function() {
-		ccm_setupBlockForm($(this), '<?=$b->getBlockID()?>', 'edit');
+jQuery(function() {
+	jQuery('#ccm-block-form').each(function() {
+		ccm_setupBlockForm(jQuery(this), '<?=$b->getBlockID()?>', 'edit');
 	});
 });
 </script>

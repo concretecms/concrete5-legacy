@@ -56,17 +56,17 @@ print $b1;
 <script type="text/javascript">
 ccm_submitCustomizeSearchColumnsForm = function() {
 	ccm_deactivateSearchResults();
-	$("#ccm-user-customize-search-columns-form").ajaxSubmit(function(resp) {
+	jQuery("#ccm-user-customize-search-columns-form").ajaxSubmit(function(resp) {
 		jQuery.fn.dialog.closeTop();
-		$("#ccm-user-advanced-search").ajaxSubmit(function(resp) {
+		jQuery("#ccm-user-advanced-search").ajaxSubmit(function(resp) {
 			ccm_parseAdvancedSearchResponse(resp, 'user');
 		});
 	});
 	return false;
 }
 
-$(function() {
-	$('#ccm-user-customize-search-columns-form').submit(function() {
+jQuery(function() {
+	jQuery('#ccm-user-customize-search-columns-form').submit(function() {
 		return ccm_submitCustomizeSearchColumnsForm();
 	});
 });

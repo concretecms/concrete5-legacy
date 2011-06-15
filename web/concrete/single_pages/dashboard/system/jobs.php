@@ -7,8 +7,8 @@ var Jobs = {
 	
 	runChecked : function (){
 		this.pendingJobs=[];
-		$('#runJobsButton').attr('disabled',true);
-		var jobsCBs=$('.runJobCheckbox');
+		jQuery('#runJobsButton').attr('disabled',true);
+		var jobsCBs=jQuery('.runJobCheckbox');
 		for( var i=0; i<jobsCBs.length; i++ ){ 
 			jobsCBs[i].disabled=true;
 			if( !jobsCBs[i].checked ) continue; 
@@ -21,19 +21,19 @@ var Jobs = {
 	
 	runNextPending : function (){
 		if(this.pendingJobs.length==0){
-			$('.runJobCheckbox').attr('disabled',false);
-			$('#runJobsButton').attr('disabled',false);
+			jQuery('.runJobCheckbox').attr('disabled',false);
+			jQuery('#runJobsButton').attr('disabled',false);
 			return;
 		}
 		var jID=this.pendingJobs.shift();
-		$('#jobItemRow'+jID).addClass('running');
+		jQuery('#jobItemRow'+jID).addClass('running');
 		$.ajax({ 
 			url: CCM_TOOLS_PATH+'/jobs?auth=<?=$auth?>&jID='+jID,
 			success: function(json){
 				eval('var jObj='+json);
-				$('#jLastStatusText'+jObj.jID).html(jObj.message);
-				$('#jDateLastRun'+jObj.jID).html(jObj.jDateLastRun);
-				var r=$('#jobItemRow'+jObj.jID)
+				jQuery('#jLastStatusText'+jObj.jID).html(jObj.message);
+				jQuery('#jDateLastRun'+jObj.jID).html(jObj.jDateLastRun);
+				var r=jQuery('#jobItemRow'+jObj.jID)
 				r.removeClass('running');
 				r.removeClass('runSuccess');
 				r.removeClass('runError');
@@ -57,13 +57,13 @@ var Jobs = {
 	},
 	
 	selectAll : function(){  
-		$('.runJobCheckbox').each(function(num,el){ 
+		jQuery('.runJobCheckbox').each(function(num,el){ 
 			el.checked=true;
 			Jobs.changeStatus(el);
 		})  
 	},	
 	selectNone: function(){  
-		$('.runJobCheckbox').each(function(num,el){
+		jQuery('.runJobCheckbox').each(function(num,el){
 		el.checked=false;
 		Jobs.changeStatus(el);
 		})  

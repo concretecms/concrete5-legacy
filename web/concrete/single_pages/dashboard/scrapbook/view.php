@@ -47,12 +47,12 @@ var GlobalScrapbook = {
 		this.enableSorting();
 	},  
 	enableSorting:function(){ 
-		$("div#ccm-scrapbook-list").sortable({
+		jQuery("div#ccm-scrapbook-list").sortable({
 			handle: 'div.ccm-scrapbook-item-handle',
 			cursor: 'move',
 			opacity: 0.5,
 			stop: function() {
-				var idslist = $('#ccm-scrapbook-list').sortable('serialize'); 
+				var idslist = jQuery('#ccm-scrapbook-list').sortable('serialize'); 
 				idslist=idslist+'&arHandle=<?=($globalScrapbookArea) ? urlencode($globalScrapbookArea->getAreaHandle()) : '' ?>';
 				$.post('<?=REL_DIR_FILES_TOOLS_REQUIRED?>/dashboard/scrapbook_services.php?mode=reorder', idslist, function(r) {
 					
@@ -115,28 +115,28 @@ var GlobalScrapbook = {
 		return true;
 	},
 	toggleRename:function(bID){
-		$('#ccm-block-type-inner'+bID).toggleClass('editMode'); 
+		jQuery('#ccm-block-type-inner'+bID).toggleClass('editMode'); 
 	},
 	toggleScrapbookRename:function(arID){
-		$('#ccm-scrapbookNameWrap'+arID).toggleClass('editMode'); 
+		jQuery('#ccm-scrapbookNameWrap'+arID).toggleClass('editMode'); 
 	},	
 	clrInitTxt:function(field,initText,removeClass,blurred){
 		if(blurred && field.value==''){
 			field.value=initText;
-			$(field).addClass(removeClass);
+			jQuery(field).addClass(removeClass);
 			return;	
 		}
 		if(field.value==initText) field.value='';
-		if($(field).hasClass(removeClass)) $(field).removeClass(removeClass);
+		if(jQuery(field).hasClass(removeClass)) jQuery(field).removeClass(removeClass);
 	},
 	toggleAddScrapbook:function(){
-		$('#addScrapbookForm').toggleClass('editMode');
+		jQuery('#addScrapbookForm').toggleClass('editMode');
 	},
 	submitAddScrapbookForm:function(){
-		$('#addScrapbookForm').submit();
+		jQuery('#addScrapbookForm').submit();
 	}
 }
-$(function(){ GlobalScrapbook.init(); }); 
+jQuery(function(){ GlobalScrapbook.init(); }); 
 </script>
 
 

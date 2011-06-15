@@ -43,19 +43,19 @@ class FormColorHelper {
 
 		if ($includeJavaScript) { 
 			$html .= "<script type=\"text/javascript\">
-				$(function() {
-					var f" .$fieldFormName. "Div =$('div#f" .$fieldFormName. "');
+				jQuery(function() {
+					var f" .$fieldFormName. "Div =jQuery('div#f" .$fieldFormName. "');
 					var c" .$fieldFormName. " = f" .$fieldFormName. "Div.attr('hex-color'); 
 					f" .$fieldFormName. "Div.ColorPicker({
 						color: c" .$fieldFormName. ",  
 						onSubmit: function(hsb, hex, rgb, cal) { 
-							$('input[name=" . $fieldFormName . "]').val('#' + hex);				
-							$('div#f" . $fieldFormName. "').css('backgroundColor', '#' + hex); 
+							jQuery('input[name=" . $fieldFormName . "]').val('#' + hex);				
+							jQuery('div#f" . $fieldFormName. "').css('backgroundColor', '#' + hex); 
 							cal.hide();
 						},  
 						onNone: function(cal) {  
-							$('input[name=" . $fieldFormName . "]').val('');		
-							$('div#f" . $fieldFormName. "').css('backgroundColor',''); 
+							jQuery('input[name=" . $fieldFormName . "]').val('');		
+							jQuery('div#f" . $fieldFormName. "').css('backgroundColor',''); 
 						}
 					});
 				

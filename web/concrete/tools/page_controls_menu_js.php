@@ -91,12 +91,12 @@ menuHTML += '<ul id="ccm-system-nav">';
 
 <? 
 if ($sh->canRead() && $u->config('UI_SITEMAP')) { ?>
-	menuHTML += '<li><a id="ccm-nav-sitemap" dialog-title="<?=t('Navigate to Page')?>" href="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/sitemap_search_selector?callback=ccm_goToSitemapNode&sitemap_select_mode=select_page" dialog-on-open="$(\'#ccm-nav-sitemap\').removeClass(\'ccm-nav-loading\')" dialog-width="90%" dialog-height="70%" dialog-modal="false"><?=t('Sitemap')?></a></li>';
+	menuHTML += '<li><a id="ccm-nav-sitemap" dialog-title="<?=t('Navigate to Page')?>" href="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/sitemap_search_selector?callback=ccm_goToSitemapNode&sitemap_select_mode=select_page" dialog-on-open="jQuery(\'#ccm-nav-sitemap\').removeClass(\'ccm-nav-loading\')" dialog-width="90%" dialog-height="70%" dialog-modal="false"><?=t('Sitemap')?></a></li>';
 <?
 }
 $fp = FilePermissions::getGlobal();
 if ($fp->canSearchFiles() && $u->config('UI_FILEMANAGER')) { ?>
-	menuHTML += '<li><a id="ccm-nav-file-manager" dialog-title="<?=t('File Manager')?>" href="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/files/search_dialog?disable_choose=1" dialog-on-open="$(\'#ccm-nav-file-manager\').removeClass(\'ccm-nav-loading\')" dialog-width="90%" dialog-height="70%" dialog-modal="false"><?=t('File Manager')?></a></li>';
+	menuHTML += '<li><a id="ccm-nav-file-manager" dialog-title="<?=t('File Manager')?>" href="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/files/search_dialog?disable_choose=1" dialog-on-open="jQuery(\'#ccm-nav-file-manager\').removeClass(\'ccm-nav-loading\')" dialog-width="90%" dialog-height="70%" dialog-modal="false"><?=t('File Manager')?></a></li>';
 
 <?
 }
@@ -109,7 +109,7 @@ if ($fp->canSearchFiles() && $u->config('UI_FILEMANAGER')) { ?>
 			menuHTML += '<li><a id="ccm-nav-dashboard" href="<?=View::url('/dashboard')?>"><?=t('Dashboard')?></a></li>';
 	<? } ?>
 <? } ?>
-menuHTML += '<li><a id="ccm-nav-help" dialog-title="<?=t('Help')?>" dialog-on-open="$(\'#ccm-nav-help\').removeClass(\'ccm-nav-loading\')" href="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/help/" dialog-width="500" dialog-height="350" dialog-modal="false"><?=t('Help')?></a></li>';
+menuHTML += '<li><a id="ccm-nav-help" dialog-title="<?=t('Help')?>" dialog-on-open="jQuery(\'#ccm-nav-help\').removeClass(\'ccm-nav-loading\')" href="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/help/" dialog-width="500" dialog-height="350" dialog-modal="false"><?=t('Help')?></a></li>';
 menuHTML += '<li class="ccm-last"><a id="ccm-nav-logout" href="<?=View::url('/login', 'logout')?>"><?=t('Sign Out')?></a></li>';
 menuHTML += '</ul>';
 menuHTML += '</div>';
@@ -171,20 +171,20 @@ menuHTML += '</div>';
 
 <?
 if ($statusMessage != '') {?> 
-	$(function() { ccmAlert.hud('<?=str_replace("'",'"',$statusMessage) ?>', 5000); });
+	jQuery(function() { ccmAlert.hud('<?=str_replace("'",'"',$statusMessage) ?>', 5000); });
 <? } ?>
 
 	
-	$(function() {
-		$(document.body).prepend('<div id="ccm-page-controls-wrapper"></div>');
-		$("#ccm-page-controls-wrapper").html(menuHTML);
+	jQuery(function() {
+		jQuery(document.body).prepend('<div id="ccm-page-controls-wrapper"></div>');
+		jQuery("#ccm-page-controls-wrapper").html(menuHTML);
 	
 		<? if ($c->isArrangeMode()) { ?>
-			$(ccm_arrangeInit);	
+			jQuery(ccm_arrangeInit);	
 		<? } else if ($c->isEditMode()) { ?>
-			$(ccm_editInit);	
+			jQuery(ccm_editInit);	
 		<? } else { ?>
-			$(ccm_init);
+			jQuery(ccm_init);
 		<? } ?>
 		
 		<? if ($u->config('UI_BREADCRUMB')) {  ?>

@@ -289,13 +289,13 @@ if (count($s2) > 0) {
 
 </form>	
 
-<script type="text/javascript">$(function() {
-	$('a#ccm-<?=$searchInstance?>-launch-save-search').dialog();
-	$('a.ccm-file-set-delete-saved-search').dialog();
+<script type="text/javascript">jQuery(function() {
+	jQuery('a#ccm-<?=$searchInstance?>-launch-save-search').dialog();
+	jQuery('a.ccm-file-set-delete-saved-search').dialog();
 	
 	<? if ($_REQUEST['fssID'] > 0) { ?>
-	$('#ccm-<?=$searchInstance?>-advanced-search input, #ccm-<?=$searchInstance?>-advanced-search select, #ccm-<?=$searchInstance?>-advanced-search textarea').attr('disabled',true);
-	$('#ccm-<?=$searchInstance?>-advanced-search select[name=fssID]').attr('disabled', false);
+	jQuery('#ccm-<?=$searchInstance?>-advanced-search input, #ccm-<?=$searchInstance?>-advanced-search select, #ccm-<?=$searchInstance?>-advanced-search textarea').attr('disabled',true);
+	jQuery('#ccm-<?=$searchInstance?>-advanced-search select[name=fssID]').attr('disabled', false);
 	<? } ?>
 	
 

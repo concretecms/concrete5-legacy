@@ -29,12 +29,12 @@ $valt = Loader::helper('validation/token');
 
 <script type="text/javascript">
 var ccm_fiActiveTab = "ccm-file-upload-multiple";
-$("#ccm-file-import-tabs a").click(function() {
-	$("li.ccm-nav-active").removeClass('ccm-nav-active');
-	$("#" + ccm_fiActiveTab + "-tab").hide();
-	ccm_fiActiveTab = $(this).attr('id');
-	$(this).parent().addClass("ccm-nav-active");
-	$("#" + ccm_fiActiveTab + "-tab").show();
+jQuery("#ccm-file-import-tabs a").click(function() {
+	jQuery("li.ccm-nav-active").removeClass('ccm-nav-active');
+	jQuery("#" + ccm_fiActiveTab + "-tab").hide();
+	ccm_fiActiveTab = jQuery(this).attr('id');
+	jQuery(this).parent().addClass("ccm-nav-active");
+	jQuery("#" + ccm_fiActiveTab + "-tab").show();
 });
 </script>
 
@@ -49,14 +49,14 @@ $umf = str_ireplace(array('M', 'K', 'G'), array(' MB', 'KB', ' GB'), $umf);
 <script type="text/javascript">
 
 var swfu;
-$(function() { 
+jQuery(function() { 
 
-	$("#ccm-file-manager-multiple-remote").submit(function() {
-		$(this).attr('target', ccm_alProcessorTarget);		
+	jQuery("#ccm-file-manager-multiple-remote").submit(function() {
+		jQuery(this).attr('target', ccm_alProcessorTarget);		
 	});
 
-	$("#ccm-file-manager-multiple-incoming").submit(function() {
-		$(this).attr('target', ccm_alProcessorTarget);		
+	jQuery("#ccm-file-manager-multiple-incoming").submit(function() {
+		jQuery(this).attr('target', ccm_alProcessorTarget);		
 	});
 
 	swfu = new SWFUpload({

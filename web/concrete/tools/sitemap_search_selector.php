@@ -15,12 +15,12 @@ if (!$sh->canRead()) {
 <script type="text/javascript">
 var ccm_ssActiveTab = "ccm-show-sitemap";
 
-$("#ccm-ss-tabs a").click(function() {
-	$("li.ccm-nav-active").removeClass('ccm-nav-active');
-	$("#" + ccm_ssActiveTab + "-tab").hide();
-	ccm_ssActiveTab = $(this).attr('id');
-	$(this).parent().addClass("ccm-nav-active");
-	$("#" + ccm_ssActiveTab + "-tab").show();
+jQuery("#ccm-ss-tabs a").click(function() {
+	jQuery("li.ccm-nav-active").removeClass('ccm-nav-active');
+	jQuery("#" + ccm_ssActiveTab + "-tab").hide();
+	ccm_ssActiveTab = jQuery(this).attr('id');
+	jQuery(this).parent().addClass("ccm-nav-active");
+	jQuery("#" + ccm_ssActiveTab + "-tab").show();
 });
 
 </script>

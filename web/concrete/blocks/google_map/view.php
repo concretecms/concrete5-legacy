@@ -31,7 +31,7 @@ if ($c->isEditMode()) { ?>
 	
 	<? if( strlen($title)>0){ ?><h3><?=$title?></h3><? } ?>
 	<div id="googleMapCanvas<?=$bID?>" class="googleMapCanvas"></div>
-	<script type="text/javascript">$(function() {
+	<script type="text/javascript">jQuery(function() {
 		googleMapInit<?=$bID?>();
 	});</script>
 	

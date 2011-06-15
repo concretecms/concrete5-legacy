@@ -151,5 +151,5 @@ ccmDateNav.dateKey='<?php echo  date( 'm_Y' ) ?>';
 	ccmDateNav.loadCurrentPage=<?php echo intval($currentPageFound) ?>;
 <?php  } ?> 
 ccmDateNav.loadPg=<?php echo intval($c->getCollectionID()) ?>;
-$(function(){ ccmDateNav.init(); });
+jQuery(function(){ ccmDateNav.init(); });
 </script>

@@ -249,16 +249,16 @@ if (!isset($_REQUEST['reload'])) { ?>
 <script type="text/javascript">
 var ccm_activeFileManagerAddCompleteTab = "ccm-file-manager-add-complete-basic";
 
-$(function() {
-	$("#ccm-file-manager-add-complete-tabs a").click(function() {
-		$("li.ccm-nav-active").removeClass('ccm-nav-active');
-		$("#" + ccm_activeFileManagerAddCompleteTab + "-tab").hide();
-		ccm_activeFileManagerAddCompleteTab = $(this).attr('id');
-		$(this).parent().addClass("ccm-nav-active");
-		$("#" + ccm_activeFileManagerAddCompleteTab + "-tab").show();
+jQuery(function() {
+	jQuery("#ccm-file-manager-add-complete-tabs a").click(function() {
+		jQuery("li.ccm-nav-active").removeClass('ccm-nav-active');
+		jQuery("#" + ccm_activeFileManagerAddCompleteTab + "-tab").hide();
+		ccm_activeFileManagerAddCompleteTab = jQuery(this).attr('id');
+		jQuery(this).parent().addClass("ccm-nav-active");
+		jQuery("#" + ccm_activeFileManagerAddCompleteTab + "-tab").show();
 	});
 
-	$("div.ccm-message").show('highlight');
+	jQuery("div.ccm-message").show('highlight');
 });
 </script>
 
@@ -352,7 +352,7 @@ foreach($attribs as $at) {
 <? } ?>
 
 <script type="text/javascript">
-$(function() { 
+jQuery(function() { 
 	ccm_activateEditablePropertiesGrid();  
 });
 </script>

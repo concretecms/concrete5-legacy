@@ -1,36 +1,36 @@
 <script>
-$(function() {
-	$("#ccm-meta-custom-fields").change(function() {
-		if ($(this).val() != "" && typeof($(this).val()) != undefined) {
-			var thisField = $(this).val();
-			$("#ccm-field-ak" + $(this).val()).show();
+jQuery(function() {
+	jQuery("#ccm-meta-custom-fields").change(function() {
+		if (jQuery(this).val() != "" && typeof(jQuery(this).val()) != undefined) {
+			var thisField = jQuery(this).val();
+			jQuery("#ccm-field-ak" + jQuery(this).val()).show();
 			this.options[this.selectedIndex] = null;
 			this.selectedIndex = 0;
 			
-			$("#ccm-meta-field-selected" + thisField).val(thisField);
+			jQuery("#ccm-meta-field-selected" + thisField).val(thisField);
 		}
 	});
 	
-	$("a.ccm-meta-close").click(function() {
-		var thisField = $(this).attr('id').substring(19);
-		var thisName = $(this).attr('ccm-meta-name');
-		$("#ccm-meta-field-selected" + thisField).val(0);
-		$("#ccm-field-ak" + thisField).hide();
+	jQuery("a.ccm-meta-close").click(function() {
+		var thisField = jQuery(this).attr('id').substring(19);
+		var thisName = jQuery(this).attr('ccm-meta-name');
+		jQuery("#ccm-meta-field-selected" + thisField).val(0);
+		jQuery("#ccm-field-ak" + thisField).hide();
 		
 		// add it back to the select menu
-		$("#ccm-meta-custom-fields").each(function() {
+		jQuery("#ccm-meta-custom-fields").each(function() {
 			this.options[this.options.length] = new Option(thisName, thisField);
 		});
 				
 	});
 
-	$("a.ccm-meta-path-add").click(function(ev) { ccmPathHelper.add(ev.target) });
-	$("a.ccm-meta-path-del").click(function(ev) { ccmPathHelper.del(ev.target) });
+	jQuery("a.ccm-meta-path-add").click(function(ev) { ccmPathHelper.add(ev.target) });
+	jQuery("a.ccm-meta-path-del").click(function(ev) { ccmPathHelper.del(ev.target) });
 });
 
 var ccmPathHelper={
 	add:function(field){
-		var parent = $(field).parent();
+		var parent = jQuery(field).parent();
 		var clone = parent.clone();
 		clone.children().each(function() {
 			if (this.id != undefined  && (i = this.id.search("-add-")) != -1) {
@@ -43,15 +43,15 @@ var ccmPathHelper={
 				this.value = "";
 			}
 		});
-    	$(field).replaceWith('<a href="javascript:void(0)" class="ccm-meta-path-del">Remove Path</a>');
+    	jQuery(field).replaceWith('<a href="javascript:void(0)" class="ccm-meta-path-del">Remove Path</a>');
 		clone.appendTo(parent.parent());
 
-		$("a.ccm-meta-path-add,a.ccm-meta-path.del").unbind('click');
-		$("a.ccm-meta-path-add").click(function(ev) { ccmPathHelper.add(ev.target) });
-		$("a.ccm-meta-path-del").click(function(ev) { ccmPathHelper.del(ev.target) });
+		jQuery("a.ccm-meta-path-add,a.ccm-meta-path.del").unbind('click');
+		jQuery("a.ccm-meta-path-add").click(function(ev) { ccmPathHelper.add(ev.target) });
+		jQuery("a.ccm-meta-path-del").click(function(ev) { ccmPathHelper.del(ev.target) });
 	},
 	del:function(field){
-		$(field).parent().remove();
+		jQuery(field).parent().remove();
 	}
 }
 </script>

@@ -49,7 +49,7 @@ foreach($s1 as $s) {
 </div>
 
 <script type="text/javascript">
-$(function() {
+jQuery(function() {
 	ccm_activateFileManager();
 });
 </script>

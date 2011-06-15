@@ -8,8 +8,8 @@
         } else if (isset($message)) { ?>
             <div class="message"><?=$message?></div>
             <script type="text/javascript">
-            $(function() {
-                $("div.message").show('highlight', {}, 500);
+            jQuery(function() {
+                jQuery("div.message").show('highlight', {}, 500);
             });
             </script>
         <? } ?>

@@ -9,7 +9,7 @@ $toggleQuestionsHideText = t('Hide fields') . ' &raquo;';
 var toggleQuestionsShowText='<?=$toggleQuestionsShowText?>';
 var toggleQuestionsHideText='<?=$toggleQuestionsHideText?>';
 function toggleQuestions(qsID,trigger){
-	$('.extraQuestionRow'+qsID).toggleClass('noDisplay');
+	jQuery('.extraQuestionRow'+qsID).toggleClass('noDisplay');
 	if(trigger.state=='open') {
 		 trigger.innerHTML = toggleQuestionsShowText;
 		 trigger.state='closed';

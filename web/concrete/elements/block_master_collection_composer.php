@@ -47,15 +47,15 @@ $valt->output();
 
 		<div class="ccm-buttons">
 		<a href="#" class="ccm-dialog-close ccm-button-left cancel"><span><em class="ccm-button-close"><?=t('Cancel')?></em></span></a>
-		<a href="javascript:void(0)" onclick="$('#ccmComposerCustomTemplateForm').submit()" class="ccm-button-right accept"><span><?=t('Update')?></span></a>
+		<a href="javascript:void(0)" onclick="jQuery('#ccmComposerCustomTemplateForm').submit()" class="ccm-button-right accept"><span><?=t('Update')?></span></a>
 		</div>
 
 </form>
 
 <script type="text/javascript">
-$(function() {
-	$('#ccmComposerCustomTemplateForm').each(function() {
-		ccm_setupBlockForm($(this), '<?=$b->getBlockID()?>', 'edit');
+jQuery(function() {
+	jQuery('#ccmComposerCustomTemplateForm').each(function() {
+		ccm_setupBlockForm(jQuery(this), '<?=$b->getBlockID()?>', 'edit');
 	});
 });
 </script>

@@ -176,7 +176,7 @@ $uArray = $ul->getUserInfoList();
 	<div class="ccm-buttons">
 	<? if ($f->overrideFileSetPermissions()) { ?>
 		<input type="hidden" name="fRevertToSetPermissions" id="fRevertToSetPermissions" value="0" />
-		<a href="javascript:void(0)" onclick="$('#fRevertToSetPermissions').val(1);ccm_alSubmitPermissionsForm('<?=$searchInstance?>')" class="ccm-button-left cancel"><span><?=t('Revert Permissions')?></span></a>
+		<a href="javascript:void(0)" onclick="jQuery('#fRevertToSetPermissions').val(1);ccm_alSubmitPermissionsForm('<?=$searchInstance?>')" class="ccm-button-left cancel"><span><?=t('Revert Permissions')?></span></a>
 	<? } ?>
 	<?=$ih->button_js(t('Update'), 'ccm_alSubmitPermissionsForm(\'' . $searchInstance . '\')')?>
 	</div>
@@ -245,12 +245,12 @@ if (is_object($fsl)) { ?>
 	var ccm_fpActiveTab = "ccm-file-permissions-advanced";
 <? } ?>
 
-$("#ccm-file-permissions-tabs a").click(function() {
-	$("li.ccm-nav-active").removeClass('ccm-nav-active');
-	$("#" + ccm_fpActiveTab + "-tab").hide();
-	ccm_fpActiveTab = $(this).attr('id');
-	$(this).parent().addClass("ccm-nav-active");
-	$("#" + ccm_fpActiveTab + "-tab").show();
+jQuery("#ccm-file-permissions-tabs a").click(function() {
+	jQuery("li.ccm-nav-active").removeClass('ccm-nav-active');
+	jQuery("#" + ccm_fpActiveTab + "-tab").hide();
+	ccm_fpActiveTab = jQuery(this).attr('id');
+	jQuery(this).parent().addClass("ccm-nav-active");
+	jQuery("#" + ccm_fpActiveTab + "-tab").show();
 });
 
 
@@ -320,17 +320,17 @@ $("#ccm-file-permissions-tabs a").click(function() {
 			ccm_setupGridStriping('ccmPermissionsTable');
 		}
 	
-	$(function() {
+	jQuery(function() {
 		ccm_setupGridStriping('ccmPermissionsTable');
-		$("#ccm-<?=$searchInstance?>-storage-form").submit(function() {
+		jQuery("#ccm-<?=$searchInstance?>-storage-form").submit(function() {
 			ccm_alSubmitStorageForm('<?=$searchInstance?>');
 			return false;
 		});
-		$("#ccm-<?=$searchInstance?>-password-form").submit(function() {
+		jQuery("#ccm-<?=$searchInstance?>-password-form").submit(function() {
 			ccm_alSubmitPasswordForm('<?=$searchInstance?>');
 			return false;
 		});
-		$("#ccm-<?=$searchInstance?>-permissions-form").submit(function() {
+		jQuery("#ccm-<?=$searchInstance?>-permissions-form").submit(function() {
 			ccm_alSubmitPermissionsForm('<?=$searchInstance?>');
 			return false;
 		});

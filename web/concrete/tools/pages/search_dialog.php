@@ -28,7 +28,7 @@ $searchRequest = $pageList->getSearchRequest();
 <?=Loader::helper('html')->css('ccm.sitemap.css')?>
 <?=Loader::helper('html')->javascript('ccm.sitemap.js')?>
 <? } ?>
-<script type="text/javascript">$(function() {
+<script type="text/javascript">jQuery(function() {
 	ccm_sitemapSetupSearch('<?=$searchInstance?>');
 });
 </script>

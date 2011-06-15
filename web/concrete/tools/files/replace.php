@@ -58,13 +58,13 @@ if (count($contents) > 0) { ?>
 </form>
 
 <script type="text/javascript">
-$(function() { 
+jQuery(function() { 
 	ccm_alSetupSingleUploadForm();
-	$("#ccm-file-manager-replace-incoming").submit(function() {
-		$(this).attr('target', ccm_alProcessorTarget);		
+	jQuery("#ccm-file-manager-replace-incoming").submit(function() {
+		jQuery(this).attr('target', ccm_alProcessorTarget);		
 	});
-	$("#ccm-file-manager-replace-remote").submit(function() {
-		$(this).attr('target', ccm_alProcessorTarget);		
+	jQuery("#ccm-file-manager-replace-remote").submit(function() {
+		jQuery(this).attr('target', ccm_alProcessorTarget);		
 	});
 
 });

@@ -59,7 +59,7 @@ if ($cp->canDeleteCollection()) { ?>
 						<br><br>
 						<?=t('You marked this page for deletion on <strong>%s</strong>', date(DATE_APP_PAGE_VERSIONS, strtotime($c->getPendingActionDateTime())))?><br><br>
 						<form method="get" id="ccmDeletePageForm" action="<?=DIR_REL?>/<?=DISPATCHER_FILENAME?>">
-							<a href="javascript:void(0)" onclick="$('#ccmDeletePageForm').get(0).submit()" class="ccm-button-left"><span><?=t('Cancel')?></span></a>
+							<a href="javascript:void(0)" onclick="jQuery('#ccmDeletePageForm').get(0).submit()" class="ccm-button-left"><span><?=t('Cancel')?></span></a>
 							<input type="hidden" name="cID" value="<?=$c->getCollectionID()?>">
 							<input type="hidden" name="ctask" value="clear_pending_action">
 						</form>
@@ -77,7 +77,7 @@ if ($cp->canDeleteCollection()) { ?>
 					<div class="ccm-buttons">
 
 					<form method="post" id="ccmDeletePageForm" action="<?=$c->getCollectionAction()?>">	
-						<a href="javascript:void(0)" onclick="if (confirm('<?=$deletePageMsg?>')) { $('#ccmDeletePageForm').get(0).submit()}" class="ccm-button-right accept"><span><?=t('Delete Page')?></span></a>
+						<a href="javascript:void(0)" onclick="if (confirm('<?=$deletePageMsg?>')) { jQuery('#ccmDeletePageForm').get(0).submit()}" class="ccm-button-right accept"><span><?=t('Delete Page')?></span></a>
 					<h2><?=t('Delete Page')?></h2>
 					<? if ($cp->canAdminPage() && $numChildren > 0) { ?>
 						<span class="important"><?=t('This will remove %s child page(s).', $numChildren)?></span>

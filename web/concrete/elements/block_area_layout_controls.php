@@ -14,7 +14,7 @@
 
 	<script type="text/javascript">
 	<? if( intval($layout->cvalID) ){ ?>var<? } ?> ccmLayout<?=intval($layout->cvalID) ?> = new ccmLayout( <?=intval($layout->cvalID) ?>, <?=intval($layout->layoutID) ?>, "<?= $layout->getAreaHandle() ?>", <?=intval($layout->locked) ?> );
-	$(function(){  ccmLayout<?=intval($layout->cvalID) ?>.init(); });
+	jQuery(function(){  ccmLayout<?=intval($layout->cvalID) ?>.init(); });
 	</script>
 	
 </div>

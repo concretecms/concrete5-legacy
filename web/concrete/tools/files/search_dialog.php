@@ -64,7 +64,7 @@ if (isset($_REQUEST['disable_choose']) && $_REQUEST['disable_choose'] == 1) {
 <? } ?>
 <?
 print '<script type="text/javascript">
-$(function() {
+jQuery(function() {
 	ccm_activateFileManager(\'' . $alType . '\', \'' . $searchInstance . '\');
 });
 </script>';

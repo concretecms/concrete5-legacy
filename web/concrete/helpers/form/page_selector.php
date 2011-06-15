@@ -50,17 +50,17 @@ class FormPageSelectorHelper {
 		$html .= '<script type="text/javascript"> 
 		var ccmActivePageField;
 		function ccm_initSelectPage() {
-			$("a.ccm-sitemap-select-page").unbind().dialog().click(function(){
+			jQuery("a.ccm-sitemap-select-page").unbind().dialog().click(function(){
 				ccmActivePageField = this;
 			});
 		};
-		$(ccm_initSelectPage);
+		jQuery(ccm_initSelectPage);
 		ccm_selectSitemapNode = function(cID, cName) { ';
 		if($javascriptFunc=='' || $javascriptFunc=='ccm_selectSitemapNode'){
 			$html .= '
-			var fieldName = $(ccmActivePageField).attr("dialog-sender");
-			var par = $(ccmActivePageField).parent().find(\'.ccm-summary-selected-item-label\');
-			var pari = $(ccmActivePageField).parent().find("[name=\'"+fieldName+"\']");
+			var fieldName = jQuery(ccmActivePageField).attr("dialog-sender");
+			var par = jQuery(ccmActivePageField).parent().find(\'.ccm-summary-selected-item-label\');
+			var pari = jQuery(ccmActivePageField).parent().find("[name=\'"+fieldName+"\']");
 			par.html(cName);
 			pari.val(cID);
 			';

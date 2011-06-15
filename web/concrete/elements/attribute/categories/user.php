@@ -33,38 +33,38 @@ if (is_object($key)) {
 </table>
 
 <script type="text/javascript">
-$(function() {
-	$('input[name=uakProfileEdit]').click(function() {
-		if ($(this).attr('checked')) {
-			$('input[name=uakProfileEditRequired]').attr('disabled', false);
+jQuery(function() {
+	jQuery('input[name=uakProfileEdit]').click(function() {
+		if (jQuery(this).attr('checked')) {
+			jQuery('input[name=uakProfileEditRequired]').attr('disabled', false);
 		} else {
-			$('input[name=uakProfileEditRequired]').attr('checked', false);
-			$('input[name=uakProfileEditRequired]').attr('disabled', true);		
+			jQuery('input[name=uakProfileEditRequired]').attr('checked', false);
+			jQuery('input[name=uakProfileEditRequired]').attr('disabled', true);		
 		}
 	});
 
-	$('input[name=uakRegisterEdit]').click(function() {
-		if ($(this).attr('checked')) {
-			$('input[name=uakRegisterEditRequired]').attr('disabled', false);
+	jQuery('input[name=uakRegisterEdit]').click(function() {
+		if (jQuery(this).attr('checked')) {
+			jQuery('input[name=uakRegisterEditRequired]').attr('disabled', false);
 		} else {
-			$('input[name=uakRegisterEditRequired]').attr('checked', false);
-			$('input[name=uakRegisterEditRequired]').attr('disabled', true);		
+			jQuery('input[name=uakRegisterEditRequired]').attr('checked', false);
+			jQuery('input[name=uakRegisterEditRequired]').attr('disabled', true);		
 		}
 	});
 	
 
-	if ($('input[name=uakProfileEdit]').attr('checked')) {
-		$('input[name=uakProfileEditRequired]').attr('disabled', false);
+	if (jQuery('input[name=uakProfileEdit]').attr('checked')) {
+		jQuery('input[name=uakProfileEditRequired]').attr('disabled', false);
 	} else {
-		$('input[name=uakProfileEditRequired]').attr('checked', false);
-		$('input[name=uakProfileEditRequired]').attr('disabled', true);		
+		jQuery('input[name=uakProfileEditRequired]').attr('checked', false);
+		jQuery('input[name=uakProfileEditRequired]').attr('disabled', true);		
 	}	
 
-	if ($('input[name=uakRegisterEdit]').attr('checked')) {
-		$('input[name=uakRegisterEditRequired]').attr('disabled', false);
+	if (jQuery('input[name=uakRegisterEdit]').attr('checked')) {
+		jQuery('input[name=uakRegisterEditRequired]').attr('disabled', false);
 	} else {
-		$('input[name=uakRegisterEditRequired]').attr('checked', false);
-		$('input[name=uakRegisterEditRequired]').attr('disabled', true);		
+		jQuery('input[name=uakRegisterEditRequired]').attr('checked', false);
+		jQuery('input[name=uakRegisterEditRequired]').attr('disabled', true);		
 	}	
 
 });

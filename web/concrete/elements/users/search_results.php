@@ -100,7 +100,7 @@
 </div>
 
 <script type="text/javascript">
-$(function() { 
+jQuery(function() { 
 	ccm_setupUserSearch(); 
 });
 </script>

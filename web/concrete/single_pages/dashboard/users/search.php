@@ -222,13 +222,13 @@ if (is_object($uo)) {
 	<script>	
 	function editAttrVal(attId,cancel){
 		if(!cancel){
-			$('#attUnknownWrap'+attId).css('display','none');
-			$('#attEditWrap'+attId).css('display','block');
-			$('#attValChanged'+attId).val(attId);	
+			jQuery('#attUnknownWrap'+attId).css('display','none');
+			jQuery('#attEditWrap'+attId).css('display','block');
+			jQuery('#attValChanged'+attId).val(attId);	
 		}else{
-			$('#attUnknownWrap'+attId).css('display','block');
-			$('#attEditWrap'+attId).css('display','none');
-			$('#attValChanged'+attId).val(0);	
+			jQuery('#attUnknownWrap'+attId).css('display','block');
+			jQuery('#attEditWrap'+attId).css('display','none');
+			jQuery('#attValChanged'+attId).val(0);	
 		}
 	}
 	</script>
@@ -566,9 +566,9 @@ if (is_object($uo)) {
 
 
 ccm_activateEditableProperties = function() {
-	$("tr.ccm-attribute-editable-field").each(function() {
-		var trow = $(this);
-		$(this).find('a').click(function() {
+	jQuery("tr.ccm-attribute-editable-field").each(function() {
+		var trow = jQuery(this);
+		jQuery(this).find('a').click(function() {
 			trow.find('.ccm-attribute-editable-field-text').hide();
 			trow.find('.ccm-attribute-editable-field-clear-button').hide();
 			trow.find('.ccm-attribute-editable-field-form').show();
@@ -618,12 +618,12 @@ ccm_submitEditableProperty = function(trow) {
 	});
 }
 
-$(function() {
+jQuery(function() {
 	ccm_activateEditableProperties();
-	$("#groupSelector").dialog();
+	jQuery("#groupSelector").dialog();
 	ccm_triggerSelectGroup = function(gID, gName) {
 		var html = '<input type="checkbox" name="gID[]" value="' + gID + '" style="vertical-align: middle" checked /> ' + gName + '<br/>';
-		$("#ccm-additional-groups").append(html);
+		jQuery("#ccm-additional-groups").append(html);
 	}
 
 });

@@ -97,7 +97,7 @@ function getAttributeOptionHTML($v){
 		onblur="ccmAttributesHelper.clrInitTxt(this,'<?=$defaultNewOptionNm ?>','faint',1)"
 		onkeypress="ccmAttributesHelper.addEnterClick(event,function(){ccmAttributesHelper.saveNewOption()})"
 		 /> 
-		<input type="button" onClick="ccmAttributesHelper.saveNewOption(); $('#ccm-attribute-key-form').unbind()" value="<?=t('Add') ?>" />
+		<input type="button" onClick="ccmAttributesHelper.saveNewOption(); jQuery('#ccm-attribute-key-form').unbind()" value="<?=t('Add') ?>" />
 	</div>
 	
 	<? if ($attributeType == 'page') { ?>
@@ -114,7 +114,7 @@ function getAttributeOptionHTML($v){
 <? if ($akSelectOptionDisplayOrder == 'display_asc') { ?>
 <script type="text/javascript">
 //<![CDATA[
-$(function() {
+jQuery(function() {
 	ccmAttributesHelper.makeSortable();
 });
 //]]>

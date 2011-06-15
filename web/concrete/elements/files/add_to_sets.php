@@ -117,7 +117,7 @@ if ($_POST['task'] == 'add_to_sets') {
 ?>
 
 <script type="text/javascript">
-$(function() {
+jQuery(function() {
 	ccm_alSetupSetsForm('<?=$searchInstance?>');
 });
 </script>
@@ -197,7 +197,7 @@ $(function() {
 
 <h2><?=t('Add to New Set')?></h2>
 
-<?=$form->checkbox('fsNew', 1)?> <?=$form->text('fsNewText', array('style' => 'width: 120px', 'onclick' => '$(\'input[name=fsNew]\').attr(\'checked\',true)'))?> <?=$form->checkbox('fsNewShare', 1, true)?> <?=t('Make set public')?>
+<?=$form->checkbox('fsNew', 1)?> <?=$form->text('fsNewText', array('style' => 'width: 120px', 'onclick' => 'jQuery(\'input[name=fsNew]\').attr(\'checked\',true)'))?> <?=$form->checkbox('fsNewShare', 1, true)?> <?=t('Make set public')?>
 
 <? if (!$disableForm) { ?>
 

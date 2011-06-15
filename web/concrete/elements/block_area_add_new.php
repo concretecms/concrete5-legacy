@@ -13,7 +13,7 @@ $form = Loader::helper('form');
 
 function ccm_updateMarketplaceTab() {
 	if (!ccm_blocksLoaded) {
-		$("#ccm-add-marketplace-tab div.ccm-block-type-list").html('');
+		jQuery("#ccm-add-marketplace-tab div.ccm-block-type-list").html('');
 		jQuery.fn.dialog.showLoader();
 		$.ajax({
 			url: CCM_TOOLS_PATH+'/marketplace/refresh_block',
@@ -21,7 +21,7 @@ function ccm_updateMarketplaceTab() {
 			data: {'arHandle': '<?=$a->getAreaHandle()?>'},
 			success: function(html) {
 				jQuery.fn.dialog.hideLoader();
-				$("#ccm-add-marketplace-tab div.ccm-block-type-list").html(html);
+				jQuery("#ccm-add-marketplace-tab div.ccm-block-type-list").html(html);
 			}
 		});
 		ccm_blocksLoaded = true;
@@ -33,36 +33,36 @@ var ccm_blocksLoaded = false;
 <? } ?>
 
 ccm_showBlockTypeDescription = function(btID) {
-	$("#ccm-bt-help" + btID).show();
+	jQuery("#ccm-bt-help" + btID).show();
 }
 
 ccm_showBlockTypeDescriptions = function() {
-	$(".ccm-block-type-description").show();
+	jQuery(".ccm-block-type-description").show();
 }
 
 var ccm_areaActiveTab = "ccm-add";
 
-$("#ccm-area-tabs a").click(function() {
-	$("li.ccm-nav-active").removeClass('ccm-nav-active');
-	$("#" + ccm_areaActiveTab + "-tab").hide();
-	ccm_areaActiveTab = $(this).attr('id');
-	$(this).parent().addClass("ccm-nav-active");
-	$("#" + ccm_areaActiveTab + "-tab").show();
+jQuery("#ccm-area-tabs a").click(function() {
+	jQuery("li.ccm-nav-active").removeClass('ccm-nav-active');
+	jQuery("#" + ccm_areaActiveTab + "-tab").hide();
+	ccm_areaActiveTab = jQuery(this).attr('id');
+	jQuery(this).parent().addClass("ccm-nav-active");
+	jQuery("#" + ccm_areaActiveTab + "-tab").show();
 	if (ccm_areaActiveTab == 'ccm-add-marketplace') {
 		ccm_updateMarketplaceTab();	
 	}
 });
 
-$('input[name=ccmBlockTypeSearch]').focus(function() {
-	if ($(this).val() == '<?=t("Search")?>') {
-		$(this).val('');
+jQuery('input[name=ccmBlockTypeSearch]').focus(function() {
+	if (jQuery(this).val() == '<?=t("Search")?>') {
+		jQuery(this).val('');
 	}
-	$(this).css('color', '#000');
+	jQuery(this).css('color', '#000');
 
 	if (!ccmLiveSearchActive) {
-		$('#ccmBlockTypeSearch').liveUpdate('ccm-block-type-list');
+		jQuery('#ccmBlockTypeSearch').liveUpdate('ccm-block-type-list');
 		ccmLiveSearchActive = true;
-//		$("#ccm-block-type-clear-search").show();
+//		jQuery("#ccm-block-type-clear-search").show();
 	}
 });
 
@@ -71,39 +71,39 @@ ccmBlockTypeSearchFormCheckResults = function() {
 }
 
 ccmBlockTypeSearchClear = function() {
-	$("input[name=ccmBlockTypeSearch]").val('');
-	$("#ccm-block-type-list li.ccm-block-type").addClass("ccm-block-type-available");
-	$("#ccm-block-type-list li.ccm-block-type").removeClass("ccm-block-type-selected");
+	jQuery("input[name=ccmBlockTypeSearch]").val('');
+	jQuery("#ccm-block-type-list li.ccm-block-type").addClass("ccm-block-type-available");
+	jQuery("#ccm-block-type-list li.ccm-block-type").removeClass("ccm-block-type-selected");
 }
 
 var ccmLiveSearchActive = false;
 ccmBlockTypeSearchResultsSelect = function(which, e) {
 	e.preventDefault();
 	e.stopPropagation();
-	$("input[name=ccmBlockTypeSearch]").blur();
+	jQuery("input[name=ccmBlockTypeSearch]").blur();
 	// find the currently selected item
-	var obj = $("li.ccm-block-type-selected");
+	var obj = jQuery("li.ccm-block-type-selected");
 	var foundblock = false;
 	if (obj.length == 0) {
-		$($("#ccm-block-type-list li.ccm-block-type-available")[0]).addClass('ccm-block-type-selected');
+		jQuery(jQuery("#ccm-block-type-list li.ccm-block-type-available")[0]).addClass('ccm-block-type-selected');
 	} else {
 		if (which == 'next') {
 			var nextObj = obj.nextAll('li.ccm-block-type-available');
 			if (nextObj.length > 0) {
 				obj.removeClass('ccm-block-type-selected');
-				$(nextObj[0]).addClass('ccm-block-type-selected');
+				jQuery(nextObj[0]).addClass('ccm-block-type-selected');
 			}
 		} else if (which == 'previous') {
 			var prevObj = obj.prevAll('li.ccm-block-type-available');
 			if (prevObj.length > 0) {
 				obj.removeClass('ccm-block-type-selected');
-				$(prevObj[0]).addClass('ccm-block-type-selected');
+				jQuery(prevObj[0]).addClass('ccm-block-type-selected');
 			}
 		}
 		
 	}	
 
-	var currObj = $("li.ccm-block-type-selected");
+	var currObj = jQuery("li.ccm-block-type-selected");
 	// handle scrolling
 	// this is buggy. needs fixing
 
@@ -131,11 +131,11 @@ ccmBlockTypeDoMapKeys = function(e) {
 	if (e.keyCode == 9) {
 		e.stopPropagation();
 		e.preventDefault();
-		$("input[name=ccmBlockTypeSearch]").focus();
+		jQuery("input[name=ccmBlockTypeSearch]").focus();
 		return true;
 	}
 	if (e.keyCode == 8) {
-		$("input[name=ccmBlockTypeSearch]").val('');
+		jQuery("input[name=ccmBlockTypeSearch]").val('');
 		e.stopPropagation();
 		e.preventDefault();
 		return true;
@@ -147,22 +147,22 @@ ccmBlockTypeDoMapKeys = function(e) {
 	} else if (e.keyCode == 38) {
 		ccmBlockTypeSearchResultsSelect('previous', e);
 	} else if (e.keyCode == 13) {
-		var obj = $("li.ccm-block-type-selected");
+		var obj = jQuery("li.ccm-block-type-selected");
 		if (obj.length > 0) {
 			obj.find('a').click();
 		}
 	}
 }
 ccmBlockTypeMapKeys = function() {
-	$(window).bind('keydown.blocktypes', ccmBlockTypeDoMapKeys);
+	jQuery(window).bind('keydown.blocktypes', ccmBlockTypeDoMapKeys);
 }
 ccmBlockTypeResetKeys = function() {
-	$(window).unbind('keydown.blocktypes');
+	jQuery(window).unbind('keydown.blocktypes');
 }
 
-$(function() {
-	$(window).css('overflow', 'hidden');
-	$(window).unbind('keydown.blocktypes');
+jQuery(function() {
+	jQuery(window).css('overflow', 'hidden');
+	jQuery(window).unbind('keydown.blocktypes');
 	ccmBlockTypeMapKeys();
 });
 

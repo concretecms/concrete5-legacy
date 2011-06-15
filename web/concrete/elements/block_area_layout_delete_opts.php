@@ -24,7 +24,7 @@ global $c;
 		<div class="ccm-buttons">
 			<a href="#" class="ccm-button-left cancel" onclick="jQuery.fn.dialog.closeTop()"><span><em class="ccm-button-close"><?=t('Cancel')?></em></span></a>
 			
-			<a href="javascript:void(0)" onclick="deleteLayoutObj.deleteLayout($('input[name=ccm_delete_layout_mode]:checked').val())" class="ccm-button-right accept"><span><?=t('Remove Layout') ?></span></a>
+			<a href="javascript:void(0)" onclick="deleteLayoutObj.deleteLayout(jQuery('input[name=ccm_delete_layout_mode]:checked').val())" class="ccm-button-right accept"><span><?=t('Remove Layout') ?></span></a>
 		</div>	 
 	
 	<? }else{ ?>

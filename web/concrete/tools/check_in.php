@@ -44,21 +44,21 @@ Loader::element('pane_header', array('c'=>$c));
         </form>
        
         <script type="text/javascript">
-        $(function() {
-            setTimeout("$('#ccm-check-in-comments').focus();",300);
-            $("#ccm-check-in-preview").click(function() {
-                $("#ccm-approve-field").val('PREVIEW');
-                $("#ccm-check-in").submit();
+        jQuery(function() {
+            setTimeout("jQuery('#ccm-check-in-comments').focus();",300);
+            jQuery("#ccm-check-in-preview").click(function() {
+                jQuery("#ccm-approve-field").val('PREVIEW');
+                jQuery("#ccm-check-in").submit();
             });
         
-            $("#ccm-check-in-discard").click(function() {
-                $("#ccm-approve-field").val('DISCARD');
-                $("#ccm-check-in").submit();
+            jQuery("#ccm-check-in-discard").click(function() {
+                jQuery("#ccm-approve-field").val('DISCARD');
+                jQuery("#ccm-check-in").submit();
             });
         
-            $("#ccm-check-in-publish").click(function() {
-                $("#ccm-approve-field").val('APPROVE');
-                $("#ccm-check-in").submit();
+            jQuery("#ccm-check-in-publish").click(function() {
+                jQuery("#ccm-approve-field").val('APPROVE');
+                jQuery("#ccm-check-in").submit();
             });
         });
         </script>

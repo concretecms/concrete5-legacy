@@ -4,9 +4,9 @@ defined('C5_EXECUTE') or die("Access Denied.");
 
 <script type="text/javascript">
 ccmPrepareScrapbookItemsDelete=function(){
-	$("a.ccm-scrapbook-delete").click(function() {
-		var id=$(this).attr('id');
-		var arHandle=$(this).attr('arHandle');
+	jQuery("a.ccm-scrapbook-delete").click(function() {
+		var id=jQuery(this).attr('id');
+		var arHandle=jQuery(this).attr('arHandle');
 		var qStr='&ptask=delete_content&arHandle='+encodeURIComponent(arHandle)+'<?=$token?>'; 
 		
 		if( id.indexOf('bID')>-1 ){
@@ -23,25 +23,25 @@ ccmPrepareScrapbookItemsDelete=function(){
 			url: CCM_DISPATCHER_FILENAME,
 			data: qStr,
 			success: function(msg) {
-				if(pcID) $("#ccm-pc-" + pcID).fadeOut();
-				if(bID)  $("#ccm-scrapbook-list-item-" + bID).fadeOut(); 
+				if(pcID) jQuery("#ccm-pc-" + pcID).fadeOut();
+				if(bID)  jQuery("#ccm-scrapbook-list-item-" + bID).fadeOut(); 
 			}
 		}); 
 	});
 }
 
-$(function(){ ccmPrepareScrapbookItemsDelete(); });
+jQuery(function(){ ccmPrepareScrapbookItemsDelete(); });
 	
 ccmChangeDisplayedScrapbook = function(sel){  
-	var scrapbook=$(sel).val(); 
+	var scrapbook=jQuery(sel).val(); 
 	if(!scrapbook) return false;
-	$('#ccm-scrapbookListsWrap').html("<div style='padding:16px;'><?=t('Loading...')?></div>");
+	jQuery('#ccm-scrapbookListsWrap').html("<div style='padding:16px;'><?=t('Loading...')?></div>");
 	$.ajax({
 	type: 'POST',
 	url: CCM_TOOLS_PATH+"/edit_area_scrapbook_refresh.php",
 	data: 'cID=<?=intval($_REQUEST['cID'])?>&arHandle=<?=urlencode($_REQUEST['arHandle'])?>&scrapbookName='+scrapbook+'&<?=$token?>',
 	success: function(resp) { 
-		$('#ccm-scrapbookListsWrap').html(resp);
+		jQuery('#ccm-scrapbookListsWrap').html(resp);
 		ccmPrepareScrapbookItemsDelete(); 
 	}});		
 	return false;

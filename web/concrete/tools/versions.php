@@ -181,12 +181,12 @@ var ccm_versionsChecked = 0;
 /* if this gets set to true, exiting this pane reloads the page */
 var ccm_versionsMustReload = false;
 
-$(function() {
+jQuery(function() {
 	
-	$(".ccm-version").dialog();
+	jQuery(".ccm-version").dialog();
 	
-	$("input[type=checkbox]").click(function() {
-		if ($(this).get(0).checked) {
+	jQuery("input[type=checkbox]").click(function() {
+		if (jQuery(this).get(0).checked) {
 			ccm_versionsChecked++;
 		} else {
 			ccm_versionsChecked--;
@@ -208,35 +208,35 @@ ccm_setSelectors = function() {
 	}
 	
 	/* first, we grab whether an active version is checked, so we can use that later */
-	var isActiveChecked = ( $("input.cb-version-active:checked").length > 0 );
+	var isActiveChecked = ( jQuery("input.cb-version-active:checked").length > 0 );
 	
 	/* if two and only two are checked, we can compare */
 	
 	if (ccm_versionsChecked == 2) {
-		$("input[name=vCompare]").get(0).disabled = false;
+		jQuery("input[name=vCompare]").get(0).disabled = false;
 	} else {
-		$("input[name=vCompare]").get(0).disabled = true;
+		jQuery("input[name=vCompare]").get(0).disabled = true;
 	}
 	
 	
 	if (ccm_versionsChecked > 0 && (!isActiveChecked)) {
-		$("input[name=vRemove]").get(0).disabled = false;
+		jQuery("input[name=vRemove]").get(0).disabled = false;
 	} else {
-		$("input[name=vRemove]").get(0).disabled = true;
+		jQuery("input[name=vRemove]").get(0).disabled = true;
 	}
 	
 	if (ccm_versionsChecked == 1 && (!isActiveChecked)) {
-		$("input[name=vApprove]").get(0).disabled = false;
+		jQuery("input[name=vApprove]").get(0).disabled = false;
 	} else {
-		$("input[name=vApprove]").get(0).disabled = true;
+		jQuery("input[name=vApprove]").get(0).disabled = true;
 	}
 	
 	
 }
 
 ccm_deselectVersions = function() {
-	$("input[type=checkbox]").each(function() {
-		$(this).get(0).checked = false;
+	jQuery("input[type=checkbox]").each(function() {
+		jQuery(this).get(0).checked = false;
 	});
 	
 	ccm_versionsChecked = 0;
@@ -251,31 +251,31 @@ ccm_exitVersionList = function() {
 }
 
 ccm_runAction = function(item) {
-	$("#ccm-versions-container").load(item.href, function() {
+	jQuery("#ccm-versions-container").load(item.href, function() {
 		
 	} );
 	return false;
 }
 
-$("a#ccm-version-select-none").click(function() {
+jQuery("a#ccm-version-select-none").click(function() {
 	ccm_deselectVersions();
 	ccm_setSelectors();
 });
 
-$("a#ccm-version-select-old").click(function() {
+jQuery("a#ccm-version-select-old").click(function() {
 	ccm_deselectVersions();
-	$("input[class=cb-version-old]").each(function() {
-		$(this).get(0).checked = true;
+	jQuery("input[class=cb-version-old]").each(function() {
+		jQuery(this).get(0).checked = true;
 		ccm_versionsChecked++;
 	});
 	ccm_setSelectors();
 
 });
 
-$("input[name=vCompare]").click(function() {
+jQuery("input[name=vCompare]").click(function() {
 	
-	var cvID2 = $("input[type=checkbox]:checked").get(0).value;
-	var cvID1 = $("input[type=checkbox]:checked").get(1).value;
+	var cvID2 = jQuery("input[type=checkbox]:checked").get(0).value;
+	var cvID1 = jQuery("input[type=checkbox]:checked").get(1).value;
 
 	$.fn.dialog.open({
 		title: ccmi18n.compareVersions,
@@ -286,11 +286,11 @@ $("input[name=vCompare]").click(function() {
 	});
 });
 
-$("input[name=vApprove]").click(function() {
+jQuery("input[name=vApprove]").click(function() {
 	
-	var cvID = $("input[type=checkbox]:checked").get(0).value;
+	var cvID = jQuery("input[type=checkbox]:checked").get(0).value;
 	jQuery.fn.dialog.showLoader();
-	$("#ccm-versions-container").load(CCM_TOOLS_PATH + '/versions.php?versions_reloaded=1&cID=<?=$c->getCollectionID()?>&cvID=' + cvID + '&vtask=approve<?=$token?>', function() {
+	jQuery("#ccm-versions-container").load(CCM_TOOLS_PATH + '/versions.php?versions_reloaded=1&cID=<?=$c->getCollectionID()?>&cvID=' + cvID + '&vtask=approve<?=$token?>', function() {
 		jQuery.fn.dialog.hideLoader();
 	});
 	
@@ -299,17 +299,17 @@ $("input[name=vApprove]").click(function() {
 ccm_goToVersionPage = function(p, url) {
 	jQuery.fn.dialog.showLoader();
 	var dest = CCM_TOOLS_PATH + '/versions.php?versions_reloaded=1&cID=<?=$c->getCollectionID()?>&ccm_paging_p=' + p;
-	$("#ccm-versions-container").load(dest, function() {
+	jQuery("#ccm-versions-container").load(dest, function() {
 		jQuery.fn.dialog.hideLoader();
 	});
 	return false;
 }
 
-$("input[name=vRemove]").click(function() {
+jQuery("input[name=vRemove]").click(function() {
 
 	jQuery.fn.dialog.showLoader();
 	
-	var cvIDs = $("input[type=checkbox]:checked");
+	var cvIDs = jQuery("input[type=checkbox]:checked");
 	var cvIDStr = '';
 	for (i = 0; i < cvIDs.length; i++) {
 		cvIDStr += "_";
@@ -328,7 +328,7 @@ $("input[name=vRemove]").click(function() {
 		'cvIDs': cvIDStr
 	}
 	
-	$("#ccm-versions-container").load(CCM_TOOLS_PATH + '/versions.php?versions_reloaded=1', params, function() {
+	jQuery("#ccm-versions-container").load(CCM_TOOLS_PATH + '/versions.php?versions_reloaded=1', params, function() {
 		jQuery.fn.dialog.hideLoader();
 	});
 	

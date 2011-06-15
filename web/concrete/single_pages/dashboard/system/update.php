@@ -10,7 +10,7 @@
 		<?=Loader::helper('concrete/interface')->submit(t('Download'), 'ccm-download-update-form')?>
 	
 		<h2><?=t('Version: %s', $update->version)?>. <?=t('Release Date: %s', date(t('F d, Y'), strtotime($update->date)))?></h2>
-		<div><a href="javascript:void(0)" onclick="jQuery.fn.dialog.open({modal: false, title: '<?=t("Release Notes")?>', width: 500, height: 400, element: $('#ccm-release-notes')})"><?=t('View Full Release Notes &gt;')?></a></div>
+		<div><a href="javascript:void(0)" onclick="jQuery.fn.dialog.open({modal: false, title: '<?=t("Release Notes")?>', width: 500, height: 400, element: jQuery('#ccm-release-notes')})"><?=t('View Full Release Notes &gt;')?></a></div>
 		<br/>
 		<span class="notes"><?=t('Note: Downloading an update will NOT automatically install it.')?></span>
 	

@@ -112,14 +112,14 @@ if (count($attribs) > 0) {
 <? } ?>
 
 <script type="text/javascript">
-	$("div.ccm-attribute-sortable-set-list").sortable({
+	jQuery("div.ccm-attribute-sortable-set-list").sortable({
 		handle: 'img.ccm-attribute-icon',
 		cursor: 'move',
 		opacity: 0.5,
 		stop: function() {
-			var ualist = $(this).sortable('serialize');
+			var ualist = jQuery(this).sortable('serialize');
 			ualist += '&cID=<?=$c->getCollectionID()?>';
-			ualist += '&asID=' + $(this).attr('attribute-set-id');
+			ualist += '&asID=' + jQuery(this).attr('attribute-set-id');
 			$.post('<?=REL_DIR_FILES_TOOLS_REQUIRED?>/dashboard/attribute_sets_update', ualist, function(r) {
 
 			});

@@ -109,42 +109,42 @@ $list = FileAttributeKey::getList();
 <script type="text/javascript">
 ccm_submitCustomizeSearchColumnsForm = function() {
 	//ccm_deactivateSearchResults('<?=$searchInstance?>');
-	$("#ccm-<?=$searchInstance?>-customize-search-columns-form").ajaxSubmit(function(resp) {
-		var sortDirection = $("#ccm-<?=$searchInstance?>-customize-search-columns-form select[name=fSearchDefaultSortDirection]").val();
-		var sortCol = $("#ccm-<?=$searchInstance?>-customize-search-columns-form select[name=fSearchDefaultSort]").val();
-		$("#ccm-<?=$searchInstance?>-advanced-search input[name=ccm_order_dir]").val(sortDirection);
-		$("#ccm-<?=$searchInstance?>-advanced-search input[name=ccm_order_by]").val(sortCol);
+	jQuery("#ccm-<?=$searchInstance?>-customize-search-columns-form").ajaxSubmit(function(resp) {
+		var sortDirection = jQuery("#ccm-<?=$searchInstance?>-customize-search-columns-form select[name=fSearchDefaultSortDirection]").val();
+		var sortCol = jQuery("#ccm-<?=$searchInstance?>-customize-search-columns-form select[name=fSearchDefaultSort]").val();
+		jQuery("#ccm-<?=$searchInstance?>-advanced-search input[name=ccm_order_dir]").val(sortDirection);
+		jQuery("#ccm-<?=$searchInstance?>-advanced-search input[name=ccm_order_by]").val(sortCol);
 		jQuery.fn.dialog.closeTop();
-		$("#ccm-<?=$searchInstance?>-advanced-search").ajaxSubmit(function(resp) {
+		jQuery("#ccm-<?=$searchInstance?>-advanced-search").ajaxSubmit(function(resp) {
 			ccm_parseAdvancedSearchResponse(resp, '<?=$searchInstance?>');
 		});
 	});
 	return false;
 }
 
-$(function() {
-	$('#ccm-<?=$searchInstance?>-sortable-column-wrapper').sortable({
+jQuery(function() {
+	jQuery('#ccm-<?=$searchInstance?>-sortable-column-wrapper').sortable({
 		cursor: 'move',
 		opacity: 0.5
 	});
-	$('form#ccm-<?=$searchInstance?>-customize-search-columns-form input[type=checkbox]').click(function() {
-		var thisLabel = $(this).parent().find('label').html();
-		var thisID = $(this).attr('id');
-		if ($(this).attr('checked')) {
-			if ($('#field_' + thisID).length == 0) {
-				$('#ccm-<?=$searchInstance?>-sortable-column-default').append('<option value="' + thisID + '" id="opt_' + thisID + '">' + thisLabel + '<\/option>');
-				$('div.ccm-sortable-column-sort-controls select').attr('disabled', false);
-				$('#ccm-<?=$searchInstance?>-sortable-column-wrapper').append('<li id="field_' + thisID + '"><input type="hidden" name="column[]" value="' + thisID + '" />' + thisLabel + '<\/li>');
+	jQuery('form#ccm-<?=$searchInstance?>-customize-search-columns-form input[type=checkbox]').click(function() {
+		var thisLabel = jQuery(this).parent().find('label').html();
+		var thisID = jQuery(this).attr('id');
+		if (jQuery(this).attr('checked')) {
+			if (jQuery('#field_' + thisID).length == 0) {
+				jQuery('#ccm-<?=$searchInstance?>-sortable-column-default').append('<option value="' + thisID + '" id="opt_' + thisID + '">' + thisLabel + '<\/option>');
+				jQuery('div.ccm-sortable-column-sort-controls select').attr('disabled', false);
+				jQuery('#ccm-<?=$searchInstance?>-sortable-column-wrapper').append('<li id="field_' + thisID + '"><input type="hidden" name="column[]" value="' + thisID + '" />' + thisLabel + '<\/li>');
 			}
 		} else {
-			$('#field_' + thisID).remove();
-			$('#opt_' + thisID).remove();
-			if ($('#ccm-<?=$searchInstance?>-sortable-column-wrapper li').length == 0) {
-				$('div.ccm-sortable-column-sort-controls select').attr('disabled', true);
+			jQuery('#field_' + thisID).remove();
+			jQuery('#opt_' + thisID).remove();
+			if (jQuery('#ccm-<?=$searchInstance?>-sortable-column-wrapper li').length == 0) {
+				jQuery('div.ccm-sortable-column-sort-controls select').attr('disabled', true);
 			}
 		}
 	});
-	$('#ccm-<?=$searchInstance?>-customize-search-columns-form').submit(function() {
+	jQuery('#ccm-<?=$searchInstance?>-customize-search-columns-form').submit(function() {
 		return ccm_submitCustomizeSearchColumnsForm();
 	});
 });

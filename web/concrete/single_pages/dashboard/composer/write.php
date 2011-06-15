@@ -122,20 +122,20 @@ if (isset($entry)) { ?>
 	var ccm_composerAutoSaveInterval = false;
 	
 	ccm_composerDoAutoSave = function() {
-		$('input[name=autosave]').val('1');
+		jQuery('input[name=autosave]').val('1');
 		try {
 			tinyMCE.triggerSave(true, true);
 		} catch(e) { }
 		
-		$('#ccm-dashboard-composer-form').ajaxSubmit({
+		jQuery('#ccm-dashboard-composer-form').ajaxSubmit({
 			'dataType': 'json',
 			'success': function(r) {
 				ccm_composerLastSaveTime = new Date();
-				$("#composer-save-status").html('<?=t("Page saved at ")?>' + r.time);
-				$(".ccm-composer-hide-on-approved").show();
+				jQuery("#composer-save-status").html('<?=t("Page saved at ")?>' + r.time);
+				jQuery(".ccm-composer-hide-on-approved").show();
 			}
 		});
-		$('input[name=autosave]').val('0');
+		jQuery('input[name=autosave]').val('0');
 	}
 	
 	ccm_composerLaunchPreview = function() {
@@ -144,18 +144,18 @@ if (isset($entry)) { ?>
 	}
 	
 	ccm_composerSelectParentPage = function(cID) {
-		$("input[name=cPublishParentID]").val(cID);
-		$(".ccm-composer-hide-on-no-target").show();
-		$("#ccm-composer-publish-location").load('<?=$this->action("select_publish_target")?>', {'entryID': <?=$entry->getCollectionID()?>, 'cPublishParentID': cID});
+		jQuery("input[name=cPublishParentID]").val(cID);
+		jQuery(".ccm-composer-hide-on-no-target").show();
+		jQuery("#ccm-composer-publish-location").load('<?=$this->action("select_publish_target")?>', {'entryID': <?=$entry->getCollectionID()?>, 'cPublishParentID': cID});
 		jQuery.fn.dialog.closeTop();
 
 	}	
 
 	ccm_composerSelectParentPageAndSubmit = function(cID) {
-		$("input[name=cPublishParentID]").val(cID);
-		$(".ccm-composer-hide-on-no-target").show();
-		$("#ccm-composer-publish-location").load('<?=$this->action("select_publish_target")?>', {'entryID': <?=$entry->getCollectionID()?>, 'cPublishParentID': cID}, function() {
-		 	$("input[name=ccm-submit-publish]").click();
+		jQuery("input[name=cPublishParentID]").val(cID);
+		jQuery(".ccm-composer-hide-on-no-target").show();
+		jQuery("#ccm-composer-publish-location").load('<?=$this->action("select_publish_target")?>', {'entryID': <?=$entry->getCollectionID()?>, 'cPublishParentID': cID}, function() {
+		 	jQuery("input[name=ccm-submit-publish]").click();
 		});
 	}	
 		
@@ -197,29 +197,29 @@ if (isset($entry)) { ?>
 		});
 	}
 	
-	$(function() {
+	jQuery(function() {
 		<? if (is_object($v) && $v->isApproved()) { ?>
-			$(".ccm-composer-hide-on-approved").hide();
+			jQuery(".ccm-composer-hide-on-approved").hide();
 		<? } ?>
 
-		if ($("input[name=cPublishParentID]").val() < 1) {
-			$(".ccm-composer-hide-on-no-target").hide();
+		if (jQuery("input[name=cPublishParentID]").val() < 1) {
+			jQuery(".ccm-composer-hide-on-no-target").hide();
 		}
 		
 		var ccm_composerAutoSaveIntervalTimeout = 7000;
 		var ccm_composerIsPublishClicked = false;
 		
-		$("#ccm-submit-discard").click(function() {
+		jQuery("#ccm-submit-discard").click(function() {
 			return (confirm('<?=t("Discard this draft?")?>'));
 		});
 		
-		$("#ccm-submit-publish").click(function() {
+		jQuery("#ccm-submit-publish").click(function() {
 			ccm_composerIsPublishClicked = true;
 		});
 		
 		<? if ($entry->isComposerDraft()) { ?>
-			$("#ccm-dashboard-composer-form").submit(function() {
-				if ($("input[name=cPublishParentID]").val() > 0) {
+			jQuery("#ccm-dashboard-composer-form").submit(function() {
+				if (jQuery("input[name=cPublishParentID]").val() > 0) {
 					return true;
 				}
 				if (ccm_composerIsPublishClicked) {

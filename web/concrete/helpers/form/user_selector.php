@@ -50,7 +50,7 @@ class FormUserSelectorHelper {
 		$html .= '<input type="hidden" name="' . $fieldName . '" value="' . $selectedUID . '">';
 		$html .= '</div>'; 
 		$html .= '<script type="text/javascript">';
-		$html .= '$(function() { $("#ccm-user-selector-' . $fieldName . '").dialog(); });';
+		$html .= 'jQuery(function() { jQuery("#ccm-user-selector-' . $fieldName . '").dialog(); });';
 		$html .= 'if (typeof(ccmActiveUserField) == "undefined") {';
 		$html .= 'var ccmActiveUserField;';		
 		$html .= '}';
@@ -58,8 +58,8 @@ class FormUserSelectorHelper {
 		ccm_triggerSelectUser = function(uID, uName, uEmail) { ';
 		if($javascriptFunc=='' || $javascriptFunc=='ccm_triggerSelectUser'){
 			$html .= '
-			var par = $(ccmActiveUserField).parent().find(\'.ccm-summary-selected-item-label\');
-			var pari = $(ccmActiveUserField).parent().find(\'[name=' . $fieldName . ']\');
+			var par = jQuery(ccmActiveUserField).parent().find(\'.ccm-summary-selected-item-label\');
+			var pari = jQuery(ccmActiveUserField).parent().find(\'[name=' . $fieldName . ']\');
 			par.html(uName);
 			pari.val(uID);
 			';
@@ -90,27 +90,27 @@ class FormUserSelectorHelper {
 		}*/
 		$html .= '<tr class="ccm-user-selected-item-none"><td colspan="3">' . t('No users selected.') . '</td></tr>';
 		$html .= '</tbody></table><script type="text/javascript">
-		$(function() {
-			$("#ccmUserSelect' . $fieldName . ' .ccm-user-select-item").dialog();
-			$("a.ccm-user-list-clear").click(function() {
-				$(this).parents(\'tr\').remove();
+		jQuery(function() {
+			jQuery("#ccmUserSelect' . $fieldName . ' .ccm-user-select-item").dialog();
+			jQuery("a.ccm-user-list-clear").click(function() {
+				jQuery(this).parents(\'tr\').remove();
 				ccm_setupGridStriping(\'ccmUserSelect' . $fieldName . '\');
 			});
 		});
 		
 		ccm_triggerSelectUser = function(uID, uName, uEmail) {
-			$("tr.ccm-user-selected-item-none").hide();
-			if ($("#ccmUserSelect' . $fieldName . '_" + uID).length < 1) {
+			jQuery("tr.ccm-user-selected-item-none").hide();
+			if (jQuery("#ccmUserSelect' . $fieldName . '_" + uID).length < 1) {
 				var html = "";
 				html += "<tr id=\"ccmUserSelect' . $fieldName . '_" + uID + "\" class=\"ccm-list-record\"><td><input type=\"hidden\" name=\"' . $fieldName . '[]\" value=\"" + uID + "\" />" + uName + "</td>";
 				html += "<td>" + uEmail + "</td>";
 				html += "<td><a href=\"javascript:void(0)\" class=\"ccm-user-list-clear\"><img src=\"' . ASSETS_URL_IMAGES . '/icons/close.png\" width=\"16\" height=\"16\" class=\"ccm-user-list-clear-button\" /></a>";
 				html += "</tr>";
-				$("#ccmUserSelect' . $fieldName . '_body").append(html);
+				jQuery("#ccmUserSelect' . $fieldName . '_body").append(html);
 			}
 			ccm_setupGridStriping(\'ccmUserSelect' . $fieldName . '\');
-			$("a.ccm-user-list-clear").click(function() {
-				$(this).parents(\'tr\').remove();
+			jQuery("a.ccm-user-list-clear").click(function() {
+				jQuery(this).parents(\'tr\').remove();
 				ccm_setupGridStriping(\'ccmUserSelect' . $fieldName . '\');
 			});
 		}

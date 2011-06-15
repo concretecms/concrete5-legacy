@@ -225,7 +225,7 @@ if($_REQUEST['btask']=='add'){
 			var ccmSaveToScrapbookDialogTarget=null;
 			
 		ccmSaveToScrapbook = function(sel){
-			var sel=$('#ccm-addToScrapbookName');
+			var sel=jQuery('#ccm-addToScrapbookName');
 			var modeAliased=document.getElementById('blockAddModeAliased');
 			var blockAddMode=(modeAliased.checked)?'alias':'duplicate';
 			ccmSaveToScrapbookDialogTarget = sel.closest('.ccm-dialog-content'); 
@@ -248,9 +248,9 @@ if($_REQUEST['btask']=='add'){
 		}
 		
 		ccmShowBlockAddModeRadios=function(sel){
-			if(!$(sel).val() || $(sel).val()=='userScrapbook')
-				 $('#ccm-blockAddModeWrap').css('display','none');
-			else $('#ccm-blockAddModeWrap').css('display','block');
+			if(!jQuery(sel).val() || jQuery(sel).val()=='userScrapbook')
+				 jQuery('#ccm-blockAddModeWrap').css('display','none');
+			else jQuery('#ccm-blockAddModeWrap').css('display','block');
 		}
 		</script>
 		

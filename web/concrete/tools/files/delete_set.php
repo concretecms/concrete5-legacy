@@ -53,7 +53,7 @@ if ($fsp->canDeleteFileSet()) {
 <script type="text/javascript">
 ccm_alDeleteFileSet = function(form) {
 	jQuery.fn.dialog.showLoader();
-	$(form).ajaxSubmit(function(r) { 
+	jQuery(form).ajaxSubmit(function(r) { 
 		jQuery.fn.dialog.hideLoader(); 
 		jQuery.fn.dialog.closeTop();
 		
@@ -61,14 +61,14 @@ ccm_alDeleteFileSet = function(form) {
 			if (ccm_alLaunchType['<?=$_REQUEST['searchInstance']?>'] == 'DASHBOARD') {
 				window.location.href = "<?=View::url('/dashboard/files/search')?>";
 			} else {
-				var url = $("div#ccm-<?=$_REQUEST['searchInstance']?>-overlay-wrapper input[name=dialogAction]").val() + "&refreshDialog=1";
+				var url = jQuery("div#ccm-<?=$_REQUEST['searchInstance']?>-overlay-wrapper input[name=dialogAction]").val() + "&refreshDialog=1";
 				$.get(url, function(resp) {
 					jQuery.fn.dialog.hideLoader();
-					$("div#ccm-<?=$_REQUEST['searchInstance']?>-overlay-wrapper").html(resp);
+					jQuery("div#ccm-<?=$_REQUEST['searchInstance']?>-overlay-wrapper").html(resp);
 				});
 			}
 		<? } else { ?>
-			$("#ccm-<?=$_REQUEST['searchInstance']?>-sets-search-wrapper").load('<?=REL_DIR_FILES_TOOLS_REQUIRED?>/files/search_sets_reload', {'searchInstance': '<?=$_REQUEST['searchInstance']?>'}, function() {
+			jQuery("#ccm-<?=$_REQUEST['searchInstance']?>-sets-search-wrapper").load('<?=REL_DIR_FILES_TOOLS_REQUIRED?>/files/search_sets_reload', {'searchInstance': '<?=$_REQUEST['searchInstance']?>'}, function() {
 				ccm_alSetupFileSetSearch('<?=$_REQUEST['searchInstance']?>');
 			});
 		<? } ?>

@@ -13,7 +13,7 @@ class DashboardSitemapSearchController extends Controller {
 			$this->addHeaderItem(Loader::helper('html')->javascript('ccm.sitemap.js'));
 			$searchInstance = 'page' . time();
 
-			$this->addHeaderItem('<script type="text/javascript">$(function() { ccm_sitemapSetupSearch(\'' . $searchInstance . '\'); });</script>');
+			$this->addHeaderItem('<script type="text/javascript">jQuery(function() { ccm_sitemapSetupSearch(\'' . $searchInstance . '\'); });</script>');
 			$pages = $pageList->getPage();
 					
 			$this->set('pageList', $pageList);		

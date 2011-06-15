@@ -114,8 +114,8 @@ jQuery.CustomPanel = {
 	init: function() {
 		var html = '<div id="jquery-custom-panel"><textarea><\/textarea><div id="jquery-custom-panel-save"><input type="button" name="save" value="' + lblOk + '" /><\/<div><\/div>';
 		
-		if ($('#jquery-custom-panel').length == 0) {
-			$(document.body).append(html);
+		if (jQuery('#jquery-custom-panel').length == 0) {
+			jQuery(document.body).append(html);
 		}
 
 		this.setupSubmit();
@@ -123,18 +123,18 @@ jQuery.CustomPanel = {
 	},
 	
 	showPanel: function(parent) {
-		var content = $("#input_" + $(parent).attr('id')).val();
-		$("#jquery-custom-panel textarea").val(content);
+		var content = jQuery("#input_" + jQuery(parent).attr('id')).val();
+		jQuery("#jquery-custom-panel textarea").val(content);
 		this.activePanel = parent;
-		var jcp = $('#jquery-custom-panel');
-		var dim = $(parent).offset();
+		var jcp = jQuery('#jquery-custom-panel');
+		var dim = jQuery(parent).offset();
 		jcp.css('top', dim.top + 36);
 		jcp.css('left', dim.left + 5);
 		jcp.bind('mousedown', function(e) {
 			e.stopPropagation();
 		});
 
-		$(document).bind('mousedown', function() {
+		jQuery(document).bind('mousedown', function() {
 			jQuery.CustomPanel.hidePanel()
 		});
 		jcp.show();		
@@ -142,18 +142,18 @@ jQuery.CustomPanel = {
 	},
 
 	hidePanel: function() {
-		var jcp = $('#jquery-custom-panel');
-		$(document).unbind('mousedown');
+		var jcp = jQuery('#jquery-custom-panel');
+		jQuery(document).unbind('mousedown');
 		jcp.hide();
 	},
 	
 	setupSubmit: function() {
 		var jcp = this;
-		$('div#jquery-custom-panel-save input').click(function() {
-			var content = $('div#jquery-custom-panel textarea').get(0).value;
-			var afp = $(jQuery.CustomPanel.activePanel);		
-			$("#input_" + afp.attr('id')).val(content);
-			$("#customize-form").get(0).submit()
+		jQuery('div#jquery-custom-panel-save input').click(function() {
+			var content = jQuery('div#jquery-custom-panel textarea').get(0).value;
+			var afp = jQuery(jQuery.CustomPanel.activePanel);		
+			jQuery("#input_" + afp.attr('id')).val(content);
+			jQuery("#customize-form").get(0).submit()
 			jcp.hidePanel();
 		});
 	}
@@ -185,8 +185,8 @@ jQuery.FontPanel = {
 		}
 		html +='<\/div><div id="jquery-font-panel-save"><input type="button" name="save" value="' + lblOk + '" /><\/<div><\/div>';
 		
-		if ($('#jquery-font-panel').length == 0) {
-			$(document.body).append(html);
+		if (jQuery('#jquery-font-panel').length == 0) {
+			jQuery(document.body).append(html);
 		}
 		this.setupSubmit();
 
@@ -194,129 +194,129 @@ jQuery.FontPanel = {
 	
 	showPanel: function(parent) {
 
-		this.setupFonts($(parent).attr('font-panel-font'));
-		this.setupSizes($(parent).attr('font-panel-size'));
-		this.setupWeights($(parent).attr('font-panel-weight'));
-		this.setupStyles($(parent).attr('font-panel-style'));
+		this.setupFonts(jQuery(parent).attr('font-panel-font'));
+		this.setupSizes(jQuery(parent).attr('font-panel-size'));
+		this.setupWeights(jQuery(parent).attr('font-panel-weight'));
+		this.setupStyles(jQuery(parent).attr('font-panel-style'));
 		
 		this.activePanel = parent;
-		var jfp = $('#jquery-font-panel');
+		var jfp = jQuery('#jquery-font-panel');
 		jfp.bind('mousedown', function(e) {
 			e.stopPropagation();
 		});
-		var dim = $(parent).offset();
+		var dim = jQuery(parent).offset();
 		jfp.css('top', dim.top + 36);
 		jfp.css('left', dim.left + 5);
-		$(document).bind('mousedown', function() {
+		jQuery(document).bind('mousedown', function() {
 			jQuery.FontPanel.hidePanel()
 		});
 		jfp.show();		
 	},
 
 	hidePanel: function() {
-		var jfp = $('#jquery-font-panel');
-		$(document).unbind('mousedown');
+		var jfp = jQuery('#jquery-font-panel');
+		jQuery(document).unbind('mousedown');
 		jfp.hide();
 	},
 	
 	setupSubmit: function() {
 		var jfp = this;
-		$('div#jquery-font-panel-save input').click(function() {
-			var font = $('div#jquery-font-panel-list-fonts div.font-panel-list-selected').attr('font-panel-font');
-			var size = $('div#jquery-font-panel-list-sizes div.font-panel-list-selected').attr('font-panel-size');
-			var weight = $('div#jquery-font-panel-list-weights div.font-panel-list-selected').attr('font-panel-weight');
-			var style = $('div#jquery-font-panel-list-styles div.font-panel-list-selected').attr('font-panel-style');
-			var afp = $(jQuery.FontPanel.activePanel);			
+		jQuery('div#jquery-font-panel-save input').click(function() {
+			var font = jQuery('div#jquery-font-panel-list-fonts div.font-panel-list-selected').attr('font-panel-font');
+			var size = jQuery('div#jquery-font-panel-list-sizes div.font-panel-list-selected').attr('font-panel-size');
+			var weight = jQuery('div#jquery-font-panel-list-weights div.font-panel-list-selected').attr('font-panel-weight');
+			var style = jQuery('div#jquery-font-panel-list-styles div.font-panel-list-selected').attr('font-panel-style');
+			var afp = jQuery(jQuery.FontPanel.activePanel);			
 			afp.attr('font-panel-weight', weight);
 			afp.attr('font-panel-size', size);
 			afp.attr('font-panel-style', style);
 			afp.attr('font-panel-font', font);
 			var selectedString = style + '|' + weight + '|' + size + '|' + font;
-			$("#input_" + afp.attr('id')).val(selectedString);
-			$("#customize-form").get(0).submit()
+			jQuery("#input_" + afp.attr('id')).val(selectedString);
+			jQuery("#customize-form").get(0).submit()
 			jfp.hidePanel();
 		});
 	},
 	
 	setupFonts: function(font) {
-		$('div#jquery-font-panel-list-fonts div').removeClass('font-panel-list-selected');
-		$('div#jquery-font-panel-list-fonts div').click(function() {
-			$('div#jquery-font-panel-list-fonts div').removeClass('font-panel-list-selected');
-			$(this).addClass("font-panel-list-selected");
+		jQuery('div#jquery-font-panel-list-fonts div').removeClass('font-panel-list-selected');
+		jQuery('div#jquery-font-panel-list-fonts div').click(function() {
+			jQuery('div#jquery-font-panel-list-fonts div').removeClass('font-panel-list-selected');
+			jQuery(this).addClass("font-panel-list-selected");
 		});
-		$('div#jquery-font-panel-list-fonts div[font-panel-font=' + font + ']').addClass('font-panel-list-selected');
+		jQuery('div#jquery-font-panel-list-fonts div[font-panel-font=' + font + ']').addClass('font-panel-list-selected');
 	},
 
 	setupSizes: function(size) {
-		$('div#jquery-font-panel-list-sizes div').removeClass('font-panel-list-selected');
-		$('div#jquery-font-panel-list-sizes div').click(function() {
-			$('div#jquery-font-panel-list-sizes div').removeClass('font-panel-list-selected');
-			$(this).addClass("font-panel-list-selected");
+		jQuery('div#jquery-font-panel-list-sizes div').removeClass('font-panel-list-selected');
+		jQuery('div#jquery-font-panel-list-sizes div').click(function() {
+			jQuery('div#jquery-font-panel-list-sizes div').removeClass('font-panel-list-selected');
+			jQuery(this).addClass("font-panel-list-selected");
 		});
-		$('div#jquery-font-panel-list-sizes div[font-panel-size=' + size + ']').addClass('font-panel-list-selected');
+		jQuery('div#jquery-font-panel-list-sizes div[font-panel-size=' + size + ']').addClass('font-panel-list-selected');
 	},
 
 	setupWeights: function(weight) {
-		$('div#jquery-font-panel-list-weights div').removeClass('font-panel-list-selected');
-		$('div#jquery-font-panel-list-weights div').click(function() {
-			$('div#jquery-font-panel-list-weights div').removeClass('font-panel-list-selected');
-			$(this).addClass("font-panel-list-selected");
+		jQuery('div#jquery-font-panel-list-weights div').removeClass('font-panel-list-selected');
+		jQuery('div#jquery-font-panel-list-weights div').click(function() {
+			jQuery('div#jquery-font-panel-list-weights div').removeClass('font-panel-list-selected');
+			jQuery(this).addClass("font-panel-list-selected");
 		});
-		$('div#jquery-font-panel-list-weights div[font-panel-weight=' + weight + ']').addClass('font-panel-list-selected');
+		jQuery('div#jquery-font-panel-list-weights div[font-panel-weight=' + weight + ']').addClass('font-panel-list-selected');
 	},
 
 	setupStyles: function(style) {
-		$('div#jquery-font-panel-list-styles div').removeClass('font-panel-list-selected');
-		$('div#jquery-font-panel-list-styles div').click(function() {
-			$('div#jquery-font-panel-list-styles div').removeClass('font-panel-list-selected');
-			$(this).addClass("font-panel-list-selected");
+		jQuery('div#jquery-font-panel-list-styles div').removeClass('font-panel-list-selected');
+		jQuery('div#jquery-font-panel-list-styles div').click(function() {
+			jQuery('div#jquery-font-panel-list-styles div').removeClass('font-panel-list-selected');
+			jQuery(this).addClass("font-panel-list-selected");
 		});
-		$('div#jquery-font-panel-list-styles div[font-panel-style=' + style + ']').addClass('font-panel-list-selected');
+		jQuery('div#jquery-font-panel-list-styles div[font-panel-style=' + style + ']').addClass('font-panel-list-selected');
 	}
 
 }
 
 jQuery.fn.CustomPanel = function() {
 	jQuery.CustomPanel.init();
-	$(this).click(function() {
+	jQuery(this).click(function() {
 		jQuery.CustomPanel.showPanel(this);
 	});
 }
 
 jQuery.fn.FontPanel = function() {
 	jQuery.FontPanel.init();
-	$(this).click(function() {
+	jQuery(this).click(function() {
 		jQuery.FontPanel.showPanel(this);
 	});
 }
 
 
 saveCustomizedTheme = function() {
-	$("#customize-form").attr('target', '_self');
-	$("#customize-form").get(0).action = $('#saveAction').val();
-	$("#customize-form").get(0).submit();
+	jQuery("#customize-form").attr('target', '_self');
+	jQuery("#customize-form").get(0).action = jQuery('#saveAction').val();
+	jQuery("#customize-form").get(0).submit();
 }
 
 resetCustomizedTheme = function() {
 	if (confirm('<?=$resetMsg?>')) { 
-		$("#customize-form").attr('target', '_self');
-		$("#customize-form").get(0).action = $('#resetAction').val();
-		$("#customize-form").get(0).submit();
+		jQuery("#customize-form").attr('target', '_self');
+		jQuery("#customize-form").get(0).action = jQuery('#resetAction').val();
+		jQuery("#customize-form").get(0).submit();
 	}
 }
 
-$(function() {
-	$('div.ccm-theme-style-font').FontPanel();
-	$('div.ccm-theme-style-custom').CustomPanel();
-	$('div.ccm-theme-style-color').each(function() {
-		var thisID = $(this).attr('id');
-		var col = $(this).children(0).attr('hex-color');
-		$(this).ColorPicker({
+jQuery(function() {
+	jQuery('div.ccm-theme-style-font').FontPanel();
+	jQuery('div.ccm-theme-style-custom').CustomPanel();
+	jQuery('div.ccm-theme-style-color').each(function() {
+		var thisID = jQuery(this).attr('id');
+		var col = jQuery(this).children(0).attr('hex-color');
+		jQuery(this).ColorPicker({
 			color: col,
 			onSubmit: function(hsb, hex, rgb, cal) {
-				$('input#input_' + thisID).val('#' + hex);
-				$('div#' + thisID + ' div').css('backgroundColor', '#' + hex);
-				$("#customize-form").get(0).submit()
+				jQuery('input#input_' + thisID).val('#' + hex);
+				jQuery('div#' + thisID + ' div').css('backgroundColor', '#' + hex);
+				jQuery("#customize-form").get(0).submit()
 				cal.hide();
 			}
 		});

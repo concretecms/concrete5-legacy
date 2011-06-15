@@ -37,9 +37,9 @@
 		function applyToAll() {
 			if (confirm("<?=$applyMSG?>")) {
 				document.forms['ccmBlockPermissionForm'].action = document.forms['ccmBlockPermissionForm'].action + "&applyToAll=1";
-				$('#ccmBlockPermissionForm').submit();
+				jQuery('#ccmBlockPermissionForm').submit();
 			} else {
-				$('#ccmBlockPermissionForm').submit();
+				jQuery('#ccmBlockPermissionForm').submit();
 			}
 		}
 		<? } ?>
@@ -107,7 +107,7 @@
 			ccm_setupGridStriping('ccmPermissionsTableBlock');
 		}
 	
-	$(function() {
+	jQuery(function() {
 		ccm_setupGridStriping('ccmPermissionsTableBlock');
 	});
 	</script>
@@ -181,7 +181,7 @@
 		<input type="hidden" name="cbOverrideAreaPermissions" value="1" id="cbOverrideAreaPermissions">
 
 		<div class="ccm-buttons">
-		<a href="javascript:void(0)" onclick="<? if ($numChildren) { ?>applyToAll();<? } else { ?>$('#ccmBlockPermissionForm').submit()<? } ?>" class="ccm-button-right accept"><span><?=t('Update')?></span></a>
+		<a href="javascript:void(0)" onclick="<? if ($numChildren) { ?>applyToAll();<? } else { ?>jQuery('#ccmBlockPermissionForm').submit()<? } ?>" class="ccm-button-right accept"><span><?=t('Update')?></span></a>
 		<a href="javascript:void(0)" class="ccm-button-left cancel ccm-dialog-close"><span><em class="ccm-button-close"><?=t('Cancel')?></em></span></a>
 		</div>
 <?
@@ -191,9 +191,9 @@ $valt->output();
 </form>
 
 <script type="text/javascript">
-$(function() {
-	$('#ccmBlockPermissionForm').each(function() {
-		ccm_setupBlockForm($(this), '<?=$b->getBlockID()?>', 'edit');
+jQuery(function() {
+	jQuery('#ccmBlockPermissionForm').each(function() {
+		ccm_setupBlockForm(jQuery(this), '<?=$b->getBlockID()?>', 'edit');
 	});
 });
 </script>

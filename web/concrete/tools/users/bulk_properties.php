@@ -132,7 +132,7 @@ foreach($attribs as $at) {
 </div>
 
 <script type="text/javascript">
-$(function() { 
+jQuery(function() { 
 	ccm_activateEditablePropertiesGrid();  
 });
 </script>

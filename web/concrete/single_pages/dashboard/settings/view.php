@@ -201,8 +201,8 @@ foreach($types as $at) { ?>
 </form>
 
 <script type="text/javascript">
-$(document).ready(function() {
-	$('#ccm-dashboard-environment-info').load('<?php echo $this->action('get_environment_info')?>');	
+jQuery(document).ready(function() {
+	jQuery('#ccm-dashboard-environment-info').load('<?php echo $this->action('get_environment_info')?>');	
 });
 </script>
 
@@ -366,12 +366,12 @@ if ($tp->canAccessTaskPermissions()) { ?>
 
 <script type="text/javascript">
 saveMaintenanceMode = function() {
-	if ($('#site-maintenance-mode-enabled').get(0).checked) {
+	if (jQuery('#site-maintenance-mode-enabled').get(0).checked) {
 		if (confirm('<?=t('Are you sure you want to put your site into maintenance mode? This will make it inaccessible to public visitors.')?>')) {
-			$("#maintenance-form").get(0).submit();
+			jQuery("#maintenance-form").get(0).submit();
 		}
 	} else {
-		$("#maintenance-form").get(0).submit();
+		jQuery("#maintenance-form").get(0).submit();
 	}
 }
 </script>
@@ -457,36 +457,36 @@ saveMaintenanceMode = function() {
 <script type="text/javascript">
 
 var saveIpBlacklist = function(){
-	$("form#ipblacklist-form").get(0).submit();	
+	jQuery("form#ipblacklist-form").get(0).submit();	
 }
 
 //jQuery block for non-submit form logic
-$(document).ready(function(){
+jQuery(document).ready(function(){
 	var sParentSelector;
 	sParentSelector = 'form#ipblacklist-form';	
 	//delegate for any clicks to this form
-	$(sParentSelector).bind('click', function(e){
+	jQuery(sParentSelector).bind('click', function(e){
 		//clicks the parent IP checkbox
-		if ( $(e.target).is('input#ip_ban_select_all') ) {
+		if ( jQuery(e.target).is('input#ip_ban_select_all') ) {
 			allIPs(e.target);
 		}
-		else if( $(e.target).is('input#submit-ipblacklist') ) {
+		else if( jQuery(e.target).is('input#submit-ipblacklist') ) {
 			saveIpBlacklist();
 		}
 	});	
 	
-	$(sParentSelector).bind('change', function(e){
-		if ($(e.target).is('select')) {			
-			//$('input[name=submit-ipblacklist]').attr('value',$(':selected',e.target).text());
+	jQuery(sParentSelector).bind('change', function(e){
+		if (jQuery(e.target).is('select')) {			
+			//jQuery('input[name=submit-ipblacklist]').attr('value',jQuery(':selected',e.target).text());
 		}
 	});
 	
 	function allIPs(t){
 		if(t.checked){
-			$('form#ipblacklist-form table input').attr('checked',true);
+			jQuery('form#ipblacklist-form table input').attr('checked',true);
 		}
 		else{
-			$('form#ipblacklist-form table input').attr('checked',false);
+			jQuery('form#ipblacklist-form table input').attr('checked',false);
 		}	
 	}
 });
@@ -589,7 +589,7 @@ $(document).ready(function(){
 			<script>
 			function removeFavIcon(){
 				document.getElementById('remove-existing-favicon').value=1;
-				$('#favicon-form').get(0).submit();
+				jQuery('#favicon-form').get(0).submit();
 			}
 			</script>
 		<? }else{ ?>
@@ -847,42 +847,42 @@ $(document).ready(function(){
 
 	<script>
 		ccm_settingsSetupCacheForm = function() {
-			var obj = $('input[name=ENABLE_CACHE]:checked');
+			var obj = jQuery('input[name=ENABLE_CACHE]:checked');
 			if (obj.val() == 0) {
-				$('div.ccm-cache-settings-full-page input').attr('disabled', true);
-				$('input[name=FULL_PAGE_CACHE_LIFETIME][value=default]').attr('checked', true);
+				jQuery('div.ccm-cache-settings-full-page input').attr('disabled', true);
+				jQuery('input[name=FULL_PAGE_CACHE_LIFETIME][value=default]').attr('checked', true);
 			} else {
-				$('div.ccm-cache-settings-full-page input').attr('disabled', false);
+				jQuery('div.ccm-cache-settings-full-page input').attr('disabled', false);
 			}
-			var obj2 = $('input[name=FULL_PAGE_CACHE_LIFETIME]:checked');
+			var obj2 = jQuery('input[name=FULL_PAGE_CACHE_LIFETIME]:checked');
 			if (obj2.val() == 'custom') {
-				$('input[name=FULL_PAGE_CACHE_LIFETIME_CUSTOM]').attr('disabled', false);
+				jQuery('input[name=FULL_PAGE_CACHE_LIFETIME_CUSTOM]').attr('disabled', false);
 			} else {
-				$('input[name=FULL_PAGE_CACHE_LIFETIME_CUSTOM]').attr('disabled', true);
-				$('input[name=FULL_PAGE_CACHE_LIFETIME_CUSTOM]').val('');
+				jQuery('input[name=FULL_PAGE_CACHE_LIFETIME_CUSTOM]').attr('disabled', true);
+				jQuery('input[name=FULL_PAGE_CACHE_LIFETIME_CUSTOM]').val('');
 			}			
 		}
 		
-		$(function(){ 
-			$("input[name='CONTENTS_TXT_EDITOR_MODE']").each(function(i,el){ 
+		jQuery(function(){ 
+			jQuery("input[name='CONTENTS_TXT_EDITOR_MODE']").each(function(i,el){ 
 				el.onchange=function(){isTxtEditorModeCustom();}
 			})	 	
-			$("input[name=ENABLE_CACHE]").click(function() {
+			jQuery("input[name=ENABLE_CACHE]").click(function() {
 				ccm_settingsSetupCacheForm();
 			});
-			$("input[name=FULL_PAGE_CACHE_LIFETIME]").click(function() {
+			jQuery("input[name=FULL_PAGE_CACHE_LIFETIME]").click(function() {
 				ccm_settingsSetupCacheForm();
 			});
-			$("input[name=FULL_PAGE_CACHE_LIFETIME][value=custom]").click(function() {
-				$('input[name=FULL_PAGE_CACHE_LIFETIME_CUSTOM]').get(0).focus();
+			jQuery("input[name=FULL_PAGE_CACHE_LIFETIME][value=custom]").click(function() {
+				jQuery('input[name=FULL_PAGE_CACHE_LIFETIME_CUSTOM]').get(0).focus();
 			});
 			ccm_settingsSetupCacheForm();
 		});
 		function isTxtEditorModeCustom(){
-			if($("input[name='CONTENTS_TXT_EDITOR_MODE']:checked").val()=='CUSTOM'){
-				$('#cstmEditorTxtAreaWrap').css('display','block');
+			if(jQuery("input[name='CONTENTS_TXT_EDITOR_MODE']:checked").val()=='CUSTOM'){
+				jQuery('#cstmEditorTxtAreaWrap').css('display','block');
 			}else{
-				$('#cstmEditorTxtAreaWrap').css('display','none');
+				jQuery('#cstmEditorTxtAreaWrap').css('display','none');
 			}
 		}
 	</script>

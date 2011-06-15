@@ -5,11 +5,11 @@
 </style>
 
 <script type="text/javascript">
-$("select#cParentIDLocation").change(function() {
-	if ($(this).attr("value") == 'OTHER') {
-		$("div.ccm-page-list-page-other").show();
+jQuery("select#cParentIDLocation").change(function() {
+	if (jQuery(this).attr("value") == 'OTHER') {
+		jQuery("div.ccm-page-list-page-other").show();
 	} else {
-		$("div.ccm-page-list-page-other").hide();
+		jQuery("div.ccm-page-list-page-other").hide();
 	}
 });
 </script>

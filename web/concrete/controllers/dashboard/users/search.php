@@ -8,7 +8,7 @@ class DashboardUsersSearchController extends Controller {
 		$html = Loader::helper('html');
 		$form = Loader::helper('form');
 		$this->set('form', $form);
-		$this->addHeaderItem('<script type="text/javascript">$(function() { ccm_setupAdvancedSearch(\'user\'); });</script>');
+		$this->addHeaderItem('<script type="text/javascript">jQuery(function() { ccm_setupAdvancedSearch(\'user\'); });</script>');
 		$userList = $this->getRequestedSearchResults();
 		$users = $userList->getPage();
 				

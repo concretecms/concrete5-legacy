@@ -50,7 +50,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			function ccm_triggerSelectUser(uID, uName) {
 				rowValue = "uID:" + uID;
 				rowText = uName;
-				if ($("#_row_uID_" + uID).length > 0) {
+				if (jQuery("#_row_uID_" + uID).length > 0) {
 					return false;
 				}			
 	
@@ -113,7 +113,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 				var rowText = gName;
 				var rowValue = "gID:" + gID;
 				
-				if ($("#_row_gID_" + gID).length > 0) {
+				if (jQuery("#_row_gID_" + gID).length > 0) {
 					return false;
 				}
 				
@@ -173,10 +173,10 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			}
 			
 			function removePermissionRow(rowID, origText) {
-				$("." + rowID + " input[type=checkbox]").each(function() {
+				jQuery("." + rowID + " input[type=checkbox]").each(function() {
 					this.checked = false;
 				});
-				$("." + rowID).hide();
+				jQuery("." + rowID).hide();
 	
 			  if (rowID && origText) {
 				  select = document.getElementById("groupSelect");
@@ -324,9 +324,9 @@ defined('C5_EXECUTE') or die("Access Denied.");
 
 	<div class="ccm-buttons">
 	<? if ($a->overrideCollectionPermissions()) { ?>
-		<a href="javascript:void(0)" onclick="$('#aRevertToPagePermissions').val(1);$('form[name=permissionForm]').get(0).submit()" class="ccm-button-left cancel"><span><?=t('Revert to Page Permissions')?></span></a>
+		<a href="javascript:void(0)" onclick="jQuery('#aRevertToPagePermissions').val(1);jQuery('form[name=permissionForm]').get(0).submit()" class="ccm-button-left cancel"><span><?=t('Revert to Page Permissions')?></span></a>
 	<? } ?>
-		<a href="javascript:void(0)" onclick="$('form[name=permissionForm]').get(0).submit()" class="ccm-button-right accept"><span><?=t('Update')?></span></a>
+		<a href="javascript:void(0)" onclick="jQuery('form[name=permissionForm]').get(0).submit()" class="ccm-button-right accept"><span><?=t('Update')?></span></a>
 	</div>
 	<div class="ccm-spacer">&nbsp;</div> 
 

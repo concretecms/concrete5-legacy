@@ -60,12 +60,12 @@ class FormRatingHelper {
 		</div>
 		<div class="ccm-spacer">&nbsp;</div>
 		<script type="text/javascript">
-		$(function() {
-			$('input[name={$field}]').rating();
-			$('input[name={$field}-display]').rating();
-			$('.ccm-rating-display').hover(function() {
-				$('.ccm-rating-display').hide();
-				$('.ccm-rating-active').show();
+		jQuery(function() {
+			jQuery('input[name={$field}]').rating();
+			jQuery('input[name={$field}-display]').rating();
+			jQuery('.ccm-rating-display').hover(function() {
+				jQuery('.ccm-rating-display').hide();
+				jQuery('.ccm-rating-active').show();
 			}, function() {
 			
 			});

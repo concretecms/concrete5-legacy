@@ -48,14 +48,14 @@ foreach ($gArray as $g) {
 
 <div class="ccm-buttons">
 <!--	<a href="javascript:void(0)" onclick="ccm_hidePane()" class="ccm-button-left cancel"><span><em class="ccm-button-close">Cancel</em></span></a>//-->
-	<a href="javascript:void(0)" onclick="$('form[name=ccmPermissionsForm]').submit()" class="ccm-button-right accept"><span><?=t('Save')?></span></a>
+	<a href="javascript:void(0)" onclick="jQuery('form[name=ccmPermissionsForm]').submit()" class="ccm-button-right accept"><span><?=t('Save')?></span></a>
 </div>	
 <input type="hidden" name="update_permissions" value="1" class="accept">
 <input type="hidden" name="processCollection" value="1">
 
 <script type="text/javascript">
-$(function() {
-	$("#ccmPermissionsForm").ajaxForm({
+jQuery(function() {
+	jQuery("#ccmPermissionsForm").ajaxForm({
 		type: 'POST',
 		iframe: true,
 		beforeSubmit: function() {

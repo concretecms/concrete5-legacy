@@ -116,8 +116,8 @@
 		ccm_alSelectPermissionsEntity('gID', gID, gName);
 	}
 	
-	$(function() {	
-		$("#ug-selector").dialog();	
+	jQuery(function() {	
+		jQuery("#ug-selector").dialog();	
 		ccm_alActivateFilePermissionsSelector();	
 	});
 	

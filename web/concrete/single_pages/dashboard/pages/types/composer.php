@@ -162,33 +162,33 @@ if ($cap->canAccessComposer()) { ?>
 <script type="text/javascript">
 ccm_setupComposerFields = function() {
 	
-	if ($("input[name=ctIncludeInComposer]").attr('checked')) {
-		$(".row-composer input, .row-composer select").attr('disabled', '');
+	if (jQuery("input[name=ctIncludeInComposer]").attr('checked')) {
+		jQuery(".row-composer input, .row-composer select").attr('disabled', '');
 	} else {
-		$(".row-composer input, .row-composer select").attr('disabled', 'true');
+		jQuery(".row-composer input, .row-composer select").attr('disabled', 'true');
 	}
-	var val = $('input[name=ctComposerPublishPageMethod]:checked').val();
+	var val = jQuery('input[name=ctComposerPublishPageMethod]:checked').val();
 	switch(val) {
 		case 'PAGE_TYPE':
-			$("#ccm-composer-choose-parent-page-type").show();
-			$("#ccm-composer-choose-parent").hide();
+			jQuery("#ccm-composer-choose-parent-page-type").show();
+			jQuery("#ccm-composer-choose-parent").hide();
 			break;
 		case 'PARENT':
-			$("#ccm-composer-choose-parent-page-type").hide();
-			$("#ccm-composer-choose-parent").show();
+			jQuery("#ccm-composer-choose-parent-page-type").hide();
+			jQuery("#ccm-composer-choose-parent").show();
 			break;
 		default:
-			$("#ccm-composer-choose-parent-page-type").hide();
-			$("#ccm-composer-choose-parent").hide();
+			jQuery("#ccm-composer-choose-parent-page-type").hide();
+			jQuery("#ccm-composer-choose-parent").hide();
 		break;
 	}
 	
-	$("div.ccm-composer-content-item-list").sortable({
+	jQuery("div.ccm-composer-content-item-list").sortable({
 		handle: 'img.ccm-composer-content-item-icon',
 		cursor: 'move',
 		opacity: 0.5,
 		stop: function() {
-			var ualist = $(this).sortable('serialize');
+			var ualist = jQuery(this).sortable('serialize');
 			$.post('<?=$this->action("save_content_items", $ct->getCollectionTypeID())?>', ualist, function(r) {
 
 			});
@@ -197,8 +197,8 @@ ccm_setupComposerFields = function() {
 	});
 }
 
-$(function() {
-	$("input[name=ctIncludeInComposer], input[name=ctComposerPublishPageMethod]").click(function() {
+jQuery(function() {
+	jQuery("input[name=ctIncludeInComposer], input[name=ctComposerPublishPageMethod]").click(function() {
 		ccm_setupComposerFields();
 	});
 	ccm_setupComposerFields();

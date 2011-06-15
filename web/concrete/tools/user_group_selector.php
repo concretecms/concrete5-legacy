@@ -19,12 +19,12 @@ if (!$tp->canAccessUserSearch() && !$tp->canAccessGroupSearch()) {
 <script type="text/javascript">
 var ccm_ugActiveTab = "ccm-select-group";
 
-$("#ccm-ug-tabs a").click(function() {
-	$("li.ccm-nav-active").removeClass('ccm-nav-active');
-	$("#" + ccm_ugActiveTab + "-tab").hide();
-	ccm_ugActiveTab = $(this).attr('id');
-	$(this).parent().addClass("ccm-nav-active");
-	$("#" + ccm_ugActiveTab + "-tab").show();
+jQuery("#ccm-ug-tabs a").click(function() {
+	jQuery("li.ccm-nav-active").removeClass('ccm-nav-active');
+	jQuery("#" + ccm_ugActiveTab + "-tab").hide();
+	ccm_ugActiveTab = jQuery(this).attr('id');
+	jQuery(this).parent().addClass("ccm-nav-active");
+	jQuery("#" + ccm_ugActiveTab + "-tab").show();
 });
 
 </script>

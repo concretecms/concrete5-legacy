@@ -35,14 +35,14 @@ $saveMsg = t('Save permissions first.');
 	<script type="text/javascript">
 		var activeSlate = "permissions";	
 		function togglePermissionsGrid(value, doReset) {
-			$("td." + activeSlate).hide();
-			$("td." + value).show();
-			$("th." + activeSlate).hide();
-			$("th." + value).show();
+			jQuery("td." + activeSlate).hide();
+			jQuery("td." + value).show();
+			jQuery("th." + activeSlate).hide();
+			jQuery("th." + value).show();
 			
 			activeSlate = value;
 			if (doReset) {
-				$("#toggleGrid").get(0).selectedIndex = 0;
+				jQuery("#toggleGrid").get(0).selectedIndex = 0;
 			}
 		}
 		
@@ -280,40 +280,40 @@ $saveMsg = t('Save permissions first.');
 				
 			<div class="ccm-buttons">
 <!--				<a href="javascript:void(0)" onclick="ccm_hidePane()" class="ccm-button-left cancel"><span><em class="ccm-button-close">Cancel</em></span></a>//-->
-				<a href="javascript:void(0)" onclick="$('form[name=ccmPermissionsForm]').submit()" class="ccm-button-right accept"><span><?=t('Save')?></span></a>
+				<a href="javascript:void(0)" onclick="jQuery('form[name=ccmPermissionsForm]').submit()" class="ccm-button-right accept"><span><?=t('Save')?></span></a>
 			</div>	
 			<input type="hidden" name="update_permissions" value="1" class="accept">
 			<input type="hidden" name="processCollection" value="1">
 
 <script type="text/javascript">
 ccm_deactivatePermissionsTable = function() {
-	$("#ccmPermissionsTablePage input, #ccmPermissionsTablePage select").each(function(i) {
-		$(this).get(0).disabled = true;
+	jQuery("#ccmPermissionsTablePage input, #ccmPermissionsTablePage select").each(function(i) {
+		jQuery(this).get(0).disabled = true;
 	});
-	$("#ccm-page-permissions-select-user-group").hide();
+	jQuery("#ccm-page-permissions-select-user-group").hide();
 }
 
 ccm_activatePermissionsTable = function() {
-	$("#ccmPermissionsTablePage input, #ccmPermissionsTablePage select").each(function(i) {
-		$(this).get(0).disabled = false;
+	jQuery("#ccmPermissionsTablePage input, #ccmPermissionsTablePage select").each(function(i) {
+		jQuery(this).get(0).disabled = false;
 	});
-	$("input.ccm-activate-date-time").each(function() {
-		var thisID = $(this).attr('ccm-date-time-id');
-		if (!$(this).get(0).checked) {
-			$("#" + thisID + "_dw input").each(function() {
-				$(this).get(0).disabled = true;
+	jQuery("input.ccm-activate-date-time").each(function() {
+		var thisID = jQuery(this).attr('ccm-date-time-id');
+		if (!jQuery(this).get(0).checked) {
+			jQuery("#" + thisID + "_dw input").each(function() {
+				jQuery(this).get(0).disabled = true;
 			});
-			$("#" + thisID + "_tw select").each(function() {
-				$(this).get(0).disabled = true;
+			jQuery("#" + thisID + "_tw select").each(function() {
+				jQuery(this).get(0).disabled = true;
 			});		}
 	});
-	$("#ccm-page-permissions-select-user-group").show();
+	jQuery("#ccm-page-permissions-select-user-group").show();
 }
-$(function() {	
+jQuery(function() {	
 	<? if (!$isManual) { ?>
 		ccm_deactivatePermissionsTable();
 	<? } ?>
-	$("#ccmPermissionsForm").ajaxForm({
+	jQuery("#ccmPermissionsForm").ajaxForm({
 		type: 'POST',
 		iframe: true,
 		beforeSubmit: function() {
@@ -338,8 +338,8 @@ $(function() {
 			ccmAlert.hud(ccmi18n_sitemap.setPagePermissionsMsg, 2000, 'success', ccmi18n_sitemap.setPagePermissions);
 		}
 	});
-	$("#ccmToggleInheritance").change(function() {
-		if ($(this).val() == 'OVERRIDE') {
+	jQuery("#ccmToggleInheritance").change(function() {
+		if (jQuery(this).val() == 'OVERRIDE') {
 			ccm_activatePermissionsTable();
 		} else {
 			ccm_deactivatePermissionsTable();

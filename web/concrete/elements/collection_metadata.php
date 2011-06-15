@@ -17,52 +17,52 @@ if ($cp->canAdminPage()) {
 	<script type="text/javascript"> 
 		
 		function ccm_triggerSelectUser(uID, uName) {
-			$('#ccm-uID').val(uID);
-			$('#ccm-uName').html(uName);
+			jQuery('#ccm-uID').val(uID);
+			jQuery('#ccm-uName').html(uName);
 		}
 		
 		
 		var ccm_activePropertiesTab = "ccm-properties-standard";
 		
-		$("#ccm-properties-tabs a").click(function() {
-			$("li.ccm-nav-active").removeClass('ccm-nav-active');
-			$("#" + ccm_activePropertiesTab + "-tab").hide();
-			ccm_activePropertiesTab = $(this).attr('id');
-			$(this).parent().addClass("ccm-nav-active");
-			$("#" + ccm_activePropertiesTab + "-tab").show();
+		jQuery("#ccm-properties-tabs a").click(function() {
+			jQuery("li.ccm-nav-active").removeClass('ccm-nav-active');
+			jQuery("#" + ccm_activePropertiesTab + "-tab").hide();
+			ccm_activePropertiesTab = jQuery(this).attr('id');
+			jQuery(this).parent().addClass("ccm-nav-active");
+			jQuery("#" + ccm_activePropertiesTab + "-tab").show();
 		});
 		
 		ccm_settingsSetupCacheForm = function() {
-			var obj = $('input[name=cCacheFullPageContent]:checked');
+			var obj = jQuery('input[name=cCacheFullPageContent]:checked');
 			if (obj.attr('enable-cache') == 1) {
-				$('div.ccm-properties-cache-lifetime input').attr('disabled', false);
+				jQuery('div.ccm-properties-cache-lifetime input').attr('disabled', false);
 			} else {
-				$('div.ccm-properties-cache-lifetime input').attr('disabled', true);
-				$('input[name=cCacheFullPageContentOverrideLifetime][value=0]').attr('checked', true);
+				jQuery('div.ccm-properties-cache-lifetime input').attr('disabled', true);
+				jQuery('input[name=cCacheFullPageContentOverrideLifetime][value=0]').attr('checked', true);
 			}
 
-			var obj2 = $('input[name=cCacheFullPageContentOverrideLifetime]:checked');
+			var obj2 = jQuery('input[name=cCacheFullPageContentOverrideLifetime]:checked');
 			if (obj2.val() == 'custom') {
-				$('input[name=cCacheFullPageContentLifetimeCustom]').attr('disabled', false);
+				jQuery('input[name=cCacheFullPageContentLifetimeCustom]').attr('disabled', false);
 			} else {
-				$('input[name=cCacheFullPageContentLifetimeCustom]').attr('disabled', true);
-				$('input[name=cCacheFullPageContentLifetimeCustom]').val('');
+				jQuery('input[name=cCacheFullPageContentLifetimeCustom]').attr('disabled', true);
+				jQuery('input[name=cCacheFullPageContentLifetimeCustom]').val('');
 			}
 
 		}
 		
-		$(function() {
-			$("input[name=cCacheFullPageContent]").click(function() {
+		jQuery(function() {
+			jQuery("input[name=cCacheFullPageContent]").click(function() {
 				ccm_settingsSetupCacheForm();
 			});
-			$("input[name=cCacheFullPageContentOverrideLifetime]").click(function() {
+			jQuery("input[name=cCacheFullPageContentOverrideLifetime]").click(function() {
 				ccm_settingsSetupCacheForm();
 			});
-			$("input[name=cCacheFullPageContentOverrideLifetime][value=custom]").click(function() {
-				$('input[name=cCacheFullPageContentLifetimeCustom]').get(0).focus();
+			jQuery("input[name=cCacheFullPageContentOverrideLifetime][value=custom]").click(function() {
+				jQuery('input[name=cCacheFullPageContentLifetimeCustom]').get(0).focus();
 			});
 			ccm_settingsSetupCacheForm();
-			$("#ccmMetadataForm").ajaxForm({
+			jQuery("#ccmMetadataForm").ajaxForm({
 				type: 'POST',
 				iframe: true,
 				beforeSubmit: function() {
@@ -248,5 +248,5 @@ if ($cp->canAdminPage()) {
 </div>
 	<div class="ccm-buttons">
 <!--	<a href="javascript:void(0)" onclick="ccm_hidePane()" class="ccm-button-left cancel"><span><em class="ccm-button-close">Cancel</em></span></a>//-->
-	<a href="javascript:void(0)" onclick="$('#ccmMetadataForm').submit()" class="ccm-button-right accept"><span><?=t('Save')?></span></a>
+	<a href="javascript:void(0)" onclick="jQuery('#ccmMetadataForm').submit()" class="ccm-button-right accept"><span><?=t('Save')?></span></a>
 	</div>

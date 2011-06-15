@@ -36,7 +36,7 @@ if ($c->isAlias() && $c->getCollectionPointerExternalLink() != '') {
 
 
 	<div class="ccm-buttons">
-	<a href="javascript:void(0)" onclick="$('#ccmEditLink').get(0).submit()" class="ccm-button-right accept"><span><?=('Save')?></span></a>
+	<a href="javascript:void(0)" onclick="jQuery('#ccmEditLink').get(0).submit()" class="ccm-button-right accept"><span><?=('Save')?></span></a>
 	</div>	
 	<input type="hidden" name="update_external" value="1" />
 	<input type="hidden" name="processCollection" value="1">

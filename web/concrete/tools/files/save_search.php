@@ -44,20 +44,20 @@ if ($_POST['task'] == 'save_search') {
 	
 <script type="text/javascript">
 ccm_alSaveSearch = function(form) {
-	if ($("input[name=fsName]").val() == '') {
+	if (jQuery("input[name=fsName]").val() == '') {
 		alert('<?=t("You must enter a valid name")?>');
 	} else {
 		jQuery.fn.dialog.showLoader();
-		$(form).ajaxSubmit(function(r) { 
+		jQuery(form).ajaxSubmit(function(r) { 
 			jQuery.fn.dialog.hideLoader(); 
 			jQuery.fn.dialog.closeTop();
 			if (ccm_alLaunchType['<?=$_REQUEST['searchInstance']?>'] == 'DASHBOARD') {
 				window.location.href = "<?=View::url('/dashboard/files/search')?>?fssID=" + r;			
 			} else {
-				var url = $("div#ccm-<?=$_REQUEST['searchInstance']?>-overlay-wrapper input[name=dialogAction]").val() + "&refreshDialog=1&fssID=" + r;
+				var url = jQuery("div#ccm-<?=$_REQUEST['searchInstance']?>-overlay-wrapper input[name=dialogAction]").val() + "&refreshDialog=1&fssID=" + r;
 				$.get(url, function(resp) {
 					jQuery.fn.dialog.hideLoader();
-					$("div#ccm-<?=$_REQUEST['searchInstance']?>-overlay-wrapper").html(resp);
+					jQuery("div#ccm-<?=$_REQUEST['searchInstance']?>-overlay-wrapper").html(resp);
 				});		
 			}
 		});

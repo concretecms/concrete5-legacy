@@ -19,7 +19,7 @@ if (ENABLE_MARKETPLACE_SUPPORT) {
 <script type="text/javascript">
 ccm_marketplaceRefreshInstalledThemes = function() {
 	jQuery.fn.dialog.closeTop();
-	$("a#ccm-nav-design").click();
+	jQuery("a#ccm-nav-design").click();
 }
 </script>
 

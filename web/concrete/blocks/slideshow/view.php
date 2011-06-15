@@ -8,7 +8,7 @@ var ccmSlideShowHelper<?=intval($bID)?> = {
 	imgNum:0,
 	
 	init:function(){
-		this.displayWrap=$('#ccm-SlideshowBlock-display'+this.bID); 
+		this.displayWrap=jQuery('#ccm-SlideshowBlock-display'+this.bID); 
 		if(this.imgInfos.length==0){
 			//alert('There are no images in this slideshow');
 			return false;
@@ -68,7 +68,7 @@ var ccmSlideShowHelper<?=intval($bID)?> = {
 		}
 		el.style.display='none';
 		this.displayWrap.append(el);
-		var jqEl=$(el);
+		var jqEl=jQuery(el);
 		this.imgEls.push(jqEl);
 	},
 	imgClick:function(linkURL){
@@ -97,7 +97,7 @@ var ccmSlideShowHelper<?=intval($bID)?> = {
 		} ?>
 	]
 }
-$(function(){ccmSlideShowHelper<?=intval($bID)?>.init();}); 
+jQuery(function(){ccmSlideShowHelper<?=intval($bID)?>.init();}); 
 //]]>
 </script>
 

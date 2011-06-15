@@ -9,13 +9,13 @@
 	</div>
 
 <script type="text/javascript">
-$(function() {
-	$("div.ccm-attributes-list").sortable({
+jQuery(function() {
+	jQuery("div.ccm-attributes-list").sortable({
 		handle: 'img.ccm-attribute-icon',
 		cursor: 'move',
 		opacity: 0.5,
 		stop: function() {
-			var ualist = $(this).sortable('serialize');
+			var ualist = jQuery(this).sortable('serialize');
 			$.post('<?=REL_DIR_FILES_TOOLS_REQUIRED?>/dashboard/user_attributes_update.php', ualist, function(r) {
 
 			});

@@ -61,16 +61,16 @@ print $b1;
 <script type="text/javascript">
 ccm_submitCustomizeSearchColumnsForm = function() {
 	ccm_deactivateSearchResults('<?=$searchInstance?>');
-	$("#ccm-<?=$searchInstance?>-customize-search-columns-form").ajaxSubmit(function(resp) {
+	jQuery("#ccm-<?=$searchInstance?>-customize-search-columns-form").ajaxSubmit(function(resp) {
 		jQuery.fn.dialog.closeTop();
-		$("#ccm-<?=$searchInstance?>-advanced-search").ajaxSubmit(function(resp) {
+		jQuery("#ccm-<?=$searchInstance?>-advanced-search").ajaxSubmit(function(resp) {
 			ccm_parseAdvancedSearchResponse(resp, '<?=$searchInstance?>');
 		});
 	});
 }
 
-$(function() {
-	$('#ccm-<?=$searchInstance?>-customize-search-columns-form').submit(function() {
+jQuery(function() {
+	jQuery('#ccm-<?=$searchInstance?>-customize-search-columns-form').submit(function() {
 		ccm_submitCustomizeSearchColumnsForm();
 	});
 });

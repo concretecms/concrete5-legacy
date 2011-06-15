@@ -19,11 +19,11 @@ if (isset($message)) { ?>
 
 
 activateInstallForm = function() {
-	$("#ccm-install-form input").each(function() {
-		$(this).attr('disabled', false);
+	jQuery("#ccm-install-form input").each(function() {
+		jQuery(this).attr('disabled', false);
 	});
-	$('#ccm-form-intro').html('<?=$introMsg?>');
-	$("#ccm-form-intro").removeClass('ccm-error');
+	jQuery('#ccm-form-intro').html('<?=$introMsg?>');
+	jQuery("#ccm-form-intro").removeClass('ccm-error');
 }
 
 <? if ($this->controller->passedRequiredItems()) { ?>
@@ -33,31 +33,31 @@ activateInstallForm = function() {
 <? } ?>
 
 
-$(function() {
-	$("a.ccm-install-tooltip").click(function() {
-		$(this).siblings('.ccm-install-info').show();
+jQuery(function() {
+	jQuery("a.ccm-install-tooltip").click(function() {
+		jQuery(this).siblings('.ccm-install-info').show();
 	});
-	$("#ccm-test-js").removeClass('fail');
-	$("#ccm-test-js").addClass('passed');
-	$("#ccm-test-urls").ajaxError(function(event, request, settings) {
-		$(this).removeClass('loading');
-		$(this).addClass('fail');
+	jQuery("#ccm-test-js").removeClass('fail');
+	jQuery("#ccm-test-js").addClass('passed');
+	jQuery("#ccm-test-urls").ajaxError(function(event, request, settings) {
+		jQuery(this).removeClass('loading');
+		jQuery(this).addClass('fail');
 	});
 	$.getJSON('<?=$this->url("/install", "test_url", "20", "20")?>', function(json) {
 		// test url takes two numbers and adds them together. Basically we just need to make sure that
 		// our url() syntax works - we do this by sending a test url call to the server when we're certain 
 		// of what the output will be
 		if (json.response == 40) {
-			$("#ccm-test-urls").removeClass('loading');
-			$("#ccm-test-urls").addClass('passed');
+			jQuery("#ccm-test-urls").removeClass('loading');
+			jQuery("#ccm-test-urls").addClass('passed');
 			
 			// now we check the other tests
 			if (showFormOnTestCompletion) {
 				activateInstallForm();
 			}
 		} else {
-			$("#ccm-test-urls").removeClass('loading');
-			$("#ccm-test-urls").addClass('fail');
+			jQuery("#ccm-test-urls").removeClass('loading');
+			jQuery("#ccm-test-urls").addClass('fail');
 		}
 	});
 	

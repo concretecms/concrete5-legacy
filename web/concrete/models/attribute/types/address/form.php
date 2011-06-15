@@ -66,7 +66,7 @@ $countries = array_merge(array('' => t('Choose Country')), $countries);
 
 <script type="text/javascript">
 //<![CDATA[
-$(function() {
+jQuery(function() {
 	ccm_setupAttributeTypeAddressSetupStateProvinceSelector('ccm-attribute-address-<?=$key->getAttributeKeyID()?>');
 });
 //]]>

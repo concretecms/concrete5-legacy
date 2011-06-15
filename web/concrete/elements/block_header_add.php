@@ -31,9 +31,9 @@ if (is_array($headerItems[$identifier])) {
 }
 ?>
 
-$(function() {
-	$('#ccm-block-form').each(function() {
-		ccm_setupBlockForm($(this), false, 'add');
+jQuery(function() {
+	jQuery('#ccm-block-form').each(function() {
+		ccm_setupBlockForm(jQuery(this), false, 'add');
 	});
 });
 

@@ -40,7 +40,7 @@ $this->addHeaderItem($html->javascript('jquery.colorpicker.js'));
 if (ACTIVE_LOCALE != 'en') {
 	$dlocale = str_replace('_', '-', ACTIVE_LOCALE);
 	$this->addHeaderItem($html->javascript('i18n/ui.datepicker-' . $dlocale . '.js'));
-	$this->addHeaderItem('<script type="text/javascript">$(function() { jQuery.datepicker.setDefaults({dateFormat: \'yy-mm-dd\'}); });</script>');
+	$this->addHeaderItem('<script type="text/javascript">jQuery(function() { jQuery.datepicker.setDefaults({dateFormat: \'yy-mm-dd\'}); });</script>');
 }
 
 $this->addHeaderItem($html->javascript('ccm.dialog.js'));
