@@ -53,7 +53,7 @@ function ccm_updateMoreThemesTab() {
 	if (!ccm_themesLoaded) {
         jQuery("#ccm-more-themes-interface-tab").html('<div style="height: 204px">&nbsp;<\/div>');
 		jQuery.fn.dialog.showLoader();
-		jQuery.ajax({
+		$.ajax({
 			url: CCM_TOOLS_PATH + '/marketplace/refresh_theme',
 			type: 'POST',
 			data: 'cID=<?=$c->getCollectionID()?>',

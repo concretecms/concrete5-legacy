@@ -8,7 +8,7 @@ function confirmDelete(strFn) {
    //   jQuery('body').append(jQuery('#confirmDelete'+dNum)); 
    jQuery('#confirmDelete').clone().attr('id', 'confirmDelete'+dNum).appendTo('body');
    var alink = jQuery('#confirmDelete' + dNum + ' input[name=backup_file]').val(strFn); 
-   confirmdlg = jQuery.fn.dialog.open({
+   confirmdlg = $.fn.dialog.open({
             title: 'Are you sure?',
             'element': jQuery('#confirmDelete' + dNum), 
             width: 300,
@@ -25,7 +25,7 @@ function confirmRestore(strFn) {
    jQuery('#confirmRestore').clone().attr('id', 'confirmRestore'+rNum).appendTo('body');
    var alink = jQuery('#confirmRestore' + rNum + ' input[name=backup_file]').val(strFn); 
    jQuery('#confirmRestore' + rNum + ' .confirmActionBtn a').attr('href',alink); 
-   confirmdlg = jQuery.fn.dialog.open({
+   confirmdlg = $.fn.dialog.open({
             title: 'Are you sure?',
             'element': jQuery('#confirmRestore' + rNum), 
             width: 300,
@@ -43,15 +43,15 @@ jQuery(document).ready(function () {
    });
 
 
-   if (jQuery.cookie('useEncryption') == "1" ) {
+   if ($.cookie('useEncryption') == "1" ) {
       jQuery('#useEncryption').attr('checked','checked');
    }
 
    jQuery('#useEncryption').change(function() {
       if (jQuery('#useEncryption').is(':checked')) {
-         jQuery.cookie('useEncryption','1');
+         $.cookie('useEncryption','1');
       } else {
-         jQuery.cookie('useEncryption','0');
+         $.cookie('useEncryption','0');
 
       }
    }); 
@@ -65,7 +65,7 @@ jQuery(document).ready(function () {
 <div class="ccm-buttons">
 <form method="post" action="<?=$this->action('delete_backup')?>">
 <input type="hidden" name="backup_file" value="" />
-<?=$ifHelper->button_js(t('Cancel'),"jQuery.fn.dialog.close(0)", 'left');?>
+<?=$ifHelper->button_js(t('Cancel'),"$.fn.dialog.close(0)", 'left');?>
 <span class="confirmActionBtn">
 <?=$ifHelper->submit('Delete Backup','right');?></span>
 
@@ -82,7 +82,7 @@ jQuery(document).ready(function () {
 <div class="ccm-buttons">
 <form method="post" action="<?=$this->action('restore_backup')?>">
 <input type="hidden" name="backup_file" value="" />
-<?=$ifHelper->button_js(t('Cancel'),"jQuery.fn.dialog.close(0)", 'left');?>
+<?=$ifHelper->button_js(t('Cancel'),"$.fn.dialog.close(0)", 'left');?>
 <span class="confirmActionBtn">
 <?=$ifHelper->submit('Restore Backup','right');?></span>
 </form>
@@ -95,7 +95,7 @@ jQuery(document).ready(function () {
 <script type="text/javascript">
 jQuery(document).ready( function() { 
    jQuery('a.dialog-launch').click( function() {
-      jQuery.fn.dialog.open({ href: jQuery(this).attr('href'),modal:false });
+      $.fn.dialog.open({ href: jQuery(this).attr('href'),modal:false });
 
       return false;
       

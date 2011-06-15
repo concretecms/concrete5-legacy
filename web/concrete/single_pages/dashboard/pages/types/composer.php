@@ -189,7 +189,7 @@ ccm_setupComposerFields = function() {
 		opacity: 0.5,
 		stop: function() {
 			var ualist = jQuery(this).sortable('serialize');
-			jQuery.post('<?=$this->action("save_content_items", $ct->getCollectionTypeID())?>', ualist, function(r) {
+			$.post('<?=$this->action("save_content_items", $ct->getCollectionTypeID())?>', ualist, function(r) {
 
 			});
 		}

@@ -27,7 +27,7 @@ var Jobs = {
 		}
 		var jID=this.pendingJobs.shift();
 		jQuery('#jobItemRow'+jID).addClass('running');
-		jQuery.ajax({ 
+		$.ajax({ 
 			url: CCM_TOOLS_PATH+'/jobs?auth=<?=$auth?>&jID='+jID,
 			success: function(json){
 				eval('var jObj='+json);
@@ -47,7 +47,7 @@ var Jobs = {
 	changeStatus:function(cb){
 		if(cb.checked) var jStatus='ENABLED';
 		else var jStatus='DISABLED';
-		jQuery.ajax({  url: CCM_TOOLS_PATH+'/tools/required/jobs?auth=<?=$auth?>&jID='+cb.value+'&jStatus='+jStatus  });
+		$.ajax({  url: CCM_TOOLS_PATH+'/tools/required/jobs?auth=<?=$auth?>&jID='+cb.value+'&jStatus='+jStatus  });
 	},
 	
 	confirmUninstall:function(){

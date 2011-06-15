@@ -31,7 +31,7 @@ if($cp->canRead()) { ?>
 <div class="ccm-spacer">&nbsp;</div>
 <script type="text/javascript">
 function ccmEditorSitemapOverlay() {
-    jQuery.fn.dialog.open({
+    $.fn.dialog.open({
         title: '<?php echo t("Choose A Page") ?>',
         href: CCM_TOOLS_PATH + '/sitemap_overlay.php?sitemap_mode=select_page&callback=ccm_selectSitemapNode<?=$GLOBALS['CCM_EDITOR_SITEMAP_NODE_NUM']?>',
         width: '550',

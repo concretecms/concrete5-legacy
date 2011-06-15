@@ -43,7 +43,7 @@ jQuery(function() {
 		jQuery(this).removeClass('loading');
 		jQuery(this).addClass('fail');
 	});
-	jQuery.getJSON('<?=$this->url("/install", "test_url", "20", "20")?>', function(json) {
+	$.getJSON('<?=$this->url("/install", "test_url", "20", "20")?>', function(json) {
 		// test url takes two numbers and adds them together. Basically we just need to make sure that
 		// our url() syntax works - we do this by sending a test url call to the server when we're certain 
 		// of what the output will be

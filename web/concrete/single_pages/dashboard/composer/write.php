@@ -174,7 +174,7 @@ if (isset($entry)) { ?>
 		if(!w) w=550;
 		if(!h) h=380; 
 		var editBlockURL = '<?=REL_DIR_FILES_TOOLS_REQUIRED ?>/edit_block_popup';
-		jQuery.fn.dialog.open({
+		$.fn.dialog.open({
 			title: ccmi18n.editBlock,
 			href: editBlockURL+'?cID='+cID+'&bID='+bID+'&arHandle=' + encodeURIComponent(arHandle) + '&btask=edit',
 			width: w,

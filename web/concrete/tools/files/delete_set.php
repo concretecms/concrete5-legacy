@@ -62,7 +62,7 @@ ccm_alDeleteFileSet = function(form) {
 				window.location.href = "<?=View::url('/dashboard/files/search')?>";
 			} else {
 				var url = jQuery("div#ccm-<?=$_REQUEST['searchInstance']?>-overlay-wrapper input[name=dialogAction]").val() + "&refreshDialog=1";
-				jQuery.get(url, function(resp) {
+				$.get(url, function(resp) {
 					jQuery.fn.dialog.hideLoader();
 					jQuery("div#ccm-<?=$_REQUEST['searchInstance']?>-overlay-wrapper").html(resp);
 				});

@@ -54,7 +54,7 @@ var GlobalScrapbook = {
 			stop: function() {
 				var idslist = jQuery('#ccm-scrapbook-list').sortable('serialize'); 
 				idslist=idslist+'&arHandle=<?=($globalScrapbookArea) ? urlencode($globalScrapbookArea->getAreaHandle()) : '' ?>';
-				jQuery.post('<?=REL_DIR_FILES_TOOLS_REQUIRED?>/dashboard/scrapbook_services.php?mode=reorder', idslist, function(r) {
+				$.post('<?=REL_DIR_FILES_TOOLS_REQUIRED?>/dashboard/scrapbook_services.php?mode=reorder', idslist, function(r) {
 					
 				});
 			}
@@ -71,7 +71,7 @@ var GlobalScrapbook = {
 		if(!w) w=550;
 		if(!h) h=380; 
 		var editBlockURL = '<?=REL_DIR_FILES_TOOLS_REQUIRED ?>/edit_block_popup';
-		jQuery.fn.dialog.open({
+		$.fn.dialog.open({
 			title: ccmi18n.editBlock,
 			href: editBlockURL+'?cID='+CCM_CID+'&bID='+bID+'&arHandle=<?=urlencode($scrapbookName)?>&btask=edit&isGlobal=1',
 			width: w,
@@ -81,7 +81,7 @@ var GlobalScrapbook = {
 	},
 	editBlockTemplate:function(bID){ 
 		var editBlockURL = '<?=REL_DIR_FILES_TOOLS_REQUIRED ?>/edit_block_popup';
-		jQuery.fn.dialog.open({
+		$.fn.dialog.open({
 			title: ccmi18n.changeBlockTemplate,
 			href: editBlockURL+'?cID='+CCM_CID+'&bID='+bID+'&arHandle=<?=urlencode($scrapbookName)?>&btask=template',
 			width: 300,
@@ -91,7 +91,7 @@ var GlobalScrapbook = {
 	},
 	editBlockDesign:function(bID){ 
 		var editBlockURL = '<?=REL_DIR_FILES_TOOLS_REQUIRED ?>/edit_block_popup';
-		jQuery.fn.dialog.open({
+		$.fn.dialog.open({
 			title: '<?=t("Design")?>',
 			href: editBlockURL+'?cID='+CCM_CID+'&bID='+bID+'&arHandle=<?=urlencode($scrapbookName)?>&btask=block_css',
 			width: 450,
@@ -101,7 +101,7 @@ var GlobalScrapbook = {
 	},
 	editBlockPermissions:function(bID){ 
 		var editBlockURL = '<?=REL_DIR_FILES_TOOLS_REQUIRED ?>/edit_block_popup';
-		jQuery.fn.dialog.open({
+		$.fn.dialog.open({
 			title: ccmi18n.changeBlockTemplate,
 			href: editBlockURL+'?cID='+CCM_CID+'&bID='+bID+'&arHandle=<?=urlencode($scrapbookName)?>&btask=groups',
 			width: 400,

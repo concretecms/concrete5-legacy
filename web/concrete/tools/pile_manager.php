@@ -236,7 +236,7 @@ if($_REQUEST['btask']=='add'){
 			}
 			jQuery.fn.dialog.showLoader();
 			
-			jQuery.ajax({
+			$.ajax({
 			type: 'POST',
 			url: CCM_TOOLS_PATH+"/pile_manager.php",
 			data: 'cID=<?=intval($_REQUEST['cID'])?>&bID=<?=intval($_REQUEST['bID'])?>&arHandle=<?=urlencode($_REQUEST['arHandle'])?>&btask=add&scrapbookName='+scrapbook+'&blockAddMode='+blockAddMode,

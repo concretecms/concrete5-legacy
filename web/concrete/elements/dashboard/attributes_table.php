@@ -120,7 +120,7 @@ if (count($attribs) > 0) {
 			var ualist = jQuery(this).sortable('serialize');
 			ualist += '&cID=<?=$c->getCollectionID()?>';
 			ualist += '&asID=' + jQuery(this).attr('attribute-set-id');
-			jQuery.post('<?=REL_DIR_FILES_TOOLS_REQUIRED?>/dashboard/attribute_sets_update', ualist, function(r) {
+			$.post('<?=REL_DIR_FILES_TOOLS_REQUIRED?>/dashboard/attribute_sets_update', ualist, function(r) {
 
 			});
 		}

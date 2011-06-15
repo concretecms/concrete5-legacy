@@ -152,7 +152,7 @@
 		
 		//var ualist = jQuery(this).sortable('serialize');
 /*				
-				jQuery.post('<?=REL_DIR_FILES_TOOLS_REQUIRED?>/dashboard/user_attributes_update.php', ualist, function(r) {
+				$.post('<?=REL_DIR_FILES_TOOLS_REQUIRED?>/dashboard/user_attributes_update.php', ualist, function(r) {
 	
 				});
 				*/
