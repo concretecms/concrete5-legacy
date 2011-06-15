@@ -277,7 +277,7 @@ jQuery("input[name=vCompare]").click(function() {
 	var cvID2 = jQuery("input[type=checkbox]:checked").get(0).value;
 	var cvID1 = jQuery("input[type=checkbox]:checked").get(1).value;
 
-	$.fn.dialog.open({
+	jQuery.fn.dialog.open({
 		title: ccmi18n.compareVersions,
 		href: CCM_TOOLS_PATH + '/versions.php?cID=<?=$c->getCollectionID()?>&cvID1=' + cvID1 + '&cvID2=' + cvID2 + '&vtask=compare_iframe',
 		width: '85%',
