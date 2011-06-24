@@ -2,16 +2,16 @@
 
 /**
  * File helper
- * 
+ *
  * Functions useful for working with files and directories.
- * 
+ *
  * Used as follows:
  * <code>
  * $file = Loader::helper('file');
  * $path = 'http://www.concrete5.org/tools/get_latest_version_number';
  * $contents = $file->getContents($path);
  * echo $contents;
- * </code> 
+ * </code>
  *
  * @package Helpers
  * @category Concrete
@@ -27,8 +27,8 @@ class FileHelper {
 	 * @access private
 	 */
 	protected $ignoreFiles = array('__MACOSX', DIRNAME_CONTROLLERS);
-	
-	/** 
+
+	/**
 	 * Returns the contents of a directory in an array.
 	 * @param string $directory Directory to get the contents of
 	 * @param array $ignoreFilesArray File names to not include when getting the directory contents
@@ -47,19 +47,19 @@ class FileHelper {
 		}
 		return $aDir;
 	}
-	
-	/** 
+
+	/**
 	 * Removes the extension of a filename, uncamelcases it.
 	 * @param string $filename
 	 * @return string
-	 */	
+	 */
 	public function unfilename($filename) {
 		// removes the extension and makes it look nice
 		$txt = Loader::helper('text');
 		return substr($txt->unhandle($filename), 0, strrpos($filename, '.'));
 	}
-	
-	/** 
+
+	/**
 	 * Recursively copies all items in the source directory or file to the target directory
 	 * @param string $source Source to copy
 	 * @param string $target Place to copy the source
@@ -69,36 +69,36 @@ class FileHelper {
 		if (is_dir($source)) {
 			@mkdir($target, $mode);
 			@chmod($target, $mode);
-			
+
 			$d = dir($source);
 			while (FALSE !== ($entry = $d->read())) {
 				if ( $entry == '.' || $entry == '..' || substr($entry, 0, 1) == '.') {
 					continue;
 				}
-			
-				$Entry = $source . '/' . $entry;            
+
+				$Entry = $source . '/' . $entry;
 				if (is_dir($Entry)) {
 					$this->copyAll($Entry, $target . '/' . $entry, $mode);
 					continue;
 				}
-				
+
 				copy($Entry, $target . '/' . $entry);
 				@chmod($target . '/' . $entry, $mode);
 			}
-			
+
 			$d->close();
 		} else {
 			copy($source, $target);
 			chmod($target, $mode);
 		}
 	}
-	
-	/** 
+
+	/**
 	 * Takes a path to a file and sends it to the browser, streaming it, and closing the HTTP connection afterwards. Basically a force download method
 	 * @param stings $file
 	 */
 	public function forceDownload($file) {
-		
+
 		header('Content-type: application/octet-stream');
 		$filename = basename($file);
 		header("Content-Disposition: attachment; filename=\"$filename\"");
@@ -108,16 +108,16 @@ class FileHelper {
 		header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
 		header("Cache-Control: private",false);
 		header("Content-Transfer-Encoding: binary");
-		
+
 		// This code isn't ready yet. It will allow us to no longer force download
-		
+
 		/*
 		$h = Loader::helper('mime');
 		$mimeType = $h->mimeFromExtension($this->getExtension($file));
 		header('Content-type: ' . $mimeType);
 		*/
-		
-	
+
+
 		$buffer = '';
 		$chunk = 1024*1024;
 		$handle = fopen($file, 'rb');
@@ -128,12 +128,12 @@ class FileHelper {
 			$buffer = fread($handle, $chunk);
 			print $buffer;
 		}
-		
+
 		fclose($handle);
-		exit;		
+		exit;
 	}
-	
-	/** 
+
+	/**
 	 * Returns the full path to the temporary directory
 	 * @return string
 	 */
@@ -143,11 +143,11 @@ class FileHelper {
 			touch(DIR_TMP . '/index.html');
 		}
 		return DIR_TMP;
-		
+
 	}
 
 
-	
+
 	/**
 	 * Adds content to a new line in a file. If a file is not there it will be created
 	 * @param string $filename
@@ -156,8 +156,8 @@ class FileHelper {
 	public function append($filename, $content) {
 		file_put_contents($filename, $content, FILE_APPEND);
 	}
-	
-	
+
+
 	/**
 	 * Just a consistency wrapper for file_get_contents
 	 * Should use curl if it exists and fopen isn't allowed (thanks Remo)
@@ -169,14 +169,14 @@ class FileHelper {
 		$url = @parse_url($file);
 		if (isset($url['scheme']) && isset($url['host'])) {
 			if (ini_get('allow_url_fopen')) {
-				$ctx = stream_context_create(array( 
-					'http' => array( 'timeout' => $timeout ) 
-				)); 
+				$ctx = stream_context_create(array(
+					'http' => array( 'timeout' => $timeout )
+				));
 				if ($contents = @file_get_contents($file, 0, $ctx)) {
 					return $contents;
 				}
 			}
-			
+
 			if (function_exists('curl_init')) {
 				$curl_handle = curl_init();
 				curl_setopt($curl_handle, CURLOPT_URL, $file);
@@ -184,10 +184,10 @@ class FileHelper {
 				curl_setopt($curl_handle, CURLOPT_RETURNTRANSFER, 1);
 				$contents = curl_exec($curl_handle);
 				$http_code = curl_getinfo($curl_handle, CURLINFO_HTTP_CODE);
-				if ($http_code == 404) {	
+				if ($http_code == 404) {
 					return false;
 				}
-				
+
 				return $contents;
 			}
 		} else {
@@ -195,20 +195,28 @@ class FileHelper {
 				return $contents;
 			}
 		}
-		
+
 		return false;
 	}
-	
-	/** 
+
+	/**
+	 * Copies the file from source to destination
+	 */
+	public function copy($source, $destination)
+	{
+        return copy($source, $destination);
+	}
+
+	/**
 	 * Removes contents of the file
 	 * @param $filename
 	 */
 	public function clear($file) {
 		file_put_contents($file, '');
 	}
-	
-	
-	/** 
+
+
+	/**
 	 * Cleans up a filename and returns the cleaned up version
 	 * @param string $file
 	 * @return string @file
@@ -218,8 +226,8 @@ class FileHelper {
 		$file = preg_replace(array("/[\s]/","/[^0-9A-Z_a-z-.]/"),array("_",""), $file);
 		return trim($file);
 	}
-	
-	/** 
+
+	/**
 	* Returns the extension for a file name
 	* @param string $filename
 	* @return string $extension
@@ -228,8 +236,8 @@ class FileHelper {
 		$extension = end(explode(".",$filename));
 		return $extension;
 	}
-	
-	/** 
+
+	/**
 	 * Takes a path and replaces the files extension in that path with the specified extension
 	 * @param string $filename
 	 * @param string $extension
@@ -239,6 +247,6 @@ class FileHelper {
 		$newFileName = substr($filename, 0, strrpos($filename, '.')) . '.' . $extension;
 		return $newFileName;
 	}
-		
+
 }
 ?>
