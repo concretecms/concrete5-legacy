@@ -144,8 +144,9 @@ class TextHelper {
 				$textStr = substr($textStr, 0, $numChars) . $tail;
 			}
 		}
-		return $textStr;				
+		return $textStr;			
 	}
+	
 	
 	/**
 	 * Takes a string and turns it into the CamelCase or StudlyCaps version
