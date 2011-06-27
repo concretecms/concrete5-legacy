@@ -2,6 +2,12 @@
 defined('C5_EXECUTE') or die("Access Denied.");
 class AttributeKey extends Object {
 	
+	public function __construct($akCategoryHandle = NULL) {
+		if($akCategoryHandle) {
+			$this->akCategoryHandle = $akCategoryHandle;
+		}
+	}
+	
 	public function getIndexedSearchTable() {return false;}
 	public function getSearchIndexFieldDefinition() {
 		return $this->searchIndexFieldDefinition;
@@ -56,8 +62,11 @@ class AttributeKey extends Object {
 	 */
 	protected function load($akID) {
 		$db = Loader::db();
-		$akunhandle = Loader::helper('text')->uncamelcase(get_class($this));
-		$akCategoryHandle = substr($akunhandle, 0, strpos($akunhandle, '_attribute_key'));
+		$akCategoryHandle = $this->akCategoryHandle;
+		if(!$this->akCategoryHandle) {
+			$akunhandle = Loader::helper('text')->uncamelcase(get_class($this));
+			$akCategoryHandle = substr($akunhandle, 0, strpos($akunhandle, '_attribute_key'));
+		}
 		if ($akCategoryHandle != '') {
 			$row = $db->GetRow('select akID, akHandle, akName, AttributeKeys.akCategoryID, akIsEditable, akIsSearchable, akIsSearchableIndexed, akIsAutoCreated, akIsColumnHeader, AttributeKeys.atID, atHandle, AttributeKeys.pkgID from AttributeKeys inner join AttributeKeyCategories on AttributeKeys.akCategoryID = AttributeKeyCategories.akCategoryID inner join AttributeTypes on AttributeKeys.atID = AttributeTypes.atID where akID = ? and akCategoryHandle = ?', array($akID, $akCategoryHandle));
 		} else {
@@ -101,13 +110,10 @@ class AttributeKey extends Object {
 		$r = $db->Execute($q, array($akCategoryHandle));
 		$list = array();
 		$txt = Loader::helper('text');
-		$className = $txt->camelcase($akCategoryHandle);
+		$akc = AttributeKeyCategory::getByHandle($akCategoryHandle);
 		while ($row = $r->FetchRow()) {
-			$c1 = $className . 'AttributeKey';
-			$c1a = call_user_func_array(array($c1, 'getByID'), array($row['akID']));
-			if (is_object($c1a)) {
-				$list[] = $c1a;
-			}
+			$ak = $akc->getAttributeKeyByID($row['akID']);
+			$list[] = $ak;
 		}
 		$r->Close();
 		return $list;
@@ -194,8 +200,8 @@ class AttributeKey extends Object {
 		
 		if ($r) {
 			$akID = $db->Insert_ID();
-			$className = $txt->camelcase($akCategoryHandle) . 'AttributeKey';
-			$ak = new $className();
+			$akc = AttributeKeyCategory::getByHandle($akCategoryHandle);
+			$ak = $akc->getNewAttributeKey();
 			$ak->load($akID);
 			switch($category->allowAttributeSets()) {
 				case AttributeKeyCategory::ASET_ALLOW_SINGLE:
