@@ -27,19 +27,25 @@
 		
 			if (file_exists(DIR_LIBRARIES . '/' . $lib . '.php')) {
 				require_once(DIR_LIBRARIES . '/' . $lib . '.php');
-				return;
+				return true;
 			}
 			
 			if ($pkgHandle == null && file_exists(DIR_LIBRARIES_CORE . '/' . $lib . '.php')) {
 				require_once(DIR_LIBRARIES_CORE . '/' . $lib . '.php');
-				return;
+				return true;
 			}
 			
 			if ($pkgHandle != null) {			
 				$dir = (is_dir(DIR_PACKAGES . '/' . $pkgHandle)) ? DIR_PACKAGES : DIR_PACKAGES_CORE;
-				require_once($dir . '/' . $pkgHandle . '/' . DIRNAME_LIBRARIES . '/' . $lib . '.php');
-				return;
+				if(file_exists($dir . '/' . $pkgHandle . '/' . DIRNAME_LIBRARIES . '/' . $lib . '.php')) {
+					require_once($dir . '/' . $pkgHandle . '/' . DIRNAME_LIBRARIES . '/' . $lib . '.php');
+					return true;
+				} else {
+					return false;
+				}
 			}
+			
+			return false;
 			
 		}
 
@@ -50,17 +56,22 @@
 			
 			if (file_exists(DIR_MODELS . '/' . $mod . '.php')) {
 				require_once(DIR_MODELS . '/' . $mod . '.php');
-				return;
+				return true;
 			}
 			
 			if ($pkgHandle == null && file_exists(DIR_MODELS_CORE . '/' . $mod . '.php')) {
 				require_once(DIR_MODELS_CORE . '/' . $mod . '.php');
-				return;
+				return true;
 			}
 			
 			if ($pkgHandle != null) {
 				$dir = (is_dir(DIR_PACKAGES . '/' . $pkgHandle)) ? DIR_PACKAGES : DIR_PACKAGES_CORE;
-				require_once($dir . '/' . $pkgHandle . '/' . DIRNAME_MODELS . '/' . $mod . '.php');
+				if(file_exists($dir . '/' . $pkgHandle . '/' . DIRNAME_MODELS . '/' . $mod . '.php')) {
+					require_once($dir . '/' . $pkgHandle . '/' . DIRNAME_MODELS . '/' . $mod . '.php');
+					return true;
+				} else {
+					return false;
+				}
 			}
 			
 			Loader::legacyModel($mod);
