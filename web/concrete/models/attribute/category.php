@@ -33,10 +33,13 @@ class AttributeKeyCategory extends Object {
 	}
 	
 	public function getAttributeKeyByHandle($akHandle) {
-		if ($this->pkgID > 0) {
-			Loader::model('attribute/categories/' . $this->akCategoryHandle, $this->getPackageHandle());
-		} else {
-			Loader::model('attribute/categories/' . $this->akCategoryHandle);
+		if(!Loader::model('attribute/categories/' . $this->akCategoryHandle, $this->getPackageHandle())) {
+			if(!Loader::model('attribute/categories/' . $this->akCategoryHandle)) {
+				Loader::model('attribute/categories/virtual_table');
+				$obj = new VirtualTableAttributeKey($this->akCategoryHandle);
+				$ak = $obj->getByHandle($akHandle);
+				return $ak;
+			}
 		}		
 		$txt = Loader::helper('text');
 		$className = $txt->camelcase($this->akCategoryHandle);
@@ -46,10 +49,13 @@ class AttributeKeyCategory extends Object {
 	}
 
 	public function getAttributeKeyByID($akID) {
-		if ($this->pkgID > 0) {
-			Loader::model('attribute/categories/' . $this->akCategoryHandle, $this->getPackageHandle());
-		} else {
-			Loader::model('attribute/categories/' . $this->akCategoryHandle);
+		if(!Loader::model('attribute/categories/' . $this->akCategoryHandle, $this->getPackageHandle())) {
+			if(!Loader::model('attribute/categories/' . $this->akCategoryHandle)) {
+				Loader::model('attribute/categories/virtual_table');
+				$obj = new VirtualTableAttributeKey($this->akCategoryHandle);
+				$ak = $obj->getByID($akID);
+				return $ak;
+			}
 		}		
 		$txt = Loader::helper('text');
 		$className = $txt->camelcase($this->akCategoryHandle);
@@ -144,10 +150,10 @@ class AttributeKeyCategory extends Object {
 		$db->Execute('insert into AttributeKeyCategories (akCategoryHandle, akCategoryAllowSets, pkgID) values (?, ?, ?)', array($akCategoryHandle, $akCategoryAllowSets, $pkgID));
 		$id = $db->Insert_ID();
 		
-		if ($pkgID > 0) {
-			Loader::model('attribute/categories/' . $akCategoryHandle, $pkg->getPackageHandle());
-		} else {
-			Loader::model('attribute/categories/' . $akCategoryHandle);
+		if(!Loader::model('attribute/categories/' . $akCategoryHandle, $pkg->getPackageHandle())) {
+			if(!Loader::model('attribute/categories/' . $akCategoryHandle)) {
+				return AttributeKeyCategory::getByID($id);
+			}
 		}		
 		$txt = Loader::helper("text");
 		$class = $txt->camelcase($akCategoryHandle) . 'AttributeKey';
@@ -170,5 +176,36 @@ class AttributeKeyCategory extends Object {
 			$as = AttributeSet::getByID($id);
 			return $as;
 		}
+	}
+	
+	public function getItemList($akCategoryHandle = NULL) {
+		if(!$akCategoryHandle) {
+			if(is_object($this)) {
+				$akCategoryHandle = $this->getAttributeKeyCategoryHandle();
+			} else {
+				return false;
+			}
+		}
+		$txt = Loader::helper("text");
+		if(Loader::model($this->akCategoryHandle . '_list', $this->getPackageHandle())) {	
+			$class = $txt->camelcase($akCategoryHandle) . 'List';
+			$list = new $class;
+		} elseif(Loader::model($this->akCategoryHandle . '_list')) {	
+			$class = $txt->camelcase($akCategoryHandle) . 'List';
+			$list = new $class;
+		} else {	
+			switch($akCategoryHandle){
+				case 'collection':
+					Loader::model('page_list');
+					$list = new PageList;
+					break;
+				default:
+					Loader::model('virtual_table_item_list');
+					$list = new VirtualTableItemList($akCategoryHandle);
+					break;
+			}
+		}
+		
+		return $list;
 	}
 }
