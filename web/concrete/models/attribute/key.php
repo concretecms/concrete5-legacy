@@ -7,6 +7,18 @@ class AttributeKey extends Object {
 			$this->akCategoryHandle = $akCategoryHandle;
 		}
 	}
+	public static function getByID($akID) {
+		$ak = new AttributeKey;
+		$ak->load($akID);
+		return $ak;
+	}
+	public static function getByHandle($akHandle, $akCategoryHandle) {
+		$db = Loader::db();
+		$akCategoryID = $db->GetOne('SELECT akCategoryID FROM AttributeKeyCategories WHERE akCategoryHandle = ?', array($akCategoryHandle));
+		$akID = $db->GetOne('SELECT akID FROM AttributeKeys WHERE akHandle = ? AND akCategoryID = ?', array($akHandle, $akCategoryID));
+		
+		return self::getByID($akID);
+	}
 	
 	public function getIndexedSearchTable() {return false;}
 	public function getSearchIndexFieldDefinition() {
@@ -156,6 +168,10 @@ class AttributeKey extends Object {
 	/** 
 	 * Adds an attribute key. 
 	 */
+	public function create($type, $args, $pkg = false) {
+		self::add($this->akCategoryHandle, $type, $args, $pkg);
+	}
+	
 	protected function add($akCategoryHandle, $type, $args, $pkg = false) {
 		
 		$vn = Loader::helper('validation/numbers');
