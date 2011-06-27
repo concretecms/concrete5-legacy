@@ -35,8 +35,7 @@ class AttributeKeyCategory extends Object {
 	public function getAttributeKeyByHandle($akHandle) {
 		if(!Loader::model('attribute/categories/' . $this->akCategoryHandle, $this->getPackageHandle())) {
 			if(!Loader::model('attribute/categories/' . $this->akCategoryHandle)) {
-				Loader::model('attribute/categories/virtual_table');
-				$obj = new VirtualTableAttributeKey($this->akCategoryHandle);
+				$obj = new AttributeKey($this->akCategoryHandle);
 				$ak = $obj->getByHandle($akHandle);
 				return $ak;
 			}
@@ -51,8 +50,7 @@ class AttributeKeyCategory extends Object {
 	public function getAttributeKeyByID($akID) {
 		if(!Loader::model('attribute/categories/' . $this->akCategoryHandle, $this->getPackageHandle())) {
 			if(!Loader::model('attribute/categories/' . $this->akCategoryHandle)) {
-				Loader::model('attribute/categories/virtual_table');
-				$obj = new VirtualTableAttributeKey($this->akCategoryHandle);
+				$obj = new AttributeKey;
 				$ak = $obj->getByID($akID);
 				return $ak;
 			}
@@ -61,6 +59,19 @@ class AttributeKeyCategory extends Object {
 		$className = $txt->camelcase($this->akCategoryHandle);
 		$c1 = $className . 'AttributeKey';
 		$ak = call_user_func_array(array($c1, 'getByID'), array($akID));
+		return $ak;
+	}
+
+	public function getNewAttributeKey() {
+		if(!Loader::model('attribute/categories/' . $this->akCategoryHandle, $this->getPackageHandle())) {
+			if(!Loader::model('attribute/categories/' . $this->akCategoryHandle)) {
+				$ak = new AttributeKey;
+				return $ak;
+			}
+		}		
+		$txt = Loader::helper('text');
+		$className = $txt->camelcase($this->akCategoryHandle) . 'AttributeKey';
+		$ak = new $className();
 		return $ak;
 	}
 
