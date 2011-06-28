@@ -113,7 +113,7 @@ class AttributeKey extends Object {
 	/** 
 	 * Returns a list of all attributes of this category
 	 */
-	public static function getList($akCategoryHandle, $filters = array()) {
+	public static function getList($akCategoryHandle = null, $filters = array()) {
 		$db = Loader::db();
 		$q = 'select akID from AttributeKeys inner join AttributeKeyCategories on AttributeKeys.akCategoryID = AttributeKeyCategories.akCategoryID where akCategoryHandle = ?';
 		foreach($filters as $key => $value) {

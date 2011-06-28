@@ -32,11 +32,17 @@ class AttributeKeyCategory extends Object {
 		return $r > 0;
 	}
 	
+	public function akCategoryHandleExists($akCategoryHandle) {
+		$db = Loader::db();
+		$r = $db->GetOne("select count(*) from AttributeKeyCategories where akCategoryHandle = ?", array($akCategoryHandle));
+		return $r > 0;
+	}
+	
 	public function getAttributeKeyByHandle($akHandle) {
 		if(!Loader::model('attribute/categories/' . $this->akCategoryHandle, $this->getPackageHandle())) {
 			if(!Loader::model('attribute/categories/' . $this->akCategoryHandle)) {
-				$obj = new AttributeKey($this->akCategoryHandle);
-				$ak = $obj->getByHandle($akHandle);
+				$obj = new AttributeKey;
+				$ak = $obj->getByHandle($akHandle, $this->akCategoryHandle);
 				return $ak;
 			}
 		}		
@@ -65,7 +71,7 @@ class AttributeKeyCategory extends Object {
 	public function getNewAttributeKey() {
 		if(!Loader::model('attribute/categories/' . $this->akCategoryHandle, $this->getPackageHandle())) {
 			if(!Loader::model('attribute/categories/' . $this->akCategoryHandle)) {
-				$ak = new AttributeKey;
+				$ak = new AttributeKey($this->akCategoryHandle);
 				return $ak;
 			}
 		}		
@@ -155,13 +161,14 @@ class AttributeKeyCategory extends Object {
 	
 	public static function add($akCategoryHandle, $akCategoryAllowSets = AttributeKeyCategory::ASET_ALLOW_NONE, $pkg = false) {
 		$db = Loader::db();
-		if (is_object($pkg)) {
+		if(is_object($pkg)) {
 			$pkgID = $pkg->getPackageID();
+			$pkgHandle = $pkg->getPackageHandle();
 		}
 		$db->Execute('insert into AttributeKeyCategories (akCategoryHandle, akCategoryAllowSets, pkgID) values (?, ?, ?)', array($akCategoryHandle, $akCategoryAllowSets, $pkgID));
 		$id = $db->Insert_ID();
 		
-		if(!Loader::model('attribute/categories/' . $akCategoryHandle, $pkg->getPackageHandle())) {
+		if(!Loader::model('attribute/categories/' . $akCategoryHandle, $pkgHandle)) {
 			if(!Loader::model('attribute/categories/' . $akCategoryHandle)) {
 				return AttributeKeyCategory::getByID($id);
 			}
@@ -198,25 +205,70 @@ class AttributeKeyCategory extends Object {
 			}
 		}
 		$txt = Loader::helper("text");
-		if(Loader::model($this->akCategoryHandle . '_list', $this->getPackageHandle())) {	
-			$class = $txt->camelcase($akCategoryHandle) . 'List';
-			$list = new $class;
-		} elseif(Loader::model($this->akCategoryHandle . '_list')) {	
-			$class = $txt->camelcase($akCategoryHandle) . 'List';
-			$list = new $class;
-		} else {	
-			switch($akCategoryHandle){
-				case 'collection':
-					Loader::model('page_list');
-					$list = new PageList;
-					break;
-				default:
-					Loader::model('virtual_table_item_list');
-					$list = new VirtualTableItemList($akCategoryHandle);
-					break;
-			}
+		switch($akCategoryHandle) {
+			case 'collection':
+				Loader::model('page_list');
+				$list = new PageList;
+				break;
+			default:
+				if(Loader::model($this->akCategoryHandle . '_list', $this->getPackageHandle())
+				|| Loader::model($this->akCategoryHandle . '_list')) {
+					$class = $txt->camelcase($akCategoryHandle) . 'List';
+					$list = new $class;
+				} else {
+					Loader::model('attribute_key_category_item_list');
+					$list = new AttributeKeyCategoryItemList($akCategoryHandle);
+				}
+				break;	
 		}
 		
 		return $list;
+	}
+	
+	public function getItemObject($ID = NULL) {
+		if(!$akCategoryHandle) {
+			if(is_object($this)) {
+				$akCategoryHandle = $this->getAttributeKeyCategoryHandle();
+			} else {
+				return false;
+			}
+		}
+		$txt = Loader::helper("text");
+		switch($akCategoryHandle) {
+			case 'collection':
+				Loader::model('page');
+				$item = new Page;
+				break;
+			case 'user':
+				$item = new UserInfo;
+				break;
+			default:
+				if(Loader::model($this->akCategoryHandle, $this->getPackageHandle())
+				|| Loader::model($this->akCategoryHandle)) {
+					$class = $txt->camelcase($akCategoryHandle);
+					$item = new $class;
+				} else {
+					Loader::model('attribute_key_category_item');
+					$item = new AttributeKeyCategoryItemList($akCategoryHandle);
+				}
+				break;	
+		}
+		
+		if($ID) {
+			return $item->getByID($ID);	
+		} else {
+			return $item;
+		}
+	}
+	
+	public function getAttributeKeyList($akCategoryHandle = NULL) {
+		if(!$akCategoryHandle) {
+			if(is_object($this)) {
+				$akCategoryHandle = $this->getAttributeKeyCategoryHandle();
+			} else {
+				return false;
+			}
+		}
+		return AttributeKey::getList($akCategoryHandle);
 	}
 }
