@@ -68,6 +68,40 @@ pkgID                    INTEGER(10) UNSIGNED,
                  PRIMARY KEY (akCategoryID)
 );
 
+CREATE TABLE AttributeKeyCategoryItemAttributeValues (
+ID                       INTEGER(10) UNSIGNED NOT NULL,
+akID                     INTEGER(10) UNSIGNED NOT NULL,
+avID                     INTEGER(10) UNSIGNED NOT NULL,
+akCategoryHandle         VARCHAR(10)(255) NOT NULL,
+                 PRIMARY KEY (ID, akID, avID)
+);
+
+CREATE TABLE AttributeKeyCategoryItemPermissions (
+ID                       VARCHAR(10)(255) NOT NULL,
+akCategoryHandle         VARCHAR(10)(255),
+gID                      INTEGER(10),
+uID                      INTEGER(10),
+canRead                  TINYINT(1) DEFAULT '0',
+canWrite                 TINYINT(1) DEFAULT '0',
+canDelete                TINYINT(1) DEFAULT '0',
+canAdd                   TINYINT(1) DEFAULT '0',
+canSearch                TINYINT(1) DEFAULT '0',
+canAdmin                 TINYINT(1) DEFAULT '0',
+                 PRIMARY KEY (ID)
+);
+
+CREATE TABLE AttributeKeyCategoryItems (
+ID                       INTEGER(10) UNSIGNED AUTO_INCREMENT,
+akCategoryHandle         VARCHAR(10)(255) NOT NULL,
+uID                      INTEGER(10) UNSIGNED DEFAULT NULL,
+                 PRIMARY KEY (ID)
+);
+
+CREATE TABLE AttributeKeyCategoryItemSearchIndex (
+ID                       INTEGER(10) UNSIGNED NOT NULL,
+                 PRIMARY KEY (ID)
+);
+
 CREATE TABLE AttributeTypeCategories (
 atID                     INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
 akCategoryID             INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
@@ -1252,23 +1286,23 @@ videoURL                 VARCHAR(255),
 );
 
 CREATE TABLE IF NOT EXISTS `CollectionSearchIndexAttributes` (
-  `cID` int(11) unsigned NOT NULL default '0',
-  `ak_meta_title` text,
-  `ak_meta_description` text,
-  `ak_meta_keywords` text,
-  `ak_exclude_nav` tinyint(4) default '0',
-  `ak_exclude_page_list` tinyint(4) default '0',
-  `ak_header_extra_content` text,
-  `ak_exclude_search_index` tinyint(4) default '0',
-  `ak_exclude_sitemapxml` tinyint(4) default '0',
-  `ak_tags` text,
+cID` int(11) UNSIGNED NOT NULL default '0',
+ak_meta_title` text,
+ak_meta_description` text,
+ak_meta_keywords` text,
+ak_exclude_nav` TINYINT(4) default '0',
+ak_exclude_page_list` TINYINT(4) default '0',
+ak_header_extra_content` text,
+ak_exclude_search_index` TINYINT(4) default '0',
+ak_exclude_sitemapxml` TINYINT(4) default '0',
+ak_tags` text,
   PRIMARY KEY  (`cID`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 CREATE TABLE IF NOT EXISTS `FileSearchIndexAttributes` (
-  `fID` int(11) unsigned NOT NULL default '0',
-  `ak_width` decimal(14,4) default '0.0000',
-  `ak_height` decimal(14,4) default '0.0000',
+fID` int(11) UNSIGNED NOT NULL default '0',
+ak_width` decimal(14,4) default '0.0000',
+ak_height` decimal(14,4) default '0.0000',
   PRIMARY KEY  (`fID`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 

@@ -249,7 +249,7 @@ class AttributeKeyCategory extends Object {
 					$item = new $class;
 				} else {
 					Loader::model('attribute_key_category_item');
-					$item = new AttributeKeyCategoryItemList($akCategoryHandle);
+					$item = new AttributeKeyCategoryItem($akCategoryHandle);
 				}
 				break;	
 		}

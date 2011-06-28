@@ -33,3 +33,8 @@ __MACOSX
 error_log
 .htaccess
 .ftpquota
+
+#ignore symlinks
+/packages
+/updates
+/single_pages
