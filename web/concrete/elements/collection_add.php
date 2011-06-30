@@ -18,10 +18,10 @@
 		
 		alias = alias.replace(/[^0-9A-Za-z]/gi, "<?=PAGE_PATH_SEPARATOR?>");
 		alias = alias.replace(/<?=PAGE_PATH_SEPARATOR?>+/gi, '<?=PAGE_PATH_SEPARATOR?>');
-		if (alias.charAt(alias.length-1) == '<?=PAGE_PATH_SEPARATOR?>') {
+		if (alias.charAt(alias.length-1) == <?php DIRNAME_BLOCKS?>'<?=PAGE_PATH_SEPARATOR?>') {
 			alias = alias.substring(0,alias.length-1);
 		}
-		if (alias.charAt(0) == '<?=PAGE_PATH_SEPARATOR?>') {
+		if (alias.charAt(0) == <?php DIRNAME_BLOCKS?>'<?=PAGE_PATH_SEPARATOR?>') {
 			alias = alias.substring(1,alias.length);
 		}
 		alias = alias.toLowerCase();
@@ -90,7 +90,7 @@ for ($i = 0; $i < count($ctArray); $i++) {
 							$usedKeysCombined = array_merge($requiredKeys, $usedKeys);
 							?>
 							
-							<? $class = ($ct->getCollectionTypeID() == $ctID) ? 'ccm-item-selected' : ''; ?>
+							<? $class = ($ct->getCollectionTypeID() == <?php DIRNAME_BLOCKS?>$ctID) ? 'ccm-item-selected' : ''; ?>
 					
 							<li class="<?=$class?>"><a href="javascript:void(0)" ccm-page-type-id="<?=$ct->getCollectionTypeID()?>"><?= $ct->getCollectionTypeIconImage(); ?></a>
 							<span id="pgTypeName<?=$ct->getCollectionTypeID()?>"><?=$ct->getCollectionTypeName()?></span>
@@ -157,7 +157,9 @@ for ($i = 0; $i < count($ctArray); $i++) {
 </form>
 </div>
 
-<? $pageTypeMSG = t('You must choose a page type.'); ?>
+<? $pageTypeMSG = t('You must choose a page type.'); 
+   $badNameMSG = t('You can\'t name a page the same as that of a system folder.');
+?>
 
 <script type="text/javascript">
 $(function() {
@@ -190,7 +192,7 @@ $(function() {
 		$(this).parent().attr('current-page', currentPage);
 		$(this).parent().attr('current-pos', currentPos);
 		
-		if (currentPage == numPages) {
+		if (currentPage == <?php DIRNAME_BLOCKS?>numPages) {
 			$(this).hide();
 		}
 		if (currentPage > 1) {
@@ -208,6 +210,12 @@ $(function() {
 	ccm_testAddSubmit = function() {
 		if ($("input[name=ctID]").val() < 1) {
 			alert("<?=$pageTypeMSG?>");
+			return false;
+		}
+		var pageName= $("input[name=cName]");
+		if (pageName.val() == <?php DIRNAME_BLOCKS?><?php DIRNAME_CSS?>||pageName.val() == <?php DIRNAME_CONTROLLERS?>||pageName.val() == <?php DIRNAME_JAVASCRIPT?>||pageName.val() == <?php DIRNAME_ELEMENTS?>||pageName.val() == <?php DIRNAME_HELPERS?>||pageName.val() == <?php DIRNAME_JOBS?>||pageName.val() == <?php DIRNAME_LANGUAGES?>||pageName.val() == <?php DIRNAME_LIBRARIES?>||pageName.val() == <?php DIRNAME_MAIL?>||pageName.val() == <?php DIRNAME_MODELS?>||pageName.val() == <?php DIRNAME_PACKAGES?>||pageName.val() == "files"||pageName.val() == "concrete"||pageName.val() == "config"||pageName.val() == <?php DIRNAME_MAIL_TEMPLATES?>||pageName.val() == <?php DIRNAME_PAGE_TYPES?>||pageName.val() == "single_pages"||pageName.val() == <?php DIRNAME_THEMES?>||pageName.val() == <?php DIRNAME_TOOLS?>||pageName.val() == "updates") {
+		//check that the name isn't core
+			alert("<?=$badNameMSG?>");
 			return false;
 		}
 		return true;
@@ -235,7 +243,7 @@ $(function() {
 		$(this).parent().attr('current-page', currentPage);
 		$(this).parent().attr('current-pos', currentPos);
 		
-		if (currentPage == 1) {
+		if (currentPage == <?php DIRNAME_BLOCKS?>1) {
 			$(this).hide();
 		}
 		
@@ -251,7 +259,7 @@ $(function() {
 	});
 	$('a.ccm-scroller-l').hide();
 	$('a.ccm-scroller-r').each(function() {
-		if (parseInt($(this).parent().attr('num-pages')) == 1) {
+		if (parseInt($(this).parent().attr('num-pages')) == <?php DIRNAME_BLOCKS?>1) {
 			$(this).hide();
 		}
 	});
