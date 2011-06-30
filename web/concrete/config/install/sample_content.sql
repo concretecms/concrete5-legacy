@@ -605,8 +605,14 @@ INSERT INTO CollectionVersions VALUES(2,1,NULL,NULL,NULL,NOW(),NOW(),'Initial Ve
  ,(76,1,'Write','write',NULL,NOW(),NOW(),'Initial Version',1,0,1,NULL,NULL)
  ,(77,1,'Drafts','drafts',NULL,NOW(),NOW(),'Initial Version',1,0,1,NULL,NULL)
  ,(78,1,'Composer','composer',NULL,NOW(),NOW(),'Initial Version',1,0,1,NULL,NULL)
- ,(79,1,'Multilingual Settings','multilingual',NULL,NOW(),NOW(),'Initial Version',1,0,1,NULL,NULL);
- ,(80,1,'Bricks','bricks','Easy to manage database',NOW(),NOW(),'Initial Version',1,0,1,NULL,NULL);
+ ,(79,1,'Multilingual Settings','multilingual',NULL,NOW(),NOW(),'Initial Version',1,0,1,NULL,NULL)
+ ,(80,1,'Bricks','bricks','Easy to manage database',NOW(),NOW(),'Initial Version',1,0,1,NULL,NULL)
+ ,(81,1,'Add','add',NULL,NOW(),NOW(),'Initial Version',1,0,1,NULL,NULL)
+ ,(82,1,'Search','search',NULL,NOW(),NOW(),'Initial Version',1,0,1,NULL,NULL)
+ ,(83,1,'Insert','insert',NULL,NOW(),NOW(),'Initial Version',1,0,1,NULL,NULL)
+ ,(84,1,'Structure','structure',NULL,NOW(),NOW(),'Initial Version',1,0,1,NULL,NULL)
+ ,(85,1,'Access','access',NULL,NOW(),NOW(),'Initial Version',1,0,1,NULL,NULL)
+ ,(86,1,'Drop','drop',NULL,NOW(),NOW(),'Initial Version',1,0,1,NULL,NULL);
 
 INSERT INTO Collections VALUES(1,NOW(),NOW(),'home')
  ,(2,NOW(),NOW(),NULL)
@@ -676,7 +682,13 @@ INSERT INTO Collections VALUES(1,NOW(),NOW(),'home')
  ,(77,NOW(),NOW(),'drafts')
  ,(78,NOW(),NOW(),'composer')
  ,(79,NOW(),NOW(),'multilingual')
- ,(80,NOW(),NOW(),'bricks');
+ ,(80,NOW(),NOW(),'bricks')
+ ,(81,NOW(),NOW(),'add')
+ ,(82,NOW(),NOW(),'search')
+ ,(83,NOW(),NOW(),'insert')
+ ,(84,NOW(),NOW(),'structure')
+ ,(85,NOW(),NOW(),'access')
+ ,(86,NOW(),NOW(),'drop');
 
 INSERT INTO DashboardHomepage VALUES(1,'activity','Site Activity',0,0)
  ,(2,'reports','Statistics',0,0)
@@ -804,7 +816,13 @@ INSERT INTO PagePaths VALUES(1,5,'/login','1')
  ,(71,77,'/dashboard/composer/drafts','1')
  ,(72,78,'/dashboard/pages/types/composer','1')
  ,(73,79,'/dashboard/settings/multilingual','1')
- ,(74,80,'/dashboard/bricks','1');
+ ,(74,80,'/dashboard/bricks','1')
+ ,(75,81,'/dashboard/bricks/add','1')
+ ,(76,82,'/dashboard/bricks/search','1')
+ ,(77,83,'/dashboard/bricks/insert','1')
+ ,(78,84,'/dashboard/bricks/structure','1')
+ ,(79,85,'/dashboard/bricks/access','1')
+ ,(80,86,'/dashboard/bricks/drop','1');
 
  
 INSERT INTO PagePermissions VALUES(5,1,0,'r',NULL,NULL)
@@ -918,7 +936,13 @@ INSERT INTO Pages VALUES(1,1,'0',1,0,NULL,NULL,NOW(),NULL,NOW(),NULL,NULL,1,1,'O
  ,(77,0,'0',1,0,NULL,NULL,NULL,NULL,NOW(),NULL,NULL,1,15,'PARENT','/dashboard/composer/drafts.php',0,NULL,0,0,1,75,0,0,-1,'0',0)
  ,(78,0,'0',1,0,NULL,NULL,NULL,NULL,NOW(),NULL,NULL,1,15,'PARENT','/dashboard/pages/types/composer.php',0,NULL,0,0,1,43,0,0,-1,'0',0)
  ,(79,0,'0',1,0,NULL,NULL,NULL,NULL,NOW(),NULL,NULL,1,15,'PARENT','/dashboard/settings/multilingual/view.php',0,NULL,0,0,1,52,0,0,-1,'0',0)
- ,(80,0,'0',1,0,NULL,NULL,NULL,NULL,NOW(),NULL,NULL,1,15,'PARENT','/dashboard/bricks/view.php',0,NULL,0,0,1,15,0,0,-1,'0',0);
+ ,(80,0,'0',1,0,NULL,NULL,NULL,NULL,NOW(),NULL,NULL,1,15,'PARENT','/dashboard/bricks/view.php',0,NULL,0,0,1,15,0,0,-1,'0',0)
+ ,(81,0,'0',1,0,NULL,NULL,NULL,NULL,NOW(),NULL,NULL,1,15,'PARENT','/dashboard/bricks/add.php',0,NULL,0,0,1,80,0,0,-1,'0',0)
+ ,(82,0,'0',1,0,NULL,NULL,NULL,NULL,NOW(),NULL,NULL,1,15,'PARENT','/dashboard/bricks/search.php',0,NULL,0,0,1,80,0,0,-1,'0',0)
+ ,(83,0,'0',1,0,NULL,NULL,NULL,NULL,NOW(),NULL,NULL,1,15,'PARENT','/dashboard/bricks/insert.php',0,NULL,0,0,1,80,0,0,-1,'0',0)
+ ,(84,0,'0',1,0,NULL,NULL,NULL,NULL,NOW(),NULL,NULL,1,15,'PARENT','/dashboard/bricks/structure.php',0,NULL,0,0,1,80,0,0,-1,'0',0)
+ ,(85,0,'0',1,0,NULL,NULL,NULL,NULL,NOW(),NULL,NULL,1,15,'PARENT','/dashboard/bricks/access.php',0,NULL,0,0,1,80,0,0,-1,'0',0)
+ ,(86,0,'0',1,0,NULL,NULL,NULL,NULL,NOW(),NULL,NULL,1,15,'PARENT','/dashboard/bricks/drop.php',0,NULL,0,0,1,80,0,0,-1,'0',0);
 
 
 INSERT INTO TaskPermissions VALUES(1,'access_task_permissions','Change Task Permissions','',0)

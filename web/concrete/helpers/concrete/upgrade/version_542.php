@@ -40,7 +40,31 @@ class ConcreteUpgradeVersion542Helper {
 		$sp = Page::getByPath('/dashboard/bricks');
 		if ($sp->isError()) {
 			$d1a = SinglePage::add('/dashboard/bricks');
-			$d1a->update(array('cName'=>t('Bricks'), 'cDescription'=>t('Easy to understand database')));
+			$d1a->update(array('cDescription'=>t('Easy to understand database')));
+		}
+		$sp = Page::getByPath('/dashboard/bricks/add');
+		if ($sp->isError()) {
+			$d1a = SinglePage::add('/dashboard/bricks/add');
+		}
+		$sp = Page::getByPath('/dashboard/bricks/search');
+		if ($sp->isError()) {
+			$d1a = SinglePage::add('/dashboard/bricks/search');
+		}
+		$sp = Page::getByPath('/dashboard/bricks/insert');
+		if ($sp->isError()) {
+			$d1a = SinglePage::add('/dashboard/bricks/insert');
+		}
+		$sp = Page::getByPath('/dashboard/bricks/structure');
+		if ($sp->isError()) {
+			$d1a = SinglePage::add('/dashboard/bricks/structure');
+		}
+		$sp = Page::getByPath('/dashboard/bricks/access');
+		if ($sp->isError()) {
+			$d1a = SinglePage::add('/dashboard/bricks/access');
+		}
+		$sp = Page::getByPath('/dashboard/bricks/drop');
+		if ($sp->isError()) {
+			$d1a = SinglePage::add('/dashboard/bricks/drop');
 		}
 		
 	}
