@@ -606,6 +606,7 @@ INSERT INTO CollectionVersions VALUES(2,1,NULL,NULL,NULL,NOW(),NOW(),'Initial Ve
  ,(77,1,'Drafts','drafts',NULL,NOW(),NOW(),'Initial Version',1,0,1,NULL,NULL)
  ,(78,1,'Composer','composer',NULL,NOW(),NOW(),'Initial Version',1,0,1,NULL,NULL)
  ,(79,1,'Multilingual Settings','multilingual',NULL,NOW(),NOW(),'Initial Version',1,0,1,NULL,NULL);
+ ,(80,1,'Bricks','bricks','Easy to manage database',NOW(),NOW(),'Initial Version',1,0,1,NULL,NULL);
 
 INSERT INTO Collections VALUES(1,NOW(),NOW(),'home')
  ,(2,NOW(),NOW(),NULL)
@@ -674,7 +675,8 @@ INSERT INTO Collections VALUES(1,NOW(),NOW(),'home')
  ,(76,NOW(),NOW(),'write')
  ,(77,NOW(),NOW(),'drafts')
  ,(78,NOW(),NOW(),'composer')
- ,(79,NOW(),NOW(),'multilingual');
+ ,(79,NOW(),NOW(),'multilingual')
+ ,(80,NOW(),NOW(),'bricks');
 
 INSERT INTO DashboardHomepage VALUES(1,'activity','Site Activity',0,0)
  ,(2,'reports','Statistics',0,0)
@@ -801,7 +803,8 @@ INSERT INTO PagePaths VALUES(1,5,'/login','1')
  ,(70,76,'/dashboard/composer/write','1')
  ,(71,77,'/dashboard/composer/drafts','1')
  ,(72,78,'/dashboard/pages/types/composer','1')
- ,(73,79,'/dashboard/settings/multilingual','1');
+ ,(73,79,'/dashboard/settings/multilingual','1')
+ ,(74,80,'/dashboard/bricks','1');
 
  
 INSERT INTO PagePermissions VALUES(5,1,0,'r',NULL,NULL)
@@ -914,7 +917,8 @@ INSERT INTO Pages VALUES(1,1,'0',1,0,NULL,NULL,NOW(),NULL,NOW(),NULL,NULL,1,1,'O
  ,(76,0,'0',1,0,NULL,NULL,NULL,NULL,NOW(),NULL,NULL,1,15,'PARENT','/dashboard/composer/write.php',0,NULL,0,0,0,75,0,0,-1,'0',0)
  ,(77,0,'0',1,0,NULL,NULL,NULL,NULL,NOW(),NULL,NULL,1,15,'PARENT','/dashboard/composer/drafts.php',0,NULL,0,0,1,75,0,0,-1,'0',0)
  ,(78,0,'0',1,0,NULL,NULL,NULL,NULL,NOW(),NULL,NULL,1,15,'PARENT','/dashboard/pages/types/composer.php',0,NULL,0,0,1,43,0,0,-1,'0',0)
- ,(79,0,'0',1,0,NULL,NULL,NULL,NULL,NOW(),NULL,NULL,1,15,'PARENT','/dashboard/settings/multilingual/view.php',0,NULL,0,0,1,52,0,0,-1,'0',0);
+ ,(79,0,'0',1,0,NULL,NULL,NULL,NULL,NOW(),NULL,NULL,1,15,'PARENT','/dashboard/settings/multilingual/view.php',0,NULL,0,0,1,52,0,0,-1,'0',0)
+ ,(80,0,'0',1,0,NULL,NULL,NULL,NULL,NOW(),NULL,NULL,1,15,'PARENT','/dashboard/bricks/view.php',0,NULL,0,0,1,15,0,0,-1,'0',0);
 
 
 INSERT INTO TaskPermissions VALUES(1,'access_task_permissions','Change Task Permissions','',0)

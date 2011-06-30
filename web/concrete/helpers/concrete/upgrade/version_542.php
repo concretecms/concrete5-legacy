@@ -36,6 +36,13 @@ class ConcreteUpgradeVersion542Helper {
 			$d1a = SinglePage::add('/dashboard/settings/multilingual');
 			$d1a->update(array('cName'=>t('Multilingual Setup')));
 		}
+		
+		$sp = Page::getByPath('/dashboard/bricks');
+		if ($sp->isError()) {
+			$d1a = SinglePage::add('/dashboard/bricks');
+			$d1a->update(array('cName'=>t('Bricks'), 'cDescription'=>t('Easy to understand database')));
+		}
+		
 	}
 	
 	public function prepare() {
