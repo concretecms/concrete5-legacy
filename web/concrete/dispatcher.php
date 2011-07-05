@@ -121,10 +121,14 @@
 	require(dirname(__FILE__) . '/startup/tools_upgrade_check.php');
 
 	## Specific site routes for various content items (if they exist) ##
-	@include(DIR_CONFIG_SITE . '/site_theme_paths.php');
+        if (file_exists(DIR_CONFIG_SITE . '/site_theme_paths.php')) {
+		@include(DIR_CONFIG_SITE . '/site_theme_paths.php');
+        }
 
 	## Specific site routes for various content items (if they exist) ##
-	@include(DIR_CONFIG_SITE . '/site_file_types.php');
+	if (file_exists(DIR_CONFIG_SITE . '/site_file_types.php')) {
+		@include(DIR_CONFIG_SITE . '/site_file_types.php');
+	}
 
 	## Package events
 	require(dirname(__FILE__) . '/startup/packages.php');
@@ -133,10 +137,10 @@
 	require(dirname(__FILE__) . '/startup/optional_menu_buttons.php');
 
 	# site events - we have to include before tools
-	if (defined('ENABLE_APPLICATION_EVENTS') && ENABLE_APPLICATION_EVENTS == true) {
+	if (defined('ENABLE_APPLICATION_EVENTS') && ENABLE_APPLICATION_EVENTS == true &&  file_exists(DIR_CONFIG_SITE . '/site_events.php')) {
 		@include(DIR_CONFIG_SITE . '/site_events.php');
-	}	
-	
+	}
+
 	// Now we check to see if we're including CSS, Javascript, etc...
 	// Include Tools. Format: index.php?task=include_frontend&fType=TOOL&filename=test.php
 	require(dirname(__FILE__) . '/startup/tools.php');
@@ -245,10 +249,13 @@
 		require(dirname(__FILE__) . '/startup/process.php');
 
 		## Record the view
+		$u = new User();
 		if (STATISTICS_TRACK_PAGE_VIEWS == 1) {
-			$u = new User();
 			$u->recordView($c);
 		}
+		
+		## Fire the on_page_view Event
+		Events::fire('on_page_view', $c, $u);
 		
 		## now we display (provided we've gotten this far)
 	

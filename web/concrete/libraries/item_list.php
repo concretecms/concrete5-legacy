@@ -85,7 +85,7 @@ class DatabaseItemList extends ItemList {
 						$q .= 'and 1 = 2';
 					}
 				} else { 
-					$comp = is_null($value) ? 'IS' : $comp;
+					$comp = (is_null($value) && stripos($comp, 'is') === false) ? (($comp == '!=' || $comp == '<>') ? 'IS NOT' : 'IS') : $comp;
 					$q .= 'and ' . $column . ' ' . $comp . ' ' . $db->quote($value) . ' ';
 				}
 			}
@@ -230,7 +230,7 @@ class ItemList {
 	protected $start = 0;
 	protected $sortBy;
 	protected $sortByDirection;
-	protected $queryStringPagingVariable = 'ccm_paging_p';
+	protected $queryStringPagingVariable = PAGING_STRING;
 	protected $queryStringSortVariable = 'ccm_order_by';
 	protected $queryStringSortDirectionVariable = 'ccm_order_dir';
 	protected $enableStickySearchRequest = false;
