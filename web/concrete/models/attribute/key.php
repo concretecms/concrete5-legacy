@@ -284,7 +284,11 @@ class AttributeKey extends Object {
 		if ($r) {
 			$txt = Loader::helper('text');
 			$className = $txt->camelcase($akCategoryHandle) . 'AttributeKey';
-			$ak = new $className();
+			if(in_array($className, get_declared_classes())) {
+				$ak = new $className();
+			} else {
+				$ak = new AttributeKey($akCategoryHandle);
+			}
 			$ak->load($this->getAttributeKeyID());
 			$at = $ak->getAttributeType();
 			$cnt = $at->getController();

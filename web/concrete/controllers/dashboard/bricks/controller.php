@@ -7,18 +7,18 @@ class DashboardBricksController extends Controller {
 
 		// Products
 		AttributeKeyCategory::registerSetting('core_commerce_product', 'list_model_path', 'product/list');
-		AttributeKeyCategory::registerSetting('core_commerce_product', 'url_browse', 'dashboard/core_commerce/products/search');
+		AttributeKeyCategory::registerSetting('core_commerce_product', 'url_search', 'dashboard/core_commerce/products/search');
 		AttributeKeyCategory::registerSetting('core_commerce_product', 'url_insert', 'dashboard/core_commerce/products/add');
 		AttributeKeyCategory::registerSetting('core_commerce_product', 'url_structure', 'dashboard/core_commerce/products/attributes');
-		AttributeKeyCategory::registerSetting('core_commerce_product', 'url_access_disabled', TRUE);
+		AttributeKeyCategory::registerSetting('core_commerce_product', 'url_permission_disabled', TRUE);
 		AttributeKeyCategory::registerSetting('core_commerce_product', 'url_drop_disabled', TRUE);
 
 		// Orders
 		AttributeKeyCategory::registerSetting('core_commerce_order', 'list_model_path', 'order/list');
-		AttributeKeyCategory::registerSetting('core_commerce_order', 'url_browse', 'dashboard/core_commerce/orders/search');
+		AttributeKeyCategory::registerSetting('core_commerce_order', 'url_search', 'dashboard/core_commerce/orders/search');
 		AttributeKeyCategory::registerSetting('core_commerce_order', 'url_insert_disabled', TRUE);
 		AttributeKeyCategory::registerSetting('core_commerce_order', 'url_structure', 'dashboard/core_commerce/orders/attributes');
-		AttributeKeyCategory::registerSetting('core_commerce_order', 'url_access_disabled', TRUE);
+		AttributeKeyCategory::registerSetting('core_commerce_order', 'url_permission_disabled', TRUE);
 		AttributeKeyCategory::registerSetting('core_commerce_order', 'url_drop_disabled', TRUE);
 		
 		// Product Options

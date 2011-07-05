@@ -7,6 +7,8 @@ if (is_object($category) && $category->allowAttributeSets()) {
 	$sets = $category->getAttributeSets();
 }
 
+if(!$currentURL) $currentURL = Loader::helper('navigation')->getLinkToCollection($c);
+
 if (count($attribs) > 0) { 
 
 	$ih = Loader::helper('concrete/interface');
@@ -14,7 +16,7 @@ if (count($attribs) > 0) {
 	
 	if (count($sets) > 0) {  ?>
 	
-		<h3 style="position: absolute; top: 6px; right: 8px"><?=t('View Attributes: ')?><select style="font-size: 10px" onchange="window.location.href='<?=Loader::helper('navigation')->getLinkToCollection($c)?>?asGroupAttributes=' + this.value" name="asGroupAttributes">
+		<h3 style="position: absolute; top: 6px; right: 8px"><?=t('View Attributes: ')?><select style="font-size: 10px" onchange="window.location.href='<?=$currentURL?>?asGroupAttributes=' + this.value" name="asGroupAttributes">
 			<option value="1" <? if ($_REQUEST['asGroupAttributes'] !== '0') { ?> selected <? } ?>><?=t('Grouped by set')?></option>
 			<option value="0" <? if ($_REQUEST['asGroupAttributes'] === '0') { ?> selected <? } ?>><?=t('In one list')?></option>
 		</select></h3>

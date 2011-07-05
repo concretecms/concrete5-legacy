@@ -21,15 +21,17 @@ $txt = Loader::helper('text');
 			if(!$disabled) {
 				if($settings['url_'.$action]) {
 					$html .= '<a href="'.View::url($settings['url_'.$action]).'">';
-					if($action == 'browse') $browse = View::url($settings['url_'.$action]);
+					if($action == 'search') $search = View::url($settings['url_'.$action]);
 					if($action == 'structure') $structure = View::url($settings['url_'.$action]);
 				} else {
 					$html .= '<a href="'.$linkPrefix.$action.'/'.$akc->getAttributeKeyCategoryHandle().$linkSuffix.'">';
-					if($action == 'browse') $browse = $linkPrefix.$action.'/'.$akc->getAttributeKeyCategoryHandle().$linkSuffix;
+					if($action == 'search') $search = $linkPrefix.$action.'/'.$akc->getAttributeKeyCategoryHandle().$linkSuffix;
 					if($action == 'structure') $structure = $linkPrefix.$action.'/'.$akc->getAttributeKeyCategoryHandle().$linkSuffix;
 				}
 			}
-			$html .= $txt->unhandle($action);
+			$html .= '<img src="'.AttributeKeyCategory::getActionIconSrc($action).'" title="'.$txt->unhandle($action);
+			if($disabled) $html .= ' Disabled';
+			$html .= '" />';
 			if(!$disabled) $html .= '</a>';
 		}
 		$html .= '</td>';
@@ -39,7 +41,7 @@ $txt = Loader::helper('text');
 	$list = $akc->getItemList();
 	$count = $list->getTotal();
 	if($count > 0) {
-		$name = '<a href="'.$browse.'">'.$txt->unhandle($akc->getAttributeKeyCategoryHandle()).'</a>';
+		$name = '<a href="'.$search.'">'.$txt->unhandle($akc->getAttributeKeyCategoryHandle()).'</a>';
 	} else {
 		$name = '<a href="'.$structure.'">'.$txt->unhandle($akc->getAttributeKeyCategoryHandle()).'</a>';
 	} ?>

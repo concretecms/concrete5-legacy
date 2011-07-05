@@ -23,7 +23,8 @@ class AttributeKeyCategoryItem extends Object {
 	public function add($uID = NULL, $akCategoryHandle = NULL) {
 		if(!$akCategoryHandle) { $akCategoryHandle = $this->akCategoryHandle; }
 		if(!AttributeKeyCategory::akCategoryHandleExists($akCategoryHandle)) {
-			throw new Exception('Attribute Key Category does not exists.');
+			var_dump($akCategoryHandle);
+			throw new Exception('Attribute Key Category "'.$akCategoryHandle.'" does not exists.');
 		}
 		
 		var_dump(AttributeKeyCategory::getByHandle($akCategoryHandle));

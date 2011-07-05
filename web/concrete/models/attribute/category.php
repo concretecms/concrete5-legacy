@@ -19,41 +19,87 @@ class AttributeKeyCategory extends Object {
 	}
 	
 	public function getActions() {
-		return array('browse', 'insert', 'structure', 'access', 'drop');
+		return array('search', 'insert', 'structure', 'permissions', 'drop');
+	}
+	public function getActionIconSrc($action) {
+		switch($action) {
+			case 'insert':
+				$iconSrc = ASSETS_URL_IMAGES.'/icons/add.png';
+				break;
+			case 'structure':
+				$iconSrc = ASSETS_URL_IMAGES.'/icons/wrench.png';
+				break;
+			case 'permissions':
+				$iconSrc = ASSETS_URL_IMAGES.'/icons/icon_header_permissions.png';
+				break;
+			case 'drop':
+				$iconSrc = ASSETS_URL_IMAGES.'/icons/delete_small.png';
+				break;
+			default:
+				$iconSrc = ASSETS_URL_IMAGES.'/icons/'.$action.'.png';
+				break;
+		}
+		return $iconSrc;
 	}
 	
 	private $registeredSettings = array(
 					'collection' => array(
-						'url_browse'		=> 'dashboard/sitemap',
-						'url_insert'		=> 'dashboard/composer',
-						'url_structure'		=> 'dashboard/pages/attributes',
-						'url_access_hidden'	=> TRUE,
-						'url_drop_hidden'	=> TRUE
+						'url_search'			=> 'dashboard/sitemap/search',
+						'url_insert'			=> 'dashboard/composer',
+						'url_structure'			=> 'dashboard/pages/attributes',
+						'url_permissions_hidden'	=> TRUE,
+						'url_drop_hidden'		=> TRUE
 					),
 					'user' => array(
-						'url_browse'		=> 'dashboard/users',
-						'url_insert'		=> 'dashboard/users/add',
-						'url_structure'		=> 'dashboard/users/attributes',
-						'url_access'		=> 'dashboard/settings/set_permissions',
-						'url_drop_hidden'	=> TRUE
+						'url_search'			=> 'dashboard/users',
+						'url_insert'			=> 'dashboard/users/add',
+						'url_structure'			=> 'dashboard/users/attributes',
+						'url_permissions'		=> 'dashboard/settings/set_permissions',
+						'url_drop_hidden'		=> TRUE
 					),
 					'file' => array(
-						'url_browse'		=> 'dashboard/files',
-						'url_insert_hidden'	=> TRUE,
-						'url_structure'		=> 'dashboard/files/attributes',
-						'url_access'		=> 'dashboard/files/access',
-						'url_drop_hidden'	=> TRUE
+						'url_search'			=> 'dashboard/files',
+						'url_insert_hidden'		=> TRUE,
+						'url_structure'			=> 'dashboard/files/attributes',
+						'url_permissions'		=> 'dashboard/files/access',
+						'url_drop_hidden'		=> TRUE
 					)
 				);
 
 	public static function registerSetting($akCategoryHandle, $settingHandle, $parameters) {
-		$re = AttributeKeyCategory::getInstance();
-		$re->registeredSettings[$akCategoryHandle][$settingHandle] = $parameters;	
+		$akc = AttributeKeyCategory::getInstance();
+		$akc->registeredSettings[$akCategoryHandle][$settingHandle] = $parameters;	
 	}
 
 	public function getRegisteredSettings() {
-		$re = AttributeKeyCategory::getInstance();
-		return $re->registeredSettings[$this->getAttributeKeyCategoryHandle()];
+		$akc = AttributeKeyCategory::getInstance();
+		return $akc->registeredSettings[$this->getAttributeKeyCategoryHandle()];
+	}
+	
+	private $allowAddToPackage = array();
+
+	public static function allowAddToPackage($pkg) {
+		if(is_object($pkg)) {
+			$pkgHandle = $pkg->getPackageHandle();
+		} elseif(is_numeric($pkg)) {
+			$pkgHandle = Package::getByID($pkg)->getPackageHandle();
+		} else {
+			$pkgHandle = $pkg;
+		}
+		$akc = AttributeKeyCategory::getInstance();
+		$akc->allowAddToPackage[] = $pkgHandle;	
+	}
+	
+	public function canAddToPackage($pkg) {
+		if(is_object($pkg)) {
+			$pkgHandle = $pkg->getPackageHandle();
+		} elseif(is_numeric($pkg)) {
+			$pkgHandle = Package::getByID($pkg)->getPackageHandle();
+		} else {
+			$pkgHandle = $pkg;
+		}
+		$akc = AttributeKeyCategory::getInstance();
+		return in_array($pkgHandle, $akc->allowAddToPackage);
 	}
 	
 	public static function getByID($akCategoryID) {
@@ -217,7 +263,7 @@ class AttributeKeyCategory extends Object {
 			$pkgHandle = $pkg->getPackageHandle();
 		} elseif(is_numeric($pkg)) {
 			$pkgID = $pkg;
-		} else {
+		} elseif(!empty($pkg)) {
 			$pkgID = Package::getByHandle($pkg)->getPackageID();
 			$pkgHandle = $pkg;
 		}
