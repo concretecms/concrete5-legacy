@@ -89,7 +89,7 @@ class DashboardBricksStructureController extends Controller {
 						
 								$type = AttributeType::getByID($this->post('atID'));
 								$ak = new AttributeKey($akCategoryHandle);
-								$ak->create($type, $this->post(), $category->getPackage());
+								$ak->create($type, $this->post(), $category->getPackageID());
 								$this->redirect('/dashboard/bricks/structure/'.$akCategoryHandle, 'attribute_created');
 						
 							break;

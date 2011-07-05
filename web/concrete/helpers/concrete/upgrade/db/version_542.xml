@@ -146,7 +146,6 @@
   </table>
   <table name="AttributeKeyCategoryItemPermissions">
     <field name="ID" type="I" size="10">
-      <key/>
       <notnull/>
       <unsigned/>
     </field>

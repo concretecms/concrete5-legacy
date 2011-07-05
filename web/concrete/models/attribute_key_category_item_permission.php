@@ -114,7 +114,7 @@ class AttributeKeyCategoryItemPermission extends Object {
 		} else {
 			if(is_numeric($this->ID)) {
 				Loader::model('attribute_key_category_item');
-				$item = AttributeKeyCategoryItemItem::getByID($this->ID);
+				$item = AttributeKeyCategoryItem::getByID($this->ID);
 				$akCategoryHandle = $item->akCategoryHandle;
 			}
 			

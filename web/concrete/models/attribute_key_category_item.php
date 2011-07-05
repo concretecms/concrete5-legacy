@@ -23,12 +23,8 @@ class AttributeKeyCategoryItem extends Object {
 	public function add($uID = NULL, $akCategoryHandle = NULL) {
 		if(!$akCategoryHandle) { $akCategoryHandle = $this->akCategoryHandle; }
 		if(!AttributeKeyCategory::akCategoryHandleExists($akCategoryHandle)) {
-			var_dump($akCategoryHandle);
 			throw new Exception('Attribute Key Category "'.$akCategoryHandle.'" does not exists.');
 		}
-		
-		var_dump(AttributeKeyCategory::getByHandle($akCategoryHandle));
-		exit;
 		
 		if(!$uID) { $uID = 1; }
 		$dt = Loader::helper('date');
@@ -75,6 +71,7 @@ class AttributeKeyCategoryItem extends Object {
 				}
 			} 
 		}
+		
 		Events::fire('on_attribute_key_category_item_add', $newObject);
 		$newObject->reindex();
 		return $newObject;
@@ -83,6 +80,7 @@ class AttributeKeyCategoryItem extends Object {
 	public function update() {
 		Events::fire('before_attribute_key_category_item_update', $this);
 		$dt = Loader::helper('date');
+		
 		if($this->getAttribute('date_modified')) {
 			$this->setAttribute('date_modified', $dt->getLocalDateTime());
 		}
@@ -91,6 +89,24 @@ class AttributeKeyCategoryItem extends Object {
 		$newObject = self::getByID($this->ID);
 		Events::fire('after_attribute_key_category_item_update', $newObject);
 		return $newObject;
+	}
+	
+	public function saveAttribute($key) {
+		$value = $this->getAttributeValueObject($key, true);
+		$key->saveAttributeForm($value);
+		$db = Loader::db();
+		$db->Replace('AttributeKeyCategoryItemAttributeValues', 
+					array(
+						'ID' => $this->getID(), 
+						'akID' => $key->getAttributeKeyID(), 
+						'avID' => $value->getAttributeValueID(),
+						'akCategoryHandle' => "'".$this->akCategoryHandle."'"
+					), 
+					array(
+						'ID', 
+						'akID'
+					)
+				);
 	}
 	
 	public function setOwner($uID = 1) {
@@ -219,7 +235,6 @@ class AttributeKeyCategoryItem extends Object {
 		if ($avID > 0) {
 			$av = AttributeValue::getByID($avID);
 			if (is_object($av)) {
-				$av->setItem($this);
 				$av->setAttributeKey($ak);
 			}
 		}

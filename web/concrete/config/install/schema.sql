@@ -86,8 +86,7 @@ canWrite                 TINYINT(1) DEFAULT '0',
 canDelete                TINYINT(1) DEFAULT '0',
 canAdd                   TINYINT(1) DEFAULT '0',
 canSearch                TINYINT(1) DEFAULT '0',
-canAdmin                 TINYINT(1) DEFAULT '0',
-                 PRIMARY KEY (ID)
+canAdmin                 TINYINT(1) DEFAULT '0'
 );
 
 CREATE TABLE AttributeKeyCategoryItems (
