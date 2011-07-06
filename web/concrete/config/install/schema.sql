@@ -1293,15 +1293,15 @@ CREATE TABLE IF NOT EXISTS `CollectionSearchIndexAttributes` (
   `ak_exclude_search_index` tinyint(4) default '0',
   `ak_exclude_sitemapxml` tinyint(4) default '0',
   `ak_tags` text,
-  PRIMARY KEY (`cID`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+  PRIMARY KEY  (`cID`)
+);
 
 CREATE TABLE IF NOT EXISTS `FileSearchIndexAttributes` (
   `fID` int(11) unsigned NOT NULL default '0',
   `ak_width` decimal(14,4) default '0.0000',
   `ak_height` decimal(14,4) default '0.0000',
-  PRIMARY KEY (`fID`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+  PRIMARY KEY  (`fID`)
+);
 
 CREATE TABLE UserSearchIndexAttributes (
 uID INTEGER(11) UNSIGNED NOT NULL DEFAULT 0,

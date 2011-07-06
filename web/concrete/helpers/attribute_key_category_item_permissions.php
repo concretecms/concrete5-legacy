@@ -1,6 +1,6 @@
-<?php 
- 
-defined('C5_EXECUTE') or die("Access Denied.");
+<?php defined('C5_EXECUTE') or die("Access Denied.");
+
+Loader::model('attribute_key_category_item_permission');
 class AttributeKeyCategoryItemPermissionsHelper { 
 	
 	public function save($post) {
@@ -103,7 +103,7 @@ class AttributeKeyCategoryItemPermissionsHelper {
 		$html .= '<div id="ccm-permissions-entities-wrapper" class="ccm-permissions-entities-wrapper">';
 		
 		if(!$disabled) {
-			$html .= '<div id="ccm-permissions-entity-base" class="ccm-permissions-entity-base">' . $this->getAccessRow($akcip) . '</div>';
+			$html .= '<div id="ccm-permissions-entity-base" class="ccm-permissions-entity-base">' . $this->getInheritanceAccessRow($akcip) . '</div>';
 		}
 
 		foreach($gArray as $g) { 

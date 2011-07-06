@@ -6,7 +6,7 @@ class DashboardBricksAddController extends Controller {
 		$subnav = array(
 			array(View::url('dashboard/bricks'), t('Categories')),
 			array(View::url('dashboard/bricks/structure'), t('Global Attributes')),
-			array(View::url('dashboard/bricks/access'), t('Global Permissions'))
+			array(View::url('dashboard/bricks/permissions'), t('Global Permissions'))
 		);
 		$this->set('subnav', $subnav);
 		if($post = $this->post()) {

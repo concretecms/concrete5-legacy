@@ -58,9 +58,9 @@ class ConcreteUpgradeVersion542Helper {
 		if ($sp->isError()) {
 			$d1a = SinglePage::add('/dashboard/bricks/structure');
 		}
-		$sp = Page::getByPath('/dashboard/bricks/access');
+		$sp = Page::getByPath('/dashboard/bricks/permissions');
 		if ($sp->isError()) {
-			$d1a = SinglePage::add('/dashboard/bricks/access');
+			$d1a = SinglePage::add('/dashboard/bricks/permissions');
 		}
 		$sp = Page::getByPath('/dashboard/bricks/drop');
 		if ($sp->isError()) {

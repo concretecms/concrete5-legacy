@@ -20,7 +20,7 @@ class DashboardBricksStructureController extends Controller {
 				$subnav = array(
 					array(View::url('dashboard/bricks'), t('Categories')),
 					array(View::url('dashboard/bricks/structure'), t('Global Attributes'), TRUE),
-					array(View::url('dashboard/bricks/access'), t('Global Permissions'))
+					array(View::url('dashboard/bricks/permissions'), t('Global Permissions'))
 				);
 				$this->set('subnav', $subnav);
 				$vtp = AttributeKeyCategoryItemPermission::getByID('default');
@@ -38,7 +38,7 @@ class DashboardBricksStructureController extends Controller {
 					array(View::url('dashboard/bricks/search', $akCategoryHandle), t('Search')),
 					array(View::url('dashboard/bricks/insert', $akCategoryHandle), t('Insert')),
 					array(View::url('dashboard/bricks/structure', $akCategoryHandle), t('Structure'), TRUE),
-					array(View::url('dashboard/bricks/access', $akCategoryHandle), t('Permissions')),
+					array(View::url('dashboard/bricks/permissions', $akCategoryHandle), t('Permissions')),
 					array(View::url('dashboard/bricks/drop', $akCategoryHandle), t('Drop'))
 				);
 				$this->set('subnav', $subnav);

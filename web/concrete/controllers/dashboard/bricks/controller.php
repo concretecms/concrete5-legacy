@@ -29,7 +29,7 @@ class DashboardBricksController extends Controller {
 		$subnav = array(
 			array(View::url('dashboard/bricks'), t('Categories'), TRUE),
 			array(View::url('dashboard/bricks/structure'), t('Global Attributes')),
-			array(View::url('dashboard/bricks/access'), t('Global Permissions'))
+			array(View::url('dashboard/bricks/permissions'), t('Global Permissions'))
 		);
 		$this->set('subnav', $subnav);
 		

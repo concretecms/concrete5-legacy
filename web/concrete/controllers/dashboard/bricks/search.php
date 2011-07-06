@@ -9,7 +9,7 @@ class DashboardBricksSearchController extends Controller {
 			array(View::url('dashboard/bricks/search', $akCategoryHandle), t('Search'), TRUE),
 			array(View::url('dashboard/bricks/insert', $akCategoryHandle), t('Insert')),
 			array(View::url('dashboard/bricks/structure', $akCategoryHandle), t('Structure')),
-			array(View::url('dashboard/bricks/access', $akCategoryHandle), t('Permissions')),
+			array(View::url('dashboard/bricks/permissions', $akCategoryHandle), t('Permissions')),
 			array(View::url('dashboard/bricks/drop', $akCategoryHandle), t('Drop'))
 		);
 		$this->set('subnav', $subnav);
