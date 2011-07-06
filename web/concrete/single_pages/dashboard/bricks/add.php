@@ -9,7 +9,8 @@
 			<br />
 			<br />
 			<?php print $form->label('enableSets', 'Enable Sets?'); ?>
-			<?php print $form->checkbox('enableSets', 0); ?>
+			<?php print $form->radio('enableSets', 1). 'Yes'; ?>
+			<?php print $form->radio('enableSets', 0). 'No'; ?>
 			<br />
 			<br />
 			<?php print $ih->submit('Add', 'add-new-category', 'right'); ?>

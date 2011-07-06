@@ -11,7 +11,7 @@ class DashboardBricksPermissionsController extends Controller {
 			$akcip = AttributeKeyCategoryItemPermission::getByID('GLOBAL');
 			$subnav = array(
 				array(View::url('dashboard/bricks'), t('Categories')),
-				array(View::url('dashboard/bricks/structure'), t('Global Attributes')),
+				array(View::url('dashboard/bricks/structure'), t('Attribute Management')),
 				array(View::url('dashboard/bricks/permissions'), t('Global Permissions'), TRUE)
 			);
 			$this->set('subnav', $subnav);

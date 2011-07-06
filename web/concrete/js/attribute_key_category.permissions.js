@@ -29,7 +29,6 @@ ccm_sitemapSelectPermissionsEntity = function(selector, id, name) {
 		ccm_sitemapActivatePermissionsSelector();
 	} else {
 		alert('That selection has already been added to the list.');
-		$("#ug-selector").dialog();
 	}
 }
 
