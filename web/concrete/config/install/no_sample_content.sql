@@ -130,7 +130,8 @@ INSERT INTO CollectionVersions VALUES(2,1,NULL,NULL,NULL,NOW(),NOW(),'Initial Ve
  ,(83,1,'Insert','insert',NULL,NOW(),NOW(),'Initial Version',1,0,1,NULL,NULL)
  ,(84,1,'Structure','structure',NULL,NOW(),NOW(),'Initial Version',1,0,1,NULL,NULL)
  ,(85,1,'Permissions','permissions',NULL,NOW(),NOW(),'Initial Version',1,0,1,NULL,NULL)
- ,(86,1,'Drop','drop',NULL,NOW(),NOW(),'Initial Version',1,0,1,NULL,NULL);
+ ,(86,1,'Drop','drop',NULL,NOW(),NOW(),'Initial Version',1,0,1,NULL,NULL)
+ ,(87,1,'Edit','edit',NULL,NOW(),NOW(),'Initial Version',1,0,1,NULL,NULL);
 
 
 INSERT INTO Collections VALUES(1,NOW(),NOW(),'home')
@@ -197,7 +198,8 @@ INSERT INTO Collections VALUES(1,NOW(),NOW(),'home')
  ,(83,NOW(),NOW(),'insert')
  ,(84,NOW(),NOW(),'structure')
  ,(85,NOW(),NOW(),'permissions')
- ,(86,NOW(),NOW(),'drop');
+ ,(86,NOW(),NOW(),'drop')
+ ,(87,NOW(),NOW(),'edit');
 
 INSERT INTO DashboardHomepage VALUES(1,'activity','Site Activity',0,0)
  ,(2,'reports','Statistics',0,0)
@@ -286,7 +288,8 @@ INSERT INTO PagePaths VALUES(1,5,'/login','1')
  ,(77,83,'/dashboard/bricks/insert','1')
  ,(78,84,'/dashboard/bricks/structure','1')
  ,(79,85,'/dashboard/bricks/permissions','1')
- ,(80,86,'/dashboard/bricks/drop','1');
+ ,(80,86,'/dashboard/bricks/drop','1')
+ ,(80,87,'/dashboard/bricks/edit','1');
 
 
 INSERT INTO PagePermissions VALUES(5,1,0,'r',NULL,NULL)
@@ -371,7 +374,8 @@ INSERT INTO Pages VALUES(1,1,'0',1,1,1,NOW(),NOW(),NULL,NOW(),NULL,NULL,1,1,'OVE
  ,(83,0,'0',1,0,NULL,NULL,NULL,NULL,NOW(),NULL,NULL,1,15,'PARENT','/dashboard/bricks/insert.php',0,NULL,0,0,1,80,0,0,-1,'0',0)
  ,(84,0,'0',1,0,NULL,NULL,NULL,NULL,NOW(),NULL,NULL,1,15,'PARENT','/dashboard/bricks/structure.php',0,NULL,0,0,1,80,0,0,-1,'0',0)
  ,(85,0,'0',1,0,NULL,NULL,NULL,NULL,NOW(),NULL,NULL,1,15,'PARENT','/dashboard/bricks/permissions.php',0,NULL,0,0,1,80,0,0,-1,'0',0)
- ,(86,0,'0',1,0,NULL,NULL,NULL,NULL,NOW(),NULL,NULL,1,15,'PARENT','/dashboard/bricks/drop.php',0,NULL,0,0,1,80,0,0,-1,'0',0);
+ ,(86,0,'0',1,0,NULL,NULL,NULL,NULL,NOW(),NULL,NULL,1,15,'PARENT','/dashboard/bricks/drop.php',0,NULL,0,0,1,80,0,0,-1,'0',0)
+ ,(87,0,'0',1,0,NULL,NULL,NULL,NULL,NOW(),NULL,NULL,1,15,'PARENT','/dashboard/bricks/edit.php',0,NULL,0,0,1,80,0,0,-1,'0',0);
  
 
 INSERT INTO TaskPermissions VALUES(1,'access_task_permissions','Change Task Permissions','',0)

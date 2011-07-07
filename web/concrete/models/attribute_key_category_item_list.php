@@ -120,7 +120,11 @@ class AttributeKeyCategoryItemList extends DatabaseItemList {
 										array($row['ID'], $ak->akID)
 									);
 					$av = AttributeValue::getById($avID);
-					$akcis[$row['ID']][$ak->akHandle] = $av->getValue('display');
+					if(is_object($av)) {
+						$akcis[$row['ID']][$ak->akHandle] = $av->getValue('display');
+					} else {
+						$akcis[$row['ID']][$ak->akHandle] = '';
+					}
 				}
 			}
 		} else {
@@ -147,8 +151,7 @@ class AttributeKeyCategoryItemList extends DatabaseItemList {
 		$db = Loader::db();
 		$keywordsExact = $db->quote($keywords);
 		$qkeywords = $db->quote('%' . $keywords . '%');
-		$ak = new AttributeKey($this->akCategoryHandle);
-		$keys = $vtak->getSearchableIndexedList();
+		$keys = AttributeKey::getSearchableIndexedList($this->akCategoryHandle);
 		$attribsStr = '';
 		foreach ($keys as $ak) {
 			$cnt = $ak->getController();			

@@ -69,7 +69,7 @@ ccm_setupNewObjectSearch = function() {
 					width: 630,
 					height: 450,
 					modal: true,
-					href: CCM_REL + '/index.php/tools/packages/virtual_tables/search/bulk_properties?' + oIDstring,
+					href: CCM_TOOLS_PATH +'/dashboard/bricks/search/bulk_properties?' + oIDstring,
 					title: ccmi18n.properties
 				});
 				break;	
@@ -85,7 +85,7 @@ ccm_setupNewObjectSearch = function() {
 					width: 300,
 					height: 100,
 					modal: true,
-					href: CCM_REL + '/index.php/tools/packages/virtual_tables/search/bulk_delete?json=' + encodeURIComponent(URIComponents),
+					href: CCM_TOOLS_PATH + '/dashboard/bricks/search/bulk_delete?json=' + encodeURIComponent(URIComponents),
 					title: ccmi18n.properties
 				});
 				break;				
@@ -107,8 +107,7 @@ ccm_closeModalRefeshSearch = function() {
 }
 ccm_deleteAndRefeshSearch = function(URIComponents) {
 	$.ajax({
-		url: CCM_REL + '/index.php/tools/packages/virtual_tables/search/bulk_delete?task=delete&json=' + URIComponents,
-		async: false
+		url: CCM_TOOLS_PATH + '/dashboard/bricks/search/bulk_delete?task=delete&json=' + URIComponents
 	}).responseText;
 	jQuery.fn.dialog.closeTop();
 	$("#ccm-new-object-advanced-search").submit();

@@ -135,7 +135,7 @@
       <notnull/>
       <unsigned/>
     </field>
-    <field name="akID" type="I" size="10">
+    <field name="avID" type="I" size="10">
       <key/>
       <notnull/>
       <unsigned/>

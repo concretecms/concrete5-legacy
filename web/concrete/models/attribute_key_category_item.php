@@ -123,7 +123,7 @@ class AttributeKeyCategoryItem extends Object {
 	public function delete() {
 		Events::fire('before_attribute_key_category_item_delete', $this);
 		$db = Loader::db();
-		$avTables = array(
+		$tables = array(
 					'atAddress',
 					'atBoolean',
 					'atDateTime',
@@ -133,16 +133,16 @@ class AttributeKeyCategoryItem extends Object {
 					'atSelectOptionsSelected',
 					'AttributeValues'
 				);
-		$rows = $db->GetArray('SELECT (avID) FROM AttributeValues WHERE ID = ?', array($this->ID));
+		$rows = $db->GetArray('SELECT * FROM AttributeKeyCategoryItemAttributeValues WHERE ID = ?', array($this->ID));
 		foreach($rows as $row) {
-			foreach($avTable as $table) {
+			foreach($tables as $table) {
 				$db->Execute('DELETE FROM '.$table.' WHERE avID = ?', array($row['avID']));
 			}
 		}
-		
+		$db->Execute('DELETE FROM AttributeKeyCategoryItemAttributeValues WHERE ID = ?', array($this->ID));
 		$db->Execute('DELETE FROM AttributeKeyCategoryItems WHERE ID = ?', array($this->ID));
 		$db->Execute('DELETE FROM AttributeKeyCategoryItemSearchIndex WHERE ID = ?', array($this->ID));
-		$db->Execute('DELETE FROM AttributeKeyCategoryPermissions WHERE akCategoryHandle LIKE ?', array('%'.$this->akCategoryHandle.'_'.$this->ID.'%'));
+		$db->Execute('DELETE FROM AttributeKeyCategoryItemPermissions WHERE ID = ?', array($this->ID));
 		Events::fire('after_attribute_key_category_item_delete', $this);
 	}
 	
@@ -173,8 +173,8 @@ class AttributeKeyCategoryItem extends Object {
 		
 	public function setAttribute($ak, $value) {
 		if (!is_object($ak)) {
-			$vtak = new AttributeKey($this->akCategoryHandle);
-			$ak = $vtak->getByHandle($ak);
+			$ak = new AttributeKey($this->akCategoryHandle);
+			$ak = $ak->getByHandle($ak);
 		}
 		$ak->setAttribute($this, $value);
 		$this->update();

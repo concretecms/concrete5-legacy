@@ -19,8 +19,11 @@ class AttributeKey extends Object {
 		
 		return self::getByID($akID);
 	}
+	protected $searchIndexFieldDefinition = 'ID I(11) UNSIGNED NOTNULL DEFAULT 0 PRIMARY';
 	
-	public function getIndexedSearchTable() {return false;}
+	public function getIndexedSearchTable() {
+		return 'AttributeKeyCategoryItemSearchIndex';
+	}
 	public function getSearchIndexFieldDefinition() {
 		return $this->searchIndexFieldDefinition;
 	}
@@ -129,6 +132,17 @@ class AttributeKey extends Object {
 		}
 		$r->Close();
 		return $list;
+	}
+	public static function getColumnHeaderList($akCategoryHandle) {
+		return self::getList($akCategoryHandle, array('akIsColumnHeader' => 1));	
+	}
+	
+	public static function getSearchableIndexedList($akCategoryHandle) {
+		return self::getList($akCategoryHandle, array('akIsSearchableIndexed' => 1));	
+	}
+	
+	public static function getSearchableList($akCategoryHandle) {
+		return self::getList($akCategoryHandle, array('akIsSearchable' => 1));	
 	}
 
 	/** 

@@ -66,6 +66,10 @@ class ConcreteUpgradeVersion542Helper {
 		if ($sp->isError()) {
 			$d1a = SinglePage::add('/dashboard/bricks/drop');
 		}
+		$sp = Page::getByPath('/dashboard/bricks/edit');
+		if ($sp->isError()) {
+			$d1a = SinglePage::add('/dashboard/bricks/edit');
+		}
 		
 	}
 	
