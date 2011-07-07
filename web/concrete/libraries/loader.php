@@ -19,53 +19,58 @@
  */
  
  class Loader {
-		
+
 		/** 
 		 * Loads a library file, either from the site's files or from Concrete's
+		 * If you want to load multiple libraries from the same location at once, separate them with a comma and space
 		 */
-		public function library($lib, $pkgHandle = null) {
-		
-			if (file_exists(DIR_LIBRARIES . '/' . $lib . '.php')) {
-				require_once(DIR_LIBRARIES . '/' . $lib . '.php');
-				return;
+		public function library($library, $pkgHandle = null) {
+			$libs=explode(", ", $library);
+			foreach($libs as $lib){
+				if (file_exists(DIR_LIBRARIES . '/' . $lib . '.php')) {
+					require_once(DIR_LIBRARIES . '/' . $lib . '.php');
+					return;
+				}
+
+				if ($pkgHandle == null && file_exists(DIR_LIBRARIES_CORE . '/' . $lib . '.php')) {
+					require_once(DIR_LIBRARIES_CORE . '/' . $lib . '.php');
+					return;
+				}
+
+				if ($pkgHandle != null) {			
+					$dir = (is_dir(DIR_PACKAGES . '/' . $pkgHandle)) ? DIR_PACKAGES : DIR_PACKAGES_CORE;
+					require_once($dir . '/' . $pkgHandle . '/' . DIRNAME_LIBRARIES . '/' . $lib . '.php');
+					return;
+				}
 			}
-			
-			if ($pkgHandle == null && file_exists(DIR_LIBRARIES_CORE . '/' . $lib . '.php')) {
-				require_once(DIR_LIBRARIES_CORE . '/' . $lib . '.php');
-				return;
-			}
-			
-			if ($pkgHandle != null) {			
-				$dir = (is_dir(DIR_PACKAGES . '/' . $pkgHandle)) ? DIR_PACKAGES : DIR_PACKAGES_CORE;
-				require_once($dir . '/' . $pkgHandle . '/' . DIRNAME_LIBRARIES . '/' . $lib . '.php');
-				return;
-			}
-			
 		}
 
 		/** 
 		 * Loads a model from either an application, the site, or the core Concrete directory
+		 * If you want to load multiple models from the same location at once, separate them with a comma and space
 		 */
-		public function model($mod, $pkgHandle = null) {
-			
-			if (file_exists(DIR_MODELS . '/' . $mod . '.php')) {
-				require_once(DIR_MODELS . '/' . $mod . '.php');
-				return;
+		public function model($model, $pkgHandle = null) {
+			$mods=explode(", ", $model);
+			foreach($mods as $mod){
+				if (file_exists(DIR_MODELS . '/' . $mod . '.php')) {
+					require_once(DIR_MODELS . '/' . $mod . '.php');
+					return;
+				}
+
+				if ($pkgHandle == null && file_exists(DIR_MODELS_CORE . '/' . $mod . '.php')) {
+					require_once(DIR_MODELS_CORE . '/' . $mod . '.php');
+					return;
+				}
+
+				if ($pkgHandle != null) {
+					$dir = (is_dir(DIR_PACKAGES . '/' . $pkgHandle)) ? DIR_PACKAGES : DIR_PACKAGES_CORE;
+					require_once($dir . '/' . $pkgHandle . '/' . DIRNAME_MODELS . '/' . $mod . '.php');
+				}
+
+				Loader::legacyModel($mod);
 			}
-			
-			if ($pkgHandle == null && file_exists(DIR_MODELS_CORE . '/' . $mod . '.php')) {
-				require_once(DIR_MODELS_CORE . '/' . $mod . '.php');
-				return;
-			}
-			
-			if ($pkgHandle != null) {
-				$dir = (is_dir(DIR_PACKAGES . '/' . $pkgHandle)) ? DIR_PACKAGES : DIR_PACKAGES_CORE;
-				require_once($dir . '/' . $pkgHandle . '/' . DIRNAME_MODELS . '/' . $mod . '.php');
-			}
-			
-			Loader::legacyModel($mod);
 		}
-		
+
 		protected function legacyModel($model) {
 			switch($model) {
 				case 'collection_attributes':
@@ -85,7 +90,7 @@
 					break;
 			}
 		}
-		
+
 		/** 
 		 * @access private
 		 */
@@ -105,18 +110,25 @@
 
 		/** 
 		 * Loads an element from C5 or the site
+		 * If you want to load multiple elements with the same args, separate them with a comma and space
 		 */
-		public function element($file, $args = null) {
-			if (is_array($args)) {
-				extract($args);
-			}
-			if (file_exists(DIR_FILES_ELEMENTS . '/' . $file . '.php')) {
-				include(DIR_FILES_ELEMENTS . '/' . $file . '.php');
-			} else if (file_exists(DIR_FILES_ELEMENTS_CORE . '/' . $file . '.php')) {
-				include(DIR_FILES_ELEMENTS_CORE . '/' . $file . '.php');
+		public function element($element, $args = null) {
+			$elems=explode(", ", $element);
+			foreach($elems as $file){
+				if (is_array($args)) {
+					extract($args);
+				}
+				if (file_exists(DIR_FILES_ELEMENTS . '/' . $file . '.php')) {
+					include(DIR_FILES_ELEMENTS . '/' . $file . '.php');
+				} else if (file_exists(DIR_FILES_ELEMENTS_CORE . '/' . $file . '.php')) {
+					include(DIR_FILES_ELEMENTS_CORE . '/' . $file . '.php');
+				}
 			}
 		}
-
+		/** 
+		 * Loads an tool from C5
+		 * If you want to load multiple tools with the same args, separate them with a comma and space
+		 */
 		public function tool($file, $args = null) {
 			if (is_array($args)) {
 				extract($args);
@@ -146,7 +158,7 @@
 				$bt = BlockType::getByHandle($bl);
 				if (is_object($bt)) { 
 					$pkg = $bt->getPackageHandle();
-					
+
 					if (file_exists(DIR_PACKAGES . '/' . $pkg . '/' . DIRNAME_BLOCKS . '/' . $bl . '/' . FILENAME_BLOCK_CONTROLLER)) {
 						require_once(DIR_PACKAGES . '/' . $pkg . '/' . DIRNAME_BLOCKS . '/' . $bl . '/' . FILENAME_BLOCK_CONTROLLER);		
 					} else if (file_exists(DIR_PACKAGES . '/' . $pkg . '/' . DIRNAME_BLOCKS . '/' . $bl . '/' . FILENAME_BLOCK_CONTROLLER)) {
@@ -155,7 +167,7 @@
 				}
 			}
 		}
-		
+
 		/** 
 		 * Loads the various files for the database abstraction layer. We would bundle these in with the db() method below but
 		 * these need to be loaded before the models which need to be loaded before db() 
@@ -167,7 +179,7 @@
 			Loader::library('3rdparty/adodb/adodb-xmlschema03.inc');
 			Loader::library('database');
 		}
-		
+
 		/** 
 		 * Returns the database object, or loads it if not yet created
 		 * <code>
@@ -201,7 +213,7 @@
 							$_dba->Execute($names);
 							$_dba->Execute($charset);
 						}
-						
+
 						ADOdb_Active_Record::SetDatabaseAdapter($_dba);
 						$_db = new Database();
 						$_db->setDatabaseObject($_dba);
@@ -214,62 +226,47 @@
 					return false;
 				}
 			}
-			
+
 			return $_db;
 		}
-		
+
 		/** 
 		 * Loads a helper file. If the same helper file is contained in both the core concrete directory and the site's directory, it will load the site's first, which could then extend the core.
+		 If you want to load multiple helpers from the same location at once, separate them with a comma and space
 		 */
-		public function helper($file, $pkgHandle = false) {
-		
-			static $instances = array();
-			$class = false;		
-			
-			if ($pkgHandle != false) {
-				$class = Object::camelcase($pkgHandle . '_' . $file) . "Helper";
-				$dir = (is_dir(DIR_PACKAGES . '/' . $pkgHandle)) ? DIR_PACKAGES : DIR_PACKAGES_CORE;
-				require_once($dir . '/' . $pkgHandle . '/' . DIRNAME_HELPERS . '/' . $file . '.php');
-				if (!class_exists($class, false)) {
-					$class = Object::camelcase($file) . "Helper";
-				}
-			} else if (file_exists(DIR_HELPERS . '/' . $file . '.php')) {
-				// first we check if there's an object of the SAME kind in the core. If so, then we load the core first, then, we load the second one (site)
-				// and we hope the second one EXTENDS the first
-				if (file_exists(DIR_HELPERS_CORE . '/' . $file . '.php')) {
-					$class = "Site" . Object::camelcase($file) . "Helper";
-				} else {
-					$class = Object::camelcase($file) . "Helper";
-				}
-			} else {
-				$class = Object::camelcase($file) . "Helper";					
-			}
-			
-			if (array_key_exists($class, $instances)) {
-            	$instance = $instances[$class];
-            } else {
+		public function helper($helper, $pkgHandle = false) {
+			$helpers=explode(", ", $helper);
+			foreach($helpers as $file){
+				// loads and instantiates the object
 				if ($pkgHandle != false) {
-					// already handled by code above.
+					$dir = (is_dir(DIR_PACKAGES . '/' . $pkgHandle)) ? DIR_PACKAGES : DIR_PACKAGES_CORE;
+					require_once($dir . '/' . $pkgHandle . '/' . DIRNAME_HELPERS . '/' . $file . '.php');
+					$class = Object::camelcase($pkgHandle . '_' . $file) . "Helper";
+					if (!class_exists($class, false)) {
+						$class = Object::camelcase($file) . "Helper";
+					}
 				} else if (file_exists(DIR_HELPERS . '/' . $file . '.php')) {
 					// first we check if there's an object of the SAME kind in the core. If so, then we load the core first, then, we load the second one (site)
 					// and we hope the second one EXTENDS the first
 					if (file_exists(DIR_HELPERS_CORE . '/' . $file . '.php')) {
 						require_once(DIR_HELPERS_CORE . '/' . $file . '.php');
 						require_once(DIR_HELPERS . '/' . $file . '.php');
+						$class = "Site" . Object::camelcase($file) . "Helper";
 					} else {
 						require_once(DIR_HELPERS . '/' . $file . '.php');
+						$class = Object::camelcase($file) . "Helper";
 					}
 				} else {
 					require_once(DIR_HELPERS_CORE . '/' . $file . '.php');
+					$class = Object::camelcase($file) . "Helper";
+
 				}
 
-	            $instances[$class] = new $class();
-    	        $instance = $instances[$class];
+				$cl = new $class;
+				return $cl;
 			}
-			
-			return $instance;
 		}
-		
+
 		/**
 		 * @access private
 		 */
@@ -285,7 +282,7 @@
 				}
 			}
 		}
-		
+
 		/**
 		 * @access private
 		 */
@@ -311,7 +308,7 @@
 			$controller = new $class();
 			return $controller;
 		}
-		
+
 		/** 
 		 * @access private
 		 */		
@@ -336,12 +333,12 @@
 				include($file3);
 			}
 		}
-		
+
 		/** 
 		 * Gets the path to a particular page type controller
 		 */
 		public function pageTypeControllerPath($ctHandle) {
-			
+
 			Loader::model('collection_types');
 			$ct = CollectionType::getByHandle($ctHandle);
 			if (!is_object($ct)) {
@@ -360,16 +357,16 @@
 			} else if (file_exists(DIR_FILES_CONTROLLERS_REQUIRED . "/" . DIRNAME_PAGE_TYPES . "/{$ctHandle}.php")) {
 				$path = DIR_FILES_CONTROLLERS_REQUIRED . "/" . DIRNAME_PAGE_TYPES . "/{$ctHandle}.php";
 			}
-			
+
 			return $path;
 		}
 		/** 
 		 * Loads a controller for either a page or view
 		 */
 		public function controller($item) {
-			
+
 			$include = false;
-			
+
 			if (is_string($item)) {
 				$db = Loader::db();
 				if (is_object($db)) {
@@ -387,7 +384,7 @@
 					$path = $item;
 				}
 			}
-			
+
 			if ($item instanceof Page) {
 				$c = $item;
 				if ($c->getCollectionTypeID() > 0) {					
@@ -420,13 +417,13 @@
 				if (class_exists($class) && $item instanceof BlockType) {
 					$controller = new $class($item);
 				}
-				
+
 				if ($item instanceof Block) {
 					$c = $item->getBlockCollectionObject();
 				}
-				
+
 			}
-			
+
 			$controllerFile = $path . '.php';
 
 			if ($path != '') {
@@ -454,7 +451,7 @@
 						$include = true;
 					}
 				}
-				
+
 				if (!$include) {
 					if (file_exists(DIR_FILES_CONTROLLERS_REQUIRED . $controllerFile)) {
 						require_once(DIR_FILES_CONTROLLERS_REQUIRED . $controllerFile);
@@ -464,12 +461,12 @@
 						$include = true;
 					}
 				}
-					
+
 				if ($include) {
 					$class = Object::camelcase($path) . 'Controller';
 				}
 			}
-			
+
 			if (!isset($controller)) {
 				if ($class && class_exists($class)) {
 					// now we get just the filename for this guy, so we can extrapolate
@@ -479,11 +476,12 @@
 					$controller = new Controller($item);
 				}
 			}
-			
+
 			if (is_object($c)) {
 				$controller->setCollectionObject($c);
 			}
-			
+
+			$controller->setupRestrictedMethods();
 			return $controller;
 		}
 
