@@ -825,7 +825,7 @@ INSERT INTO PagePaths VALUES(1,5,'/login','1')
  ,(78,84,'/dashboard/bricks/structure','1')
  ,(79,85,'/dashboard/bricks/permissions','1')
  ,(80,86,'/dashboard/bricks/drop','1')
- ,(80,87,'/dashboard/bricks/edit','1');
+ ,(81,87,'/dashboard/bricks/edit','1');
 
  
 INSERT INTO PagePermissions VALUES(5,1,0,'r',NULL,NULL)
