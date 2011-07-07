@@ -62,7 +62,7 @@
       <UNSIGNED/>
     </field>
   </table>
-<table name="Users">
+  <table name="Users">
     <field name="uID" type="I" size="10">
       <KEY/>
       <AUTOINCREMENT/>
@@ -124,5 +124,72 @@
       <col>uName</col>
     </index>
   </table>
-
+  <table name="AttributeKeyCategoryItemAttributeValues">
+    <field name="ID" type="I" size="10">
+      <key/>
+      <notnull/>
+      <unsigned/>
+    </field>
+    <field name="akID" type="I" size="10">
+      <key/>
+      <notnull/>
+      <unsigned/>
+    </field>
+    <field name="avID" type="I" size="10">
+      <key/>
+      <notnull/>
+      <unsigned/>
+    </field>
+    <field name="akCategoryHandle" type="C" size="255">
+      <notnull/>
+    </field>
+  </table>
+  <table name="AttributeKeyCategoryItemPermissions">
+    <field name="ID" type="I" size="10">
+      <notnull/>
+      <unsigned/>
+    </field>
+    <field name="akCategoryHandle" type="C" size="255"/>
+    <field name="gID" type="I" size="10"/>
+    <field name="uID" type="I" size="10"/>
+    <field name="canRead" type="I" size="1">
+      <default value="0"/>
+    </field>
+    <field name="canWrite" type="I" size="1">
+      <default value="0"/>
+    </field>
+    <field name="canDelete" type="I" size="1">
+      <default value="0"/>
+    </field>
+    <field name="canAdd" type="I" size="1">
+      <default value="0"/>
+    </field>
+    <field name="canSearch" type="I" size="1">
+      <default value="0"/>
+    </field>
+    <field name="canAdmin" type="I" size="1">
+      <default value="0"/>
+    </field>
+  </table>
+  <table name="AttributeKeyCategoryItems">
+    <field name="ID" type="I" size="10">
+      <KEY/>
+      <AUTOINCREMENT/>
+      <UNSIGNED/>
+    </field>
+    <field name="akCategoryHandle" type="C" size="255">
+      <notnull/>
+    </field>
+    <field name="uID" type="I" size="10">
+      <unsigned/>
+    </field>
+  </table>
+  <table name="AttributeKeyCategoryItemSearchIndex">
+    <field name="ID">
+      <key/>
+      <unsigned/>
+      <notnull/>
+    </field>
+  </table>
+  
 </schema>

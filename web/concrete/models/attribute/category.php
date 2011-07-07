@@ -5,6 +5,102 @@ class AttributeKeyCategory extends Object {
 	const ASET_ALLOW_NONE = 0;
 	const ASET_ALLOW_SINGLE = 1;
 	const ASET_ALLOW_MULTIPLE = 2;
+
+	/** 
+	 * Returns an instance of the systemwide AttributeKeyCategory object.
+	 */
+	public function getInstance() {
+		static $instance;
+		if (!isset($instance)) {
+			$v = __CLASS__;
+			$instance = new $v;
+		}
+		return $instance;
+	}
+	
+	public function getActions() {
+		return array('search', 'insert', 'structure', 'permissions', 'drop');
+	}
+	public function getActionIconSrc($action) {
+		switch($action) {
+			case 'insert':
+				$iconSrc = ASSETS_URL_IMAGES.'/icons/add.png';
+				break;
+			case 'structure':
+				$iconSrc = ASSETS_URL_IMAGES.'/icons/wrench.png';
+				break;
+			case 'permissions':
+				$iconSrc = ASSETS_URL_IMAGES.'/icons/icon_header_permissions.png';
+				break;
+			case 'drop':
+				$iconSrc = ASSETS_URL_IMAGES.'/icons/delete_small.png';
+				break;
+			default:
+				$iconSrc = ASSETS_URL_IMAGES.'/icons/'.$action.'.png';
+				break;
+		}
+		return $iconSrc;
+	}
+	
+	private $registeredSettings = array(
+					'collection' => array(
+						'url_search'			=> 'dashboard/sitemap/search',
+						'url_insert'			=> 'dashboard/composer',
+						'url_structure'			=> 'dashboard/pages/attributes',
+						'url_permissions_hidden'	=> TRUE,
+						'url_drop_hidden'		=> TRUE
+					),
+					'user' => array(
+						'url_search'			=> 'dashboard/users',
+						'url_insert'			=> 'dashboard/users/add',
+						'url_structure'			=> 'dashboard/users/attributes',
+						'url_permissions'		=> 'dashboard/settings/set_permissions',
+						'url_drop_hidden'		=> TRUE
+					),
+					'file' => array(
+						'url_search'			=> 'dashboard/files',
+						'url_insert_hidden'		=> TRUE,
+						'url_structure'			=> 'dashboard/files/attributes',
+						'url_permissions'		=> 'dashboard/files/access',
+						'url_drop_hidden'		=> TRUE
+					)
+				);
+
+	public static function registerSetting($akCategoryHandle, $settingHandle, $parameters) {
+		$akc = AttributeKeyCategory::getInstance();
+		$akc->registeredSettings[$akCategoryHandle][$settingHandle] = $parameters;	
+	}
+
+	public function getRegisteredSettings() {
+		$akc = AttributeKeyCategory::getInstance();
+		return $akc->registeredSettings[$this->getAttributeKeyCategoryHandle()];
+	}
+	
+	private $allowAddToPackage = array();
+
+	public static function allowAddToPackage($pkg) {
+		if(is_object($pkg)) {
+			$pkgHandle = $pkg->getPackageHandle();
+		} elseif(is_numeric($pkg)) {
+			$pkgHandle = Package::getByID($pkg)->getPackageHandle();
+		} else {
+			$pkgHandle = $pkg;
+		}
+		$akc = AttributeKeyCategory::getInstance();
+		$akc->allowAddToPackage[] = $pkgHandle;	
+	}
+	
+	public function canAddToPackage($pkg) {
+		if(is_object($pkg)) {
+			$pkgHandle = $pkg->getPackageHandle();
+		} elseif(is_numeric($pkg)) {
+			$pkgHandle = Package::getByID($pkg)->getPackageHandle();
+		} else {
+			$pkgHandle = $pkg;
+		}
+		$akc = AttributeKeyCategory::getInstance();
+		return in_array($pkgHandle, $akc->allowAddToPackage);
+	}
 	
 	public static function getByID($akCategoryID) {
 		$db = Loader::db();
@@ -32,11 +128,19 @@ class AttributeKeyCategory extends Object {
 		return $r > 0;
 	}
 	
+	public function akCategoryHandleExists($akCategoryHandle) {
+		$db = Loader::db();
+		$r = $db->GetOne("select count(*) from AttributeKeyCategories where akCategoryHandle = ?", array($akCategoryHandle));
+		return $r > 0;
+	}
+	
 	public function getAttributeKeyByHandle($akHandle) {
-		if ($this->pkgID > 0) {
-			Loader::model('attribute/categories/' . $this->akCategoryHandle, $this->getPackageHandle());
-		} else {
-			Loader::model('attribute/categories/' . $this->akCategoryHandle);
+		if(!Loader::model('attribute/categories/' . $this->akCategoryHandle, $this->getPackageHandle())) {
+			if(!Loader::model('attribute/categories/' . $this->akCategoryHandle)) {
+				$obj = new AttributeKey;
+				$ak = $obj->getByHandle($akHandle, $this->akCategoryHandle);
+				return $ak;
+			}
 		}		
 		$txt = Loader::helper('text');
 		$className = $txt->camelcase($this->akCategoryHandle);
@@ -46,15 +150,30 @@ class AttributeKeyCategory extends Object {
 	}
 
 	public function getAttributeKeyByID($akID) {
-		if ($this->pkgID > 0) {
-			Loader::model('attribute/categories/' . $this->akCategoryHandle, $this->getPackageHandle());
-		} else {
-			Loader::model('attribute/categories/' . $this->akCategoryHandle);
+		if(!Loader::model('attribute/categories/' . $this->akCategoryHandle, $this->getPackageHandle())) {
+			if(!Loader::model('attribute/categories/' . $this->akCategoryHandle)) {
+				$obj = new AttributeKey;
+				$ak = $obj->getByID($akID);
+				return $ak;
+			}
 		}		
 		$txt = Loader::helper('text');
 		$className = $txt->camelcase($this->akCategoryHandle);
 		$c1 = $className . 'AttributeKey';
 		$ak = call_user_func_array(array($c1, 'getByID'), array($akID));
+		return $ak;
+	}
+
+	public function getNewAttributeKey() {
+		if(!Loader::model('attribute/categories/' . $this->akCategoryHandle, $this->getPackageHandle())) {
+			if(!Loader::model('attribute/categories/' . $this->akCategoryHandle)) {
+				$ak = new AttributeKey($this->akCategoryHandle);
+				return $ak;
+			}
+		}		
+		$txt = Loader::helper('text');
+		$className = $txt->camelcase($this->akCategoryHandle) . 'AttributeKey';
+		$ak = new $className();
 		return $ak;
 	}
 
@@ -137,17 +256,25 @@ class AttributeKeyCategory extends Object {
 	}
 	
 	public static function add($akCategoryHandle, $akCategoryAllowSets = AttributeKeyCategory::ASET_ALLOW_NONE, $pkg = false) {
+		if(self::akCategoryHandleExists($akCategoryHandle)) throw new Exception('AttributeKeyCategory handle already in use.');
 		$db = Loader::db();
-		if (is_object($pkg)) {
+		if(is_object($pkg)) {
 			$pkgID = $pkg->getPackageID();
+			$pkgHandle = $pkg->getPackageHandle();
+		} elseif(is_numeric($pkg)) {
+			$pkgID = $pkg;
+		} elseif(!empty($pkg)) {
+			$pkgID = Package::getByHandle($pkg)->getPackageID();
+			$pkgHandle = $pkg;
 		}
+		
 		$db->Execute('insert into AttributeKeyCategories (akCategoryHandle, akCategoryAllowSets, pkgID) values (?, ?, ?)', array($akCategoryHandle, $akCategoryAllowSets, $pkgID));
 		$id = $db->Insert_ID();
 		
-		if ($pkgID > 0) {
-			Loader::model('attribute/categories/' . $akCategoryHandle, $pkg->getPackageHandle());
-		} else {
-			Loader::model('attribute/categories/' . $akCategoryHandle);
+		if(!Loader::model('attribute/categories/' . $akCategoryHandle, $pkgHandle)) {
+			if(!Loader::model('attribute/categories/' . $akCategoryHandle)) {
+				return AttributeKeyCategory::getByID($id);
+			}
 		}		
 		$txt = Loader::helper("text");
 		$class = $txt->camelcase($akCategoryHandle) . 'AttributeKey';
@@ -170,5 +297,89 @@ class AttributeKeyCategory extends Object {
 			$as = AttributeSet::getByID($id);
 			return $as;
 		}
+	}
+	
+	public function getItemList($akCategoryHandle = NULL) {
+		if($akCategoryHandle) {
+			$akc = AttributeKeyCategory::getByHandle($akCategoryHandle);
+			return $akc->getItemList();
+		}
+		
+		$rs = $this->getRegisteredSettings();
+		$txt = Loader::helper("text");
+		$class = $txt->camelcase($this->akCategoryHandle) . 'List';
+		switch($this->getAttributeKeyCategoryHandle()) {
+			case 'collection':
+				Loader::model('page_list');
+				$list = new PageList;
+				break;
+			default:
+				if(Loader::model($this->akCategoryHandle . '_list', $this->getPackageHandle())) {
+					$list = new $class;
+				} elseif($rs['list_model_path']) {
+					Loader::model($rs['list_model_path'], $this->getPackageHandle());
+					if($rs['list_model_class']) {
+						$list = new $rs['list_model_class'];
+					} else {
+						$list = new $class;
+					}
+				} else {
+					Loader::model('attribute_key_category_item_list');
+					$list = new AttributeKeyCategoryItemList($this->getAttributeKeyCategoryHandle());
+				}
+				break;	
+		}
+		
+		return $list;
+	}
+	
+	public function getItemObject($ID = NULL) {
+		$rs = $this->getRegisteredSettings();
+		$txt = Loader::helper("text");
+		$class = $txt->camelcase($this->getAttributeKeyCategoryHandle());
+		if(!$this->getAttributeKeyCategoryHandle()) {
+			return false;
+		}
+		switch($this->getAttributeKeyCategoryHandle()) {
+			case 'collection':
+				Loader::model('page');
+				$item = new Page;
+				break;
+			case 'user':
+				$item = new UserInfo;
+				break;
+			default:
+				if(Loader::model($this->akCategoryHandle, $this->getPackageHandle())) {
+					$item = new $class;
+				} elseif($rs['item_model_path']) {
+					Loader::model($rs['item_model_path'], $this->getPackageHandle());
+					if($rs['item_model_class']) {
+						$item = new $rs['item_model_class'];
+					} else {
+						$item = new $class;
+					}
+				} else {
+					Loader::model('attribute_key_category_item');
+					$item = new AttributeKeyCategoryItem($this->getAttributeKeyCategoryHandle());
+				}
+				break;	
+		}
+		
+		if($ID) {
+			return $item->getByID($ID);	
+		} else {
+			return $item;
+		}
+	}
+	
+	public function getAttributeKeyList($akCategoryHandle = NULL) {
+		if(!$akCategoryHandle) {
+			if(is_object($this)) {
+				$akCategoryHandle = $this->getAttributeKeyCategoryHandle();
+			} else {
+				return false;
+			}
+		}
+		return AttributeKey::getList($akCategoryHandle);
 	}
 }

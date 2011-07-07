@@ -66,6 +66,39 @@ pkgID                    INTEGER(10) UNSIGNED,
                  PRIMARY KEY (akCategoryID)
 );
 
+CREATE TABLE AttributeKeyCategoryItemAttributeValues (
+ID                       INTEGER(10) UNSIGNED NOT NULL,
+akID                     INTEGER(10) UNSIGNED NOT NULL,
+avID                     INTEGER(10) UNSIGNED NOT NULL,
+akCategoryHandle         VARCHAR(255) NOT NULL,
+                 PRIMARY KEY (ID, akID, avID)
+);
+
+CREATE TABLE AttributeKeyCategoryItemPermissions (
+ID                       VARCHAR(255) NOT NULL,
+akCategoryHandle         VARCHAR(255),
+gID                      INTEGER(10),
+uID                      INTEGER(10),
+canRead                  TINYINT(1) DEFAULT '0',
+canWrite                 TINYINT(1) DEFAULT '0',
+canDelete                TINYINT(1) DEFAULT '0',
+canAdd                   TINYINT(1) DEFAULT '0',
+canSearch                TINYINT(1) DEFAULT '0',
+canAdmin                 TINYINT(1) DEFAULT '0'
+);
+
+CREATE TABLE AttributeKeyCategoryItems (
+ID                       INTEGER(10) UNSIGNED AUTO_INCREMENT,
+akCategoryHandle         VARCHAR(255) NOT NULL,
+uID                      INTEGER(10) UNSIGNED DEFAULT NULL,
+                 PRIMARY KEY (ID)
+);
+
+CREATE TABLE AttributeKeyCategoryItemSearchIndex (
+ID                       INTEGER(10) UNSIGNED NOT NULL,
+                 PRIMARY KEY (ID)
+);
+
 CREATE TABLE AttributeTypeCategories (
 atID                     INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
 akCategoryID             INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
@@ -1271,6 +1304,6 @@ CREATE TABLE IF NOT EXISTS `FileSearchIndexAttributes` (
 );
 
 CREATE TABLE UserSearchIndexAttributes (
-uID                      INTEGER(11) UNSIGNED NOT NULL DEFAULT 0,
+uID INTEGER(11) UNSIGNED NOT NULL DEFAULT 0,
                  PRIMARY KEY (uID)
 );

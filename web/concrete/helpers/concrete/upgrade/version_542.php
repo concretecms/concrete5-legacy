@@ -36,6 +36,41 @@ class ConcreteUpgradeVersion542Helper {
 			$d1a = SinglePage::add('/dashboard/settings/multilingual');
 			$d1a->update(array('cName'=>t('Multilingual Setup')));
 		}
+		
+		$sp = Page::getByPath('/dashboard/bricks');
+		if ($sp->isError()) {
+			$d1a = SinglePage::add('/dashboard/bricks');
+			$d1a->update(array('cDescription'=>t('Easy to understand database')));
+		}
+		$sp = Page::getByPath('/dashboard/bricks/add');
+		if ($sp->isError()) {
+			$d1a = SinglePage::add('/dashboard/bricks/add');
+		}
+		$sp = Page::getByPath('/dashboard/bricks/search');
+		if ($sp->isError()) {
+			$d1a = SinglePage::add('/dashboard/bricks/search');
+		}
+		$sp = Page::getByPath('/dashboard/bricks/insert');
+		if ($sp->isError()) {
+			$d1a = SinglePage::add('/dashboard/bricks/insert');
+		}
+		$sp = Page::getByPath('/dashboard/bricks/structure');
+		if ($sp->isError()) {
+			$d1a = SinglePage::add('/dashboard/bricks/structure');
+		}
+		$sp = Page::getByPath('/dashboard/bricks/permissions');
+		if ($sp->isError()) {
+			$d1a = SinglePage::add('/dashboard/bricks/permissions');
+		}
+		$sp = Page::getByPath('/dashboard/bricks/drop');
+		if ($sp->isError()) {
+			$d1a = SinglePage::add('/dashboard/bricks/drop');
+		}
+		$sp = Page::getByPath('/dashboard/bricks/edit');
+		if ($sp->isError()) {
+			$d1a = SinglePage::add('/dashboard/bricks/edit');
+		}
+		
 	}
 	
 	public function prepare() {
