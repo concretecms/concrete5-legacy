@@ -34,7 +34,7 @@ class Request {
 	// for use in the dispatcher
 	// Thanks to Code Igniter for some of this code (in terms of getenv(), etc...)
 	
-	private static function parsePathFromRequest($var) {
+	public static function parsePathFromRequest($var) {
 		$path = (isset($_SERVER[$var])) ? $_SERVER[$var] : @getenv($var);
 		if (!$path) {
 			return false;
@@ -62,7 +62,7 @@ class Request {
 	 */
 	public static function get() {
 		static $req;
-		if (!isset($req)) {			
+		if (!isset($req) || defined('C5_UNIT_TESTING')) {			
 			$path = false;
 			if (defined('SERVER_PATH_VARIABLE')) {
 				$path = Request::parsePathFromRequest(SERVER_PATH_VARIABLE);
