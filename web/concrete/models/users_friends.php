@@ -11,7 +11,6 @@ defined('C5_EXECUTE') or die("Access Denied.");
 
 /**
  * User associations
- *
  * @package Users
  * @category Concrete
  * @copyright  Copyright (c) 2003-2009 Concrete5. (http://www.concrete5.org)
@@ -21,6 +20,10 @@ defined('C5_EXECUTE') or die("Access Denied.");
 
 class UsersFriends extends Object {  
 
+	/**
+	* Get data from a users friends
+	* @param int $uID
+	*/
 	static function getUsersFriendsData($uID=0, $sortBy='uf.uDateAdded DESC'){ 
 		if( !intval($uID) ){
 			$u = new User();
@@ -32,7 +35,13 @@ class UsersFriends extends Object {
 		$sql = 'SELECT uf.* FROM UsersFriends AS uf, Users AS u WHERE u.uID=uf.uID AND uf.uID=? ORDER BY '.$sortBy; 
 		return $db->getAll( $sql, $vals );  
 	}
-	
+	/**
+	* Check if a user is friends with another
+	* $friendUID is the user id of the person you want to check
+	* $uID is the user id of the person you are checking from
+	* @param int $friendUID
+	* @param int $uID
+	*/
 	static function isFriend($friendUID,$uID=0){
 		if( !intval($friendUID) ) return false;
 		if( !intval($uID) ){
@@ -47,7 +56,13 @@ class UsersFriends extends Object {
 		if( intval($count) ) return true;
 		return false;
 	}	
-	
+	/**
+	* Adds a user as a friend to another
+	* $friendUID is the person you want to add as a friend
+	* $uID is the person that is friending $friendUID
+	* @param int $friendUID
+	* @param int $uID
+	*/
 	static function addFriend( $friendUID, $uID=0, $status=''){
 		if( !intval($friendUID) ) return false;
 		if( !intval($uID) ){
@@ -66,7 +81,13 @@ class UsersFriends extends Object {
 		$db->query($sql,$vals); 
 		return true;
 	}	
-	
+	/**
+	* removes a user as a friend to another
+	* $friendUID is the person you want to remove as a friend
+	* $uID is the person that is un-friending $friendUID
+	* @param int $friendUID
+	* @param int $uID
+	*/
 	static function removeFriend($friendUID,$uID=0){
 		if( !intval($friendUID) ) return false;
 		if( !intval($uID) ){
