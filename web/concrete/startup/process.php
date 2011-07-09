@@ -337,7 +337,7 @@
 					if($layoutID){  
 						//security check: make sure this layout belongs to this area & collection
 						$db = Loader::db();
-						$vals = array( $layoutID, $area->getAreaHandle(), intval($nvc->cID), intval($c->getVersionID()), intval($nvc->getVersionID())  ); 
+						$vals = array( $nvc->getCollectionID(), $nvc->getVersionID(), $_GET['arHandle'], $originalLayoutID );
 						$layoutExistsInArea = intval($db->getOne('SELECT count(*) FROM CollectionVersionAreaLayouts WHERE layoutID=? AND arHandle=? AND cID=? AND cvID IN (?,?)',$vals))?1:0;
 						$validLayout = ($layoutExistsInArea)?1:0;
 
