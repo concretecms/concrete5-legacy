@@ -86,48 +86,41 @@
 			}
 		}
 		
-		/** 
-		 * @access private
-		 */
-		public function packageElement($file, $pkgHandle, $args = null) {
-			if (is_array($args)) {
-				extract($args);
-			}
-			if (file_exists(DIR_FILES_ELEMENTS . '/' . $file . '.php')) {
-				include(DIR_FILES_ELEMENTS . '/' . $file . '.php');
-			} else {
-				$dir = (is_dir(DIR_PACKAGES . '/' . $pkgHandle)) ? DIR_PACKAGES : DIR_PACKAGES_CORE;
-				if (file_exists($dir . '/' . $pkgHandle . '/' . DIRNAME_ELEMENTS . '/' . $file . '.php')) {
-					include($dir . '/' . $pkgHandle . '/' . DIRNAME_ELEMENTS . '/' . $file . '.php');
-				}
-			}
-		}
-
-		/** 
-		 * Loads an element from C5 or the site
-		 */
-		public function element($file, $args = null) {
-			if (is_array($args)) {
-				extract($args);
-			}
-			if (file_exists(DIR_FILES_ELEMENTS . '/' . $file . '.php')) {
-				include(DIR_FILES_ELEMENTS . '/' . $file . '.php');
-			} else if (file_exists(DIR_FILES_ELEMENTS_CORE . '/' . $file . '.php')) {
-				include(DIR_FILES_ELEMENTS_CORE . '/' . $file . '.php');
-			}
-		}
-
-		public function tool($file, $args = null) {
-			if (is_array($args)) {
-				extract($args);
-			}
-			if (file_exists(DIR_FILES_TOOLS . '/' . $file . '.php')) {
-				include(DIR_FILES_TOOLS . '/' . $file . '.php');
-			} else if (file_exists(DIR_FILES_TOOLS_REQUIRED . '/' . $file . '.php')) {
-				include(DIR_FILES_TOOLS_REQUIRED . '/' . $file . '.php');
-			}
-		}
-
+           /** 
+             * @access private
+             * this first checks the package provided and then the root
+             */
+             public function packageElement($file, $pkgHandle, $args = null) {
+                 if (is_array($args)) {
+                     extract($args);
+                 }
+                 if(file_exists(DIR_PACKAGES . '/' . $pkgHandle . '/elements/'. $file.'.php')) {
+                     $dir = (is_dir(DIR_PACKAGES . '/' . $pkgHandle)) ? DIR_PACKAGES : DIR_PACKAGES_CORE;
+                     if (file_exists($dir . '/' . $pkgHandle . '/' . DIRNAME_ELEMENTS . '/' . $file . '.php')) {
+                         include($dir . '/' . $pkgHandle . '/' . DIRNAME_ELEMENTS . '/' . $file . '.php');
+                     }
+                 }else{
+                     include(DIR_FILES_ELEMENTS . '/' . $file . '.php');
+                 }
+             }
+             /**
+             * Loads a tool file from c5 or site
+             * checks if its in the packages folder first.
+             */
+               public function tool($file, $args = null, $pkgHandle) {
+                   if (is_array($args)) {
+                       extract($args);
+                   }
+                   if($pkgHandle&& file_exists(DIR_PACKAGES . '/' .$pkgHandle.'/tools/'. $file . '.php')){
+                        include(DIR_PACKAGES . '/' .$pkgHandle.'/tools/'. $file . '.php');
+                   }else{
+                        if (file_exists(DIR_FILES_TOOLS . '/' . $file . '.php')) {
+                            include(DIR_FILES_TOOLS . '/' . $file . '.php');
+                        } else if (file_exists(DIR_FILES_TOOLS_REQUIRED . '/' . $file . '.php')) {
+                            include(DIR_FILES_TOOLS_REQUIRED . '/' . $file . '.php');
+                        }
+                    }
+                }
 		/** 
 		 * Loads a block's controller/class into memory. 
 		 * <code>
