@@ -94,7 +94,7 @@
                  if (is_array($args)) {
                      extract($args);
                  }
-                 if(file_exists(DIR_PACKAGES . '/' . $pkgHandle . '/elements/'. $file.'.php')) {
+                 if(file_exists(DIR_PACKAGES . '/' . $pkgHandle . '/'.DIRNAME_ELEMENTS.'/'. $file.'.php')) {
                      $dir = (is_dir(DIR_PACKAGES . '/' . $pkgHandle)) ? DIR_PACKAGES : DIR_PACKAGES_CORE;
                      if (file_exists($dir . '/' . $pkgHandle . '/' . DIRNAME_ELEMENTS . '/' . $file . '.php')) {
                          include($dir . '/' . $pkgHandle . '/' . DIRNAME_ELEMENTS . '/' . $file . '.php');
@@ -107,7 +107,7 @@
              * Loads a tool file from c5 or site
              * checks if its in the packages folder first.
              */
-               public function tool($file, $args = null, $pkgHandle) {
+               public function tool($file, $args = null, $pkgHandle= null) {
                    if (is_array($args)) {
                        extract($args);
                    }
