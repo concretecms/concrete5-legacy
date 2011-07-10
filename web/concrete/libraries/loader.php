@@ -111,8 +111,8 @@
                    if (is_array($args)) {
                        extract($args);
                    }
-                   if($pkgHandle&& file_exists(DIR_PACKAGES . '/' .$pkgHandle.'/tools/'. $file . '.php')){
-                        include(DIR_PACKAGES . '/' .$pkgHandle.'/tools/'. $file . '.php');
+                   if($pkgHandle&& file_exists(DIR_PACKAGES . '/' .$pkgHandle.'/'.DIRNAME_TOOLS.'/'. $file . '.php')){
+                        include(DIR_PACKAGES . '/' .$pkgHandle.'/'.DIRNAME_TOOLS.'/'. $file . '.php');
                    }else{
                         if (file_exists(DIR_FILES_TOOLS . '/' . $file . '.php')) {
                             include(DIR_FILES_TOOLS . '/' . $file . '.php');
