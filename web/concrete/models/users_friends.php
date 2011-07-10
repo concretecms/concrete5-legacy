@@ -23,6 +23,8 @@ class UsersFriends extends Object {
 	/**
 	* Get data from a users friends
 	* @param int $uID
+	* @param string $sortBy
+	* @return array
 	*/
 	static function getUsersFriendsData($uID=0, $sortBy='uf.uDateAdded DESC'){ 
 		if( !intval($uID) ){
@@ -41,6 +43,7 @@ class UsersFriends extends Object {
 	* $uID is the user id of the person you are checking from
 	* @param int $friendUID
 	* @param int $uID
+	* @return bool
 	*/
 	static function isFriend($friendUID,$uID=0){
 		if( !intval($friendUID) ) return false;
@@ -62,6 +65,7 @@ class UsersFriends extends Object {
 	* $uID is the person that is friending $friendUID
 	* @param int $friendUID
 	* @param int $uID
+	* @return bool
 	*/
 	static function addFriend( $friendUID, $uID=0, $status=''){
 		if( !intval($friendUID) ) return false;
@@ -87,6 +91,7 @@ class UsersFriends extends Object {
 	* $uID is the person that is un-friending $friendUID
 	* @param int $friendUID
 	* @param int $uID
+	* @return bool
 	*/
 	static function removeFriend($friendUID,$uID=0){
 		if( !intval($friendUID) ) return false;

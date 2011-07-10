@@ -41,6 +41,8 @@ class Config extends Object {
 	/**
 	* Gets the config value for a given key
 	* @param string $cfKey
+	* @param bool $getFullObject
+	* @return object $cv
 	*/
 	public function get($cfKey, $getFullObject = false) {
 		static $instance;
@@ -99,6 +101,7 @@ class Config extends Object {
 	/**
 	* gets a list of all the configs associated with a package
 	* @param string $pkg
+	* @return array $list
 	*/
 	public static function getListByPackage($pkg) {
 		$db = Loader::db();

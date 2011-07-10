@@ -30,6 +30,8 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		/**
 		* Gets a message given the message id
 		* @param int $msgID
+		* @param bool $mailbox
+		* @return object $upm
 		*/
 		public static function getByID($msgID, $mailbox = false) {
 			$db = Loader::db();
@@ -54,6 +56,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		}
 		/**
 		* Gets the messages status- whether its read or not, replied to, sent, etc.
+		* @return string
 		*/
 		public function getMessageStatus() {
 			if (is_object($this->mailbox)) {
@@ -110,6 +113,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		
 		/** 
 		 * Responsible for converting line breaks to br tags, perhaps running bbcode, as well as making the older replied-to messages gray
+		 * @return string $msgBody
 		 */		
 		public function getFormattedMessageBody() {
 			$msgBody = $this->getMessageBody();
@@ -168,7 +172,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		/**
 		* Get when the message was made
 		* @param string $type is how it was made
-		* returns a date in the format of $mask
+		* returns date in the format of $mask
 		*/
 		public function getMessageDateAdded($type = 'system', $mask = false) {
 			if($type == 'user') {
@@ -200,6 +204,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		* Gets infromation about a users mailbox
 		* @param string $uer
 		* @param int $msgMailboxID
+		* @return object $mb
 		*/
 		public static function get($user, $msgMailboxID) {
 			$db = Loader::db();
@@ -271,7 +276,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		/**
 		 * checks to see if a user has exceeded their limit for sending private messages
 		 * @param int $uID
-		 * @return boolean
+		 * @return bool
 		*/
 		public function isOverLimit($uID){
 			if(USER_PRIVATE_MESSAGE_MAX == 0) { return false; }
@@ -292,6 +297,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		}
 		/**
 		* Alters the user if isOverLimit occurs
+		* @return string $ve
 		*/
 		public function getErrorObject() {
 			$ve = Loader::helper('validation/error');
@@ -300,6 +306,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		}
 		/**
 		* Alters the admin if isOverLimit occurs
+		* @param int $offenderID
 		*/
 		protected function notifyAdmin($offenderID) {
 			$offender = UserInfo::getByID($offenderID);

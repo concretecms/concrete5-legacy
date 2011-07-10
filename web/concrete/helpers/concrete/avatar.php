@@ -22,6 +22,7 @@ class ConcreteAvatarHelper {
 	
 	/**
 	* Gets the default avatar
+	* @return array $aDir
 	*/
 	function getStockAvatars() {
 		$f = Loader::helper('file');
@@ -29,8 +30,9 @@ class ConcreteAvatarHelper {
 		return $aDir;			
 	}
 	/** 
-	* Outputs the final user avata
+	* Outputs the final user avatar
 	* @param int $uo
+	* @return string $str
 	*/
 	function outputUserAvatar($uo, $suppressNone = false, $aspectRatio = 1.0) {	
 		if (is_object($uo) && $uo->hasAvatar()) {
@@ -59,6 +61,8 @@ class ConcreteAvatarHelper {
 	/**
 	* gets the image path for a users avatar
 	* @param int $uo
+	* @param bool $withNoCacheStr
+	* @return string $src
 	*/
 	public function getImagePath($uo,$withNoCacheStr=true) {
 		if (!$uo->hasAvatar()) {
@@ -83,6 +87,8 @@ class ConcreteAvatarHelper {
 
 	/**
 	* What to show if the user has no avatar
+	* @param int $aspectRatio
+	* @return string $str
 	*/
 	function outputNoAvatar($aspectRatio = 1.0) {
 		$str = '<img class="u-avatar" src="' . AVATAR_NONE . '" width="' . AVATAR_WIDTH*$aspectRatio . '" height="' . AVATAR_HEIGHT*$aspectRatio . '" alt="" />';
@@ -94,6 +100,7 @@ class ConcreteAvatarHelper {
 	* It needs to make some various sizes of the image
 	* @param string $pointer
 	* @param int $uID
+	* @return int $uHasAvatar
 	*/
 	function processUploadedAvatar($pointer, $uID) {
 		$uHasAvatar = 0;
@@ -158,7 +165,7 @@ class ConcreteAvatarHelper {
 	}
 	/**
 	* Removes the avatar for the given user
-	* @param int $ui
+	* @param object $ui
 	*/
 	function removeAvatar($ui) {
 		if (is_object($ui)) {
@@ -172,7 +179,8 @@ class ConcreteAvatarHelper {
 	/**
 	* Updates the avatar for the given user with the image given in $pointer
 	* @param string $pointer
-	* @param int $ui
+	* @param int $uID
+	* @return int $uHasAvatar
 	*/
 	function updateUserAvatar($pointer, $uID) {
 		$uHasAvatar = $this->processUploadedAvatar($pointer, $uID);
@@ -183,7 +191,7 @@ class ConcreteAvatarHelper {
 	/**
 	* Updates the avatar for the given user with a stock image thats given with $pointer
 	* @param string $pointer
-	* @param int $ui
+	* @param int $uID
 	*/
 	function updateUserAvatarWithStock($pointer, $uID) {
 		if ($pointer != "") {
