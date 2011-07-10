@@ -31,7 +31,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		* Gets a message given the message id
 		* @param int $msgID
 		* @param bool $mailbox
-		* @return object $upm
+		* @return UserPrivateMessage object $upm
 		*/
 		public static function getByID($msgID, $mailbox = false) {
 			$db = Loader::db();
@@ -93,9 +93,6 @@ defined('C5_EXECUTE') or die("Access Denied.");
 				$db->Execute('update UserPrivateMessagesTo set msgIsUnread = 0 where msgID = ?', array($this->msgID, $this->msgMailboxID, $this->uID));
 			}
 		}
-		/**
-		* Functions useful for getting information about the message
-		*/
 		public function getMessageAuthorID() {return $this->uAuthorID;}
 		public function getMessageID() {return $this->msgID;}
 		public function getMessageUserID() {return $this->uID;}
@@ -201,8 +198,8 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		public function getMailboxID() {return $this->msgMailboxID;}
 		public function getMailboxUserID() {return $this->uID;}
 		/** 
-		* Gets infromation about a users mailbox
-		* @param string $uer
+		* Gets information about a users mailbox
+		* @param user object $uer
 		* @param int $msgMailboxID
 		* @return object $mb
 		*/
