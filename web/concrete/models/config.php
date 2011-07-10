@@ -38,6 +38,12 @@ class Config extends Object {
 	public function setPackageObject($pkg) {
 		$this->pkg = $pkg;
 	}
+	/**
+	* Gets the config value for a given key
+	* @param string $cfKey
+	* @param bool $getFullObject
+	* @return object $cv
+	*/
 	public function get($cfKey, $getFullObject = false) {
 		static $instance;
 		if (!isset($instance)) {
@@ -92,7 +98,11 @@ class Config extends Object {
 			return $cv;
 		}
 	}
-	
+	/**
+	* gets a list of all the configs associated with a package
+	* @param string $pkg
+	* @return array $list
+	*/
 	public static function getListByPackage($pkg) {
 		$db = Loader::db();
 		$list = array();
@@ -103,7 +113,12 @@ class Config extends Object {
 		$r->Close();
 		return $list;
 	}	
-	
+	/**
+	* Checks to see if the given key is defined or not
+	* if it isn't then it is defined as the default value
+	* @param string $key
+	* @param string $defaultValue
+	*/
 	public function getOrDefine($key, $defaultValue) {
 		$val = Config::get($key);
 		if ($val == null) {
@@ -111,7 +126,10 @@ class Config extends Object {
 		}
 		define($key, $val);
 	}
-	
+	/**
+	* Clears a gived config key
+	* @param strink $cfKey
+	*/
 	public function clear($cfKey) {
 		$db = Loader::db();
 		$pkgID = '';
@@ -123,7 +141,11 @@ class Config extends Object {
 		}
 		Cache::delete('config_option' . $pkgID, $cfKey);
 	}
-	
+	/**
+	* Saves a given value to a key
+	* @param string $cfkey
+	* @param string $cfValue
+	*/
 	public function save($cfKey, $cfValue) {
 		$db = Loader::db();
 		$pkgID = '';

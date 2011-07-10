@@ -23,11 +23,16 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		
 		protected $authorName = false;
 		protected $mailbox;
-		
+		// separates the quote when sent via email
 		public function getMessageDelimiter() {
 			return t('-------------------- Original Message --------------------');
 		}
-		
+		/**
+		* Gets a message given the message id
+		* @param int $msgID
+		* @param bool $mailbox
+		* @return object $upm
+		*/
 		public static function getByID($msgID, $mailbox = false) {
 			$db = Loader::db();
 			$row = $db->GetRow('select uAuthorID, msgDateCreated, msgID, msgSubject, msgBody, uToID from UserPrivateMessages where msgID = ?', array($msgID));
@@ -49,7 +54,10 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			
 			return $upm;
 		}
-		
+		/**
+		* Gets the messages status- whether its read or not, replied to, sent, etc.
+		* @return string
+		*/
 		public function getMessageStatus() {
 			if (is_object($this->mailbox)) {
 				if (!$this->msgIsUnread) {
@@ -72,7 +80,9 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			
 			return t("Read");		
 		}
-
+		/**
+		* Marks the current message as read
+		*/
 		public function markAsRead() {
 			if (!$this->uID) {
 				return false;
@@ -83,7 +93,9 @@ defined('C5_EXECUTE') or die("Access Denied.");
 				$db->Execute('update UserPrivateMessagesTo set msgIsUnread = 0 where msgID = ?', array($this->msgID, $this->msgMailboxID, $this->uID));
 			}
 		}
-		
+		/**
+		* Functions useful for getting information about the message
+		*/
 		public function getMessageAuthorID() {return $this->uAuthorID;}
 		public function getMessageID() {return $this->msgID;}
 		public function getMessageUserID() {return $this->uID;}
@@ -101,6 +113,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		
 		/** 
 		 * Responsible for converting line breaks to br tags, perhaps running bbcode, as well as making the older replied-to messages gray
+		 * @return string $msgBody
 		 */		
 		public function getFormattedMessageBody() {
 			$msgBody = $this->getMessageBody();
@@ -119,7 +132,9 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			return $msgBody;
 		}
 			
-			
+		/**
+		* Deletes the current message from a users inbox
+		*/	
 		public function delete() {
 			$db = Loader::db();
 			if (!$this->uID) {
@@ -132,14 +147,20 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			$ui = UserInfo::getByID($this->getMessageRelevantUserID());
 			return $ui;
 		}
-
+		/**
+		* Gets the user name that was sent a message or author name if it isn't sent
+		* @return string username
+		*/
 		public function getMessageRelevantUserName() {
 			$ui = UserInfo::getByID($this->getMessageRelevantUserID());
 			if (is_object($ui)) {
 				return $ui->getUserName();
 			}
 		}
-		
+		/**
+		* Gets the messages Author Name
+		* @return string author name 
+		*/
 		public function getMessageAuthorName() {
 			if ($this->authorName == false) {
 				$author = $this->getMessageAuthorObject();
@@ -148,7 +169,11 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			
 			return $this->authorName;
 		}
-		
+		/**
+		* Get when the message was made
+		* @param string $type is how it was made
+		* returns date in the format of $mask
+		*/
 		public function getMessageDateAdded($type = 'system', $mask = false) {
 			if($type == 'user') {
 				$dh = Loader::helper('date');
@@ -157,7 +182,9 @@ defined('C5_EXECUTE') or die("Access Denied.");
 				return $this->msgDateCreated;
 			}
 		}
-		
+		/**
+		* Functions to get the content of a message
+		*/
 		public function getMessageSubject() {return $this->msgSubject;}
 		public function getFormattedMessageSubject() {
 			$txt = Loader::helper('text');
@@ -173,7 +200,12 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		
 		public function getMailboxID() {return $this->msgMailboxID;}
 		public function getMailboxUserID() {return $this->uID;}
-		
+		/** 
+		* Gets infromation about a users mailbox
+		* @param string $uer
+		* @param int $msgMailboxID
+		* @return object $mb
+		*/
 		public static function get($user, $msgMailboxID) {
 			$db = Loader::db();
 			$mb = new UserPrivateMessageMailbox();
@@ -184,13 +216,17 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			
 			return $mb;
 		}
-		
+		/**
+		* Set messages to not be new
+		*/
 		public function removeNewStatus() {
 			$db = Loader::db();
 			$user = UserInfo::getByID($this->uID);
 			$db->Execute('update UserPrivateMessagesTo set msgIsNew = 0 where msgMailboxID = ? and uID = ?', array($this->msgMailboxID, $user->getUserID()));
 		}
-
+		/**
+		* Functions to get messages
+		*/
 		public function getTotalMessages() {return $this->totalMessages;}
 		public function getLastMessageID() {return $this->lastMessageID;}
 		public function getLastMessageObject() {
@@ -198,7 +234,9 @@ defined('C5_EXECUTE') or die("Access Denied.");
 				return UserPrivateMessage::getByID($this->lastMessageID, $this);
 			}
 		}
-		
+		/**
+		* Gets a filtered list of messages
+		*/
 		public function getMessageList() {
 			$pml = new UserPrivateMessageList();
 			$pml->filterByMailbox($this);
@@ -238,7 +276,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		/**
 		 * checks to see if a user has exceeded their limit for sending private messages
 		 * @param int $uID
-		 * @return boolean
+		 * @return bool
 		*/
 		public function isOverLimit($uID){
 			if(USER_PRIVATE_MESSAGE_MAX == 0) { return false; }
@@ -257,13 +295,19 @@ defined('C5_EXECUTE') or die("Access Denied.");
 				return false;
 			}
 		}
-		
+		/**
+		* Alters the user if isOverLimit occurs
+		* @return string $ve
+		*/
 		public function getErrorObject() {
 			$ve = Loader::helper('validation/error');
 			$ve->add(t('You may not send more than %s messages in %s minutes', USER_PRIVATE_MESSAGE_MAX, USER_PRIVATE_MESSAGE_MAX_TIME_SPAN));
 			return $ve;
 		}
-		
+		/**
+		* Alters the admin if isOverLimit occurs
+		* @param int $offenderID
+		*/
 		protected function notifyAdmin($offenderID) {
 			$offender = UserInfo::getByID($offenderID);
 			$admin = UserInfo::getByID(USER_SUPER_ID);
