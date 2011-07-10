@@ -42,7 +42,7 @@ class Config extends Object {
 	* Gets the config value for a given key
 	* @param string $cfKey
 	* @param bool $getFullObject
-	* @return object $cv
+	* @return string or full object $cv
 	*/
 	public function get($cfKey, $getFullObject = false) {
 		static $instance;
@@ -100,7 +100,7 @@ class Config extends Object {
 	}
 	/**
 	* gets a list of all the configs associated with a package
-	* @param string $pkg
+	* @param package object $pkg
 	* @return array $list
 	*/
 	public static function getListByPackage($pkg) {
@@ -128,7 +128,7 @@ class Config extends Object {
 	}
 	/**
 	* Clears a gived config key
-	* @param strink $cfKey
+	* @param string $cfKey
 	*/
 	public function clear($cfKey) {
 		$db = Loader::db();
