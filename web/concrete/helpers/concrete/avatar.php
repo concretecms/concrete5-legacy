@@ -31,7 +31,7 @@ class ConcreteAvatarHelper {
 	}
 	/** 
 	* Outputs the final user avatar
-	* @param int $uo
+	* @param user object $uo
 	* @return string $str
 	*/
 	function outputUserAvatar($uo, $suppressNone = false, $aspectRatio = 1.0) {	
@@ -60,7 +60,7 @@ class ConcreteAvatarHelper {
 	}
 	/**
 	* gets the image path for a users avatar
-	* @param int $uo
+	* @param user object $uo
 	* @param bool $withNoCacheStr
 	* @return string $src
 	*/
@@ -165,7 +165,7 @@ class ConcreteAvatarHelper {
 	}
 	/**
 	* Removes the avatar for the given user
-	* @param object $ui
+	* @param user object $ui
 	*/
 	function removeAvatar($ui) {
 		if (is_object($ui)) {
