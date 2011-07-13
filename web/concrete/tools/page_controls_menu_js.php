@@ -29,8 +29,21 @@ if (isset($cp)) {
 	$statusMessage = '';
 	if ($c->isCheckedOut()) {
 		if (!$c->isCheckedOutByMe()) {
+			$db = Loader::db();
+			$date = Loader::helper('date');
+			$page = Page::getCurrentPage();
+			$page->getCollectionID();
+			$query = "select cCheckedOutUID from Pages where cID = ?";
+			$vals=array($page->getCollectionID());
+			$checkedOutId = $db->getOne($query, $vals);
+			if(!$checkedOutId==0){
+				$ui = UserInfo::getByID($checkedOutId);
+				$name=$ui->getUserName();
+			}else{
+				$name="Guest";
+			}
 			$cantCheckOut = true;
-			$statusMessage .= t("Another user is currently editing this page.");
+			$statusMessage .= t("$name is currently editing this page.");
 		}
 	}
 	
