@@ -203,36 +203,14 @@ foreach($nav as $n2) {
 <div id="ccm-dashboard-content">
 
 	<div id="ccm-dashboard-content-inner">
-	<? if (isset($error)) { ?>
-		<? 
-		if ($error instanceof Exception) {
-			$_error[] = $error->getMessage();
-		} else if ($error instanceof ValidationErrorHelper) {
-			$_error = array();
-			if ($error->has()) {
-				$_error = $error->getList();
-			}
-		} else {
-			$_error = $error;
-		}
+		<?php
+		Loader::element('system_errors', array('error' => $error, 'dashboard' => 1));
 		
-		if (count($_error) > 0) {
-			?>
-			<div class="message error">
-			<strong><?=t('The following errors occurred when attempting to process your request:')?></strong>
-			<ul>
-			<? foreach($_error as $e) { ?><li><?=$e?></li><? } ?>
-			</ul>
-			</div>
-		<? 
-		}
-	}
-	
-	if (isset($message)) { ?>
-		<div class="message success"><?=$message?></div>
-	<? } ?>
-	
-	<?php print $innerContent; ?>
+		if (isset($message)) { ?>
+			<div class="message success"><?=$message?></div>
+		<? } ?>
+		
+		<?php print $innerContent; ?>
 	</div>
 	
 	<div class="ccm-spacer">&nbsp;</div>
