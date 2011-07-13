@@ -43,7 +43,7 @@ if (isset($cp)) {
 				$name="Guest";
 			}
 			$cantCheckOut = true;
-			$statusMessage .= t("$name is currently editing this page.");
+			$statusMessage .= t("%s is currently editing this page.", $name);
 		}
 	}
 	
