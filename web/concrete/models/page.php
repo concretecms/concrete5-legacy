@@ -251,6 +251,10 @@ $ppWhere = '';
 		}
 		return $name;
 	}
+<<<<<<< HEAD
+=======
+
+>>>>>>> changed naming and added comment.
 	function isCheckedOutByMe() {
 		$u = new User();
 		return ($this->getCollectionCheckedOutUserID() > 0 && $this->getCollectionCheckedOutUserID() == $u->getUserID());
