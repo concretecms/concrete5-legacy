@@ -234,7 +234,11 @@ $ppWhere = '';
 			}
 		}
 	}
-	function isCheckedOutByUser() {
+	/** 
+	* Gets the user that is editing the current page. 
+	* $return string $name
+	*/
+	function getCollectionCheckedOutUserID() {
 		$db = Loader::db();
 		$query = "select cCheckedOutUID from Pages where cID = ?";
 		$vals=array($this->cID);
