@@ -54,14 +54,27 @@ class DatabaseItemList extends ItemList {
 	
 	protected function executeBase() {
 		$db = Loader::db();
-		$q = $this->query . $this->userQuery . ' where 1=1 ';
-		foreach($this->filters as $f) {
+		$q = $this->query . $this->userQuery;
+
+		if (count($this->filters) > 0) {
+			$q .= ' WHERE ';
+		}
+		
+		for ($i=0; $i < count($this->filters); $i++) { 
+			$f = $this->filters[$i];
 			$column = $f[0];
 			$comp = $f[2];
 			$value = $f[1];
+			
+			if ($i == 0) {
+				$operator = '';
+			}
+			else {
+				$operator = $f[3];	
+			}
 			// if there is NO column, then we have a free text filter that we just add on
 			if ($column == false || $column == '') {
-				$q .= 'and ' . $f[1] . ' ';
+				$q .= $operator.' ' . $value . ' ';
 			} else {
 				if (is_array($value)) {
 					if (count($value) > 0) {
@@ -73,7 +86,7 @@ class DatabaseItemList extends ItemList {
 								$comp = 'not in';
 								break;
 						}
-						$q .= 'and ' . $column . ' ' . $comp . ' (';
+						$q .= $operator.' ' . $column . ' ' . $comp . ' (';
 						for ($i = 0; $i < count($value); $i++) {
 							if ($i > 0) {
 								$q .= ',';
@@ -82,11 +95,11 @@ class DatabaseItemList extends ItemList {
 						}
 						$q .= ') ';
 					} else {
-						$q .= 'and 1 = 2';
-					}
+						$q .= $operator.' 1 = 2';
+					}		
 				} else { 
 					$comp = (is_null($value) && stripos($comp, 'is') === false) ? (($comp == '!=' || $comp == '<>') ? 'IS NOT' : 'IS') : $comp;
-					$q .= 'and ' . $column . ' ' . $comp . ' ' . $db->quote($value) . ' ';
+					$q .= $operator.' ' . $column . ' ' . $comp . ' ' . $db->quote($value) . ' ';
 				}
 			}
 		}
@@ -158,8 +171,8 @@ class DatabaseItemList extends ItemList {
 	/** 
 	 * Adds a filter to this item list
 	 */
-	public function filter($column, $value, $comparison = '=') {
-		$this->filters[] = array($column, $value, $comparison);
+	public function filter($column, $value, $comparison = '=', $operator = 'AND') {
+		$this->filters[] = array($column, $value, $comparison, $operator);
 	}
 	
 	public function getSearchResultsClass($field) {
