@@ -173,6 +173,10 @@ div#ccm-dashboard-subnav-third {
 }
 div#ccm-dashboard-subnav-third a {
 	color: #666;
+	text-decoration: none;
+}
+div#ccm-dashboard-subnav-third a:hover {
+	color: #457DA5;
 }
 div#ccm-dashboard-subnav-third ul {list-style-type: none; height:22px;}
 div#ccm-dashboard-subnav-third ul li {
@@ -185,12 +189,14 @@ div#ccm-dashboard-subnav-third ul li {
 	height:19px;
 }
 
-div#ccm-dashboard-subnav-third ul li.nav-selected {
+div#ccm-dashboard-subnav-third ul li.nav-selected a{
 	font-weight: bold;
+	top: -1px; /*fix misaligned link due to bolding*/
+	position: relative;
 }
 
 div#ccm-dashboard-subnav-third ul li a:hover {
-	border-bottom: 2px solid #aaa;
+/*	border-bottom: 2px solid #aaa;*/
 }
 
 /* groups */
