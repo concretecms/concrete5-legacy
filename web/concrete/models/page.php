@@ -234,7 +234,23 @@ $ppWhere = '';
 			}
 		}
 	}
-
+	/** 
+	* Gets the user that is editing the current page. 
+	* $return string $name
+	*/
+	function getCollectionCheckedOutUserID() {
+		$db = Loader::db();
+		$query = "select cCheckedOutUID from Pages where cID = ?";
+		$vals=array($this->cID);
+		$checkedOutId = $db->getOne($query, $vals);
+		if(!$checkedOutId==0){
+		    $ui = UserInfo::getByID($checkedOutId);
+		    $name=$ui->getUserName();
+		}else{
+		    $name="Guest";
+		}
+		return $name;
+	}
 	function isCheckedOutByMe() {
 		$u = new User();
 		return ($this->getCollectionCheckedOutUserID() > 0 && $this->getCollectionCheckedOutUserID() == $u->getUserID());
