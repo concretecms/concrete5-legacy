@@ -1,9 +1,9 @@
-<?php defined('C5_EXECUTE') or die("Access Denied.");
-
-//Load the needed helpers:
+<?php
+defined('C5_EXECUTE') or die("Access Denied.");
+$rssUrl = $controller->getRssUrl($b);
 $th = Loader::helper('text');
 //$ih = Loader::helper('image'); //<--uncomment this line if displaying image attributes (see below)
-//$nh (navigation helper) is already loaded for us by the controller due to legacy reasons
+//Note that $nh (navigation helper) is already loaded for us by the controller due to legacy reasons
 ?>
 
 <div class="ccm-page-list">
@@ -54,7 +54,7 @@ $th = Loader::helper('text');
 		<div class="ccm-page-list-rss-icon">
 			<a href="<?php echo $rssUrl ?>" target="_blank"><img src="<?php echo $rssIconSrc ?>" width="14" height="14" alt="RSS" /></a>
 		</div>
-		<?php echo $rssInvisibleLink ?>
+		<link href="<?php echo BASE_URL.$rssUrl ?>" rel="alternate" type="application/rss+xml" title="<?php echo $rssTitle; ?>" />
 	<?php endif; ?>
  
 </div><!-- end .ccm-page-list -->

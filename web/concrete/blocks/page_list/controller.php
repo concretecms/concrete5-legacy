@@ -130,18 +130,16 @@
 			$rssInvisibleLink = '';
 			if ($this->rss) {
 				$showRss = true;
-				$b = $this->getBlockObject();
-				$rssIconSrc = Loader::helper('concrete/urls')->getBlockTypeAssetsURL(BlockType::getByID($b->getBlockTypeID()), 'rss.png');
-				$rssInvisibleLink = '<link href="'.BASE_URL.$this->getRssUrl($b).'" rel="alternate" type="application/rss+xml" title="'.$this->rssTitle.'" />';
+				$rssIconSrc = Loader::helper('concrete/urls')->getBlockTypeAssetsURL(BlockType::getByID($this->getBlockObject()->getBlockTypeID()), 'rss.png');
+				//DEV NOTE: Ideally we'd set rssUrl here, but we can't because for some reason calling $this->getBlockObject() here doesn't load all info properly, and then the call to $this->getRssUrl() fails when it tries to get the area handle of the block.
 			}
 			$this->set('showRss', $showRss);
 			$this->set('rssIconSrc', $rssIconSrc);
-			$this->set('rssInvisibleLink', $rssInvisibleLink);
 
 			//Pagination...
 			$showPagination = false;
 			$paginator = null;
-			$pl = $this->getvar('pl'); //Terrible horrible hacky way to get the $pl object set in $this->getPages() -- we need to do it this way for backwards-compatibility reasons
+			$pl = $this->get('pl'); //Terrible horrible hacky way to get the $pl object set in $this->getPages() -- we need to do it this way for backwards-compatibility reasons
 			if ($this->paginate && $this->num > 0 && is_object($pl)) {
 				$description = $pl->getSummary();
 				if ($description->pages > 1) {

@@ -25,9 +25,7 @@ $cArray = $controller->getPages();
 //For compatibility with 5.4.2+ view.php...
 $pages = $cArray;
 $showRss = false;
-$rssUrl = '';
 $rssIconSrc = '';
-$rssInvisibleLink = '';
 $showPagination = false;
 $paginator = null;
 
