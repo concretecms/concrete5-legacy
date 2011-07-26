@@ -39,12 +39,24 @@ class Request {
 		if (!$path) {
 			return false;
 		}
-		$replace[] = DIR_REL . '/' . DISPATCHER_FILENAME;
+		
+		// if the path starts off with dir_rel, we remove it:
+		
 		if (DIR_REL != '') {
-			$replace[] = DIR_REL . '/';
+			$dr = trim(DIR_REL, '/');
+			$path = trim($path, '/');
+			if (strpos($path, $dr) === 0) {
+				$path = substr($path, strlen($dr));	
+			}
 		}
-		$path = str_replace($replace, '', $path);
+		
 		$path = trim($path, '/');
+		if (strpos($path, DISPATCHER_FILENAME) === 0) {
+			$path = substr($path, strlen(DISPATCHER_FILENAME));	
+		}
+
+		$path = trim($path, '/');
+		
 		if (defined('ENABLE_CMS_FOR_PATH') && ENABLE_CMS_FOR_PATH != '') {
 			$path = ENABLE_CMS_FOR_PATH . '/' . $path;
 		}
@@ -160,61 +172,79 @@ class Request {
 		
 		// tools
 
-		if (preg_match("/^tools\/blocks\/(.[^\/]*)\/(.[^\.]*).php|^tools\/blocks\/(.[^\/]*)\/(.[^\.]*)/i", $path, $matches)) {
-			if (isset($matches[4])) {
-				$this->filename = $matches[4] . '.php';
-				$this->btHandle = $matches[3];
-			} else {
-				$this->filename = $matches[2] . '.php';
-				$this->btHandle = $matches[1];
+		$exploded = explode('/', $path);
+		if($exploded[0] == 'tools') {
+			if($exploded[1] == 'blocks') {
+				$this->btHandle = $exploded[2];
+				unset($exploded[0]);
+				unset($exploded[1]);
+				unset($exploded[2]);
+				$imploded = implode('/', $exploded);
+				if(substr($imploded, -4) == '.php') {
+					$this->filename = $imploded;
+				} else {
+					$this->filename = $imploded . '.php';
+				}
+				$this->includeType = 'BLOCK_TOOL';
+				return;
 			}
-			$this->includeType = 'BLOCK_TOOL';
-			return;
-		}
 
-		// theme-based css
-		if (preg_match("/^tools\/css\/themes\/(.[^\/]*)\/(.[^\.]*).css/i", $path, $matches)) {
-			$this->filename = 'css.php';
-			$this->includeType = 'CONCRETE_TOOL';
-			$this->auxData = new stdClass;
-			$this->auxData->theme = $matches[1];
-			$this->auxData->file = $matches[2] . '.css';
+			if($exploded[1] == 'css' && $exploded[2] == 'themes') {
+				unset($exploded[0]);
+				unset($exploded[1]);
+				unset($exploded[2]);
+				$this->filename = 'css.php';
+				$this->auxData = new stdClass;
+				$this->auxData->theme = $exploded[3];
+				unset($exploded[3]);
+				$imploded = implode('/', $exploded);
+				if(substr($imploded, -4) == '.css') {
+					$this->auxData->file = $imploded;
+				} else {
+					$this->auxData->file = $imploded . '.css';
+				}
+				$this->includeType = 'CONCRETE_TOOL';
+				return;
+			}
 			
-			return;
-		}
-
-		if (preg_match("/^tools\/packages\/(.[^\/]*)\/(.[^\.]*).php|^tools\/packages\/(.[^\/]*)\/(.[^\.]*)/i", $path, $matches)) {
-			if (isset($matches[4])) {
-				$this->filename = $matches[4] . '.php';
-				$this->pkgHandle = $matches[3];
-			} else {
-				$this->filename = $matches[2] . '.php';
-				$this->pkgHandle = $matches[1];
+			if($exploded[1] == 'packages') {
+				$this->pkgHandle = $exploded[2];
+				unset($exploded[0]);
+				unset($exploded[1]);
+				unset($exploded[2]);
+				$imploded = implode('/', $exploded);
+				if(substr($imploded, -4) == '.php') {
+					$this->filename = $imploded;
+				} else {
+					$this->filename = $imploded . '.php';
+				}
+				$this->includeType = 'PACKAGE_TOOL';
+				return;
 			}
-			$this->includeType = 'PACKAGE_TOOL';
-			return;
-		}
-
-		if (preg_match("/^tools\/required\/(.[^\.]*).php|^tools\/required\/(.[^\.]*)/i", $path, $matches)) {
-			if (isset($matches[2])) {
-				$this->filename = $matches[2] . '.php';
-			} else {
-				$this->filename = $matches[1] . '.php';
+			
+			if($exploded[1] == 'required') {
+				unset($exploded[0]);
+				unset($exploded[1]);
+				$imploded = implode('/', $exploded);
+				if(substr($imploded, -4) == '.php') {
+					$this->filename = $imploded;
+				} else {
+					$this->filename = $imploded . '.php';
+				}
+				$this->includeType = 'CONCRETE_TOOL';
+				return;
 			}
-			$this->includeType = 'CONCRETE_TOOL';
-			return;
-		}
-
-		if (preg_match("/^tools\/(.[^\.\/]*).php|^tools\/(.[^\.\/]*)/i", $path, $matches)) {
-			if (isset($matches[2])) {
-				$this->filename = $matches[2] . '.php';
+			
+			unset($exploded[0]);
+			$imploded = implode('/', $exploded);
+			if(substr($imploded, -4) == '.php') {
+				$this->filename = $imploded;
 			} else {
-				$this->filename = $matches[1] . '.php';
+				$this->filename = $imploded . '.php';
 			}
 			$this->includeType = 'TOOL';
 			return;
 		}
-
 		
 		// just path
 		if ($path != '') {
