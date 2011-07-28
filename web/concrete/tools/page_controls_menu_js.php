@@ -30,10 +30,9 @@ if (isset($cp)) {
 	if ($c->isCheckedOut()) {
 		if (!$c->isCheckedOutByMe()) {
 			$cantCheckOut = true;
-			$statusMessage .= t("Another user is currently editing this page.");
+			$statusMessage .= t("%s is currently editing this page.", $c->getCollectionCheckedOutUserID());
 		}
-	}
-	
+	}	
 	if ($c->getCollectionPointerID() > 0) {
 		$statusMessage .= t("This page is an alias of one that actually appears elsewhere. ");
 		$statusMessage .= "<br/><a href='" . DIR_REL . "/" . DISPATCHER_FILENAME . "?cID=" . $c->getCollectionID() . "'>" . t('View/Edit Original') . "</a>";
