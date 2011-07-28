@@ -475,6 +475,13 @@ snDescription            TEXT,
 snBody                   TEXT,
                  PRIMARY KEY (snID)
 );
+CREATE TABLE  SystemCaptchaLibraries (
+sclHandle                VARCHAR(64),
+sclName                  VARCHAR(255),
+sclIsDefault             TINYINT(1) NOT NULL DEFAULT 0,
+pkgID                    INTEGER UNSIGNED NOT NULL DEFAULT  0,
+PRIMARY KEY (sclHandle)
+)
 
 CREATE TABLE Packages (
 pkgID                    INTEGER(10) UNSIGNED NOT NULL AUTO_INCREMENT,
