@@ -1,5 +1,4 @@
 <?
-
 $attribs = UserAttributeKey::getList(true);
 $u = new User();
 $uh = Loader::helper('concrete/user');

@@ -8,15 +8,6 @@ if (!$tp->canAccessUserSearch()) {
 }
 */
 
-$cnt = Loader::controller('/dashboard/virtual_tables/search');
-$newObjectList = $cnt->getRequestedSearchResults($_REQUEST['table']);
-$newObjects = $newObjectList->getPage();
-$pagination = $newObjectList->getPagination();
-
-Loader::helper('virtual_tables_category', 'virtual_tables');
-$names = new VirtualTablesObjectsNamingConvention();
-$names->useHandle($_REQUEST['table']);
-
 if (!isset($mode)) {
 	$mode = $_REQUEST['mode'];
 }
@@ -26,10 +17,10 @@ if (!isset($mode)) {
 
 		<table id="ccm-search-form-table" >
 			<tr>
-				<td valign="top" class="ccm-search-form-advanced-col"><?php  Loader::packageElement('dashboard/virtual_tables/search/search_form_advanced', 'virtual_tables', array('names' => $names) ); ?></td>
+				<td valign="top" class="ccm-search-form-advanced-col"><?php  Loader::element('bricks/search_form_advanced', array('akCategoryHandle' => $_REQUEST['akCategoryHandle'], 'akID' => $_REQUEST['akID']) ); ?></td>
 				<td valign="top" width="100%"><div id="ccm-search-advanced-results-wrapper">
 						<div id="ccm-new-object-search-results">
-							<?php  Loader::packageElement('dashboard/virtual_tables/search/search_results', 'virtual_tables', array('newObjects' => $newObjects, 'newObjectList' => $newObjectList, 'pagination' => $pagination, 'names' => $names, 'akID' => $_REQUEST['akID'])); ?>
+							<?php  Loader::element('bricks/search_results', array('akCategoryHandle' => $_REQUEST['akCategoryHandle'], 'akID' => $_REQUEST['akID'])); ?>
 						</div>
 					</div></td>
 			</tr>
@@ -41,4 +32,7 @@ if (!isset($mode)) {
 $(function() {
 	ccm_setupAdvancedSearch('new-object');
 });
+</script>
+<script type="text/javascript">
+	ccm_setupNewObjectSearch<?php if($_REQUEST['akID']) print '_'.$_REQUEST['akID'];?>();
 </script>

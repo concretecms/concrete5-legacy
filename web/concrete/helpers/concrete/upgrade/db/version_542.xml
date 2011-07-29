@@ -191,5 +191,11 @@
       <notnull/>
     </field>
   </table>
+  <table name="atAttributeKeyCategoryItemsSettings">
+    <field name="akID" type="I">
+      <key/>
+    </field>
+    <field name="akCategoryHandle" type="C" size="255"></field>
+  </table>
   
 </schema>

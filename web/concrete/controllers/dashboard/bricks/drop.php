@@ -14,7 +14,7 @@ class DashboardBricksDropController extends Controller {
 		);
 		$this->set('subnav', $subnav);
 		if($post = $this->post()) {
-			AttributeKeyCategory::getByHandle($akCategoryHandle)->delete();
+			AttributeKeyCategory::getByHandle($akCategoryHandle)->drop();
 			$this->redirect('dashboard/bricks');
 		} else {
 			$txt = Loader::helper('text');

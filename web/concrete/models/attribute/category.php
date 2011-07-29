@@ -1,105 +1,17 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 class AttributeKeyCategory extends Object {
 
 	const ASET_ALLOW_NONE = 0;
 	const ASET_ALLOW_SINGLE = 1;
 	const ASET_ALLOW_MULTIPLE = 2;
-
-	/** 
-	 * Returns an instance of the systemwide AttributeKeyCategory object.
-	 */
-	public function getInstance() {
-		static $instance;
-		if (!isset($instance)) {
-			$v = __CLASS__;
-			$instance = new $v;
-		}
-		return $instance;
-	}
 	
-	public function getActions() {
-		return array('search', 'insert', 'structure', 'permissions', 'drop');
-	}
-	public function getActionIconSrc($action) {
-		switch($action) {
-			case 'insert':
-				$iconSrc = ASSETS_URL_IMAGES.'/icons/add.png';
-				break;
-			case 'structure':
-				$iconSrc = ASSETS_URL_IMAGES.'/icons/wrench.png';
-				break;
-			case 'permissions':
-				$iconSrc = ASSETS_URL_IMAGES.'/icons/icon_header_permissions.png';
-				break;
-			case 'drop':
-				$iconSrc = ASSETS_URL_IMAGES.'/icons/delete_small.png';
-				break;
-			default:
-				$iconSrc = ASSETS_URL_IMAGES.'/icons/'.$action.'.png';
-				break;
+	public function getRegisteredSettings($akCategoryHandle = NULL) {
+		if(!$akCategoryHandle) {
+			$akCategoryHandle = $this->akCategoryHandle;
 		}
-		return $iconSrc;
-	}
-	
-	private $registeredSettings = array(
-					'collection' => array(
-						'url_search'			=> 'dashboard/sitemap/search',
-						'url_insert'			=> 'dashboard/composer',
-						'url_structure'			=> 'dashboard/pages/attributes',
-						'url_permissions_hidden'	=> TRUE,
-						'url_drop_hidden'		=> TRUE
-					),
-					'user' => array(
-						'url_search'			=> 'dashboard/users',
-						'url_insert'			=> 'dashboard/users/add',
-						'url_structure'			=> 'dashboard/users/attributes',
-						'url_permissions'		=> 'dashboard/settings/set_permissions',
-						'url_drop_hidden'		=> TRUE
-					),
-					'file' => array(
-						'url_search'			=> 'dashboard/files',
-						'url_insert_hidden'		=> TRUE,
-						'url_structure'			=> 'dashboard/files/attributes',
-						'url_permissions'		=> 'dashboard/files/access',
-						'url_drop_hidden'		=> TRUE
-					)
-				);
-
-	public static function registerSetting($akCategoryHandle, $settingHandle, $parameters) {
-		$akc = AttributeKeyCategory::getInstance();
-		$akc->registeredSettings[$akCategoryHandle][$settingHandle] = $parameters;	
-	}
-
-	public function getRegisteredSettings() {
-		$akc = AttributeKeyCategory::getInstance();
-		return $akc->registeredSettings[$this->getAttributeKeyCategoryHandle()];
-	}
-	
-	private $allowAddToPackage = array();
-
-	public static function allowAddToPackage($pkg) {
-		if(is_object($pkg)) {
-			$pkgHandle = $pkg->getPackageHandle();
-		} elseif(is_numeric($pkg)) {
-			$pkgHandle = Package::getByID($pkg)->getPackageHandle();
-		} else {
-			$pkgHandle = $pkg;
-		}
-		$akc = AttributeKeyCategory::getInstance();
-		$akc->allowAddToPackage[] = $pkgHandle;	
-	}
-	
-	public function canAddToPackage($pkg) {
-		if(is_object($pkg)) {
-			$pkgHandle = $pkg->getPackageHandle();
-		} elseif(is_numeric($pkg)) {
-			$pkgHandle = Package::getByID($pkg)->getPackageHandle();
-		} else {
-			$pkgHandle = $pkg;
-		}
-		$akc = AttributeKeyCategory::getInstance();
-		return in_array($pkgHandle, $akc->allowAddToPackage);
+		$akcsh = Loader::helper('attribute_key_category_settings');
+		return $akcsh->getRegisteredSettings($akCategoryHandle);
 	}
 	
 	public static function getByID($akCategoryID) {
@@ -243,6 +155,24 @@ class AttributeKeyCategory extends Object {
 		$this->clearAttributeKeyCategoryTypes();
 		$this->clearAttributeKeyCategoryColumnHeaders();
 		$db->Execute('delete from AttributeKeyCategories where akCategoryID = ?', $this->akCategoryID);		
+	}
+	/**
+	 * note, this DOES remove all items and attirbute values associated with the category
+	 */
+	public function drop() {
+		$items = $this->getItemList();
+		$items->ignorePermissions = TRUE;
+		$items = $items->get(0,0,'objects');
+		foreach($items as $item) {
+			$item->delete();
+		}
+		foreach($this->getAttributeSets() as $set) {
+			$set->delete();
+		}
+		foreach($this->getAttributeKeyList() as $ak) {
+			$ak->delete();
+		}
+		$this->delete();
 	}
 	
 	public function getList() {

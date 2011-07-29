@@ -14,7 +14,7 @@ if ($_REQUEST['task'] == 'delete') {
 	<p>Are you sure you want to delete the selected items?</p>
 <?php
 	$ih = Loader::helper('concrete/interface');
-	print '<script language="javascript">var URIComponents = "'.$_REQUEST['json'].'";</script>';
+	print "<script type='text/javascript'>var URIComponents = '".$_REQUEST['json']."';</script>";
 	print $ih->button_js(t('Yes'), 'ccm_deleteAndRefeshSearch(URIComponents)');
 	print $ih->button_js(t('No'), 'ccm_closeModalRefeshSearch()', 'right');
 } ?>

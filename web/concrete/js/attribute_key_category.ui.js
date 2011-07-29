@@ -74,7 +74,7 @@ ccm_setupNewObjectSearch = function() {
 				});
 				break;	
 			case "delete": 
-				URIComponents = '{"table":"' + $(this).attr('table') + '","newObjectIDs":['
+				URIComponents = '{"table":"' + $(this).attr('table') + '","newObjectIDs":[';
 				$("td.ccm-new-object-list-cb input[type=checkbox]:checked").each(function() {
 					URIComponents = URIComponents + '"' + $(this).val() + '",';
 				});

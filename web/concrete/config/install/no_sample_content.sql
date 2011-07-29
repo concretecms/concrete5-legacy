@@ -2,6 +2,11 @@ INSERT INTO AttributeKeyCategories VALUES(1,'collection',0,NULL)
  ,(2,'user',0,NULL)
  ,(3,'file',0,NULL);
 
+INSERT INTO AttributeKeyCategoryItemPermissions VALUES
+('GLOBAL', NULL, 1, NULL, 2, 0, 0, 0, 2, 0),
+('GLOBAL', NULL, 2, NULL, 2, 2, 0, 2, 2, 0),
+('GLOBAL', NULL, 3, NULL, 1, 1, 1, 1, 1, 1);
+
 INSERT INTO AttributeKeys VALUES(1,'meta_title','Meta Title',1,0,0,0,1,1,1,0)
  ,(2,'meta_description','Meta Description',1,0,0,0,1,2,1,0)
  ,(3,'meta_keywords','Meta Keywords',1,0,0,0,1,2,1,0)
@@ -43,7 +48,8 @@ INSERT INTO AttributeTypes VALUES(1,'text','Text',0)
  ,(6,'number','Number',0)
  ,(7,'rating','Rating',0)
  ,(8,'select','Select',0)
- ,(9,'address','Address',0);
+ ,(9,'address','Address',0)
+ ,(10,'attribute_key_category_items','Bricks',0);
 
 INSERT INTO BlockTypes VALUES(1,'content','Content','HTML/WYSIWYG Editor Content.',1,0,0,0,600,465,0)
  ,(2,'html','HTML','For adding HTML by hand.',1,0,0,0,600,465,0)
@@ -368,14 +374,14 @@ INSERT INTO Pages VALUES(1,1,'0',1,1,1,NOW(),NOW(),NULL,NOW(),NULL,NULL,1,1,'OVE
 ,(77,0,'0',1,0,NULL,NULL,NULL,NULL,NOW(),NULL,NULL,1,15,'PARENT','/dashboard/composer/drafts.php',0,NULL,0,0,1,75,0,0,-1,'0',0)
 ,(78,0,'0',1,0,NULL,NULL,NULL,NULL,NOW(),NULL,NULL,1,15,'PARENT','/dashboard/pages/types/composer.php',0,NULL,0,0,1,43,0,0,-1,'0',0)
  ,(79,0,'0',1,0,NULL,NULL,NULL,NULL,NOW(),NULL,NULL,1,15,'PARENT','/dashboard/settings/multilingual/view.php',0,NULL,0,0,1,52,0,0,-1,'0',0)
- ,(80,0,'0',1,0,NULL,NULL,NULL,NULL,NOW(),NULL,NULL,1,15,'PARENT','/dashboard/bricks/view.php',0,NULL,0,6,1,15,0,0,-1,'0',0)
- ,(81,0,'0',1,0,NULL,NULL,NULL,NULL,NOW(),NULL,NULL,1,15,'PARENT','/dashboard/bricks/add.php',0,NULL,0,0,1,80,0,0,-1,'0',0)
- ,(82,0,'0',1,0,NULL,NULL,NULL,NULL,NOW(),NULL,NULL,1,15,'PARENT','/dashboard/bricks/search.php',0,NULL,0,0,1,80,0,0,-1,'0',0)
- ,(83,0,'0',1,0,NULL,NULL,NULL,NULL,NOW(),NULL,NULL,1,15,'PARENT','/dashboard/bricks/insert.php',0,NULL,0,0,1,80,0,0,-1,'0',0)
- ,(84,0,'0',1,0,NULL,NULL,NULL,NULL,NOW(),NULL,NULL,1,15,'PARENT','/dashboard/bricks/structure.php',0,NULL,0,0,1,80,0,0,-1,'0',0)
- ,(85,0,'0',1,0,NULL,NULL,NULL,NULL,NOW(),NULL,NULL,1,15,'PARENT','/dashboard/bricks/permissions.php',0,NULL,0,0,1,80,0,0,-1,'0',0)
- ,(86,0,'0',1,0,NULL,NULL,NULL,NULL,NOW(),NULL,NULL,1,15,'PARENT','/dashboard/bricks/drop.php',0,NULL,0,0,1,80,0,0,-1,'0',0)
- ,(87,0,'0',1,0,NULL,NULL,NULL,NULL,NOW(),NULL,NULL,1,15,'PARENT','/dashboard/bricks/edit.php',0,NULL,0,0,1,80,0,0,-1,'0',0);
+,(80,0,'0',1,0,NULL,NULL,NULL,NULL,NOW(),NULL,NULL,1,15,'PARENT','/dashboard/bricks/view.php',0,NULL,0,6,1,15,0,0,-1,'0',0)
+,(81,0,'0',1,0,NULL,NULL,NULL,NULL,NOW(),NULL,NULL,1,15,'PARENT','/dashboard/bricks/add.php',0,NULL,0,0,1,80,0,0,-1,'0',0)
+,(82,0,'0',1,0,NULL,NULL,NULL,NULL,NOW(),NULL,NULL,1,15,'PARENT','/dashboard/bricks/search.php',0,NULL,0,0,1,80,0,0,-1,'0',0)
+,(83,0,'0',1,0,NULL,NULL,NULL,NULL,NOW(),NULL,NULL,1,15,'PARENT','/dashboard/bricks/insert.php',0,NULL,0,0,1,80,0,0,-1,'0',0)
+,(84,0,'0',1,0,NULL,NULL,NULL,NULL,NOW(),NULL,NULL,1,15,'PARENT','/dashboard/bricks/structure.php',0,NULL,0,0,1,80,0,0,-1,'0',0)
+,(85,0,'0',1,0,NULL,NULL,NULL,NULL,NOW(),NULL,NULL,1,15,'PARENT','/dashboard/bricks/permissions.php',0,NULL,0,0,1,80,0,0,-1,'0',0)
+,(86,0,'0',1,0,NULL,NULL,NULL,NULL,NOW(),NULL,NULL,1,15,'PARENT','/dashboard/bricks/drop.php',0,NULL,0,0,1,80,0,0,-1,'0',0)
+,(87,0,'0',1,0,NULL,NULL,NULL,NULL,NOW(),NULL,NULL,1,15,'PARENT','/dashboard/bricks/edit.php',0,NULL,0,0,1,80,0,0,-1,'0',0);
  
 
 INSERT INTO TaskPermissions VALUES(1,'access_task_permissions','Change Task Permissions','',0)
@@ -398,8 +404,3 @@ INSERT INTO TaskPermissionUserGroups VALUES(1,3,0,1)
 ,(8,3,0,1)
 ,(9,3,0,1)
 ,(10,3,0,1);
-
-INSERT INTO `AttributeKeyCategoryItemPermissions` (`ID`, `akCategoryHandle`, `gID`, `uID`, `canRead`, `canWrite`, `canDelete`, `canAdd`, `canSearch`, `canAdmin`) VALUES
-('GLOBAL', NULL, 3, NULL, 1, 1, 1, 1, 1, 1),
-('GLOBAL', NULL, 2, NULL, 2, 2, 0, 2, 2, 0),
-('GLOBAL', NULL, 1, NULL, 2, 0, 0, 0, 2, 0);

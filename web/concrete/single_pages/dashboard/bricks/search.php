@@ -4,10 +4,10 @@
 <div class="ccm-dashboard-inner">
 	<table id="ccm-search-form-table" >
 		<tr>
-			<td valign="top" class="ccm-search-form-advanced-col"><?php Loader::element('dashboard/bricks/search/search_form_advanced', array('akCategoryHandle' => $akCategoryHandle) ); ?></td>
+			<td valign="top" class="ccm-search-form-advanced-col"><?php Loader::element('bricks/search_form_advanced', array('akCategoryHandle' => $akCategoryHandle) ); ?></td>
 			<td valign="top" width="100%"><div id="ccm-search-advanced-results-wrapper">
 				<div id="ccm-new-object-search-results">
-					<?php  Loader::element('dashboard/bricks/search/search_results', array('newObjects' => $newObjects, 'newObjectList' => $newObjectList, 'pagination' => $pagination, 'akCategoryHandle' => $akCategoryHandle)); ?>
+					<?php  Loader::element('bricks/search_results', array('newObjects' => $newObjects, 'newObjectList' => $newObjectList, 'pagination' => $pagination, 'akCategoryHandle' => $akCategoryHandle)); ?>
 				</div>
 			</td>
 		</tr>

@@ -1,5 +1,6 @@
 <?php defined('C5_EXECUTE') or die(_("Access Denied.")); 
 $txt = Loader::helper('text');
+$akcsh = Loader::helper('attribute_key_category_settings');
 ?>
 
 <?php if(is_array($pile)) { ?>
@@ -13,7 +14,7 @@ $txt = Loader::helper('text');
 	$settings = $akc->getRegisteredSettings();
 	if($settings['hidden']) continue;
 	$html = '';
-	foreach(AttributeKeyCategory::getActions() as $action) {
+	foreach($akcsh->getActions() as $action) {
 		if($hideAction[$action] || $settings['url_'.$action.'_hidden']) $hidden = TRUE;
 		if($disableAction[$action] || $settings['url_'.$action.'_disabled']) $disabled = TRUE;
 		$html .= '<td>';
@@ -29,7 +30,7 @@ $txt = Loader::helper('text');
 					if($action == 'structure') $structure = $linkPrefix.$action.'/'.$akc->getAttributeKeyCategoryHandle().$linkSuffix;
 				}
 			}
-			$html .= '<img src="'.AttributeKeyCategory::getActionIconSrc($action).'" title="'.$txt->unhandle($action);
+			$html .= '<img src="'.$akcsh->getActionIconSrc($action).'" title="'.$txt->unhandle($action);
 			if($disabled) $html .= ' Disabled';
 			$html .= '" />';
 			if(!$disabled) $html .= '</a>';

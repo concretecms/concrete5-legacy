@@ -30,6 +30,8 @@ class ConcreteUpgradeVersion542Helper {
 				$tip->addAccess($g3);
 			}
 		}
+		
+		// Install Single Pages
 		Loader::model('single_page');
 		$sp = Page::getByPath('/dashboard/settings/multilingual');
 		if ($sp->isError()) {
@@ -71,6 +73,8 @@ class ConcreteUpgradeVersion542Helper {
 			$d1a = SinglePage::add('/dashboard/bricks/edit');
 		}
 		
+		// Install AttributeTypes
+		$akci = AttributeType::add('attribute_key_category_items', t('Bricks'));
 	}
 	
 	public function prepare() {

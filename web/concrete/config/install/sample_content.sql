@@ -104,7 +104,8 @@ INSERT INTO AttributeTypes VALUES(1,'text','Text',0)
  ,(6,'number','Number',0)
  ,(7,'rating','Rating',0)
  ,(8,'select','Select',0)
- ,(9,'address','Address',0);
+ ,(9,'address','Address',0)
+ ,(10,'attribute_key_category_items','Bricks',0);
 
 INSERT INTO AttributeValues VALUES(1,9,NOW(),1,6)
  ,(2,10,NOW(),1,6)
@@ -1105,7 +1106,7 @@ INSERT INTO FileSearchIndexAttributes VALUES(1,800.0000,192.0000)
  ,(4,800.0000,215.0000)
  ,(5,800.0000,192.0000);
 
-INSERT INTO `AttributeKeyCategoryItemPermissions` (`ID`, `akCategoryHandle`, `gID`, `uID`, `canRead`, `canWrite`, `canDelete`, `canAdd`, `canSearch`, `canAdmin`) VALUES
+INSERT INTO AttributeKeyCategoryItemPermissions VALUES
 ('GLOBAL', NULL, 3, NULL, 1, 1, 1, 1, 1, 1),
 ('GLOBAL', NULL, 2, NULL, 2, 2, 0, 2, 2, 0),
 ('GLOBAL', NULL, 1, NULL, 2, 0, 0, 0, 2, 0);
