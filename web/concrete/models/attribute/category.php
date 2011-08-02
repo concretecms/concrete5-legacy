@@ -296,7 +296,12 @@ class AttributeKeyCategory extends Object {
 		}
 		
 		if($ID) {
-			$item = $item->getByID($ID);
+			if(method_exists($item, 'getByID')) {
+				$item = $item->getByID($ID);
+			} else {
+				$txt = Loader::helper('text');
+				eval('$item = $item->getBy'.$txt->unhandle($this->getAttributeKeyCategoryHandle()).'ID($ID);');
+			}
 			if(!$item->ID) {
 				$item->ID = $ID;
 			}

@@ -6,23 +6,18 @@ class AttributeKeyCategorySettingsHelper extends Object {
 	
 	public function __construct() {
 		$this->registeredSettings['collection'] = array(
-			'url_search'				=> 'dashboard/sitemap/search',
 			'url_insert'				=> 'dashboard/composer',
-			'url_structure'				=> 'dashboard/pages/attributes',
 			'url_permissions_hidden'	=> TRUE,
 			'url_drop_hidden'			=> TRUE,
 			'standard_properties'		=> array(
 				new DatabaseItemListColumn('ctName', t('Type'), 'getCollectionTypeName', false),
 				new DatabaseItemListColumn('cvName', t('Name'), 'getCollectionName'),
 				new DatabaseItemListColumn('cvDatePublic', t('Public Date'), 'getCollectionDatePublic'),
-				new DatabaseItemListColumn('cDateModified', t('Date Modified'), 'cDateModified'),
-				new DatabaseItemListColumn('cvAuthorUname', t('Owner'), 'getVersionAuthorUserName', false)
+				new DatabaseItemListColumn('cDateModified', t('Date Modified'), 'getCollectionDateLastModified')
 			)
 		);
 		$this->registeredSettings['user'] = array(
-			'url_search'				=> 'dashboard/users',
 			'url_insert'				=> 'dashboard/users/add',
-			'url_structure'				=> 'dashboard/users/attributes',
 			'url_permissions'			=> 'dashboard/settings/set_permissions',
 			'url_drop_hidden'			=> TRUE,
 			'standard_properties'		=> array(
@@ -33,11 +28,12 @@ class AttributeKeyCategorySettingsHelper extends Object {
 			)
 		);
 		$this->registeredSettings['file'] = array(
-			'url_search'				=> 'dashboard/files',
 			'url_insert_hidden'			=> TRUE,
-			'url_structure'				=> 'dashboard/files/attributes',
 			'url_permissions'			=> 'dashboard/files/access',
 			'url_drop_hidden'			=> TRUE,
+			'loaders'					=> array(
+				'file_list' => Loader::model('file_list')
+			),
 			'standard_properties'		=> array(
 				new DatabaseItemListColumn('fvType', t('Type'), 'getType', false),
 				new DatabaseItemListColumn('fvTitle', t('Title'), 'getTitle'),

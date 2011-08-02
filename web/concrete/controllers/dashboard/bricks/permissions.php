@@ -20,14 +20,20 @@ class DashboardBricksPermissionsController extends Controller {
 			$this->set('akCategoryHandle', $akCategoryHandle);
 			$akcip = AttributeKeyCategoryItemPermission::getByID($akCategoryHandle);
 			
-			$subnav = array(
-				array(View::url('dashboard/bricks'), t('Categories')),
-				array(View::url('dashboard/bricks/search', $akCategoryHandle), t('Search')),
-				array(View::url('dashboard/bricks/insert', $akCategoryHandle), t('Insert')),
-				array(View::url('dashboard/bricks/structure', $akCategoryHandle), t('Structure')),
-				array(View::url('dashboard/bricks/permissions', $akCategoryHandle), t('Permissions'), TRUE),
-				array(View::url('dashboard/bricks/drop', $akCategoryHandle), t('Drop'))
-			);
+			$akcsh = Loader::helper('attribute_key_category_settings');
+			$rs = $akcsh->getRegisteredSettings($akCategoryHandle);
+			$subnav = array(array(View::url('dashboard/bricks'), t('Categories')));
+			foreach($akcsh->getActions() as $action) {
+				if(!$rs['url_'.$action.'_hidden']) {
+					$url = View::url('dashboard/bricks/', $action, $akCategoryHandle);
+					if($rs['url_'.$action]) $url = View::url($rs['url_'.$action]);
+					$subnav[] = array(
+						$url,
+						t(ucwords($action)),
+						($this->getCollectionObject()->getCollectionHandle() == $action)
+					);
+				}
+			}
 			$this->set('subnav', $subnav);
 		}
 		$this->set('permission', $akcip->canAdmin());
