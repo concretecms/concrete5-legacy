@@ -221,6 +221,8 @@ defined('C5_EXECUTE') or die("Access Denied.");
 				}
 			}
 
+			$r = $db->query("DELETE FROM UsersFriends WHERE friendUID = ?",array(intval($this->uID)) );
+			
 			$r = $db->query("DELETE FROM UserGroups WHERE uID = ?",array(intval($this->uID)) );
 			$r = $db->query("DELETE FROM UserOpenIDs WHERE uID = ?",array(intval($this->uID)));
 			$r = $db->query("DELETE FROM Users WHERE uID = ?",array(intval($this->uID)));
@@ -339,7 +341,6 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		}
 		
 		public function reindex() {
-			Loader::model('attribute/categories/user');
 			$attribs = UserAttributeKey::getAttributes($this->getUserID(), 'getSearchIndexValue');
 			$db = Loader::db();
 	
