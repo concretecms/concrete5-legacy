@@ -3,13 +3,13 @@
 if($permission) {	 
 	$df = Loader::helper('form/date_time');
 	?>
-	<form method="post" action="<?php echo $this->action($akci->ID); ?>" id="new-object-form">
+	<form method="post" action="<?php echo $this->action($akCategoryHandle, $akci->ID); ?>" id="new-object-form">
 	<table width="100%">
 		<tr>
 			<td valign="top">
 				<h1><a class="ccm-dashboard-header-option" style="right:130px;" href="<?php echo $this->url('/dashboard/bricks/structure/');?>">Global Attributes</a><a class="ccm-dashboard-header-option" href="<?php echo $this->url('/dashboard/bricks/structure/'.$akCategoryHandle)?>">Category Attributes</a><span><?php echo 'Editing \''.$txt->unhandle($akCategoryHandle).'\''.t(' Item')?></span></h1>
 				<div class="ccm-dashboard-inner">
-						<?php echo $form->hidden('akciID', $akciID); 
+						<?php echo $form->hidden('akciID', $akci->ID); 
 				if (count($attribs) > 0) { 
 					if (count($sets) > 0) { 
 						foreach($sets as $as) { ?>
@@ -101,7 +101,7 @@ if($permission) {
 				<div class="ccm-dashboard-inner">
 					<?php
 						print $ih->button(t('Cancel'), $this->url('/dashboard/bricks/search/'.$akCategoryHandle), 'left');
-						print $ih->button(t('Delete'), $this->url('/dashboard/bricks/edit', 'delete', $akci->ID, $delete_token));
+						print $ih->button(t('Delete'), $this->url('/dashboard/bricks/edit', 'delete', $akCategoryHandle, $akci->ID, $delete_token));
 						print $ih->submit('Save', 'new-object-form');
 					?>
 					<div class="ccm-spacer">&nbsp;</div>

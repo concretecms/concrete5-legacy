@@ -52,7 +52,11 @@ class DashboardBricksInsertController extends Controller {
 			$form = Loader::helper('form');
 			$this->set('form', $form);
 			$this->addHeaderItem(Loader::helper('html')->javascript('attribute_key_category.ui.js'));
-			$this->addHeaderItem('<script type="text/javascript">$(function(){ccm_setupAdvancedSearch(\'new-object\');});</script>');
+			$searchInstance = $akCategoryHandle.time();
+			if (isset($_REQUEST['searchInstance'])) {
+				$searchInstance = $_REQUEST['searchInstance'];
+			}
+			$this->addHeaderItem('<script type="text/javascript">$(function(){ccm_setupAdvancedSearch(\''.$searchInstance.'\');});</script>');
 		}
 	}
 	

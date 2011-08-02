@@ -7,12 +7,18 @@ class DashboardBricksEditController extends Controller {
 		$this->token = Loader::helper('validation/token');
 	}
 	
-	public function view($akciID = NULL) {
-		if(!$akciID) $this->redirect('dashboard/bricks');
-		Loader::model('attribute_key_category_item');
-		$akci = AttributeKeyCategoryItem::getByID($akciID);
+	public function view($akCategoryHandle = NULL, $akciID = NULL) {
+		if(!$akciID && !$akCategoryHandle) $this->redirect('dashboard/bricks');
+		if(!$akciID && $akCategoryHandle) $this->redirect('dashboard/bricks/search/'.$akCategoryHandle);
+		if($akCategoryHandle) {
+			$akc = AttributeKeyCategory::getByHandle($akCategoryHandle);
+			$akci = $akc->getItemObject($akciID);
+		} else {
+			Loader::model('attribute_key_category_item');
+			$akci = AttributeKeyCategoryItem::getByID($akciID);
+			$akCategoryHandle = $akci->akCategoryHandle;
+		}
 		$this->set('akci', $akci);
-		$akCategoryHandle = $akci->akCategoryHandle;
 		$this->set('akCategoryHandle', $akCategoryHandle);
 		$subnav = array(
 			array(View::url('dashboard/bricks'), t('Categories')),
@@ -31,9 +37,7 @@ class DashboardBricksEditController extends Controller {
 		if($this->isPost()) {
 			$this->validate();
 			if(!$this->error->has()) {
-				Loader::model('attribute_key_category_item');
-				$akci = AttributeKeyCategoryItem::getByID($akciID);
-				$this->saveData($akci, $akCategoryHandle);
+				$this->saveData($akci);
 				$this->redirect('/dashboard/bricks/search/'.$akCategoryHandle);
 			}
 		} else {
@@ -48,7 +52,11 @@ class DashboardBricksEditController extends Controller {
 			$form = Loader::helper('form');
 			$this->set('form', $form);
 			$this->addHeaderItem(Loader::helper('html')->javascript('attribute_key_category.ui.js'));
-			$this->addHeaderItem('<script type="text/javascript">$(function(){ccm_setupAdvancedSearch(\'new-object\');});</script>');
+			$searchInstance = $akCategoryHandle.time();
+			if (isset($_REQUEST['searchInstance'])) {
+				$searchInstance = $_REQUEST['searchInstance'];
+			}
+			$this->addHeaderItem('<script type="text/javascript">$(function(){ccm_setupAdvancedSearch(\''.$searchInstance.'\');});</script>');
 			
 			$this->set('delete_token', $this->token->generate('delete_akci_'.$akciID));
 		}
@@ -64,22 +72,22 @@ class DashboardBricksEditController extends Controller {
 		$this->redirect('/dashboard/bricks/search/'.$akCategoryHandle);
 	}
 	
-	private function saveData($object, $akCategoryHandle) {
+	private function saveData($item) {
 		$post = $this->post();
 		$akIDs = $post['akID'];
 		if($akIDs) {
 			foreach(array_keys($akIDs) as $akID) {
 				$ak = AttributeKey::getByID($akID);
-				$object->saveAttribute($ak);
+				$item->saveAttribute($ak);
 			}
 		}
-		$object->setOwner($post['uID']);
-		$post['akcipID'] = $object->getID();
+		$item->setOwner($post['uID']);
+		$post['akcipID'] = $item->getID();
 		
 		$akciph = Loader::helper('attribute_key_category_item_permissions');
 		$akciph->save($post);
 		
-		$object->update();
+		$item->reindex();
 	}
 
 	public function validate() {

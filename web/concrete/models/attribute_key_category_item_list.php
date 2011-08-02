@@ -102,7 +102,7 @@ class AttributeKeyCategoryItemList extends DatabaseItemList {
 	}
 	
 	// Returns an array of AttributeKeyCategoryItems based on current filter settings
-	public function get($itemsToGet = 0, $offset = 0, $getAs = 'display') {
+	public function get($itemsToGet = 0, $offset = 0, $getAs = 'objects') {
 		$akcis = array(); 
 		$this->createQuery();
 		$r = parent::get( $itemsToGet, $offset);
@@ -158,5 +158,55 @@ class AttributeKeyCategoryItemList extends DatabaseItemList {
 			$attribsStr.=' OR ' . $cnt->searchKeywords($keywords);
 		}
 		$this->filter(false, '(akci.ID LIKE ' . $qkeywords . $attribsStr . ')');
+	}
+}
+
+class AttributeKeyCategoryDefaultColumnSet extends DatabaseItemListColumnSet {
+	protected $attributeClass = 'AttributeKey';
+	public function __construct($akCategoryHandle) {
+		$this->akCategoryHandle = $akCategoryHandle;
+		$akcsh = Loader::helper('attribute_key_category_settings');
+		$rs = $akcsh->getRegisteredSettings($akCategoryHandle);
+		if(is_array($rs['standard_properties'])) foreach($rs['standard_properties'] as $sp) {
+			$this->addColumn($sp);
+		}
+		if(is_array($rs['standard_properties'])) {
+			$this->setDefaultSortColumn($rs['standard_properties'][0], 'desc');
+		} else {
+			$list = AttributeKey::getList($akCategoryHandle);
+			if(count($list)) {
+				$this->setDefaultSortColumn(
+					new DatabaseItemListColumn($list[0]->getAttributeKeyHandle(), $list[0]->getAttributeKeyName(), NULL,
+					'desc')
+				);
+			}
+		}
+	}
+}
+
+class AttributeKeyCategoryAvailableColumnSet extends AttributeKeyCategoryDefaultColumnSet {
+	protected $attributeClass = 'AttributeKey';
+	public function __construct($akCategoryHandle) {
+		parent::__construct($akCategoryHandle);
+		$this->akCategoryHandle = $akCategoryHandle;
+	}
+}
+
+class AttributeKeyCategoryColumnSet extends DatabaseItemListColumnSet {
+	protected $attributeClass = 'AttributeKey';
+	public function __construct($akCategoryHandle) {
+		$this->akCategoryHandle = $akCategoryHandle;
+	}
+	public function getCurrent($akCategoryHandle = NULL) {
+		if(!$akCategoryHandle) $akCategoryHandle = $this->akCategoryHandle;
+		$u = new User();
+		$akcdc = $u->config(strtoupper($akCategoryHandle).'_LIST_DEFAULT_COLUMNS');
+		if ($akcdc != '') {
+			$akcdc = @unserialize($akcdc);
+		}
+		if (!($akcdc instanceof DatabaseItemListColumnSet)) {
+			$akcdc = new AttributeKeyCategoryDefaultColumnSet($akCategoryHandle);
+		}
+		return $akcdc;
 	}
 }

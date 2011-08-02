@@ -1,5 +1,9 @@
 <?php  defined('C5_EXECUTE') or die(_("Access Denied.")); 
-
+if(!$akCategoryHandle) $akCategoryHandle = $_REQUEST['akCategoryHandle'];
+$searchInstance = $akCategoryHandle.time();
+if (isset($_REQUEST['searchInstance'])) {
+	$searchInstance = $_REQUEST['searchInstance'];
+}
 $searchFields = array('' => '** ' . t('Fields'));
 
 $akc = new AttributeKey($akCategoryHandle);
@@ -12,7 +16,7 @@ foreach($searchFieldAttributes as $ak) {
 <?php  $form = Loader::helper('form'); ?>
 
 	
-	<div id="ccm-new-object-search-field-base-elements" style="display: none">
+	<div id="ccm-<?=$searchInstance?>-search-field-base-elements" style="display: none">
 		
 		<?php  foreach($searchFieldAttributes as $sfa) { 
 			$sfa->render('search'); ?>
@@ -20,13 +24,15 @@ foreach($searchFieldAttributes as $ak) {
 		
 	</div>
 	
-	<form method="get" id="ccm-new-object-advanced-search" action="<?php echo REL_DIR_FILES_TOOLS_REQUIRED . '/dashboard/bricks/search/search_results?akCategoryHandle='.$akCategoryHandle; if(!empty($akID)) print '&akID='.$akID;?>">
+	<form method="get" id="ccm-<?=$searchInstance?>-advanced-search" action="<?php echo REL_DIR_FILES_TOOLS_REQUIRED . '/bricks/search_results?akCategoryHandle='.$akCategoryHandle; if(!empty($akID)) print '&akID='.$akID;?>">
 	<?php echo $form->hidden('mode', $mode); ?>
-	<div id="ccm-new-object-search-advanced-fields" class="ccm-search-advanced-fields" >
+	<?php echo $form->hidden('akCategoryHandle', $akCategoryHandle); ?>
+	<?php echo $form->hidden('searchInstance', $searchInstance); ?>
+	<div id="ccm-<?=$searchInstance?>-search-advanced-fields" class="ccm-search-advanced-fields" >
 	
 		<input type="hidden" name="search" value="1" />
 		<div id="ccm-search-box-title">
-			<img src="<?php echo ASSETS_URL_IMAGES?>/throbber_white_16.gif" width="16" height="16" class="ccm-search-loading"  id="ccm-new-object-search-loading" />
+			<img src="<?php echo ASSETS_URL_IMAGES?>/throbber_white_16.gif" width="16" height="16" class="ccm-search-loading"  id="ccm-<?=$searchInstance?>-search-loading" />
 			<h2><?php echo t('Search')?></h2>			
 		</div>
 		
@@ -55,7 +61,7 @@ foreach($searchFieldAttributes as $ak) {
 							'500' => '500'
 						), false, array('style' => 'width:65px'))?>
 					</td>
-					<td><a href="javascript:void(0)" id="ccm-new-object-search-add-option"><img src="<?php echo ASSETS_URL_IMAGES?>/icons/add.png" width="16" height="16" /></a></td>
+					<td><a href="javascript:void(0)" id="ccm-<?=$searchInstance?>-search-add-option"><img src="<?php echo ASSETS_URL_IMAGES?>/icons/add.png" width="16" height="16" /></a></td>
 				</tr>	
 				</table>
 			</div>
@@ -66,7 +72,7 @@ foreach($searchFieldAttributes as $ak) {
 						<td valign="top" style="padding-right: 4px">
 						<?php echo $form->select('searchField', $searchFields, array('style' => 'width: 85px'));
 						?>
-						<input type="hidden" value="" class="ccm-new-object-selected-field" name="selectedSearchField[]" />
+						<input type="hidden" value="" class="ccm-<?=$searchInstance?>-selected-field" name="selectedSearchField[]" />
 						</td>
 						<td width="100%" valign="top" class="ccm-selected-field-content">
 						<?php echo t('Select Search Field.')?>
@@ -82,7 +88,7 @@ foreach($searchFieldAttributes as $ak) {
 			</div>
 			
 			<div id="ccm-search-fields-submit">
-				<?php echo $form->submit('ccm-search-new-objects', 'Search')?>
+				<?php echo $form->submit('ccm-'.$searchInstance.'-advanced-search', 'Search')?>
 			</div>
 		</div>
 	

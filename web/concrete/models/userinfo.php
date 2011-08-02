@@ -339,6 +339,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		}
 		
 		public function reindex() {
+			Loader::model('attribute/categories/user');
 			$attribs = UserAttributeKey::getAttributes($this->getUserID(), 'getSearchIndexValue');
 			$db = Loader::db();
 	

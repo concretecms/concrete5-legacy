@@ -28,62 +28,54 @@ defined('C5_EXECUTE') or die("Access Denied.");
 class FormAttributeKeyCategoryItemSelectorHelper {
 	
 	public function selectItems($akCategoryHandle, $fieldName, $values, $akID) {
-		$akcsh = Loader::helper('attribute_key_category_settings');
-		$rs = $akcsh->getRegisteredSettings($akCategoryHandle);
 		$html = '';
-		$html .= '<table width="100%" id="ccmUserSelect' . $akID . '" class="ccm-results-list" cellspacing="0" cellpadding="0" border="0">';
-		$ak = new AttributeKey($akCategoryHandle);
-		$hList = $ak->getColumnHeaderList($akCategoryHandle);
-		if(is_array($rs['static_attributes'])) foreach($rs['static_attributes'] as $sa) {
-			$html .= '<th>'.$sa.'</th>';
+		$html .= '<table width="100%" id="ccmAttributeKeyCategoryItemSelect' . $akID . '" class="ccm-results-list" cellspacing="0" cellpadding="0" border="0">'; 
+		Loader::model('attribute_key_category_item_list');
+		$columns = AttributeKeyCategoryColumnSet::getCurrent($akCategoryHandle);
+		if(is_array($columns->getColumns())) foreach($columns->getColumns() as $col) {
+			$html .= '<th>'.$col->getColumnName().'</th>';
 		}
-		if(is_array($hList)) foreach($hList as $ak) { 
-			$html .= '<th>'.$ak->getAttributeKeyName().'</th>';
-		}
-		$html .= '<th width="30px" align="right"><a class="ccm-user-select-item dialog-launch" onclick="ccmActiveUserField=this" dialog-width="90%" dialog-height="70%" dialog-modal="false" dialog-title="' . t('Choose Items') . '" href="' . REL_DIR_FILES_TOOLS_REQUIRED . '/dashboard/bricks/search/search_dialog?mode=choose_multiple&akCategoryHandle='.$akCategoryHandle.'&akID='.$akID.'"><img src="' . ASSETS_URL_IMAGES . '/icons/add.png" width="16" height="16" /></a></th>';
-		$html .= '</tr><tbody id="ccmUserSelect' . $akID . '_body" >';
+		$html .= '<th width="30px" align="right"><a class="ccm-attribute-key-category-select-item dialog-launch" onclick="ccmActiveUserField=this" dialog-width="90%" dialog-height="70%" dialog-modal="false" dialog-title="' . t('Choose Items') . '" href="' . REL_DIR_FILES_TOOLS_REQUIRED . '/bricks/search_dialog?mode=choose_multiple&akCategoryHandle='.$akCategoryHandle.'&akID='.$akID.'"><img src="' . ASSETS_URL_IMAGES . '/icons/add.png" width="16" height="16" /></a></th>';
+		$html .= '</tr><tbody id="ccmAttributeKeyCategoryItemSelect' . $akID . '_body" >';
 		if(!empty($values)) {
 			foreach($values as $akci) {
 				if($akci) {
-					$html .= '<tr class="" id="ccmUserSelect'.$akID.'_'.$akci->ID.'">';
-					if(is_array($rs['static_attributes'])) foreach($rs['static_attributes'] as $sa => $value) {
-						$html .= '<td>'.$akci->$sa.'</td>';
+					$html .= '<tr class="" id="ccmAttributeKeyCategoryItemSelect'.$akID.'_'.$akci->ID.'">';
+					if(is_array($columns->getColumns())) foreach($columns->getColumns() as $col) {
+						$html .= '<td>'.$col->getColumnValue($akci).'</td>';
 					}
-					if(is_array($hList)) foreach($hList as $ak) { 
-						$html .= '<td>'.$akci->getAttribute($ak).'</td>';
-					}
-					$html .= '<td align="center"><input type="hidden" value="'.$akci->ID.'" name="'.$fieldName.'[]"><a class="ccm-user-list-clear" href="javascript:void(0)"><img width="16" height="16" class="ccm-user-list-clear-button" src="' . ASSETS_URL_IMAGES . '/icons/close.png"></a></td></tr>';
+					$html .= '<td align="center"><input type="hidden" value="'.$akci->ID.'" name="'.$fieldName.'[]"><a class="ccm-attribute-key-category-item-list-clear" href="javascript:void(0)"><img width="16" height="16" class="ccm-attribute-key-category-item-list-clear-button" src="' . ASSETS_URL_IMAGES . '/icons/close.png"></a></td></tr>';
 				}
 			}
 		} else {
-			$html .= '<tr class="ccm-user-selected-item-none-'.$akID.'"><td colspan="3">' . t('No items selected.') . '</td></tr>';
+			$html .= '<tr class="ccm-attribute-key-category-selected-item-none-'.$akID.'"><td colspan="3">' . t('No items selected.') . '</td></tr>';
 		}
 		$html .= '</tbody></table><script type="text/javascript">
 		$(function() {
-			$("#ccmUserSelect' . $akID . ' .ccm-user-select-item").dialog();
-			$("a.ccm-user-list-clear").click(function() {
+			$("#ccmAttributeKeyCategoryItemSelect' . $akID . ' .ccm-attribute-key-category-select-item").dialog();
+			$("a.ccm-attribute-key-category-item-list-clear").click(function() {
 				$(this).parent().parent().remove();
-				ccm_setupGridStriping(\'ccmUserSelect' . $akID . '\');
+				ccm_setupGridStriping(\'ccmAttributeKeyCategoryItemSelect' . $akID . '\');
 			});
 		});
 		
-		ccm_triggerSelectNewObject'.$akID.' = function(that) {
-			$("tr.ccm-user-selected-item-none-'.$akID.'").hide();
+		ccm_triggerSelectAttributeKeyCategoryItem = function(akID, that) {
+			$("tr.ccm-attribute-key-category-selected-item-none-"+akID).hide();
 			val = that.children(\':first-child\').children(\':first-child\').val();
-			if ($("#ccmUserSelect' . $akID . '_" + val).length < 1) {
-				html = \'<input type="hidden" value="\'+val+\'" name="'.$fieldName.'[]"><a class="ccm-user-list-clear" href="javascript:void(0)"><img width="16" height="16" class="ccm-user-list-clear-button" src="' . ASSETS_URL_IMAGES . '/icons/close.png"></a>\';
+			if ($("#ccmAttributeKeyCategoryItemSelect"+akID+"_" + val).length < 1) {
+				html = \'<input type="hidden" value="\'+val+\'" name="'.$fieldName.'[]"><a class="ccm-attribute-key-category-item-list-clear" href="javascript:void(0)"><img width="16" height="16" class="ccm-attribute-key-category-item-list-clear-button" src="' . ASSETS_URL_IMAGES . '/icons/close.png"></a>\';
 				that.children(":first-child").remove();
 				that.children(":last-child").append(html);
 				that.children(":last-child").attr("align", "center");
 				that.children().removeAttr("onclick");
-				that.attr("id", "ccmUserSelect' . $akID . '_" + val);
-				$("#ccmUserSelect' . $akID . '_body").append(that);
+				that.attr("id", "ccmAttributeKeyCategoryItemSelect"+akID+"_" + val);
+				$("#ccmAttributeKeyCategoryItemSelect"+akID+"_body").append(that);
 			}
 			
-			ccm_setupGridStriping(\'ccmUserSelect' . $akID . '\');
-			$("a.ccm-user-list-clear").click(function() {
+			ccm_setupGridStriping(\'ccmAttributeKeyCategoryItemSelect"+akID+"\');
+			$("a.ccm-attribute-key-category-item-list-clear").click(function() {
 				$(this).parent().parent().remove();
-				ccm_setupGridStriping(\'ccmUserSelect' . $akID . '\');
+				ccm_setupGridStriping(\'ccmAttributeKeyCategoryItemSelect"+akID+"\');
 			});
 		}
 		</script>';	

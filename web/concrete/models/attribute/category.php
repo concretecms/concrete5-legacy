@@ -296,7 +296,11 @@ class AttributeKeyCategory extends Object {
 		}
 		
 		if($ID) {
-			return $item->getByID($ID);	
+			$item = $item->getByID($ID);
+			if(!$item->ID) {
+				$item->ID = $ID;
+			}
+			return $item;	
 		} else {
 			return $item;
 		}

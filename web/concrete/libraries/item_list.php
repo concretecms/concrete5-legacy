@@ -563,7 +563,11 @@ class DatabaseItemListColumnSet {
 	}
 	public function getColumnByKey($key) {
 		if (substr($key, 0, 3) == 'ak_') {
-			$ak = call_user_func_array(array($this->attributeClass, 'getByHandle'), array(substr($key, 3)));
+			if($this->attributeClass != "AttributeKey") {
+				$ak = call_user_func_array(array($this->attributeClass, 'getByHandle'), array(substr($key, 3)));
+			} else {
+				$ak = AttributeKey::getByHandle(substr($key, 3), $this->akCategoryHandle);
+			}
 			$col = new DatabaseItemListAttributeKeyColumn($ak);
 			return $col;
 		} else {

@@ -3,18 +3,18 @@
 $form = Loader::helper('form');
 
 $selectedAKIDs = array();
-$slist = AttributeKey::getColumnHeaderList($_REQUEST['handle']);
+$slist = AttributeKey::getColumnHeaderList($_REQUEST['akCategoryHandle']);
 foreach($slist as $sk) {
 	$selectedAKIDs[] = $sk->getAttributeKeyID();
 }
 
 if ($_POST['task'] == 'update_columns') {
-	$sc = AttributeKeyCategory::getByHandle($_REQUEST['handle']);
+	$sc = AttributeKeyCategory::getByHandle($_REQUEST['akCategoryHandle']);
 	$sc->clearAttributeKeyCategoryColumnHeaders();
 	
 	if (is_array($_POST['akID'])) {
 		foreach($_POST['akID'] as $akID) {
-			$vtak = new AttributeKey($_REQUEST['handle']);
+			$vtak = new AttributeKey($_REQUEST['akCategoryHandle']);
 			$ak = $vtak->getByID($akID);
 			$ak->setAttributeKeyColumnHeader(1);
 		}
@@ -23,10 +23,10 @@ if ($_POST['task'] == 'update_columns') {
 	exit;
 }
 
-$list = AttributeKey::getList($_REQUEST['handle']);
+$list = AttributeKey::getList($_REQUEST['akCategoryHandle']);
 ?>
 
-<form method="post" id="ccm-new-object-customize-search-columns-form" action="<?php echo REL_DIR_FILES_TOOLS_REQUIRED . '/dashboard/bricks/search/customize_search_columns/';?>">
+<form method="post" id="ccm-new-object-customize-search-columns-form" action="<?php echo REL_DIR_FILES_TOOLS_REQUIRED . '/bricks/customize_search_columns/';?>">
 <?php echo $form->hidden('task', 'update_columns')?>
 
 <h1><?php echo t('Additional Searchable Attributes')?></h1>
@@ -38,7 +38,7 @@ $list = AttributeKey::getList($_REQUEST['handle']);
 	<div><?php echo $form->checkbox('akID[]', $ak->getAttributeKeyID(), in_array($ak->getAttributeKeyID(), $selectedAKIDs), array('style' => 'vertical-align: middle'))?> <?php echo $ak->getAttributeKeyDisplayHandle()?></div>
 	
 <?php  } ?>
-<input type="hidden" name="handle" value="<?php echo $_REQUEST['handle']; ?>" />
+<input type="hidden" name="akCategoryHandle" value="<?php echo $_REQUEST['akCategoryHandle']; ?>" />
 <br/><br/>
 <?php 
 $h = Loader::helper('concrete/interface');

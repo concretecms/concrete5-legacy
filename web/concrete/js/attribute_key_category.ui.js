@@ -30,52 +30,61 @@ ccm_checkSelectedAdvancedSearchField = function(searchType, fieldset) {
 	});
 	$("#ccm-" + searchType + "-search-field-set" + fieldset + " .ccm-search-option-type-rating input").rating();		
 }
-ccm_setupNewObjectSearch = function() {
-	$("#ccm-new-object-list-cb-all").click(function() {
-		if ($(this).attr('checked') == true) {
-			$('.ccm-list-record td.ccm-new-object-list-cb input[type=checkbox]').attr('checked', true);
-			$("#ccm-new-object-list-multiple-operations").attr('disabled', false);
+ccm_setupAttributeKeyCategoryItemSearch = function(searchInstance, akID) {
+
+	ccm_setupAdvancedSearch(searchInstance);
+	
+	id = "#ccm-" + searchInstance + "-list-multiple-operations";
+	if(typeof(akID) != 'undefined') {
+		id = "#ccm-" + searchInstance + "-list-multiple-operations-" + akID;
+	}
+	
+	$("#ccm-" + searchInstance + "-list-cb-all").click(function() {
+		if ($(this).is(':checked')) {
+			$('.ccm-list-record td.ccm-' + searchInstance + '-list-cb input[type=checkbox]').attr('checked', true);
+			$(id).attr('disabled', false);
 		} else {
-			$('.ccm-list-record td.ccm-new-object-list-cb input[type=checkbox]').attr('checked', false);
-			$("#ccm-new-object-list-multiple-operations").attr('disabled', true);
+			$('.ccm-list-record td.ccm-' + searchInstance + '-list-cb input[type=checkbox]').attr('checked', false);
+			$(id).attr('disabled', true);
 		}
 	});
-	$("td.ccm-new-object-list-cb input[type=checkbox]").click(function(e) {
-		if ($("td.ccm-new-object-list-cb input[type=checkbox]:checked").length > 0) {
-			$("#ccm-new-object-list-multiple-operations").attr('disabled', false);
+	$("td.ccm-" + searchInstance + "-list-cb input[type=checkbox]").click(function() {
+		if ($("td.ccm-" + searchInstance + "-list-cb input[type=checkbox]:checked").length > 0) {
+			$(id).attr('disabled', false);
 		} else {
-			$("#ccm-new-object-list-multiple-operations").attr('disabled', true);
+			$(id).attr('disabled', true);
 		}
 	});
 	
 	// if we're not in the dashboard, add to the multiple operations select menu
 
-	$("#ccm-new-object-list-multiple-operations").change(function() {
+	$(id).change(function() {
 		var action = $(this).val();
 		switch(action) {
 			case 'choose':
 				var idstr = '';
-				$("td.ccm-new-object-list-cb input[type=checkbox]:checked").each(function() {
-					ccm_triggerSelectNewObject($(this).val(), $(this).attr('new-object-name'), $(this).attr('new-object-email'));
+				$("td.ccm-" + searchInstance + "-list-cb input[type=checkbox]:checked").each(function() {
+					console.log($(this).parent().parent());
+					ccm_triggerSelectAttributeKeyCategoryItem(akID, $(this).parent().parent());
 				});
 				jQuery.fn.dialog.closeTop();
 				break;
 			case "properties": 
-				oIDstring = 'table='+$(this).attr('table');
-				$("td.ccm-new-object-list-cb input[type=checkbox]:checked").each(function() {
+				oIDstring = 'searchInstance='+searchInstance+'&akCategoryHandle='+$(this).attr('akCategoryHandle');
+				$("td.ccm-" + searchInstance + "-list-cb input[type=checkbox]:checked").each(function() {
 					oIDstring=oIDstring+'&newObjectID[]='+$(this).val();
 				});
 				jQuery.fn.dialog.open({
 					width: 630,
 					height: 450,
 					modal: true,
-					href: CCM_TOOLS_PATH +'/dashboard/bricks/search/bulk_properties?' + oIDstring,
+					href: CCM_TOOLS_PATH +'/bricks/bulk_properties?' + oIDstring,
 					title: ccmi18n.properties
 				});
 				break;	
 			case "delete": 
-				URIComponents = '{"table":"' + $(this).attr('table') + '","newObjectIDs":[';
-				$("td.ccm-new-object-list-cb input[type=checkbox]:checked").each(function() {
+				URIComponents = '{"akCategoryHandle":"' + $(this).attr('akCategoryHandle') + '","akcIDs":[';
+				$("td.ccm-" + searchInstance + "-list-cb input[type=checkbox]:checked").each(function() {
 					URIComponents = URIComponents + '"' + $(this).val() + '",';
 				});
 				URIComponents = URIComponents.substring(0, URIComponents.length-1);
@@ -85,7 +94,7 @@ ccm_setupNewObjectSearch = function() {
 					width: 300,
 					height: 100,
 					modal: true,
-					href: CCM_TOOLS_PATH + '/dashboard/bricks/search/bulk_delete?json=' + encodeURIComponent(URIComponents),
+					href: CCM_TOOLS_PATH + '/bricks/bulk_delete?searchInstance='+searchInstance+'&akCategoryHandle='+$(this).attr('akCategoryHandle')+'&json=' + encodeURIComponent(URIComponents),
 					title: ccmi18n.properties
 				});
 				break;				
@@ -94,21 +103,21 @@ ccm_setupNewObjectSearch = function() {
 		$(this).get(0).selectedIndex = 0;
 	});
 
-	$("div.ccm-new-object-search-advanced-groups-cb input[type=checkbox]").unbind();
-	$("div.ccm-new-object-search-advanced-groups-cb input[type=checkbox]").click(function() {
-		$("#ccm-new-object-advanced-search").submit();
+	$("div.ccm-" + searchInstance + "-search-advanced-groups-cb input[type=checkbox]").unbind();
+	$("div.ccm-" + searchInstance + "-search-advanced-groups-cb input[type=checkbox]").click(function() {
+		$("#ccm-" + searchInstance + "-advanced-search").submit();
 	});
 
 }
 
-ccm_closeModalRefeshSearch = function() {
+ccm_closeModalRefeshSearch = function(searchInstance) {
 	jQuery.fn.dialog.closeTop();
-	$("#ccm-new-object-advanced-search").submit();
+	$("#ccm-" + searchInstance + "-advanced-search").submit();
 }
-ccm_deleteAndRefeshSearch = function(URIComponents) {
+ccm_deleteAndRefeshSearch = function(URIComponents, searchInstance) {
 	$.ajax({
-		url: CCM_TOOLS_PATH + '/dashboard/bricks/search/bulk_delete?task=delete&json=' + URIComponents
+		url: CCM_TOOLS_PATH + '/bricks/bulk_delete?task=delete&json=' + URIComponents
 	}).responseText;
 	jQuery.fn.dialog.closeTop();
-	$("#ccm-new-object-advanced-search").submit();
+	$("#ccm-" + searchInstance + "-advanced-search").submit();
 }

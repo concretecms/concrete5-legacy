@@ -1,11 +1,11 @@
 <?php
 defined('C5_EXECUTE') or die(_("Access Denied."));
-Loader::model('attribute/types/number/controller');
 class AttributeKeyCategoryItemsAttributeTypeController extends NumberAttributeTypeController  {
 
 	protected $searchIndexFieldDefinition = 'X NULL';
 	
 	public function getValue($displayMode = FALSE) {
+		$this->load();
 		switch($displayMode) {
 			case 'getDisplayValue':
 				return $this->getDisplayValue();
@@ -129,10 +129,12 @@ class AttributeKeyCategoryItemsAttributeTypeController extends NumberAttributeTy
 		$this->load();
 		$html = Loader::helper('html');
 		$this->akID = $this->attributeKey->getAttributeKeyID();
-		$this->addHeaderItem('<script type="text/javascript">$(function(){ccm_setupAdvancedSearch(\'new-object\');});</script>');
+		$searchInstance = $_REQUEST['akCategoryHandle'] . time();
+		if (isset($_REQUEST['searchInstance'])) {
+			$searchInstance = $_REQUEST['searchInstance'];
+		}
 		$this->addHeaderItem(Loader::helper('html')->javascript('attribute_key_category.ui.js'));
-		$this->addHeaderItem($html->javascript(DIR_REL.'/concrete/models/attribute/types/attribute_key_category_items/js/attribute_key_category_items.js.php?akID='.$this->akID));
-		$this->addHeaderItem('<script type="text/javascript">ccm_setupNewObjectSearch_'.$this->akID.'();</script>');
+		$this->addHeaderItem('<script type="text/javascript">ccm_setupAttributeKeyCategoryItemSearch("'.$searchInstance.'", '.$this->akID.');</script>');
 		$akcis = Loader::helper('form/attribute_key_category_item_selector');
 		$value = $this->getValue();
 		print $akcis->selectItems($this->akCategoryHandle, 'akID['.$this->akID.'][value]',

@@ -4,8 +4,29 @@ class DashboardBricksSearchController extends Controller {
 	
 	public function view($akCategoryHandle = NULL) {
 		if(!$akCategoryHandle) $this->redirect('dashboard/bricks');
-		$this->addHeaderItem('<script type="text/javascript">$(function(){ccm_setupAdvancedSearch(\'new-object\');});</script>');
-		$this->addHeaderItem(Loader::helper('html')->javascript('attribute_key_category.ui.js'));
+		$akcsh = Loader::helper('attribute_key_category_settings');
+		$rs = $akcsh->getRegisteredSettings($akCategoryHandle);
+		
+			$this->addHeaderItem(Loader::helper('html')->javascript('attribute_key_category.ui.js'));
+			$searchInstance = $akCategoryHandle.time();
+			if (isset($_REQUEST['searchInstance'])) {
+				$searchInstance = $_REQUEST['searchInstance'];
+			}
+			$this->addHeaderItem('<script type="text/javascript">$(function(){ccm_setupAdvancedSearch(\''.$searchInstance.'\');});</script>');
+			$this->set('akCategoryHandle', $akCategoryHandle);
+			$this->set('txt', Loader::helper('text'));
+			$this->set('form', Loader::helper('form'));
+			Loader::model('attribute_key_category_item_permission');
+			$akcip = AttributeKeyCategoryItemPermission::getByID($akCategoryHandle);
+			$this->set('permission', $akcip->canSearch());
+			
+			$objectList = $this->getRequestedSearchResults($akCategoryHandle);
+			$objects = $objectList->getPage();
+			
+			$this->set('newObjectList', $objectList);		
+			$this->set('newObjects', $objects);		
+			$this->set('pagination', $objectList->getPagination());
+			
 		$subnav = array(
 			array(View::url('dashboard/bricks'), t('Categories')),
 			array(View::url('dashboard/bricks/search', $akCategoryHandle), t('Search'), TRUE),
@@ -15,23 +36,11 @@ class DashboardBricksSearchController extends Controller {
 			array(View::url('dashboard/bricks/drop', $akCategoryHandle), t('Drop'))
 		);
 		$this->set('subnav', $subnav);
-		$this->set('akCategoryHandle', $akCategoryHandle);
-		$this->set('txt', Loader::helper('text'));
-		$this->set('form', Loader::helper('form'));
-		Loader::model('attribute_key_category_item_permission');
-		$akcip = AttributeKeyCategoryItemPermission::getByID($akCategoryHandle);
-		$this->set('permission', $akcip->canSearch());
-		
-		$objectList = $this->getRequestedSearchResults($akCategoryHandle);
-		$objects = $objectList->getPage();
-		
-		$this->set('newObjectList', $objectList);		
-		$this->set('newObjects', $objects);		
-		$this->set('pagination', $objectList->getPagination());
 	}
 	
 	public function getRequestedSearchResults($akCategoryHandle) {
-		$objectList = AttributeKeyCategory::getItemList($akCategoryHandle);
+		$akc = AttributeKeyCategory::getByHandle($akCategoryHandle);
+		$objectList = $akc->getItemList();
 		
 		if ($_GET['keywords'] != '') {
 			$objectList->filterByKeywords($_GET['keywords']);

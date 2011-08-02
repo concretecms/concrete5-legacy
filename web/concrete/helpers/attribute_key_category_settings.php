@@ -2,6 +2,53 @@
 defined('C5_EXECUTE') or die("Access Denied.");
 class AttributeKeyCategorySettingsHelper extends Object {
 	
+	private $registeredSettings = array();
+	
+	public function __construct() {
+		$this->registeredSettings['collection'] = array(
+			'url_search'				=> 'dashboard/sitemap/search',
+			'url_insert'				=> 'dashboard/composer',
+			'url_structure'				=> 'dashboard/pages/attributes',
+			'url_permissions_hidden'	=> TRUE,
+			'url_drop_hidden'			=> TRUE,
+			'standard_properties'		=> array(
+				new DatabaseItemListColumn('ctName', t('Type'), 'getCollectionTypeName', false),
+				new DatabaseItemListColumn('cvName', t('Name'), 'getCollectionName'),
+				new DatabaseItemListColumn('cvDatePublic', t('Public Date'), 'getCollectionDatePublic'),
+				new DatabaseItemListColumn('cDateModified', t('Date Modified'), 'cDateModified'),
+				new DatabaseItemListColumn('cvAuthorUname', t('Owner'), 'getVersionAuthorUserName', false)
+			)
+		);
+		$this->registeredSettings['user'] = array(
+			'url_search'				=> 'dashboard/users',
+			'url_insert'				=> 'dashboard/users/add',
+			'url_structure'				=> 'dashboard/users/attributes',
+			'url_permissions'			=> 'dashboard/settings/set_permissions',
+			'url_drop_hidden'			=> TRUE,
+			'standard_properties'		=> array(
+				new DatabaseItemListColumn('uName', t('Username'), 'getUserName'),
+				new DatabaseItemListColumn('uEmail', t('Email Address'), 'getUserEmail'),
+				new DatabaseItemListColumn('uDateAdded', t('Date Added'), 'getUserDateAdded'),
+				new DatabaseItemListColumn('uNumLogins', t('# Logins'), 'getNumLogins')
+			)
+		);
+		$this->registeredSettings['file'] = array(
+			'url_search'				=> 'dashboard/files',
+			'url_insert_hidden'			=> TRUE,
+			'url_structure'				=> 'dashboard/files/attributes',
+			'url_permissions'			=> 'dashboard/files/access',
+			'url_drop_hidden'			=> TRUE,
+			'standard_properties'		=> array(
+				new DatabaseItemListColumn('fvType', t('Type'), 'getType', false),
+				new DatabaseItemListColumn('fvTitle', t('Title'), 'getTitle'),
+				new DatabaseItemListColumn('fDateAdded', t('Added'), array('FileManagerDefaultColumnSet', 'getFileDateAdded')),
+				new DatabaseItemListColumn('fvDateAdded', t('Active'), array('FileManagerDefaultColumnSet', 'getFileDateActivated')),
+				new DatabaseItemListColumn('fvSize', t('Size'), 'getSize'),
+				new DatabaseItemListColumn('fvAuthorName', t('Author'), 'getAuthorName')
+			)
+		);
+	}
+	
 	/** 
 	 * Returns an instance of the systemwide AttributeKeyCategory object.
 	 */
@@ -37,38 +84,6 @@ class AttributeKeyCategorySettingsHelper extends Object {
 		}
 		return $iconSrc;
 	}
-	
-	private $registeredSettings = array(
-		'collection' => array(
-			'url_search'				=> 'dashboard/sitemap/search',
-			'url_insert'				=> 'dashboard/composer',
-			'url_structure'				=> 'dashboard/pages/attributes',
-			'url_permissions_hidden'	=> TRUE,
-			'url_drop_hidden'			=> TRUE,
-			'static_attributes'			=> array(
-												'ctName'				=> 'Type',
-												'vObj/cvName'			=> 'Name',
-												'vObj/cvDatePublic'		=> 'Public Date',
-												'cDateModified'			=> 'Date Modified',
-												'vObj/cvAuthorUname'	=> 'Owner'
-											)
-		),
-		'user' => array(
-			'url_search'				=> 'dashboard/users',
-			'url_insert'				=> 'dashboard/users/add',
-			'url_structure'				=> 'dashboard/users/attributes',
-			'url_permissions'			=> 'dashboard/settings/set_permissions',
-			'url_drop_hidden'			=> TRUE
-			
-		),
-		'file' => array(
-			'url_search'				=> 'dashboard/files',
-			'url_insert_hidden'			=> TRUE,
-			'url_structure'				=> 'dashboard/files/attributes',
-			'url_permissions'			=> 'dashboard/files/access',
-			'url_drop_hidden'			=> TRUE
-		)
-	);
 
 	public static function registerSetting($akCategoryHandle, $settingHandle, $parameters) {
 		$akc = AttributeKeyCategorySettingsHelper::getInstance();
@@ -104,5 +119,11 @@ class AttributeKeyCategorySettingsHelper extends Object {
 		}
 		$akc = AttributeKeyCategorySettingsHelper::getInstance();
 		return in_array($pkgHandle, $akc->allowAddToPackage);
+	}
+	
+	public function getAllColumnHeaders($akCategoryHandle) {
+		Loader::model('attribute_key_category_item_list');
+		$akcdc = AttributeKeyCategoryColumnSet::getCurrent($akCategoryHandle);
+		return $akcdc;
 	}
 }?>
