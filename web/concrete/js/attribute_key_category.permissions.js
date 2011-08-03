@@ -14,7 +14,7 @@ $(function() {
 ccm_sitemapSelectPermissionsEntity = function(selector, id, name) {
 	var html = $('#ccm-permissions-entity-base').html();
 	var i = 0;
-	$('input[name*='+selector+'['+id+']]').each(function() { i++; });
+	$('input[name*="'+selector+'['+id+']]"').each(function() { i++; });
 	if(i < 2) { 
 		$('#ccm-permissions-entities-wrapper').append('<div class="ccm-permissions-entity">' + html + '<\/div>');
 		var p = $('.ccm-permissions-entity');

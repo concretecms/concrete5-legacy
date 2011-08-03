@@ -83,8 +83,7 @@ if($permission) {
 				<div class="ccm-dashboard-inner">
 				<?php 
 					$uh = Loader::helper('form/user_selector');
-					global $u;
-					print $uh->selectUser('uID', $u->uID); 
+					print $uh->selectUser('uID', $akci->uID); 
 				?>
 				</div>
 				<h1><span><?php echo t('Permissions')?></span></h1>

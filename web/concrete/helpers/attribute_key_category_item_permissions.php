@@ -77,7 +77,6 @@ class AttributeKeyCategoryItemPermissionsHelper {
 		return $html;
 	}
 	public function getInheritanceForm($item, $description = '', $disabled = FALSE) {
-		
 		if ($item instanceof AttributeKeyCategoryItemPermission) {
 			$akcip = new AttributeKeyCategoryItemPermissionList();
 			$akcip->add($item);
@@ -111,7 +110,7 @@ class AttributeKeyCategoryItemPermissionsHelper {
 			$html .= '<div id="ccm-permissions-entity-base" class="ccm-permissions-entity-base">' . $this->getInheritanceAccessRow($akcip) . '</div>';
 		}
 
-		foreach($gArray as $g) { 
+		foreach($gArray as $g) {
 			$html .= $this->getInheritanceAccessRow($akcip, $g, $disabled);
 		}
 		
@@ -171,9 +170,6 @@ class AttributeKeyCategoryItemPermissionsHelper {
 			}
 		}
 		
-		$akcip = new AttributeKeyCategoryItemPermission();
-		if(!$akcip->canAdmin()) {	return ''; }
-		
 		$html .= $form->hidden('selectedEntity[]', $identifier);
 		
 		$html .= '<h2>';
@@ -226,7 +222,7 @@ class AttributeKeyCategoryItemPermissionsHelper {
 		return $html;
 	}
 	
-	public function getInheritanceAccessRow($akcips, $obj = FALSE, $disabled = FALSE) {		
+	public function getInheritanceAccessRow($akcips, $obj = FALSE, $disabled = FALSE) {
 		$form = Loader::helper('form');
 		$html = '<div class="ccm-sitemap-permissions-entity">';
 
@@ -239,9 +235,6 @@ class AttributeKeyCategoryItemPermissionsHelper {
 				$name = $obj->getUserName();
 			}
 		}
-		
-		$akcip = new AttributeKeyCategoryItemPermission();
-		if(!$akcip->canAdmin()) {	return ''; }
 		
 		if(!$disabled) {
 			$html .= $form->hidden('selectedEntity[]', $identifier);
