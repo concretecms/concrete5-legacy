@@ -9,31 +9,38 @@ class DashboardBricksAddController extends Controller {
 			array(View::url('dashboard/bricks/permissions'), t('Global Permissions'))
 		);
 		$this->set('subnav', $subnav);
-		if($post = $this->post()) {
-			$txt = Loader::helper('text');
-			if(empty($post['akCategoryName'])) {
-				$this->redirect('dashboard/bricks/add/error/malformed');
-			} else {
-				try{
-					if(!$post['package_handle']) $post['package_handle'] = 0;
-					$akc = AttributeKeyCategory::add($txt->uncamelcase($txt->camelcase($post['akCategoryName'])), $post['enableSets'], $post['package_handle']);
-					if($post['associateAttributeTypes'] == '1') {
-						$atypes = AttributeType::getList();
-						foreach($atypes as $type) {
-							$akc->associateAttributeKeyType($type);
+		
+		Loader::model('attribute_key_category_item_permission');
+		$akcip = AttributeKeyCategoryItemPermission::get('GLOBAL');
+		$this->set('permission', $akcip->canAdmin());
+		
+		if($akcip->canAdmin()) {
+			if($post = $this->post()) {
+				$txt = Loader::helper('text');
+				if(empty($post['akCategoryName'])) {
+					$this->redirect('dashboard/bricks/add/error/malformed');
+				} else {
+					try{
+						if(!$post['package_handle']) $post['package_handle'] = 0;
+						$akc = AttributeKeyCategory::add($txt->uncamelcase($txt->camelcase($post['akCategoryName'])), $post['enableSets'], $post['package_handle']);
+						if($post['associateAttributeTypes'] == '1') {
+							$atypes = AttributeType::getList();
+							foreach($atypes as $type) {
+								$akc->associateAttributeKeyType($type);
+							}
 						}
+						$this->redirect('dashboard/bricks');
+					} catch(Exception $e) {
+						$this->redirect('dashboard/bricks/add/error/exists');
 					}
-					$this->redirect('dashboard/bricks');
-				} catch(Exception $e) {
-					$this->redirect('dashboard/bricks/add/error/exists');
 				}
+			} else {
+				$this->set('packageHandle', $packageHandle);
+				$form = Loader::helper('form');
+				$this->set('form', $form);
+				$ih = Loader::helper('concrete/interface');
+				$this->set('ih', $ih);
 			}
-		} else {
-			$this->set('packageHandle', $packageHandle);
-			$form = Loader::helper('form');
-			$this->set('form', $form);
-			$ih = Loader::helper('concrete/interface');
-			$this->set('ih', $ih);
 		}
 	}
 	
