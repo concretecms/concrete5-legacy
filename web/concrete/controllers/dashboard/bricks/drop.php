@@ -21,16 +21,21 @@ class DashboardBricksDropController extends Controller {
 		}
 		$this->set('subnav', $subnav);
 		
-		if($post = $this->post()) {
-			AttributeKeyCategory::getByHandle($akCategoryHandle)->drop();
-			$this->redirect('dashboard/bricks');
-		} else {
-			$txt = Loader::helper('text');
-			$this->set('akCategoryName', $txt->unhandle($akCategoryHandle));
-			$form = Loader::helper('form');
-			$this->set('form', $form);
-			$ih = Loader::helper('concrete/interface');
-			$this->set('ih', $ih);
+		Loader::model('attribute_key_category_item_permission');
+		$akcip = AttributeKeyCategoryItemPermission::get($akCategoryHandle);
+		$this->set('permission', $akcip->canAdmin());
+		if($akcip->canAdmin()) {
+			if($post = $this->post()) {
+				AttributeKeyCategory::getByHandle($akCategoryHandle)->drop();
+				$this->redirect('dashboard/bricks');
+			} else {
+				$txt = Loader::helper('text');
+				$this->set('akCategoryName', $txt->unhandle($akCategoryHandle));
+				$form = Loader::helper('form');
+				$this->set('form', $form);
+				$ih = Loader::helper('concrete/interface');
+				$this->set('ih', $ih);
+			}
 		}
 	}
 		

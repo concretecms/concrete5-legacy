@@ -6,21 +6,8 @@
  * @author Andrew Embler <andrew@concrete5.org>
  * @copyright  Copyright (c) 2003-2008 Concrete5. (http://www.concrete5.org)
  * @license    http://www.concrete5.org/license/     MIT License
- */
-
-/**
- * Special form elements for choosing a ---- from the concrete5 sitemap tool.
- * @package Helpers
- * @category Concrete
- * @subpackage Forms
- * @author Andrew Embler <andrew@concrete5.org>
- * @copyright  Copyright (c) 2003-2008 Concrete5. (http://www.concrete5.org)
- * @license    http://www.concrete5.org/license/     MIT License
- */
-
-
-/**
- * Modified to fit needs of the Virtual Tables package
+ *
+ * Modified to fit needs of the Bricks database system fork
  * @author Isaac Jessup <ibjessup@comcast.net>
  */
  

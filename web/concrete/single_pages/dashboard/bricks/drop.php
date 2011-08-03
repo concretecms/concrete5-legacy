@@ -1,4 +1,5 @@
-<?php defined('C5_EXECUTE') or die(_("Access Denied.")); ?>
+<?php defined('C5_EXECUTE') or die(_("Access Denied."));
+if($permission) { ?>
 <div style="width:300px">
 	<h1><span>Warning!</span></h1>
 	<div class="ccm-dashboard-inner">
@@ -9,3 +10,11 @@
 		</form>
 	</div>
 </div>
+<?php } else { ?>
+<div style="width:300px">
+	<h1><span>Warning!</span></h1>
+	<div class="ccm-dashboard-inner">
+		You do not have permission to drop this category.
+	</div>
+</div>
+<?php } ?>
