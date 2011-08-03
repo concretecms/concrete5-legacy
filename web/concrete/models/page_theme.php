@@ -271,9 +271,8 @@ class PageTheme extends Object {
 			
 			// replace all url( instances with url starting with path to theme
 			$contents = preg_replace('/(url\(\')(.*)/', '$1' . $this->getThemeURL() . '/$2', $contents);
-                        $contents = preg_replace('/(url\(")(.*)/', '$1' . $this->getThemeURL() . '/$2', $contents);
-                        $contents = preg_replace('/(url\((?![\'"]))(.*)/', '$1' . $this->getThemeURL() . '/$2', $contents);
-			
+			$contents = preg_replace('/(url\(")(.*)/', '$1' . $this->getThemeURL() . '/$2', $contents);
+            $contents = preg_replace('/(url\((?![\'"]))(.*)/', '$1' . $this->getThemeURL() . '/$2', $contents);
 			
 			// load up all tokens from the db for this stylesheet.
 			// if a replacement style array is passed then we use that instead of the database (as is the case when previewing)

@@ -15,6 +15,8 @@ INSERT INTO AttributeKeys VALUES(1,'meta_title','Meta Title',1,0,0,0,1,1,1,0)
  ,(6,'header_extra_content','Header Extra Content',1,0,0,0,1,2,1,0)
  ,(7,'exclude_search_index','Exclude From Search Index',1,0,0,0,1,3,1,0)
  ,(8,'exclude_sitemapxml','Exclude From sitemap.xml',1,0,0,0,1,3,1,0)
+ ,(9,'width','Width',1,0,1,0,0,6,3,0)
+ ,(10,'height','Height',1,0,1,0,0,6,3,0)
  ,(11,'tags','Tags',0,0,0,0,1,8,1,0);
 
 INSERT INTO AttributeTypeCategories VALUES(1,1)
@@ -383,6 +385,7 @@ INSERT INTO Pages VALUES(1,1,'0',1,1,1,NOW(),NOW(),NULL,NOW(),NULL,NULL,1,1,'OVE
 ,(86,0,'0',1,0,NULL,NULL,NULL,NULL,NOW(),NULL,NULL,1,15,'PARENT','/dashboard/bricks/drop.php',0,NULL,0,0,1,80,0,0,-1,'0',0)
 ,(87,0,'0',1,0,NULL,NULL,NULL,NULL,NOW(),NULL,NULL,1,15,'PARENT','/dashboard/bricks/edit.php',0,NULL,0,0,1,80,0,0,-1,'0',0);
  
+INSERT INTO atSelectSettings VALUES(11,1,'display_asc',1);
 
 INSERT INTO TaskPermissions VALUES(1,'access_task_permissions','Change Task Permissions','',0)
 ,(2,'access_sitemap','Access Sitemap and Page Search','',0)
