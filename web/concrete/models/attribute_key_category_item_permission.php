@@ -4,16 +4,16 @@ class AttributeKeyCategoryItemPermissionList extends Object {
 	
 	protected $permissions = array();
 	
-	public function add($vtp) {
-		$this->permissions[] = $vtp;
+	public function add($akcip) {
+		$this->permissions[] = $akcip;
 	}
 	
 	public function getAttributeKeyCategoryItemPermissionIDs() {
-		$vtps = array();
-		foreach($this->permissions as $vtp) {
-			$vtps[] = $vtp->ID;
+		$akcips = array();
+		foreach($this->permissions as $akcip) {
+			$akcips[] = $akcip->ID;
 		}
-		return $vtps;
+		return $akcips;
 	}
 	
 	public function getAttributeKeyCategoryItemPermissions() {return $this->permissions;}
@@ -37,42 +37,114 @@ class AttributeKeyCategoryItemPermission extends Object {
 		return $permArray;
 	}
 
-	public static function getByID($ID, $recursiveCheck = array()) {
-		if(in_array($ID, $recursiveCheck) || in_array('default', $recursiveCheck)) {
-			return;
-		}
+	public static function get($akci, $akCategoryHandle = NULL, $getInherited = TRUE) {
 		$db = Loader::db();
-		$properties['ID'] = $ID;
-		$rows = $db->GetArray("SELECT * FROM AttributeKeyCategoryItemPermissions WHERE ID = ?", array($ID));
-		foreach($rows as $row) {
-			if($row['uID'] != NULL) {
-				$properties['uIDs'][$row['uID']]['read'] = $row['canRead'];
-				$properties['uIDs'][$row['uID']]['write'] = $row['canWrite'];
-				$properties['uIDs'][$row['uID']]['delete'] = $row['canDelete'];
-				$properties['uIDs'][$row['uID']]['add'] = $row['canAdd'];
-				$properties['uIDs'][$row['uID']]['search'] = $row['canSearch'];
-				$properties['uIDs'][$row['uID']]['admin'] = $row['canAdmin'];
-			}
-			if($row['gID'] != NULL) {
-				$properties['gIDs'][$row['gID']]['read'] = $row['canRead'];
-				$properties['gIDs'][$row['gID']]['write'] = $row['canWrite'];
-				$properties['gIDs'][$row['gID']]['delete'] = $row['canDelete'];
-				$properties['gIDs'][$row['gID']]['add'] = $row['canAdd'];
-				$properties['gIDs'][$row['gID']]['search'] = $row['canSearch'];
-				$properties['gIDs'][$row['gID']]['admin'] = $row['canAdmin'];
-			}
-		}
-		$rows = $db->GetArray("SELECT akCategoryHandle FROM AttributeKeyCategoryItems WHERE ID = ?", array($ID));
-		foreach($rows as $row) {
-			if($row['akCategoryHandle'] != NULL) {
-				$properties['akCategoryHandle'] = $row['akCategoryHandle'];
-			}
-			
+		$akcip = new AttributeKeyCategoryItemPermission();
+		
+		if(is_object($akci)) {
+			$properties['akCategoryHandle'] = $akci->akCategoryHandle;
+			$properties['ID'] = $akci->ID;
+			$rows = $db->GetArray("SELECT * FROM AttributeKeyCategoryItemPermissions WHERE ID = ? and akCategoryHandle = ?", array($akci->ID, $akci->akCategoryHandle));
+		} elseif($akCategoryHandle) {
+			$properties['akCategoryHandle'] = $akCategoryHandle;
+			$properties['ID'] = $akci;
+			$rows = $db->GetArray("SELECT * FROM AttributeKeyCategoryItemPermissions WHERE ID = ?", array($akci));
+		} elseif(!is_numeric($ak)) {
+			$properties['ID'] = $akci;
+			$rows = $db->GetArray("SELECT * FROM AttributeKeyCategoryItemPermissions WHERE ID = ?", array($akci));
+		} else {
+			return $akcip;
 		}
 		
-		$vtp = new AttributeKeyCategoryItemPermission();
-		$vtp->setPropertiesFromArray($properties);
-		return $vtp;
+		foreach($rows as $row) {
+			if($row['uID'] != NULL) {
+				$properties['uIDs'][$row['uID']]['read']	= $row['canRead'];
+				$properties['uIDs'][$row['uID']]['write']	= $row['canWrite'];
+				$properties['uIDs'][$row['uID']]['delete']	= $row['canDelete'];
+				$properties['uIDs'][$row['uID']]['add']		= $row['canAdd'];
+				$properties['uIDs'][$row['uID']]['search']	= $row['canSearch'];
+				$properties['uIDs'][$row['uID']]['admin']	= $row['canAdmin'];
+			}
+			if($row['gID'] != NULL) {
+				$properties['gIDs'][$row['gID']]['read']	= $row['canRead'];
+				$properties['gIDs'][$row['gID']]['write']	= $row['canWrite'];
+				$properties['gIDs'][$row['gID']]['delete']	= $row['canDelete'];
+				$properties['gIDs'][$row['gID']]['add']		= $row['canAdd'];
+				$properties['gIDs'][$row['gID']]['search']	= $row['canSearch'];
+				$properties['gIDs'][$row['gID']]['admin']	= $row['canAdmin'];
+			}
+		}
+		
+		if($getInherited) {
+			if($properties['akCategoryHandle']) {
+				$rows = $db->GetArray("SELECT * FROM AttributeKeyCategoryItemPermissions WHERE ID = ?", array($properties['akCategoryHandle']));
+				foreach($rows as $row) {
+					if($row['uID'] != NULL) {
+						if(!$properties['uIDs'][$row['uID']]['read'])
+							$properties['uIDs'][$row['uID']]['read']	= $row['canRead'];
+						if(!$properties['uIDs'][$row['uID']]['write'])
+							$properties['uIDs'][$row['uID']]['write']	= $row['canWrite'];
+						if(!$properties['uIDs'][$row['uID']]['delete'])
+							$properties['uIDs'][$row['uID']]['delete']	= $row['canDelete'];
+						if(!$properties['uIDs'][$row['uID']]['add'])
+							$properties['uIDs'][$row['uID']]['add']		= $row['canAdd'];
+						if(!$properties['uIDs'][$row['uID']]['search'])
+							$properties['uIDs'][$row['uID']]['search']	= $row['canSearch'];
+						if(!$properties['uIDs'][$row['uID']]['admin'])
+							$properties['uIDs'][$row['uID']]['admin']	= $row['canAdmin'];
+					}
+					if($row['gID'] != NULL) {
+						if(!$properties['gIDs'][$row['gID']]['read'])
+							$properties['gIDs'][$row['gID']]['read']	= $row['canRead'];
+						if(!$properties['gIDs'][$row['gID']]['write'])
+							$properties['gIDs'][$row['gID']]['write']	= $row['canWrite'];
+						if(!$properties['gIDs'][$row['gID']]['delete'])
+							$properties['gIDs'][$row['gID']]['delete']	= $row['canDelete'];
+						if(!$properties['gIDs'][$row['gID']]['add'])
+							$properties['gIDs'][$row['gID']]['add']		= $row['canAdd'];
+						if(!$properties['gIDs'][$row['gID']]['search'])
+							$properties['gIDs'][$row['gID']]['search']	= $row['canSearch'];
+						if(!$properties['gIDs'][$row['gID']]['admin'])
+							$properties['gIDs'][$row['gID']]['admin']	= $row['canAdmin'];
+					}
+				}
+			}
+			
+			$rows = $db->GetArray("SELECT * FROM AttributeKeyCategoryItemPermissions WHERE ID = ?", array('GLOBAL'));
+			foreach($rows as $row) {
+				if($row['uID'] != NULL) {
+					if(!$properties['uIDs'][$row['uID']]['read'])
+						$properties['uIDs'][$row['uID']]['read']	= $row['canRead'];
+					if(!$properties['uIDs'][$row['uID']]['write'])
+						$properties['uIDs'][$row['uID']]['write']	= $row['canWrite'];
+					if(!$properties['uIDs'][$row['uID']]['delete'])
+						$properties['uIDs'][$row['uID']]['delete']	= $row['canDelete'];
+					if(!$properties['uIDs'][$row['uID']]['add'])
+						$properties['uIDs'][$row['uID']]['add']		= $row['canAdd'];
+					if(!$properties['uIDs'][$row['uID']]['search'])
+						$properties['uIDs'][$row['uID']]['search']	= $row['canSearch'];
+					if(!$properties['uIDs'][$row['uID']]['admin'])
+						$properties['uIDs'][$row['uID']]['admin']	= $row['canAdmin'];
+				}
+				if($row['gID'] != NULL) {
+					if(!$properties['gIDs'][$row['gID']]['read'])
+						$properties['gIDs'][$row['gID']]['read']	= $row['canRead'];
+					if(!$properties['gIDs'][$row['gID']]['write'])
+						$properties['gIDs'][$row['gID']]['write']	= $row['canWrite'];
+					if(!$properties['gIDs'][$row['gID']]['delete'])
+						$properties['gIDs'][$row['gID']]['delete']	= $row['canDelete'];
+					if(!$properties['gIDs'][$row['gID']]['add'])
+						$properties['gIDs'][$row['gID']]['add']		= $row['canAdd'];
+					if(!$properties['gIDs'][$row['gID']]['search'])
+						$properties['gIDs'][$row['gID']]['search']	= $row['canSearch'];
+					if(!$properties['gIDs'][$row['gID']]['admin'])
+						$properties['gIDs'][$row['gID']]['admin']	= $row['canAdmin'];
+				}
+			}
+		}
+		
+		$akcip->setPropertiesFromArray($properties);
+		return $akcip;
 	}
 
 	public function clearPermissions($who) {
@@ -287,9 +359,9 @@ class AttributeKeyCategoryItemGroupList extends GroupList {
 	private function getRelevantGroups($obj, $omitRequiredGroups = false) {
 		$db = Loader::db();
 		
-		$vtpis = $obj->getAttributeKeyCategoryItemPermissionIDs();
+		$akcipis = $obj->getAttributeKeyCategoryItemPermissionIDs();
 		$table = 'AttributeKeyCategoryItemPermissions';
-		$where = "ID = '" . implode(',', $vtpis) . "'";
+		$where = "ID = '" . implode(',', $akcipis) . "'";
 
 		$groups = array();
 		if ($where) {
@@ -327,8 +399,8 @@ class AttributeKeyCategoryItemUserInfoList extends Object {
 	function AttributeKeyCategoryItemUserInfoList($obj) {
 		$db = Loader::db();
 		
-		$vtpis = $obj->getAttributeKeyCategoryItemPermissionIDs();
-		$q = "select uID from AttributeKeyCategoryItemPermissions where ID = '" . implode(',', $vtpis) . "'";
+		$akcipis = $obj->getAttributeKeyCategoryItemPermissionIDs();
+		$q = "select uID from AttributeKeyCategoryItemPermissions where ID = '" . implode(',', $akcipis) . "'";
 		$r = $db->Execute($q);
 		while ($row = $r->FetchRow()) {
 			$userPermissionsArray['permissions'] = $row;

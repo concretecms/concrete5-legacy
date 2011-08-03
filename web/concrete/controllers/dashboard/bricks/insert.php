@@ -35,9 +35,9 @@ class DashboardBricksInsertController extends Controller {
 		$this->addHeaderItem(Loader::helper('html')->javascript('attribute_key_category.permissions.js'));
 		
 		Loader::model('attribute_key_category_item_permission');
-		$akcip = new AttributeKeyCategoryItemPermission($akCategoryHandle);
+		$akcip = AttributeKeyCategoryItemPermission::get($akCategoryHandle);
 		$this->set('permission', $akcip->canAdd());
-		if($this->isPost()) {
+		if($this->isPost() && $akcip->canAdd()) {
 			$this->validate();
 			if(!$this->error->has()) {
 				Loader::model('attribute_key_category_item');

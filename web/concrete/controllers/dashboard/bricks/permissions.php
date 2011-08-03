@@ -8,7 +8,8 @@ class DashboardBricksPermissionsController extends Controller {
 		$this->token = Loader::helper('validation/token');
 		$this->set('ih', Loader::helper('concrete/interface'));
 		if(!$akCategoryHandle) {
-			$akcip = AttributeKeyCategoryItemPermission::getByID('GLOBAL');
+			$akcip = AttributeKeyCategoryItemPermission::get('GLOBAL', NULL, FALSE);
+			$this->set('permission', $akcip->canAdmin());
 			$subnav = array(
 				array(View::url('dashboard/bricks'), t('Categories')),
 				array(View::url('dashboard/bricks/structure'), t('Attribute Management')),
@@ -18,7 +19,7 @@ class DashboardBricksPermissionsController extends Controller {
 		} else {
 			$this->set('txt', Loader::helper('text'));
 			$this->set('akCategoryHandle', $akCategoryHandle);
-			$akcip = AttributeKeyCategoryItemPermission::getByID($akCategoryHandle);
+			$akcip = AttributeKeyCategoryItemPermission::get($akCategoryHandle, NULL, FALSE);
 			
 			$akcsh = Loader::helper('attribute_key_category_settings');
 			$rs = $akcsh->getRegisteredSettings($akCategoryHandle);
@@ -35,8 +36,8 @@ class DashboardBricksPermissionsController extends Controller {
 				}
 			}
 			$this->set('subnav', $subnav);
+			$this->set('permission', $akcip->canAdmin());
 		}
-		$this->set('permission', $akcip->canAdmin());
 		$this->set('akcip', $akcip);
 
 		if($task) {

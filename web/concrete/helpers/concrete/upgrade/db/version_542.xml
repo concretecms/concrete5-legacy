@@ -145,9 +145,8 @@
     </field>
   </table>
   <table name="AttributeKeyCategoryItemPermissions">
-    <field name="ID" type="I" size="10">
+    <field name="ID" type="C" size="255">
       <notnull/>
-      <unsigned/>
     </field>
     <field name="akCategoryHandle" type="C" size="255"/>
     <field name="gID" type="I" size="10"/>

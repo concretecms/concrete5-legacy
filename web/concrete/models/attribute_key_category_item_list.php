@@ -35,21 +35,21 @@ class AttributeKeyCategoryItemList extends DatabaseItemList {
 		}
 		
 		Loader::model('attribute_key_category_item_permission');
-		$akcip = AttributeKeyCategoryItemPermission::getByID('default');
+		$akcip = AttributeKeyCategoryItemPermission::get('GLOBAL');
 		if($akcip->canRead($u)) {
 			return;
 		}
-		$akcip = AttributeKeyCategoryItemPermission::getByID($this->akCategoryHandle);
+		$akcip = AttributeKeyCategoryItemPermission::get($this->akCategoryHandle);
 		if($akcip->canRead($u)) {
 			return;
 		}
 		
-		$akcip = AttributeKeyCategoryItemPermission::getByID('default');
+		$akcip = AttributeKeyCategoryItemPermission::get('GLOBAL');
 		if(!$akcip->canSearch($u)) {
 			$defaultFail = TRUE;
 		}
 		if($defaultFail) {
-			$vtp = AttributeKeyCategoryItemPermission::getByID($this->names->fileName);
+			$vtp = AttributeKeyCategoryItemPermission::get($this->akCategoryHandle);
 			if(!$vtp->canSearch($u)) {
 				throw new Exception('Permission Error: User does not have access to search this table.');
 			}

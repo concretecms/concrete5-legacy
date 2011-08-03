@@ -4,7 +4,7 @@ Loader::model('attribute_key_category_item_permission');
 class AttributeKeyCategoryItemPermissionsHelper { 
 	
 	public function save($post) {
-		$akcip = AttributeKeyCategoryItemPermission::getByID($post['akcipID']);
+		$akcip = AttributeKeyCategoryItemPermission::get($post['akcipID'], $post['akCategoryHandle']);
 		$akcip->clearAllPermissions();
 		foreach($post['selectedEntity'] as $e) {
 			if ($e != '') {

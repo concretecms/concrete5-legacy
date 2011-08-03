@@ -54,7 +54,7 @@ if($permission) {
 	
 		<table width="100%">
 			<tr>
-				<td width="50%" valign="top"><h1><span><?php echo t('Manage \''.$txt->unhandle($akCategoryHandle).'\' Attribute Sets')?></span></h1>
+				<td width="50%" valign="top"><h1><span><?php echo t('Manage '.$txt->unhandle($akCategoryHandle).' Attribute Sets')?></span></h1>
 					<div class="ccm-dashboard-inner">
 						<table width="100%">
 						<?php $deleteConfirmJS	= t('Are you sure you want to delete this attribute set?'); ?>
@@ -114,7 +114,7 @@ if($permission) {
 			<?php if($category->allowAttributeSets() == AttributeKeyCategory::ASET_ALLOW_SINGLE) {?>
 			<a class="ccm-dashboard-header-option" href="<?php echo $this->url('/dashboard/bricks/structure/sets/'.$akCategoryHandle)?>">Manage Attribute Sets</a>
 			<?php } ?>
-			<span><?php echo t('Add New Attribute to \''.$txt->unhandle($akCategoryHandle).'\'')?></span></h1>
+			<span><?php echo t('Add New Attribute to '.$txt->unhandle($akCategoryHandle))?></span></h1>
 		<div class="ccm-dashboard-inner">
 			<h2><?php echo t('Choose Attribute Type')?></h2>
 			<form method="post" action="<?php echo $this->action($akCategoryHandle.'/select_type')?>" id="ccm-attribute-type-form">
@@ -151,7 +151,7 @@ if($permission) {
 		$cat = AttributeKeyCategory::getByHandle($akCategoryHandle); ?>
 		<table width="100%">
 			<tr>
-				<td width="50%" valign="top"><h1><span><?php echo t('\''.$txt->unhandle($akCategoryHandle).'\' Attributes')?></span></h1>
+				<td width="50%" valign="top"><h1><span><?php echo t($txt->unhandle($akCategoryHandle).' Attributes')?></span></h1>
 					<div class="ccm-dashboard-inner">
 						<?php echo Loader::element(
 							'dashboard/attributes_table', 
@@ -195,7 +195,7 @@ if($permission) {
 			</tr>
 		</table>
 		<form method="post" id="attribute_type_associations_form" action="<?php echo $this->action('save_attribute_type_associations/'.$akCategoryHandle)?>">
-			<h1><span><?php echo t('\''.$txt->unhandle($akCategoryHandle).'\'Attribute Type Associations')?></span></h1>
+			<h1><span><?php echo t($txt->unhandle($akCategoryHandle).'Attribute Type Associations')?></span></h1>
 			<div class="ccm-dashboard-inner">
 				<table border="0" cellspacing="1" cellpadding="0" border="0" class="grid-list">
 				<tr>
@@ -257,7 +257,7 @@ if($permission) {
 	<?php if($akCategoryHandle) { ?>
 
 			
-		<h1><span><?php echo t('\''.$txt->unhandle($akCategoryHandle).'\' Attribute Key Category Attributes')?></span></h1>
+		<h1><span><?php echo t($txt->unhandle($akCategoryHandle).' Attribute Key Category Attributes')?></span></h1>
 		<div class="ccm-dashboard-inner">
 		<?php echo t('You are not allowed to change these permissions.')?>
 		</div>

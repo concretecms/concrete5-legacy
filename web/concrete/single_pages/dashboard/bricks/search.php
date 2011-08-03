@@ -1,4 +1,6 @@
-<?php defined('C5_EXECUTE') or die(_("Access Denied."));?>
+<?php defined('C5_EXECUTE') or die(_("Access Denied."));
+if($permission) {
+?>
 
 <h1><?php if(!$rs['url_insert_hidden']){?><a class="ccm-dashboard-header-option" href="<?php echo $this->url('/dashboard/bricks/insert/', $akCategoryHandle)?>">Add Item</a><?php } ?><span><?php echo $txt->unhandle($akCategoryHandle).t(' Search')?></span></h1>
 <div class="ccm-dashboard-inner">
@@ -53,3 +55,9 @@
 <script type="text/javascript">
 	ccm_setupAttributeKeyCategoryItemSearch('<?=$searchInstance?>');
 </script>
+<?php } else { ?>
+<h1><span><?php echo $txt->unhandle($akCategoryHandle).t(' Search')?></span></h1>
+<div class="ccm-dashboard-inner">
+	You do not have permission to search this category.
+</div>
+<?php } ?>

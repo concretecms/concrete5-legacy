@@ -7,7 +7,7 @@ if($permission) {
 	<table width="100%">
 		<tr>
 			<td valign="top">
-				<h1><a class="ccm-dashboard-header-option" style="right:130px;" href="<?php echo $this->url('/dashboard/bricks/structure/');?>">Global Attributes</a><a class="ccm-dashboard-header-option" href="<?php echo $this->url('/dashboard/bricks/structure/'.$akCategoryHandle)?>">Category Attributes</a><span><?php echo 'Editing \''.$txt->unhandle($akCategoryHandle).'\''.t(' Item')?></span></h1>
+				<h1><a class="ccm-dashboard-header-option" style="right:130px;" href="<?php echo $this->url('/dashboard/bricks/structure/');?>">Global Attributes</a><a class="ccm-dashboard-header-option" href="<?php echo $this->url('/dashboard/bricks/structure/'.$akCategoryHandle)?>">Category Attributes</a><span><?php echo 'Editing '.$txt->unhandle($akCategoryHandle).t(' Item')?></span></h1>
 				<div class="ccm-dashboard-inner">
 						<?php echo $form->hidden('akciID', $akci->ID); 
 				if (count($attribs) > 0) { 
@@ -91,7 +91,7 @@ if($permission) {
 				<div class="ccm-dashboard-inner">
 					<?php echo $this->controller->token->output('update_permissions');?>
 			
-					<?php  print Loader::helper('attribute_key_category_item_permissions')->getForm(AttributeKeyCategoryItemPermission::getByID($akci->ID), t('Set permissions for this item.'));?>
+					<?php  print Loader::helper('attribute_key_category_item_permissions')->getForm(AttributeKeyCategoryItemPermission::get($akci, NULL, FALSE), t('Set permissions for this item.'));?>
 				</div>
 			</td>
 		</tr>
@@ -115,9 +115,9 @@ if($permission) {
 <?php } else { ?>
 
 		
-	<h1><span><?php echo t('\''.$txt->unhandle($akCategoryHandle).'\' Search')?></span></h1>
+	<h1><span><?php echo t($txt->unhandle($akCategoryHandle).' Edit')?></span></h1>
 	<div class="ccm-dashboard-inner">
-	<?php echo t('You are not allowed to '.$task.'.')?>
+	<?php echo t('You are not allowed to edit items in this category.')?>
 	</div>
 
 

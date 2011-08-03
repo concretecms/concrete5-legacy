@@ -63,7 +63,7 @@ $columns = $akccs->getCurrent();
 		<?php } ?>
 			<th width="20px" class="ccm-search-add-column-header">
 				<a href="<?=REL_DIR_FILES_TOOLS_REQUIRED.'/bricks/customize_search_columns?akCategoryHandle='.$akCategoryHandle.'&searchInstance='.$searchInstance;?>" id="ccm-search-add-column">
-					<img src="<?php echo ASSETS_URL_IMAGES?>/icons/add.png" width="16" height="16" />
+					<img src="<?php echo ASSETS_URL_IMAGES?>/icons/column_preferences.png" width="16" height="16" />
 				</a>
 			</th>
 		</tr>

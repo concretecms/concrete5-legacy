@@ -23,8 +23,8 @@ class DashboardBricksStructureController extends Controller {
 					array(View::url('dashboard/bricks/permissions'), t('Global Permissions'))
 				);
 				$this->set('subnav', $subnav);
-				$vtp = AttributeKeyCategoryItemPermission::getByID('default');
-				$this->set('permission', $vtp->canDefaultAdmin());
+				$akcip = AttributeKeyCategoryItemPermission::get('GLOBAL');
+				$this->set('permission', $akcip->canAdmin());
 				$this->set('types', AttributeType::getList());
 				break;
 			default:
@@ -49,7 +49,7 @@ class DashboardBricksStructureController extends Controller {
 				}
 				$this->set('subnav', $subnav);
 				$this->set('akCategoryHandle', $akCategoryHandle);
-				$akcip = AttributeKeyCategoryItemPermission::getByID($akCategoryHandle);
+				$akcip = AttributeKeyCategoryItemPermission::get($akCategoryHandle);
 				$this->set('permission', $akcip->canAdmin());
 				$this->set('attribs', AttributeKey::getList($akCategoryHandle));
 				$this->set('category', $category);

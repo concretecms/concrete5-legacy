@@ -4,22 +4,26 @@ class DashboardBricksSearchController extends Controller {
 	
 	public function view($akCategoryHandle = NULL) {
 		if(!$akCategoryHandle) $this->redirect('dashboard/bricks');
+		
+		Loader::model('attribute_key_category_item_permission');
+		$akcip = AttributeKeyCategoryItemPermission::get($akCategoryHandle);
+		$this->set('permission', $akcip->canSearch());
+		
+		$this->set('akCategoryHandle', $akCategoryHandle);
+		$this->set('txt', Loader::helper('text'));
+		$this->set('form', Loader::helper('form'));
+		
 		$akcsh = Loader::helper('attribute_key_category_settings');
 		$rs = $akcsh->getRegisteredSettings($akCategoryHandle);
 		$this->set('rs', $rs);
 		
-			$this->addHeaderItem(Loader::helper('html')->javascript('attribute_key_category.ui.js'));
+		if($akcip->canSearch()) {
 			$searchInstance = $akCategoryHandle.time();
 			if (isset($_REQUEST['searchInstance'])) {
 				$searchInstance = $_REQUEST['searchInstance'];
 			}
+			$this->addHeaderItem(Loader::helper('html')->javascript('attribute_key_category.ui.js'));
 			$this->addHeaderItem('<script type="text/javascript">$(function(){ccm_setupAdvancedSearch(\''.$searchInstance.'\');});</script>');
-			$this->set('akCategoryHandle', $akCategoryHandle);
-			$this->set('txt', Loader::helper('text'));
-			$this->set('form', Loader::helper('form'));
-			Loader::model('attribute_key_category_item_permission');
-			$akcip = AttributeKeyCategoryItemPermission::getByID($akCategoryHandle);
-			$this->set('permission', $akcip->canSearch());
 			
 			$objectList = $this->getRequestedSearchResults($akCategoryHandle);
 			$objects = $objectList->getPage();
@@ -27,6 +31,7 @@ class DashboardBricksSearchController extends Controller {
 			$this->set('newObjectList', $objectList);		
 			$this->set('newObjects', $objects);		
 			$this->set('pagination', $objectList->getPagination());
+		}
 			
 		$subnav = array(array(View::url('dashboard/bricks'), t('Categories')));
 		foreach($akcsh->getActions() as $action) {
