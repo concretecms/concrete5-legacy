@@ -209,7 +209,11 @@ class AttributeKeyCategory extends Object {
 		$txt = Loader::helper("text");
 		$class = $txt->camelcase($akCategoryHandle) . 'AttributeKey';
 		$obj = new $class;
-		$obj->createIndexedSearchTable();
+		$class = get_parent_class($obj);
+		$parent = new $class;
+		if($parent->getIndexedSearchTable() != $obj->getIndexedSearchTable()) {
+			$obj->createIndexedSearchTable();
+		}
 		
 		return AttributeKeyCategory::getByID($id);
 	}
@@ -245,6 +249,10 @@ class AttributeKeyCategory extends Object {
 				break;
 			default:
 				if(Loader::model($this->akCategoryHandle . '_list', $this->getPackageHandle())) {
+					$list = new $class;
+				} elseif(Loader::model(str_replace($this->getPackageHandle().'_', '', $this->akCategoryHandle) . '_list', $this->getPackageHandle())) {
+					$list = new $class;
+				} elseif(Loader::model(str_replace($this->getPackageHandle().'_', '', $this->akCategoryHandle) . '/list', $this->getPackageHandle())) {
 					$list = new $class;
 				} elseif($rs['list_model_path']) {
 					Loader::model($rs['list_model_path'], $this->getPackageHandle());
@@ -300,7 +308,10 @@ class AttributeKeyCategory extends Object {
 				$item = $item->getByID($ID);
 			} else {
 				$txt = Loader::helper('text');
-				eval('$item = $item->getBy'.$txt->unhandle($this->getAttributeKeyCategoryHandle()).'ID($ID);');
+				eval('$item = $item->getBy'.$txt->camelcase($this->getAttributeKeyCategoryHandle()).'ID($ID);');
+				if(!$item) {
+					eval('$item = $item->getBy'.$txt->camelcase(str_replace($this->getPackageHandle().'_', '', $this->getAttributeKeyCategoryHandle())).'ID($ID);');
+				}
 			}
 			if(!$item->ID) {
 				$item->ID = $ID;

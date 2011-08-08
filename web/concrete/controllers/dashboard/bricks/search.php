@@ -66,7 +66,14 @@ class DashboardBricksSearchController extends Controller {
 			foreach($_REQUEST['selectedSearchField'] as $i => $akID) {
 				// due to the way the form is setup, index will always be one more than the arrays
 				if ($akID != '') {
-					$ak = AttributeKey::getByID($akID);
+					$txt = Loader::helper('text');
+					$className = $txt->camelcase($akCategoryHandle).'AttributeKey';
+					if(class_exists($className)) {
+						$ak = new $className;
+						$ak = $ak->getByID($akID);
+					} else {
+						$ak = AttributeKey::getByID($akID);
+					}
 					$type = $ak->getAttributeType();
 					$cnt = $type->getController();
 					$cnt->setRequestArray($req);

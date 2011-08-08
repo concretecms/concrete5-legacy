@@ -1,142 +1,1297 @@
-
-
-
 CREATE TABLE AreaGroupBlockTypes (
-  cID int(10) unsigned NOT NULL DEFAULT '0',
-  arHandle varchar(255) NOT NULL,
-  gID int(10) unsigned NOT NULL DEFAULT '0',
-  uID int(10) unsigned NOT NULL DEFAULT '0',
-  btID int(10) unsigned NOT NULL DEFAULT '0',
-  PRIMARY KEY (cID,arHandle,gID,uID,btID)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+cID                      INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+arHandle                 VARCHAR(255) NOT NULL,
+gID                      INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+uID                      INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+btID                     INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+                 PRIMARY KEY (cID, arHandle, gID, uID, btID)
+);
 
 CREATE TABLE AreaGroups (
-  cID int(10) unsigned NOT NULL DEFAULT '0',
-  arHandle varchar(255) NOT NULL,
-  gID int(10) unsigned NOT NULL DEFAULT '0',
-  uID int(10) unsigned NOT NULL DEFAULT '0',
-  agPermissions varchar(64) NOT NULL,
-  PRIMARY KEY (cID,arHandle,gID,uID)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+cID                      INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+arHandle                 VARCHAR(255) NOT NULL,
+gID                      INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+uID                      INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+agPermissions            VARCHAR(64) NOT NULL,
+                 PRIMARY KEY (cID, arHandle, gID, uID)
+);
 
 CREATE TABLE Areas (
-  arID int(10) unsigned NOT NULL AUTO_INCREMENT,
-  cID int(10) unsigned NOT NULL DEFAULT '0',
-  arHandle varchar(255) NOT NULL,
-  arOverrideCollectionPermissions tinyint(1) NOT NULL DEFAULT '0',
-  arInheritPermissionsFromAreaOnCID int(10) unsigned NOT NULL DEFAULT '0',
-  PRIMARY KEY (arID)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+arID                     INTEGER(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+cID                      INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+arHandle                 VARCHAR(255) NOT NULL,
+arOverrideCollectionPermissions TINYINT(1) NOT NULL DEFAULT 0,
+arInheritPermissionsFromAreaOnCID INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+                 PRIMARY KEY (arID)
+);
+
+CREATE TABLE AttributeSetKeys (
+akID                     INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+asID                     INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+displayOrder             INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+                 PRIMARY KEY (akID, asID)
+);
+
+CREATE TABLE AttributeSets (
+asID                     INTEGER(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+asName                   VARCHAR(255),
+asHandle                 VARCHAR(255) NOT NULL,
+akCategoryID             INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+pkgID                    INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+                 PRIMARY KEY (asID)
+);
+
+CREATE TABLE AttributeKeys (
+akID                     INTEGER(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+akHandle                 VARCHAR(255) NOT NULL,
+akName                   VARCHAR(255) NOT NULL,
+akIsSearchable           TINYINT(1) NOT NULL DEFAULT 0,
+akIsSearchableIndexed    TINYINT(1) NOT NULL DEFAULT 0,
+akIsAutoCreated          TINYINT(1) NOT NULL DEFAULT 0,
+akIsColumnHeader         TINYINT(1) NOT NULL DEFAULT 0,
+akIsEditable             TINYINT(1) NOT NULL DEFAULT 0,
+atID                     INTEGER(10) UNSIGNED,
+akCategoryID             INTEGER(10) UNSIGNED,
+pkgID                    INTEGER(10) UNSIGNED,
+                 PRIMARY KEY (akID)
+);
+
+ALTER TABLE AttributeKeys ADD  UNIQUE INDEX akHandle  (akHandle, akCategoryID);
+
+CREATE TABLE AttributeKeyCategories (
+akCategoryID             INTEGER(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+akCategoryHandle         VARCHAR(255) NOT NULL,
+akCategoryAllowSets      SMALLINT(4) NOT NULL DEFAULT 0,
+pkgID                    INTEGER(10) UNSIGNED,
+                 PRIMARY KEY (akCategoryID)
+);
+
+CREATE TABLE AttributeTypeCategories (
+atID                     INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+akCategoryID             INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+                 PRIMARY KEY (atID, akCategoryID)
+);
+
+CREATE TABLE AttributeTypes (
+atID                     INTEGER(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+atHandle                 VARCHAR(255) NOT NULL,
+atName                   VARCHAR(255) NOT NULL,
+pkgID                    INTEGER(10) UNSIGNED,
+                 PRIMARY KEY (atID)
+);
+
+CREATE TABLE AttributeValues (
+avID                     INTEGER(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+akID                     INTEGER(10) UNSIGNED,
+avDateAdded              DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
+uID                      INTEGER(10) UNSIGNED,
+atID                     INTEGER(10) UNSIGNED,
+                 PRIMARY KEY (avID)
+);
+
+CREATE TABLE BlockRelations (
+brID                     INTEGER(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+bID                      INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+originalBID              INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+relationType             VARCHAR(50) NOT NULL,
+                 PRIMARY KEY (brID)
+);
+
+CREATE TABLE BlockTypes (
+btID                     INTEGER(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+btHandle                 VARCHAR(32) NOT NULL,
+btName                   VARCHAR(128) NOT NULL,
+btDescription            TEXT,
+btActiveWhenAdded        TINYINT(1) NOT NULL DEFAULT 1,
+btCopyWhenPropagate      TINYINT(1) NOT NULL DEFAULT 0,
+btIncludeAll             TINYINT(1) NOT NULL DEFAULT 0,
+btIsInternal             TINYINT(1) NOT NULL DEFAULT 0,
+btInterfaceWidth         INTEGER(10) UNSIGNED NOT NULL DEFAULT 400,
+btInterfaceHeight        INTEGER(10) UNSIGNED NOT NULL DEFAULT 400,
+pkgID                    INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+                 PRIMARY KEY (btID)
+);
+
+ALTER TABLE BlockTypes ADD  UNIQUE INDEX btHandle  (btHandle);
+
+CREATE TABLE Blocks (
+bID                      INTEGER(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+bName                    VARCHAR(60),
+bDateAdded               DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
+bDateModified            DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
+bFilename                VARCHAR(32),
+bIsActive                VARCHAR(1) NOT NULL DEFAULT '1',
+btID                     INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+uID                      INTEGER(10) UNSIGNED,
+                 PRIMARY KEY (bID)
+);
+
+CREATE TABLE CollectionAttributeValues (
+cID                      INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+cvID                     INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+akID                     INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+avID                     INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+                 PRIMARY KEY (cID, cvID, akID, avID)
+);
+
+CREATE TABLE CollectionVersionBlockPermissions (
+cID                      INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+cvID                     INTEGER(10) UNSIGNED NOT NULL DEFAULT 1,
+bID                      INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+gID                      INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+uID                      INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+cbgPermissions           VARCHAR(32),
+                 PRIMARY KEY (cID, cvID, bID, gID, uID)
+);
+
+CREATE TABLE CollectionVersionBlocks (
+cID                      INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+cvID                     INTEGER(10) UNSIGNED NOT NULL DEFAULT 1,
+bID                      INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+arHandle                 VARCHAR(255) NOT NULL,
+cbDisplayOrder           INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+isOriginal               VARCHAR(1) NOT NULL DEFAULT '0',
+cbOverrideAreaPermissions TINYINT(1) NOT NULL DEFAULT 0,
+cbIncludeAll             TINYINT(1) NOT NULL DEFAULT 0,
+                 PRIMARY KEY (cID, cvID, bID, arHandle)
+);
+
+ALTER TABLE CollectionVersionBlocks ADD  INDEX cbIncludeAll  (cbIncludeAll);
+
+CREATE TABLE CollectionVersionBlockStyles (
+cID                      INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+cvID                     INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+bID                      INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+arHandle                 VARCHAR(255) NOT NULL,
+csrID                    INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+                 PRIMARY KEY (cID, cvID, bID, arHandle)
+);
+
+CREATE TABLE CollectionVersionAreaLayouts (
+cvalID                   INTEGER(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+cID                      INTEGER(10) UNSIGNED DEFAULT 0,
+cvID                     INTEGER(10) UNSIGNED DEFAULT 0,
+arHandle                 VARCHAR(255),
+layoutID                 INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+position                 INTEGER(10) DEFAULT 1000,
+areaNameNumber           INTEGER(10) UNSIGNED DEFAULT 0,
+                 PRIMARY KEY (cvalID)
+);
+
+ALTER TABLE CollectionVersionAreaLayouts ADD  INDEX areaLayoutsIndex  (cID, cvID, arHandle);
+
+CREATE TABLE CollectionVersionAreaStyles (
+cID                      INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+cvID                     INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+arHandle                 VARCHAR(255) NOT NULL,
+csrID                    INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+                 PRIMARY KEY (cID, cvID, arHandle)
+);
+
+CREATE TABLE CollectionVersions (
+cID                      INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+cvID                     INTEGER(10) UNSIGNED NOT NULL DEFAULT 1,
+cvName                   TEXT,
+cvHandle                 VARCHAR(64),
+cvDescription            TEXT,
+cvDatePublic             DATETIME,
+cvDateCreated            DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
+cvComments               VARCHAR(255),
+cvIsApproved             TINYINT(1) NOT NULL DEFAULT 0,
+cvIsNew                  TINYINT(1) NOT NULL DEFAULT 0,
+cvAuthorUID              INTEGER(10) UNSIGNED,
+cvApproverUID            INTEGER(10) UNSIGNED,
+cvActivateDatetime       DATETIME,
+                 PRIMARY KEY (cID, cvID)
+);
+
+ALTER TABLE CollectionVersions ADD  INDEX cvIsApproved  (cvIsApproved);
+
+ALTER TABLE CollectionVersions ADD  INDEX cvName  (cvName(128));
+
+CREATE TABLE Collections (
+cID                      INTEGER(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+cDateAdded               DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
+cDateModified            DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
+cHandle                  VARCHAR(255),
+                 PRIMARY KEY (cID)
+);
+
+ALTER TABLE Collections ADD  INDEX cDateModified  (cDateModified);
+
+ALTER TABLE Collections ADD  INDEX cDateAdded  (cDateAdded);
+
+CREATE TABLE ComposerDrafts (
+cID                      INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+cpPublishParentID        INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+                 PRIMARY KEY (cID)
+);
+
+CREATE TABLE ComposerContentLayout (
+cclID                    INTEGER(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+bID                      INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+akID                     INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+displayOrder             INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+ctID                     INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+ccFilename               VARCHAR(128),
+                 PRIMARY KEY (cclID)
+);
+
+CREATE TABLE Config (
+cfKey                    VARCHAR(64) NOT NULL,
+timestamp                TIMESTAMP NOT NULL,
+cfValue                  LONGTEXT,
+uID                      INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+pkgID                    INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+                 PRIMARY KEY (cfKey, uID)
+);
+
+ALTER TABLE Config ADD  INDEX uID  (uID);
+
+CREATE TABLE DashboardHomepage (
+dbhID                    INTEGER(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+dbhModule                VARCHAR(255) NOT NULL,
+dbhDisplayName           VARCHAR(255),
+dbhDisplayOrder          INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+pkgID                    INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+                 PRIMARY KEY (dbhID)
+);
+
+CREATE TABLE DownloadStatistics (
+dsID                     INTEGER(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+fID                      INTEGER(10) UNSIGNED NOT NULL,
+fvID                     INTEGER(10) UNSIGNED NOT NULL,
+uID                      INTEGER(10) UNSIGNED NOT NULL,
+rcID                     INTEGER(10) UNSIGNED NOT NULL,
+timestamp                TIMESTAMP NOT NULL,
+                 PRIMARY KEY (dsID)
+);
+
+CREATE TABLE FileAttributeValues (
+fID                      INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+fvID                     INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+akID                     INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+avID                     INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+                 PRIMARY KEY (fID, fvID, akID, avID)
+);
+
+CREATE TABLE FilePermissionFileTypes (
+fsID                     INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+gID                      INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+uID                      INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+extension                VARCHAR(32) NOT NULL,
+                 PRIMARY KEY (fsID, gID, uID, extension)
+);
+
+CREATE TABLE CustomStylePresets (
+cspID                    INTEGER(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+cspName                  VARCHAR(255) NOT NULL,
+csrID                    INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+                 PRIMARY KEY (cspID)
+);
+
+CREATE TABLE CustomStyleRules (
+csrID                    INTEGER(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+css_id                   VARCHAR(128),
+css_class                VARCHAR(128),
+css_serialized           TEXT,
+css_custom               TEXT,
+                 PRIMARY KEY (csrID)
+);
+
+CREATE TABLE FilePermissions (
+fID                      INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+gID                      INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+uID                      INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+canRead                  INTEGER(4) NOT NULL DEFAULT 0,
+canWrite                 INTEGER(4) NOT NULL DEFAULT 0,
+canAdmin                 INTEGER(4) NOT NULL DEFAULT 0,
+canSearch                INTEGER(4) NOT NULL DEFAULT 0,
+                 PRIMARY KEY (fID, gID, uID)
+);
+
+CREATE TABLE TaskPermissionUserGroups (
+tpID                     INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+gID                      INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+uID                      INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+canRead                  INTEGER(1) NOT NULL DEFAULT 0,
+                 PRIMARY KEY (tpID, gID, uID)
+);
+
+CREATE TABLE TaskPermissions (
+tpID                     INTEGER(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+tpHandle                 VARCHAR(255),
+tpName                   VARCHAR(255),
+tpDescription            TEXT,
+pkgID                    INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+                 PRIMARY KEY (tpID)
+);
+
+ALTER TABLE TaskPermissions ADD  UNIQUE INDEX tpHandle  (tpHandle);
+
+CREATE TABLE FileSetPermissions (
+fsID                     INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+gID                      INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+uID                      INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+canRead                  INTEGER(4),
+canWrite                 INTEGER(4),
+canAdmin                 INTEGER(4),
+canAdd                   INTEGER(4),
+canSearch                INTEGER(3) UNSIGNED,
+                 PRIMARY KEY (fsID, gID, uID)
+);
+
+ALTER TABLE FileSetPermissions ADD  INDEX canRead  (canRead);
+
+ALTER TABLE FileSetPermissions ADD  INDEX canWrite  (canWrite);
+
+ALTER TABLE FileSetPermissions ADD  INDEX canAdmin  (canAdmin);
+
+ALTER TABLE FileSetPermissions ADD  INDEX canSearch  (canSearch);
+
+ALTER TABLE FileSetPermissions ADD  INDEX canAdd  (canAdd);
+
+CREATE TABLE FileVersions (
+fID                      INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+fvID                     INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+fvFilename               VARCHAR(255) NOT NULL,
+fvPrefix                 VARCHAR(12),
+fvGenericType            INTEGER(3) UNSIGNED NOT NULL DEFAULT 0,
+fvSize                   INTEGER(20) UNSIGNED NOT NULL DEFAULT 0,
+fvTitle                  VARCHAR(255),
+fvDescription            TEXT,
+fvTags                   VARCHAR(255),
+fvIsApproved             INTEGER(10) UNSIGNED NOT NULL DEFAULT 1,
+fvDateAdded              DATETIME,
+fvApproverUID            INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+fvAuthorUID              INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+fvActivateDatetime       DATETIME,
+fvHasThumbnail1          INTEGER(1) NOT NULL DEFAULT 0,
+fvHasThumbnail2          INTEGER(1) NOT NULL DEFAULT 0,
+fvHasThumbnail3          INTEGER(1) NOT NULL DEFAULT 0,
+fvExtension              VARCHAR(32),
+fvType                   INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+                 PRIMARY KEY (fID, fvID)
+);
+
+ALTER TABLE FileVersions ADD  INDEX fvExtension  (fvType);
+
+ALTER TABLE FileVersions ADD  INDEX fvTitle  (fvTitle);
+
+CREATE TABLE FileVersionLog (
+fvlID                    INTEGER(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+fID                      INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+fvID                     INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+fvUpdateTypeID           INTEGER(3) UNSIGNED NOT NULL DEFAULT 0,
+fvUpdateTypeAttributeID  INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+                 PRIMARY KEY (fvlID)
+);
+
+CREATE TABLE FileStorageLocations (
+fslID                    INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+fslName                  VARCHAR(255) NOT NULL,
+fslDirectory             VARCHAR(255) NOT NULL,
+                 PRIMARY KEY (fslID)
+);
+
+CREATE TABLE Files (
+fID                      INTEGER(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+fDateAdded               DATETIME,
+uID                      INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+fslID                    INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+ocID                     INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+fOverrideSetPermissions  INTEGER(1) NOT NULL DEFAULT 0,
+fPassword                VARCHAR(255),
+                 PRIMARY KEY (fID, uID, fslID)
+);
+
+ALTER TABLE Files ADD  INDEX fOverrideSetPermissions  (fOverrideSetPermissions);
+
+CREATE TABLE Groups (
+gID                      INTEGER(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+gName                    VARCHAR(128) NOT NULL,
+gDescription             VARCHAR(255) NOT NULL,
+gUserExpirationIsEnabled INTEGER(1) NOT NULL DEFAULT 0,
+gUserExpirationMethod    VARCHAR(12),
+gUserExpirationSetDateTime DATETIME,
+gUserExpirationInterval  INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+gUserExpirationAction    VARCHAR(20),
+                 PRIMARY KEY (gID)
+);
+
+ALTER TABLE Groups ADD  UNIQUE INDEX gName  (gName);
+
+CREATE TABLE Jobs (
+jID                      INTEGER(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+jName                    VARCHAR(100) NOT NULL,
+jDescription             VARCHAR(255) NOT NULL,
+jDateInstalled           DATETIME,
+jDateLastRun             DATETIME,
+pkgID                    INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+jLastStatusText          VARCHAR(255),
+jLastStatusCode          SMALLINT(4) NOT NULL DEFAULT 0,
+jStatus                  VARCHAR(14) NOT NULL DEFAULT 'ENABLED',
+jHandle                  VARCHAR(255) NOT NULL,
+jNotUninstallable        SMALLINT(4) NOT NULL DEFAULT 0,
+                 PRIMARY KEY (jID)
+);
+
+CREATE TABLE JobsLog (
+jlID                     INTEGER(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+jID                      INTEGER(10) UNSIGNED NOT NULL,
+jlMessage                VARCHAR(255) NOT NULL,
+jlTimestamp              TIMESTAMP NOT NULL,
+jlError                  INTEGER(10) NOT NULL DEFAULT 0,
+                 PRIMARY KEY (jlID)
+);
+
+CREATE TABLE Layouts (
+layoutID                 INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+layout_rows              INTEGER(5) NOT NULL DEFAULT 3,
+layout_columns           INTEGER(3) NOT NULL DEFAULT 3,
+spacing                  INTEGER(3) NOT NULL DEFAULT 3,
+breakpoints              VARCHAR(255) NOT NULL DEFAULT '',
+locked                   TINYINT(1) NOT NULL DEFAULT 0,
+                 PRIMARY KEY (layoutID)
+);
+
+CREATE TABLE LayoutPresets (
+lpID                     INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+lpName                   VARCHAR(128) NOT NULL,
+layoutID                 INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+                 PRIMARY KEY (lpID)
+);
+
+ALTER TABLE LayoutPresets ADD  UNIQUE INDEX layoutID  (layoutID);
+
+CREATE TABLE SystemNotifications (
+snID                     INTEGER(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+snTypeID                 INTEGER(3) UNSIGNED NOT NULL DEFAULT 0,
+snURL                    TEXT,
+snURL2                   TEXT,
+snDateTime               DATETIME NOT NULL,
+snIsArchived             INTEGER(1) NOT NULL DEFAULT 0,
+snIsNew                  INTEGER(1) NOT NULL DEFAULT 0,
+snTitle                  VARCHAR(255),
+snDescription            TEXT,
+snBody                   TEXT,
+                 PRIMARY KEY (snID)
+);
+
+CREATE TABLE Packages (
+pkgID                    INTEGER(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+pkgName                  VARCHAR(255) NOT NULL,
+pkgHandle                VARCHAR(64) NOT NULL,
+pkgDescription           TEXT,
+pkgDateInstalled         DATETIME NOT NULL,
+pkgIsInstalled           TINYINT(1) NOT NULL DEFAULT 1,
+pkgVersion               VARCHAR(32),
+pkgAvailableVersion      VARCHAR(32),
+                 PRIMARY KEY (pkgID)
+);
+
+ALTER TABLE Packages ADD  UNIQUE INDEX pkgHandle  (pkgHandle);
+
+CREATE TABLE PagePaths (
+ppID                     INTEGER(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+cID                      INTEGER(10) UNSIGNED DEFAULT 0,
+cPath                    TEXT,
+ppIsCanonical            VARCHAR(1) NOT NULL DEFAULT '1',
+                 PRIMARY KEY (ppID)
+);
+
+ALTER TABLE PagePaths ADD  INDEX cID  (cID);
+
+ALTER TABLE PagePaths ADD  INDEX ppIsCanonical  (ppIsCanonical);
+
+ALTER TABLE PagePaths ADD  INDEX cPath (cPath(128));
+
+CREATE TABLE PageSearchIndex (
+cID                      INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+content                  TEXT,
+cName                    VARCHAR(255),
+cDescription             TEXT,
+cPath                    TEXT,
+cDatePublic              DATETIME,
+cDateLastIndexed         DATETIME,
+cDateLastSitemapped      DATETIME,
+                 PRIMARY KEY (cID)
+)ENGINE=MYISAM;
+
+ALTER TABLE PageSearchIndex ADD  FULLTEXT INDEX cName  (cName);
+
+ALTER TABLE PageSearchIndex ADD  FULLTEXT INDEX cDescription  (cDescription);
+
+ALTER TABLE PageSearchIndex ADD  FULLTEXT INDEX content  (content);
+
+ALTER TABLE PageSearchIndex ADD  FULLTEXT INDEX content2  (cName, cDescription, content);
+
+ALTER TABLE PageSearchIndex ADD  INDEX cDateLastIndexed  (cDateLastIndexed);
+
+ALTER TABLE PageSearchIndex ADD  INDEX cDateLastSitemapped  (cDateLastSitemapped);
+
+CREATE TABLE PagePermissionPageTypes (
+cID                      INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+gID                      INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+uID                      INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+ctID                     INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+                 PRIMARY KEY (cID, gID, uID, ctID)
+);
+
+CREATE TABLE PagePermissions (
+cID                      INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+gID                      INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+uID                      INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+cgPermissions            VARCHAR(32),
+cgStartDate              DATETIME,
+cgEndDate                DATETIME,
+                 PRIMARY KEY (cID, gID, uID)
+);
+
+CREATE TABLE PageStatistics (
+pstID                    BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+cID                      INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+date                     DATE,
+timestamp                TIMESTAMP NOT NULL,
+uID                      INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+                 PRIMARY KEY (pstID)
+)ENGINE=MYISAM;
+
+ALTER TABLE PageStatistics ADD  INDEX cID  (cID);
+
+ALTER TABLE PageStatistics ADD  INDEX date  (date);
+
+ALTER TABLE PageStatistics ADD  INDEX uID  (uID);
+
+CREATE TABLE PageThemes (
+ptID                     INTEGER(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+ptHandle                 VARCHAR(64) NOT NULL,
+ptName                   VARCHAR(255),
+ptDescription            TEXT,
+pkgID                    INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+                 PRIMARY KEY (ptID)
+);
+
+ALTER TABLE PageThemes ADD  UNIQUE INDEX ptHandle  (ptHandle);
+
+CREATE TABLE PageThemeStyles (
+ptID                     INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+ptsHandle                VARCHAR(128) NOT NULL,
+ptsValue                 LONGTEXT,
+ptsType                  VARCHAR(32) NOT NULL,
+                 PRIMARY KEY (ptID, ptsHandle, ptsType)
+);
+
+CREATE TABLE PageTypeAttributes (
+ctID                     INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+akID                     INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+                 PRIMARY KEY (ctID, akID)
+);
+
+
+CREATE TABLE PageTypes (
+ctID                     INTEGER(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+ctHandle                 VARCHAR(32) NOT NULL,
+ctIcon                   VARCHAR(128),
+ctName                   VARCHAR(90) NOT NULL,
+pkgID                    INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+                 PRIMARY KEY (ctID)
+);
+
+ALTER TABLE PageTypes ADD  UNIQUE INDEX ctHandle  (ctHandle);
+
+CREATE TABLE ComposerTypes (
+ctID                     INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+ctComposerPublishPageMethod VARCHAR(64) NOT NULL DEFAULT 'CHOOSE',
+ctComposerPublishPageTypeID INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+ctComposerPublishPageParentID INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+                 PRIMARY KEY (ctID)
+);
+
+CREATE TABLE Pages (
+cID                      INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+ctID                     INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+cIsTemplate              VARCHAR(1) NOT NULL DEFAULT '0',
+uID                      INTEGER(10) UNSIGNED,
+cIsCheckedOut            TINYINT(1) NOT NULL DEFAULT 0,
+cCheckedOutUID           INTEGER(10) UNSIGNED,
+cCheckedOutDatetime      DATETIME,
+cCheckedOutDatetimeLastEdit DATETIME,
+cPendingAction           VARCHAR(6),
+cPendingActionDatetime   DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
+cPendingActionUID        INTEGER(10) UNSIGNED,
+cPendingActionTargetCID  INTEGER(10) UNSIGNED,
+cOverrideTemplatePermissions TINYINT(1) NOT NULL DEFAULT 1,
+cInheritPermissionsFromCID INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+cInheritPermissionsFrom  VARCHAR(8) NOT NULL DEFAULT 'PARENT',
+cFilename                VARCHAR(255),
+cPointerID               INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+cPointerExternalLink     VARCHAR(255),
+cPointerExternalLinkNewWindow TINYINT(1) NOT NULL DEFAULT 0,
+cChildren                INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+cDisplayOrder            INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+cParentID                INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+pkgID                    INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+ptID                     INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+cCacheFullPageContent    INTEGER(4) NOT NULL DEFAULT -1,
+cCacheFullPageContentOverrideLifetime VARCHAR(32) NOT NULL DEFAULT '0',
+cCacheFullPageContentLifetimeCustom INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+                 PRIMARY KEY (cID)
+);
+
+ALTER TABLE Pages ADD  INDEX cParentID  (cParentID);
+
+ALTER TABLE Pages ADD  INDEX cCheckedOutUID  (cCheckedOutUID);
+
+ALTER TABLE Pages ADD  INDEX cPointerID  (cPointerID);
+
+ALTER TABLE Pages ADD  INDEX uID  (uID);
+
+ALTER TABLE Pages ADD  INDEX ctID  (ctID);
+
+CREATE TABLE PileContents (
+pcID                     INTEGER(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+pID                      INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+itemID                   INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+itemType                 VARCHAR(64) NOT NULL,
+quantity                 INTEGER(10) UNSIGNED NOT NULL DEFAULT 1,
+timestamp                TIMESTAMP NOT NULL,
+displayOrder             INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+                 PRIMARY KEY (pcID)
+);
+
+CREATE TABLE Piles (
+pID                      INTEGER(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+uID                      INTEGER(10) UNSIGNED,
+isDefault                TINYINT(1) NOT NULL DEFAULT 0,
+timestamp                TIMESTAMP NOT NULL,
+name                     VARCHAR(255),
+state                    VARCHAR(64) NOT NULL,
+                 PRIMARY KEY (pID)
+);
+
+CREATE TABLE UserAttributeKeys (
+akID                     INTEGER(10) UNSIGNED NOT NULL,
+uakProfileDisplay        TINYINT(1) NOT NULL DEFAULT 0,
+uakMemberListDisplay     TINYINT(1) NOT NULL DEFAULT 0,
+uakProfileEdit           TINYINT(1) NOT NULL DEFAULT 1,
+uakProfileEditRequired   TINYINT(1) NOT NULL DEFAULT 0,
+uakRegisterEdit          TINYINT(1) NOT NULL DEFAULT 0,
+uakRegisterEditRequired  TINYINT(1) NOT NULL DEFAULT 0,
+displayOrder             INTEGER(10) UNSIGNED DEFAULT 0,
+uakIsActive              TINYINT(1) NOT NULL DEFAULT 1,
+                 PRIMARY KEY (akID)
+);
+
+CREATE TABLE UserAttributeValues (
+uID                      INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+akID                     INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+avID                     INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+                 PRIMARY KEY (uID, akID, avID)
+);
+
+CREATE TABLE UserPrivateMessages (
+msgID                    INTEGER(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+uAuthorID                INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+msgDateCreated           DATETIME NOT NULL,
+msgSubject               VARCHAR(255) NOT NULL,
+msgBody                  TEXT,
+uToID                    INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+                 PRIMARY KEY (msgID)
+);
+
+CREATE TABLE UserPrivateMessagesTo (
+msgID                    INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+uID                      INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+uAuthorID                INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+msgMailboxID             INTEGER(11) NOT NULL,
+msgIsNew                 INTEGER(1) NOT NULL DEFAULT 0,
+msgIsUnread              INTEGER(1) NOT NULL DEFAULT 0,
+msgIsReplied             INTEGER(1) NOT NULL DEFAULT 0,
+                 PRIMARY KEY (msgID, uID, uAuthorID)
+);
+
+ALTER TABLE UserPrivateMessagesTo ADD  INDEX uID  (uID);
+
+ALTER TABLE UserPrivateMessagesTo ADD  INDEX uAuthorID  (uAuthorID);
+
+ALTER TABLE UserPrivateMessagesTo ADD  INDEX msgFolderID  (msgMailboxID);
+
+ALTER TABLE UserPrivateMessagesTo ADD  INDEX msgIsNew  (msgIsNew);
+
+CREATE TABLE UserBannedIPs (
+ipFrom                   INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+ipTo                     INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+banCode                  INTEGER(1) UNSIGNED NOT NULL DEFAULT 1,
+expires                  INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+isManual                 INTEGER(1) NOT NULL DEFAULT 0,
+                 PRIMARY KEY (ipFrom, ipTo)
+);
+
+ALTER TABLE UserBannedIPs ADD  INDEX ipFrom  (ipFrom);
+
+ALTER TABLE UserBannedIPs ADD  INDEX ipTo  (ipTo);
+
+CREATE TABLE UserGroups (
+uID                      INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+gID                      INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+ugEntered                DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
+type                     VARCHAR(64),
+                 PRIMARY KEY (uID, gID)
+);
+
+ALTER TABLE UserGroups ADD  INDEX uID  (uID);
+
+ALTER TABLE UserGroups ADD  INDEX gID  (gID);
+
+CREATE TABLE UserValidationHashes (
+uvhID                    INTEGER(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+uID                      INTEGER(10) UNSIGNED,
+uHash                    VARCHAR(64) NOT NULL,
+type                     INTEGER(4) UNSIGNED NOT NULL DEFAULT 0,
+uDateGenerated           INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+uDateRedeemed            INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+                 PRIMARY KEY (uvhID)
+);
+
+CREATE TABLE Logs (
+logID                    INTEGER(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+logType                  VARCHAR(64) NOT NULL,
+timestamp                TIMESTAMP NOT NULL,
+logText                  LONGTEXT,
+logIsInternal            TINYINT(1) NOT NULL DEFAULT 0,
+                 PRIMARY KEY (logID)
+);
+
+ALTER TABLE Logs ADD  INDEX logType  (logType);
+
+ALTER TABLE Logs ADD  INDEX logIsInternal  (logIsInternal);
+
+CREATE TABLE MailImporters (
+miID                     INTEGER(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+miHandle                 VARCHAR(64) NOT NULL,
+miServer                 VARCHAR(255),
+miUsername               VARCHAR(255),
+miPassword               VARCHAR(255),
+miEncryption             VARCHAR(32),
+miIsEnabled              INTEGER(1) NOT NULL DEFAULT 0,
+miEmail                  VARCHAR(255),
+miPort                   INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+pkgID                    INTEGER(10) UNSIGNED,
+                 PRIMARY KEY (miID)
+);
+
+CREATE TABLE MailValidationHashes (
+mvhID                    INTEGER(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+miID                     INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+email                    VARCHAR(255) NOT NULL,
+mHash                    VARCHAR(128) NOT NULL,
+mDateGenerated           INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+mDateRedeemed            INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+data                     TEXT,
+                 PRIMARY KEY (mvhID)
+);
+
+CREATE TABLE UserOpenIDs (
+uID                      INTEGER(10) UNSIGNED NOT NULL,
+uOpenID                  VARCHAR(255) NOT NULL,
+                 PRIMARY KEY (uOpenID)
+);
+
+ALTER TABLE UserOpenIDs ADD  INDEX uID  (uID);
+
+CREATE TABLE Users (
+uID                      INTEGER(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+uName                    VARCHAR(64) NOT NULL,
+uEmail                   VARCHAR(64) NOT NULL,
+uPassword                VARCHAR(255) NOT NULL,
+uIsActive                VARCHAR(1) NOT NULL DEFAULT '0',
+uIsValidated             TINYINT NOT NULL DEFAULT -1,
+uIsFullRecord            TINYINT(1) NOT NULL DEFAULT 1,
+uDateAdded               DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
+uHasAvatar               TINYINT(1) NOT NULL DEFAULT 0,
+uLastOnline              INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+uLastLogin               INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+uPreviousLogin           INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+uNumLogins               INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+uTimezone                VARCHAR(255),
+uDefaultLanguage		 VARCHAR(32) NULL,
+                 PRIMARY KEY (uID)
+);
+
+ALTER TABLE Users ADD  UNIQUE INDEX uName  (uName);
+
+CREATE TABLE UsersFriends (
+ufID                     INTEGER(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+uID                      INTEGER(10) UNSIGNED,
+status                   VARCHAR(64) NOT NULL,
+friendUID                INTEGER(10) UNSIGNED,
+uDateAdded               DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
+                 PRIMARY KEY (ufID)
+);
+
+CREATE TABLE SignupRequests (
+id                       INTEGER(11) NOT NULL AUTO_INCREMENT,
+ipFrom                   INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+date_access              TIMESTAMP NOT NULL,
+                 PRIMARY KEY (id)
+);
+
+ALTER TABLE SignupRequests ADD  INDEX index_ipFrom  (ipFrom);
+
+CREATE TABLE FileSets (
+fsID                     INTEGER(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+fsName                   VARCHAR(64) NOT NULL,
+uID                      INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+fsType                   INTEGER(4) NOT NULL,
+fsOverrideGlobalPermissions INTEGER(4),
+                 PRIMARY KEY (fsID)
+);
+
+ALTER TABLE FileSets ADD  INDEX fsOverrideGlobalPermissions  (fsOverrideGlobalPermissions);
+
+CREATE TABLE FileSetSavedSearches (
+fsID                     INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+fsSearchRequest          TEXT,
+fsResultColumns          TEXT,
+                 PRIMARY KEY (fsID)
+);
+
+CREATE TABLE FileSetFiles (
+fsfID                    INTEGER(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+fID                      INTEGER(10) UNSIGNED NOT NULL,
+fsID                     INTEGER(10) UNSIGNED NOT NULL,
+timestamp                TIMESTAMP NOT NULL,
+fsDisplayOrder           INTEGER(10) UNSIGNED NOT NULL,
+                 PRIMARY KEY (fsfID)
+);
+
+ALTER TABLE FileSetFiles ADD  INDEX fID  (fID);
+
+ALTER TABLE FileSetFiles ADD  INDEX fsID  (fsID);
+
+CREATE TABLE atBoolean (
+avID                     INTEGER(10) UNSIGNED NOT NULL,
+value                    TINYINT(1) NOT NULL DEFAULT 0,
+                 PRIMARY KEY (avID)
+);
+
+CREATE TABLE atBooleanSettings (
+akID                     INTEGER(10) UNSIGNED NOT NULL,
+akCheckedByDefault       TINYINT(1) NOT NULL DEFAULT 0,
+                 PRIMARY KEY (akID)
+);
+
+CREATE TABLE atDateTimeSettings (
+akID                     INTEGER(10) UNSIGNED NOT NULL,
+akDateDisplayMode        VARCHAR(255),
+                 PRIMARY KEY (akID)
+);
+
+CREATE TABLE atDateTime (
+avID                     INTEGER(10) UNSIGNED NOT NULL,
+value                    DATETIME DEFAULT '0000-00-00 00:00:00',
+                 PRIMARY KEY (avID)
+);
+
+CREATE TABLE atDefault (
+avID                     INTEGER(10) UNSIGNED NOT NULL,
+value                    LONGTEXT,
+                 PRIMARY KEY (avID)
+);
+
+CREATE TABLE atFile (
+avID                     INTEGER(10) UNSIGNED NOT NULL,
+fID                      INTEGER(10) UNSIGNED NOT NULL,
+                 PRIMARY KEY (avID)
+);
+
+CREATE TABLE atNumber (
+avID                     INTEGER(10) UNSIGNED NOT NULL,
+value                    NUMERIC(14,4) DEFAULT 0,
+                 PRIMARY KEY (avID)
+);
+
+CREATE TABLE atSelectSettings (
+akID                     INTEGER(10) UNSIGNED NOT NULL,
+akSelectAllowMultipleValues TINYINT(1) NOT NULL DEFAULT 0,
+akSelectOptionDisplayOrder VARCHAR(255) NOT NULL DEFAULT 'display_asc',
+akSelectAllowOtherValues TINYINT(1) NOT NULL DEFAULT 0,
+                 PRIMARY KEY (akID)
+);
+
+CREATE TABLE atTextareaSettings (
+akID                     INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+akTextareaDisplayMode    VARCHAR(255),
+                 PRIMARY KEY (akID)
+);
+
+CREATE TABLE atSelectOptions (
+ID                       INTEGER(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+akID                     INTEGER(10) UNSIGNED,
+value                    VARCHAR(255),
+displayOrder             INTEGER(10) UNSIGNED,
+isEndUserAdded           TINYINT(1) NOT NULL DEFAULT 0,
+                 PRIMARY KEY (ID)
+);
+
+CREATE TABLE atSelectOptionsSelected (
+avID                     INTEGER(10) UNSIGNED NOT NULL,
+atSelectOptionID         INTEGER(10) UNSIGNED NOT NULL,
+                 PRIMARY KEY (avID, atSelectOptionID)
+);
+
+ALTER TABLE atSelectOptionsSelected add index `atSelectOptionID` (atSelectOptionID);
 
 CREATE TABLE atAddress (
-  avID int(10) unsigned NOT NULL DEFAULT '0',
-  address1 varchar(255) DEFAULT NULL,
-  address2 varchar(255) DEFAULT NULL,
-  city varchar(255) DEFAULT NULL,
-  state_province varchar(255) DEFAULT NULL,
-  country varchar(4) DEFAULT NULL,
-  postal_code varchar(32) DEFAULT NULL,
-  PRIMARY KEY (avID)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+avID                     INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+address1                 VARCHAR(255),
+address2                 VARCHAR(255),
+city                     VARCHAR(255),
+state_province           VARCHAR(255),
+country                  VARCHAR(4),
+postal_code              VARCHAR(32),
+                 PRIMARY KEY (avID)
+);
 
 CREATE TABLE atAddressCustomCountries (
-  atAddressCustomCountryID int(10) unsigned NOT NULL AUTO_INCREMENT,
-  akID int(10) unsigned NOT NULL DEFAULT '0',
-  country varchar(5) NOT NULL,
-  PRIMARY KEY (atAddressCustomCountryID)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+atAddressCustomCountryID INTEGER(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+akID                     INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+country                  VARCHAR(5) NOT NULL,
+                 PRIMARY KEY (atAddressCustomCountryID)
+);
 
 CREATE TABLE atAddressSettings (
-  akID int(10) unsigned NOT NULL DEFAULT '0',
-  akHasCustomCountries int(1) NOT NULL DEFAULT '0',
-  akDefaultCountry varchar(12) DEFAULT NULL,
-  PRIMARY KEY (akID)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+akID                     INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
+akHasCustomCountries     INTEGER(1) NOT NULL DEFAULT 0,
+akDefaultCountry         VARCHAR(12),
+                 PRIMARY KEY (akID)
+);
+
+CREATE TABLE btNavigation (
+bID                      INTEGER UNSIGNED NOT NULL,
+orderBy                  VARCHAR(255) DEFAULT 'alpha_asc',
+displayPages             VARCHAR(255) DEFAULT 'top',
+displayPagesCID          INTEGER UNSIGNED NOT NULL DEFAULT 1,
+displayPagesIncludeSelf  TINYINT UNSIGNED NOT NULL DEFAULT 0,
+displaySubPages          VARCHAR(255) DEFAULT 'none',
+displaySubPageLevels     VARCHAR(255) DEFAULT 'none',
+displaySubPageLevelsNum  SMALLINT UNSIGNED NOT NULL DEFAULT 0,
+displayUnavailablePages  TINYINT UNSIGNED NOT NULL DEFAULT 0,
+                 PRIMARY KEY (bID)
+);
+
+CREATE TABLE btContentLocal (
+bID                      INTEGER UNSIGNED NOT NULL,
+content                  LONGTEXT,
+                 PRIMARY KEY (bID)
+);
+
+CREATE TABLE btDateNav (
+bID                      INTEGER UNSIGNED NOT NULL,
+num                      SMALLINT UNSIGNED NOT NULL,
+cParentID                INTEGER UNSIGNED NOT NULL DEFAULT 1,
+cThis                    TINYINT UNSIGNED NOT NULL DEFAULT 0,
+ctID                     SMALLINT UNSIGNED,
+flatDisplay              INTEGER DEFAULT 0,
+defaultNode              VARCHAR(64) DEFAULT 'current_page',
+truncateTitles           INTEGER DEFAULT 0,
+truncateSummaries        INTEGER DEFAULT 0,
+displayFeaturedOnly      INTEGER DEFAULT 0,
+truncateChars            INTEGER DEFAULT 128,
+truncateTitleChars       INTEGER DEFAULT 128,
+showDescriptions         INTEGER DEFAULT 0,
+                 PRIMARY KEY (bID)
+);
+
+CREATE TABLE btExternalForm (
+bID                      INTEGER UNSIGNED NOT NULL,
+filename                 VARCHAR(128),
+                 PRIMARY KEY (bID)
+);
+
+CREATE TABLE btContentFile (
+bID                      INTEGER UNSIGNED NOT NULL,
+fID                      INTEGER UNSIGNED,
+fileLinkText             VARCHAR(255),
+filePassword             VARCHAR(255),
+                 PRIMARY KEY (bID)
+);
+
+CREATE TABLE btFlashContent (
+bID                      INTEGER UNSIGNED NOT NULL,
+fID                      INTEGER UNSIGNED,
+quality                  VARCHAR(255),
+minVersion               VARCHAR(255),
+                 PRIMARY KEY (bID)
+);
+
+CREATE TABLE btForm (
+bID                      INTEGER UNSIGNED NOT NULL,
+questionSetId            INTEGER UNSIGNED DEFAULT 0,
+surveyName               VARCHAR(255),
+thankyouMsg              TEXT,
+notifyMeOnSubmission     TINYINT UNSIGNED NOT NULL DEFAULT 0,
+recipientEmail           VARCHAR(255),
+displayCaptcha           INTEGER DEFAULT 1,
+redirectCID              INTEGER DEFAULT 0,
+                 PRIMARY KEY (bID)
+);
+
+ALTER TABLE btForm ADD  INDEX questionSetIdForeign  (questionSetId);
+
+CREATE TABLE btFormQuestions (
+qID                      INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+msqID                    INTEGER UNSIGNED DEFAULT 0,
+bID                      INTEGER UNSIGNED DEFAULT 0,
+questionSetId            INTEGER UNSIGNED DEFAULT 0,
+question                 VARCHAR(255),
+inputType                VARCHAR(255),
+options                  TEXT,
+position                 INTEGER UNSIGNED DEFAULT 1000,
+width                    INTEGER UNSIGNED DEFAULT 50,
+height                   INTEGER UNSIGNED DEFAULT 3,
+required                 INTEGER DEFAULT 0,
+                 PRIMARY KEY (qID)
+);
+
+ALTER TABLE btFormQuestions ADD  INDEX questionSetId  (questionSetId);
+
+ALTER TABLE btFormQuestions ADD  INDEX msqID  (msqID);
+
+CREATE TABLE btFormAnswerSet (
+asID                     INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+questionSetId            INTEGER UNSIGNED DEFAULT 0,
+created                  TIMESTAMP,
+uID                      INTEGER UNSIGNED DEFAULT 0,
+                 PRIMARY KEY (asID)
+);
+
+CREATE TABLE btFormAnswers (
+aID                      INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+asID                     INTEGER UNSIGNED DEFAULT 0,
+msqID                    INTEGER UNSIGNED DEFAULT 0,
+answer                   VARCHAR(255),
+answerLong               TEXT,
+                 PRIMARY KEY (aID)
+);
+
+CREATE TABLE btGoogleMap (
+bID                      INTEGER UNSIGNED NOT NULL,
+title                    VARCHAR(255),
+location                 VARCHAR(255),
+latitude                 DOUBLE,
+longitude                DOUBLE,
+zoom                     INTEGER(8),
+                 PRIMARY KEY (bID)
+);
+
+CREATE TABLE btGuestBook (
+bID                      INTEGER UNSIGNED NOT NULL,
+requireApproval          INTEGER DEFAULT 0,
+title                    VARCHAR(100) DEFAULT 'Comments',
+dateFormat               VARCHAR(100),
+displayGuestBookForm     INTEGER DEFAULT 1,
+displayCaptcha           INTEGER DEFAULT 1,
+authenticationRequired   INTEGER DEFAULT 0,
+notifyEmail              VARCHAR(100),
+                 PRIMARY KEY (bID)
+);
+
+CREATE TABLE btGuestBookEntries (
+bID                      INTEGER,
+cID                      INTEGER DEFAULT 1,
+entryID                  INTEGER NOT NULL AUTO_INCREMENT,
+uID                      INTEGER DEFAULT 0,
+commentText              LONGTEXT,
+user_name                VARCHAR(100),
+user_email               VARCHAR(100),
+entryDate                TIMESTAMP,
+approved                 INTEGER DEFAULT 1,
+                 PRIMARY KEY (entryID)
+);
+
+ALTER TABLE btGuestBookEntries ADD  INDEX cID  (cID);
+
+CREATE TABLE btContentImage (
+bID                      INTEGER UNSIGNED NOT NULL,
+fID                      INTEGER UNSIGNED DEFAULT 0,
+fOnstateID               INTEGER UNSIGNED DEFAULT 0,
+maxWidth                 INTEGER UNSIGNED DEFAULT 0,
+maxHeight                INTEGER UNSIGNED DEFAULT 0,
+externalLink             VARCHAR(255),
+altText                  VARCHAR(255),
+                 PRIMARY KEY (bID)
+);
+
+CREATE TABLE btFile (
+bID                      INTEGER UNSIGNED NOT NULL,
+filename                 VARCHAR(255),
+origfilename             VARCHAR(255),
+url                      VARCHAR(255),
+type                     VARCHAR(32),
+generictype              VARCHAR(32),
+                 PRIMARY KEY (bID)
+);
+
+CREATE TABLE btNextPrevious (
+bID                      INTEGER UNSIGNED NOT NULL,
+linkStyle                VARCHAR(32),
+nextLabel                VARCHAR(128),
+previousLabel            VARCHAR(128),
+parentLabel              VARCHAR(128),
+showArrows               INTEGER DEFAULT 1,
+loopSequence             INTEGER DEFAULT 1,
+excludeSystemPages       INTEGER DEFAULT 1,
+orderBy                  VARCHAR(20) DEFAULT 'display_asc',
+                 PRIMARY KEY (bID)
+);
+
+CREATE TABLE btPageList (
+bID                      INTEGER UNSIGNED NOT NULL,
+num                      SMALLINT UNSIGNED NOT NULL,
+orderBy                  VARCHAR(32),
+cParentID                INTEGER UNSIGNED NOT NULL DEFAULT 1,
+cThis                    TINYINT UNSIGNED NOT NULL DEFAULT 0,
+paginate                 TINYINT UNSIGNED NOT NULL DEFAULT 0,
+displayAliases           TINYINT UNSIGNED NOT NULL DEFAULT 1,
+ctID                     SMALLINT UNSIGNED,
+rss                      INTEGER DEFAULT 0,
+rssTitle                 VARCHAR(255),
+rssDescription           LONGTEXT,
+truncateSummaries        INTEGER DEFAULT 0,
+displayFeaturedOnly      INTEGER DEFAULT 0,
+truncateChars            INTEGER DEFAULT 128,
+                 PRIMARY KEY (bID)
+);
+
+CREATE TABLE btRssDisplay (
+bID                      INTEGER UNSIGNED NOT NULL,
+title                    VARCHAR(255),
+url                      VARCHAR(255),
+dateFormat               VARCHAR(100),
+itemsToDisplay           INTEGER UNSIGNED DEFAULT 5,
+showSummary              TINYINT UNSIGNED NOT NULL DEFAULT 1,
+launchInNewWindow        TINYINT UNSIGNED NOT NULL DEFAULT 1,
+                 PRIMARY KEY (bID)
+);
+
+CREATE TABLE btSearch (
+bID                      INTEGER UNSIGNED NOT NULL,
+title                    VARCHAR(255),
+buttonText               VARCHAR(128),
+baseSearchPath           VARCHAR(255),
+resultsURL               VARCHAR(255),
+                 PRIMARY KEY (bID)
+);
+
+CREATE TABLE btSlideshow (
+bID                      INTEGER UNSIGNED NOT NULL,
+fsID                     INTEGER UNSIGNED,
+playback                 VARCHAR(50),
+duration                 INTEGER UNSIGNED,
+fadeDuration             INTEGER UNSIGNED,
+                 PRIMARY KEY (bID)
+);
+
+CREATE TABLE btSlideshowImg (
+slideshowImgId           INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+bID                      INTEGER UNSIGNED,
+fID                      INTEGER UNSIGNED,
+url                      VARCHAR(255),
+duration                 INTEGER UNSIGNED,
+fadeDuration             INTEGER UNSIGNED,
+groupSet                 INTEGER UNSIGNED,
+position                 INTEGER UNSIGNED,
+imgHeight                INTEGER UNSIGNED,
+                 PRIMARY KEY (slideshowImgId)
+);
+
+CREATE TABLE btSurvey (
+bID                      INTEGER UNSIGNED NOT NULL,
+question                 VARCHAR(255) DEFAULT '',
+requiresRegistration     INTEGER DEFAULT 0,
+                 PRIMARY KEY (bID)
+);
+
+CREATE TABLE btSurveyOptions (
+optionID                 INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+bID                      INTEGER,
+optionName               VARCHAR(255),
+displayOrder             INTEGER DEFAULT 0,
+                 PRIMARY KEY (optionID)
+);
+
+CREATE TABLE btSurveyResults (
+resultID                 INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+optionID                 INTEGER UNSIGNED DEFAULT 0,
+uID                      INTEGER UNSIGNED DEFAULT 0,
+bID                      INTEGER,
+cID                      INTEGER,
+ipAddress                VARCHAR(128),
+timestamp                TIMESTAMP,
+                 PRIMARY KEY (resultID)
+);
+
+CREATE TABLE btTags (
+bID                      INTEGER UNSIGNED NOT NULL,
+title                    VARCHAR(255),
+targetCID                INTEGER,
+displayMode              VARCHAR(20) DEFAULT 'page',
+cloudCount               INTEGER DEFAULT 10,
+                 PRIMARY KEY (bID)
+);
+
+CREATE TABLE btVideo (
+bID                      INTEGER UNSIGNED NOT NULL,
+fID                      INTEGER UNSIGNED,
+width                    INTEGER UNSIGNED,
+height                   INTEGER UNSIGNED,
+                 PRIMARY KEY (bID)
+);
+
+CREATE TABLE btYouTube (
+bID                      INTEGER UNSIGNED NOT NULL,
+title                    VARCHAR(255),
+videoURL                 VARCHAR(255),
+                 PRIMARY KEY (bID)
+);
+
+CREATE TABLE IF NOT EXISTS `CollectionSearchIndexAttributes` (
+  `cID` int(11) unsigned NOT NULL default '0',
+  `ak_meta_title` text,
+  `ak_meta_description` text,
+  `ak_meta_keywords` text,
+  `ak_exclude_nav` tinyint(4) default '0',
+  `ak_exclude_page_list` tinyint(4) default '0',
+  `ak_header_extra_content` text,
+  `ak_exclude_search_index` tinyint(4) default '0',
+  `ak_exclude_sitemapxml` tinyint(4) default '0',
+  `ak_tags` text,
+  PRIMARY KEY  (`cID`)
+) ENGINE=MyISAM;
+
+CREATE TABLE IF NOT EXISTS `FileSearchIndexAttributes` (
+  `fID` int(11) unsigned NOT NULL default '0',
+  `ak_width` decimal(14,4) default '0.0000',
+  `ak_height` decimal(14,4) default '0.0000',
+  PRIMARY KEY  (`fID`)
+) ENGINE=MyISAM;
+
+CREATE TABLE IF NOT EXISTS `UserSearchIndexAttributes` (
+  `uID` int(11) unsigned NOT NULL DEFAULT '0',
+  `ak_profile_private_messages_enabled` tinyint(4) DEFAULT '0',
+  `ak_profile_private_messages_notification_enabled` tinyint(4) DEFAULT '0',
+  PRIMARY KEY (`uID`)
+) ENGINE=MyISAM;
+
+
 
 CREATE TABLE atAttributeKeyCategoryItemsSettings (
   akID int(11) NOT NULL DEFAULT '0',
   akCategoryHandle varchar(255) DEFAULT NULL,
   PRIMARY KEY (akID)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE atBoolean (
-  avID int(10) unsigned NOT NULL,
-  `value` tinyint(1) NOT NULL DEFAULT '0',
-  PRIMARY KEY (avID)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE atBooleanSettings (
-  akID int(10) unsigned NOT NULL,
-  akCheckedByDefault tinyint(1) NOT NULL DEFAULT '0',
-  PRIMARY KEY (akID)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE atDateTime (
-  avID int(10) unsigned NOT NULL,
-  `value` datetime DEFAULT '0000-00-00 00:00:00',
-  PRIMARY KEY (avID)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE atDateTimeSettings (
-  akID int(10) unsigned NOT NULL,
-  akDateDisplayMode varchar(255) DEFAULT NULL,
-  PRIMARY KEY (akID)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE atDefault (
-  avID int(10) unsigned NOT NULL,
-  `value` longtext,
-  PRIMARY KEY (avID)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE atFile (
-  avID int(10) unsigned NOT NULL,
-  fID int(10) unsigned NOT NULL,
-  PRIMARY KEY (avID)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE atNumber (
-  avID int(10) unsigned NOT NULL,
-  `value` decimal(14,4) DEFAULT '0.0000',
-  PRIMARY KEY (avID)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE atSelectOptions (
-  ID int(10) unsigned NOT NULL AUTO_INCREMENT,
-  akID int(10) unsigned DEFAULT NULL,
-  `value` varchar(255) DEFAULT NULL,
-  displayOrder int(10) unsigned DEFAULT NULL,
-  isEndUserAdded tinyint(1) NOT NULL DEFAULT '0',
-  PRIMARY KEY (ID)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE atSelectOptionsSelected (
-  avID int(10) unsigned NOT NULL,
-  atSelectOptionID int(10) unsigned NOT NULL,
-  PRIMARY KEY (avID,atSelectOptionID)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE atSelectSettings (
-  akID int(10) unsigned NOT NULL,
-  akSelectAllowMultipleValues tinyint(1) NOT NULL DEFAULT '0',
-  akSelectOptionDisplayOrder varchar(255) NOT NULL DEFAULT 'display_asc',
-  akSelectAllowOtherValues tinyint(1) NOT NULL DEFAULT '0',
-  PRIMARY KEY (akID)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE atTextareaSettings (
-  akID int(10) unsigned NOT NULL DEFAULT '0',
-  akTextareaDisplayMode varchar(255) DEFAULT NULL,
-  PRIMARY KEY (akID)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE AttributeKeyCategories (
-  akCategoryID int(10) unsigned NOT NULL AUTO_INCREMENT,
-  akCategoryHandle varchar(255) NOT NULL,
-  akCategoryAllowSets smallint(4) NOT NULL DEFAULT '0',
-  pkgID int(10) unsigned DEFAULT NULL,
-  PRIMARY KEY (akCategoryID)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM;
 
 CREATE TABLE AttributeKeyCategoryItemAttributeValues (
   ID int(10) unsigned NOT NULL,
@@ -144,7 +1299,7 @@ CREATE TABLE AttributeKeyCategoryItemAttributeValues (
   avID int(10) unsigned NOT NULL,
   akCategoryHandle varchar(255) NOT NULL,
   PRIMARY KEY (ID,akID,avID)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM;
 
 CREATE TABLE AttributeKeyCategoryItemPermissions (
   ID varchar(255) NOT NULL,
@@ -157,1103 +1312,16 @@ CREATE TABLE AttributeKeyCategoryItemPermissions (
   canAdd tinyint(1) DEFAULT '0',
   canSearch tinyint(1) DEFAULT '0',
   canAdmin tinyint(1) DEFAULT '0'
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM;
 
 CREATE TABLE AttributeKeyCategoryItems (
   ID int(10) unsigned NOT NULL AUTO_INCREMENT,
   akCategoryHandle varchar(255) NOT NULL,
   uID int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (ID)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM;
 
 CREATE TABLE AttributeKeyCategoryItemSearchIndex (
   ID int(10) unsigned NOT NULL,
   PRIMARY KEY (ID)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE AttributeKeys (
-  akID int(10) unsigned NOT NULL AUTO_INCREMENT,
-  akHandle varchar(255) NOT NULL,
-  akName varchar(255) NOT NULL,
-  akIsSearchable tinyint(1) NOT NULL DEFAULT '0',
-  akIsSearchableIndexed tinyint(1) NOT NULL DEFAULT '0',
-  akIsAutoCreated tinyint(1) NOT NULL DEFAULT '0',
-  akIsColumnHeader tinyint(1) NOT NULL DEFAULT '0',
-  akIsEditable tinyint(1) NOT NULL DEFAULT '0',
-  atID int(10) unsigned DEFAULT NULL,
-  akCategoryID int(10) unsigned DEFAULT NULL,
-  pkgID int(10) unsigned DEFAULT NULL,
-  PRIMARY KEY (akID),
-  UNIQUE KEY akHandle (akHandle,akCategoryID)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE AttributeSetKeys (
-  akID int(10) unsigned NOT NULL DEFAULT '0',
-  asID int(10) unsigned NOT NULL DEFAULT '0',
-  displayOrder int(10) unsigned NOT NULL DEFAULT '0',
-  PRIMARY KEY (akID,asID)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE AttributeSets (
-  asID int(10) unsigned NOT NULL AUTO_INCREMENT,
-  asName varchar(255) DEFAULT NULL,
-  asHandle varchar(255) NOT NULL,
-  akCategoryID int(10) unsigned NOT NULL DEFAULT '0',
-  pkgID int(10) unsigned NOT NULL DEFAULT '0',
-  PRIMARY KEY (asID)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE AttributeTypeCategories (
-  atID int(10) unsigned NOT NULL DEFAULT '0',
-  akCategoryID int(10) unsigned NOT NULL DEFAULT '0',
-  PRIMARY KEY (atID,akCategoryID)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE AttributeTypes (
-  atID int(10) unsigned NOT NULL AUTO_INCREMENT,
-  atHandle varchar(255) NOT NULL,
-  atName varchar(255) NOT NULL,
-  pkgID int(10) unsigned DEFAULT NULL,
-  PRIMARY KEY (atID)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE AttributeValues (
-  avID int(10) unsigned NOT NULL AUTO_INCREMENT,
-  akID int(10) unsigned DEFAULT NULL,
-  avDateAdded datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  uID int(10) unsigned DEFAULT NULL,
-  atID int(10) unsigned DEFAULT NULL,
-  PRIMARY KEY (avID)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE BlockRelations (
-  brID int(10) unsigned NOT NULL AUTO_INCREMENT,
-  bID int(10) unsigned NOT NULL DEFAULT '0',
-  originalBID int(10) unsigned NOT NULL DEFAULT '0',
-  relationType varchar(50) NOT NULL,
-  PRIMARY KEY (brID)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE Blocks (
-  bID int(10) unsigned NOT NULL AUTO_INCREMENT,
-  bName varchar(60) DEFAULT NULL,
-  bDateAdded datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  bDateModified datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  bFilename varchar(32) DEFAULT NULL,
-  bIsActive varchar(1) NOT NULL DEFAULT '1',
-  btID int(10) unsigned NOT NULL DEFAULT '0',
-  uID int(10) unsigned DEFAULT NULL,
-  PRIMARY KEY (bID)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE BlockTypes (
-  btID int(10) unsigned NOT NULL AUTO_INCREMENT,
-  btHandle varchar(32) NOT NULL,
-  btName varchar(128) NOT NULL,
-  btDescription text,
-  btActiveWhenAdded tinyint(1) NOT NULL DEFAULT '1',
-  btCopyWhenPropagate tinyint(1) NOT NULL DEFAULT '0',
-  btIncludeAll tinyint(1) NOT NULL DEFAULT '0',
-  btIsInternal tinyint(1) NOT NULL DEFAULT '0',
-  btInterfaceWidth int(10) unsigned NOT NULL DEFAULT '400',
-  btInterfaceHeight int(10) unsigned NOT NULL DEFAULT '400',
-  pkgID int(10) unsigned NOT NULL DEFAULT '0',
-  PRIMARY KEY (btID),
-  UNIQUE KEY btHandle (btHandle)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE btContentFile (
-  bID int(10) unsigned NOT NULL,
-  fID int(10) unsigned DEFAULT NULL,
-  fileLinkText varchar(255) DEFAULT NULL,
-  filePassword varchar(255) DEFAULT NULL,
-  PRIMARY KEY (bID)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE btContentImage (
-  bID int(10) unsigned NOT NULL,
-  fID int(10) unsigned DEFAULT '0',
-  fOnstateID int(10) unsigned DEFAULT '0',
-  maxWidth int(10) unsigned DEFAULT '0',
-  maxHeight int(10) unsigned DEFAULT '0',
-  externalLink varchar(255) DEFAULT NULL,
-  altText varchar(255) DEFAULT NULL,
-  PRIMARY KEY (bID)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE btContentLocal (
-  bID int(10) unsigned NOT NULL,
-  content longtext,
-  PRIMARY KEY (bID)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE btDateNav (
-  bID int(10) unsigned NOT NULL,
-  num smallint(5) unsigned NOT NULL,
-  cParentID int(10) unsigned NOT NULL DEFAULT '1',
-  cThis tinyint(3) unsigned NOT NULL DEFAULT '0',
-  ctID smallint(5) unsigned DEFAULT NULL,
-  flatDisplay int(11) DEFAULT '0',
-  defaultNode varchar(64) DEFAULT 'current_page',
-  truncateTitles int(11) DEFAULT '0',
-  truncateSummaries int(11) DEFAULT '0',
-  displayFeaturedOnly int(11) DEFAULT '0',
-  truncateChars int(11) DEFAULT '128',
-  truncateTitleChars int(11) DEFAULT '128',
-  showDescriptions int(11) DEFAULT '0',
-  PRIMARY KEY (bID)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE btExternalForm (
-  bID int(10) unsigned NOT NULL,
-  filename varchar(128) DEFAULT NULL,
-  PRIMARY KEY (bID)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE btFile (
-  bID int(10) unsigned NOT NULL,
-  filename varchar(255) DEFAULT NULL,
-  origfilename varchar(255) DEFAULT NULL,
-  url varchar(255) DEFAULT NULL,
-  `type` varchar(32) DEFAULT NULL,
-  generictype varchar(32) DEFAULT NULL,
-  PRIMARY KEY (bID)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE btFlashContent (
-  bID int(10) unsigned NOT NULL,
-  fID int(10) unsigned DEFAULT NULL,
-  quality varchar(255) DEFAULT NULL,
-  minVersion varchar(255) DEFAULT NULL,
-  PRIMARY KEY (bID)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE btForm (
-  bID int(10) unsigned NOT NULL,
-  questionSetId int(10) unsigned DEFAULT '0',
-  surveyName varchar(255) DEFAULT NULL,
-  thankyouMsg text,
-  notifyMeOnSubmission tinyint(3) unsigned NOT NULL DEFAULT '0',
-  recipientEmail varchar(255) DEFAULT NULL,
-  displayCaptcha int(11) DEFAULT '1',
-  redirectCID int(11) DEFAULT '0',
-  PRIMARY KEY (bID),
-  KEY questionSetIdForeign (questionSetId)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE btFormAnswers (
-  aID int(10) unsigned NOT NULL AUTO_INCREMENT,
-  asID int(10) unsigned DEFAULT '0',
-  msqID int(10) unsigned DEFAULT '0',
-  answer varchar(255) DEFAULT NULL,
-  answerLong text,
-  PRIMARY KEY (aID)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE btFormAnswerSet (
-  asID int(10) unsigned NOT NULL AUTO_INCREMENT,
-  questionSetId int(10) unsigned DEFAULT '0',
-  created timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  uID int(10) unsigned DEFAULT '0',
-  PRIMARY KEY (asID)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE btFormQuestions (
-  qID int(10) unsigned NOT NULL AUTO_INCREMENT,
-  msqID int(10) unsigned DEFAULT '0',
-  bID int(10) unsigned DEFAULT '0',
-  questionSetId int(10) unsigned DEFAULT '0',
-  question varchar(255) DEFAULT NULL,
-  inputType varchar(255) DEFAULT NULL,
-  `options` text,
-  position int(10) unsigned DEFAULT '1000',
-  width int(10) unsigned DEFAULT '50',
-  height int(10) unsigned DEFAULT '3',
-  required int(11) DEFAULT '0',
-  PRIMARY KEY (qID),
-  KEY questionSetId (questionSetId),
-  KEY msqID (msqID)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE btGoogleMap (
-  bID int(10) unsigned NOT NULL,
-  title varchar(255) DEFAULT NULL,
-  location varchar(255) DEFAULT NULL,
-  latitude double DEFAULT NULL,
-  longitude double DEFAULT NULL,
-  zoom int(8) DEFAULT NULL,
-  PRIMARY KEY (bID)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE btGuestBook (
-  bID int(10) unsigned NOT NULL,
-  requireApproval int(11) DEFAULT '0',
-  title varchar(100) DEFAULT 'Comments',
-  dateFormat varchar(100) DEFAULT NULL,
-  displayGuestBookForm int(11) DEFAULT '1',
-  displayCaptcha int(11) DEFAULT '1',
-  authenticationRequired int(11) DEFAULT '0',
-  notifyEmail varchar(100) DEFAULT NULL,
-  PRIMARY KEY (bID)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE btGuestBookEntries (
-  bID int(11) DEFAULT NULL,
-  cID int(11) DEFAULT '1',
-  entryID int(11) NOT NULL AUTO_INCREMENT,
-  uID int(11) DEFAULT '0',
-  commentText longtext,
-  user_name varchar(100) DEFAULT NULL,
-  user_email varchar(100) DEFAULT NULL,
-  entryDate timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  approved int(11) DEFAULT '1',
-  PRIMARY KEY (entryID),
-  KEY cID (cID)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE btNavigation (
-  bID int(10) unsigned NOT NULL,
-  orderBy varchar(255) DEFAULT 'alpha_asc',
-  displayPages varchar(255) DEFAULT 'top',
-  displayPagesCID int(10) unsigned NOT NULL DEFAULT '1',
-  displayPagesIncludeSelf tinyint(3) unsigned NOT NULL DEFAULT '0',
-  displaySubPages varchar(255) DEFAULT 'none',
-  displaySubPageLevels varchar(255) DEFAULT 'none',
-  displaySubPageLevelsNum smallint(5) unsigned NOT NULL DEFAULT '0',
-  displayUnavailablePages tinyint(3) unsigned NOT NULL DEFAULT '0',
-  PRIMARY KEY (bID)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE btNextPrevious (
-  bID int(10) unsigned NOT NULL,
-  linkStyle varchar(32) DEFAULT NULL,
-  nextLabel varchar(128) DEFAULT NULL,
-  previousLabel varchar(128) DEFAULT NULL,
-  parentLabel varchar(128) DEFAULT NULL,
-  showArrows int(11) DEFAULT '1',
-  loopSequence int(11) DEFAULT '1',
-  excludeSystemPages int(11) DEFAULT '1',
-  orderBy varchar(20) DEFAULT 'display_asc',
-  PRIMARY KEY (bID)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE btPageList (
-  bID int(10) unsigned NOT NULL,
-  num smallint(5) unsigned NOT NULL,
-  orderBy varchar(32) DEFAULT NULL,
-  cParentID int(10) unsigned NOT NULL DEFAULT '1',
-  cThis tinyint(3) unsigned NOT NULL DEFAULT '0',
-  paginate tinyint(3) unsigned NOT NULL DEFAULT '0',
-  displayAliases tinyint(3) unsigned NOT NULL DEFAULT '1',
-  ctID smallint(5) unsigned DEFAULT NULL,
-  rss int(11) DEFAULT '0',
-  rssTitle varchar(255) DEFAULT NULL,
-  rssDescription longtext,
-  truncateSummaries int(11) DEFAULT '0',
-  displayFeaturedOnly int(11) DEFAULT '0',
-  truncateChars int(11) DEFAULT '128',
-  PRIMARY KEY (bID)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE btRssDisplay (
-  bID int(10) unsigned NOT NULL,
-  title varchar(255) DEFAULT NULL,
-  url varchar(255) DEFAULT NULL,
-  dateFormat varchar(100) DEFAULT NULL,
-  itemsToDisplay int(10) unsigned DEFAULT '5',
-  showSummary tinyint(3) unsigned NOT NULL DEFAULT '1',
-  launchInNewWindow tinyint(3) unsigned NOT NULL DEFAULT '1',
-  PRIMARY KEY (bID)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE btSearch (
-  bID int(10) unsigned NOT NULL,
-  title varchar(255) DEFAULT NULL,
-  buttonText varchar(128) DEFAULT NULL,
-  baseSearchPath varchar(255) DEFAULT NULL,
-  resultsURL varchar(255) DEFAULT NULL,
-  PRIMARY KEY (bID)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE btSlideshow (
-  bID int(10) unsigned NOT NULL,
-  fsID int(10) unsigned DEFAULT NULL,
-  playback varchar(50) DEFAULT NULL,
-  duration int(10) unsigned DEFAULT NULL,
-  fadeDuration int(10) unsigned DEFAULT NULL,
-  PRIMARY KEY (bID)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE btSlideshowImg (
-  slideshowImgId int(10) unsigned NOT NULL AUTO_INCREMENT,
-  bID int(10) unsigned DEFAULT NULL,
-  fID int(10) unsigned DEFAULT NULL,
-  url varchar(255) DEFAULT NULL,
-  duration int(10) unsigned DEFAULT NULL,
-  fadeDuration int(10) unsigned DEFAULT NULL,
-  groupSet int(10) unsigned DEFAULT NULL,
-  position int(10) unsigned DEFAULT NULL,
-  imgHeight int(10) unsigned DEFAULT NULL,
-  PRIMARY KEY (slideshowImgId)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE btSurvey (
-  bID int(10) unsigned NOT NULL,
-  question varchar(255) DEFAULT '',
-  requiresRegistration int(11) DEFAULT '0',
-  PRIMARY KEY (bID)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE btSurveyOptions (
-  optionID int(10) unsigned NOT NULL AUTO_INCREMENT,
-  bID int(11) DEFAULT NULL,
-  optionName varchar(255) DEFAULT NULL,
-  displayOrder int(11) DEFAULT '0',
-  PRIMARY KEY (optionID)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE btSurveyResults (
-  resultID int(10) unsigned NOT NULL AUTO_INCREMENT,
-  optionID int(10) unsigned DEFAULT '0',
-  uID int(10) unsigned DEFAULT '0',
-  bID int(11) DEFAULT NULL,
-  cID int(11) DEFAULT NULL,
-  ipAddress varchar(128) DEFAULT NULL,
-  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (resultID)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE btTags (
-  bID int(10) unsigned NOT NULL,
-  title varchar(255) DEFAULT NULL,
-  targetCID int(11) DEFAULT NULL,
-  PRIMARY KEY (bID)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE btVideo (
-  bID int(10) unsigned NOT NULL,
-  fID int(10) unsigned DEFAULT NULL,
-  width int(10) unsigned DEFAULT NULL,
-  height int(10) unsigned DEFAULT NULL,
-  PRIMARY KEY (bID)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE btYouTube (
-  bID int(10) unsigned NOT NULL,
-  title varchar(255) DEFAULT NULL,
-  videoURL varchar(255) DEFAULT NULL,
-  PRIMARY KEY (bID)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE CollectionAttributeValues (
-  cID int(10) unsigned NOT NULL DEFAULT '0',
-  cvID int(10) unsigned NOT NULL DEFAULT '0',
-  akID int(10) unsigned NOT NULL DEFAULT '0',
-  avID int(10) unsigned NOT NULL DEFAULT '0',
-  PRIMARY KEY (cID,cvID,akID,avID)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE Collections (
-  cID int(10) unsigned NOT NULL AUTO_INCREMENT,
-  cDateAdded datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  cDateModified datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  cHandle varchar(255) DEFAULT NULL,
-  PRIMARY KEY (cID),
-  KEY cDateModified (cDateModified),
-  KEY cDateAdded (cDateAdded)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE CollectionSearchIndexAttributes (
-  cID int(11) unsigned NOT NULL DEFAULT '0',
-  ak_meta_title text,
-  ak_meta_description text,
-  ak_meta_keywords text,
-  ak_exclude_nav tinyint(4) DEFAULT '0',
-  ak_exclude_page_list tinyint(4) DEFAULT '0',
-  ak_header_extra_content text,
-  ak_exclude_search_index tinyint(4) DEFAULT '0',
-  ak_exclude_sitemapxml tinyint(4) DEFAULT '0',
-  ak_tags text,
-  PRIMARY KEY (cID)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE CollectionVersionAreaLayouts (
-  cvalID int(10) unsigned NOT NULL AUTO_INCREMENT,
-  cID int(10) unsigned DEFAULT '0',
-  cvID int(10) unsigned DEFAULT '0',
-  arHandle varchar(255) DEFAULT NULL,
-  layoutID int(10) unsigned NOT NULL DEFAULT '0',
-  position int(10) DEFAULT '1000',
-  areaNameNumber int(10) unsigned DEFAULT '0',
-  PRIMARY KEY (cvalID),
-  KEY areaLayoutsIndex (cID,cvID,arHandle)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE CollectionVersionAreaStyles (
-  cID int(10) unsigned NOT NULL DEFAULT '0',
-  cvID int(10) unsigned NOT NULL DEFAULT '0',
-  arHandle varchar(255) NOT NULL,
-  csrID int(10) unsigned NOT NULL DEFAULT '0',
-  PRIMARY KEY (cID,cvID,arHandle)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE CollectionVersionBlockPermissions (
-  cID int(10) unsigned NOT NULL DEFAULT '0',
-  cvID int(10) unsigned NOT NULL DEFAULT '1',
-  bID int(10) unsigned NOT NULL DEFAULT '0',
-  gID int(10) unsigned NOT NULL DEFAULT '0',
-  uID int(10) unsigned NOT NULL DEFAULT '0',
-  cbgPermissions varchar(32) DEFAULT NULL,
-  PRIMARY KEY (cID,cvID,bID,gID,uID)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE CollectionVersionBlocks (
-  cID int(10) unsigned NOT NULL DEFAULT '0',
-  cvID int(10) unsigned NOT NULL DEFAULT '1',
-  bID int(10) unsigned NOT NULL DEFAULT '0',
-  arHandle varchar(255) NOT NULL,
-  cbDisplayOrder int(10) unsigned NOT NULL DEFAULT '0',
-  isOriginal varchar(1) NOT NULL DEFAULT '0',
-  cbOverrideAreaPermissions tinyint(1) NOT NULL DEFAULT '0',
-  cbIncludeAll tinyint(1) NOT NULL DEFAULT '0',
-  PRIMARY KEY (cID,cvID,bID,arHandle),
-  KEY cbIncludeAll (cbIncludeAll)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE CollectionVersionBlockStyles (
-  cID int(10) unsigned NOT NULL DEFAULT '0',
-  cvID int(10) unsigned NOT NULL DEFAULT '0',
-  bID int(10) unsigned NOT NULL DEFAULT '0',
-  arHandle varchar(255) NOT NULL,
-  csrID int(10) unsigned NOT NULL DEFAULT '0',
-  PRIMARY KEY (cID,cvID,bID,arHandle)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE CollectionVersions (
-  cID int(10) unsigned NOT NULL DEFAULT '0',
-  cvID int(10) unsigned NOT NULL DEFAULT '1',
-  cvName text,
-  cvHandle varchar(64) DEFAULT NULL,
-  cvDescription text,
-  cvDatePublic datetime DEFAULT NULL,
-  cvDateCreated datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  cvComments varchar(255) DEFAULT NULL,
-  cvIsApproved tinyint(1) NOT NULL DEFAULT '0',
-  cvIsNew tinyint(1) NOT NULL DEFAULT '0',
-  cvAuthorUID int(10) unsigned DEFAULT NULL,
-  cvApproverUID int(10) unsigned DEFAULT NULL,
-  cvActivateDatetime datetime DEFAULT NULL,
-  PRIMARY KEY (cID,cvID),
-  KEY cvIsApproved (cvIsApproved)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE ComposerContentLayout (
-  cclID int(10) unsigned NOT NULL AUTO_INCREMENT,
-  bID int(10) unsigned NOT NULL DEFAULT '0',
-  akID int(10) unsigned NOT NULL DEFAULT '0',
-  displayOrder int(10) unsigned NOT NULL DEFAULT '0',
-  ctID int(10) unsigned NOT NULL DEFAULT '0',
-  ccFilename varchar(128) DEFAULT NULL,
-  PRIMARY KEY (cclID)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE ComposerDrafts (
-  cID int(10) unsigned NOT NULL DEFAULT '0',
-  cpPublishParentID int(10) unsigned NOT NULL DEFAULT '0',
-  PRIMARY KEY (cID)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE ComposerTypes (
-  ctID int(10) unsigned NOT NULL DEFAULT '0',
-  ctComposerPublishPageMethod varchar(64) NOT NULL DEFAULT 'CHOOSE',
-  ctComposerPublishPageTypeID int(10) unsigned NOT NULL DEFAULT '0',
-  ctComposerPublishPageParentID int(10) unsigned NOT NULL DEFAULT '0',
-  PRIMARY KEY (ctID)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE Config (
-  cfKey varchar(64) NOT NULL,
-  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  cfValue longtext,
-  uID int(10) unsigned NOT NULL DEFAULT '0',
-  pkgID int(10) unsigned NOT NULL DEFAULT '0',
-  PRIMARY KEY (cfKey,uID),
-  KEY uID (uID)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE CustomStylePresets (
-  cspID int(10) unsigned NOT NULL AUTO_INCREMENT,
-  cspName varchar(255) NOT NULL,
-  csrID int(10) unsigned NOT NULL DEFAULT '0',
-  PRIMARY KEY (cspID)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE CustomStyleRules (
-  csrID int(10) unsigned NOT NULL AUTO_INCREMENT,
-  css_id varchar(128) DEFAULT NULL,
-  css_class varchar(128) DEFAULT NULL,
-  css_serialized text,
-  css_custom text,
-  PRIMARY KEY (csrID)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE DashboardHomepage (
-  dbhID int(10) unsigned NOT NULL AUTO_INCREMENT,
-  dbhModule varchar(255) NOT NULL,
-  dbhDisplayName varchar(255) DEFAULT NULL,
-  dbhDisplayOrder int(10) unsigned NOT NULL DEFAULT '0',
-  pkgID int(10) unsigned NOT NULL DEFAULT '0',
-  PRIMARY KEY (dbhID)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE DownloadStatistics (
-  dsID int(10) unsigned NOT NULL AUTO_INCREMENT,
-  fID int(10) unsigned NOT NULL,
-  fvID int(10) unsigned NOT NULL,
-  uID int(10) unsigned NOT NULL,
-  rcID int(10) unsigned NOT NULL,
-  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (dsID)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE FileAttributeValues (
-  fID int(10) unsigned NOT NULL DEFAULT '0',
-  fvID int(10) unsigned NOT NULL DEFAULT '0',
-  akID int(10) unsigned NOT NULL DEFAULT '0',
-  avID int(10) unsigned NOT NULL DEFAULT '0',
-  PRIMARY KEY (fID,fvID,akID,avID)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE FilePermissionFileTypes (
-  fsID int(10) unsigned NOT NULL DEFAULT '0',
-  gID int(10) unsigned NOT NULL DEFAULT '0',
-  uID int(10) unsigned NOT NULL DEFAULT '0',
-  extension varchar(32) NOT NULL,
-  PRIMARY KEY (fsID,gID,uID,extension)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE FilePermissions (
-  fID int(10) unsigned NOT NULL DEFAULT '0',
-  gID int(10) unsigned NOT NULL DEFAULT '0',
-  uID int(10) unsigned NOT NULL DEFAULT '0',
-  canRead int(4) NOT NULL DEFAULT '0',
-  canWrite int(4) NOT NULL DEFAULT '0',
-  canAdmin int(4) NOT NULL DEFAULT '0',
-  canSearch int(4) NOT NULL DEFAULT '0',
-  PRIMARY KEY (fID,gID,uID)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE Files (
-  fID int(10) unsigned NOT NULL AUTO_INCREMENT,
-  fDateAdded datetime DEFAULT NULL,
-  uID int(10) unsigned NOT NULL DEFAULT '0',
-  fslID int(10) unsigned NOT NULL DEFAULT '0',
-  ocID int(10) unsigned NOT NULL DEFAULT '0',
-  fOverrideSetPermissions int(1) NOT NULL DEFAULT '0',
-  fPassword varchar(255) DEFAULT NULL,
-  PRIMARY KEY (fID,uID,fslID),
-  KEY fOverrideSetPermissions (fOverrideSetPermissions)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE FileSearchIndexAttributes (
-  fID int(11) unsigned NOT NULL DEFAULT '0',
-  ak_width decimal(14,4) DEFAULT '0.0000',
-  ak_height decimal(14,4) DEFAULT '0.0000',
-  PRIMARY KEY (fID)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE FileSetFiles (
-  fsfID int(10) unsigned NOT NULL AUTO_INCREMENT,
-  fID int(10) unsigned NOT NULL,
-  fsID int(10) unsigned NOT NULL,
-  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  fsDisplayOrder int(10) unsigned NOT NULL,
-  PRIMARY KEY (fsfID),
-  KEY fID (fID),
-  KEY fsID (fsID)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE FileSetPermissions (
-  fsID int(10) unsigned NOT NULL DEFAULT '0',
-  gID int(10) unsigned NOT NULL DEFAULT '0',
-  uID int(10) unsigned NOT NULL DEFAULT '0',
-  canRead int(4) DEFAULT NULL,
-  canWrite int(4) DEFAULT NULL,
-  canAdmin int(4) DEFAULT NULL,
-  canAdd int(4) DEFAULT NULL,
-  canSearch int(3) unsigned DEFAULT NULL,
-  PRIMARY KEY (fsID,gID,uID),
-  KEY canRead (canRead),
-  KEY canWrite (canWrite),
-  KEY canAdmin (canAdmin),
-  KEY canSearch (canSearch),
-  KEY canAdd (canAdd)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE FileSets (
-  fsID int(10) unsigned NOT NULL AUTO_INCREMENT,
-  fsName varchar(64) NOT NULL,
-  uID int(10) unsigned NOT NULL DEFAULT '0',
-  fsType int(4) NOT NULL,
-  fsOverrideGlobalPermissions int(4) DEFAULT NULL,
-  PRIMARY KEY (fsID),
-  KEY fsOverrideGlobalPermissions (fsOverrideGlobalPermissions)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE FileSetSavedSearches (
-  fsID int(10) unsigned NOT NULL DEFAULT '0',
-  fsSearchRequest text,
-  fsResultColumns text,
-  PRIMARY KEY (fsID)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE FileStorageLocations (
-  fslID int(10) unsigned NOT NULL DEFAULT '0',
-  fslName varchar(255) NOT NULL,
-  fslDirectory varchar(255) NOT NULL,
-  PRIMARY KEY (fslID)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE FileVersionLog (
-  fvlID int(10) unsigned NOT NULL AUTO_INCREMENT,
-  fID int(10) unsigned NOT NULL DEFAULT '0',
-  fvID int(10) unsigned NOT NULL DEFAULT '0',
-  fvUpdateTypeID int(3) unsigned NOT NULL DEFAULT '0',
-  fvUpdateTypeAttributeID int(10) unsigned NOT NULL DEFAULT '0',
-  PRIMARY KEY (fvlID)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE FileVersions (
-  fID int(10) unsigned NOT NULL DEFAULT '0',
-  fvID int(10) unsigned NOT NULL DEFAULT '0',
-  fvFilename varchar(255) NOT NULL,
-  fvPrefix varchar(12) DEFAULT NULL,
-  fvGenericType int(3) unsigned NOT NULL DEFAULT '0',
-  fvSize int(20) unsigned NOT NULL DEFAULT '0',
-  fvTitle varchar(255) DEFAULT NULL,
-  fvDescription text,
-  fvTags varchar(255) DEFAULT NULL,
-  fvIsApproved int(10) unsigned NOT NULL DEFAULT '1',
-  fvDateAdded datetime DEFAULT NULL,
-  fvApproverUID int(10) unsigned NOT NULL DEFAULT '0',
-  fvAuthorUID int(10) unsigned NOT NULL DEFAULT '0',
-  fvActivateDatetime datetime DEFAULT NULL,
-  fvHasThumbnail1 int(1) NOT NULL DEFAULT '0',
-  fvHasThumbnail2 int(1) NOT NULL DEFAULT '0',
-  fvHasThumbnail3 int(1) NOT NULL DEFAULT '0',
-  fvExtension varchar(32) DEFAULT NULL,
-  fvType int(10) unsigned NOT NULL DEFAULT '0',
-  PRIMARY KEY (fID,fvID),
-  KEY fvExtension (fvType),
-  KEY fvTitle (fvTitle)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE Groups (
-  gID int(10) unsigned NOT NULL AUTO_INCREMENT,
-  gName varchar(128) NOT NULL,
-  gDescription varchar(255) NOT NULL,
-  gUserExpirationIsEnabled int(1) NOT NULL DEFAULT '0',
-  gUserExpirationMethod varchar(12) DEFAULT NULL,
-  gUserExpirationSetDateTime datetime DEFAULT NULL,
-  gUserExpirationInterval int(10) unsigned NOT NULL DEFAULT '0',
-  gUserExpirationAction varchar(20) DEFAULT NULL,
-  PRIMARY KEY (gID),
-  UNIQUE KEY gName (gName)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE Jobs (
-  jID int(10) unsigned NOT NULL AUTO_INCREMENT,
-  jName varchar(100) NOT NULL,
-  jDescription varchar(255) NOT NULL,
-  jDateInstalled datetime DEFAULT NULL,
-  jDateLastRun datetime DEFAULT NULL,
-  pkgID int(10) unsigned NOT NULL DEFAULT '0',
-  jLastStatusText varchar(255) DEFAULT NULL,
-  jLastStatusCode smallint(4) NOT NULL DEFAULT '0',
-  jStatus varchar(14) NOT NULL DEFAULT 'ENABLED',
-  jHandle varchar(255) NOT NULL,
-  jNotUninstallable smallint(4) NOT NULL DEFAULT '0',
-  PRIMARY KEY (jID)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE JobsLog (
-  jlID int(10) unsigned NOT NULL AUTO_INCREMENT,
-  jID int(10) unsigned NOT NULL,
-  jlMessage varchar(255) NOT NULL,
-  jlTimestamp timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  jlError int(10) NOT NULL DEFAULT '0',
-  PRIMARY KEY (jlID)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE LayoutPresets (
-  lpID int(10) unsigned NOT NULL AUTO_INCREMENT,
-  lpName varchar(128) NOT NULL,
-  layoutID int(10) unsigned NOT NULL DEFAULT '0',
-  PRIMARY KEY (lpID),
-  UNIQUE KEY layoutID (layoutID)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE Layouts (
-  layoutID int(10) unsigned NOT NULL AUTO_INCREMENT,
-  layout_rows int(5) NOT NULL DEFAULT '3',
-  layout_columns int(3) NOT NULL DEFAULT '3',
-  spacing int(3) NOT NULL DEFAULT '3',
-  breakpoints varchar(255) NOT NULL DEFAULT '',
-  locked tinyint(1) NOT NULL DEFAULT '0',
-  PRIMARY KEY (layoutID)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE `Logs` (
-  logID int(10) unsigned NOT NULL AUTO_INCREMENT,
-  logType varchar(64) NOT NULL,
-  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  logText longtext,
-  logIsInternal tinyint(1) NOT NULL DEFAULT '0',
-  PRIMARY KEY (logID),
-  KEY logType (logType),
-  KEY logIsInternal (logIsInternal)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE MailImporters (
-  miID int(10) unsigned NOT NULL AUTO_INCREMENT,
-  miHandle varchar(64) NOT NULL,
-  miServer varchar(255) DEFAULT NULL,
-  miUsername varchar(255) DEFAULT NULL,
-  miPassword varchar(255) DEFAULT NULL,
-  miEncryption varchar(32) DEFAULT NULL,
-  miIsEnabled int(1) NOT NULL DEFAULT '0',
-  miEmail varchar(255) DEFAULT NULL,
-  miPort int(10) unsigned NOT NULL DEFAULT '0',
-  pkgID int(10) unsigned DEFAULT NULL,
-  PRIMARY KEY (miID)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE MailValidationHashes (
-  mvhID int(10) unsigned NOT NULL AUTO_INCREMENT,
-  miID int(10) unsigned NOT NULL DEFAULT '0',
-  email varchar(255) NOT NULL,
-  mHash varchar(128) NOT NULL,
-  mDateGenerated int(10) unsigned NOT NULL DEFAULT '0',
-  mDateRedeemed int(10) unsigned NOT NULL DEFAULT '0',
-  `data` text,
-  PRIMARY KEY (mvhID)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE Packages (
-  pkgID int(10) unsigned NOT NULL AUTO_INCREMENT,
-  pkgName varchar(255) NOT NULL,
-  pkgHandle varchar(64) NOT NULL,
-  pkgDescription text,
-  pkgDateInstalled datetime NOT NULL,
-  pkgIsInstalled tinyint(1) NOT NULL DEFAULT '1',
-  pkgVersion varchar(32) DEFAULT NULL,
-  pkgAvailableVersion varchar(32) DEFAULT NULL,
-  PRIMARY KEY (pkgID),
-  UNIQUE KEY pkgHandle (pkgHandle)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE PagePaths (
-  ppID int(10) unsigned NOT NULL AUTO_INCREMENT,
-  cID int(10) unsigned DEFAULT '0',
-  cPath text,
-  ppIsCanonical varchar(1) NOT NULL DEFAULT '1',
-  PRIMARY KEY (ppID),
-  KEY cID (cID),
-  KEY ppIsCanonical (ppIsCanonical)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE PagePermissionPageTypes (
-  cID int(10) unsigned NOT NULL DEFAULT '0',
-  gID int(10) unsigned NOT NULL DEFAULT '0',
-  uID int(10) unsigned NOT NULL DEFAULT '0',
-  ctID int(10) unsigned NOT NULL DEFAULT '0',
-  PRIMARY KEY (cID,gID,uID,ctID)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE PagePermissions (
-  cID int(10) unsigned NOT NULL DEFAULT '0',
-  gID int(10) unsigned NOT NULL DEFAULT '0',
-  uID int(10) unsigned NOT NULL DEFAULT '0',
-  cgPermissions varchar(32) DEFAULT NULL,
-  cgStartDate datetime DEFAULT NULL,
-  cgEndDate datetime DEFAULT NULL,
-  PRIMARY KEY (cID,gID,uID)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE Pages (
-  cID int(10) unsigned NOT NULL DEFAULT '0',
-  ctID int(10) unsigned NOT NULL DEFAULT '0',
-  cIsTemplate varchar(1) NOT NULL DEFAULT '0',
-  uID int(10) unsigned DEFAULT NULL,
-  cIsCheckedOut tinyint(1) NOT NULL DEFAULT '0',
-  cCheckedOutUID int(10) unsigned DEFAULT NULL,
-  cCheckedOutDatetime datetime DEFAULT NULL,
-  cCheckedOutDatetimeLastEdit datetime DEFAULT NULL,
-  cPendingAction varchar(6) DEFAULT NULL,
-  cPendingActionDatetime datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  cPendingActionUID int(10) unsigned DEFAULT NULL,
-  cPendingActionTargetCID int(10) unsigned DEFAULT NULL,
-  cOverrideTemplatePermissions tinyint(1) NOT NULL DEFAULT '1',
-  cInheritPermissionsFromCID int(10) unsigned NOT NULL DEFAULT '0',
-  cInheritPermissionsFrom varchar(8) NOT NULL DEFAULT 'PARENT',
-  cFilename varchar(255) DEFAULT NULL,
-  cPointerID int(10) unsigned NOT NULL DEFAULT '0',
-  cPointerExternalLink varchar(255) DEFAULT NULL,
-  cPointerExternalLinkNewWindow tinyint(1) NOT NULL DEFAULT '0',
-  cChildren int(10) unsigned NOT NULL DEFAULT '0',
-  cDisplayOrder int(10) unsigned NOT NULL DEFAULT '0',
-  cParentID int(10) unsigned NOT NULL DEFAULT '0',
-  pkgID int(10) unsigned NOT NULL DEFAULT '0',
-  ptID int(10) unsigned NOT NULL DEFAULT '0',
-  cCacheFullPageContent int(4) NOT NULL DEFAULT '-1',
-  cCacheFullPageContentOverrideLifetime varchar(32) NOT NULL DEFAULT '0',
-  cCacheFullPageContentLifetimeCustom int(10) unsigned NOT NULL DEFAULT '0',
-  PRIMARY KEY (cID),
-  KEY cParentID (cParentID),
-  KEY cCheckedOutUID (cCheckedOutUID),
-  KEY cPointerID (cPointerID),
-  KEY uID (uID),
-  KEY ctID (ctID)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE PageSearchIndex (
-  cID int(10) unsigned NOT NULL DEFAULT '0',
-  content text,
-  cName varchar(255) DEFAULT NULL,
-  cDescription text,
-  cPath text,
-  cDatePublic datetime DEFAULT NULL,
-  cDateLastIndexed datetime DEFAULT NULL,
-  cDateLastSitemapped datetime DEFAULT NULL,
-  PRIMARY KEY (cID),
-  KEY cDateLastIndexed (cDateLastIndexed),
-  KEY cDateLastSitemapped (cDateLastSitemapped),
-  FULLTEXT KEY cName (cName),
-  FULLTEXT KEY cDescription (cDescription),
-  FULLTEXT KEY content (content),
-  FULLTEXT KEY content2 (cName,cDescription,content)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE PageStatistics (
-  pstID bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  cID int(10) unsigned NOT NULL DEFAULT '0',
-  `date` date DEFAULT NULL,
-  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  uID int(10) unsigned NOT NULL DEFAULT '0',
-  PRIMARY KEY (pstID),
-  KEY cID (cID),
-  KEY `date` (`date`),
-  KEY uID (uID)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE PageThemes (
-  ptID int(10) unsigned NOT NULL AUTO_INCREMENT,
-  ptHandle varchar(64) NOT NULL,
-  ptName varchar(255) DEFAULT NULL,
-  ptDescription text,
-  pkgID int(10) unsigned NOT NULL DEFAULT '0',
-  PRIMARY KEY (ptID),
-  UNIQUE KEY ptHandle (ptHandle)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE PageThemeStyles (
-  ptID int(10) unsigned NOT NULL DEFAULT '0',
-  ptsHandle varchar(128) NOT NULL,
-  ptsValue longtext,
-  ptsType varchar(32) NOT NULL,
-  PRIMARY KEY (ptID,ptsHandle,ptsType)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE PageTypeAttributes (
-  ctID int(10) unsigned NOT NULL DEFAULT '0',
-  akID int(10) unsigned NOT NULL DEFAULT '0',
-  PRIMARY KEY (ctID,akID)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE PageTypes (
-  ctID int(10) unsigned NOT NULL AUTO_INCREMENT,
-  ctHandle varchar(32) NOT NULL,
-  ctIcon varchar(128) DEFAULT NULL,
-  ctName varchar(90) NOT NULL,
-  pkgID int(10) unsigned NOT NULL DEFAULT '0',
-  PRIMARY KEY (ctID),
-  UNIQUE KEY ctHandle (ctHandle)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE PileContents (
-  pcID int(10) unsigned NOT NULL AUTO_INCREMENT,
-  pID int(10) unsigned NOT NULL DEFAULT '0',
-  itemID int(10) unsigned NOT NULL DEFAULT '0',
-  itemType varchar(64) NOT NULL,
-  quantity int(10) unsigned NOT NULL DEFAULT '1',
-  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  displayOrder int(10) unsigned NOT NULL DEFAULT '0',
-  PRIMARY KEY (pcID)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE Piles (
-  pID int(10) unsigned NOT NULL AUTO_INCREMENT,
-  uID int(10) unsigned DEFAULT NULL,
-  isDefault tinyint(1) NOT NULL DEFAULT '0',
-  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `name` varchar(255) DEFAULT NULL,
-  state varchar(64) NOT NULL,
-  PRIMARY KEY (pID)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE SignupRequests (
-  id int(11) NOT NULL AUTO_INCREMENT,
-  ipFrom int(10) unsigned NOT NULL DEFAULT '0',
-  date_access timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (id),
-  KEY index_ipFrom (ipFrom)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE SystemNotifications (
-  snID int(10) unsigned NOT NULL AUTO_INCREMENT,
-  snTypeID int(3) unsigned NOT NULL DEFAULT '0',
-  snURL text,
-  snURL2 text,
-  snDateTime datetime NOT NULL,
-  snIsArchived int(1) NOT NULL DEFAULT '0',
-  snIsNew int(1) NOT NULL DEFAULT '0',
-  snTitle varchar(255) DEFAULT NULL,
-  snDescription text,
-  snBody text,
-  PRIMARY KEY (snID)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE TaskPermissions (
-  tpID int(10) unsigned NOT NULL AUTO_INCREMENT,
-  tpHandle varchar(255) DEFAULT NULL,
-  tpName varchar(255) DEFAULT NULL,
-  tpDescription text,
-  pkgID int(10) unsigned NOT NULL DEFAULT '0',
-  PRIMARY KEY (tpID),
-  UNIQUE KEY tpHandle (tpHandle)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE TaskPermissionUserGroups (
-  tpID int(10) unsigned NOT NULL DEFAULT '0',
-  gID int(10) unsigned NOT NULL DEFAULT '0',
-  uID int(10) unsigned NOT NULL DEFAULT '0',
-  canRead int(1) NOT NULL DEFAULT '0',
-  PRIMARY KEY (tpID,gID,uID)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE UserAttributeKeys (
-  akID int(10) unsigned NOT NULL,
-  uakProfileDisplay tinyint(1) NOT NULL DEFAULT '0',
-  uakMemberListDisplay tinyint(1) NOT NULL DEFAULT '0',
-  uakProfileEdit tinyint(1) NOT NULL DEFAULT '1',
-  uakProfileEditRequired tinyint(1) NOT NULL DEFAULT '0',
-  uakRegisterEdit tinyint(1) NOT NULL DEFAULT '0',
-  uakRegisterEditRequired tinyint(1) NOT NULL DEFAULT '0',
-  displayOrder int(10) unsigned DEFAULT '0',
-  uakIsActive tinyint(1) NOT NULL DEFAULT '1',
-  PRIMARY KEY (akID)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE UserAttributeValues (
-  uID int(10) unsigned NOT NULL DEFAULT '0',
-  akID int(10) unsigned NOT NULL DEFAULT '0',
-  avID int(10) unsigned NOT NULL DEFAULT '0',
-  PRIMARY KEY (uID,akID,avID)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE UserBannedIPs (
-  ipFrom int(10) unsigned NOT NULL DEFAULT '0',
-  ipTo int(10) unsigned NOT NULL DEFAULT '0',
-  banCode int(1) unsigned NOT NULL DEFAULT '1',
-  expires int(10) unsigned NOT NULL DEFAULT '0',
-  isManual int(1) NOT NULL DEFAULT '0',
-  PRIMARY KEY (ipFrom,ipTo),
-  KEY ipFrom (ipFrom),
-  KEY ipTo (ipTo)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE UserGroups (
-  uID int(10) unsigned NOT NULL DEFAULT '0',
-  gID int(10) unsigned NOT NULL DEFAULT '0',
-  ugEntered datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `type` varchar(64) DEFAULT NULL,
-  PRIMARY KEY (uID,gID),
-  KEY uID (uID),
-  KEY gID (gID)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE UserOpenIDs (
-  uID int(10) unsigned NOT NULL,
-  uOpenID varchar(255) NOT NULL,
-  PRIMARY KEY (uOpenID),
-  KEY uID (uID)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE UserPrivateMessages (
-  msgID int(10) unsigned NOT NULL AUTO_INCREMENT,
-  uAuthorID int(10) unsigned NOT NULL DEFAULT '0',
-  msgDateCreated datetime NOT NULL,
-  msgSubject varchar(255) NOT NULL,
-  msgBody text,
-  uToID int(10) unsigned NOT NULL DEFAULT '0',
-  PRIMARY KEY (msgID)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE UserPrivateMessagesTo (
-  msgID int(10) unsigned NOT NULL DEFAULT '0',
-  uID int(10) unsigned NOT NULL DEFAULT '0',
-  uAuthorID int(10) unsigned NOT NULL DEFAULT '0',
-  msgMailboxID int(11) NOT NULL,
-  msgIsNew int(1) NOT NULL DEFAULT '0',
-  msgIsUnread int(1) NOT NULL DEFAULT '0',
-  msgIsReplied int(1) NOT NULL DEFAULT '0',
-  PRIMARY KEY (msgID,uID,uAuthorID),
-  KEY uID (uID),
-  KEY uAuthorID (uAuthorID),
-  KEY msgFolderID (msgMailboxID),
-  KEY msgIsNew (msgIsNew)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE Users (
-  uID int(10) unsigned NOT NULL AUTO_INCREMENT,
-  uName varchar(64) NOT NULL,
-  uEmail varchar(64) NOT NULL,
-  uPassword varchar(255) NOT NULL,
-  uIsActive varchar(1) NOT NULL DEFAULT '0',
-  uIsValidated tinyint(4) NOT NULL DEFAULT '-1',
-  uIsFullRecord tinyint(1) NOT NULL DEFAULT '1',
-  uDateAdded datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  uHasAvatar tinyint(1) NOT NULL DEFAULT '0',
-  uLastOnline int(10) unsigned NOT NULL DEFAULT '0',
-  uLastLogin int(10) unsigned NOT NULL DEFAULT '0',
-  uPreviousLogin int(10) unsigned NOT NULL DEFAULT '0',
-  uNumLogins int(10) unsigned NOT NULL DEFAULT '0',
-  uTimezone varchar(255) DEFAULT NULL,
-  uDefaultLanguage varchar(32) DEFAULT NULL,
-  PRIMARY KEY (uID),
-  UNIQUE KEY uName (uName)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE UserSearchIndexAttributes (
-  uID int(11) unsigned NOT NULL DEFAULT '0',
-  PRIMARY KEY (uID)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE UsersFriends (
-  ufID int(10) unsigned NOT NULL AUTO_INCREMENT,
-  uID int(10) unsigned DEFAULT NULL,
-  `status` varchar(64) NOT NULL,
-  friendUID int(10) unsigned DEFAULT NULL,
-  uDateAdded datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  PRIMARY KEY (ufID)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE UserValidationHashes (
-  uvhID int(10) unsigned NOT NULL AUTO_INCREMENT,
-  uID int(10) unsigned DEFAULT NULL,
-  uHash varchar(64) NOT NULL,
-  `type` int(4) unsigned NOT NULL DEFAULT '0',
-  uDateGenerated int(10) unsigned NOT NULL DEFAULT '0',
-  uDateRedeemed int(10) unsigned NOT NULL DEFAULT '0',
-  PRIMARY KEY (uvhID)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM;

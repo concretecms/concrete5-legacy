@@ -71,7 +71,16 @@ $columns = $akccs->getCurrent();
 		foreach($newObjects as $item) { 
 			$ID = $item->ID;
 			if(!$ID) {
-				eval('$ID = $item->'.substr($akCategoryHandle, 0, 1).'ID;');
+				$pkg = AttributeKeyCategory::getByHandle($akCategoryHandle)->getPackageHandle();
+				if(method_exists($item, 'getID')) {
+					$ID = $item->getID();
+				} elseif(method_exists($item, 'get'.$txt->camelcase($akCategoryHandle).'ID')) {
+					$pkg = AttributeKeyCategory::getByHandle($akCategoryHandle)->getPackageHandle();
+					$txt = Loader::helper('text');
+					eval('$ID = $item->get'.$txt->camelcase($akCategoryHandle).'ID();');
+				} elseif(method_exists($item, 'get'.$txt->camelcase(str_replace($pkg.'_', '', $akCategoryHandle)).'ID')) {
+					eval('$ID = $item->get'.$txt->camelcase(str_replace($pkg.'_', '', $akCategoryHandle)).'ID();');
+				}
 			}
 			$action = "location.href='".View::url('/dashboard/bricks/edit/', $akCategoryHandle, $ID)."'";
 			

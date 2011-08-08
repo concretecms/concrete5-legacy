@@ -88,6 +88,10 @@ class AttributeKeyCategorySettingsHelper extends Object {
 
 	public function getRegisteredSettings($akCategoryHandle) {
 		$akcsh = AttributeKeyCategorySettingsHelper::getInstance();
+		$akc = AttributeKeyCategory::getByHandle($akCategoryHandle);
+		if($akc->getPackageID()){
+			$akcsh->registerSetting($akCategoryHandle, 'url_drop_hidden', TRUE);
+		}
 		return $akcsh->registeredSettings[$akCategoryHandle];
 	}
 	
