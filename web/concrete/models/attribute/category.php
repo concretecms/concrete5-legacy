@@ -287,22 +287,23 @@ class AttributeKeyCategory extends Object {
 				$item = new UserInfo;
 				break;
 			default:
-				if(Loader::model($this->akCategoryHandle, $this->getPackageHandle())) {
-					$item = new $class;
-				} elseif($rs['item_model_path']) {
+				if($rs['item_model_path']) {
 					Loader::model($rs['item_model_path'], $this->getPackageHandle());
 					if($rs['item_model_class']) {
 						$item = new $rs['item_model_class'];
 					} else {
 						$item = new $class;
 					}
+				} elseif(Loader::model($this->akCategoryHandle, $this->getPackageHandle())) {
+					$item = new $class;
+				} elseif(Loader::model(str_replace($this->getPackageHandle().'_', '', $this->akCategoryHandle).'/model', $this->getPackageHandle())) {
+					$item = new $class;
 				} else {
 					Loader::model('attribute_key_category_item');
 					$item = new AttributeKeyCategoryItem($this->getAttributeKeyCategoryHandle());
 				}
 				break;	
 		}
-		
 		if($ID) {
 			if(method_exists($item, 'getByID')) {
 				$item = $item->getByID($ID);

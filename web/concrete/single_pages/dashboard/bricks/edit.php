@@ -1,5 +1,4 @@
 <?php defined('C5_EXECUTE') or die("Access Denied.");
-
 if($permission) {	 
 	$df = Loader::helper('form/date_time');
 	?>
