@@ -1325,3 +1325,12 @@ CREATE TABLE AttributeKeyCategoryItemSearchIndex (
   ID int(10) unsigned NOT NULL,
   PRIMARY KEY (ID)
 ) ENGINE=MyISAM;
+
+CREATE TABLE btBricks (
+bID                      INTEGER UNSIGNED NOT NULL,
+akCategoryHandle         VARCHAR(255),
+isSearchable             tinyint(1) DEFAULT '0',
+administrationDisabled   tinyint(1) DEFAULT '1',
+columns                  LONGTEXT,
+                 PRIMARY KEY (bID)
+) ENGINE=MyISAM;

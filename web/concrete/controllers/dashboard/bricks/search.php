@@ -48,7 +48,7 @@ class DashboardBricksSearchController extends Controller {
 		$this->set('subnav', $subnav);
 	}
 	
-	public function getRequestedSearchResults($akCategoryHandle) {
+	public function getRequestedSearchResults($akCategoryHandle, $sortBy = NULL) {
 		$akc = AttributeKeyCategory::getByHandle($akCategoryHandle);
 		$objectList = $akc->getItemList();
 		
@@ -60,6 +60,10 @@ class DashboardBricksSearchController extends Controller {
 			$objectList->setItemsPerPage($_REQUEST['numResults']);
 		} else {
 			$objectList->setItemsPerPage(10);
+		}
+		
+		if($sortBy) {
+			$objectList->sortBy($sortBy->columnKey, $sortBy->defaultSortDirection);
 		}
 		
 		if (is_array($_REQUEST['selectedSearchField'])) {

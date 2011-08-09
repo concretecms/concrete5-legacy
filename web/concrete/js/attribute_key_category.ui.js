@@ -30,6 +30,8 @@ ccm_checkSelectedAdvancedSearchField = function(searchType, fieldset) {
 	});
 	$("#ccm-" + searchType + "-search-field-set" + fieldset + " .ccm-search-option-type-rating input").rating();		
 }
+
+
 ccm_setupAttributeKeyCategoryItemSearch = function(searchInstance, akID) {
 
 	ccm_setupAdvancedSearch(searchInstance);

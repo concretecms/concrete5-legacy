@@ -1,9 +1,14 @@
 <?php  defined('C5_EXECUTE') or die(_("Access Denied.")); 
 if(!$akCategoryHandle) $akCategoryHandle = $_REQUEST['akCategoryHandle'];
-$searchInstance = $akCategoryHandle.time();
-if (isset($_REQUEST['searchInstance'])) {
-	$searchInstance = $_REQUEST['searchInstance'];
-}
+
+if(!$searchInstance) $searchInstance = $akCategoryHandle.time();
+if(isset($_REQUEST['searchInstance'])) $searchInstance = $_REQUEST['searchInstance'];
+
+if(isset($_REQUEST['administrationDisabled'])) $administrationDisabled = $_REQUEST['administrationDisabled'];
+
+$columns = urlencode(serialize($columns));
+if(isset($_REQUEST['columns'])) $columns = $_REQUEST['columns'];
+
 $searchFields = array('' => '** ' . t('Fields'));
 
 $akc = new AttributeKey($akCategoryHandle);
@@ -31,6 +36,9 @@ foreach($searchFieldAttributes as $ak) {
 	<div id="ccm-<?=$searchInstance?>-search-advanced-fields" class="ccm-search-advanced-fields" >
 	
 		<input type="hidden" name="search" value="1" />
+		<input type="hidden" name="administrationDisabled" value="<?=$administrationDisabled?>" />
+		<input type="hidden" name="columns" value="<?=$columns?>" />
+		
 		<div id="ccm-search-box-title">
 			<img src="<?php echo ASSETS_URL_IMAGES?>/throbber_white_16.gif" width="16" height="16" class="ccm-search-loading"  id="ccm-<?=$searchInstance?>-search-loading" />
 			<h2><?php echo t('Search')?></h2>			

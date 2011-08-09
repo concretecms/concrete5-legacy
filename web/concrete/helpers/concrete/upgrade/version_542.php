@@ -95,6 +95,9 @@ class ConcreteUpgradeVersion542Helper {
 		// Install AttributeTypes
 		$at = AttributeType::getByHandle('attribute_key_category_items');
 		if(!$at) $akci = AttributeType::add('attribute_key_category_items', t('Bricks'));
+		
+		// Install Blocks
+		$bt = BlockType::installBlockType('bricks');
 	}
 	
 	public function prepare() {
