@@ -6,13 +6,16 @@ if(isset($_REQUEST['searchInstance'])) $searchInstance = $_REQUEST['searchInstan
 
 if(isset($_REQUEST['administrationDisabled'])) $administrationDisabled = $_REQUEST['administrationDisabled'];
 
+if(isset($_REQUEST['action'])) $action = $_REQUEST['action'];
+
 Loader::model('attribute_key_category_item_list');
 $akccs = new AttributeKeyCategoryColumnSet($akCategoryHandle);
 if(!$columns) $columns = $akccs->getCurrent();
 if(isset($_REQUEST['columns'])) $columns = unserialize(urldecode($_REQUEST['columns']));
 
 $cnt = Loader::controller('/dashboard/bricks/search');
-$newObjectList = $cnt->getRequestedSearchResults($akCategoryHandle, $columns->getDefaultSortColumn());
+if(is_object($columns)) $sortBy = $columns->getDefaultSortColumn();
+$newObjectList = $cnt->getRequestedSearchResults($akCategoryHandle, $sortBy);
 $newObjects = $newObjectList->getPage();
 $pagination = $newObjectList->getPagination();
 ?>
@@ -27,7 +30,12 @@ $pagination = $newObjectList->getPagination();
 	$soargs['akCategoryHandle'] = $akCategoryHandle;
 	$soargs['searchInstance'] = $searchInstance;
 	$soargs['administrationDisabled'] = $administrationDisabled;
-	if(is_object($columns))	$soargs['columns'] = urlencode(serialize($columns));
+	$soargs['action'] = $action;
+	if(is_object($columns))	{
+		$soargs['columns'] = urlencode(serialize($columns));
+	} else {
+		$soargs['columns'] = $columns;
+	}
 	
 	if(!$administrationDisabled) { ?>
 	<table border="0" cellspacing="0" cellpadding="0" width="100%">

@@ -81,19 +81,20 @@ class DashboardBricksEditController extends Controller {
 	}
 	
 	private function saveData($item) {
-		$post = $this->post();
-		$akIDs = $post['akID'];
-		if($akIDs) {
-			foreach(array_keys($akIDs) as $akID) {
-				$ak = AttributeKey::getByID($akID);
-				$item->saveAttribute($ak);
+		if($_POST['akID']) {
+			foreach(array_keys($_POST['akID']) as $akID) {
+				$ak = AttributeKey::getInstanceByID($akID);
+				$item->setAttribute($ak, $_POST['akID'][$akID]['value']);
 			}
 		}
-		$item->setOwner($post['uID']);
-		$post['akcipID'] = $item->getID();
 		
-		$akciph = Loader::helper('attribute_key_category_item_permissions');
-		$akciph->save($post);
+		if($item instanceof AttributeKeyCategoryItem) {
+			$item->setOwner($post['uID']);
+			$post['akcipID'] = $item->getID();
+			
+			$akciph = Loader::helper('attribute_key_category_item_permissions');
+			$akciph->save($post);
+		}
 		
 		$item->reindex();
 	}

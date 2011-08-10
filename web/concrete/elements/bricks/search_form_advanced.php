@@ -6,9 +6,10 @@ if(isset($_REQUEST['searchInstance'])) $searchInstance = $_REQUEST['searchInstan
 
 if(isset($_REQUEST['administrationDisabled'])) $administrationDisabled = $_REQUEST['administrationDisabled'];
 
-$columns = urlencode(serialize($columns));
-if(isset($_REQUEST['columns'])) $columns = $_REQUEST['columns'];
+if(isset($_REQUEST['action'])) $action = $_REQUEST['action'];
 
+if($columns) $columns = urlencode(serialize($columns));
+if(isset($_REQUEST['columns'])) $columns = $_REQUEST['columns'];
 $searchFields = array('' => '** ' . t('Fields'));
 
 $akc = new AttributeKey($akCategoryHandle);
@@ -37,7 +38,10 @@ foreach($searchFieldAttributes as $ak) {
 	
 		<input type="hidden" name="search" value="1" />
 		<input type="hidden" name="administrationDisabled" value="<?=$administrationDisabled?>" />
+		<?php if($columns) { ?>
 		<input type="hidden" name="columns" value="<?=$columns?>" />
+		<?php } ?>
+		<input type="hidden" name="action" value="<?=$action?>" />
 		
 		<div id="ccm-search-box-title">
 			<img src="<?php echo ASSETS_URL_IMAGES?>/throbber_white_16.gif" width="16" height="16" class="ccm-search-loading"  id="ccm-<?=$searchInstance?>-search-loading" />

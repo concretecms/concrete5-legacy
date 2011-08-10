@@ -78,6 +78,7 @@ if($permission) {
 				</div>
 			</td>
 			<td valign="top" width="34%">
+				<?php if($akci instanceof AttributeKeyCategoryItem) { ?>
 				<h1><span><?php echo t('Owner')?></span></h1>
 				<div class="ccm-dashboard-inner">
 				<?php 
@@ -91,6 +92,7 @@ if($permission) {
 			
 					<?php  print Loader::helper('attribute_key_category_item_permissions')->getForm(AttributeKeyCategoryItemPermission::get($akci, NULL, FALSE), t('Set permissions for this item.'));?>
 				</div>
+				<?php } ?>
 			</td>
 		</tr>
 		<tr>

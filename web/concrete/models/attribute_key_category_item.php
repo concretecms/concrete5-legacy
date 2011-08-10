@@ -91,15 +91,16 @@ class AttributeKeyCategoryItem extends Object {
 		return $newObject;
 	}
 	
-	public function saveAttribute($key) {
-		$value = $this->getAttributeValueObject($key, true);
-		$key->saveAttributeForm($value);
+	public function saveAttribute($ak, $value = false) {
+		$av = $this->getAttributeValueObject($ak, true);
+		$ak->setAttribute($av, $value);
+		
 		$db = Loader::db();
 		$db->Replace('AttributeKeyCategoryItemAttributeValues', 
 					array(
 						'ID' => $this->getID(), 
-						'akID' => $key->getAttributeKeyID(), 
-						'avID' => $value->getAttributeValueID(),
+						'akID' => $ak->getAttributeKeyID(), 
+						'avID' => $av->getAttributeValueID(),
 						'akCategoryHandle' => "'".$this->akCategoryHandle."'"
 					), 
 					array(
@@ -107,6 +108,7 @@ class AttributeKeyCategoryItem extends Object {
 						'akID'
 					)
 				);
+		unset($av);
 	}
 	
 	public function setOwner($uID = 1) {
@@ -173,11 +175,11 @@ class AttributeKeyCategoryItem extends Object {
 		
 	public function setAttribute($ak, $value) {
 		if (!is_object($ak)) {
-			$ak = new AttributeKey($this->akCategoryHandle);
-			$ak = $ak->getByHandle($ak);
+			$newAK = new AttributeKey($this->akCategoryHandle);
+			$ak = $newAK->getByHandle($ak);
 		}
 		$ak->setAttribute($this, $value);
-		$this->update();
+		$this->reindex();
 	}
 
 	public function reindex() {	

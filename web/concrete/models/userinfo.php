@@ -437,7 +437,6 @@ defined('C5_EXECUTE') or die("Access Denied.");
 				
 				$testChange = false;
 				
-						var_dump($data['uPassword']);
 				if ($data['uPassword'] != null) {
 					if (User::encryptPassword($data['uPassword']) == User::encryptPassword($data['uPasswordConfirm'])) {
 						$v = array($uName, $uEmail, User::encryptPassword($data['uPassword']), $uHasAvatar, $uTimezone, $uDefaultLanguage, $this->uID);

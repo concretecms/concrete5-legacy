@@ -527,17 +527,27 @@ class AttributeKey extends Object {
 	/** 
 	 * Calls the functions necessary to save this attribute to the database. If no passed value is passed, then we save it via the stock form.
 	 */
-	protected function saveAttribute($attributeValue, $passedValue = false) {
+	protected function saveAttribute($obj, $passedValue = false) {
 		$at = $this->getAttributeType();
-		$at->controller->setAttributeKey($this);
-		$at->controller->setAttributeValue($attributeValue);
-		if ($passedValue) {
-			$at->controller->saveValue($passedValue);
+		if(method_exists($obj, 'getAttributeValueObject')) {
+			if ($passedValue) {
+				$obj->saveAttribute($this, $passedValue);
+			} else {
+				$value = $at->controller->post();
+				$obj->saveAttribute($this, $value['value']);
+			}
 		} else {
-			$at->controller->saveForm($at->controller->post());
+			$attributeValue = $obj;
+			$at->controller->setAttributeKey($this);
+			$at->controller->setAttributeValue($attributeValue);
+			if ($passedValue) {
+				$at->controller->saveValue($passedValue);
+			} else {
+				$at->controller->saveForm($at->controller->post());
+			}
+			$at->__destruct();
+			unset($at);
 		}
-		$at->__destruct();
-		unset($at);
 	}
 	
 	public function __destruct() {

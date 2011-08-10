@@ -176,7 +176,7 @@ class AttributeKeyCategoryDefaultColumnSet extends DatabaseItemListColumnSet {
 			$list = AttributeKey::getList($akCategoryHandle);
 			if(count($list)) {
 				$this->setDefaultSortColumn(
-					new DatabaseItemListColumn($list[0]->getAttributeKeyHandle(), $list[0]->getAttributeKeyName(), NULL,
+					new DatabaseItemListColumn('ak_'.$list[0]->getAttributeKeyHandle(), $list[0]->getAttributeKeyName(), NULL,
 					'desc')
 				);
 			}
