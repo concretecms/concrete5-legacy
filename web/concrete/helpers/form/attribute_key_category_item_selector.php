@@ -22,7 +22,7 @@ class FormAttributeKeyCategoryItemSelectorHelper {
 		if(is_array($columns->getColumns())) foreach($columns->getColumns() as $col) {
 			$html .= '<th>'.$col->getColumnName().'</th>';
 		}
-		$html .= '<th width="30px" align="right"><a class="ccm-attribute-key-category-select-item dialog-launch" onclick="ccmActiveUserField=this" dialog-width="90%" dialog-height="70%" dialog-modal="false" dialog-title="' . t('Choose Items') . '" href="' . REL_DIR_FILES_TOOLS_REQUIRED . '/bricks/search_dialog?mode=choose_multiple&akCategoryHandle='.$akCategoryHandle.'&akID='.$akID.'&searchInstance=akID_'.$akID*time().'&fieldName='.$fieldName.'[]"><img src="' . ASSETS_URL_IMAGES . '/icons/add.png" width="16" height="16" /></a></th>';
+		$html .= '<th width="30px" align="right"><a class="ccm-attribute-key-category-select-item" dialog-width="90%" dialog-height="70%" dialog-modal="false" dialog-title="' . t('Choose Items') . '" href="' . REL_DIR_FILES_TOOLS_REQUIRED . '/bricks/search_dialog?mode=choose_multiple&akCategoryHandle='.$akCategoryHandle.'&akID='.$akID.'&searchInstance=akID_'.$akID*time().'&fieldName='.$fieldName.'[]"><img src="' . ASSETS_URL_IMAGES . '/icons/add.png" width="16" height="16" /></a></th>';
 		$html .= '</tr><tbody id="ccmAttributeKeyCategoryItemSelect' . $akID . '_body" >';
 		if(!empty($values)) {
 			foreach($values as $akci) {
