@@ -134,11 +134,12 @@ class AttributeKeyCategoryItemsAttributeTypeController extends NumberAttributeTy
 			$searchInstance = $_REQUEST['searchInstance'];
 		}
 		$this->addHeaderItem(Loader::helper('html')->javascript('attribute_key_category.ui.js'));
-		$this->addHeaderItem('<script type="text/javascript">ccm_setupAttributeKeyCategoryItemSearch("'.$searchInstance.'", '.$this->akID.');</script>');
-		$akcis = Loader::helper('form/attribute_key_category_item_selector');
-		$value = $this->getValue();
-		print $akcis->selectItems($this->akCategoryHandle, 'akID['.$this->akID.'][value]',
-								$value, $this->akID);
+		$akcis = Loader::helper('form/attribute_key_category_item_selector');		
+		if (is_object($this->attributeValue)) {
+			$value = $this->getAttributeValue()->getValue();
+		}
+		print $akcis->selectItems($this->akCategoryHandle, $this->field('value'),
+								$value, $this->akID, $searchInstance);
 	}
 	
 	// run when we call setAttribute(), instead of saving through the UI

@@ -36,37 +36,30 @@ ccm_setupAttributeKeyCategoryItemSearch = function(searchInstance, akID) {
 
 	ccm_setupAdvancedSearch(searchInstance);
 	
-	id = "#ccm-" + searchInstance + "-list-multiple-operations";
-	if(typeof(akID) != 'undefined') {
-		id = "#ccm-" + searchInstance + "-list-multiple-operations-" + akID;
-	}
-	
-	$("#ccm-" + searchInstance + "-list-cb-all").click(function() {
+	$("#ccm-" + searchInstance + "-list-cb-all").live('click', function() {
 		if ($(this).is(':checked')) {
-			$('.ccm-list-record td.ccm-' + searchInstance + '-list-cb input[type=checkbox]').attr('checked', true);
-			$(id).attr('disabled', false);
+			$('.ccm-' + searchInstance + '-list-cb input[type=checkbox]').attr('checked', true);
+			$("#ccm-" + searchInstance + "-list-multiple-operations").attr('disabled', false);
 		} else {
-			$('.ccm-list-record td.ccm-' + searchInstance + '-list-cb input[type=checkbox]').attr('checked', false);
-			$(id).attr('disabled', true);
+			$('.ccm-' + searchInstance + '-list-cb input[type=checkbox]').attr('checked', false);
+			$("#ccm-" + searchInstance + "-list-multiple-operations").attr('disabled', true);
 		}
 	});
-	$("td.ccm-" + searchInstance + "-list-cb input[type=checkbox]").click(function() {
-		if ($("td.ccm-" + searchInstance + "-list-cb input[type=checkbox]:checked").length > 0) {
-			$(id).attr('disabled', false);
+	$(".ccm-" + searchInstance + "-list-cb input[type=checkbox]").live('click', function() {
+		if ($(".ccm-" + searchInstance + "-list-cb input[type=checkbox]:checked").length > 0) {
+			$("#ccm-" + searchInstance + "-list-multiple-operations").attr('disabled', false);
 		} else {
-			$(id).attr('disabled', true);
+			$("#ccm-" + searchInstance + "-list-multiple-operations").attr('disabled', true);
 		}
 	});
 	
 	// if we're not in the dashboard, add to the multiple operations select menu
 
-	$(id).change(function() {
+	$("#ccm-" + searchInstance + "-list-multiple-operations").live('change', function() {
 		var action = $(this).val();
 		switch(action) {
 			case 'choose':
-				var idstr = '';
 				$("td.ccm-" + searchInstance + "-list-cb input[type=checkbox]:checked").each(function() {
-					console.log($(this).parent().parent());
 					ccm_triggerSelectAttributeKeyCategoryItem(akID, $(this).parent().parent());
 				});
 				jQuery.fn.dialog.closeTop();
@@ -106,7 +99,7 @@ ccm_setupAttributeKeyCategoryItemSearch = function(searchInstance, akID) {
 	});
 
 	$("div.ccm-" + searchInstance + "-search-advanced-groups-cb input[type=checkbox]").unbind();
-	$("div.ccm-" + searchInstance + "-search-advanced-groups-cb input[type=checkbox]").click(function() {
+	$("div.ccm-" + searchInstance + "-search-advanced-groups-cb input[type=checkbox]").live('click', function() {
 		$("#ccm-" + searchInstance + "-advanced-search").submit();
 	});
 

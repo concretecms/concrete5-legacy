@@ -19,6 +19,7 @@ ccm_setupAdvancedSearchFields = function(searchType) {
 }
 
 ccm_setupAdvancedSearch = function(searchType) {
+	
 	ccm_setupAdvancedSearchFields(searchType);
 	$("#ccm-" + searchType + "-advanced-search").ajaxForm({
 		beforeSubmit: function() {
@@ -75,23 +76,19 @@ ccm_activateSearchResults = function(searchType) {
 }
 
 ccm_setupInPagePaginationAndSorting = function(searchType) {
-	$(".ccm-results-list th a").click(function() {
+	var obj = $("#ccm-" + searchType + "-search-results");
+	if (obj.length == 0) {
+		obj = $("#ccm-search-results");
+	}
+	obj.find(".ccm-results-list th a").click(function() {
 		ccm_deactivateSearchResults(searchType);
-		var obj = $("#ccm-" + searchType + "-search-results");
-		if (obj.length == 0) {
-			obj = $("#ccm-search-results");
-		}
 		obj.load($(this).attr('href'), false, function() {
 			ccm_activateSearchResults(searchType);
 		});
 		return false;
 	});
-	$("div.ccm-pagination a").click(function() {
+	obj.find("div.ccm-pagination a").click(function() {
 		ccm_deactivateSearchResults(searchType);
-		var obj = $("#ccm-" + searchType + "-search-results");
-		if (obj.length == 0) {
-			obj = $("#ccm-search-results");
-		}
 		obj.load($(this).attr('href'), false, function() {
 			ccm_activateSearchResults(searchType);
 			$("div.ccm-dialog-content").attr('scrollTop', 0);

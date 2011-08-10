@@ -1332,5 +1332,6 @@ akCategoryHandle         VARCHAR(255),
 isSearchable             tinyint(1) DEFAULT '0',
 administrationDisabled   tinyint(1) DEFAULT '1',
 columns                  LONGTEXT,
+persistantBID            int(10),
                  PRIMARY KEY (bID)
 ) ENGINE=MyISAM;

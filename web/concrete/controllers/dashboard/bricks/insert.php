@@ -43,7 +43,7 @@ class DashboardBricksInsertController extends Controller {
 				Loader::model('attribute_key_category_item');
 				$akci = new AttributeKeyCategoryItem($akCategoryHandle);
 				$newObject = $akci->add();
-				$this->saveData($newObject, $akCategoryHandle);
+				$this->saveData($newObject);
 				$this->redirect('/dashboard/bricks/search/'.$akCategoryHandle);
 			}
 		} else {
@@ -67,22 +67,23 @@ class DashboardBricksInsertController extends Controller {
 		}
 	}
 	
-	private function saveData($object, $akCategoryHandle) {
-		$post = $this->post();
-		$akIDs = $post['akID'];
-		if($akIDs) {
-			foreach(array_keys($akIDs) as $akID) {
-				$ak = AttributeKey::getByID($akID);
-				$object->saveAttribute($ak);
+	private function saveData($item) {
+		if($_POST['akID']) {
+			foreach(array_keys($_POST['akID']) as $akID) {
+				$ak = AttributeKey::getInstanceByID($akID);
+				$item->setAttribute($ak, $_POST['akID'][$akID]['value']);
 			}
 		}
-		$object->setOwner($post['uID']);
-		$post['akcipID'] = $object->getID();
 		
-		$akciph = Loader::helper('attribute_key_category_item_permissions');
-		$akciph->save($post);
+		if($item instanceof AttributeKeyCategoryItem) {
+			$item->setOwner($post['uID']);
+			$post['akcipID'] = $item->getID();
+			
+			$akciph = Loader::helper('attribute_key_category_item_permissions');
+			$akciph->save($post);
+		}
 		
-		$object->update();
+		$item->reindex();
 	}
 	
 	private function validate() {

@@ -32,17 +32,15 @@ if($permission) {
                         ?>
                     </td>
                     <td valign="top" width="100%">
-                        <div id="ccm-<?=$searchInstance?>-search-results">
-                            <?php
-                                Loader::element(
-                                    'bricks/search_results', 
-                                    array(
-                                        'searchInstance' => $searchInstance,
-                                        'akCategoryHandle' => $akCategoryHandle
-                                    )
-                                );
-                            ?>
-                        </div>
+						<?php
+							Loader::element(
+								'bricks/search_results', 
+								array(
+									'searchInstance' => $searchInstance,
+									'akCategoryHandle' => $akCategoryHandle
+								)
+							);
+						?>
                     </td>
                 </tr>
             </table>
@@ -51,10 +49,6 @@ if($permission) {
     </div>
     <? } ?>
 </div>
-
-<script type="text/javascript">
-	ccm_setupAttributeKeyCategoryItemSearch('<?=$searchInstance?>');
-</script>
 <?php } else { ?>
 <h1><span><?php echo $txt->unhandle($akCategoryHandle).t(' Search')?></span></h1>
 <div class="ccm-dashboard-inner">

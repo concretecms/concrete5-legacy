@@ -36,18 +36,16 @@ if (!isset($mode)) {
                     ?>
                 </td>
                 <td valign="top" width="100%">
-                    <div id="ccm-<?=$searchInstance?>-search-results">
-                        <?php
-                            Loader::element(
-                                'bricks/search_results', 
-                                array(
-                                    'searchInstance' => $searchInstance,
-                                    'akCategoryHandle' => $_REQUEST['akCategoryHandle'], 
-                                    'akID' => $_REQUEST['akID']
-                                )
-                            );
-                        ?>
-                    </div>
+					<?php
+						Loader::element(
+							'bricks/search_results', 
+							array(
+								'searchInstance' => $searchInstance,
+								'akCategoryHandle' => $_REQUEST['akCategoryHandle'], 
+								'akID' => $_REQUEST['akID']
+							)
+						);
+					?>
                 </td>
             </tr>
         </table>
@@ -55,9 +53,3 @@ if (!isset($mode)) {
 <? if (!isset($_REQUEST['refreshDialog'])) { ?> 
 </div>
 <? } ?>
-<script type="text/javascript">
-	ccm_setupAttributeKeyCategoryItemSearch(
-		'<?=$searchInstance?>'<?php if($_REQUEST['akID']){?>, 
-		'<?=$_REQUEST['akID']?>'<?php }?>'
-	);
-</script>

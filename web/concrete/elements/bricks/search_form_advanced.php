@@ -8,8 +8,9 @@ if(isset($_REQUEST['administrationDisabled'])) $administrationDisabled = $_REQUE
 
 if(isset($_REQUEST['action'])) $action = $_REQUEST['action'];
 
-if($columns) $columns = urlencode(serialize($columns));
 if(isset($_REQUEST['columns'])) $columns = $_REQUEST['columns'];
+if($columns) $columns = urlencode(serialize($columns));
+
 $searchFields = array('' => '** ' . t('Fields'));
 
 $akc = new AttributeKey($akCategoryHandle);
@@ -39,7 +40,7 @@ foreach($searchFieldAttributes as $ak) {
 		<input type="hidden" name="search" value="1" />
 		<input type="hidden" name="administrationDisabled" value="<?=$administrationDisabled?>" />
 		<?php if($columns) { ?>
-		<input type="hidden" name="columns" value="<?=$columns?>" />
+		<input type="hidden" name="columns_<?=$searchInstance?>" value="<?=$columns?>" />
 		<?php } ?>
 		<input type="hidden" name="action" value="<?=$action?>" />
 		

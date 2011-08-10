@@ -14,15 +14,15 @@
 defined('C5_EXECUTE') or die("Access Denied.");
 class FormAttributeKeyCategoryItemSelectorHelper {
 	
-	public function selectItems($akCategoryHandle, $fieldName, $values, $akID) {
-		$html = '';
+	public function selectItems($akCategoryHandle, $fieldName, $values, $akID, $searchInstance = false) {
+		$html = '<input type="hidden" name="'.$fieldName.'[]" value="" />';
 		$html .= '<table width="100%" id="ccmAttributeKeyCategoryItemSelect' . $akID . '" class="ccm-results-list" cellspacing="0" cellpadding="0" border="0">'; 
 		Loader::model('attribute_key_category_item_list');
 		$columns = AttributeKeyCategoryColumnSet::getCurrent($akCategoryHandle);
 		if(is_array($columns->getColumns())) foreach($columns->getColumns() as $col) {
 			$html .= '<th>'.$col->getColumnName().'</th>';
 		}
-		$html .= '<th width="30px" align="right"><a class="ccm-attribute-key-category-select-item dialog-launch" onclick="ccmActiveUserField=this" dialog-width="90%" dialog-height="70%" dialog-modal="false" dialog-title="' . t('Choose Items') . '" href="' . REL_DIR_FILES_TOOLS_REQUIRED . '/bricks/search_dialog?mode=choose_multiple&akCategoryHandle='.$akCategoryHandle.'&akID='.$akID.'"><img src="' . ASSETS_URL_IMAGES . '/icons/add.png" width="16" height="16" /></a></th>';
+		$html .= '<th width="30px" align="right"><a class="ccm-attribute-key-category-select-item dialog-launch" onclick="ccmActiveUserField=this" dialog-width="90%" dialog-height="70%" dialog-modal="false" dialog-title="' . t('Choose Items') . '" href="' . REL_DIR_FILES_TOOLS_REQUIRED . '/bricks/search_dialog?mode=choose_multiple&akCategoryHandle='.$akCategoryHandle.'&akID='.$akID.'&searchInstance=akID_'.$akID*time().'&fieldName='.$fieldName.'[]"><img src="' . ASSETS_URL_IMAGES . '/icons/add.png" width="16" height="16" /></a></th>';
 		$html .= '</tr><tbody id="ccmAttributeKeyCategoryItemSelect' . $akID . '_body" >';
 		if(!empty($values)) {
 			foreach($values as $akci) {
@@ -50,7 +50,7 @@ class FormAttributeKeyCategoryItemSelectorHelper {
 			$("tr.ccm-attribute-key-category-selected-item-none-"+akID).hide();
 			val = that.children(\':first-child\').children(\':first-child\').val();
 			if ($("#ccmAttributeKeyCategoryItemSelect"+akID+"_" + val).length < 1) {
-				html = \'<input type="hidden" value="\'+val+\'" name="'.$fieldName.'[]"><a class="ccm-attribute-key-category-item-list-clear" href="javascript:void(0)"><img width="16" height="16" class="ccm-attribute-key-category-item-list-clear-button" src="' . ASSETS_URL_IMAGES . '/icons/close.png"></a>\';
+				html = \'<input type="hidden" value="\'+val+\'" name="\'+that.attr(\'fieldName\')+\'"><a class="ccm-attribute-key-category-item-list-clear" href="javascript:void(0)"><img width="16" height="16" class="ccm-attribute-key-category-item-list-clear-button" src="' . ASSETS_URL_IMAGES . '/icons/close.png"></a>\';
 				that.children(":first-child").remove();
 				that.children(":last-child").append(html);
 				that.children(":last-child").attr("align", "center");
@@ -65,6 +65,9 @@ class FormAttributeKeyCategoryItemSelectorHelper {
 				ccm_setupGridStriping(\'ccmAttributeKeyCategoryItemSelect"+akID+"\');
 			});
 		}
+		</script>
+		<script type="text/javascript">
+			ccm_setupAttributeKeyCategoryItemSearch(\'akID_'.$akID*time().'\', '.$akID.');
 		</script>';	
 		return $html;
 	}
