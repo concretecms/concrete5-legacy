@@ -73,7 +73,7 @@ INSERT INTO BlockTypes VALUES(1,'content','Content','HTML/WYSIWYG Editor Content
  ,(18,'date_nav','Date Navigation','A collapsible date based navigation tree',1,0,0,0,500,350,0)
  ,(19,'next_previous','Next & Previous Nav','Navigate through sibling pages.',1,0,0,0,430,300,0)
  ,(20,'tags','Tags','List pages based on type, area.',1,0,0,0,500,350,0)
- ,(21,'bricks','Bricks','Display a list of items associated to an Attribute Key Category.',1,0,0,0,300,100,0);
+ ,(21,'bricks','Bricks','Display a list of items associated to an Attribute Key Category.',1,0,0,0,600,400,0);
 
 INSERT INTO CollectionVersions VALUES(2,1,NULL,NULL,NULL,NOW(),NOW(),'Initial Version',1,0,1,NULL,NULL)
  ,(1,2,'Home','home',NULL,NOW(),NOW(),'New Version 2',1,0,1,1,NULL)

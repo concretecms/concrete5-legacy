@@ -1331,7 +1331,16 @@ bID                      INTEGER UNSIGNED NOT NULL,
 akCategoryHandle         VARCHAR(255),
 isSearchable             tinyint(1) DEFAULT '0',
 administrationDisabled   tinyint(1) DEFAULT '1',
+userDefinedColumnsDisabled   tinyint(1) DEFAULT '1',
 columns                  LONGTEXT,
 persistantBID            int(10),
                  PRIMARY KEY (bID)
+) ENGINE=MyISAM;
+
+CREATE TABLE btBricksColumns (
+persistantBID            INTEGER UNSIGNED NOT NULL,
+uID                      INTEGER,
+akCategoryHandle         VARCHAR(255),
+columns                  LONGTEXT,
+                 PRIMARY KEY (persistantBID)
 ) ENGINE=MyISAM;

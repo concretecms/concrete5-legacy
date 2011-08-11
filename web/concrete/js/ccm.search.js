@@ -98,6 +98,17 @@ ccm_setupInPagePaginationAndSorting = function(searchType) {
 }
 
 ccm_setupSortableColumnSelection = function(searchType) {
+	$("#ccm-search-"+searchType+"-add-column").unbind();
+	$("#ccm-search-"+searchType+"-add-column").click(function() {
+		jQuery.fn.dialog.open({
+			width: 550,
+			height: 350,
+			modal: false,
+			href: $(this).attr('href')+'&columns='+$('input[name=columns_'+searchType+']').val()+'&persistantBID='+$('input[name=persistantBID_'+searchType+']').val(),
+			title: ccmi18n.customizeSearch				
+		});
+		return false;
+	});
 	$("#ccm-search-add-column").unbind();
 	$("#ccm-search-add-column").click(function() {
 		jQuery.fn.dialog.open({

@@ -8,6 +8,8 @@ if(isset($_REQUEST['administrationDisabled'])) $administrationDisabled = $_REQUE
 
 if(isset($_REQUEST['action'])) $action = $_REQUEST['action'];
 
+if(isset($_REQUEST['persistantBID'])) $persistantBID = $_REQUEST['persistantBID'];
+
 if(isset($_REQUEST['columns'])) $columns = $_REQUEST['columns'];
 if($columns) $columns = urlencode(serialize($columns));
 
@@ -43,6 +45,7 @@ foreach($searchFieldAttributes as $ak) {
 		<input type="hidden" name="columns_<?=$searchInstance?>" value="<?=$columns?>" />
 		<?php } ?>
 		<input type="hidden" name="action" value="<?=$action?>" />
+		<input type="hidden" name="persistantBID" value="<?=$persistantBID?>" />
 		
 		<div id="ccm-search-box-title">
 			<img src="<?php echo ASSETS_URL_IMAGES?>/throbber_white_16.gif" width="16" height="16" class="ccm-search-loading"  id="ccm-<?=$searchInstance?>-search-loading" />

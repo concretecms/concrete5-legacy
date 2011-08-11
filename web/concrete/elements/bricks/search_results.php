@@ -2,9 +2,14 @@
 if(!$akCategoryHandle) $akCategoryHandle = $_REQUEST['akCategoryHandle'];
 
 if(!$searchInstance) $searchInstance = $akCategoryHandle.time();
-if(isset($_REQUEST['searchInstance'])) $searchInstance = $_REQUEST['searchInstance'];
+if(isset($_REQUEST['searchInstance'])) $searchInstance = $_REQUEST['searchInstance'];?>
+
+<div id="ccm-<?=$searchInstance?>-search-results">
+<?php try {
 
 if(isset($_REQUEST['administrationDisabled'])) $administrationDisabled = $_REQUEST['administrationDisabled'];
+
+if(isset($_REQUEST['userDefinedColumnsDisabled'])) $userDefinedColumnsDisabled = $_REQUEST['userDefinedColumnsDisabled'];
 
 if(isset($_REQUEST['action'])) $action = $_REQUEST['action'];
 
@@ -14,10 +19,19 @@ if(isset($_REQUEST['fieldName'])) $fieldName = $_REQUEST['fieldName'];
 
 Loader::model('attribute_key_category_item_list');
 $akccs = new AttributeKeyCategoryColumnSet($akCategoryHandle);
-if(!$columns) $columns = $akccs->getCurrent();
-if(isset($_REQUEST['columns'])) $columns = unserialize(urldecode($_REQUEST['columns']));
-if(isset($_REQUEST['columns_'.$searchInstance])) $columns = unserialize(urldecode($_REQUEST['columns_'.$searchInstance]));
-if(is_string($columns)) $columns = unserialize(urldecode($columns));
+
+$u = new User();
+$db = Loader::db();
+$v = array($persistantBID, $u->getUserID(), $akCategoryHandle);
+$userColumns = $db->GetOne('SELECT columns FROM btBricksColumns WHERE persistantBID = ? AND uID = ? AND akCategoryHandle = ?', $v);
+if($userColumns) {
+	$columns = unserialize($userColumns);
+} else {
+	if(!$columns) $columns = $akccs->getCurrent();
+	if(isset($_REQUEST['columns'])) $columns = unserialize(urldecode($_REQUEST['columns']));
+	if(isset($_REQUEST['columns_'.$searchInstance])) $columns = unserialize(urldecode($_REQUEST['columns_'.$searchInstance]));
+	if(is_string($columns)) $columns = unserialize(urldecode($columns));
+}
 
 $cnt = Loader::controller('/dashboard/bricks/search');
 if(is_object($columns)) $sortBy = $columns->getDefaultSortColumn();
@@ -25,7 +39,6 @@ $newObjectList = $cnt->getRequestedSearchResults($akCategoryHandle, $sortBy);
 $newObjects = $newObjectList->getPage();
 $pagination = $newObjectList->getPagination();
 ?>
-<div id="ccm-<?=$searchInstance?>-search-results">
 	<div id="ccm-list-wrapper">
 		<?php 
 		if (!$mode) {
@@ -37,8 +50,10 @@ $pagination = $newObjectList->getPagination();
 		if($akCategoryHandle) $soargs['akCategoryHandle'] = $akCategoryHandle;
 		if($searchInstance) $soargs['searchInstance'] = $searchInstance;
 		if($administrationDisabled) $soargs['administrationDisabled'] = $administrationDisabled;
+		if($userDefinedColumnsDisabled) $soargs['userDefinedColumnsDisabled'] = $userDefinedColumnsDisabled;
 		if($action) $soargs['action'] = $action;
 		if($fieldName) $soargs['fieldName'] = $fieldName;
+		if($persistantBID) $soargs['persistantBID'] = $persistantBID;
 		if(is_object($columns))	{
 			$soargs['columns'] = urlencode(serialize($columns));
 		} elseif($columns) {
@@ -79,13 +94,9 @@ $pagination = $newObjectList->getPagination();
 					<?=$col->getColumnName()?>
 					<?php } ?>
 				</th>
-			<?php } if(!$administrationDisabled) { ?>
+			<?php } if(!$userDefinedColumnsDisabled) { ?>
 				<th width="20px" class="ccm-search-add-column-header">
-				<?php if(!$persistantBID) { ?>
-					<a href="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/bricks/customize_search_columns?akCategoryHandle=<?=$akCategoryHandle?>&searchInstance=<?=$searchInstance?>" id="ccm-search-add-column">
-				<?php } else { ?>
-					<a href="<?=REL_DIR_FILES_TOOLS_BLOCKS?>/bricks/columns?persistantBID=<?=$persistantBID?>&searchInstance=<?=$searchInstance?>" id="ccm-search-add-column">
-				<?php } ?>
+					<a href="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/bricks/customize_search_columns?akCategoryHandle=<?=$akCategoryHandle?>&searchInstance=<?=$searchInstance?>" id="ccm-search-<?=$searchInstance?>-add-column">
 						<img src="<?php echo ASSETS_URL_IMAGES?>/icons/column_preferences.png" width="16" height="16" />
 					</a>
 				</th>
@@ -129,7 +140,7 @@ $pagination = $newObjectList->getPagination();
 				if(is_array($columns->getColumns())) foreach($columns->getColumns() as $col) { ?>
 				<td onclick="<?=$action;?>"><?=$col->getColumnValue($item)?></td>
 				<?php } 
-				if(!$administrationDisabled) { ?>
+				if(!$userDefinedColumnsDisabled) { ?>
 				<td>&nbsp;</td>
 				<?php } ?>
 			</tr>
@@ -143,8 +154,12 @@ $pagination = $newObjectList->getPagination();
 		<?php  } 
 		$newObjectList->displayPaging($bu, false, $soargs);?>
 	</div>
-</div>
 
 <script type="text/javascript">
 	ccm_setupAttributeKeyCategoryItemSearch('<?=$searchInstance?>');
 </script>
+<?php } catch (Exception $e) { ?>
+<h2><span style="color:red">Error</span></h2>
+<p><?=$e->getMessage()?></p>
+<?php } ?>
+</div>
