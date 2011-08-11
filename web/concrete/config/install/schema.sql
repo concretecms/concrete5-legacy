@@ -1338,9 +1338,8 @@ persistantBID            int(10),
 ) ENGINE=MyISAM;
 
 CREATE TABLE btBricksColumns (
-persistantBID            INTEGER UNSIGNED NOT NULL,
+persistantBID            INTEGER NOT NULL,
 uID                      INTEGER,
 akCategoryHandle         VARCHAR(255),
-columns                  LONGTEXT,
-                 PRIMARY KEY (persistantBID)
+columns                  LONGTEXT
 ) ENGINE=MyISAM;
