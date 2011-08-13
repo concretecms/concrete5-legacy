@@ -4,6 +4,11 @@ thumbs.db
 __MACOSX
 ._*
 
+# ignore eclipse files / folders
+.buildpath
+.project
+.settings/
+
 # ignore the site.php
 /web/config/site.php
 
