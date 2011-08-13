@@ -11,8 +11,10 @@ User Name: %s
 Email Address: %s
 ", $uName, $uEmail);
 
-foreach($attribs as $item) {
-	$body .= $item . "\n";
+if(count($attribs)){
+	foreach($attribs as $item) {
+		$body .= $item . "\n";
+	}
 }
 
 $body .= t("
