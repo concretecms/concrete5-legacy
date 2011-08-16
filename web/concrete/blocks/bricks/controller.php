@@ -30,7 +30,6 @@ class BricksBlockController extends BlockController {
 		$this->addHeaderItem(Loader::helper('html')->javascript('ccm.search.js'));
 		$this->addHeaderItem(Loader::helper('html')->javascript('attribute_key_category.ui.js'));
 		$this->addHeaderItem('<script type="text/javascript" src="' . REL_DIR_FILES_TOOLS_REQUIRED . '/i18n_js"></script>');
-		$this->addHeaderItem('<script type="text/javascript">ccm_setupAttributeKeyCategoryItemSearch(\'block'.$this->persistantBID.'\');</script>');
 	}
 	
 	function view(){ 
