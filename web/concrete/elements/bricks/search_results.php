@@ -21,6 +21,15 @@ Loader::model('attribute_key_category_item_list');
 $akccs = new AttributeKeyCategoryColumnSet($akCategoryHandle);
 
 $u = new User();
+
+if($administrationDisabled) {
+	$canAdmin = FALSE;
+} else {
+	Loader::model('attribute_key_category_item_permission');
+	$akcip = AttributeKeyCategoryItemPermission::get($akCategoryHandle);
+	$canAdmin = $akcip->canAdmin();
+}
+
 $db = Loader::db();
 $v = array($persistantBID, $u->getUserID(), $akCategoryHandle);
 $userColumns = $db->GetOne('SELECT columns FROM btBricksColumns WHERE persistantBID = ? AND uID = ? AND akCategoryHandle = ?', $v);
@@ -59,11 +68,12 @@ $pagination = $newObjectList->getPagination();
 		} elseif($columns) {
 			 $soargs['columns'] = $columns;
 		}
+		?>
 		
-		if(!$administrationDisabled) { ?>
 		<table border="0" cellspacing="0" cellpadding="0" width="100%">
 			<tr>
 				<td width="100%"><?php echo $newObjectList->displaySummary();?></td>
+				<?php if($canAdmin) { ?>
 				<td style="white-space: nowrap"><?php echo t('With Selected: ')?>&nbsp;</td>
 				<td align="right"><select id="ccm-<?=$searchInstance?>-list-multiple-operations" akCategoryHandle="<?php echo $akCategoryHandle; ?>" disabled>
 						<option value="">**</option>
@@ -75,15 +85,16 @@ $pagination = $newObjectList->getPagination();
 						<option value="choose"><?php echo t('Choose')?></option>
 						<?php  } ?>
 					</select></td>
+				<?php } ?>
 			</tr>
 		</table>
-		<?php }
+		<?php
 		$txt = Loader::helper('text');
 		$keywords = $_REQUEST['keywords'];
 		$bu = REL_DIR_FILES_TOOLS_REQUIRED . '/bricks/search_results';
 		if (count($newObjects) > 0) { ?>
 		<table border="0" cellspacing="0" cellpadding="0" id="ccm-<?=$searchInstance?>-list" class="ccm-results-list">
-			<tr><?php if(!$administrationDisabled) { ?>
+			<tr><?php if($canAdmin) { ?>
 				<th width="20px"><input id="ccm-<?=$searchInstance?>-list-cb-all" type="checkbox" /></th>
 		<?php }
 			if(is_array($columns->getColumns())) foreach($columns->getColumns() as $col) { ?>
@@ -94,7 +105,7 @@ $pagination = $newObjectList->getPagination();
 					<?=$col->getColumnName()?>
 					<?php } ?>
 				</th>
-			<?php } if(!$userDefinedColumnsDisabled) { ?>
+			<?php } if(!$userDefinedColumnsDisabled && $u->isRegistered()) { ?>
 				<th width="20px" class="ccm-search-add-column-header">
 					<a href="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/bricks/customize_search_columns?akCategoryHandle=<?=$akCategoryHandle?>&searchInstance=<?=$searchInstance?>" id="ccm-search-<?=$searchInstance?>-add-column">
 						<img src="<?php echo ASSETS_URL_IMAGES?>/icons/column_preferences.png" width="16" height="16" />
@@ -131,7 +142,7 @@ $pagination = $newObjectList->getPagination();
 	
 				?>
 			<tr class="ccm-list-record <?php echo $striped?>"<?php if($fieldName) {?> fieldName="<?=$fieldName?>"<?php } ?>>
-				<?php if(!$administrationDisabled) { ?>
+				<?php if($canAdmin) { ?>
 				<td class="ccm-<?=$searchInstance?>-list-cb" style="vertical-align: middle !important">
 					<input type="checkbox" 
 						value="<?php echo $ID?>" />
@@ -140,7 +151,7 @@ $pagination = $newObjectList->getPagination();
 				if(is_array($columns->getColumns())) foreach($columns->getColumns() as $col) { ?>
 				<td onclick="<?=$action;?>"><?=$col->getColumnValue($item)?></td>
 				<?php } 
-				if(!$userDefinedColumnsDisabled) { ?>
+				if(!$userDefinedColumnsDisabled && $u->isRegistered()) { ?>
 				<td>&nbsp;</td>
 				<?php } ?>
 			</tr>

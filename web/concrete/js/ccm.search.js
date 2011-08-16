@@ -1,12 +1,24 @@
 var ccm_searchActivatePostFunction = new Array();
 
 ccm_setupAdvancedSearchFields = function(searchType) {
-	ccm_totalAdvancedSearchFields = $('.ccm-search-request-field-set').length;
-	$("#ccm-" + searchType + "-search-add-option").unbind();
-	$("#ccm-" + searchType + "-search-add-option").click(function() {
-		ccm_totalAdvancedSearchFields++;
-		$("#ccm-search-fields-wrapper").append('<div class="ccm-search-field" id="ccm-' + searchType + '-search-field-set' + ccm_totalAdvancedSearchFields + '">' + $("#ccm-search-field-base").html() + '<\/div>');
-		ccm_activateAdvancedSearchFields(searchType, ccm_totalAdvancedSearchFields);
+	var ccm_totalAdvancedSearchFields = new Array();
+	ccm_totalAdvancedSearchFields[searchType] = $('ccm-search-request-field-set').length;
+	if($('*[id*=ccm-'+searchType+'-search-field-set]').length) {
+		ccm_totalAdvancedSearchFields[searchType] = $('*[id*=ccm-'+searchType+'-search-field-set]').length;
+		console.log(true);
+	}
+	$("#ccm-" + searchType + "-search-add-option").die('click');
+	$("#ccm-" + searchType + "-search-add-option").live('click', function() {
+		ccm_totalAdvancedSearchFields[searchType]++;
+		if($("#ccm-"+searchType+"-search-fields-wrapper").length) {
+			if(!ccm_totalAdvancedSearchFields[searchType].length) {
+				ccm_totalAdvancedSearchFields[searchType] = $('*[id*=ccm-'+searchType+'-search-field-set]').length + 1;
+			}
+			$("#ccm-"+searchType+"-search-fields-wrapper").append('<div class="ccm-search-field" id="ccm-' + searchType + '-search-field-set' + ccm_totalAdvancedSearchFields[searchType] + '">' + $("#ccm-"+searchType+"-search-field-base").html() + '<\/div>');
+		} else {
+			$("#ccm-search-fields-wrapper").append('<div class="ccm-search-field" id="ccm-' + searchType + '-search-field-set' + ccm_totalAdvancedSearchFields[searchType] + '">' + $("#ccm-search-field-base").html() + '<\/div>');
+		}
+		ccm_activateAdvancedSearchFields(searchType, ccm_totalAdvancedSearchFields[searchType]);
 	});
 	
 	// we have to activate any of the fields that were here based on the request
@@ -147,14 +159,16 @@ ccm_checkSelectedAdvancedSearchField = function(searchType, fieldset) {
 
 ccm_activateAdvancedSearchFields = function(searchType, fieldset) {
 	var selTag = $("#ccm-" + searchType + "-search-field-set" + fieldset + " select:first");
-	selTag.unbind();
-	selTag.change(function() {
+	selTag.die('change');
+	selTag.live('change', function() {
 		var selected = $(this).find(':selected').val(); 
 		$(this).next('input.ccm-' + searchType + '-selected-field').val(selected);
 		
 		var itemToCopy = $('#ccm-' + searchType + '-search-field-base-elements span[search-field=' + selected + ']');
 		$("#ccm-" + searchType + "-search-field-set" + fieldset + " .ccm-selected-field-content").html('');
 		itemToCopy.clone().appendTo("#ccm-" + searchType + "-search-field-set" + fieldset + " .ccm-selected-field-content");
+		
+		console.log($('#ccm-' + searchType + '-search-field-base-elements span[search-field=' + selected + ']'));
 		
 		$("#ccm-" + searchType + "-search-field-set" + fieldset + " .ccm-selected-field-content .ccm-search-option").show();
 		ccm_checkSelectedAdvancedSearchField(searchType, fieldset);
