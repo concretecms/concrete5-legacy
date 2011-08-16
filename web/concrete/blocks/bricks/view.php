@@ -31,5 +31,5 @@ $searchInstance = 'block'.$persistantBID;?>
 	</table>
 </div>
 <script type="text/javascript">
-	//$("#ccm-<?=$searchInstance?>-advanced-search").submit();
+	$("#ccm-<?=$searchInstance?>-advanced-search").ready(function(){$("#ccm-<?=$searchInstance?>-advanced-search").submit();});
 </script>

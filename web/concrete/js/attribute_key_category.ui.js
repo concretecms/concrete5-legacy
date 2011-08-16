@@ -1,37 +1,3 @@
-ccm_checkSelectedAdvancedSearchField = function(searchType, fieldset) {
-	$("#ccm-" + searchType + "-search-field-set" + fieldset + " .ccm-search-option[search-field=date_added] input").each(function() {
-		if ($(this).attr('id') == 'date_added_from') {
-			$(this).attr('id', 'date_added_from' + fieldset);
-		} else if ($(this).attr('id') == 'date_added_to') {
-			$(this).attr('id', 'date_added_to' + fieldset);
-		}
-	});
-	$("#ccm-" + searchType + "-search-field-set" + fieldset + " .ccm-search-option[search-field=date_changed] input").each(function() {
-		if ($(this).attr('id') == 'date_changed_from') {
-			$(this).attr('id', 'date_changed_from' + fieldset);
-		} else if ($(this).attr('id') == 'date_changed_to') {
-			$(this).attr('id', 'date_changed_to' + fieldset);
-		}
-	});
-
-	$("#ccm-" + searchType + "-search-field-set" + fieldset + " .ccm-search-option-type-date_time input").each(function() {
-		$(this).attr('id', $(this).attr('id') + fieldset);
-	});
-	
-	
-	$("#ccm-" + searchType + "-search-field-set" + fieldset + " .ccm-search-option[search-field=date_added] input").datepicker({
-		showAnim: 'fadeIn'
-	});
-	$("#ccm-" + searchType + "-search-field-set" + fieldset + " .ccm-search-option[search-field=date_changed] input").datepicker({
-		showAnim: 'fadeIn'
-	});
-	$("#ccm-" + searchType + "-search-field-set" + fieldset + " .ccm-search-option-type-date_time input").datepicker({
-		showAnim: 'fadeIn'
-	});
-	$("#ccm-" + searchType + "-search-field-set" + fieldset + " .ccm-search-option-type-rating input").rating();		
-}
-
-
 ccm_setupAttributeKeyCategoryItemSearch = function(searchInstance, akID) {
 
 	ccm_setupAdvancedSearch(searchInstance);

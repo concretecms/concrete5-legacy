@@ -3,10 +3,7 @@ var ccm_searchActivatePostFunction = new Array();
 ccm_setupAdvancedSearchFields = function(searchType) {
 	var ccm_totalAdvancedSearchFields = new Array();
 	ccm_totalAdvancedSearchFields[searchType] = $('ccm-search-request-field-set').length;
-	if($('*[id*=ccm-'+searchType+'-search-field-set]').length) {
-		ccm_totalAdvancedSearchFields[searchType] = $('*[id*=ccm-'+searchType+'-search-field-set]').length;
-		console.log(true);
-	}
+	if($('*[id*=ccm-'+searchType+'-search-field-set]').length) ccm_totalAdvancedSearchFields[searchType] = $('*[id*=ccm-'+searchType+'-search-field-set]').length;
 	$("#ccm-" + searchType + "-search-add-option").die('click');
 	$("#ccm-" + searchType + "-search-add-option").live('click', function() {
 		ccm_totalAdvancedSearchFields[searchType]++;

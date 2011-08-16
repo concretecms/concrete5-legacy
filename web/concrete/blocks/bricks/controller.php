@@ -21,9 +21,11 @@ class BricksBlockController extends BlockController {
 		$this->addHeaderItem(Loader::helper('html')->css('ccm.dialog.css'));
 		$this->addHeaderItem(Loader::helper('html')->css('ccm.search.css'));
 		$this->addHeaderItem(Loader::helper('html')->css('ccm.forms.css'));
+		$this->addHeaderItem(Loader::helper('html')->css('jquery.rating.css'));
 		$this->addHeaderItem('<script type="text/javascript" src="' . REL_DIR_FILES_TOOLS_REQUIRED . '/i18n_js"></script>');
 		$this->addHeaderItem(Loader::helper('html')->javascript('jquery.ui.js'));
 		$this->addHeaderItem(Loader::helper('html')->javascript('jquery.form.js'));
+		$this->addHeaderItem(Loader::helper('html')->javascript('jquery.rating.js'));
 		$this->addHeaderItem(Loader::helper('html')->javascript('ccm.dialog.js'));
 		$this->addHeaderItem(Loader::helper('html')->javascript('ccm.search.js'));
 		$this->addHeaderItem(Loader::helper('html')->javascript('attribute_key_category.ui.js'));
