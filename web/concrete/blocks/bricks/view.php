@@ -14,6 +14,7 @@ $searchInstance = 'block'.$persistantBID;?>
 							'persistantBID'					=> $persistantBID,
 							'defaults'						=> $defaults,
 							'numResults'					=> $numResults,
+							'action'						=> 'null',
 							'mode'							=> 'block'
 						)
 					);
