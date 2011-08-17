@@ -12,12 +12,9 @@ $searchInstance = 'block'.$persistantBID;?>
 							'searchInstance'				=> $searchInstance,
 							'akCategoryHandle'				=> $akCategoryHandle,
 							'persistantBID'					=> $persistantBID,
-							'administrationDisabled'		=> $administrationDisabled,
-							'userDefinedColumnsDisabled'	=> $userDefinedColumnsDisabled,
 							'defaults'						=> $defaults,
-							'action'						=> 'null',
-							'keywords'						=> $keywords,
-							'numResults'					=> $numResults
+							'numResults'					=> $numResults,
+							'mode'							=> 'block'
 						)
 					);
 				?>

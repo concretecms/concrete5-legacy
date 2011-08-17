@@ -16,15 +16,6 @@ Loader::model('attribute_key_category_item_list');
 $akccs = new AttributeKeyCategoryColumnSet($akCategoryHandle);
 
 $u = new User();
-
-if($administrationDisabled) {
-	$canAdmin = FALSE;
-} else {
-	Loader::model('attribute_key_category_item_permission');
-	$akcip = AttributeKeyCategoryItemPermission::get($akCategoryHandle);
-	$canAdmin = $akcip->canAdmin();
-}
-
 $db = Loader::db();
 $v = array($persistantBID, $u->getUserID(), $akCategoryHandle);
 $userColumns = $db->GetOne('SELECT columns FROM btBricksColumns WHERE persistantBID = ? AND uID = ? AND akCategoryHandle = ?', $v);
@@ -53,6 +44,17 @@ $pagination = $newObjectList->getPagination();
 		<?php 
 		if (!$mode) {
 			$mode = $_REQUEST['mode'];
+		} 
+		if($administrationDisabled) {
+			$canAdmin = FALSE;
+		} else {
+			Loader::model('attribute_key_category_item_permission');
+			$akcip = AttributeKeyCategoryItemPermission::get($akCategoryHandle);
+			$canAdmin = $akcip->canAdmin();
+		}
+		if($mode = 'block') {
+			$canAdmin = FALSE;
+			$userDefinedColumnsDisabled = TRUE;
 		}
 		
 		$soargs = array();

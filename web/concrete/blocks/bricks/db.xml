@@ -10,29 +10,7 @@
 		<field name="isSearchable" type="I" size="1">
 			<default value="0" />
 		</field>
-		<field name="administrationDisabled" type="I" size="1">
-			<default value="1" />
-		</field>
-		<field name="userDefinedColumnsDisabled" type="I" size="1">
-			<default value="1" />
-		</field>
-		<field name="persistantBID" type="I" size="10">
-		</field>
-		<field name="keywords" type="C" size="255">
-		</field>
-		<field name="numResults" type="I" size="3">
-		</field>
 		<field name="defaults" type="X">
-		</field>
-	</table>
-	<table name="btBricksColumns">
-		<field name="persistantBID" type="I">
-		</field>
-		<field name="uID" type="I">
-		</field>
-		<field name="akCategoryHandle" type="C" size="255">
-		</field>
-		<field name="columns" type="X">
 		</field>
 	</table>
 </schema>
