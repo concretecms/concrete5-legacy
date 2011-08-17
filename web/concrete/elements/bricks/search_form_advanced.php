@@ -3,6 +3,7 @@ if(!$akCategoryHandle) $akCategoryHandle = $_REQUEST['akCategoryHandle'];
 if(!$searchInstance) $searchInstance = $akCategoryHandle.time();
 if(isset($_REQUEST['searchInstance'])) $searchInstance = $_REQUEST['searchInstance'];
 if(isset($_REQUEST['administrationDisabled'])) $administrationDisabled = $_REQUEST['administrationDisabled'];
+if(isset($_REQUEST['userDefinedColumnsDisabled'])) $userDefinedColumnsDisabled = $_REQUEST['userDefinedColumnsDisabled'];
 if(isset($_REQUEST['action'])) $action = $_REQUEST['action'];
 if(isset($_REQUEST['keywords'])) $keywords = $_REQUEST['keywords'];
 if(isset($_REQUEST['numResults'])) $numResults = $_REQUEST['numResults'];
@@ -48,12 +49,13 @@ $form = Loader::helper('form');
 </div>
 
 <?php if(!$_REQUEST['disableSubmit']) { ?>
-<form method="get" id="ccm-<?=$searchInstance?>-advanced-search" action="<?php echo REL_DIR_FILES_TOOLS_REQUIRED . '/bricks/search_results?akCategoryHandle='.$akCategoryHandle; if(!empty($akID)) print '&akID='.$akID;?>">
+<form method="post" id="ccm-<?=$searchInstance?>-advanced-search" action="<?php echo REL_DIR_FILES_TOOLS_REQUIRED . '/bricks/search_results?akCategoryHandle='.$akCategoryHandle; if(!empty($akID)) print '&akID='.$akID;?>">
 	<?php echo $form->hidden('mode', $mode); ?>
 	<?php echo $form->hidden('akCategoryHandle', $akCategoryHandle); ?>
 	<?php echo $form->hidden('searchInstance', $searchInstance); ?>
 	<?php echo $form->hidden('search', 1); ?>
 	<?php echo $form->hidden('administrationDisabled', $administrationDisabled); ?>
+	<?php echo $form->hidden('userDefinedColumnsDisabled', $userDefinedColumnsDisabled); ?>
 	<?php echo $form->hidden('defaults_'.$searchInstance, urlencode(serialize($defaults))); ?>
 	<?php echo $form->hidden('action', $action); ?>
 	<?php echo $form->hidden('persistantBID', $persistantBID); ?>

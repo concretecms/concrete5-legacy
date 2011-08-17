@@ -52,11 +52,10 @@ $pagination = $newObjectList->getPagination();
 			$akcip = AttributeKeyCategoryItemPermission::get($akCategoryHandle);
 			$canAdmin = $akcip->canAdmin();
 		}
-		if($mode = 'block') {
+		if($mode == 'block') {
 			$canAdmin = FALSE;
 			$userDefinedColumnsDisabled = TRUE;
 		}
-		
 		$soargs = array();
 		if($mode) $soargs['mode'] = $mode;
 		if($akCategoryHandle) $soargs['akCategoryHandle'] = $akCategoryHandle;
