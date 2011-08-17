@@ -20,8 +20,8 @@ loadColumnsPane = function(searchType) {
 	url = $('input[name=bricksToolsURL_'+searchType+']').val() + 'columns.php?';
 	url += 'akCategoryHandle=' + $('select[name=akCategoryHandle]').val();
 	if($('select[name=akCategoryHandle]').val() == $('input[name=originalAKC_'+searchType+']').val()) {
-		if($('input[name=columns_'+searchType+']').val()) {
-			url += '&columns=' + $('input[name=columns_'+searchType+']').val();
+		if($('input[name=defaults_'+searchType+']').val()) {
+			url += '&defaults=' + $('input[name=defaults_'+searchType+']').val();
 		}
 	}
 	url += '&persistantBID=' + $('input[name=persistantBID_'+searchType+']').val();
@@ -39,8 +39,8 @@ loadSearchFormAdvanced = function (searchType) {
 		if($('input[name=numResults_'+searchType+']').val()) {
 			url += '&numResults=' + $('input[name=numResults_'+searchType+']').val();
 		}
-		if($('input[name=akID_'+searchType+']').val()) {
-			url += '&akID'+'=' + $('input[name=akID_'+searchType+']').val();
+		if($('input[name=defaults_'+searchType+']').val()) {
+			url += '&defaults'+'=' + $('input[name=defaults_'+searchType+']').val();
 		}
 	}
 	url += '&disableSubmit=1';

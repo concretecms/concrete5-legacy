@@ -1,15 +1,14 @@
 <?php defined('C5_EXECUTE') or die("Access Denied.");
 $form = Loader::helper('form');
-
 $selectedAKIDs = array();
-
 Loader::model('attribute_key_category_item_list');
 $akcdca = new AttributeKeyCategoryAvailableColumnSet($_REQUEST['akCategoryHandle']);
-if(!$_REQUEST['columns']) {
+if(!$_REQUEST['defaults']) {
 	$akcdc = AttributeKeyCategoryColumnSet::getCurrent($_REQUEST['akCategoryHandle']);
 	$columns = $akcdc;
 } else {
-	$columns = unserialize(urldecode($_REQUEST['columns']));
+	$defaults = unserialize(urldecode($_REQUEST['defaults']));
+	$columns = $defaults['columns'];
 	if(is_string($columns)) $columns = unserialize($columns);
 }
 $list = AttributeKey::getList($_REQUEST['akCategoryHandle']);

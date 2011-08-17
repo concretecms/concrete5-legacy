@@ -14,11 +14,10 @@ $searchInstance = 'block'.$persistantBID;?>
 							'persistantBID'					=> $persistantBID,
 							'administrationDisabled'		=> $administrationDisabled,
 							'userDefinedColumnsDisabled'	=> $userDefinedColumnsDisabled,
-							'columns'						=> $columns,
+							'defaults'						=> $defaults,
 							'action'						=> 'null',
 							'keywords'						=> $keywords,
-							'numResults'					=> $numResults,
-							'akID'							=> $akID
+							'numResults'					=> $numResults
 						)
 					);
 				?>

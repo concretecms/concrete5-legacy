@@ -67,22 +67,44 @@ class DashboardBricksSearchController extends Controller {
 		}
 		
 		if (is_array($_REQUEST['selectedSearchField'])) {
-			foreach($_REQUEST['selectedSearchField'] as $i => $akID) {
+			$txt = Loader::helper('text');
+			foreach($_REQUEST['selectedSearchField'] as $i => $item) {
 				// due to the way the form is setup, index will always be one more than the arrays
-				if ($akID != '') {
-					$txt = Loader::helper('text');
-					$className = $txt->camelcase($akCategoryHandle).'AttributeKey';
-					if(class_exists($className)) {
-						$ak = new $className;
-						$ak = $ak->getByID($akID);
+				if ($item != '') {
+					if(is_numeric($item)) {
+						$className = $txt->camelcase($akCategoryHandle).'AttributeKey';
+						if(class_exists($className)) {
+							$ak = new $className;
+							$ak = $ak->getByID($item);
+						} else {
+							$ak = AttributeKey::getByID($item);
+						}
+						$type = $ak->getAttributeType();
+						$cnt = $type->getController();
+						$cnt->setRequestArray($req);
+						$cnt->setAttributeKey($ak);
+						$cnt->searchForm($objectList);
 					} else {
-						$ak = AttributeKey::getByID($akID);
+						if(!empty($_REQUEST[$item])) {
+							switch($item) { 
+								case 'onlyMine':
+									$u = new User();
+									if(method_exists($objectList, 'filterByUserID')) {
+										$objectList->filterByUserID($u->getUserID());
+									} elseif(method_exists($objectList, 'filterByAuthorUID')) {
+										$objectList->filterByAuthorUID($u->getUserID());
+									} elseif(method_exists($objectList, 'filterByUserName')) {
+										$objectList->filterByUserName($u->getUserName());
+									} else {
+										$objectList->filter('uID', $u->getUserID());
+									}
+									break;
+								default:
+									$objectList->filter($item, '%'.$_REQUEST[$item].'%', 'LIKE');
+									break;
+							}
+						}
 					}
-					$type = $ak->getAttributeType();
-					$cnt = $type->getController();
-					$cnt->setRequestArray($req);
-					$cnt->setAttributeKey($ak);
-					$cnt->searchForm($objectList);
 				}
 			}
 		}

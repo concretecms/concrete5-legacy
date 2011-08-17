@@ -54,7 +54,8 @@ class BricksBlockController extends BlockController {
 		}
 	}
 	
-	function save($data) {		
+	function save($data) {
+		
 		$args['akCategoryHandle'] = isset($data['akCategoryHandle']) ? $data['akCategoryHandle'] : '';
 		$args['isSearchable'] = isset($data['isSearchable']) ? $data['isSearchable'] : 0;
 		$args['administrationDisabled'] = isset($data['administrationDisabled']) ? $data['administrationDisabled'] : 0;
@@ -63,9 +64,13 @@ class BricksBlockController extends BlockController {
 		
 		$args['keywords'] = isset($data['keywords']) ? $data['keywords'] : NULL;
 		$args['numResults'] = isset($data['numResults']) ? $data['numResults'] : 10;
-		$args['akID'] = isset($data['akID']) ? serialize($data['akID']) : '';
 		
-		$args['filters'] = serialize($args['filters']);
+		foreach(array_keys($data) as $key) 
+			if(strpos($key, 'dsp_') !== false) 
+				if(!empty($data[$key])) $args['defaults']['filters'][str_replace('dsp_', '', $key)] = $data[$key];
+		if(is_array($data['akID']))
+			foreach($data['akID'] as $key => $value)
+				if(!empty($value)) $args['defaults']['filters'][$key] = $value;
 		
 		Loader::model('attribute_key_category_item_list');
 		$akcdc = new AttributeKeyCategoryColumnSet($data['akCategoryHandle']);
@@ -78,7 +83,8 @@ class BricksBlockController extends BlockController {
 			$akcdc->setDefaultSortColumn($sortCol, $data['fSearchDefaultSortDirection']);
 			$columns = serialize($akcdc);
 		}
-		$args['columns'] = $columns;
+		$args['defaults']['columns'] = $columns;
+		$args['defaults'] = serialize($args['defaults']);
 		
 		parent::save($args);
 	}

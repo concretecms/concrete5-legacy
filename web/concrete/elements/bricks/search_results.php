@@ -6,15 +6,10 @@ if(isset($_REQUEST['searchInstance'])) $searchInstance = $_REQUEST['searchInstan
 
 <div id="ccm-<?=$searchInstance?>-search-results">
 <?php try {
-
 if(isset($_REQUEST['administrationDisabled'])) $administrationDisabled = $_REQUEST['administrationDisabled'];
-
 if(isset($_REQUEST['userDefinedColumnsDisabled'])) $userDefinedColumnsDisabled = $_REQUEST['userDefinedColumnsDisabled'];
-
 if(isset($_REQUEST['action'])) $action = $_REQUEST['action'];
-
 if(isset($_REQUEST['persistantBID'])) $persistantBID = $_REQUEST['persistantBID'];
-
 if(isset($_REQUEST['fieldName'])) $fieldName = $_REQUEST['fieldName'];
 
 Loader::model('attribute_key_category_item_list');
@@ -36,10 +31,16 @@ $userColumns = $db->GetOne('SELECT columns FROM btBricksColumns WHERE persistant
 if($userColumns) {
 	$columns = unserialize($userColumns);
 } else {
-	if(!$columns) $columns = $akccs->getCurrent();
-	if(isset($_REQUEST['columns'])) $columns = unserialize(urldecode($_REQUEST['columns']));
-	if(isset($_REQUEST['columns_'.$searchInstance])) $columns = unserialize(urldecode($_REQUEST['columns_'.$searchInstance]));
+	if(isset($_REQUEST['defaults'])) {
+		$defaults = unserialize(urldecode($_REQUEST['defaults']));
+		$columns = $defaults['columns'];
+	}
+	if(isset($_REQUEST['defaults_'.$searchInstance])) {
+		$defaults = unserialize(urldecode($_REQUEST['defaults_'.$searchInstance]));
+		$columns = $defaults['columns'];
+	}
 	if(is_string($columns)) $columns = unserialize(urldecode($columns));
+	if(!$columns) $columns = $akccs->getCurrent();
 }
 
 $cnt = Loader::controller('/dashboard/bricks/search');
