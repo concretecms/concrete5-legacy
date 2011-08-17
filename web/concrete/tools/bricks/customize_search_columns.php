@@ -27,11 +27,11 @@ if($u->isRegistered()) {
 			
 			if($persistantBID) {
 				$db = Loader::db();
-				$exists = $db->GetOne('SELECT columns FROM btBricksColumns WHERE persistantBID = ? AND uID = ? AND akCategoryHandle = ?', array($persistantBID, $u->getUserID(), $akCategoryHandle));
+				$exists = $db->GetOne('SELECT columns FROM btAdvancedBricksColumns WHERE persistantBID = ? AND uID = ? AND akCategoryHandle = ?', array($persistantBID, $u->getUserID(), $akCategoryHandle));
 				if($exists) {
-					$db->Execute('UPDATE btBricksColumns SET columns = ? WHERE  persistantBID = ? AND uID = ? AND akCategoryHandle = ?', array(serialize($akcdc), $persistantBID, $u->getUserID(), $akCategoryHandle));
+					$db->Execute('UPDATE btAdvancedBricksColumns SET columns = ? WHERE  persistantBID = ? AND uID = ? AND akCategoryHandle = ?', array(serialize($akcdc), $persistantBID, $u->getUserID(), $akCategoryHandle));
 				} else {
-					$db->Execute('INSERT INTO btBricksColumns (persistantBID, uID, akCategoryHandle, columns) values (?,?,?,?)', array($persistantBID, $u->getUserID(), $akCategoryHandle, serialize($akcdc)));
+					$db->Execute('INSERT INTO btAdvancedBricksColumns (persistantBID, uID, akCategoryHandle, columns) values (?,?,?,?)', array($persistantBID, $u->getUserID(), $akCategoryHandle, serialize($akcdc)));
 				}
 			} else {
 				$u->saveConfig(strtoupper($akCategoryHandle).'_LIST_DEFAULT_COLUMNS', serialize($akcdc));
@@ -48,7 +48,7 @@ if($u->isRegistered()) {
 		$columns = AttributeKeyCategoryColumnSet::getCurrent($akCategoryHandle);
 	} elseif($persistantBID) {
 		$db = Loader::db();
-		$exists = $db->GetOne('SELECT columns FROM btBricksColumns WHERE persistantBID = ? AND uID = ? AND akCategoryHandle = ?', array($persistantBID, $u->getUserID(), $akCategoryHandle));
+		$exists = $db->GetOne('SELECT columns FROM btAdvancedBricksColumns WHERE persistantBID = ? AND uID = ? AND akCategoryHandle = ?', array($persistantBID, $u->getUserID(), $akCategoryHandle));
 		if($exists) {
 			$columns = unserialize($exists);
 		} else {

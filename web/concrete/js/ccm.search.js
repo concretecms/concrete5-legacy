@@ -163,10 +163,7 @@ ccm_activateAdvancedSearchFields = function(searchType, fieldset) {
 		
 		var itemToCopy = $('#ccm-' + searchType + '-search-field-base-elements span[search-field=' + selected + ']');
 		$("#ccm-" + searchType + "-search-field-set" + fieldset + " .ccm-selected-field-content").html('');
-		itemToCopy.clone().appendTo("#ccm-" + searchType + "-search-field-set" + fieldset + " .ccm-selected-field-content");
-		
-		console.log($('#ccm-' + searchType + '-search-field-base-elements span[search-field=' + selected + ']'));
-		
+		itemToCopy.clone().appendTo("#ccm-" + searchType + "-search-field-set" + fieldset + " .ccm-selected-field-content");		
 		$("#ccm-" + searchType + "-search-field-set" + fieldset + " .ccm-selected-field-content .ccm-search-option").show();
 		ccm_checkSelectedAdvancedSearchField(searchType, fieldset);
 	});

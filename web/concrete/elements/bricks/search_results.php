@@ -1,8 +1,9 @@
 <?php  defined('C5_EXECUTE') or die(_("Access Denied.")); 
 if(!$akCategoryHandle) $akCategoryHandle = $_REQUEST['akCategoryHandle'];
-
 if(!$searchInstance) $searchInstance = $akCategoryHandle.time();
-if(isset($_REQUEST['searchInstance'])) $searchInstance = $_REQUEST['searchInstance'];?>
+if(isset($_REQUEST['searchInstance'])) $searchInstance = $_REQUEST['searchInstance'];
+$u = new USer();
+?>
 
 <div id="ccm-<?=$searchInstance?>-search-results">
 <?php try {
@@ -15,13 +16,6 @@ if(isset($_REQUEST['fieldName'])) $fieldName = $_REQUEST['fieldName'];
 Loader::model('attribute_key_category_item_list');
 $akccs = new AttributeKeyCategoryColumnSet($akCategoryHandle);
 
-$u = new User();
-$db = Loader::db();
-$v = array($persistantBID, $u->getUserID(), $akCategoryHandle);
-$userColumns = $db->GetOne('SELECT columns FROM btBricksColumns WHERE persistantBID = ? AND uID = ? AND akCategoryHandle = ?', $v);
-if($userColumns) {
-	$columns = unserialize($userColumns);
-} else {
 	if(isset($_REQUEST['defaults'])) {
 		$defaults = unserialize(urldecode($_REQUEST['defaults']));
 		$columns = $defaults['columns'];
@@ -32,7 +26,6 @@ if($userColumns) {
 	}
 	if(is_string($columns)) $columns = unserialize(urldecode($columns));
 	if(!$columns) $columns = $akccs->getCurrent();
-}
 
 $cnt = Loader::controller('/dashboard/bricks/search');
 if(is_object($columns)) $sortBy = $columns->getDefaultSortColumn();
