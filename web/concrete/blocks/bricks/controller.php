@@ -48,7 +48,7 @@ class BricksBlockController extends BlockController {
 			$columns = serialize($akcdc);
 		}
 		$args['defaults']['columns'] = $columns;
-		$args['defaults'] = serialize($args['defaults']);
+		$args['defaults'] = urlencode(serialize($args['defaults']));
 		
 		parent::save($args);
 	}

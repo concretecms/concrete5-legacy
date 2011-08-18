@@ -12,9 +12,7 @@ if($u->isRegistered()) {
 	
 	Loader::model('attribute_key_category_item_list');
 	$akcdca = new AttributeKeyCategoryAvailableColumnSet($akCategoryHandle);
-	
 	if ($_POST['task'] == 'update_columns') {
-		
 		$akcdc = new AttributeKeyCategoryColumnSet($akCategoryHandle);
 		if(is_array($_POST['column'])) {
 			
@@ -27,11 +25,11 @@ if($u->isRegistered()) {
 			
 			if($persistantBID) {
 				$db = Loader::db();
-				$exists = $db->GetOne('SELECT columns FROM btAdvancedBricksColumns WHERE persistantBID = ? AND uID = ? AND akCategoryHandle = ?', array($persistantBID, $u->getUserID(), $akCategoryHandle));
+				$exists = $db->GetOne('SELECT columns FROM BricksCustomColumns WHERE searchInstance = ? AND uID = ? AND akCategoryHandle = ?', array($searchInstance, $u->getUserID(), $akCategoryHandle));
 				if($exists) {
-					$db->Execute('UPDATE btAdvancedBricksColumns SET columns = ? WHERE  persistantBID = ? AND uID = ? AND akCategoryHandle = ?', array(serialize($akcdc), $persistantBID, $u->getUserID(), $akCategoryHandle));
+					$db->Execute('UPDATE BricksCustomColumns SET columns = ? WHERE  searchInstance = ? AND uID = ? AND akCategoryHandle = ?', array(urlencode(serialize($akcdc)), $searchInstance, $u->getUserID(), $akCategoryHandle));
 				} else {
-					$db->Execute('INSERT INTO btAdvancedBricksColumns (persistantBID, uID, akCategoryHandle, columns) values (?,?,?,?)', array($persistantBID, $u->getUserID(), $akCategoryHandle, serialize($akcdc)));
+					$db->Execute('INSERT INTO BricksCustomColumns (searchInstance, uID, akCategoryHandle, columns) values (?,?,?,?)', array($searchInstance, $u->getUserID(), $akCategoryHandle, urlencode(serialize($akcdc))));
 				}
 			} else {
 				$u->saveConfig(strtoupper($akCategoryHandle).'_LIST_DEFAULT_COLUMNS', serialize($akcdc));
@@ -43,21 +41,17 @@ if($u->isRegistered()) {
 		$list->resetSearchRequest();
 		exit;
 	}
-	
-	if(!$_REQUEST['columns'] || $_REQUEST['columns'] == 'undefined') {
-		$columns = AttributeKeyCategoryColumnSet::getCurrent($akCategoryHandle);
-	} elseif($persistantBID) {
-		$db = Loader::db();
-		$exists = $db->GetOne('SELECT columns FROM btAdvancedBricksColumns WHERE persistantBID = ? AND uID = ? AND akCategoryHandle = ?', array($persistantBID, $u->getUserID(), $akCategoryHandle));
-		if($exists) {
-			$columns = unserialize($exists);
+	$db = Loader::db();
+	$exists = $db->GetOne('SELECT columns FROM BricksCustomColumns WHERE searchInstance = ? AND uID = ? AND akCategoryHandle = ?', array($searchInstance, $u->getUserID(), $akCategoryHandle));
+	if($exists) {
+		$columns = unserialize(urldecode($exists));
+	} else {
+		if(!$_REQUEST['columns'] || $_REQUEST['columns'] == 'undefined') {
+			$columns = AttributeKeyCategoryColumnSet::getCurrent($akCategoryHandle);
 		} else {
 			$columns = unserialize(urldecode($_REQUEST['columns']));
 			if(is_string($columns)) $columns = unserialize($columns);
 		}
-	} else {
-		$columns = unserialize(urldecode($_REQUEST['columns']));
-		if(is_string($columns)) $columns = unserialize($columns);
 	}
 	$list = AttributeKey::getList($akCategoryHandle);
 	?>

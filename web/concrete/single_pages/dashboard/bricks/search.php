@@ -25,8 +25,9 @@ if($permission) {
                             Loader::element(
                                 'bricks/search_form_advanced', 
                                 array(
-                                    'searchInstance' => $searchInstance,
-                                    'akCategoryHandle' => $akCategoryHandle
+                                    'searchInstance'	=> $searchInstance,
+                                    'akCategoryHandle'	=> $akCategoryHandle,
+									'onLeftClick'		=> "location.href='".View::url('/dashboard/bricks/edit/', $akCategoryHandle)."'+$(this).parent().children(':first-child').find('input[name=ID]').val()"
                                 )
                             );
                         ?>
@@ -36,8 +37,9 @@ if($permission) {
 							Loader::element(
 								'bricks/search_results', 
 								array(
-									'searchInstance' => $searchInstance,
-									'akCategoryHandle' => $akCategoryHandle
+									'searchInstance'	=> $searchInstance,
+									'akCategoryHandle'	=> $akCategoryHandle,
+									'onLeftClick'		=> "location.href='".View::url('/dashboard/bricks/edit/', $akCategoryHandle)."'+$(this).parent().children(':first-child').find('input[name=ID]').val()"
 								)
 							);
 						?>

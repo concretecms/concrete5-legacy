@@ -4,7 +4,7 @@ $fakeInstance = mt_rand(); ?>
 <?php if($akCategoryHandle) { ?>
 <input type="hidden" name="originalAKC_<?=$fakeInstance?>" value="<?=$akCategoryHandle?>" />
 <?php } ?>
-<input type="hidden" name="defaults_<?=$fakeInstance?>" value="<?=urlencode($defaults)?>" />
+<input type="hidden" name="defaults_<?=$fakeInstance?>" value="<?=$defaults?>" />
 <input type="hidden" name="fakeInstance" value="<?=$fakeInstance?>" />
 
 <!-- Settings Pane -->

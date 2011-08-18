@@ -1333,3 +1333,10 @@ isSearchable             tinyint(1) DEFAULT '0',
 defaults                 LONGTEXT,
                  PRIMARY KEY (bID)
 ) ENGINE=MyISAM;
+
+CREATE TABLE BricksCustomColumns (
+searchInstance           VARCHAR(255) NOT NULL,
+uID                      int(10) unsigned NOT NULL,
+akCategoryHandle         VARCHAR(255),
+columns                  LONGTEXT
+) ENGINE=MyISAM;

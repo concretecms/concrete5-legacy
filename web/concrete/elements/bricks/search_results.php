@@ -2,30 +2,43 @@
 if(!$akCategoryHandle) $akCategoryHandle = $_REQUEST['akCategoryHandle'];
 if(!$searchInstance) $searchInstance = $akCategoryHandle.time();
 if(isset($_REQUEST['searchInstance'])) $searchInstance = $_REQUEST['searchInstance'];
-$u = new USer();
+$u = new User();
 ?>
 
 <div id="ccm-<?=$searchInstance?>-search-results">
 <?php try {
 if(isset($_REQUEST['administrationDisabled'])) $administrationDisabled = $_REQUEST['administrationDisabled'];
 if(isset($_REQUEST['userDefinedColumnsDisabled'])) $userDefinedColumnsDisabled = $_REQUEST['userDefinedColumnsDisabled'];
-if(isset($_REQUEST['action'])) $action = $_REQUEST['action'];
 if(isset($_REQUEST['persistantBID'])) $persistantBID = $_REQUEST['persistantBID'];
 if(isset($_REQUEST['fieldName'])) $fieldName = $_REQUEST['fieldName'];
 
 Loader::model('attribute_key_category_item_list');
 $akccs = new AttributeKeyCategoryColumnSet($akCategoryHandle);
+$db = Loader::db();
+$exists = $db->GetOne('SELECT columns FROM BricksCustomColumns WHERE searchInstance = ? AND uID = ? AND akCategoryHandle = ?', array($searchInstance, $u->getUserID(), $akCategoryHandle));
+if($exists) {
+	$columns = unserialize(urldecode($exists));
+} elseif(isset($_REQUEST['defaults'])) {
+	$defaults = unserialize(urldecode($_REQUEST['defaults']));
+	$columns = $defaults['columns'];
+} else if(isset($_REQUEST['defaults_'.$searchInstance])) {
+	$defaults = unserialize(urldecode($_REQUEST['defaults_'.$searchInstance]));
+	$columns = $defaults['columns'];
+}
+if(is_string($columns)) $columns = unserialize(urldecode($columns));
+if(!$columns) $columns = $akccs->getCurrent();
 
-	if(isset($_REQUEST['defaults'])) {
-		$defaults = unserialize(urldecode($_REQUEST['defaults']));
-		$columns = $defaults['columns'];
-	}
-	if(isset($_REQUEST['defaults_'.$searchInstance])) {
-		$defaults = unserialize(urldecode($_REQUEST['defaults_'.$searchInstance]));
-		$columns = $defaults['columns'];
-	}
-	if(is_string($columns)) $columns = unserialize(urldecode($columns));
-	if(!$columns) $columns = $akccs->getCurrent();
+if($defaults) {
+	$onLeftClick = $defaults['onLeftClick'];
+	$onRightClick = $defaults['onRightClick'];
+}
+
+$akcdca = new AttributeKeyCategoryAvailableColumnSet($akCategoryHandle);
+$ak = new AttributeKey($akCategoryHandle);
+$fieldAttributes = $ak->getSearchableList($akCategoryHandle);
+foreach($fieldAttributes as $ak) {
+	$akcdca->addColumn($akcdca->getColumnByKey('ak_'.$ak->getAttributeKeyHandle()));
+}
 
 $cnt = Loader::controller('/dashboard/bricks/search');
 if(is_object($columns)) $sortBy = $columns->getDefaultSortColumn();
@@ -55,14 +68,8 @@ $pagination = $newObjectList->getPagination();
 		if($searchInstance) $soargs['searchInstance'] = $searchInstance;
 		if($administrationDisabled) $soargs['administrationDisabled'] = $administrationDisabled;
 		if($userDefinedColumnsDisabled) $soargs['userDefinedColumnsDisabled'] = $userDefinedColumnsDisabled;
-		if($action) $soargs['action'] = $action;
 		if($fieldName) $soargs['fieldName'] = $fieldName;
 		if($persistantBID) $soargs['persistantBID'] = $persistantBID;
-		if(is_object($columns))	{
-			$soargs['columns'] = urlencode(serialize($columns));
-		} elseif($columns) {
-			 $soargs['columns'] = $columns;
-		}
 		?>
 		
 		<table border="0" cellspacing="0" cellpadding="0" width="100%">
@@ -123,10 +130,9 @@ $pagination = $newObjectList->getPagination();
 						eval('$ID = $item->get'.$txt->camelcase(str_replace($pkg.'_', '', $akCategoryHandle)).'ID();');
 					}
 				}
-				if(!$action) $action = "location.href='".View::url('/dashboard/bricks/edit/', $akCategoryHandle, $ID)."'";
 				
 				if ($mode == 'choose_one' || $mode == 'choose_multiple') {
-					$action = 'ccm_triggerSelectAttributeKeyCategoryItem('.$akID.', $(this).parent()); jQuery.fn.dialog.closeTop();';
+					$onLeftClick = 'ccm_triggerSelectAttributeKeyCategoryItem('.$akID.', $(this).parent()); jQuery.fn.dialog.closeTop();';
 				}
 				
 				if (!isset($striped) || $striped == 'ccm-list-record-alt') {
@@ -139,15 +145,17 @@ $pagination = $newObjectList->getPagination();
 			<tr class="ccm-list-record <?php echo $striped?>"<?php if($fieldName) {?> fieldName="<?=$fieldName?>"<?php } ?>>
 				<?php if($canAdmin) { ?>
 				<td class="ccm-<?=$searchInstance?>-list-cb" style="vertical-align: middle !important">
-					<input type="checkbox" 
-						value="<?php echo $ID?>" />
+				<?php foreach($akcdca->getColumns() as $aCol) { ?>
+					<input type="hidden" name="<?=$aCol->getColumnKey()?>" value="<?=urlencode($aCol->getColumnValue($item))?>" />
+				<?php } ?>
+					<input type="checkbox" name="ID" value="<?=$ID?>" />
 				</td>
 				<?php }
 				if(is_array($columns->getColumns())) foreach($columns->getColumns() as $col) { ?>
-				<td onclick="<?=$action;?>"><?=$col->getColumnValue($item)?></td>
+				<td class="ccm-onclick-effect"><?=$col->getColumnValue($item)?></td>
 				<?php } 
 				if(!$userDefinedColumnsDisabled && $u->isRegistered()) { ?>
-				<td>&nbsp;</td>
+				<td class="ccm-onclick-effect">&nbsp;</td>
 				<?php } ?>
 			</tr>
 			<?php 
@@ -155,13 +163,61 @@ $pagination = $newObjectList->getPagination();
 	
 		?>
 		</table>
+	<?php if($onLeftClick) { ?>
+		<script type="text/javascript">
+			$('#ccm-<?=$searchInstance?>-list td.ccm-onclick-effect').live('click', function () {
+				<?=$onLeftClick;?>
+			});
+		</script>
+	<?php } ?>
+	<?php if($onRightClick) { ?>
+		<script type="text/javascript">
+			$('#ccm-<?=$searchInstance?>-list td.ccm-onclick-effect').live("contextmenu",function(e){
+				e.preventDefault();
+				<?=$onRightClick;?>
+				$(this).addClass('selected');
+			});
+		</script>
+	<?php } ?>
 		<?php  } else { ?>
 		<div id="ccm-list-none"><?php echo t('No items found.')?></div>
 		<?php  } 
 		$newObjectList->displayPaging($bu, false, $soargs);?>
 	</div>
 
-<script type="text/javascript">
+<script type="text/javascript"><?php if(!$onLeftClick && $canAdmin) { ?>
+	$('#ccm-<?=$searchInstance?>-list tr')
+		.filter(':has(:checkbox:checked)')
+		.end()
+		.find('input[type=checkbox]')
+		.click(function(event) {
+			if($(this).is(':checked')) {
+				$(this).parent().parent().addClass('selected');
+			} else {
+				$(this).parent().parent().removeClass('selected');
+			}
+		}
+	);
+	$('#ccm-<?=$searchInstance?>-list tr')
+		.filter(':has(:checkbox:checked)')
+		.end()
+		.click(function(event) {
+			if(event.target.type !== 'checkbox') {
+				if($(this).find('input[type=checkbox]').is(':checked')) {
+					$(this).find('input[type=checkbox]').removeAttr('checked');
+				} else {
+					$(this).find('input[type=checkbox]').attr('checked', 'checked');
+				}
+				$(this).find('input[type=checkbox]').trigger('click');
+				if($(this).find('input[type=checkbox]').is(':checked')) {
+					$(this).find('input[type=checkbox]').removeAttr('checked');
+				} else {
+					$(this).find('input[type=checkbox]').attr('checked', 'checked');
+				}
+			}
+		}
+	);
+	<?php } ?>
 	ccm_setupAttributeKeyCategoryItemSearch('<?=$searchInstance?>');
 </script>
 <?php } catch (Exception $e) { ?>

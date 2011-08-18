@@ -161,7 +161,7 @@ class AttributeKeyCategoryItemList extends DatabaseItemList {
 	}
 }
 
-class AttributeKeyCategoryDefaultColumnSet extends DatabaseItemListColumnSet {
+class AttributeKeyCategoryDefaultColumnSet extends AttributeKeyCategoryColumnSet {
 	protected $attributeClass = 'AttributeKey';
 	public function __construct($akCategoryHandle) {
 		$this->akCategoryHandle = $akCategoryHandle;
@@ -179,6 +179,19 @@ class AttributeKeyCategoryDefaultColumnSet extends DatabaseItemListColumnSet {
 					new DatabaseItemListColumn('ak_'.$list[0]->getAttributeKeyHandle(), $list[0]->getAttributeKeyName(), NULL,
 					'desc')
 				);
+			}
+		}
+	}
+	public function getColumnByKey($key) {
+		if (substr($key, 0, 3) == 'ak_') {
+			eval('$ak = '.$this->attributeClass.'::getByHandle("'.substr($key, 3).'", "'.$this->akCategoryHandle.'");');
+			$col = new DatabaseItemListAttributeKeyColumn($ak);
+			return $col;
+		} else {
+			foreach($this->columns as $col) {
+				if ($col->getColumnKey() == $key) {
+					return $col;			
+				}
 			}
 		}
 	}

@@ -12,9 +12,9 @@ $searchInstance = 'block'.$persistantBID;?>
 							'searchInstance'				=> $searchInstance,
 							'akCategoryHandle'				=> $akCategoryHandle,
 							'persistantBID'					=> $persistantBID,
-							'defaults'						=> $defaults,
+							'defaults'						=> unserialize(urldecode($defaults)),
 							'numResults'					=> $numResults,
-							'action'						=> 'null',
+							'onLeftClick'					=> 'null',
 							'mode'							=> 'block'
 						)
 					);
@@ -29,7 +29,7 @@ $searchInstance = 'block'.$persistantBID;?>
 </div>
 <script type="text/javascript">
 	$("#ccm-<?=$searchInstance?>-advanced-search").ready(function(){
-		ccm_setupAttributeKeyCategoryItemSearch('<?=$searchInstance?>');
+		ccm_setupAdvancedSearch('<?=$searchInstance?>');
 		$("#ccm-<?=$searchInstance?>-advanced-search").submit();
 	});
 </script>

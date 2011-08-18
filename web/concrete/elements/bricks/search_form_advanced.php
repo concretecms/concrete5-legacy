@@ -4,7 +4,6 @@ if(!$searchInstance) $searchInstance = $akCategoryHandle.time();
 if(isset($_REQUEST['searchInstance'])) $searchInstance = $_REQUEST['searchInstance'];
 if(isset($_REQUEST['administrationDisabled'])) $administrationDisabled = $_REQUEST['administrationDisabled'];
 if(isset($_REQUEST['userDefinedColumnsDisabled'])) $userDefinedColumnsDisabled = $_REQUEST['userDefinedColumnsDisabled'];
-if(isset($_REQUEST['action'])) $action = $_REQUEST['action'];
 if(isset($_REQUEST['keywords'])) $keywords = $_REQUEST['keywords'];
 if(isset($_REQUEST['numResults'])) $numResults = $_REQUEST['numResults'];
 if(isset($_REQUEST['defaults'])) $defaults = $_REQUEST['defaults'];
@@ -57,7 +56,8 @@ $form = Loader::helper('form');
 	<?php echo $form->hidden('administrationDisabled', $administrationDisabled); ?>
 	<?php echo $form->hidden('userDefinedColumnsDisabled', $userDefinedColumnsDisabled); ?>
 	<?php echo $form->hidden('defaults_'.$searchInstance, urlencode(serialize($defaults))); ?>
-	<?php echo $form->hidden('action', $action); ?>
+	<?php echo $form->hidden('onLeftClick', $onLeftClick); ?>
+	<?php echo $form->hidden('onRightClick', $onRightClick); ?>
 	<?php echo $form->hidden('persistantBID', $persistantBID); ?>
 <div id="ccm-<?=$searchInstance?>-search-advanced-fields" class="ccm-search-advanced-fields" >		
 	<div id="ccm-search-box-title">
