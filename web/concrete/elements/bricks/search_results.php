@@ -66,10 +66,7 @@ $pagination = $newObjectList->getPagination();
 		if($mode) $soargs['mode'] = $mode;
 		if($akCategoryHandle) $soargs['akCategoryHandle'] = $akCategoryHandle;
 		if($searchInstance) $soargs['searchInstance'] = $searchInstance;
-		if($administrationDisabled) $soargs['administrationDisabled'] = $administrationDisabled;
-		if($userDefinedColumnsDisabled) $soargs['userDefinedColumnsDisabled'] = $userDefinedColumnsDisabled;
 		if($fieldName) $soargs['fieldName'] = $fieldName;
-		if($persistantBID) $soargs['persistantBID'] = $persistantBID;
 		?>
 		
 		<table border="0" cellspacing="0" cellpadding="0" width="100%">

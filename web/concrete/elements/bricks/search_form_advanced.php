@@ -49,16 +49,9 @@ $form = Loader::helper('form');
 
 <?php if(!$_REQUEST['disableSubmit']) { ?>
 <form method="get" id="ccm-<?=$searchInstance?>-advanced-search" action="<?php echo REL_DIR_FILES_TOOLS_REQUIRED . '/bricks/search_results?akCategoryHandle='.$akCategoryHandle; if(!empty($akID)) print '&akID='.$akID;?>">
-	<?php echo $form->hidden('mode', $mode); ?>
-	<?php echo $form->hidden('akCategoryHandle', $akCategoryHandle); ?>
-	<?php echo $form->hidden('searchInstance', $searchInstance); ?>
+	<?php if($mode) echo $form->hidden('mode', $mode); ?>
+	<?php if($searchInstance) echo $form->hidden('searchInstance', $searchInstance); ?>
 	<?php echo $form->hidden('search', 1); ?>
-	<?php echo $form->hidden('administrationDisabled', $administrationDisabled); ?>
-	<?php echo $form->hidden('userDefinedColumnsDisabled', $userDefinedColumnsDisabled); ?>
-	<?php echo $form->hidden('defaults_'.$searchInstance, urlencode(serialize($defaults))); ?>
-	<?php echo $form->hidden('onLeftClick', $onLeftClick); ?>
-	<?php echo $form->hidden('onRightClick', $onRightClick); ?>
-	<?php echo $form->hidden('persistantBID', $persistantBID); ?>
 <div id="ccm-<?=$searchInstance?>-search-advanced-fields" class="ccm-search-advanced-fields" >		
 	<div id="ccm-search-box-title">
 		<img src="<?php echo ASSETS_URL_IMAGES?>/throbber_white_16.gif" width="16" height="16" class="ccm-search-loading"  id="ccm-<?=$searchInstance?>-search-loading" />
