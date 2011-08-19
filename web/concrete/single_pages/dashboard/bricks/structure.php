@@ -195,7 +195,7 @@ if($permission) {
 			</tr>
 		</table>
 		<form method="post" id="attribute_type_associations_form" action="<?php echo $this->action('save_attribute_type_associations/'.$akCategoryHandle)?>">
-			<h1><span><?php echo t($txt->unhandle($akCategoryHandle).'Attribute Type Associations')?></span></h1>
+			<h1><span><?php echo t($txt->unhandle($akCategoryHandle).' Attribute Type Associations')?></span></h1>
 			<div class="ccm-dashboard-inner">
 				<table border="0" cellspacing="1" cellpadding="0" border="0" class="grid-list">
 				<tr>

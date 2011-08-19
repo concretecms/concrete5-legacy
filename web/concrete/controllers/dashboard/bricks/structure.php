@@ -111,7 +111,6 @@ class DashboardBricksStructureController extends Controller {
 					$type = $key->getAttributeType();
 					$this->set('key', $key);
 					$this->set('type', $type);
-				
 					if ($this->isPost()) {
 						$key->update($this->post());
 						$this->redirect('/dashboard/bricks/structure/'.$akCategoryHandle, 'attribute_updated');

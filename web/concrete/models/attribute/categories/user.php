@@ -190,8 +190,6 @@ class UserAttributeKey extends AttributeKey {
 	public function update($args) {
 		$ak = parent::update($args);
 
-		extract($args);
-
 		if ($uakProfileDisplay != 1) {
 			$uakProfileDisplay = 0;
 		}

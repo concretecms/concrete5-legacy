@@ -8,8 +8,17 @@ class AttributeKey extends Object {
 		}
 	}
 	public static function getByID($akID, $akCategoryHandle = NULL) {
-		$ak = new AttributeKey($akCategoryHandle);
-		return $ak->load($akID);
+		$akc = AttributeKeyCategory::getByHandle($akCategoryHandle);
+		if(is_object($akc)) $pkg = $akc->getPackageHandle();
+		if(Loader::model('attribute/categories/'.$akCategoryHandle, $pkg)) {
+			$txt = Loader::helper('text');
+			$class = $txt->unhandle($akCategoryHandle).'AttributeKey';
+			eval('$ak = '.$class.'::get($akID);');
+		} else {
+			$ak = new AttributeKey($akCategoryHandle);
+			$ak->load($akID);
+		}
+		return $ak;
 	}
 	public static function getByHandle($akHandle, $akCategoryHandle) {
 		$db = Loader::db();
@@ -82,22 +91,12 @@ class AttributeKey extends Object {
 			$akunhandle = $txt->uncamelcase(get_class($this));
 			$akCategoryHandle = substr($akunhandle, 0, strpos($akunhandle, '_attribute_key'));
 		}
-		$akc = AttributeKeyCategory::getByHandle($akCategoryHandle);
-		if(is_object($akc)) $pkg = $akc->getPackageHandle();
-		if(Loader::model('attribute/categories/'.$akCategoryHandle, $pkg)) {
-			$class = $txt->unhandle($akCategoryHandle).'AttributeKey';
-			$ak = new $class;
-			$ak = $ak->getByID($akID);
-			return $ak;
+		if ($akCategoryHandle != '') {
+			$row = $db->GetRow('select akID, akHandle, akName, AttributeKeys.akCategoryID, akIsEditable, akIsSearchable, akIsSearchableIndexed, akIsAutoCreated, akIsColumnHeader, AttributeKeys.atID, atHandle, AttributeKeys.pkgID from AttributeKeys inner join AttributeKeyCategories on AttributeKeys.akCategoryID = AttributeKeyCategories.akCategoryID inner join AttributeTypes on AttributeKeys.atID = AttributeTypes.atID where akID = ? and akCategoryHandle = ?', array($akID, $akCategoryHandle));
 		} else {
-			if ($akCategoryHandle != '') {
-				$row = $db->GetRow('select akID, akHandle, akName, AttributeKeys.akCategoryID, akIsEditable, akIsSearchable, akIsSearchableIndexed, akIsAutoCreated, akIsColumnHeader, AttributeKeys.atID, atHandle, AttributeKeys.pkgID from AttributeKeys inner join AttributeKeyCategories on AttributeKeys.akCategoryID = AttributeKeyCategories.akCategoryID inner join AttributeTypes on AttributeKeys.atID = AttributeTypes.atID where akID = ? and akCategoryHandle = ?', array($akID, $akCategoryHandle));
-			} else {
-				$row = $db->GetRow('select akID, akHandle, akName, akCategoryID, akIsEditable, akIsSearchable, akIsSearchableIndexed, akIsAutoCreated, akIsColumnHeader, AttributeKeys.atID, atHandle, AttributeKeys.pkgID from AttributeKeys inner join AttributeTypes on AttributeKeys.atID = AttributeTypes.atID where akID = ?', array($akID));		
-			}
-			$this->setPropertiesFromArray($row);
-			return $this;
+			$row = $db->GetRow('select akID, akHandle, akName, akCategoryID, akIsEditable, akIsSearchable, akIsSearchableIndexed, akIsAutoCreated, akIsColumnHeader, AttributeKeys.atID, atHandle, AttributeKeys.pkgID from AttributeKeys inner join AttributeTypes on AttributeKeys.atID = AttributeTypes.atID where akID = ?', array($akID));		
 		}
+		$this->setPropertiesFromArray($row);
 	}
 	
 	public function getPackageID() { return $this->pkgID;}
@@ -266,6 +265,7 @@ class AttributeKey extends Object {
 
 	public function refreshCache() {
 		Cache::delete('attribute_key', $this->getAttributeKeyID());
+		Cache::flush();
 	}
 	
 	/** 
@@ -304,15 +304,10 @@ class AttributeKey extends Object {
 				break;
 		}
 
-		
 		if ($r) {
 			$txt = Loader::helper('text');
 			$className = $txt->camelcase($akCategoryHandle) . 'AttributeKey';
-			if(in_array($className, get_declared_classes())) {
-				$ak = new $className();
-			} else {
-				$ak = new AttributeKey($akCategoryHandle);
-			}
+			$ak = new $className();
 			$ak->load($this->getAttributeKeyID());
 			$at = $ak->getAttributeType();
 			$cnt = $at->getController();
