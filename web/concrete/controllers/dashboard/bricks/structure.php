@@ -106,7 +106,7 @@ class DashboardBricksStructureController extends Controller {
 					}
 				
 					$ak = new AttributeKey($akCategoryHandle);
-					$key = $ak->getByID($ID);
+					$key = $ak->getByID($ID, $akCategoryHandle);
 				
 					$type = $key->getAttributeType();
 					$this->set('key', $key);

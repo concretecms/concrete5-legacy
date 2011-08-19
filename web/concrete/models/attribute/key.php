@@ -7,17 +7,16 @@ class AttributeKey extends Object {
 			$this->akCategoryHandle = $akCategoryHandle;
 		}
 	}
-	public static function getByID($akID) {
-		$ak = new AttributeKey;
-		$ak->load($akID);
-		return $ak;
+	public static function getByID($akID, $akCategoryHandle = NULL) {
+		$ak = new AttributeKey($akCategoryHandle);
+		return $ak->load($akID);
 	}
 	public static function getByHandle($akHandle, $akCategoryHandle) {
 		$db = Loader::db();
 		$akCategoryID = $db->GetOne('SELECT akCategoryID FROM AttributeKeyCategories WHERE akCategoryHandle = ?', array($akCategoryHandle));
 		$akID = $db->GetOne('SELECT akID FROM AttributeKeys WHERE akHandle = ? AND akCategoryID = ?', array($akHandle, $akCategoryID));
 		
-		return self::getByID($akID);
+		return self::getByID($akID, $akCategoryHandle);
 	}
 	protected $searchIndexFieldDefinition = 'ID I(11) UNSIGNED NOTNULL DEFAULT 0 PRIMARY';
 	
@@ -77,17 +76,28 @@ class AttributeKey extends Object {
 	 */
 	protected function load($akID) {
 		$db = Loader::db();
+		$txt = Loader::helper('text');
 		$akCategoryHandle = $this->akCategoryHandle;
-		if(!$this->akCategoryHandle) {
-			$akunhandle = Loader::helper('text')->uncamelcase(get_class($this));
+		if(!$akCategoryHandle) {
+			$akunhandle = $txt->uncamelcase(get_class($this));
 			$akCategoryHandle = substr($akunhandle, 0, strpos($akunhandle, '_attribute_key'));
 		}
-		if ($akCategoryHandle != '') {
-			$row = $db->GetRow('select akID, akHandle, akName, AttributeKeys.akCategoryID, akIsEditable, akIsSearchable, akIsSearchableIndexed, akIsAutoCreated, akIsColumnHeader, AttributeKeys.atID, atHandle, AttributeKeys.pkgID from AttributeKeys inner join AttributeKeyCategories on AttributeKeys.akCategoryID = AttributeKeyCategories.akCategoryID inner join AttributeTypes on AttributeKeys.atID = AttributeTypes.atID where akID = ? and akCategoryHandle = ?', array($akID, $akCategoryHandle));
+		$akc = AttributeKeyCategory::getByHandle($akCategoryHandle);
+		if(is_object($akc)) $pkg = $akc->getPackageHandle();
+		if(Loader::model('attribute/categories/'.$akCategoryHandle, $pkg)) {
+			$class = $txt->unhandle($akCategoryHandle).'AttributeKey';
+			$ak = new $class;
+			$ak = $ak->getByID($akID);
+			return $ak;
 		} else {
-			$row = $db->GetRow('select akID, akHandle, akName, akCategoryID, akIsEditable, akIsSearchable, akIsSearchableIndexed, akIsAutoCreated, akIsColumnHeader, AttributeKeys.atID, atHandle, AttributeKeys.pkgID from AttributeKeys inner join AttributeTypes on AttributeKeys.atID = AttributeTypes.atID where akID = ?', array($akID));		
+			if ($akCategoryHandle != '') {
+				$row = $db->GetRow('select akID, akHandle, akName, AttributeKeys.akCategoryID, akIsEditable, akIsSearchable, akIsSearchableIndexed, akIsAutoCreated, akIsColumnHeader, AttributeKeys.atID, atHandle, AttributeKeys.pkgID from AttributeKeys inner join AttributeKeyCategories on AttributeKeys.akCategoryID = AttributeKeyCategories.akCategoryID inner join AttributeTypes on AttributeKeys.atID = AttributeTypes.atID where akID = ? and akCategoryHandle = ?', array($akID, $akCategoryHandle));
+			} else {
+				$row = $db->GetRow('select akID, akHandle, akName, akCategoryID, akIsEditable, akIsSearchable, akIsSearchableIndexed, akIsAutoCreated, akIsColumnHeader, AttributeKeys.atID, atHandle, AttributeKeys.pkgID from AttributeKeys inner join AttributeTypes on AttributeKeys.atID = AttributeTypes.atID where akID = ?', array($akID));		
+			}
+			$this->setPropertiesFromArray($row);
+			return $this;
 		}
-		$this->setPropertiesFromArray($row);
 	}
 	
 	public function getPackageID() { return $this->pkgID;}
