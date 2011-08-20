@@ -569,6 +569,12 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			$r = $db->query($q);
 		}
 		
+		function notifyUser(){
+			$mh = Loader::helper('mail');
+			$mh->to($this->uEmail);
+			$mh->load('user_activation');
+			$mh->sendMail();
+		}
 		
 		function resetUserPassword() {
 			// resets user's password, and returns the value of the reset password

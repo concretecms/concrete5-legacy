@@ -81,6 +81,10 @@ if (intval($_GET['uID'])) {
 				throw new Exception('Invalid token.  Unable to activate user.');
 			}else{		
 				$uo->activate();
+				// notify user when his account has been activated
+				if(defined('EMAIL_NOTIFY_USER_ON_ACTIVATION')){
+					$uo->notifyUser();
+				}
 				$uo = UserInfo::getByID(intval($_GET['uID']));
 				$message = t("User activated.");
 			}
