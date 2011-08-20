@@ -2,7 +2,7 @@
 	
 	class Localization {
 	
-		public function init() {
+		public static function init() {
 			$loc = self::getInstance();
 			$loc->getTranslate();
 		}

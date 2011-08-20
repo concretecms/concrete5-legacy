@@ -309,9 +309,7 @@ class Package extends Object {
 							$item->delete();
 							break;
 						case 'ConfigValue':
-							$co = new Config();
-							$co->setPackageObject($this);
-							$co->clear($item->key);
+							Config::clear($item->key, $this->getPackageID());
 							break;
 						case 'DashboardHomepage':
 							$item->Delete();
@@ -550,21 +548,15 @@ class Package extends Object {
 
 
 	public function config($cfKey, $getFullObject = false) {
-		$co = new Config();
-		$co->setPackageObject($this);
-		return $co->get($cfKey, $getFullObject);
+		return Config::get($cfKey, $getFullObject, $this->getPackageID());
 	}
 	
 	public function saveConfig($cfKey, $value) {
-		$co = new Config();
-		$co->setPackageObject($this);
-		return $co->save($cfKey, $value);
+		return Config::save($cfKey, $cfValue, $this->getPackageID());
 	}
 
 	public function clearConfig($cfKey) {
-		$co = new Config();
-		$co->setPackageObject($this);
-		return $co->clear($cfKey);
+		return Config::clear($cfKey, $this->getPackageID());
 	}
 	
 	public static function getAvailablePackages($filterInstalled = true) {

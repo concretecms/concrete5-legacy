@@ -61,7 +61,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			BlockController::$sets[$this->identifier][$key] = $value;		
 		}
 		
-		public function get($key) {
+		public function get($key = null) {
 			if (isset(BlockController::$sets[$this->identifier][$key])) {
 				return BlockController::$sets[$this->identifier][$key];
 			}
@@ -283,7 +283,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			parent::addHeaderItem($file);
 		}
 		
-		public function setupAndRun($method) {
+		public function setupAndRun($method = null) {
 			if ($method) {
 				$this->task = $method;
 			}

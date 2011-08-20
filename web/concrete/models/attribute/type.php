@@ -208,7 +208,7 @@ class AttributeType extends Object {
 
 class PendingAttributeType extends AttributeType {
 
-	public static function getList() {
+	public static function getList($akCategoryHandle = false) {
 		$db = Loader::db();
 		$atHandles = $db->GetCol("select atHandle from AttributeTypes");
 		

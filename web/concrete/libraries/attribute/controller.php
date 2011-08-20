@@ -94,7 +94,8 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			return $this->searchIndexFieldDefinition;
 		}
 		
-		public function setupAndRun($method) {
+		public function setupAndRun($method = null)
+		{
 			$args = func_get_args();
 			$args = array_slice($args, 1);
 			if ($method) {

@@ -124,7 +124,7 @@ class ComposerPage extends Page {
 		return $blocks;
 	}
 	
-	public static function getByID($cID, $cvID = 'RECENT') {
+	public static function getByID($cID, $cvID = 'RECENT', $class = 'Page') {
 		$db = Loader::db();
 		$c = parent::getByID($cID, $cvID, 'ComposerPage');
 

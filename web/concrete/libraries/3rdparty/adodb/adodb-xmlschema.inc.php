@@ -476,8 +476,13 @@ class dbTable extends dbObject {
 	* @param object $xmls adoSchema object
 	* @return array Array containing table creation SQL
 	*/
-	function create( &$xmls ) {
+	function create(&$xmls = null)
+	{
 		$sql = array();
+		
+		if (null == $xmls) {
+			return $sql;
+		}
 		
 		// drop any existing indexes
 		if( is_array( $legacy_indexes = $xmls->dict->MetaIndexes( $this->name ) ) ) {
@@ -741,7 +746,11 @@ class dbIndex extends dbObject {
 	* @param object $xmls adoSchema object
 	* @return array Array containing index creation SQL
 	*/
-	function create( &$xmls ) {
+	function create(&$xmls = null)
+	{
+		if (null == $xmls) {
+			return null;
+		}
 		if( $this->drop ) {
 			return NULL;
 		}
