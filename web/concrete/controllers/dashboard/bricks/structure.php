@@ -100,14 +100,30 @@ class DashboardBricksStructureController extends Controller {
 						$this->redirect('/dashboard/bricks/structure/'.$akCategoryHandle, 'attribute_created');
 				
 					break;
-				case 'edit':						
+				case 'edit':				
 					if ($this->post('akID')) {
 						$ID = $this->post('akID');
 					}
 				
 					$ak = new AttributeKey($akCategoryHandle);
 					$key = $ak->getByID($ID, $akCategoryHandle);
-				
+					
+					if(!$key->isUnique)
+						$this->addHeaderItem('<script type="text/javascript">
+	$(document).ready(function () {
+		$("input[name=akHandle]").attr("disabled", true);
+		$("input[name=akHandle]").attr("title", "Changing this would rip a hole in the space-time continuum.");
+		if ($.browser.mozilla) {
+			$(function() {
+				$("input[name=akHandle]")
+					.removeAttr("disabled")
+					.attr("readonly", true)
+					.css("background", "#EEEEEE")
+				})
+    	}
+
+	}
+);</script>');	
 					$type = $key->getAttributeType();
 					$this->set('key', $key);
 					$this->set('type', $type);

@@ -191,7 +191,8 @@ if($permission) {
 								<?php  Loader::element("attribute/type_form_required", array('category' => $category, 'type' => $type)); ?>
 							</form>
 						<?php  } ?>
-					</div></td>
+					</div>
+				</td>
 			</tr>
 		</table>
 		<form method="post" id="attribute_type_associations_form" action="<?php echo $this->action('save_attribute_type_associations/'.$akCategoryHandle)?>">

@@ -18,6 +18,8 @@ class AttributeKey extends Object {
 			$ak = new AttributeKey($akCategoryHandle);
 			$ak->load($akID);
 		}
+		if($ak->getIndexedSearchTable() != 'AttributeKeyCategoryItemSearchIndex')
+			$ak->isUnique = true;
 		return $ak;
 	}
 	public static function getByHandle($akHandle, $akCategoryHandle) {
@@ -25,7 +27,7 @@ class AttributeKey extends Object {
 		$akCategoryID = $db->GetOne('SELECT akCategoryID FROM AttributeKeyCategories WHERE akCategoryHandle = ?', array($akCategoryHandle));
 		$akID = $db->GetOne('SELECT akID FROM AttributeKeys WHERE akHandle = ? AND akCategoryID = ?', array($akHandle, $akCategoryID));
 		
-		return self::getByID($akID, $akCategoryHandle);
+		if($akID) return self::getByID($akID, $akCategoryHandle);
 	}
 	protected $searchIndexFieldDefinition = 'ID I(11) UNSIGNED NOTNULL DEFAULT 0 PRIMARY';
 	
@@ -265,7 +267,6 @@ class AttributeKey extends Object {
 
 	public function refreshCache() {
 		Cache::delete('attribute_key', $this->getAttributeKeyID());
-		Cache::flush();
 	}
 	
 	/** 
@@ -307,7 +308,11 @@ class AttributeKey extends Object {
 		if ($r) {
 			$txt = Loader::helper('text');
 			$className = $txt->camelcase($akCategoryHandle) . 'AttributeKey';
-			$ak = new $className();
+			if(class_exists($className)){
+				$ak = new $className();
+			} else {
+				$ak = new AttributeKey($akCategoryHandle);
+			}
 			$ak->load($this->getAttributeKeyID());
 			$at = $ak->getAttributeType();
 			$cnt = $at->getController();
@@ -444,6 +449,11 @@ class AttributeKey extends Object {
 	}
 	
 	public function delete() {
+		$akcs = AttributeKeyCategory::getList();
+		foreach($akcs as $akc) {
+			$ak = $akc->getAttributeKeyByHandle($this->akHandle);
+			if(is_object($ak)) if($ak->getIndexedSearchTable() == 'AttributeKeyCategoryItemSearchIndex') $aks[] = $ak;
+		}
 		$at = $this->getAttributeType();
 		$at->controller->setAttributeKey($this);
 		$at->controller->deleteKey();
@@ -452,29 +462,30 @@ class AttributeKey extends Object {
 		$db = Loader::db();
 		$db->Execute('delete from AttributeKeys where akID = ?', array($this->getAttributeKeyID()));
 		$db->Execute('delete from AttributeSetKeys where akID = ?', array($this->getAttributeKeyID()));
-
-		if ($this->getIndexedSearchTable()) {
-			$columns = $db->MetaColumns($this->getIndexedSearchTable());
-			$dba = NewDataDictionary($db, DB_TYPE);
-			
-			$fields = array();
-			if (!is_array($cnt->getSearchIndexFieldDefinition())) {
-				$dropColumns[] = 'ak_' . $this->akHandle;
-			} else {
-				foreach($cnt->getSearchIndexFieldDefinition() as $col => $def) {
-					$dropColumns[] = 'ak_' . $this->akHandle . '_' . $col;
+		
+		if(count($aks) == 1) {
+			if ($this->getIndexedSearchTable()) {
+				$columns = $db->MetaColumns($this->getIndexedSearchTable());
+				$dba = NewDataDictionary($db, DB_TYPE);
+				
+				$fields = array();
+				if (!is_array($cnt->getSearchIndexFieldDefinition())) {
+					$dropColumns[] = 'ak_' . $this->akHandle;
+				} else {
+					foreach($cnt->getSearchIndexFieldDefinition() as $col => $def) {
+						$dropColumns[] = 'ak_' . $this->akHandle . '_' . $col;
+					}
 				}
-			}
-			
-			foreach($dropColumns as $dc) {
-				if ($columns[strtoupper($dc)]) {
-					$q = $dba->DropColumnSQL($this->getIndexedSearchTable(), $dc);
-					$db->Execute($q[0]);
+				
+				foreach($dropColumns as $dc) {
+					if ($columns[strtoupper($dc)]) {
+						$q = $dba->DropColumnSQL($this->getIndexedSearchTable(), $dc);
+						$db->Execute($q[0]);
+					}
 				}
 			}
 		}
 		$this->refreshCache();
-
 	}
 	
 	public function getAttributeValueIDList() {
