@@ -658,7 +658,7 @@ class Page extends Collection {
 	 * @return string
 	 */	
 	function getCollectionPath() {
-		return $this->cPath;
+		return $this->getEncodePath($this->cPath);
 	}
 	
 	/**
@@ -678,7 +678,19 @@ class Page extends Collection {
 		$path .= '/';
 		
 		Cache::set('page_path', $cID, $path);
-		return $path;
+		return $this->getEncodePath($path);
+	}
+
+	function getEncodePath($path){
+	    if(mb_strpos($path,"/") !== false){
+	      $path = explode("/",$path);
+	      $path = array_map("rawurlencode",$path);
+	      return implode("/",$path);
+	    }else if(is_null($path)){
+          return NULL;
+	    }else{
+	      return urlencode($path);
+	    }	
 	}
 
 	/**
