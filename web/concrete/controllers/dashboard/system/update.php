@@ -20,9 +20,8 @@ class UpdateArchive extends Archive {
 class DashboardSystemUpdateController extends Controller { 	 
 	
 	function view() {  
-		$upd = new Update();
-		$updates = $upd->getLocalAvailableUpdates();
-		$remote = $upd->getApplicationUpdateInformation();
+		$updates = Update::getLocalAvailableUpdates();
+		$remote = Update::getApplicationUpdateInformation();
 		$this->set('updates', $updates);
 		if (MULTI_SITE == 0) {
 			$this->set('showDownloadBox', true);

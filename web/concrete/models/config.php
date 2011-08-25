@@ -31,7 +31,6 @@ class ConfigValue extends Object {
 }
 
 class Config extends Object {
-	private $pkg = false;
 	private static $store;
 	
 	public static function setStore(ConfigStore $store)
@@ -50,16 +49,7 @@ class Config extends Object {
 		return self::$store;
 	}
 	
-	public function setPackageObject($pkg) {
-		$this->pkg = $pkg;
-	}
-	
-	public function get($cfKey, $getFullObject = false) {
-		$pkgID = null;
-		if (isset($this) && is_object($this->pkg)) {
-			$pkgID = $this->pkg->getPackageID();
-		}
-		
+	public static function get($cfKey, $getFullObject = false, $pkgID = null) {
 		$cv = self::getStore()->get($cfKey, $pkgID);
 
 		if (!$getFullObject) {
@@ -83,11 +73,11 @@ class Config extends Object {
 	}	
 	
 	// Misleading old functionname
-	public function getOrDefine($key, $defaultValue) {
+	public static function getOrDefine($key, $defaultValue) {
 		return self::getAndDefine($key, $defaultValue);
 	}
 	
-	public function getAndDefine($key, $defaultValue) {
+	public static function getAndDefine($key, $defaultValue) {
 		$val = Config::get($key, true);
 		if (!$val) {
 			$val = $defaultValue;
@@ -97,22 +87,13 @@ class Config extends Object {
 		define($key, $val);
 	}
 	
-	public function clear($cfKey) {
-		$pkgID = null;
-		if (isset($this) && is_object($this->pkg)) {
-			$pkgID = $this->pkg->getPackageID();
-		}
+	public static function clear($cfKey, $pkgID = null) {
 		self::getStore()->delete($cfKey, $pkgID);
 	}
 	
-	public function save($cfKey, $cfValue) {
-		$pkgID = null;
-		if (isset($this) && is_object($this->pkg)) {
-			$pkgID = $this->pkg->getPackageID();
-		}
+	public static function save($cfKey, $cfValue, $pkgID = null) {
 		self::getStore()->set($cfKey, $cfValue, $pkgID);
 	}
-	
 }
 
 /**

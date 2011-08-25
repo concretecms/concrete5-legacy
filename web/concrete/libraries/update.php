@@ -17,7 +17,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
  */
 class Update {
 
-	public function getLatestAvailableVersionNumber() {
+	public static function getLatestAvailableVersionNumber() {
 		if (defined('MULTI_SITE') && MULTI_SITE == 1) {
 			$updates = Update::getLocalAvailableUpdates();
 			$multiSiteVersion = 0;
@@ -77,7 +77,7 @@ class Update {
 		return $versionNum;
 	}
 	
-	public function getApplicationUpdateInformation() {
+	public static function getApplicationUpdateInformation() {
 		$r = Cache::get('APP_UPDATE_INFO', false);
 		if (!is_object($r)) {
 			$r = Update::getLatestAvailableUpdate();
@@ -85,7 +85,7 @@ class Update {
 		return $r;
 	}
 		
-	protected function getLatestAvailableUpdate() {
+	protected static function getLatestAvailableUpdate() {
 		$obj = new stdClass;
 		$obj->notes = false;
 		$obj->url = false;
@@ -126,7 +126,7 @@ class Update {
 	 * version they represent, and finds all versions greater than the currently installed version of
 	 * concrete5
 	 */
-	public function getLocalAvailableUpdates() {
+	public static function getLocalAvailableUpdates() {
 		$fh = Loader::helper('file');
 		$updates = array();
 		$contents = @$fh->getDirectoryContents(DIR_APP_UPDATES);
@@ -192,7 +192,7 @@ class ApplicationUpdate {
 		return true;
 	}	
 	
-	public function get($dir) {
+	public static function get($dir) {
 		$APP_VERSION = false;
 		// given a directory, we figure out what version of the system this is
 		$version = DIR_APP_UPDATES . '/' . $dir . '/' . DIRNAME_APP . '/config/version.php';

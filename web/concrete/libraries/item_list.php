@@ -169,7 +169,7 @@ class DatabaseItemList extends ItemList {
 		return parent::getSearchResultsClass($field);
 	}
 
-	public function sortBy($key, $dir) {
+	public function sortBy($key, $dir = 'asc') {
 		if ($key instanceof AttributeKey) {
 			$key = 'ak_' . $key->getAttributeKeyHandle();
 		}

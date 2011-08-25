@@ -1481,7 +1481,11 @@ class Page extends Collection {
 		}
 	}
 
-	function duplicate($nc, $preserveUserID = false) {
+	function duplicate($nc = null, $preserveUserID = false)
+	{
+		if (null == $nc) {
+			return;
+		}
 		$db = Loader::db();
 		// the passed collection is the parent collection
 		$cParentID = $nc->getCollectionID();
@@ -2159,7 +2163,7 @@ class Page extends Collection {
 	* @return page
 	**/
 	
-	public function add($ct, $data) {
+	public function add($ct, $data = array()) {
 		$db = Loader::db();
 		$txt = Loader::helper('text');
 		

@@ -517,9 +517,13 @@ class dbTable extends dbObject {
 	* @param object $xmls adoSchema object
 	* @return array Array containing table creation SQL
 	*/
-	function create( &$xmls ) {
+	function create(&$xmls = null)
+	{
 		$sql = array();
 		
+		if (null == $xmls) {
+			return $sql;
+		}
 		// drop any existing indexes
 		if( is_array( $legacy_indexes = $xmls->dict->MetaIndexes( $this->name ) ) ) {
 			foreach( $legacy_indexes as $index => $index_details ) {
@@ -782,7 +786,11 @@ class dbIndex extends dbObject {
 	* @param object $xmls adoSchema object
 	* @return array Array containing index creation SQL
 	*/
-	function create( &$xmls ) {
+	function create(&$xmls = null)
+	{
+		if (null == $xmls) {
+			return null;
+		}
 		if( $this->drop ) {
 			return NULL;
 		}
@@ -933,7 +941,11 @@ class dbData extends dbObject {
 	* @param object $xmls adoSchema object
 	* @return array Array containing index creation SQL
 	*/
-	function create( &$xmls ) {
+	function create(&$xmls = null)
+	{
+		if (null == $xmls) {
+			return array();
+		}
 		$table = $xmls->dict->TableName($this->parent->name);
 		$table_field_count = count($this->parent->fields);
 		$tables = $xmls->db->MetaTables(); 
@@ -1231,7 +1243,11 @@ class dbQuerySet extends dbObject {
 	* @param object $xmls adoSchema object
 	* @return array Query set
 	*/
-	function create( &$xmls ) {
+	function create(&$xmls = null)
+	{
+		if (null == $xmls) {
+			return array();
+		}
 		foreach( $this->queries as $id => $query ) {
 			switch( $this->prefixMethod ) {
 				case 'AUTO':

@@ -23,7 +23,7 @@
 		/** 
 		 * Loads a library file, either from the site's files or from Concrete's
 		 */
-		public function library($lib, $pkgHandle = null) {
+		public static function library($lib, $pkgHandle = null) {
 		
 			if (file_exists(DIR_LIBRARIES . '/' . $lib . '.php')) {
 				require_once(DIR_LIBRARIES . '/' . $lib . '.php');
@@ -46,7 +46,7 @@
 		/** 
 		 * Loads a model from either an application, the site, or the core Concrete directory
 		 */
-		public function model($mod, $pkgHandle = null) {
+		public static function model($mod, $pkgHandle = null) {
 			
 			if (file_exists(DIR_MODELS . '/' . $mod . '.php')) {
 				require_once(DIR_MODELS . '/' . $mod . '.php');
@@ -66,7 +66,7 @@
 			Loader::legacyModel($mod);
 		}
 		
-		protected function legacyModel($model) {
+		protected static function legacyModel($model) {
 			switch($model) {
 				case 'collection_attributes':
 					Loader::model('attribute/categories/collection');
@@ -160,7 +160,7 @@
 		 * Loads the various files for the database abstraction layer. We would bundle these in with the db() method below but
 		 * these need to be loaded before the models which need to be loaded before db() 
 		 */
-		public function database() {
+		public static function database() {
 			Loader::library('3rdparty/adodb/adodb.inc');
 			Loader::library('3rdparty/adodb/adodb-exceptions.inc');
 			Loader::library('3rdparty/adodb/adodb-active-record.inc');
@@ -176,7 +176,7 @@
 		 * $db->query($sql);
 		 * </code>
 		 */
-		public function db($server = null, $username = null, $password = null, $database = null, $create = false, $autoconnect = true) {
+		public static function db($server = null, $username = null, $password = null, $database = null, $create = false, $autoconnect = true) {
 			static $_db;
 			if ((!isset($_db) || $create) && ($autoconnect)) {
 				if ($server == null && defined('DB_SERVER')) {	
@@ -222,7 +222,7 @@
 		/** 
 		 * Loads a helper file. If the same helper file is contained in both the core concrete directory and the site's directory, it will load the site's first, which could then extend the core.
 		 */
-		public function helper($file, $pkgHandle = false) {
+		public static function helper($file, $pkgHandle = false) {
 		
 			static $instances = array();
 			$class = false;		
