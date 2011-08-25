@@ -689,7 +689,7 @@ class Page extends Collection {
 	    }else if(is_null($path)){
           return NULL;
 	    }else{
-	      return urlencode($path);
+	      return rawurlencode($path);
 	    }	
 	}
 
