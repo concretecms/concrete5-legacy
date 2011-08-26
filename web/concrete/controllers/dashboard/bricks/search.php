@@ -66,7 +66,7 @@ class DashboardBricksSearchController extends Controller {
 			$objectList->sortBy($sortBy->columnKey, $sortBy->defaultSortDirection);
 		}
 		
-		if (is_array($_REQUEST['selectedSearchField'])) {
+		if(is_array($_REQUEST['selectedSearchField'])) {
 			$txt = Loader::helper('text');
 			foreach($_REQUEST['selectedSearchField'] as $i => $item) {
 				// due to the way the form is setup, index will always be one more than the arrays
@@ -86,6 +86,8 @@ class DashboardBricksSearchController extends Controller {
 						$cnt->searchForm($objectList);
 					} else {
 						if(!empty($_REQUEST[$item])) {
+							$functionName = 'filterBy';
+							$handled = Loader::helper('text')->uncamelcase($_REQUEST[$item]);
 							switch($item) { 
 								case 'onlyMine':
 									$u = new User();
@@ -99,10 +101,50 @@ class DashboardBricksSearchController extends Controller {
 										$objectList->filter('uID', $u->getUserID());
 									}
 									break;
+								case 'uID':
+									$objectList->filterByUserID($_REQUEST[$item]);
+									break;
 								default:
-									$objectList->filter($item, '%'.$_REQUEST[$item].'%', 'LIKE');
+									$functionName = 'filterBy';
+									$handled = Loader::helper('text')->uncamelcase($item);
+									$handled = explode("_", $handled);
+									foreach($handled as $word) $functionName .= ucwords($word);
+									var_dump($functionName);
+									if(method_exists($objectList, $functionName)){
+										call_user_func_array(array($objectList,$functionName), array($_REQUEST[$item]));
+									} else {
+										$objectList->filter($item, '%'.$_REQUEST[$item].'%', 'LIKE');
+									}
 									break;
 							}
+						}
+					}
+				}
+			}
+		}
+		if(is_array($_REQUEST['searchFilters'])) {
+			foreach($_REQUEST['searchFilters'] as $filter) {
+				if(is_numeric($filter['handle'])) {
+					$objectList->filterByAttribute(AttributeKey::getByID($filter['handle'])->getAttributeKeyHandle(), $filter['value'], $filter['comparison']);
+				} else {
+					if(!empty($filter['handle'])) {
+						$functionName = 'filterBy';
+						$handled = Loader::helper('text')->uncamelcase(v);
+						switch($filter['handle']) { 
+							case 'uID':
+								$objectList->filterByUserID($filter['value']);
+								break;
+							default:
+								$functionName = 'filterBy';
+								$handled = Loader::helper('text')->uncamelcase($filter['handle']);
+								$handled = explode("_", $handled);
+								foreach($handled as $word) $functionName .= ucwords($word);
+								if(method_exists($objectList, $functionName)){
+									call_user_func_array(array($objectList,$functionName), array($filter['value']));
+								} else {
+									$objectList->filter($filter['handle'], '%'.$filter['value'].'%', 'LIKE');
+								}
+								break;
 						}
 					}
 				}

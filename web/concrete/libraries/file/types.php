@@ -83,7 +83,28 @@ class FileTypeList {
 			return $ft;
 		}
 	}
-	
+		
+	/** 
+	 * Can take an Name or a filename
+	 * Returns any registered information we have for the particular file type, based on its registration
+	 */
+	public static function getTypeByName($name) {
+		$ftl = FileTypeList::getInstance();	
+		if (strpos($ext, '.') !== false) {
+			// filename
+			$h = Loader::helper('file');
+			$ext = $h->getExtension($ext);
+			return self::getType(strtolower($ext));
+		}
+		foreach($ftl->types as $type){
+			if($type->name == $name) {
+				return $type;
+			} else {
+				$ft = new FileType(); // generic
+				return $ft;
+			}
+		}
+	}
 		
 }
 

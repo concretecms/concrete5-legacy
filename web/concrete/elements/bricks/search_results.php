@@ -5,26 +5,34 @@ if(isset($_REQUEST['searchInstance'])) $searchInstance = $_REQUEST['searchInstan
 $u = new User();
 ?>
 
-<div id="ccm-<?=$searchInstance?>-search-results">
 <?php try {
-if(isset($_REQUEST['administrationDisabled'])) $administrationDisabled = $_REQUEST['administrationDisabled'];
-if(isset($_REQUEST['userDefinedColumnsDisabled'])) $userDefinedColumnsDisabled = $_REQUEST['userDefinedColumnsDisabled'];
-if(isset($_REQUEST['persistantBID'])) $persistantBID = $_REQUEST['persistantBID'];
-if(isset($_REQUEST['fieldName'])) $fieldName = $_REQUEST['fieldName'];
 
 Loader::model('attribute_key_category_item_list');
 $akccs = new AttributeKeyCategoryColumnSet($akCategoryHandle);
 $db = Loader::db();
+$exists = $db->GetOne('SELECT columns FROM BricksCustomColumns WHERE searchInstance = ? AND uID = ? AND akCategoryHandle = ?', array($searchInstance, 0, $akCategoryHandle));
+if($exists) {
+	$defaults = unserialize(urldecode($exists));
+	$columns = $defaults['columns'];
+}
 $exists = $db->GetOne('SELECT columns FROM BricksCustomColumns WHERE searchInstance = ? AND uID = ? AND akCategoryHandle = ?', array($searchInstance, $u->getUserID(), $akCategoryHandle));
 if($exists) {
-	$columns = unserialize(urldecode($exists));
+	$defaults = unserialize(urldecode($exists));
+	$columns = $defaults['columns'];
 } elseif(isset($_REQUEST['defaults'])) {
 	$defaults = unserialize(urldecode($_REQUEST['defaults']));
 	$columns = $defaults['columns'];
-} else if(isset($_REQUEST['defaults_'.$searchInstance])) {
+} elseif(isset($_REQUEST['defaults_'.$searchInstance])) {
 	$defaults = unserialize(urldecode($_REQUEST['defaults_'.$searchInstance]));
 	$columns = $defaults['columns'];
 }
+	
+if($defaults) $administrationDisabled = $defaults['administrationDisabled'];
+if(isset($_REQUEST['administrationDisabled'])) $administrationDisabled = $_REQUEST['administrationDisabled'];
+if($defaults) $userDefinedColumnsDisabled = $defaults['userDefinedColumnsDisabled'];
+if(isset($_REQUEST['userDefinedColumnsDisabled'])) $userDefinedColumnsDisabled = $_REQUEST['userDefinedColumnsDisabled'];
+if(isset($_REQUEST['persistantBID'])) $persistantBID = $_REQUEST['persistantBID'];
+if(isset($_REQUEST['fieldName'])) $fieldName = $_REQUEST['fieldName'];
 if(is_string($columns)) $columns = unserialize(urldecode($columns));
 if(!$columns) $columns = $akccs->getCurrent();
 
@@ -32,16 +40,14 @@ if($defaults) {
 	$onLeftClick = $defaults['onLeftClick'];
 	$onRightClick = $defaults['onRightClick'];
 }
-
 $akcdca = new AttributeKeyCategoryAvailableColumnSet($akCategoryHandle);
 $ak = new AttributeKey($akCategoryHandle);
 $fieldAttributes = $ak->getSearchableList($akCategoryHandle);
 foreach($fieldAttributes as $ak) {
 	$akcdca->addColumn($akcdca->getColumnByKey('ak_'.$ak->getAttributeKeyHandle()));
 }
-
-$cnt = Loader::controller('/dashboard/bricks/search');
 if(is_object($columns)) $sortBy = $columns->getDefaultSortColumn();
+$cnt = Loader::controller('/dashboard/bricks/search');
 $newObjectList = $cnt->getRequestedSearchResults($akCategoryHandle, $sortBy);
 $newObjects = $newObjectList->getPage();
 $pagination = $newObjectList->getPagination();
@@ -93,9 +99,11 @@ $pagination = $newObjectList->getPagination();
 		$bu = REL_DIR_FILES_TOOLS_REQUIRED . '/bricks/search_results';
 		if (count($newObjects) > 0) { ?>
 		<table border="0" cellspacing="0" cellpadding="0" id="ccm-<?=$searchInstance?>-list" class="ccm-results-list">
-			<tr><?php if($canAdmin) { ?>
-				<th width="20px"><input id="ccm-<?=$searchInstance?>-list-cb-all" type="checkbox" /></th>
-		<?php }
+			<tr>
+				<th width="20px"<?php if(!$canAdmin) { ?> style="display:none"<?php } ?>>
+					<input id="ccm-<?=$searchInstance?>-list-cb-all" type="checkbox" />
+				</th>
+		<?php
 			if(is_array($columns->getColumns())) foreach($columns->getColumns() as $col) { ?>
 				<th class="<?=$newObjectList->getSearchResultsClass($col->getColumnKey())?>">
 					<?php if($col->isColumnSortable()) {?>
@@ -140,14 +148,13 @@ $pagination = $newObjectList->getPagination();
 	
 				?>
 			<tr class="ccm-list-record <?php echo $striped?>"<?php if($fieldName) {?> fieldName="<?=$fieldName?>"<?php } ?>>
-				<?php if($canAdmin) { ?>
-				<td class="ccm-<?=$searchInstance?>-list-cb" style="vertical-align: middle !important">
+				<td class="ccm-<?=$searchInstance?>-list-cb" style="vertical-align: middle !important;<?php if(!$canAdmin) { ?> display:none;<?php } ?>">
 				<?php foreach($akcdca->getColumns() as $aCol) { ?>
 					<input type="hidden" name="<?=$aCol->getColumnKey()?>" value="<?=urlencode($aCol->getColumnValue($item))?>" />
 				<?php } ?>
 					<input type="checkbox" name="ID" value="<?=$ID?>" />
 				</td>
-				<?php }
+				<?php 
 				if(is_array($columns->getColumns())) foreach($columns->getColumns() as $col) { ?>
 				<td class="ccm-onclick-effect"><?=$col->getColumnValue($item)?></td>
 				<?php } 
@@ -162,18 +169,24 @@ $pagination = $newObjectList->getPagination();
 		</table>
 	<?php if($onLeftClick) { ?>
 		<script type="text/javascript">
-			$('#ccm-<?=$searchInstance?>-list td.ccm-onclick-effect').live('click', function () {
-				<?=$onLeftClick;?>
-			});
+			if(beendone['<?=$searchInstance?>']['leftClick'] == 0) {
+				$('#ccm-<?=$searchInstance?>-list td.ccm-onclick-effect').live('click', function () {
+					<?=$onLeftClick;?>
+				});
+				beendone['<?=$searchInstance?>']['leftClick']++;
+			}
 		</script>
 	<?php } ?>
 	<?php if($onRightClick) { ?>
 		<script type="text/javascript">
-			$('#ccm-<?=$searchInstance?>-list td.ccm-onclick-effect').live("contextmenu",function(e){
-				e.preventDefault();
-				<?=$onRightClick;?>
-				$(this).addClass('selected');
-			});
+			if(beendone['<?=$searchInstance?>']['rightClick'] == 0) {
+				$('#ccm-<?=$searchInstance?>-list td.ccm-onclick-effect').live("contextmenu",function(e){
+					e.preventDefault();
+					<?=$onRightClick;?>
+					$(this).addClass('selected');
+				});
+				beendone['<?=$searchInstance?>']['rightClick']++;
+			}
 		</script>
 	<?php } ?>
 		<?php  } else { ?>
@@ -187,6 +200,7 @@ $pagination = $newObjectList->getPagination();
 		.filter(':has(:checkbox:checked)')
 		.end()
 		.find('input[type=checkbox]')
+		.unbind('click')
 		.click(function(event) {
 			if($(this).is(':checked')) {
 				$(this).parent().parent().addClass('selected');
@@ -198,6 +212,7 @@ $pagination = $newObjectList->getPagination();
 	$('#ccm-<?=$searchInstance?>-list tr')
 		.filter(':has(:checkbox:checked)')
 		.end()
+		.unbind('click')
 		.click(function(event) {
 			if(event.target.type !== 'checkbox') {
 				if($(this).find('input[type=checkbox]').is(':checked')) {
@@ -221,4 +236,3 @@ $pagination = $newObjectList->getPagination();
 <h2><span style="color:red">Error</span></h2>
 <p><?=$e->getMessage()?></p>
 <?php } ?>
-</div>

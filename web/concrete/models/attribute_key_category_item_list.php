@@ -105,7 +105,7 @@ class AttributeKeyCategoryItemList extends DatabaseItemList {
 	public function get($itemsToGet = 0, $offset = 0, $getAs = 'objects') {
 		$akcis = array(); 
 		$this->createQuery();
-		$r = parent::get( $itemsToGet, $offset);
+		$r = parent::get($itemsToGet, $offset);
 		if($getAs == 'objects' || $getAs == 'object') {
 				foreach($r as $row) {
 					$no = AttributeKeyCategoryItem::getByID($row['ID']);			

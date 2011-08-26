@@ -1,7 +1,8 @@
 ccm_setupAttributeKeyCategoryItemSearch = function(searchInstance, akID) {
 	if(typeof alreadyRun === 'undefined') alreadyRun = Array();
-	if(typeof alreadyRun[searchInstance] === 'undefined') {
-		alreadyRun[searchInstance] = true;
+	if(typeof beendone === 'undefined') beendone = Array();
+	if(typeof alreadyRun[searchInstance] === 'undefined' || typeof beendone[searchInstance] !== 'undefined') {
+		alreadyRun[searchInstance] = 1;
 		ccm_setupAdvancedSearch(searchInstance);
 		
 		$("#ccm-" + searchInstance + "-list-cb-all").live('click', function() {

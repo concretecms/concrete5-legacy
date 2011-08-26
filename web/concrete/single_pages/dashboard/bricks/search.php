@@ -33,6 +33,7 @@ if($permission) {
                         ?>
                     </td>
                     <td valign="top" width="100%">
+						<div id="ccm-<?=$searchInstance?>-search-results">
 						<?php
 							Loader::element(
 								'bricks/search_results', 
@@ -43,6 +44,7 @@ if($permission) {
 								)
 							);
 						?>
+						</div>
                     </td>
                 </tr>
             </table>

@@ -506,12 +506,13 @@ class DatabaseItemListColumn {
 	public function isColumnSortable() {return $this->isSortable;}
 	public function getColumnCallback() {return $this->callback;}
 	public function setColumnDefaultSortDirection($dir) {$this->defaultSortDirection = $dir;}
-	public function __construct($key, $name, $callback, $isSortable = true, $defaultSort = 'asc') {
+	public function __construct($key, $name, $callback, $isSortable = true, $defaultSort = 'asc', $formType = 'text') {
 		$this->columnKey = $key;
 		$this->columnName = $name;
 		$this->isSortable = $isSortable;
 		$this->callback = $callback;
 		$this->defaultSortDirection = $defaultSort;
+		$this->formType = $formType;
 	}
 }
 

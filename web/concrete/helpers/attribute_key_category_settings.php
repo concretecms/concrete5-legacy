@@ -10,10 +10,11 @@ class AttributeKeyCategorySettingsHelper extends Object {
 			'url_permissions_hidden'	=> TRUE,
 			'url_drop_hidden'			=> TRUE,
 			'standard_properties'		=> array(
-				new DatabaseItemListColumn('ctName', t('Type'), 'getCollectionTypeName', false),
-				new DatabaseItemListColumn('cvName', t('Name'), 'getCollectionName'),
-				new DatabaseItemListColumn('cvDatePublic', t('Public Date'), 'getCollectionDatePublic'),
-				new DatabaseItemListColumn('cDateModified', t('Date Modified'), 'getCollectionDateLastModified')
+				new DatabaseItemListColumn('ctName',t('Type'),'getCollectionTypeName',false),
+				new DatabaseItemListColumn('cvName',t('Page Name'),'getCollectionName'),
+				new DatabaseItemListColumn('cvDatePublic',t('Publish Date'),'getCollectionDatePublic'),
+				new DatabaseItemListColumn('cDateModified',t('Date Last Modified'),'getCollectionDateLastModified'),
+				new DatabaseItemListColumn('uID',t('Author User ID'),'getCollectionUserID', false)
 			)
 		);
 		$this->registeredSettings['user'] = array(
@@ -21,10 +22,11 @@ class AttributeKeyCategorySettingsHelper extends Object {
 			'url_permissions'			=> 'dashboard/settings/set_permissions',
 			'url_drop_hidden'			=> TRUE,
 			'standard_properties'		=> array(
-				new DatabaseItemListColumn('uName', t('Username'), 'getUserName'),
-				new DatabaseItemListColumn('uEmail', t('Email Address'), 'getUserEmail'),
-				new DatabaseItemListColumn('uDateAdded', t('Date Added'), 'getUserDateAdded'),
-				new DatabaseItemListColumn('uNumLogins', t('# Logins'), 'getNumLogins')
+				new DatabaseItemListColumn('uID',t('User ID'),'getUserID'),
+				new DatabaseItemListColumn('uName',t('Username'),'getUserName'),
+				new DatabaseItemListColumn('uEmail',t('Email Address'),'getUserEmail',NULL,NULL,'email'),
+				new DatabaseItemListColumn('uDateAdded',t('Date Added'),'getUserDateAdded'),
+				new DatabaseItemListColumn('uNumLogins',t('# of Logins'),'getNumLogins')
 			)
 		);
 		$this->registeredSettings['file'] = array(
@@ -35,12 +37,13 @@ class AttributeKeyCategorySettingsHelper extends Object {
 				'file_list' => Loader::model('file_list')
 			),
 			'standard_properties'		=> array(
-				new DatabaseItemListColumn('fvType', t('Type'), 'getType', false),
-				new DatabaseItemListColumn('fvTitle', t('Title'), 'getTitle'),
-				new DatabaseItemListColumn('fDateAdded', t('Added'), array('FileManagerDefaultColumnSet', 'getFileDateAdded')),
-				new DatabaseItemListColumn('fvDateAdded', t('Active'), array('FileManagerDefaultColumnSet', 'getFileDateActivated')),
-				new DatabaseItemListColumn('fvSize', t('Size'), 'getSize'),
-				new DatabaseItemListColumn('fvAuthorName', t('Author'), 'getAuthorName')
+				new DatabaseItemListColumn('fvType',t('Type'),'getType',false),
+				new DatabaseItemListColumn('fvTitle',t('Title'),'getTitle'),
+				new DatabaseItemListColumn('fDateAdded',t('Date Added'),array('FileManagerDefaultColumnSet','getFileDateAdded')),
+				new DatabaseItemListColumn('fvDateAdded',t('Date Activated'),array('FileManagerDefaultColumnSet','getFileDateActivated')),
+				new DatabaseItemListColumn('fvSize',t('Size'),'getSize'),
+				new DatabaseItemListColumn('fvAuthorName',t('Uploader Username'),'getAuthorName'),
+				new DatabaseItemListColumn('fvAuthorID',t('Uploader User ID'),'getUserID')
 			)
 		);
 	}

@@ -41,6 +41,9 @@ class FileList extends DatabaseItemList {
 	 * @param mixed $ctID
 	 */
 	public function filterByType($type) {
+		if(!is_numeric($type)) {
+			$type = FileTypeList::getInstance()->getTypeByName($type)->type;
+		}
 		$this->filter('fv.fvType', $type, '=');
 	}
 	
@@ -140,6 +143,12 @@ class FileList extends DatabaseItemList {
 	*/
 	public function filterByAuthorUID($uID) {
 		$this->filter('fv.fvAuthorUID', $uID);	
+	}
+	
+	public function filterByAuthorName($name) {
+		$u = UserInfo::getByUserName($name);
+		if(is_object($u)) $uID = $u->getUserID();
+		$this->filter('fv.fvAuthorUID', $uID);
 	}
 	
 	public function setPermissionLevel($plevel) {

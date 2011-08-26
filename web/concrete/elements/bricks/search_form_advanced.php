@@ -37,7 +37,12 @@ $form = Loader::helper('form');
 			$handle = '';
 			if(is_numeric($searchInstance)) $handle = 'dsp_';
 			$handle .= $col->getColumnKey();
-			print $form->text($handle)
+			if($col->formType){
+				$formType = $col->formType;
+				print $form->$formType($handle);
+			} else {
+				print $form->text($handle);
+			}
 		?>
 	</span>
 <?php } ?>	
@@ -214,7 +219,7 @@ $form = Loader::helper('form');
 		</div>
 		<?php if(!$_REQUEST['disableSubmit']) { ?>
 		<div id="ccm-search-fields-submit">
-			<?php echo $form->submit('ccm-'.$searchInstance.'-advanced-search', 'Search')?>
+			<?php echo $form->submit('ccm-'.$searchInstance.'-advanced-search-submit', 'Search')?>
 		</div>
 		<?php } ?>
 	</div>
