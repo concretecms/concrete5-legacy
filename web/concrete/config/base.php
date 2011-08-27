@@ -493,4 +493,29 @@ define('MARKETPLACE_CONTENT_LATEST_THRESHOLD', 10800); // every three hours
 define('MARKETPLACE_DIRNAME_THEME_PREVIEW', 'previewable_themes');
 define('MARKETPLACE_THEME_PREVIEW_ASSETS_URL', CONCRETE5_ORG_URL ."/". MARKETPLACE_DIRNAME_THEME_PREVIEW);
 
+if (!defined('CAPTCHA_WIDTH')) {
+  define('CAPTCHA_WIDTH', 190);
+}
+if (!defined('CAPTCHA_HEIGHT')) {
+  define('CAPTCHA_HEIGHT', 60);
+}
+if (!defined('CAPTCHA_NUM_LINES')) {
+  define('CAPTCHA_NUM_LINES', 5);
+}
+if (!defined('CAPTCHA_BG_COLOR')) {
+  define('CAPTCHA_BG_COLOR', '#e3daed');
+}
+if (!defined('CAPTCHA_LINE_COLOR')) {
+  define('CAPTCHA_LINE_COLOR', '#333333');
+}
+if (!defined('CAPTCHA_TEXT_COLOR_1')) {
+  define('CAPTCHA_TEXT_COLOR_1', '#b80432');
+}
+if (!defined('CAPTCHA_TEXT_COLOR_2')) {
+  define('CAPTCHA_TEXT_COLOR_2', '#0c439d');
+}
+if (!defined('CAPTCHA_TEXT_COLOR_3')) {
+  define('CAPTCHA_TEXT_COLOR_3', '#f4310b');
+}
+
 require_once(DIR_LIBRARIES_CORE . '/loader.php');
