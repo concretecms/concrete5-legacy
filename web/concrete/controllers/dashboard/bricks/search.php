@@ -56,12 +56,6 @@ class DashboardBricksSearchController extends Controller {
 			$objectList->filterByKeywords($_GET['keywords']);
 		}	
 		
-		if ($_REQUEST['numResults']) {
-			$objectList->setItemsPerPage($_REQUEST['numResults']);
-		} else {
-			$objectList->setItemsPerPage(10);
-		}
-		
 		if($sortBy) {
 			$objectList->sortBy($sortBy->columnKey, $sortBy->defaultSortDirection);
 		}
@@ -109,7 +103,6 @@ class DashboardBricksSearchController extends Controller {
 									$handled = Loader::helper('text')->uncamelcase($item);
 									$handled = explode("_", $handled);
 									foreach($handled as $word) $functionName .= ucwords($word);
-									var_dump($functionName);
 									if(method_exists($objectList, $functionName)){
 										call_user_func_array(array($objectList,$functionName), array($_REQUEST[$item]));
 									} else {
@@ -152,6 +145,12 @@ class DashboardBricksSearchController extends Controller {
 		}
 		$req = $objectList->getSearchRequest();
 		$this->set('searchRequest', $req);
+		
+		if ($_REQUEST['numResults']) {
+			$objectList->setItemsPerPage($_REQUEST['numResults']);
+		} elseif($objectList->getTotal()) {
+			$objectList->setItemsPerPage($objectList->getTotal());
+		}
 		return $objectList;
 	}
 } ?>

@@ -82,6 +82,7 @@ $form = Loader::helper('form');
 				<td style="white-space: nowrap"><div style="width: 85px; padding-right:5px"><?php echo t('Results Per Page')?></div></td>
 				<td width="1%">
 					<?php echo $form->select('numResults', array(
+						'0' => 'All',
 						'10' => '10',
 						'25' => '25',
 						'50' => '50',

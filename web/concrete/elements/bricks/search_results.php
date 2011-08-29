@@ -39,6 +39,7 @@ if(!$columns) $columns = $akccs->getCurrent();
 if($defaults) {
 	$onLeftClick = $defaults['onLeftClick'];
 	$onRightClick = $defaults['onRightClick'];
+	$onDoubleClick = $defaults['onDoubleClick'];
 }
 $akcdca = new AttributeKeyCategoryAvailableColumnSet($akCategoryHandle);
 $ak = new AttributeKey($akCategoryHandle);
@@ -75,6 +76,7 @@ $pagination = $newObjectList->getPagination();
 		if($fieldName) $soargs['fieldName'] = $fieldName;
 		?>
 		
+		<?php if (count($newObjects) > 0) { ?>
 		<table border="0" cellspacing="0" cellpadding="0" width="100%">
 			<tr>
 				<td width="100%"><?php echo $newObjectList->displaySummary();?></td>
@@ -97,7 +99,7 @@ $pagination = $newObjectList->getPagination();
 		$txt = Loader::helper('text');
 		$keywords = $_REQUEST['keywords'];
 		$bu = REL_DIR_FILES_TOOLS_REQUIRED . '/bricks/search_results';
-		if (count($newObjects) > 0) { ?>
+		?>
 		<table border="0" cellspacing="0" cellpadding="0" id="ccm-<?=$searchInstance?>-list" class="ccm-results-list">
 			<tr>
 				<th width="20px"<?php if(!$canAdmin) { ?> style="display:none"<?php } ?>>
@@ -177,6 +179,20 @@ $pagination = $newObjectList->getPagination();
 			}
 		</script>
 	<?php } ?>
+	<?php if($onDoubleClick) { ?>
+		<script type="text/javascript">
+			if(beendone['<?=$searchInstance?>']['dblClick'] == 0) {
+				$('#ccm-<?=$searchInstance?>-list td.ccm-onclick-effect').live('dblclick', function () {
+					if (window.getSelection)
+						window.getSelection().removeAllRanges();
+					else if (document.selection)
+						document.selection.empty();
+					<?=$onDoubleClick;?>
+				});
+				beendone['<?=$searchInstance?>']['dblClick']++;
+			}
+		</script>
+	<?php }?>
 	<?php if($onRightClick) { ?>
 		<script type="text/javascript">
 			if(beendone['<?=$searchInstance?>']['rightClick'] == 0) {
@@ -188,6 +204,43 @@ $pagination = $newObjectList->getPagination();
 				beendone['<?=$searchInstance?>']['rightClick']++;
 			}
 		</script>
+		<script type="text/javascript"><?php if(!$onLeftClick && $canAdmin) { ?>
+			$('#ccm-<?=$searchInstance?>-list tr')
+				.filter(':has(:checkbox:checked)')
+				.end()
+				.find('input[type=checkbox]')
+				.unbind('click')
+				.click(function(event) {
+					if($(this).is(':checked')) {
+						$(this).parent().parent().addClass('selected');
+					} else {
+						$(this).parent().parent().removeClass('selected');
+					}
+				}
+			);
+			$('#ccm-<?=$searchInstance?>-list tr')
+				.filter(':has(:checkbox:checked)')
+				.end()
+				.unbind('click')
+				.click(function(event) {
+					if(event.target.type !== 'checkbox') {
+						if($(this).find('input[type=checkbox]').is(':checked')) {
+							$(this).find('input[type=checkbox]').removeAttr('checked');
+						} else {
+							$(this).find('input[type=checkbox]').attr('checked', 'checked');
+						}
+						$(this).find('input[type=checkbox]').trigger('click');
+						if($(this).find('input[type=checkbox]').is(':checked')) {
+							$(this).find('input[type=checkbox]').removeAttr('checked');
+						} else {
+							$(this).find('input[type=checkbox]').attr('checked', 'checked');
+						}
+					}
+				}
+			);
+			<?php } ?>
+			ccm_setupAttributeKeyCategoryItemSearch('<?=$searchInstance?>');
+		</script>
 	<?php } ?>
 		<?php  } else { ?>
 		<div id="ccm-list-none"><?php echo t('No items found.')?></div>
@@ -195,43 +248,6 @@ $pagination = $newObjectList->getPagination();
 		$newObjectList->displayPaging($bu, false, $soargs);?>
 	</div>
 
-<script type="text/javascript"><?php if(!$onLeftClick && $canAdmin) { ?>
-	$('#ccm-<?=$searchInstance?>-list tr')
-		.filter(':has(:checkbox:checked)')
-		.end()
-		.find('input[type=checkbox]')
-		.unbind('click')
-		.click(function(event) {
-			if($(this).is(':checked')) {
-				$(this).parent().parent().addClass('selected');
-			} else {
-				$(this).parent().parent().removeClass('selected');
-			}
-		}
-	);
-	$('#ccm-<?=$searchInstance?>-list tr')
-		.filter(':has(:checkbox:checked)')
-		.end()
-		.unbind('click')
-		.click(function(event) {
-			if(event.target.type !== 'checkbox') {
-				if($(this).find('input[type=checkbox]').is(':checked')) {
-					$(this).find('input[type=checkbox]').removeAttr('checked');
-				} else {
-					$(this).find('input[type=checkbox]').attr('checked', 'checked');
-				}
-				$(this).find('input[type=checkbox]').trigger('click');
-				if($(this).find('input[type=checkbox]').is(':checked')) {
-					$(this).find('input[type=checkbox]').removeAttr('checked');
-				} else {
-					$(this).find('input[type=checkbox]').attr('checked', 'checked');
-				}
-			}
-		}
-	);
-	<?php } ?>
-	ccm_setupAttributeKeyCategoryItemSearch('<?=$searchInstance?>');
-</script>
 <?php } catch (Exception $e) { ?>
 <h2><span style="color:red">Error</span></h2>
 <p><?=$e->getMessage()?></p>
