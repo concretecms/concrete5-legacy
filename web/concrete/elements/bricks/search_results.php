@@ -169,6 +169,16 @@ $pagination = $newObjectList->getPagination();
 	
 		?>
 		</table>
+		<script type="text/javascript">
+			ccm_setupAttributeKeyCategoryItemSearch("<?=$searchInstance?>");
+			if(typeof beendone === 'undefined') beendone = Array();
+			if(typeof beendone["<?=$searchInstance?>"] === 'undefined') {
+				beendone["<?=$searchInstance?>"] = Array();
+				beendone["<?=$searchInstance?>"]["leftClick"] = 0;
+				beendone["<?=$searchInstance?>"]["dblClick"] = 0;
+				beendone["<?=$searchInstance?>"]["rightClick"] = 0;
+			}
+		</script>
 	<?php if($onLeftClick) { ?>
 		<script type="text/javascript">
 			if(beendone['<?=$searchInstance?>']['leftClick'] == 0) {

@@ -24,7 +24,6 @@ class DashboardBricksSearchController extends Controller {
 			}
 			$this->addHeaderItem(Loader::helper('html')->javascript('attribute_key_category.ui.js'));
 			$this->addHeaderItem('<script type="text/javascript">$(function(){ccm_setupAdvancedSearch(\''.$searchInstance.'\');});</script>');
-			
 			$objectList = $this->getRequestedSearchResults($akCategoryHandle);
 			$objects = $objectList->getPage();
 			

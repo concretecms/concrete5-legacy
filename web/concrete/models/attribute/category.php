@@ -306,7 +306,7 @@ class AttributeKeyCategory extends Object {
 		}
 		if($ID) {
 			if(method_exists($item, 'getByID')) {
-				$item = $item->getByID($ID);
+				$item = call_user_func_array(array(get_class($item), 'getByID'), array(($ID)));
 			} else {
 				$txt = Loader::helper('text');
 				eval('$item = $item->getBy'.$txt->camelcase($this->getAttributeKeyCategoryHandle()).'ID($ID);');
