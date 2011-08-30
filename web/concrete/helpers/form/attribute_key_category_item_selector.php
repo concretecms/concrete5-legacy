@@ -48,7 +48,7 @@ class FormAttributeKeyCategoryItemSelectorHelper {
 		
 		ccm_triggerSelectAttributeKeyCategoryItem = function(akID, that) {
 			$("tr.ccm-attribute-key-category-selected-item-none-"+akID).hide();
-			val = that.children(\':first-child\').children(\':first-child\').val();
+			val = that.children(\':first-child\').find(\'input[name=ID]\').val();
 			if ($("#ccmAttributeKeyCategoryItemSelect"+akID+"_" + val).length < 1) {
 				html = \'<input type="hidden" value="\'+val+\'" name="\'+that.attr(\'fieldName\')+\'"><a class="ccm-attribute-key-category-item-list-clear" href="javascript:void(0)"><img width="16" height="16" class="ccm-attribute-key-category-item-list-clear-button" src="' . ASSETS_URL_IMAGES . '/icons/close.png"></a>\';
 				that.children(":first-child").remove();
