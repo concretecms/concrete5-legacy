@@ -23,5 +23,44 @@ $miniSurvey->frontEndMode=true;
 	<? } ?>
 	<input name="qsID" type="hidden" value="<?= intval($survey->questionSetId)?>" />
 	<input name="pURI" type="hidden" value="<?= $pURI ?>" />
-	<?php  $miniSurvey->loadSurvey( $survey->questionSetId, 0, intval($bID) );  ?> 
+	
+	<table class="formBlockSurveyTable">
+	
+	<?php 
+	$questions = $miniSurvey->loadQuestions($survey->questionSetId, intval($bID));
+	while ($row = $questions->fetchRow()) {
+		$requiredSymbol = $row['required'] ?
+			'<span class="required">*</span>' : '';
+	?>
+	<tr>
+		<td valign="top" class="question"><label for="Question<?=intval($row['msqID'])?>"><?=$row['question']?><?=$requiredSymbol?></label></td>
+		<td valign="top"><?=$miniSurvey->loadInputType($row, showEdit)?></td>
+	</tr>
+	
+	<?php 
+	}
+	$surveyBlockInfo = $miniSurvey->getMiniSurveyBlockInfoByQuestionId(
+		$qsID, intval($bID)
+	);
+
+	if ($surveyBlockInfo['displayCaptcha']) {
+		$captcha = Loader::helper('validation/captcha');				
+	?>
+	<tr>
+		<td colspan="2">
+		<?=t('Please type the letters and numbers shown in the image.')?>	
+		</td></tr><tr><td>&nbsp;</td><td>
+	
+		<?$captcha->display()?><br/>
+		<?$captcha->showInput()?>		
+		</td>
+	</tr>
+	<?php 
+	}
+	?>
+	<tr>
+		<td>&nbsp;</td>
+		<td><input class="formBlockSubmitButton ccm-input-button" name="Submit" type="submit" value="<?=t('Submit')?>" /></td>
+	</tr>
+	</table>
 </form>
