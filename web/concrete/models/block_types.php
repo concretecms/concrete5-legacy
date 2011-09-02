@@ -45,7 +45,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			if ($allowedBlocks != null) {
 				$q .= ' and btID in (' . implode(',', $allowedBlocks) . ') ';
 			}
-			$q .= ' order by btID asc';
+			$q .= ' order by btName asc';
 			
 			$r = $db->query($q);
 	
