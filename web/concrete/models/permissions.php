@@ -11,12 +11,12 @@ class PermissionsCache {
 
 	static $permCache = array();
 	
-	function exists($obj) {
+	static function exists($obj) {
 		$identifier = PermissionsCache::getIdentifier($obj);
 		return (isset(PermissionsCache::$permCache[$identifier]));
 	}
 	
-	function getIdentifier($obj) {
+	static function getIdentifier($obj) {
 		if (is_a($obj, "Page")) {
 			$id = $obj->getPermissionsCollectionID();
 			$prefix = 'page';
@@ -41,12 +41,12 @@ class PermissionsCache {
 		return $identifier;
 	}
 	
-	function getObject($obj) {
+	static function getObject($obj) {
 		$identifier = PermissionsCache::getIdentifier($obj);
 		return PermissionsCache::$permCache[$identifier];
 	}
 	
-	function add($originalObj, $obj) {
+	static function add($originalObj, $obj) {
 		
 		// I don't know if globals is the best way to do this or not, but it seems better than hitting the database a million times
 		$identifier = PermissionsCache::getIdentifier($originalObj);
@@ -98,7 +98,7 @@ class PermissionsProxy {
 		return $po;
 	}
 	
-	public function get($unknownObj) {
+	public static function get($unknownObj) {
 		if (is_a($unknownObj, 'File')) {
 			if (!$unknownObj->overrideFileSetPermissions()) {				
 				$po = PermissionsProxy::getNewOrCached($unknownObj, 'FileSetPermissions');

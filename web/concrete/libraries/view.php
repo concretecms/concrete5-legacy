@@ -107,8 +107,8 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		
 		public function getHeaderItems() {
 			$a1 = (is_array($this->headerItems['CORE'])) ? $this->headerItems['CORE'] : array();
-			$a2 = (is_array($this->headerItems['VIEW'])) ? $this->headerItems['VIEW'] : array();
-			$a3 = (is_array($this->headerItems['CONTROLLER'])) ? $this->headerItems['CONTROLLER'] : array();
+			$a2 = (isset($this->headerItems['VIEW']) && is_array($this->headerItems['VIEW'])) ? $this->headerItems['VIEW'] : array();
+			$a3 = (isset($this->headerItems['CONTROLLER']) && is_array($this->headerItems['CONTROLLER'])) ? $this->headerItems['CONTROLLER'] : array();
 			
 			$items = array_merge($a1, $a2, $a3);
 			if (version_compare(PHP_VERSION, '5.2.9', '<')) {
@@ -404,7 +404,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		 * @param string $task
 		 * @return string $url
 		*/	
-		public function url($action, $task = null) {
+		public static function url($action, $task = null) {
 			$dispatcher = '';
 			if ((!URL_REWRITING_ALL) || !defined('URL_REWRITING_ALL')) {
 				$dispatcher = '/' . DISPATCHER_FILENAME;

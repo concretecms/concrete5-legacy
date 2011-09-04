@@ -102,6 +102,7 @@ class FormHelper {
 	public function checkbox($field, $value, $isChecked = false, $miscFields = array()) {
 		$id = $field;
 		$_field = $field;
+		$checked = false;
 
 		if ((strpos($field, '[]') + 2) == strlen($field)) {
 			$_field = substr($field, 0, strpos($field, '[]'));

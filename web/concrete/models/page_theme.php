@@ -458,7 +458,7 @@ class PageTheme extends Object {
 		return $styles;
 	}
 	
-	public function getByHandle($ptHandle) {
+	public static function getByHandle($ptHandle) {
 		$pt = Cache::get('page_theme_by_handle', $ptHandle);
 		if ($pt instanceof PageTheme) {
 			return $pt;
@@ -471,7 +471,7 @@ class PageTheme extends Object {
 		return $pt;
 	}
 	
-	public function getByID($ptID) {
+	public static function getByID($ptID) {
 		$pt = Cache::get('page_theme_by_id', $ptID);
 		if ($pt instanceof PageTheme) {
 			return $pt;
@@ -484,7 +484,7 @@ class PageTheme extends Object {
 		return $pt;
 	}
 	
-	protected function populateThemeQuery($where, $args) {
+	protected static function populateThemeQuery($where, $args) {
 		$db = Loader::db();
 		$row = $db->GetRow("select ptID, ptHandle, ptDescription, pkgID, ptName from PageThemes where {$where}", $args);
 		if ($row['ptID']) {

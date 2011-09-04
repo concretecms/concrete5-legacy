@@ -19,6 +19,9 @@ class AttributeValueList extends Object implements Iterator {
 	}
 	
 	public function getAttribute($akHandle) {
+		if (! isset($this->attributes[$akHandle])) {
+			return null;
+		}
 		return $this->attributes[$akHandle];
 	}
 	

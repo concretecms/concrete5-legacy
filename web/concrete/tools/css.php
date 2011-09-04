@@ -8,7 +8,7 @@ if (isset($au->theme) && isset($au->file)) {
 	if (is_object($pt)) {
 		if (file_exists($pt->getThemeDirectory() . '/' . $au->file)) {
 
-			if ($_REQUEST['mode'] == 'preview') {
+			if (isset($_REQUEST['mode']) && $_REQUEST['mode'] == 'preview') {
 				$val = Cache::get('preview_theme_style', $pt->getThemeID(), false, true);
 				if (is_array($val)) {
 					header("Content-Type: text/css");
@@ -27,7 +27,7 @@ if (isset($au->theme) && isset($au->file)) {
 			}
 			header("Content-Type: text/css");
 			header("Date: ". date("D, j M Y G:i:s", $stat) ." GMT");
-			header("Expires: ". gmdate("D, j M Y H:i:s", time() + DAY) ." GMT");
+			header("Expires: ". gmdate("D, j M Y H:i:s", time() + 86400) ." GMT");
 			header("Cache-Control: max-age=86400, must-revalidate"); // HTTP/1.1
 			header("Pragma: cache_asset");        // HTTP/1.0	
 

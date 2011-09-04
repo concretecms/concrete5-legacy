@@ -106,7 +106,7 @@
 		/** 
 		 * Loads an element from C5 or the site
 		 */
-		public function element($file, $args = null) {
+		public static function element($file, $args = null) {
 			if (is_array($args)) {
 				extract($args);
 			}
@@ -274,7 +274,7 @@
 		/**
 		 * @access private
 		 */
-		public function package($pkgHandle) {
+		public static function package($pkgHandle) {
 			// loads and instantiates the object
 			$dir = (is_dir(DIR_PACKAGES . '/' . $pkgHandle)) ? DIR_PACKAGES : DIR_PACKAGES_CORE;
 			if (file_exists($dir . '/' . $pkgHandle . '/' . FILENAME_PACKAGE_CONTROLLER)) {
@@ -367,7 +367,7 @@
 		/** 
 		 * Loads a controller for either a page or view
 		 */
-		public function controller($item) {
+		public static function controller($item) {
 			
 			$include = false;
 			
