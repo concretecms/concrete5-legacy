@@ -491,6 +491,10 @@ div.ccm-addon-list h3 {margin: 0px 0px 2px 0px; padding: 0px}
 div.ccm-addon-list table td.ccm-addon-list-description {width: 100%; padding: 0px 6px 0px 10px}
 div.ccm-addon-marketplace-account {border-bottom: 1px solid #ddd; border-top: 1px solid #ddd; padding-top: 13px; padding-bottom: 13px; margin-bottom: 13px} 
 
+/* BlockType Display Order */
+.sortable .ccm-addon-list { background-color: #fff; margin-top: 0; padding-top: 15px; cursor: move; }
+.sortable .ui-sortable-helper { border-top: 1px solid #ddd; }
+
 /* composer */
 div#ccm-dashboard-composer {padding-right: 20px}
 div#ccm-dashboard-composer ol {list-style-type: none; padding-left: 0px;}

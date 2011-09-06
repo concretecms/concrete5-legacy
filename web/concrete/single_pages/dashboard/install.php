@@ -95,7 +95,7 @@ if ($this->controller->getTask() == 'browse') { ?>
 
 </div>
 
-<? } else if ($this->controller->getTask() == 'uninstall' && $tp->canUninstallPackages()) { ?>
+<? /* END task == 'browse' */ } else if ($this->controller->getTask() == 'uninstall' && $tp->canUninstallPackages()) { ?>
 
 <div style="width: 760px">
 <h1><span><?=t("Uninstall Package")?></span></h1>
@@ -150,7 +150,7 @@ if ($this->controller->getTask() == 'browse') { ?>
 </div>
 </div>
 
-<? } else if ($this->controller->getTask() == 'update' && $tp->canInstallPackages()) { 
+<? /* END task == 'uninstall' */ } else if ($this->controller->getTask() == 'update' && $tp->canInstallPackages()) { 
 
 	$pkgAvailableArray = Package::getLocalUpgradeablePackages();
 	$thisURL = $this->url('/dashboard/install', 'update');
@@ -241,9 +241,45 @@ if ($this->controller->getTask() == 'browse') { ?>
 
 <? } ?>
 
-<? 
-} else { 
-
+<? /* END task == 'update' */ } else if ($this->controller->getTask() == 'blocktype_display_order') {  ?>
+	
+	<h1><span><?=t('Block Type Display Order')?></span></h1>
+	<div class="ccm-dashboard-inner">
+		
+		<div class="ccm-addon-list">
+			<p style="margin: 0 0 0 15px; padding: 0 0 5px 0; font-style: italic;"><?=t('Drag and drop items in this list to determine the order they will appear in the "Add Block" popup menu.')?></p>
+		</div>
+		
+		<form method="post" action="<?=$this->action('blocktype_display_order')?>">
+			<div class="sortable-container">
+			<div class="sortable">
+				<?php foreach($btArray as $bt): ?>
+				<div class="ccm-addon-list">
+					<input type="hidden" name="btIDs[]" value="<?=$bt->getBlockTypeID()?>" />
+					<table cellspacing="0" cellpadding="0">		
+					<tr>
+						<td class="ccm-installed-items-icon"><img src="<?=$ci->getBlockTypeIconURL($bt)?>" /></td>
+						<td class="ccm-addon-list-description"><h3><?=$bt->getBlockTypeName()?></h3></td>
+						<td align="right"><img src="<?php echo ASSETS_URL_IMAGES?>/dashboard/drag_grip.jpg" alt="<?php echo t('Drag Item')?>" class="sortable-drag" /></td>
+					</tr>
+					</table>
+				</div>
+				<?php endforeach; ?>
+				<input type="submit" value="TEST SUBMIT" />
+			</div>
+			</div>
+		</form>
+		<script type="text/javascript">
+		$(document).ready(function() {
+			$('.sortable').sortable({
+				'containment': '.sortable-container'
+			});
+		});
+		</script>
+		
+	</div>	
+	
+<? /* END task == 'blocktype_display_order' */ } else { 
 	function sortAvailableArray($obj1, $obj2) {
 		$name1 = ($obj1 instanceof Package) ? $obj1->getPackageName() : $obj1->getBlockTypeName();
 		$name2 = ($obj2 instanceof Package) ? $obj2->getPackageName() : $obj2->getBlockTypeName();
@@ -493,10 +529,15 @@ if ($this->controller->getTask() == 'browse') { ?>
 					</div>
 				<? } ?>				
 			<? } ?>
-	
+
+			<div class="ccm-addon-list">
+				<h2><?=t('Block Type Display Order')?></h2>
+				<?=$ch->button(t('Set Display Order...'), View::url('/dashboard/install', 'blocktype_display_order'), "left")?>
 			</div>
+
+			</div><!-- END ccm-dashboard-inner -->
 				
-		</div>
+		</div><!-- END ccm-module -->
 		
 		<? if ($tp->canInstallPackages()) { ?>
 		

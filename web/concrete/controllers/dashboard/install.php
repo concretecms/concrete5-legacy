@@ -364,4 +364,28 @@ class DashboardInstallController extends Controller {
 		}
     }
 
+	public function blocktype_display_order() {
+		$postedBtIDs = $this->post('btIDs');
+		if ($postedBtIDs) {
+			$db = Loader::db();
+			$sql = "UPDATE BlockTypes SET btDisplayOrder = ? WHERE btID = ?";
+			$stmt = $db->Prepare($sql);
+			foreach ($postedBtIDs as $index => $btID) {
+				$displayOrder = $index + 1;
+				$vals = array($displayOrder, $btID);
+				$db->Execute($stmt, $vals);
+			}
+			
+			$this->redirect('/dashboard/install', 'blocktype_display_order_updated');
+		} else {
+			$btl = new BlockTypeList();
+			$btArray = $btl->getBlockTypeList();
+			$this->set('btArray', $btArray);
+		}
+	}
+
+	public function blocktype_display_order_updated() {
+		$this->set('message', t('Block Type display order for the "Add Block" popup list has been successfully updated.'));
+	}
+
 }
