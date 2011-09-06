@@ -45,7 +45,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			if ($allowedBlocks != null) {
 				$q .= ' and btID in (' . implode(',', $allowedBlocks) . ') ';
 			}
-			$q .= ' order by btID asc';
+			$q .= ' order by btDisplayOrder ASC, btID ASC'; //keep btID as secondary sort field in case someone upgraded from prior version of c5 and hasn't yet set their own display order (this way the "add blocks" list will look the same to them as it always did, because older versions of C5 just sorted on btID)
 			
 			$r = $db->query($q);
 	
@@ -526,6 +526,8 @@ defined('C5_EXECUTE') or die("Access Denied.");
 				$btd->btIsInternal = $bta->isBlockTypeInternal();
 				$btd->btInterfaceHeight = $bta->getInterfaceHeight();
 				$btd->btInterfaceWidth = $bta->getInterfaceWidth();
+				$db->Execute('UPDATE BlockTypes SET btDisplayOrder = btDisplayOrder + 1'); //make room for this new block type to be first in the display order (so most recently-installed block is at the top of the "add blocks" list)
+				$btd->btDisplayOrder = 1;
 				$btd->pkgID = $bt->getPackageID();
 				
 				if ($btID > 0) {

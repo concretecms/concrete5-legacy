@@ -282,6 +282,11 @@
       <DEFAULT value="400"/>
       <UNSIGNED/>
     </field>
+	<field name="btDisplayOrder" type="I" size="10">
+	  <NOTNULL/>
+	  <DEFAULT value="0"/>
+	  <UNSIGNED />
+	</field>
     <field name="pkgID" type="I" size="10">
       <NOTNULL/>
       <DEFAULT value="0"/>

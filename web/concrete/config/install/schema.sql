@@ -108,6 +108,7 @@ btIncludeAll             TINYINT(1) NOT NULL DEFAULT 0,
 btIsInternal             TINYINT(1) NOT NULL DEFAULT 0,
 btInterfaceWidth         INTEGER(10) UNSIGNED NOT NULL DEFAULT 400,
 btInterfaceHeight        INTEGER(10) UNSIGNED NOT NULL DEFAULT 400,
+btDisplayOrder           INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
 pkgID                    INTEGER(10) UNSIGNED NOT NULL DEFAULT 0,
                  PRIMARY KEY (btID)
 );
