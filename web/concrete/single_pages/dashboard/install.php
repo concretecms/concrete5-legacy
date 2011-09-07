@@ -243,14 +243,20 @@ if ($this->controller->getTask() == 'browse') { ?>
 
 <? /* END task == 'update' */ } else if ($this->controller->getTask() == 'blocktype_display_order') {  ?>
 	
-	<h1><span><?=t('Block Type Display Order')?></span></h1>
+	<h1><span><?=t('List Display Options')?></span></h1>
 	<div class="ccm-dashboard-inner">
 		
 		<div class="ccm-addon-list">
-			<p style="margin: 0 0 0 15px; padding: 0 0 5px 0; font-style: italic;"><?=t('Drag and drop items in this list to determine the order they will appear in the "Add Block" popup menu.')?></p>
+			<p style="margin: 0 0 0 15px; padding: 0 0 5px 0; font-style: italic;">
+				<?=t('Drag and drop items in this list to determine the order they will appear in the "Add Block" popup menu.')?>
+				<br />
+				<?=t('Change "Visible" to "Hidden" if you wish to hide a certain block type from the "Add Block" list entirely.')?>
+			</p>
 		</div>
 		
 		<form method="post" action="<?=$this->action('blocktype_display_order')?>">
+			<?=$ch->submit('Save List Display Options')?>
+			<div style="clear: both;"></div>
 			<div class="sortable-container">
 			<div class="sortable">
 				<?php foreach($btArray as $bt): ?>
@@ -260,13 +266,16 @@ if ($this->controller->getTask() == 'browse') { ?>
 					<tr>
 						<td class="ccm-installed-items-icon"><img src="<?=$ci->getBlockTypeIconURL($bt)?>" /></td>
 						<td class="ccm-addon-list-description"><h3><?=$bt->getBlockTypeName()?></h3></td>
-						<td align="right"><?=$form->select('btDisplaysInAddList[]', array('1' => t('Visible'), '0' => t('Hidden')), $bt->getDisplayInAddList())?></td>
+						<td align="left" style="padding-right: 30px;"><?=$form->select('btDisplaysInAddList[]', array('1' => t('Visible'), '0' => t('Hidden')), $bt->getDisplayInAddList())?></td>
 						<td align="right"><img src="<?php echo ASSETS_URL_IMAGES?>/dashboard/drag_grip.jpg" alt="<?php echo t('Drag Item')?>" class="sortable-drag" /></td>
 					</tr>
 					</table>
 				</div>
 				<?php endforeach; ?>
-				<input type="submit" value="TEST SUBMIT" />
+				<div style="margin-top: 20px; padding-bottom: 50px;">
+				<?=$ch->submit('Save List Display Options')?>
+				</div>
+				<div style="clear: both;"></div>
 			</div>
 			</div>
 		</form>
@@ -532,8 +541,8 @@ if ($this->controller->getTask() == 'browse') { ?>
 			<? } ?>
 
 			<div class="ccm-addon-list">
-				<h2><?=t('Block Type Display Order')?></h2>
-				<?=$ch->button(t('Set Display Order...'), View::url('/dashboard/install', 'blocktype_display_order'), "left")?>
+				<h2><?=t('List Display Options')?></h2>
+				<?=$ch->button(t('Go To Options...'), View::url('/dashboard/install', 'blocktype_display_order'), "left")?>
 			</div>
 
 			</div><!-- END ccm-dashboard-inner -->
@@ -650,7 +659,7 @@ if ($this->controller->getTask() == 'browse') { ?>
 	
 			</div>
 	
-		</div>
+		</div><!-- END ccm-module -->
 	
 		</div>
 		</div>
