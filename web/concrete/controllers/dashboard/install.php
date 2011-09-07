@@ -380,7 +380,7 @@ class DashboardInstallController extends Controller {
 	}
 
 	public function blocktype_display_order_updated() {
-		$this->set('message', t('List Display Options have been successfully updated.'));
+		$this->set('message', t('List display order has been successfully updated.'));
 	}
 
 }
