@@ -260,6 +260,7 @@ if ($this->controller->getTask() == 'browse') { ?>
 					<tr>
 						<td class="ccm-installed-items-icon"><img src="<?=$ci->getBlockTypeIconURL($bt)?>" /></td>
 						<td class="ccm-addon-list-description"><h3><?=$bt->getBlockTypeName()?></h3></td>
+						<td align="right"><?=$form->select('btDisplaysInAddList[]', array('1' => t('Visible'), '0' => t('Hidden')), $bt->getDisplayInAddList())?></td>
 						<td align="right"><img src="<?php echo ASSETS_URL_IMAGES?>/dashboard/drag_grip.jpg" alt="<?php echo t('Drag Item')?>" class="sortable-drag" /></td>
 					</tr>
 					</table>

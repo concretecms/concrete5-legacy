@@ -190,9 +190,9 @@ class Area extends Object {
 		return $this->areaBlocksArray;
 	}
 
-	function getAddBlockTypes(&$c, &$ap) {
+	function getAddBlockTypes(&$c, &$ap, $excludeHidden = false) {
 		if ($ap->canAddBlocks()) {
-			$bt = new BlockTypeList($ap->addBlockTypes);
+			$bt = new BlockTypeList($ap->addBlockTypes, $excludeHidden);
 		} else {
 			$bt = false;
 		}

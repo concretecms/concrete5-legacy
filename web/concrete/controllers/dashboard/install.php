@@ -365,22 +365,17 @@ class DashboardInstallController extends Controller {
     }
 
 	public function blocktype_display_order() {
-		$postedBtIDs = $this->post('btIDs');
-		if ($postedBtIDs) {
-			$db = Loader::db();
-			$sql = "UPDATE BlockTypes SET btDisplayOrder = ? WHERE btID = ?";
-			$stmt = $db->Prepare($sql);
-			foreach ($postedBtIDs as $index => $btID) {
-				$displayOrder = $index + 1;
-				$vals = array($displayOrder, $btID);
-				$db->Execute($stmt, $vals);
-			}
-			
+		if ($this->post()) {
+			$orderedBtIDs = $this->post('btIDs');
+			$orderedBtDisplaysInAddList = $this->post('btDisplaysInAddList');
+			$data = array_combine($orderedBtIDs, $orderedBtDisplaysInAddList);
+			BlockType::updateListDisplay($data);
 			$this->redirect('/dashboard/install', 'blocktype_display_order_updated');
 		} else {
 			$btl = new BlockTypeList();
 			$btArray = $btl->getBlockTypeList();
 			$this->set('btArray', $btArray);
+			$this->set('form', Loader::helper('form'));
 		}
 	}
 

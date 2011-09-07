@@ -1,6 +1,6 @@
 <? 
 defined('C5_EXECUTE') or die("Access Denied.");
-$btl = $a->getAddBlockTypes($c, $ap );
+$btl = $a->getAddBlockTypes($c, $ap, true);
 $blockTypes = $btl->getBlockTypeList();
 $ci = Loader::helper('concrete/urls');
 $ch = Loader::helper('concrete/interface');
