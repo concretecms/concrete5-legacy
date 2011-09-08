@@ -16,7 +16,7 @@
 				$target = 'target="' . $target . '"';
 			}
 
-			if ($ni->isActive($c) || strpos($c->getCollectionPath(), $_c->getCollectionPath()) === 0) {
+			if ($ni->isActive($c) || $c->getCollectionID() == $_c->getCollectionID() ) {
 				$navSelected='nav-selected';
 			} else {
 				$navSelected = '';
