@@ -1,13 +1,4 @@
-<?
-
-/**
- * @package Core
- * @author Andrew Embler <andrew@concrete5.org>
- * @copyright  Copyright (c) 2003-2008 Concrete5. (http://www.concrete5.org)
- * @license    http://www.concrete5.org/license/     MIT License
- *
- */
-
+<?php defined('C5_EXECUTE') or die("Access Denied.");
 /**
  * An events framework for Concrete. System events like "on_user_add" can be hooked into, so that when a user is added to the system, the new UserInfo object is passed to developers' custom functions.
  * Current events include:
@@ -18,8 +9,6 @@
  * @license    http://www.concrete5.org/license/     MIT License
  *
  */
-
-defined('C5_EXECUTE') or die("Access Denied.");
 class Events {
 	
 	const EVENT_TYPE_PAGETYPE = "page_type";
@@ -31,7 +20,9 @@ class Events {
 	private static $registeredEvents = array();
 	
 	/** 
-	 * Enables events if they haven't been enabled yet. This happens automatically if a particular 3rd party addon requires it
+	 * Enables events if they haven't been enabled yet.
+	 * This happens automatically if a particular 3rd party addon requires it
+	 * @return void
 	 */
 	public static function enableEvents() {
 		if (!defined("ENABLE_APPLICATION_EVENTS")) {
@@ -40,11 +31,14 @@ class Events {
 	}
 	
 	/** 
-	
-	/** 
-	 * When passed an "event" as a string, a user-defined method will be run INSIDE this page's controller
-	 * whenever an event takes place. The name/location of this event is not customizable. If you want more
-	 * customization, used extend() below.
+	 * When the event(s) you listen for fire a method with the exact same name
+	 * as the event will be called on the PageTypeController for that pagetype.
+	 *
+	 * @see Events::extend()
+	 * @param string $ctHandle the name of the pagetype
+	 * @param string|bool $event either one of the on_page_<action> events or false to listen to all events
+	 * @param array $params 
+	 * @return void
 	 */
 	public static function extendPageType($ctHandle, $event = false, $params = array()) {
 		self::enableEvents();
@@ -70,17 +64,18 @@ class Events {
 			);
 		}
 	}
+	
 	/**
-	 * When passed an "event" as a string (e.g. "on_user_add"), a user-defined method can be run whenever this event
-	 * takes place.
+	 * Register a callback for a certain event
+	 * 
 	 * <code>
 	 * Events::extend('on_user_add', 'MySpecialClass', 'createSpecialUserInfo', 'models/my_special_class.php', array('foo' => 'bar'))
 	 * </code>
-	 * @param string $event
-	 * @param string $class
-	 * @param string $method
-	 * @param string $filename
-	 * @param array $params
+	 * @param string $event name of the event
+	 * @param string $class name of the call on which the method will be called
+	 * @param string $method name of the method that will be called
+	 * @param string $filename either a relative path to the DIR_BASE or an absolute path to file containing the class 
+	 * @param array $params that will be appended to the arguments of the method
 	 * @return void
 	 */
 	public static function extend($event, $class, $method, $filename, $params = array()) {
@@ -95,9 +90,13 @@ class Events {
 	}
 	
 	/** 
-	 * An internal function used by Concrete to "fire" a system-wide event. Any time this happens, events that 
-	 * a developer has hooked into will be run.
+	 * Fires an system-wide event calling the earlier set callbacks using the extend() method
+	 * Additional arguments will be passed to the callbacks
+	 * 
 	 * @param string $event
+	 * @param mixed $arg1
+	 * @param mixed $arg2
+	 * @param mixed $argN and so on
 	 * @return void
 	 */
 	public static function fire($event) {
@@ -161,5 +160,5 @@ class Events {
 
 
 
-	//	$controller = Loader::controller($this);
-//		$ret = $controller->runTask('on_page_delete', array($this));
+//	$controller = Loader::controller($this);
+//	$ret = $controller->runTask('on_page_delete', array($this));
