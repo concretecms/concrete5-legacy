@@ -151,6 +151,8 @@ class Events {
 				}
 			}
 		}		
+		
+		// TODO only the return value returned by the last callback gets forwarded
 		return $eventReturn;
 	}
 }
