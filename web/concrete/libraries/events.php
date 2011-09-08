@@ -107,11 +107,8 @@ class Events {
 		// any additional arguments passed to the fire function will get passed FIRST to the method, with the method's own registered
 		// params coming at the end. e.g. if I fire Events::fire('on_login', $userObject) it will come in with user object first
 		$args = func_get_args();
-		if (count($args) > 1) {
-			array_shift($args);
-		} else {
-			$args = false;
-		}
+		// shift the event arg off so we only have the additional args
+		array_shift($args);
 
 		$events = self::$registeredEvents[$event];
 		$eventReturn = false;
