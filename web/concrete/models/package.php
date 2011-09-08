@@ -452,6 +452,7 @@ class Package extends Object {
 	public function install() {
 		$db = Loader::db();
 		$dh = Loader::helper('date');
+		$this->setupPackageLocalization();
 		$v = array($this->getPackageName(), $this->getPackageDescription(), $this->getPackageVersion(), $this->getPackageHandle(), 1, $dh->getSystemDateTime());
 		$db->query("insert into Packages (pkgName, pkgDescription, pkgVersion, pkgHandle, pkgIsInstalled, pkgDateInstalled) values (?, ?, ?, ?, ?, ?)", $v);
 		
@@ -591,6 +592,7 @@ class Package extends Object {
 				$pkg = Loader::package($p);
                 if (!empty($pkg)) {
 				    $packagesTemp[] = $pkg;
+				    $pkg->setupPackageLocalization();
                 }
 			}
 			$packages = $packagesTemp;
