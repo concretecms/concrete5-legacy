@@ -25,6 +25,11 @@ class Events {
 	const EVENT_TYPE_PAGETYPE = "page_type";
 	const EVENT_TYPE_GLOBAL = "global";
 	
+	/**
+	 * @var array containing all registered events with their callbacks
+	 */
+	private static $registeredEvents = array();
+	
 	/** 
 	 * Enables events if they haven't been enabled yet. This happens automatically if a particular 3rd party addon requires it
 	 */
@@ -35,19 +40,6 @@ class Events {
 	}
 	
 	/** 
-	 * Returns an instance of the systemwide Events object.
-	 */
-	public function getInstance() {
-		static $instance;
-		if (!isset($instance)) {
-			$v = __CLASS__;
-			$instance = new $v;
-		}
-		return $instance;
-	}		
-
-	private $registeredEvents = array();
-	
 	
 	/** 
 	 * When passed an "event" as a string, a user-defined method will be run INSIDE this page's controller
@@ -55,23 +47,22 @@ class Events {
 	 * customization, used extend() below.
 	 */
 	public static function extendPageType($ctHandle, $event = false, $params = array()) {
-		Events::enableEvents();
+		self::enableEvents();
 		if ($event == false) {
 			// then we're registering ALL the page type events for this particular page type
-			Events::extendPageType($ctHandle, 'on_page_add', $params);
-			Events::extendPageType($ctHandle, 'on_page_update', $params);
-			Events::extendPageType($ctHandle, 'on_page_duplicate', $params);
-			Events::extendPageType($ctHandle, 'on_page_move', $params);
-			Events::extendPageType($ctHandle, 'on_page_view', $params);
-			Events::extendPageType($ctHandle, 'on_page_version_approve', $params);
-			Events::extendPageType($ctHandle, 'on_page_delete', $params);
+			self::extendPageType($ctHandle, 'on_page_add', $params);
+			self::extendPageType($ctHandle, 'on_page_update', $params);
+			self::extendPageType($ctHandle, 'on_page_duplicate', $params);
+			self::extendPageType($ctHandle, 'on_page_move', $params);
+			self::extendPageType($ctHandle, 'on_page_view', $params);
+			self::extendPageType($ctHandle, 'on_page_version_approve', $params);
+			self::extendPageType($ctHandle, 'on_page_delete', $params);
 		} else {
-			$ce = Events::getInstance();
 			$class = Object::camelcase($ctHandle) . 'PageTypeController';
 			$method = $event;
 			$filename = Loader::pageTypeControllerPath($ctHandle);
-			$ce->registeredEvents[$event][] = array(
-				Events::EVENT_TYPE_PAGETYPE,
+			self::$registeredEvents[$event][] = array(
+				self::EVENT_TYPE_PAGETYPE,
 				$class,
 				$method,
 				$filename,
@@ -93,10 +84,9 @@ class Events {
 	 * @return void
 	 */
 	public static function extend($event, $class, $method, $filename, $params = array()) {
-		Events::enableEvents();
-		$ce = Events::getInstance();
-		$ce->registeredEvents[$event][] = array(
-			Events::EVENT_TYPE_GLOBAL,
+		self::enableEvents();
+		self::$registeredEvents[$event][] = array(
+			self::EVENT_TYPE_GLOBAL,
 			$class,
 			$method,
 			$filename,
@@ -124,15 +114,14 @@ class Events {
 			$args = false;
 		}
 
-		$ce = Events::getInstance();
-		$events = $ce->registeredEvents[$event];
+		$events = self::$registeredEvents[$event];
 		$eventReturn = false;
 		
 		if (is_array($events)) {
 			foreach($events as $ev) {
 				$type = $ev[0];
 				$proceed = true;
-				if ($type == Events::EVENT_TYPE_PAGETYPE) {
+				if ($type == self::EVENT_TYPE_PAGETYPE) {
 					// then the first argument in the event fire() method will be the page
 					// that this applies to. We check to see if the page type is the right type
 					$proceed = false;
