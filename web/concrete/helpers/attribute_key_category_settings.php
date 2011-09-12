@@ -24,7 +24,7 @@ class AttributeKeyCategorySettingsHelper extends Object {
 			'standard_properties'		=> array(
 				new DatabaseItemListColumn('uID',t('User ID'),'getUserID'),
 				new DatabaseItemListColumn('uName',t('Username'),'getUserName'),
-				new DatabaseItemListColumn('uEmail',t('Email Address'),'getUserEmail',NULL,NULL,'email'),
+				new DatabaseItemListColumn('uEmail',t('Email Address'), 'getUserEmail'),
 				new DatabaseItemListColumn('uDateAdded',t('Date Added'),'getUserDateAdded'),
 				new DatabaseItemListColumn('uNumLogins',t('# of Logins'),'getNumLogins')
 			)

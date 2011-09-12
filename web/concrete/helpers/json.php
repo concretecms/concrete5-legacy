@@ -24,9 +24,9 @@ class JsonHelper {
 	 * @param string $string
 	 * @return string
 	 */
-	public function decode($string) {
+	public function decode($string, $assoc = NULL) {
 		if (function_exists('json_decode')) {
-			return json_decode($string);
+			return json_decode($string, $assoc);
 		} else {
 			Loader::library('3rdparty/JSON/JSON');
 			$sjs = new Services_JSON();

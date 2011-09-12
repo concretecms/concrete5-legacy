@@ -57,17 +57,9 @@ class AttributeKeyCategoryItemsAttributeTypeController extends NumberAttributeTy
 			foreach($value as $item) {
 				if($item){
 					if($display) {
-						if($name = $item->getAttribute('name')) {
-							$display .= '<br />'.$name;
-						} else {
-							$display .= '<br />'.$item->ID;
-						}
+						$display .= "\n".$item->ID;
 					} else {
-						if($name = $item->getAttribute('name')) {
-							$display = $name;
-						} else {
-							$display = $item->ID;
-						}
+						$display = $item->ID;
 					}
 				}
 			}
