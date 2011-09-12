@@ -20,61 +20,67 @@ class AttributeKeyCategoryItem extends Object {
 		return $this->ID;
 	}
 	
-	public function add($uID = NULL, $akCategoryHandle = NULL) {
-		if(!$akCategoryHandle) { $akCategoryHandle = $this->akCategoryHandle; }
-		if(!AttributeKeyCategory::akCategoryHandleExists($akCategoryHandle)) {
-			throw new Exception('Attribute Key Category "'.$akCategoryHandle.'" does not exists.');
+	public function add() {
+		$u = new User();
+		if($u->isRegistered()) {
+			$uID = $u->getUserID();
+			if(!$akCategoryHandle) { $akCategoryHandle = $this->akCategoryHandle; }
+			if(!AttributeKeyCategory::akCategoryHandleExists($akCategoryHandle)) {
+				throw new Exception('Attribute Key Category "'.$akCategoryHandle.'" does not exists.');
+			}
+			
+			if(!$uID) { $uID = 1; }
+			$dt = Loader::helper('date');
+			$timeDate = $dt->getLocalDateTime();
+			
+			$v = array('akCategoryHandle' => $akCategoryHandle, 'uID' => $uID);
+			
+			$db = Loader::db();
+			$db->Execute('INSERT INTO AttributeKeyCategoryItems (akCategoryHandle, uID) values (?, ?)', $v);
+			$id = $db->Insert_ID();
+			
+			$newObject = new AttributeKeyCategoryItem($akCategoryHandle);
+			$newObject->load($id);
+			
+			$vtak = new AttributeKey($akCategoryHandle);
+			foreach($vtak->getList() as $ak) {
+				if($ak->akIsEditable == 0) {
+					switch($ak->getAttributeKeyHandle()) {
+						case 'increment_id':
+							Loader::model('attribute_key_category_item_list');
+							$vtil = new AttributeKeyCategoryItemList($akCategoryHandle);
+							if($vtil->getTotal() > 1) {
+								$vtak = new AttributeKey($akCategoryHandle);
+								$ak = $vtak->getByHandle('increment_id');
+								
+								$vtil->sortBy($ak, 'desc');
+								$lastItem = $vtil->get(1, 0, TRUE);
+								$lastItem = $lastItem[0]->getAttribute('increment_id');
+								$lastItem = (int)$lastItem;
+								$lastItem++;
+							} else {
+								$lastItem = 0;
+							}
+							$newObject->setAttribute($ak, $lastItem);
+							break;
+						case 'date_created':
+							$newObject->setAttribute($ak, $timeDate);
+							break;
+						case 'date_modified':
+							//$newObject->setAttribute($ak, $timeDate);
+							break;
+						default:
+							break;
+					}
+				} 
+			}
+			
+			Events::fire('on_attribute_key_category_item_add', $newObject);
+			$newObject->reindex();
+			return $newObject;
+		} else {
+			throw new Exception('User not registered.');
 		}
-		
-		if(!$uID) { $uID = 1; }
-		$dt = Loader::helper('date');
-		$timeDate = $dt->getLocalDateTime();
-		
-		$v = array('akCategoryHandle' => $akCategoryHandle, 'uID' => $uID);
-		
-		$db = Loader::db();
-		$db->Execute('INSERT INTO AttributeKeyCategoryItems (akCategoryHandle, uID) values (?, ?)', $v);
-		$id = $db->Insert_ID();
-		
-		$newObject = new AttributeKeyCategoryItem($akCategoryHandle);
-		$newObject->load($id);
-		
-		$vtak = new AttributeKey($akCategoryHandle);
-		foreach($vtak->getList() as $ak) {
-			if($ak->akIsEditable == 0) {
-				switch($ak->getAttributeKeyHandle()) {
-					case 'increment_id':
-						Loader::model('attribute_key_category_item_list');
-						$vtil = new AttributeKeyCategoryItemList($akCategoryHandle);
-						if($vtil->getTotal() > 1) {
-							$vtak = new AttributeKey($akCategoryHandle);
-							$ak = $vtak->getByHandle('increment_id');
-							
-							$vtil->sortBy($ak, 'desc');
-							$lastItem = $vtil->get(1, 0, TRUE);
-							$lastItem = $lastItem[0]->getAttribute('increment_id');
-							$lastItem = (int)$lastItem;
-							$lastItem++;
-						} else {
-							$lastItem = 0;
-						}
-						$newObject->setAttribute($ak, $lastItem);
-						break;
-					case 'date_created':
-						$newObject->setAttribute($ak, $timeDate);
-						break;
-					case 'date_modified':
-						//$newObject->setAttribute($ak, $timeDate);
-						break;
-					default:
-						break;
-				}
-			} 
-		}
-		
-		Events::fire('on_attribute_key_category_item_add', $newObject);
-		$newObject->reindex();
-		return $newObject;
 	}
 	
 	public function update() {

@@ -96,7 +96,7 @@ class DashboardBricksEditController extends Controller {
 			$akciph->save($post);
 		}
 		
-		$item->reindex();
+		$item->update();
 	}
 
 	public function validate() {

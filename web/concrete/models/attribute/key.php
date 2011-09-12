@@ -13,7 +13,9 @@ class AttributeKey extends Object {
 		if(Loader::model('attribute/categories/'.$akCategoryHandle, $pkg)) {
 			$txt = Loader::helper('text');
 			$class = $txt->unhandle($akCategoryHandle).'AttributeKey';
-			eval('$ak = '.$class.'::get($akID);');
+			$class = str_replace(' ', '', $class);
+			eval('$ak = new '.$class.';');
+			$ak->load($akID);
 		} else {
 			$ak = new AttributeKey($akCategoryHandle);
 			$ak->load($akID);
