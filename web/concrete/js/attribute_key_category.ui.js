@@ -188,26 +188,27 @@ ccm_deleteAndRefeshSearch = function(URIComponents, searchInstance) {
 		},
 		
 		itemActions:{
-			remove:function(action, $item, position, widget){
+			remove:function(action, $item, widget){
 				//widget.removeItem($item.find("input").val());
 				$item.remove();
+				widget.restripe();
 			}
 		},
-		/*
-		createItemAction:function(key, callback){
-			
-			var $actions = this.template.find(".item-actions"),
-				$action = $actions.children("."+key);
-			
-			//Add action to template, if it doesn't already exist
-			if(!$action.length){
-				$action = $("<a class=\""+key+"\" title=\""+(key)+"\">"+key+"</a>");
-			}
-			
-			this.itemActions[key] = callback;
-			
+		
+		execItemAction:function(key, $item){
+			var I = this;
+			//Loop through, in case multiple items are passed
+			$item.each(function(i, item){
+				var $item = $(item),
+					args = [key, $item, I],
+					result = I.itemActions[key].apply($item.get(0), args);
+				
+				if(result !== false){
+					args.splice(0,0,key+"Item");
+					I._trigger.apply(I, args);
+				}
+			});			
 		},
-		*/
 		
 		delegateItemActions:function($item, $actionsWrap){
 			var I = this;
@@ -220,13 +221,7 @@ ccm_deleteAndRefeshSearch = function(URIComponents, searchInstance) {
 					var key = classes[c],
 						$item = $a.closest("tr");
 					if($.isFunction(I.itemActions[key])){
-						var args = [key, $item, $item.prevAll("tr").length, I],
-							result = I.itemActions[key].apply($item.get(0), args);
-						
-						if(result !== false){
-							args.splice(0,0,key+"Item");
-							I._trigger.apply(I, args);
-						}
+						I.execItemAction(key, $item);
 					}
 				}
 				
