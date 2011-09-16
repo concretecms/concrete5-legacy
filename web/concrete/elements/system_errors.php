@@ -11,7 +11,15 @@ if (isset($error) && $error != '') {
 	} else if (is_string($error)) {
 		$_error[] = $error;
 	}
-	?>
+	
+	if($dashboard) { ?>
+		<div class="message error">
+			<strong><?=t('The following errors occurred when attempting to process your request:')?></strong>
+			<ul>
+				<? foreach($_error as $e) { ?><li><?=$e?></li><? } ?>
+			</ul>
+		</div>
+	<?php } else {?>
 	
 	<ul class="ccm-error">
 	<?php foreach($_error as $e): ?>
@@ -19,4 +27,5 @@ if (isset($error) && $error != '') {
 	<?php endforeach; ?>
 	</ul>
 
-<?php } ?>
+<?php } 
+} ?>
