@@ -37,7 +37,7 @@ class DashboardBricksEditController extends Controller {
 		}
 		$this->set('subnav', $subnav);
 		
-		$this->addHeaderItem(Loader::helper('html')->javascript('attribute_key_category.permissions.js'));
+		$this->addHeaderItem(Loader::helper('html')->javascript('ccm.attributekeycategory.permissions.js'));
 		
 		Loader::model('attribute_key_category_item_permission');
 		$akcip = AttributeKeyCategoryItemPermission::get($akci);
@@ -59,7 +59,7 @@ class DashboardBricksEditController extends Controller {
 			
 			$form = Loader::helper('form');
 			$this->set('form', $form);
-			$this->addHeaderItem(Loader::helper('html')->javascript('attribute_key_category.ui.js'));
+			$this->addHeaderItem(Loader::helper('html')->javascript('ccm.attributekeycategory.js'));
 			$searchInstance = $akCategoryHandle.time();
 			if (isset($_REQUEST['searchInstance'])) {
 				$searchInstance = $_REQUEST['searchInstance'];

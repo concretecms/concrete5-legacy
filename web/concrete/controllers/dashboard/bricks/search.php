@@ -22,7 +22,7 @@ class DashboardBricksSearchController extends Controller {
 			if (isset($_REQUEST['searchInstance'])) {
 				$searchInstance = $_REQUEST['searchInstance'];
 			}
-			$this->addHeaderItem(Loader::helper('html')->javascript('attribute_key_category.ui.js'));
+			$this->addHeaderItem(Loader::helper('html')->javascript('ccm.attributekeycategory.js'));
 			$this->addHeaderItem('<script type="text/javascript">$(function(){ccm_setupAdvancedSearch(\''.$searchInstance.'\');});</script>');
 			$objectList = $this->getRequestedSearchResults($akCategoryHandle);
 			$objects = $objectList->getPage();
