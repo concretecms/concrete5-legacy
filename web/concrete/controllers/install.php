@@ -255,7 +255,7 @@ class InstallController extends Controller {
 				// insert admin user into the user table
 				$salt = ( defined('MANUAL_PASSWORD_SALT') ) ? MANUAL_PASSWORD_SALT : $vh->getString(64);
 				if(!isset($this->installData['uPassword'])) {
-					$uPassword = rand(100000, 999999);
+					$uPassword = uniqid();
 				} else {
 					$uPassword = $this->installData['uPassword'];
 				}
