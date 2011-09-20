@@ -1,11 +1,22 @@
 <?php  defined('C5_EXECUTE') or die(_("Access Denied.")); 
-if(!$akCategoryHandle) $akCategoryHandle = $_REQUEST['akCategoryHandle'];
-if(!$searchInstance) $searchInstance = $akCategoryHandle.time();
+if(empty($akCategoryHandle)) $akCategoryHandle = $_REQUEST['akCategoryHandle'];
+if(empty($searchInstance)) $searchInstance = uniqid($akCategoryHandle);
 if(isset($_REQUEST['searchInstance'])) $searchInstance = $_REQUEST['searchInstance'];
+
+$baseID = $searchInstance.'_results';
+
 $u = new User();
+
+
 ?>
 
+<div id="<?php echo $baseID ?>" class="ccm-list-wrapper ccm-attribute-key-category-search">
+
 <?php try {
+	
+	
+	
+
 
 Loader::model('attribute_key_category_item_list');
 $akccs = new AttributeKeyCategoryColumnSet($akCategoryHandle);
@@ -47,16 +58,18 @@ $fieldAttributes = $ak->getSearchableList($akCategoryHandle);
 foreach($fieldAttributes as $ak) {
 	$akcdca->addColumn($akcdca->getColumnByKey('ak_'.$ak->getAttributeKeyHandle()));
 }
-if(is_object($columns)) $sortBy = $columns->getDefaultSortColumn();
+if(!$sortBy && is_object($columns)) $sortBy = $columns->getDefaultSortColumn();
 $cnt = Loader::controller('/dashboard/bricks/search');
 $newObjectList = $cnt->getRequestedSearchResults($akCategoryHandle, $sortBy);
+
 $newObjects = $newObjectList->getPage();
+
 $pagination = $newObjectList->getPagination();
 ?>
-	<div id="ccm-list-wrapper">
+	
 		<?php 
-		if (!$mode) {
-			$mode = $_REQUEST['mode'];
+		if (!isset($mode) || empty($mode)) {		
+			$mode = isset($_REQUEST['mode']) ? $_REQUEST['mode'] : 'admin';			
 		} 
 		if($administrationDisabled) {
 			$canAdmin = FALSE;
@@ -82,9 +95,9 @@ $pagination = $newObjectList->getPagination();
 				<td width="100%"><?php echo $newObjectList->displaySummary();?></td>
 				<?php if($canAdmin) { ?>
 				<td style="white-space: nowrap"><?php echo t('With Selected: ')?>&nbsp;</td>
-				<td align="right"><select id="ccm-<?=$searchInstance?>-list-multiple-operations" akCategoryHandle="<?php echo $akCategoryHandle; ?>" disabled>
+				<td align="right"><select id="<?php echo $baseID ?>-list-multiple-operations" data-akCategoryHandle="<?php echo $akCategoryHandle; ?>" disabled>
 						<option value="">**</option>
-						<?php if(!$mode) {?>
+						<?php if($mode == 'admin') {?>
 						<option value="properties"><?php echo t('Edit Properties')?></option>
 						<option value="delete"><?php echo t('Delete')?></option>
 						<?php } ?>
@@ -100,23 +113,23 @@ $pagination = $newObjectList->getPagination();
 		$keywords = $_REQUEST['keywords'];
 		$bu = REL_DIR_FILES_TOOLS_REQUIRED . '/bricks/search_results';
 		?>
-		<table border="0" cellspacing="0" cellpadding="0" id="ccm-<?=$searchInstance?>-list" class="ccm-results-list">
+		<table border="0" cellspacing="0" cellpadding="0" id="<?php echo $baseID ?>-list" class="ccm-results-list">
 			<tr>
 				<th width="20px"<?php if(!$canAdmin) { ?> style="display:none"<?php } ?>>
-					<input id="ccm-<?=$searchInstance?>-list-cb-all" type="checkbox" />
+					<input id="<?php echo $baseID ?>-list-cb-all" type="checkbox" />
 				</th>
 		<?php
 			if(is_array($columns->getColumns())) foreach($columns->getColumns() as $col) { ?>
-				<th class="<?=$newObjectList->getSearchResultsClass($col->getColumnKey())?>">
+				<th class="<?php echo $newObjectList->getSearchResultsClass($col->getColumnKey())?>">
 					<?php if($col->isColumnSortable()) {?>
-					<a href="<?=$newObjectList->getSortByURL($col->getColumnKey(), $col->getColumnDefaultSortDirection(), $bu, $soargs)?>"><?=$col->getColumnName()?></a>
+					<a href="<?php echo $newObjectList->getSortByURL($col->getColumnKey(), $col->getColumnDefaultSortDirection(), $bu, $soargs)?>"><?php echo $col->getColumnName()?></a>
 					<?php } else { ?>
-					<?=$col->getColumnName()?>
+					<?php echo $col->getColumnName()?>
 					<?php } ?>
 				</th>
 			<?php } if(!$userDefinedColumnsDisabled && $u->isRegistered()) { ?>
-				<th width="20px" class="ccm-search-add-column-header">
-					<a href="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/bricks/customize_search_columns?akCategoryHandle=<?=$akCategoryHandle?>&searchInstance=<?=$searchInstance?>" id="ccm-search-<?=$searchInstance?>-add-column">
+				<th width="20" class="ccm-search-add-column-header">
+					<a href="<?php echo REL_DIR_FILES_TOOLS_REQUIRED?>/bricks/customize_search_columns?akCategoryHandle=<?php echo $akCategoryHandle?>&searchInstance=<?php echo $searchInstance?>" class="ccm-search-add-column" id="ccm-search-<?php echo $searchInstance?>-add-column">
 						<img src="<?php echo ASSETS_URL_IMAGES?>/icons/column_preferences.png" width="16" height="16" />
 					</a>
 				</th>
@@ -139,7 +152,7 @@ $pagination = $newObjectList->getPagination();
 				}
 				
 				if ($mode == 'choose_one' || $mode == 'choose_multiple') {
-					$onLeftClick = 'ccm_triggerSelectAttributeKeyCategoryItem('.$akID.', $(this).parent()); jQuery.fn.dialog.closeTop();';
+					$onLeftClick = 'ccm_triggerSelectAttributeKeyCategoryItem('.$akCategoryHandle.', $(this).closest("tr")); jQuery.fn.dialog.closeTop();';
 				}
 				
 				if (!isset($striped) || $striped == 'ccm-list-record-alt') {
@@ -149,16 +162,16 @@ $pagination = $newObjectList->getPagination();
 				}
 	
 				?>
-			<tr class="ccm-list-record <?php echo $striped?>"<?php if($fieldName) {?> fieldName="<?=$fieldName?>"<?php } ?>>
-				<td class="ccm-<?=$searchInstance?>-list-cb" style="vertical-align: middle !important;<?php if(!$canAdmin) { ?> display:none;<?php } ?>">
+			<tr class="ccm-list-record <?php echo $striped ?>"<?php if($fieldName) {?> data-fieldName="<?php echo $fieldName ?>"<?php } ?>>
+				<td class="<?php echo $baseID ?>-list-cb" style="<?php if(!$canAdmin) { ?> display:none;<?php } ?>">
 				<?php foreach($akcdca->getColumns() as $aCol) { ?>
-					<input type="hidden" name="<?=$aCol->getColumnKey()?>" value="<?=urlencode($aCol->getColumnValue($item))?>" />
+					<input type="hidden" name="<?php echo $aCol->getColumnKey()?>" value="<?php echo urlencode($aCol->getColumnValue($item))?>" />
 				<?php } ?>
-					<input type="checkbox" name="ID" value="<?=$ID?>" />
+					<input type="checkbox" name="ID" value="<?php echo $ID?>" />
 				</td>
 				<?php 
 				if(is_array($columns->getColumns())) foreach($columns->getColumns() as $col) { ?>
-				<td class="ccm-onclick-effect"><?=$col->getColumnValue($item)?></td>
+				<td class="ccm-onclick-effect"><?php echo $col->getColumnValue($item)?></td>
 				<?php } 
 				if(!$userDefinedColumnsDisabled && $u->isRegistered()) { ?>
 				<td class="ccm-onclick-effect">&nbsp;</td>
@@ -169,53 +182,55 @@ $pagination = $newObjectList->getPagination();
 	
 		?>
 		</table>
-		<script type="text/javascript">
-			ccm_setupAttributeKeyCategoryItemSearch("<?=$searchInstance?>");
+		<script type="text/javascript">/*
+			ccm_setupAttributeKeyCategoryItemSearch("<?php echo $searchInstance?>");
 			if(typeof beendone === 'undefined') beendone = Array();
-			if(typeof beendone["<?=$searchInstance?>"] === 'undefined') {
-				beendone["<?=$searchInstance?>"] = Array();
-				beendone["<?=$searchInstance?>"]["leftClick"] = 0;
-				beendone["<?=$searchInstance?>"]["dblClick"] = 0;
-				beendone["<?=$searchInstance?>"]["rightClick"] = 0;
-			}
+			if(typeof beendone["<?php echo $searchInstance?>"] === 'undefined') {
+				beendone["<?php echo $searchInstance?>"] = Array();
+				beendone["<?php echo $searchInstance?>"]["leftClick"] = 0;
+				beendone["<?php echo $searchInstance?>"]["dblClick"] = 0;
+				beendone["<?php echo $searchInstance?>"]["rightClick"] = 0;
+			}*/
 		</script>
 	<?php if($onLeftClick) { ?>
 		<script type="text/javascript">
-			if(beendone['<?=$searchInstance?>']['leftClick'] == 0) {
-				$('#ccm-<?=$searchInstance?>-list td.ccm-onclick-effect').live('click', function () {
-					<?=$onLeftClick;?>
+			/*if(beendone['<?php echo $searchInstance?>']['leftClick'] == 0) {
+				$('#<?php echo $searchInstance ?>-list td.ccm-onclick-effect').live('click', function () {
+					<?php echo $onLeftClick;?>
 				});
-				beendone['<?=$searchInstance?>']['leftClick']++;
-			}
+				beendone['<?php echo $searchInstance?>']['leftClick']++;
+			}*/
 		</script>
 	<?php } ?>
 	<?php if($onDoubleClick) { ?>
 		<script type="text/javascript">
-			if(beendone['<?=$searchInstance?>']['dblClick'] == 0) {
-				$('#ccm-<?=$searchInstance?>-list td.ccm-onclick-effect').live('dblclick', function () {
+			/*if(beendone['<?php echo $searchInstance?>']['dblClick'] == 0) {
+				$('#<?php echo $searchInstance ?>-list td.ccm-onclick-effect').live('dblclick', function () {
 					if (window.getSelection)
 						window.getSelection().removeAllRanges();
 					else if (document.selection)
 						document.selection.empty();
-					<?=$onDoubleClick;?>
+					<?php echo $onDoubleClick;?>
 				});
-				beendone['<?=$searchInstance?>']['dblClick']++;
-			}
+				beendone['<?php echo $searchInstance?>']['dblClick']++;
+			}*/
 		</script>
 	<?php }?>
 	<?php if($onRightClick) { ?>
 		<script type="text/javascript">
-			if(beendone['<?=$searchInstance?>']['rightClick'] == 0) {
-				$('#ccm-<?=$searchInstance?>-list td.ccm-onclick-effect').live("contextmenu",function(e){
+			/*if(beendone['<?php echo $searchInstance?>']['rightClick'] == 0) {
+				$('#<?php echo $searchInstance ?>-list td.ccm-onclick-effect').live("contextmenu",function(e){
 					e.preventDefault();
-					<?=$onRightClick;?>
+					<?php echo $onRightClick;?>
 					$(this).addClass('selected');
 				});
-				beendone['<?=$searchInstance?>']['rightClick']++;
-			}
+				beendone['<?php echo $searchInstance?>']['rightClick']++;
+			}*/
 		</script>
-		<script type="text/javascript"><?php if(!$onLeftClick && $canAdmin) { ?>
-			$('#ccm-<?=$searchInstance?>-list tr')
+		<script type="text/javascript">
+		/*
+		<?php if(!$onLeftClick && $canAdmin) { ?>
+			$('#<?php echo $searchInstance ?>-list tr')
 				.filter(':has(:checkbox:checked)')
 				.end()
 				.find('input[type=checkbox]')
@@ -228,7 +243,7 @@ $pagination = $newObjectList->getPagination();
 					}
 				}
 			);
-			$('#ccm-<?=$searchInstance?>-list tr')
+			$('#<?php echo $searchInstance ?>-list tr')
 				.filter(':has(:checkbox:checked)')
 				.end()
 				.unbind('click')
@@ -249,16 +264,36 @@ $pagination = $newObjectList->getPagination();
 				}
 			);
 			<?php } ?>
-			ccm_setupAttributeKeyCategoryItemSearch('<?=$searchInstance?>');
+			ccm_setupAttributeKeyCategoryItemSearch('<?php echo $searchInstance?>');
+			*/
 		</script>
 	<?php } ?>
 		<?php  } else { ?>
 		<div id="ccm-list-none"><?php echo t('No items found.')?></div>
 		<?php  } 
 		$newObjectList->displayPaging($bu, false, $soargs);?>
-	</div>
+	
+    
+    
+    <?php
+		//Prep the jsInitArgs
+		$json = Loader::helper('json');
+		
+		$jsInitArgs['mode'] = $mode;
+		$jsInitArgs['searchInstance'] = $searchInstance;
+		
+		$jsInitArgsStr = $json->encode($jsInitArgs);
+	?>
+    
+    <script type="text/javascript">
+		$(function(){
+			$("#<?php echo $baseID ?>").ccm_AttributeKeyCategoryItemSearchResults(<?php echo $jsInitArgsStr ?>);			
+		});
+	</script>
 
 <?php } catch (Exception $e) { ?>
 <h2><span style="color:red">Error</span></h2>
-<p><?=$e->getMessage()?></p>
+<p><?php echo $e->getMessage()?></p>
 <?php } ?>
+
+</div>

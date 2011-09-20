@@ -1,4 +1,4 @@
-ccm_setupAttributeKeyCategoryItemSearch = function(searchInstance, akID) {return;
+ccm_setupAttributeKeyCategoryItemSearch = function(searchInstance, akID) {alert("ccm_setupAttributeKeyCategoryItemSearch");
 	if(typeof alreadyRun === 'undefined') alreadyRun = Array();
 	if(typeof beendone === 'undefined') beendone = Array();
 	if(typeof alreadyRun[searchInstance] === 'undefined' || typeof beendone[searchInstance] !== 'undefined') {
@@ -75,10 +75,12 @@ ccm_setupAttributeKeyCategoryItemSearch = function(searchInstance, akID) {return
 };
 
 ccm_closeModalRefeshSearch = function(searchInstance) {
+	alert("ccm_closeModalRefeshSearch");
 	jQuery.fn.dialog.closeTop();
 	$("#ccm-" + searchInstance + "-advanced-search").submit();
 };
 ccm_deleteAndRefeshSearch = function(URIComponents, searchInstance) {
+	alert("ccm_deleteAndRefeshSearch");
 	$.ajax({
 		url: CCM_TOOLS_PATH + '/bricks/bulk_delete?task=delete&json=' + URIComponents
 	}).responseText;
@@ -101,16 +103,106 @@ ccm_deleteAndRefeshSearch = function(URIComponents, searchInstance) {
 		console = window.console;	
 	}
 	
+	//Prototype for the ccm_AttributeKeyCategoryItemSearchForm widget
+	var ccm_AttributeKeyCategoryItemSearchForm = {
+		widgetEventPrefix:"ccm_AttributeKeyCategoryItemSearchForm_".toLowerCase(),
+		options:{
+			searchInstance:null
+		},
+		_init:function(){
+			var I = this;
+			
+			I._initForm();			
+			I._initSearchFields();
+		},
+		
+		_initForm:function(){
+			var I = this;
+			
+			this.element.ajaxForm({
+				beforeSubmit: $.proxy(I._beforeSearchSubmit, I),				
+				success: $.proxy(I._onSearchSuccess, I)
+			});			
+			
+		},
+		
+		_initSearchFields:function(){
+			var I = this,
+				$fBase = this.getRelEl("-field-base"),
+				$fWrap = this.getRelEl("-fields-wrapper"),
+				$fAdd = this.getRelEl("-add-option"),
+				$fTypeBases = this.getRelEl("-field-base-elements");
+
+
+			//Setup the add field button
+			$fAdd.click(function(){
+				$fBase.clone().appendTo($fWrap).slideDown(200).removeAttr("id");
+			});
+			
+			//Setup remove field buttons
+			$fWrap.delegate(".ccm-search-remove-option", "click", function(evt){
+				var $field = $(this).closest("div");
+				$field.slideUp(200, function(){
+					$(this).closest("div").remove();
+				});				
+			});
+			
+			//Setup field type selects
+			$fWrap.delegate(".ccm-input-select", "change", function(evt){
+				var $select = $(this),
+					$fTypeBase = $fTypeBases.find("[search-field='"+$select.val()+"']"),
+					$fContent = $select.closest("table").find("td.ccm-selected-field-content").empty();
+				$fTypeBase.clone().appendTo($fContent).fadeIn();
+				console.log($fTypeBase, $fTypeBases);
+			});
+
+		},
+		
+		_beforeSearchSubmit:function(){
+			this.disable();
+		},
+		_onSearchSuccess:function(resp){
+			
+			this.getResultsWidget().element.replaceWith(resp);
+			this.enable();
+		},
+		
+		enable:function(){
+			this.element.find(":submit").removeAttr("disabled");
+			this.element.find(".ccm-search-loading").hide();
+			
+			return this._setOption( "disabled", false );
+		},
+		
+		disable:function(){
+			this.element.find(":submit").attr("disabled","disabled");
+			this.element.find(".ccm-search-loading").show();
+			
+			return this._setOption( "disabled", true );
+		},
+		
+		getResultsWidget:function(){
+			return $("#"+this.options.searchInstance+"_results").data("ccm_AttributeKeyCategoryItemSearchResults");
+		},
+		
+		getRelEl:function(sel){
+			return $(this.getRelElId(sel));
+		},
+		getRelElId:function(sel){
+			return "#"+this.element.attr("id")+sel;
+		}
+	};
+	
+	$.widget("ccm.ccm_AttributeKeyCategoryItemSearchForm", ccm_AttributeKeyCategoryItemSearchForm);
+	
 	
 	//Prototype for the ccm_AttributeKeyCategoryItemSearchResults widget
 	var ccm_AttributeKeyCategoryItemSearchResults = {
 		widgetEventPrefix:"ccm_AttributeKeyCategoryItemSearchResults_".toLowerCase(),
 		options:{
+			searchInstance:null,
 			mode:"choose_multiple",
 			itemSelector:"tr.ccm-list-record"
-		},
-		_create:function(){
-			
 		},
 		_init:function(){
 			var I = this,
@@ -123,9 +215,8 @@ ccm_deleteAndRefeshSearch = function(URIComponents, searchInstance) {
 			
 			//Bind to the item containing rows
 			this.element.delegate(this.options.itemSelector +" > td:not(:has(input[name=ID]))", "click", function(evt){
-				if(I.options.mode === "choose_multiple" || I.options.mode === "choose"){
+				if(I.options.mode === "choose_multiple" || I.options.mode === "choose" || I.options.mode === "admin"){
 					I.execItemAction("choose", $(this).closest("tr"));
-					jQuery.fn.dialog.closeTop();
 				}
 			});
 			
@@ -139,13 +230,51 @@ ccm_deleteAndRefeshSearch = function(URIComponents, searchInstance) {
 				var action = this.value;
 				if($.trim(this.value).length){
 					I.execItemAction(this.value, I.getItems(true));
-					jQuery.fn.dialog.closeTop();
 				}
 				
 			});
 			
+			//Setup ajax sorting
+			this.element.find(".ccm-results-list th a").not(".ccm-search-add-column").click(function() {
+				
+				//ccm_deactivateSearchResults(searchType);
+				I.element.load($(this).attr('href'), false, function() {
+					//ccm_activateSearchResults(searchType);
+				});
+				return false;
+			});
 			
+			//Setup ajax paging
+			this.element.find("div.ccm-pagination a").click(function() {
+				//ccm_deactivateSearchResults(searchType);
+				I.element.load($(this).attr('href'), false, function() {
+					//ccm_activateSearchResults(searchType);
+					$("div.ccm-dialog-content").attr('scrollTop', 0);
+				});
+				return false;
+			});
 			
+			//Setup column config
+			this.element.find("a.ccm-search-add-column").click(function(){
+				var params = {
+					searchInstance:I.options.searchInstance,
+					columns:$('input[name=columns_'+I.options.searchInstance+']').val(),
+					persistantBID: $('input[name=persistantBID_'+I.options.searchInstance+']').val()
+				};
+				jQuery.fn.dialog.open({
+					width: 550,
+					height: 350,
+					modal: false,
+					href: $(this).attr('href')+"&"+$.param(params),
+					title: ccmi18n.customizeSearch				
+				});
+				return false;
+				
+			});
+		},
+		
+		getFormWidget:function(){
+			return $("#"+this.options.searchInstance+"_form").data("ccm_AttributeKeyCategoryItemSearchForm");
 		},
 		
 		getItems:function(ifSelected){
@@ -176,42 +305,55 @@ ccm_deleteAndRefeshSearch = function(URIComponents, searchInstance) {
 		},
 		
 		itemActions:{
-			select:function(action, $item, widget){
-				$item.find("input[name=ID]").prop("checked", true);
-				
-				widget.multipleActionsToggle();
+			select:function(data){
+				data.$item.find("input[name=ID]").prop("checked", true);				
+				data.widget.multipleActionsToggle();
 			},
-			unselect:function(action, $item, widget){
-				$item.find("input[name=ID]").prop("checked", false);
-				widget.multipleActionsToggle();
+			unselect:function(data){
+				data.$item.find("input[name=ID]").prop("checked", false);
+				data.widget.multipleActionsToggle();
 			},
-			choose:function(action, $item, widget){
+			choose:function(data){
 				console.log(arguments);
 			}
 		},
 		
 		execItemAction:function(key, $item, extraArgs){
-			var I = this;
-			//Loop through, in case multiple items are passed
+			var I = this,
+				data = {key:key, $item:$item, widget:I};
+			
+			if($.isArray(extraArgs)){
+				//data = data.push.apply(data, extraArgs);
+				$.extend(data, extraArgs);
+			}
+			
+			//Dispatch an even for actions to multiple items. 
+			if($item.length > 1){
+				var multiResult = I._trigger.apply(I, [key+"items", null, data]);
+				//If the event is stopped by one of the handlers, we stop here and do not execute the action on multiple items.
+				if(multiResult === false){
+					return;	
+				}
+			}
+			
+			//Execute the action
 			$item.each(function(i, item){
 				var $item = $(item),
-					data = [key, $item, I],
 					result = null;
 				
-				if($.isArray(extraArgs)){
-					data = data.push.apply(data, extraArgs);
-				}
+				//copy the data object
+				data = $.extend(true, {}, data);
 				
 				if($.isFunction(I.itemActions[key])){
-					result = I.itemActions[key].apply($item.get(0), data);
+					result = I.itemActions[key].apply($item.get(0), [data]);
 				}
 				
 				if(result !== false){
 					var args = [key+"item", null, data];
-					//args.splice(0,0,key+"item");
 					I._trigger.apply(I, args);
 				}
-			});			
+			});	
+					
 		},
 		
 		bind:function(){
@@ -276,8 +418,18 @@ ccm_deleteAndRefeshSearch = function(URIComponents, searchInstance) {
 			});
 			
 			
-			$("#"+this.options.selectItemParameters.searchInstance).live(ccm_AttributeKeyCategoryItemSearchResults.widgetEventPrefix+"chooseitem", function(evt, action, $item, widget){
-				I.addItem($item);
+			$("#"+this.options.selectItemParameters.searchInstance+"_results").live(ccm_AttributeKeyCategoryItemSearchResults.widgetEventPrefix+"chooseitems", function(evt, data){
+				data.$item.each(function(){
+					I.addItem($(this));
+				});
+				jQuery.fn.dialog.closeTop();	
+				return false;
+				
+			});
+			
+			$("#"+this.options.selectItemParameters.searchInstance+"_results").live(ccm_AttributeKeyCategoryItemSearchResults.widgetEventPrefix+"chooseitem", function(evt, data){
+				I.addItem(data.$item);
+				jQuery.fn.dialog.closeTop();	
 			});
 			
 			
@@ -328,36 +480,19 @@ ccm_deleteAndRefeshSearch = function(URIComponents, searchInstance) {
 		},
 		
 		itemActions:{
-			remove:function(action, $item, widget){
-				$item.fadeOut(300, function(){
-					$item.remove();
-					widget.restripe();
+			remove:function(data){
+				data.$item.fadeOut(300, function(){
+					data.$item.remove();
+					data.widget.restripe();
 				});				
 			}
 		},
 		
-		execItemAction:function(key, $item, extraArgs){
-			var I = this;
-			//Loop through, in case multiple items are passed
-			$item.each(function(i, item){
-				var $item = $(item),
-					data = [key, $item, I],
-					result = null;
-				
-				if($.isArray(extraArgs)){
-					data = data.push.apply(data, extraArgs);
-				}
-				
-				if($.isFunction(I.itemActions[key])){
-					result = I.itemActions[key].apply($item.get(0), data);
-				}
-				
-				if(result !== false){
-					var args = [key+"item", null, data];
-					I._trigger.apply(I, args);
-				}
-			});			
-		},
+		
+		
+		execItemAction:ccm_AttributeKeyCategoryItemSearchResults.execItemAction,
+		
+		
 		
 		_delegateItemActions:function($context, selector, eventName, $item){
 			var I = this;
@@ -386,12 +521,8 @@ ccm_deleteAndRefeshSearch = function(URIComponents, searchInstance) {
 				
 			dialogOpts.href += "?"+$.param(parameters);
 			
-			dialogOpts.onOpen = function(){
-				
-			};
-			dialogOpts.onClose = function(){
-				
-			};
+			dialogOpts.onOpen = function(){ };
+			dialogOpts.onClose = function(){ };
 			
 			jQuery.fn.dialog.open(dialogOpts);
 			
@@ -404,10 +535,8 @@ ccm_deleteAndRefeshSearch = function(URIComponents, searchInstance) {
 			this._trigger("restripe");
 		},
 		
-		bind:function(){
-			arguments[0] = (this.widgetEventPrefix+arguments[0]).toLowerCase();
-			this.element.bind.apply(this.element, arguments);
-		}
+		
+		bind: ccm_AttributeKeyCategoryItemSearchResults.bind
 		
 		
 	};

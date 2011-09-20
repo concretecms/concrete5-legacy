@@ -136,9 +136,7 @@ if($u->isRegistered()) {
 			$("#ccm-<?=$searchInstance?>-advanced-search input[name=ccm_order_dir]").val(sortDirection);
 			$("#ccm-<?=$searchInstance?>-advanced-search input[name=ccm_order_by]").val(sortCol);
 			jQuery.fn.dialog.closeTop();
-			$("#ccm-<?=$searchInstance?>-advanced-search").ajaxSubmit(function(resp) {
-				ccm_parseAdvancedSearchResponse(resp, '<?=$searchInstance?>');
-			});
+			$("#<?=$searchInstance?>_form").submit();
 		});
 		return false;
 	}

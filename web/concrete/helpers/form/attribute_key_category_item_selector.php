@@ -14,11 +14,28 @@
 defined('C5_EXECUTE') or die("Access Denied.");
 class FormAttributeKeyCategoryItemSelectorHelper {
 	
-	public function selectItems($akCategoryHandle, $fieldName, $values, $akID, $searchInstance = false) {
-		$baseID = uniqid("ccmAttributeKeyCategoryItemSelect$akID_");
+	
+	public function __construct(){
+		$this->view = View::getInstance();			
+		$this->html = Loader::helper('html');
+	}
+	
+	public function addHeaderItems($to=NULL){
+		if(is_null($to)){
+			$to = $this->view;
+		}
+		$to->addHeaderItem($this->html->javascript('jquery.ui.js'));
+		$to->addHeaderItem($this->html->javascript('ccm.attributekeycategory.js'));
+	}
+	
+	public function selectItems($akCategoryHandle, $fieldName, $values=array(), $wrapAttrs=array(), $searchInstance=NULL, $jsInit=TRUE, $jsInitArgs=array()) {
+		if(is_null($searchInstance)){
+			$searchInstance = uniqid($akCategoryHandle.'_selector');
+		}
+		$baseID = isset($wrapAttrs['id']) ? $wrapAttrs['id'] : $searchInstance;
 		$itemActionsCell = '<td class="item-actions"><a class="remove" href="javascript:;"><img width="16" height="16" src="' . ASSETS_URL_IMAGES . '/icons/close.png"></a>%input%</td>';
 		$fieldName = $fieldName.'[]';
-		$html = '<div id="'.$baseID.'"><input type="hidden" name="'.$fieldName.'" value="" />';
+		
 		$html .= '<table width="100%" id="'.$baseID.'_table" class="ccm-results-list" cellspacing="0" cellpadding="0" border="0"><thead>'; 
 		Loader::model('attribute_key_category_item_list');
 		$columns = AttributeKeyCategoryColumnSet::getCurrent($akCategoryHandle);
@@ -30,7 +47,7 @@ class FormAttributeKeyCategoryItemSelectorHelper {
 		if(!empty($values)) {
 			foreach($values as $akci) {
 				if($akci) {
-					$html .= '<tr class="" id="ccmAttributeKeyCategoryItemSelect'.$akID.'_'.$akci->ID.'">';
+					$html .= '<tr class="ccm-list-record" id="ccmAttributeKeyCategoryItemSelect'.$akID.'_'.$akci->ID.'">';
 					if(is_array($columns->getColumns())) foreach($columns->getColumns() as $col) {
 						$html .= '<td>'.$col->getColumnValue($akci).'</td>';
 					}
@@ -40,28 +57,48 @@ class FormAttributeKeyCategoryItemSelectorHelper {
 		} else {
 			$html .= '<tr class="ccm-attribute-key-category-selected-item-none"><td colspan="3">' . t('No items selected.') . '</td></tr>';
 		}
-		$html .= '</tbody></table></div>';
+		$html .= '</tbody></table>';
 
-		
-		$html .= '
-		<script type="text/javascript">
-		
-			$(function(){
-				$("#'.$baseID.'").ccm_attributeKeyCategoryItemSelector({
-					fieldName:"'.$fieldName.'",
-					selectItemDialog:{
-						title:"'. t('Choose Items') .'"
-					},
-					selectItemParameters:{
-						akCategoryHandle:"'.$akCategoryHandle.'",
-						akID:"'.$akID.'",
-						searchInstance:"'.$baseID.'"
-					},
-					itemActionsCell:"'.addslashes(str_replace('%input%', '', $itemActionsCell)).'"
-				});
-			});
+		if($jsInit){
 			
-		</script>';	
+			//Setup the js init args
+			$jsInitArgs['fieldName'] = $fieldName;
+			$jsInitArgs['selectItemDialog'] = array('title'=>t('Choose Items'));
+			$jsInitArgs['selectItemParameters'] = array('akCategoryHandle'=>$akCategoryHandle);
+			$jsInitArgs['itemActionsCell'] = str_replace('%input%', '', $itemActionsCell);
+			
+			$json = Loader::helper('json');
+			$jsInitArgsStr = $json->encode($jsInitArgs);
+			
+			$html .= '
+			<script type="text/javascript">
+			
+				$(function(){
+					$("#'.$baseID.'").ccm_attributeKeyCategoryItemSelector('.$jsInitArgsStr.');
+				});
+				
+			</script>';	
+		
+		}
+		
+		//Add the wrapper
+		$wrapAttrDefaults = $finalAttrs = array(
+			'id'=>$baseID,
+			'class'=>'ccm-attribute-key-category-item-selector'
+		);
+		if(is_array($wrapAttrs)){
+			$finalAttrs = array_merge($wrapAttrDefaults, $wrapAttrs);
+		}
+		
+		foreach($finalAttrs as $attr=>$val){
+			if(($attr == 'class') && strpos($val, $wrapAttrDefaults[$attr])===FALSE){
+				$val .= $wrapAttrDefArr[$attr];
+			}
+			$wrapAttrStr .= "$attr=\"$val\" ";
+		}
+		
+		$html = "<div $wrapAttrStr>$html</div>";
+		
 		return $html;
 	}
 	

@@ -3,6 +3,8 @@
 $form = Loader::helper('form');
 Loader::model('attribute_key_category_item');
 
+$searchInstance = $_REQUEST['searchInstance'];
+
 $attribs = AttributeKey::getList($_REQUEST['akCategoryHandle']);
 
 $newObjects = array();
@@ -140,4 +142,4 @@ if (!isset($_REQUEST['reload'])) { ?>
 <?php  } ?>
 <?php 
 $ih = Loader::helper("concrete/interface");
-print $ih->button_js(t('Close'), 'ccm_closeModalRefeshSearch(\''.$_REQUEST['searchInstance'].'\')', 'right'); ?>
+print $ih->button_js(t('Close'), (!empty($searchInstance) ? '$(\'#'.$searchInstance.'_form\').submit();' : '').'jQuery.fn.dialog.closeTop()', 'right'); ?>

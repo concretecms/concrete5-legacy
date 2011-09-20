@@ -125,7 +125,7 @@ class AttributeKeyCategoryItemsAttributeTypeController extends NumberAttributeTy
 		if (isset($_REQUEST['searchInstance'])) {
 			$searchInstance = $_REQUEST['searchInstance'];
 		}
-		$this->addHeaderItem(Loader::helper('html')->javascript('attribute_key_category.ui.js'));
+		$this->addHeaderItem(Loader::helper('html')->javascript('ccm.attributekeycategory.js'));
 		$akcis = Loader::helper('form/attribute_key_category_item_selector');		
 		if (is_object($this->attributeValue)) {
 			$value = $this->getAttributeValue()->getValue();
