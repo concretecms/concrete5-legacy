@@ -123,7 +123,7 @@ $form = Loader::helper('form');
 						</optgroup>
 					<?php } ?>
 					</select>
-					<input type="hidden" value="" class="ccm-<?php echo $searchInstance?>-selected-field" name="selectedSearchField[]" />
+					<input type="hidden" value="" class="ccm-selected-search-field" name="selectedSearchField[]" />
 					</td>
 					<td width="100%" valign="top" class="ccm-selected-field-content">
 					<?php echo t('Select Search Field.')?>
@@ -175,7 +175,7 @@ $form = Loader::helper('form');
 							</optgroup>
 						<?php } ?>
 						</select>
-						<input type="hidden" value="<?php echo $key?>" class="<?php echo $baseID ?>-selected-field" name="selectedSearchField[]" />
+						<input type="hidden" value="<?php echo $key?>" class="ccm-selected-search-field" name="selectedSearchField[]" />
 						</td>
 						<td width="100%" valign="top" class="ccm-selected-field-content">
 						<span class="ccm-search-option" search-field="<?php echo $key?>">

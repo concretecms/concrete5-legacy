@@ -151,11 +151,26 @@ ccm_deleteAndRefeshSearch = function(URIComponents, searchInstance) {
 			$fWrap.delegate(".ccm-input-select", "change", function(evt){
 				var $select = $(this),
 					$fTypeBase = $fTypeBases.find("[search-field='"+$select.val()+"']"),
-					$fContent = $select.closest("table").find("td.ccm-selected-field-content").empty();
-				$fTypeBase.clone().appendTo($fContent).fadeIn();
+					$fContent = $select.closest("table").find("td.ccm-selected-field-content").empty(),
+					$field = $fTypeBase.clone().appendTo($fContent).fadeIn();
+				
+				//Set the hidden field
+				$select.next(".ccm-selected-search-field").val($select.val());
+				
+				//Uniquify element ids
+				$field.find("[id]").each(function(){
+					this.id += "_"+$fWrap.find(".ccm-search-field").length;
+				});
+				
+				//Setup date fields - this should really be done by whatever generates the fields
+				$field.find(".ccm-input-date-wrapper input").datepicker({
+					showAnim: 'fadeIn'
+				});
+				
 				console.log($fTypeBase, $fTypeBases);
 			});
-
+			
+			
 		},
 		
 		_beforeSearchSubmit:function(){
