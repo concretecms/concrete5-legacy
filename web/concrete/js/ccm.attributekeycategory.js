@@ -203,8 +203,14 @@ ccm_deleteAndRefeshSearch = function(URIComponents, searchInstance) {
 		getRelEl:function(sel){
 			return $(this.getRelElId(sel));
 		},
+		
 		getRelElId:function(sel){
 			return "#"+this.element.attr("id")+sel;
+		},
+		
+		bind:function(){
+			arguments[0] = (this.widgetEventPrefix+arguments[0]).toLowerCase();
+			this.element.bind.apply(this.element, arguments);
 		}
 	};
 	
@@ -223,6 +229,15 @@ ccm_deleteAndRefeshSearch = function(URIComponents, searchInstance) {
 			var I = this,
 				id = this.element.attr("id");
 			
+			this._initItems();	
+			this._initSorting();		
+			this._initPaging();
+			this._initColumnConfig();			
+			
+		},
+		
+		_initItems:function(){
+			var I = this;
 			//Bind to the checkboxes
 			this.element.delegate(this.options.itemSelector +" > td > input[name=ID]", "change", function(evt){
 				I.execItemAction(this.checked ? "select" : "unselect", $(this).closest("tr"));
@@ -236,12 +251,12 @@ ccm_deleteAndRefeshSearch = function(URIComponents, searchInstance) {
 			});
 			
 			//Bind to the "all" checkbox
-			this.element.delegate("#"+id+"-list-cb-all", "change", function(){				
+			this.getRelEl("-list-cb-all").bind("change", function(){				
 				I.selectAllToggle(this.checked);
 			});
 			
 			//Bind to the multiple operations checkbox
-			this.element.delegate("#"+id+"-list-multiple-operations", "change", function(){
+			this.getRelEl("-list-multiple-operations").bind("change", function(){
 				var action = this.value;
 				if($.trim(this.value).length){
 					I.execItemAction(this.value, I.getItems(true));
@@ -249,26 +264,33 @@ ccm_deleteAndRefeshSearch = function(URIComponents, searchInstance) {
 				
 			});
 			
+		},
+		
+		_initSorting:function(){
+			var I = this;
 			//Setup ajax sorting
 			this.element.find(".ccm-results-list th a").not(".ccm-search-add-column").click(function() {
-				
-				//ccm_deactivateSearchResults(searchType);
-				I.element.load($(this).attr('href'), false, function() {
-					//ccm_activateSearchResults(searchType);
+				$.get($(this).attr("href"), function(data){
+					I.element.replaceWith(data);
+					$("div.ccm-dialog-content").attr('scrollTop', 0);
 				});
 				return false;
-			});
-			
+			});			
+		},
+		
+		_initPaging:function(){
 			//Setup ajax paging
 			this.element.find("div.ccm-pagination a").click(function() {
-				//ccm_deactivateSearchResults(searchType);
-				I.element.load($(this).attr('href'), false, function() {
-					//ccm_activateSearchResults(searchType);
+				$.get($(this).attr("href"), function(data){
+					I.element.replaceWith(data);
 					$("div.ccm-dialog-content").attr('scrollTop', 0);
 				});
 				return false;
 			});
-			
+		},
+		
+		_initColumnConfig:function(){
+			var I = this;
 			//Setup column config
 			this.element.find("a.ccm-search-add-column").click(function(){
 				var params = {
@@ -286,7 +308,9 @@ ccm_deleteAndRefeshSearch = function(URIComponents, searchInstance) {
 				return false;
 				
 			});
+			
 		},
+		
 		
 		getFormWidget:function(){
 			return $("#"+this.options.searchInstance+"_form").data("ccm_AttributeKeyCategoryItemSearchForm");
@@ -371,10 +395,9 @@ ccm_deleteAndRefeshSearch = function(URIComponents, searchInstance) {
 					
 		},
 		
-		bind:function(){
-			arguments[0] = (this.widgetEventPrefix+arguments[0]).toLowerCase();
-			this.element.bind.apply(this.element, arguments);
-		}
+		bind:ccm_AttributeKeyCategoryItemSearchForm.bind,		
+		getRelEl:ccm_AttributeKeyCategoryItemSearchForm.getRelEl,
+		getRelElId:ccm_AttributeKeyCategoryItemSearchForm.getRelElId
 	};
 	
 	//Register the ccm_AttributeKeyCategoryItemSearchResults widget
@@ -551,8 +574,9 @@ ccm_deleteAndRefeshSearch = function(URIComponents, searchInstance) {
 		},
 		
 		
-		bind: ccm_AttributeKeyCategoryItemSearchResults.bind
-		
+		bind:ccm_AttributeKeyCategoryItemSearchForm.bind,		
+		getRelEl:ccm_AttributeKeyCategoryItemSearchForm.getRelEl,
+		getRelElId:ccm_AttributeKeyCategoryItemSearchForm.getRelElId
 		
 	};
 	
