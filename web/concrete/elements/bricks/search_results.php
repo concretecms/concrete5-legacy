@@ -12,10 +12,7 @@ $u = new User();
 
 <div id="<?php echo $baseID ?>" class="ccm-list-wrapper ccm-attribute-key-category-search">
 
-<?php try {
-	
-	
-	
+<?php try {	
 
 
 Loader::model('attribute_key_category_item_list');
@@ -61,6 +58,25 @@ foreach($fieldAttributes as $ak) {
 if(!$sortBy && is_object($columns)) $sortBy = $columns->getDefaultSortColumn();
 $cnt = Loader::controller('/dashboard/bricks/search');
 $newObjectList = $cnt->getRequestedSearchResults($akCategoryHandle, $sortBy);
+
+//print_r($newObjectList->getSearchRequest());
+//$newObjectList->debug(TRUE);
+
+//Make sure we're sorting correctly
+if(isset($_REQUEST['ccm_order_by'])){
+	$sortBy = $akcdca->getColumnByKey($_REQUEST['ccm_order_by']);
+}
+
+if(isset($_REQUEST['ccm_order_dir'])){
+	$sortDir =$_REQUEST['ccm_order_dir'];
+}else{
+	$sortDir = $sortBy->getColumnDefaultSortDirection();	
+}
+//Not sure why the DatabaseItemList we get from the controller isn't already sorted correctly. Seems to work fine for Collection, User, and File.
+//TODO: Need to figure out why the 
+$newObjectList->sortBy($sortBy->getColumnKey(), $sortDir);
+
+
 
 $newObjects = $newObjectList->getPage();
 
