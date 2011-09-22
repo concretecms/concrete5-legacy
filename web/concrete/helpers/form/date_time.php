@@ -1,4 +1,4 @@
-<?
+<?php 
 /**
  * @package Helpers
  * @category Concrete
@@ -138,7 +138,7 @@ class FormDateTimeHelper {
 		}
 		$html .= '</span>';
 		if ($calendarAutoStart) { 
-			$html .= '<script type="text/javascript">$(function() { $("#' . $id . '_dt").datepicker({ changeYear: true, showAnim: \'fadeIn\' }); });</script>';
+			$html .= '<script type="text/javascript">$(function() { $("#' . $id . '_dt").datepicker({ changeYear: true, showAnim: \'fadeIn\', dateFormat:\''.DATE_APP_DATE_PICKER.'\' }); });</script>';
 		}
 		// first we add a calendar input
 		
@@ -184,22 +184,23 @@ EOS;
 		if (isset($_REQUEST[$field])) {
 			$dt = $_REQUEST[$field];
 		} else if ($value != "") {
-			$dt = date('m/d/Y', strtotime($value));
+			$dt = date(DATE_APP_GENERIC_MDY, strtotime($value));
 		} else if ($value === '') {
 			$dt = '';
 		} else {
-			$dt = date('m/d/Y');
+			$dt = date(DATE_APP_GENERIC_MDY);
 		}
 		//$id = preg_replace("/[^0-9A-Za-z-]/", "_", $prefix);
 		$html = '';
 		$html .= '<span class="ccm-input-date-wrapper" id="' . $id . '_dw"><input id="' . $id . '" name="' . $field . '" class="ccm-input-date" value="' . $dt . '"  /></span>';
 
 		if ($calendarAutoStart) { 
-			$html .= '<script type="text/javascript">$(function() { $("#' . $id . '").datepicker({ changeYear: true, showAnim: \'fadeIn\' }); });</script>';
+			$html .= '<script type="text/javascript">$(function() { $("#' . $id . '").datepicker({ changeYear: true, showAnim: \'fadeIn\', dateFormat:\''.DATE_APP_DATE_PICKER.'\' }); });</script>';
 		}
 		return $html;
 	
 	}	
 
 }
+
 

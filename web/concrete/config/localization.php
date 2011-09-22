@@ -55,6 +55,10 @@ if (!defined('DATE_APP_GENERIC_TS')) {
 	define('DATE_APP_GENERIC_TS', t('g:i:s A'));
 }
 
+if (!defined('DATE_APP_DATE_PICKER')) {
+	define('DATE_APP_DATE_PICKER', 'mm-dd-yy');
+}
+
 if (!defined('DATE_APP_FILENAME')) {
 	define('DATE_APP_FILENAME', t('d-m-Y_H:i_')); // used when dates are used to start filenames
 }
