@@ -135,7 +135,7 @@ class SinglePage extends Page {
 		$pages = explode('/', $cPath);
 		
 		// instantiate the home collection so we have someplace to add these to
-		$parent = Page::getByID(1);
+		$parent = Page::getByID(HOME_CID);
 		
 		// now we iterate through the pages  to ensure that they exist in the system before adding the new guy
 		
@@ -175,7 +175,7 @@ class SinglePage extends Page {
 			
 			$pathPrefix = $currentPath . '/';
 		}
-		
+		Events::fire('on_single_page_add', $newC);
 		return $newC;
 		
 	}
