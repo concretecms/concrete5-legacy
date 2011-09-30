@@ -6,7 +6,7 @@
 <? 
 
 if (count($languages) == 0) { ?>
-	<?=t("You don't have any interface languages installed. You must run concrete5 in English.");?>
+	You don't have any interface languages installed. You must run concrete5 in English.
 <? } else { ?>
 	
 	<form method="post" action="<?=$this->action('save_interface_language')?>">
