@@ -28,22 +28,21 @@ class FormAttributeKeyCategoryItemSelectorHelper {
 		$to->addHeaderItem($this->html->javascript('ccm.attributekeycategory.js'));
 	}
 	
-	public function selectItems($akCategoryHandle, $fieldName, $values=array(), $wrapAttrs=array(), $searchInstance=NULL, $jsInit=TRUE, $jsInitArgs=array()) {
+	public function selectItems($akCategoryHandle, $fieldName, $values=array(), $max=0, $searchInstance=NULL, $wrapAttrs=array(), $jsInit=TRUE, $jsInitArgs=array()) {
 		if(is_null($searchInstance)){
-			$searchInstance = uniqid($akCategoryHandle.'_selector');
+			$searchInstance = $akCategoryHandle.'_selector';
 		}
-		$baseID = isset($wrapAttrs['id']) ? $wrapAttrs['id'] : $searchInstance;
+		$baseId = isset($wrapAttrs['id']) ? $wrapAttrs['id'] : uniqid($searchInstance);
 		$itemActionsCell = '<td class="item-actions"><a class="remove" href="javascript:;"><img width="16" height="16" src="' . ASSETS_URL_IMAGES . '/icons/close.png"></a>%input%</td>';
-		$fieldName = $fieldName.'[]';
 		
-		$html .= '<table width="100%" id="'.$baseID.'_table" class="ccm-results-list" cellspacing="0" cellpadding="0" border="0"><thead>'; 
+		$html .= '<table width="100%" id="'.$baseId.'_table" class="ccm-results-list" cellspacing="0" cellpadding="0" border="0"><thead>'; 
 		Loader::model('attribute_key_category_item_list');
 		$columns = AttributeKeyCategoryColumnSet::getCurrent($akCategoryHandle);
 		if(is_array($columns->getColumns())) foreach($columns->getColumns() as $col) {
 			$html .= '<th>'.$col->getColumnName().'</th>';
 		}
-		$html .= '<th width="30px" align="right"><a class="ccm-attribute-key-category-select-item" href="javascript:;"><img src="' . ASSETS_URL_IMAGES . '/icons/add.png" width="16" height="16" /></a></th>';
-		$html .= '</tr></thead><tbody id="' . $baseID . '_body" >';
+		$html .= '<th width="30px" align="right"><a class="ccm-akc-select-item" href="javascript:;" title="'.t('Add Item(s)').($max > 0 && !is_infinite($max) ? ' : '.t('%s maximum', $max) : '').'"><img src="' . ASSETS_URL_IMAGES . '/icons/add.png" width="16" height="16" /></a></th>';
+		$html .= '</tr></thead><tbody id="' . $baseId . '_body" >';
 		if(!empty($values)) {
 			foreach($values as $akci) {
 				if($akci) {
@@ -55,18 +54,21 @@ class FormAttributeKeyCategoryItemSelectorHelper {
 				}
 			}
 		} else {
-			$html .= '<tr class="ccm-attribute-key-category-selected-item-none"><td colspan="3">' . t('No items selected.') . '</td></tr>';
+			$html .= '<tr class="ccm-akc-selected-item-none"><td colspan="3">' . t('No items selected.') . '</td></tr>';
 		}
 		$html .= '</tbody></table>';
-
+		
+		
 		if($jsInit){
 			
 			//Setup the js init args
+			$jsInitArgs['max'] = $max;
+			$jsInitArgs['baseId'] = $baseId;
+			$jsInitArgs['akcHandle'] = $akCategoryHandle;
 			$jsInitArgs['fieldName'] = $fieldName;
 			$jsInitArgs['selectItemDialog'] = array('title'=>t('Choose Items'));
-			$jsInitArgs['selectItemParameters'] = array('akCategoryHandle'=>$akCategoryHandle);
 			$jsInitArgs['itemActionsCell'] = str_replace('%input%', '', $itemActionsCell);
-			
+			$jsInitArgs['itemSearchParams'] = array('searchInstance'=>$searchInstance);
 			$json = Loader::helper('json');
 			$jsInitArgsStr = $json->encode($jsInitArgs);
 			
@@ -74,7 +76,7 @@ class FormAttributeKeyCategoryItemSelectorHelper {
 			<script type="text/javascript">
 			
 				$(function(){
-					$("#'.$baseID.'").ccm_attributeKeyCategoryItemSelector('.$jsInitArgsStr.');
+					$("#'.$baseId.'").ccm_akcItemSelector('.$jsInitArgsStr.');
 				});
 				
 			</script>';	
@@ -83,8 +85,8 @@ class FormAttributeKeyCategoryItemSelectorHelper {
 		
 		//Add the wrapper
 		$wrapAttrDefaults = $finalAttrs = array(
-			'id'=>$baseID,
-			'class'=>'ccm-attribute-key-category-item-selector'
+			'id'=>$baseId,
+			'class'=>'ccm-akc-item-selector'
 		);
 		if(is_array($wrapAttrs)){
 			$finalAttrs = array_merge($wrapAttrDefaults, $wrapAttrs);
@@ -94,7 +96,7 @@ class FormAttributeKeyCategoryItemSelectorHelper {
 			if(($attr == 'class') && strpos($val, $wrapAttrDefaults[$attr])===FALSE){
 				$val .= $wrapAttrDefArr[$attr];
 			}
-			$wrapAttrStr .= "$attr=\"$val\" ";
+			$wrapAttrStr .= $attr.'="'.addslashes($val).'" ';
 		}
 		
 		$html = "<div $wrapAttrStr>$html</div>";

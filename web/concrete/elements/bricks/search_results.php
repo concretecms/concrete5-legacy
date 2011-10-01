@@ -1,16 +1,19 @@
 <?php  defined('C5_EXECUTE') or die(_("Access Denied.")); 
 if(empty($akCategoryHandle)) $akCategoryHandle = $_REQUEST['akCategoryHandle'];
-if(empty($searchInstance)) $searchInstance = uniqid($akCategoryHandle);
-if(isset($_REQUEST['searchInstance'])) $searchInstance = $_REQUEST['searchInstance'];
+if(empty($searchInstance)) $searchInstance = $akCategoryHandle;
+if(empty($baseId)) $baseId = $searchInstance;
 
-$baseID = $searchInstance.'_results';
+if(isset($_REQUEST['searchInstance'])) $searchInstance = $_REQUEST['searchInstance'];
+if(isset($_REQUEST['baseId'])) $baseId = $_REQUEST['baseId'];
+
+$wrapId = $baseId.'_results';
 
 $u = new User();
 
 
 ?>
 
-<div id="<?php echo $baseID ?>" class="ccm-list-wrapper ccm-attribute-key-category-search">
+<div id="<?php echo $wrapId ?>" class="ccm-list-wrapper ccm-akc-search">
 
 <?php try {	
 
@@ -111,7 +114,7 @@ $pagination = $newObjectList->getPagination();
 				<td width="100%"><?php echo $newObjectList->displaySummary();?></td>
 				<?php if($canAdmin) { ?>
 				<td style="white-space: nowrap"><?php echo t('With Selected: ')?>&nbsp;</td>
-				<td align="right"><select id="<?php echo $baseID ?>-list-multiple-operations" data-akCategoryHandle="<?php echo $akCategoryHandle; ?>" disabled>
+				<td align="right"><select id="<?php echo $wrapId ?>-list-multiple-operations" data-akCategoryHandle="<?php echo $akCategoryHandle; ?>" disabled>
 						<option value="">**</option>
 						<?php if($mode == 'admin') {?>
 						<option value="properties"><?php echo t('Edit Properties')?></option>
@@ -129,10 +132,10 @@ $pagination = $newObjectList->getPagination();
 		$keywords = $_REQUEST['keywords'];
 		$bu = REL_DIR_FILES_TOOLS_REQUIRED . '/bricks/search_results';
 		?>
-		<table border="0" cellspacing="0" cellpadding="0" id="<?php echo $baseID ?>-list" class="ccm-results-list">
+		<table border="0" cellspacing="0" cellpadding="0" id="<?php echo $wrapId ?>-list" class="ccm-results-list">
 			<tr>
 				<th width="20px"<?php if(!$canAdmin) { ?> style="display:none"<?php } ?>>
-					<input id="<?php echo $baseID ?>-list-cb-all" type="checkbox" />
+					<input id="<?php echo $wrapId ?>-list-cb-all" type="checkbox" />
 				</th>
 		<?php
 			if(is_array($columns->getColumns())) foreach($columns->getColumns() as $col) { ?>
@@ -179,7 +182,7 @@ $pagination = $newObjectList->getPagination();
 	
 				?>
 			<tr class="ccm-list-record <?php echo $striped ?>"<?php if($fieldName) {?> data-fieldName="<?php echo $fieldName ?>"<?php } ?>>
-				<td class="<?php echo $baseID ?>-list-cb" style="<?php if(!$canAdmin) { ?> display:none;<?php } ?>">
+				<td class="<?php echo $wrapId ?>-list-cb" style="<?php if(!$canAdmin) { ?> display:none;<?php } ?>">
 				<?php foreach($akcdca->getColumns() as $aCol) { ?>
 					<input type="hidden" name="<?php echo $aCol->getColumnKey()?>" value="<?php echo urlencode($aCol->getColumnValue($item))?>" />
 				<?php } ?>
@@ -295,15 +298,16 @@ $pagination = $newObjectList->getPagination();
 		//Prep the jsInitArgs
 		$json = Loader::helper('json');
 		
+		$jsInitArgs['akcHandle'] = $akCategoryHandle;
 		$jsInitArgs['mode'] = $mode;
 		$jsInitArgs['searchInstance'] = $searchInstance;
-		
+		$jsInitArgs['baseId'] = $baseId;
 		$jsInitArgsStr = $json->encode($jsInitArgs);
 	?>
     
     <script type="text/javascript">
 		$(function(){
-			$("#<?php echo $baseID ?>").ccm_AttributeKeyCategoryItemSearchResults(<?php echo $jsInitArgsStr ?>);			
+			$("#<?php echo $wrapId ?>").ccm_akcItemSearchResults(<?php echo $jsInitArgsStr ?>);			
 		});
 	</script>
 

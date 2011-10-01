@@ -5,9 +5,14 @@ if($permission) {
 <h1><?php if(!$rs['url_insert_hidden']){?><a class="ccm-dashboard-header-option" href="<?php echo $this->url('/dashboard/bricks/insert/', $akCategoryHandle)?>">Add Item</a><?php } ?><span><?php echo $txt->unhandle($akCategoryHandle).t(' Search')?></span></h1>
 <div class="ccm-dashboard-inner">
 	<?php
-		$searchInstance = uniqid($akCategoryHandle.'_search');
+		$searchInstance = $akCategoryHandle.'_search';
         if (isset($_REQUEST['searchInstance'])) {
 			$searchInstance = $_REQUEST['searchInstance'];
+		}
+		
+		$baseId = uniqid($searchInstance);
+		if(isset($_REQUEST['baseId'])){
+			$baseId = $_REQUEST['baseId'];
 		}
 		
 		if (!isset($mode)) {
@@ -15,9 +20,9 @@ if($permission) {
 		}
 	?>
     <? if (!isset($_REQUEST['refreshDialog'])) { ?> 
-    <div id="ccm-<?=$searchInstance?>-overlay-wrapper">
+    <div id="<?php echo $baseId ?>-overlay-wrapper">
     <? } ?>
-        <div id="ccm-<?=$searchInstance?>-search-overlay">
+        <div id="<?php echo $baseId ?>-search-overlay">
             <table id="ccm-search-form-table" >
                 <tr>
                     <td valign="top" class="ccm-search-form-advanced-col">
@@ -25,6 +30,7 @@ if($permission) {
                             Loader::element(
                                 'bricks/search_form_advanced',
                                 array(
+									'baseId' 			=> $baseId,
                                     'searchInstance'	=> $searchInstance,
                                     'akCategoryHandle'	=> $akCategoryHandle
                                 )
@@ -37,6 +43,7 @@ if($permission) {
 							Loader::element(
 								'bricks/search_results', 
 								array(
+									'baseId' 			=> $baseId,
 									'searchInstance'	=> $searchInstance,
 									'akCategoryHandle'	=> $akCategoryHandle
 								)
@@ -58,55 +65,14 @@ if($permission) {
 						$(function(){
 							
 							var searchInstance = "<?php echo $searchInstance ?>",
-								akCategoryHandle = "<?php echo $akCategoryHandle ?>";
-								resultsSelector = "#"+searchInstance+"_results";
-							
-							$(resultsSelector).live("ccm_attributekeycategoryitemsearchresults_propertiesitem ccm_attributekeycategoryitemsearchresults_propertiesitems", function(evt, data){
+								akCategoryHandle = "<?php echo $akCategoryHandle ?>",
+								baseId = "<?php echo $baseId ?>",
+								resultsSelector = "#"+baseId+"_results";
 						
-								var params = {
-										searchInstance:searchInstance,
-										akCategoryHandle:akCategoryHandle
-									},
-									ids = data.$item.find("input[name=ID]").map(function(){
-										return this.value;
-									}).get();
-								params["newObjectID[]"] = ids;
-								//console.log($.param(params));
-						
-								jQuery.fn.dialog.open({
-									width: 630,
-									height: 450,
-									modal: true,
-									href: CCM_TOOLS_PATH +'/bricks/bulk_properties?' + $.param(params),
-									title: ccmi18n.properties
-								});	
-								
-								return false;
-							});
 							
 							
-							$(resultsSelector).live("ccm_attributekeycategoryitemsearchresults_deleteitem ccm_attributekeycategoryitemsearchresults_deleteitems", function(evt, data){								
-								var params = {
-										searchInstance:searchInstance,
-										akCategoryHandle:akCategoryHandle
-									},
-									ids = data.$item.find("input[name=ID]").map(function(){
-										return this.value;
-									}).get();
-								params["akcID[]"] = ids;
-						
-								jQuery.fn.dialog.open({
-									width: 300,
-									height: 100,
-									modal: true,
-									href: CCM_TOOLS_PATH +'/bricks/bulk_delete?' + $.param(params),
-									title: ccmi18n.properties
-								});	
-								return false;
-							});
 							
-							
-							$(resultsSelector).live("ccm_attributekeycategoryitemsearchresults_chooseitem", function(evt, data){
+							$(resultsSelector).live("ccm_akcitemsearchresults_chooseitem", function(evt, data){
 								var id = data.$item.find("input[name=ID]").first().val();
 								location.href = "<?php echo View::url('/dashboard/bricks/edit/', $akCategoryHandle) ?>"+id;
 							});

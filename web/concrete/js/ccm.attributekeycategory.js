@@ -103,10 +103,11 @@ ccm_deleteAndRefeshSearch = function(URIComponents, searchInstance) {
 		console = window.console;	
 	}
 	
-	//Prototype for the ccm_AttributeKeyCategoryItemSearchForm widget
-	var ccm_AttributeKeyCategoryItemSearchForm = {
-		widgetEventPrefix:"ccm_AttributeKeyCategoryItemSearchForm_".toLowerCase(),
+	//Prototype for the ccm_akcItemSearchForm widget
+	var ccm_akcItemSearchForm = {
+		widgetEventPrefix:"ccm_akcItemSearchForm_".toLowerCase(),
 		options:{
+			baseId:null,
 			searchInstance:null
 		},
 		_init:function(){
@@ -166,8 +167,6 @@ ccm_deleteAndRefeshSearch = function(URIComponents, searchInstance) {
 				$field.find(".ccm-input-date-wrapper input").datepicker({
 					showAnim: 'fadeIn'
 				});
-				
-				console.log($fTypeBase, $fTypeBases);
 			});
 			
 			
@@ -197,7 +196,7 @@ ccm_deleteAndRefeshSearch = function(URIComponents, searchInstance) {
 		},
 		
 		getResultsWidget:function(){
-			return $("#"+this.options.searchInstance+"_results").data("ccm_AttributeKeyCategoryItemSearchResults");
+			return $("#"+this.getBaseId()+"_results").data("ccm_akcItemSearchResults");
 		},
 		
 		getRelEl:function(sel){
@@ -208,19 +207,27 @@ ccm_deleteAndRefeshSearch = function(URIComponents, searchInstance) {
 			return "#"+this.element.attr("id")+sel;
 		},
 		
+		getBaseId:function(){
+			var id = this.options.baseId || this.element.attr("id").replace(/^(.+)_\w+$/, "$1");
+			console.log(this.widgetEventPrefix, id, this.element.attr("id"));
+			return id;
+		},
+		
 		bind:function(){
 			arguments[0] = (this.widgetEventPrefix+arguments[0]).toLowerCase();
 			this.element.bind.apply(this.element, arguments);
 		}
 	};
 	
-	$.widget("ccm.ccm_AttributeKeyCategoryItemSearchForm", ccm_AttributeKeyCategoryItemSearchForm);
+	$.widget("ccm.ccm_akcItemSearchForm", ccm_akcItemSearchForm);
 	
 	
-	//Prototype for the ccm_AttributeKeyCategoryItemSearchResults widget
-	var ccm_AttributeKeyCategoryItemSearchResults = {
-		widgetEventPrefix:"ccm_AttributeKeyCategoryItemSearchResults_".toLowerCase(),
+	//Prototype for the ccm_akcItemSearchResults widget
+	var ccm_akcItemSearchResults = {
+		widgetEventPrefix:"ccm_akcItemSearchResults_".toLowerCase(),
 		options:{
+			baseId:null,
+			akcHandle:null,
 			searchInstance:null,
 			mode:"choose_multiple",
 			itemSelector:"tr.ccm-list-record"
@@ -295,6 +302,7 @@ ccm_deleteAndRefeshSearch = function(URIComponents, searchInstance) {
 			this.element.find("a.ccm-search-add-column").click(function(){
 				var params = {
 					searchInstance:I.options.searchInstance,
+					baseId:I.options.baseId,
 					columns:$('input[name=columns_'+I.options.searchInstance+']').val(),
 					persistantBID: $('input[name=persistantBID_'+I.options.searchInstance+']').val()
 				};
@@ -313,7 +321,7 @@ ccm_deleteAndRefeshSearch = function(URIComponents, searchInstance) {
 		
 		
 		getFormWidget:function(){
-			return $("#"+this.options.searchInstance+"_form").data("ccm_AttributeKeyCategoryItemSearchForm");
+			return $("#"+this.getBaseId()+"_form").data("ccm_akcItemSearchForm");
 		},
 		
 		getItems:function(ifSelected){
@@ -354,6 +362,45 @@ ccm_deleteAndRefeshSearch = function(URIComponents, searchInstance) {
 			},
 			choose:function(data){
 				console.log(arguments);
+			},
+			properties:function(data){
+				var params = {
+						searchInstance:data.widget.options.searchInstance,
+						baseId:data.widget.options.baseId,
+						akCategoryHandle:data.widget.options.akcHandle
+					},
+					ids = data.$item.find("input[name=ID]").map(function(){
+						return this.value;
+					}).get();
+				params["newObjectID[]"] = ids;
+				//console.log($.param(params));
+		
+				jQuery.fn.dialog.open({
+					width: 630,
+					height: 450,
+					modal: true,
+					href: CCM_TOOLS_PATH +'/bricks/bulk_properties?' + $.param(params),
+					title: ccmi18n.properties
+				});	
+			},
+			"delete":function(data){
+				var params = {
+						searchInstance:data.widget.options.searchInstance,
+						baseId:data.widget.options.baseId,
+						akCategoryHandle:data.widget.options.akcHandle
+					},
+					ids = data.$item.find("input[name=ID]").map(function(){
+						return this.value;
+					}).get();
+				params["akcID[]"] = ids;
+		
+				jQuery.fn.dialog.open({
+					width: 300,
+					height: 100,
+					modal: true,
+					href: CCM_TOOLS_PATH +'/bricks/bulk_delete?' + $.param(params),
+					title: ccmi18n.properties
+				});	
 			}
 		},
 		
@@ -366,69 +413,58 @@ ccm_deleteAndRefeshSearch = function(URIComponents, searchInstance) {
 				$.extend(data, extraArgs);
 			}
 			
-			//Dispatch an even for actions to multiple items. 
-			if($item.length > 1){
-				var multiResult = I._trigger.apply(I, [key+"items", null, data]);
-				//If the event is stopped by one of the handlers, we stop here and do not execute the action on multiple items.
-				if(multiResult === false){
-					return;	
-				}
+			//Execute the action
+			var result = null;
+			
+			//copy the data object
+			data = $.extend(true, {}, data);
+			
+			if($.isFunction(I.itemActions[key])){
+				result = I.itemActions[key].apply($item.get(0), [data]);
 			}
 			
-			//Execute the action
-			$item.each(function(i, item){
-				var $item = $(item),
-					result = null;
-				
-				//copy the data object
-				data = $.extend(true, {}, data);
-				
-				if($.isFunction(I.itemActions[key])){
-					result = I.itemActions[key].apply($item.get(0), [data]);
-				}
-				
-				if(result !== false){
-					var args = [key+"item", null, data];
-					I._trigger.apply(I, args);
-				}
-			});	
+			if(result !== false){
+				var args = [key+"item", null, data];
+				I._trigger.apply(I, args);
+			}	
 					
 		},
 		
-		bind:ccm_AttributeKeyCategoryItemSearchForm.bind,		
-		getRelEl:ccm_AttributeKeyCategoryItemSearchForm.getRelEl,
-		getRelElId:ccm_AttributeKeyCategoryItemSearchForm.getRelElId
+		bind:ccm_akcItemSearchForm.bind,		
+		getRelEl:ccm_akcItemSearchForm.getRelEl,
+		getRelElId:ccm_akcItemSearchForm.getRelElId,
+		getBaseId:ccm_akcItemSearchForm.getBaseId
 	};
 	
-	//Register the ccm_AttributeKeyCategoryItemSearchResults widget
-	$.widget("ccm.ccm_AttributeKeyCategoryItemSearchResults", ccm_AttributeKeyCategoryItemSearchResults);
+	//Register the ccm_akcItemSearchResults widget
+	$.widget("ccm.ccm_akcItemSearchResults", ccm_akcItemSearchResults);
 	
 	
 	
 	
 	
-	//Prototype for the jQuery.ccm_attributeKeyCategoryItemSelector widget
-	var ccm_attributeKeyCategoryItemSelector = {
-		widgetEventPrefix:"ccm_attributeKeyCategoryItemSelector_".toLowerCase(),
+	//Prototype for the jQuery.ccm_akcItemSelector widget
+	var ccm_akcItemSelector = {
+		widgetEventPrefix:"ccm_akcItemSelector_".toLowerCase(),
 		options:{
+			max:Infinity,
+			baseId:null,
+			akcHandle:null,
+			searchInstance:null,
 			selectItemDialog:{
 				href:CCM_TOOLS_PATH+"/bricks/search_dialog",
 				width:"90%",
 				height:"70%",
 				modal:false
 			},
-			selectItemParameters:{
+			itemSearchParams:{
 				mode:"choose_multiple"
 			},
 			itemSelector:"tr.ccm-list-record"
 		},
-		_create:function(){
-			if(!this.options.selectItemParameters.searchInstance){
-				this.options.selectItemParameters.searchInstance = this.widgetName+"_search"+(new Date()).getMilliseconds();
-			}
-		},
 		_init:function(){
-			var I = this;			
+			var I = this,
+				baseId = this.getBaseId();		
 			
 			this._table = this.element.find("table").first();
 			this._tbody = this._table.children("tbody");
@@ -451,22 +487,19 @@ ccm_deleteAndRefeshSearch = function(URIComponents, searchInstance) {
 			
 			
 			//Setup the item selector trigger
-			this.element.find(".ccm-attribute-key-category-select-item").bind("click", function(){
-				I.openItemSelect();
+			this.element.find(".ccm-akc-select-item").bind("click", function(){
+				if(I._tbody.children(I.options.itemSelector).length < I.options.max){
+					I.openItemSearch();
+				}
 			});
+			this.toggleAddItem();
+
 			
-			
-			$("#"+this.options.selectItemParameters.searchInstance+"_results").live(ccm_AttributeKeyCategoryItemSearchResults.widgetEventPrefix+"chooseitems", function(evt, data){
+			//Listen for selected items
+			$("#"+baseId+"_results").live(ccm_akcItemSearchResults.widgetEventPrefix+"chooseitem", function(evt, data){
 				data.$item.each(function(){
 					I.addItem($(this));
 				});
-				jQuery.fn.dialog.closeTop();	
-				return false;
-				
-			});
-			
-			$("#"+this.options.selectItemParameters.searchInstance+"_results").live(ccm_AttributeKeyCategoryItemSearchResults.widgetEventPrefix+"chooseitem", function(evt, data){
-				I.addItem(data.$item);
 				jQuery.fn.dialog.closeTop();	
 			});
 			
@@ -475,7 +508,6 @@ ccm_deleteAndRefeshSearch = function(URIComponents, searchInstance) {
 			
 		},
 		addItem:function($row, position){
-			
 			var $item = $row,
 				$id = $item.find("input[name=ID]"),
 				$existing = this._tbody.find("input[name='"+ this.options.fieldName +"'][value='"+ $id.val() +"']"); //see if this item already exists
@@ -498,6 +530,12 @@ ccm_deleteAndRefeshSearch = function(URIComponents, searchInstance) {
 				//this.delegateItemActions($item, $item);
 			}
 			
+			//If we've reached the max items, remove the last ones before we add the new one
+			while(this._tbody.children(this.options.itemSelector).length >= this.options.max){		
+				this._tbody.children(this.options.itemSelector).last().remove();
+			}
+			
+			//Now add the new item
 			if(position < 1){
 				this._tbody.prepend($item);
 			}else if(position == null || position > this._tbody.children(this.options.itemSelector).length){
@@ -506,7 +544,11 @@ ccm_deleteAndRefeshSearch = function(URIComponents, searchInstance) {
 				this._tbody.children(this.options.itemSelector).eq(position).insertAfter($item);
 			}
 			
-			var $noneSelected = this._tbody.children(".ccm-attribute-key-category-selected-item-none");
+			//Toggle the add button, if we're at the max again
+			this.toggleAddItem();
+			
+			//Remove the "none selected" row
+			var $noneSelected = this._tbody.children(".ccm-akc-selected-item-none");
 			if($noneSelected.length){
 				$noneSelected.remove();	
 			}
@@ -524,13 +566,9 @@ ccm_deleteAndRefeshSearch = function(URIComponents, searchInstance) {
 					data.widget.restripe();
 				});				
 			}
-		},
+		},		
 		
-		
-		
-		execItemAction:ccm_AttributeKeyCategoryItemSearchResults.execItemAction,
-		
-		
+		execItemAction:ccm_akcItemSearchResults.execItemAction,		
 		
 		_delegateItemActions:function($context, selector, eventName, $item){
 			var I = this;
@@ -552,9 +590,13 @@ ccm_deleteAndRefeshSearch = function(URIComponents, searchInstance) {
 			
 		},
 		
-		openItemSelect:function(opts, params){
+		openItemSearch:function(opts, params){
 			
-			var parameters = $.extend({fieldName:this.options.fieldName}, this.options.selectItemParameters, params),
+			var parameters = $.extend({
+					fieldName:this.options.fieldName,
+					akCategoryHandle:this.options.akcHandle,
+					baseId:this.options.baseId
+				}, this.options.itemSearchParams, params),
 				dialogOpts = $.extend({}, this.options.selectItemDialog, opts);
 				
 			dialogOpts.href += "?"+$.param(parameters);
@@ -573,16 +615,26 @@ ccm_deleteAndRefeshSearch = function(URIComponents, searchInstance) {
 			this._trigger("restripe");
 		},
 		
+		toggleAddItem:function(){
+			var I = this,
+				$add = this.element.find(".ccm-akc-select-item");
+			if(this._tbody.children(this.options.itemSelector).length >= this.options.max){
+				$add.css({opacity:".3"});
+			}else{
+				$add.css({opacity:""});
+			}
+		},
 		
-		bind:ccm_AttributeKeyCategoryItemSearchForm.bind,		
-		getRelEl:ccm_AttributeKeyCategoryItemSearchForm.getRelEl,
-		getRelElId:ccm_AttributeKeyCategoryItemSearchForm.getRelElId
+		bind:ccm_akcItemSearchForm.bind,		
+		getRelEl:ccm_akcItemSearchForm.getRelEl,
+		getRelElId:ccm_akcItemSearchForm.getRelElId,
+		getBaseId:ccm_akcItemSearchForm.getBaseId
 		
 	};
 	
 	
-	//Register the jQuery.ccm_attributeKeyCategoryItemSelector widget
-	$.widget("ccm.ccm_attributeKeyCategoryItemSelector", ccm_attributeKeyCategoryItemSelector);
+	//Register the jQuery.ccm_akcItemSelector widget
+	$.widget("ccm.ccm_akcItemSelector", ccm_akcItemSelector);
 	
 	
 

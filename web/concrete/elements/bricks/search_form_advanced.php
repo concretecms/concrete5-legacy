@@ -1,7 +1,11 @@
 <?php  defined('C5_EXECUTE') or die(_("Access Denied."));
 if(!$akCategoryHandle) $akCategoryHandle = $_REQUEST['akCategoryHandle'];
 if(!$searchInstance) $searchInstance = uniqid($akCategoryHandle);
+if(!$baseId) $baseId = $searchInstance;
+
+
 if(isset($_REQUEST['searchInstance'])) $searchInstance = $_REQUEST['searchInstance'];
+if(isset($_REQUEST['baseId'])) $baseId = $_REQUEST['baseId'];
 if(isset($_REQUEST['administrationDisabled'])) $administrationDisabled = $_REQUEST['administrationDisabled'];
 if(isset($_REQUEST['userDefinedColumnsDisabled'])) $userDefinedColumnsDisabled = $_REQUEST['userDefinedColumnsDisabled'];
 if(isset($_REQUEST['keywords'])) $keywords = $_REQUEST['keywords'];
@@ -9,7 +13,10 @@ if(isset($_REQUEST['numResults'])) $numResults = $_REQUEST['numResults'];
 if(isset($_REQUEST['defaults'])) $defaults = $_REQUEST['defaults'];
 if(is_string($defaults)) $defaults = unserialize(urldecode($defaults));
 
-$baseID = $searchInstance.'_form';
+
+$wrapId = $baseId.'_form';
+
+
 
 
 Loader::model('attribute_key_category_item_list');
@@ -25,7 +32,7 @@ foreach($searchFieldAttributes as $ak) {
 }
 $form = Loader::helper('form');
 ?>
-<div id="<?php echo $baseID ?>-field-base-elements" style="display: none">
+<div id="<?php echo $wrapId ?>-field-base-elements" style="display: none">
 	<span class="ccm-search-option" search-field="onlyMine">
 		<?php
 			$handle = '';
@@ -56,14 +63,15 @@ $form = Loader::helper('form');
 </div>
 
 <?php if(!$_REQUEST['disableSubmit']) { ?>
-<form method="get" id="<?php echo $baseID ?>" action="<?php echo REL_DIR_FILES_TOOLS_REQUIRED . '/bricks/search_results' ?>">
+<form method="get" id="<?php echo $wrapId ?>" action="<?php echo REL_DIR_FILES_TOOLS_REQUIRED . '/bricks/search_results' ?>">
 	<?php echo $form->hidden('searchInstance', $searchInstance) ?>
+    <?php echo $form->hidden('baseId', $baseId) ?>
     <?php echo $form->hidden('akCategoryHandle', $akCategoryHandle) ?>
     
 	<?php if($mode) echo $form->hidden('mode', $mode); ?>
     
 	<?php echo $form->hidden('search', 1); ?>
-<div id="<?php echo $baseID ?>-advanced-fields" class="ccm-search-advanced-fields" >		
+<div id="<?php echo $wrapId ?>-advanced-fields" class="ccm-search-advanced-fields" >		
 	<div class="ccm-search-box-title">
 		<img src="<?php echo ASSETS_URL_IMAGES?>/throbber_white_16.gif" width="16" height="16" class="ccm-search-loading"  id="ccm-<?php echo $searchInstance?>-search-loading" />
 		<h2><?php echo t('Search')?></h2>
@@ -96,12 +104,12 @@ $form = Loader::helper('form');
 						'500' => '500'
 					), $numResults, array('style' => 'width:65px'))?>
 				</td>
-				<td width="1%" align="center" style="padding-left:5px;"><a href="javascript:;" id="<?php echo $baseID ?>-add-option"><img src="<?php echo ASSETS_URL_IMAGES?>/icons/add.png" width="16" height="16" /></a></td>
+				<td width="1%" align="center" style="padding-left:5px;"><a href="javascript:;" id="<?php echo $wrapId ?>-add-option"><img src="<?php echo ASSETS_URL_IMAGES?>/icons/add.png" width="16" height="16" /></a></td>
 			</tr>	
 			</table>
 		</div>
 		
-		<div id="<?php echo $baseID ?>-field-base" class="ccm-search-field" style="display:none">				
+		<div id="<?php echo $wrapId ?>-field-base" class="ccm-search-field" style="display:none">				
 			<table border="0" cellspacing="0" cellpadding="0">
 				<tr>
 					<td valign="top" style="padding-right: 4px">
@@ -135,7 +143,7 @@ $form = Loader::helper('form');
 			</table>
 		</div>
 		
-		<div id="<?php echo $baseID ?>-fields-wrapper">
+		<div id="<?php echo $wrapId ?>-fields-wrapper">
 		<?php $i=1; if(is_array($defaults['filters'])) foreach($defaults['filters'] as $key => $value) {
 			$continue = false;
 			if(is_array($value)) {
@@ -153,7 +161,7 @@ $form = Loader::helper('form');
 				$handle = '';
 				if(is_numeric($searchInstance)) $handle = 'dsp_';
 			?>
-			<div id="<?php echo $baseID ?>-field-set<?php echo $i?>" class="ccm-search-field">	
+			<div id="<?php echo $wrapId ?>-field-set<?php echo $i?>" class="ccm-search-field">	
 				<table border="0" cellspacing="0" cellpadding="0">
 					<tr>
 						<td valign="top" style="padding-right: 4px">
@@ -239,15 +247,14 @@ $form = Loader::helper('form');
 
 <?php
 	$json = Loader::helper('json');
-	$jsInitArgs = array(
-		'searchInstance' => $searchInstance
-	);
+	$jsInitArgs['searchInstance'] = $searchInstance;
+	$jsInitArgs['baseId'] = $baseId;
 	
 	$jsInitArgsStr = $json->encode($jsInitArgs);
 ?>
 <script type="text/javascript">
 $(function(){
-	$("#<?php echo $baseID ?>").ccm_AttributeKeyCategoryItemSearchForm(<?php echo $jsInitArgsStr ?>);
+	$("#<?php echo $wrapId ?>").ccm_akcItemSearchForm(<?php echo $jsInitArgsStr ?>);
 });
 </script>
 <?php } ?>
