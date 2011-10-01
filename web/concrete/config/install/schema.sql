@@ -1293,6 +1293,7 @@ CREATE TABLE IF NOT EXISTS `UserSearchIndexAttributes` (
 CREATE TABLE atAttributeKeyCategoryItemsSettings (
   akID int(11) NOT NULL DEFAULT '0',
   akCategoryHandle varchar(255) DEFAULT NULL,
+  max int(10) unsigned DEFAULT '0',
   PRIMARY KEY (akID)
 ) ENGINE=MyISAM;
 

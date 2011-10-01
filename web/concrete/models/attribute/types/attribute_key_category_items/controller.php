@@ -91,18 +91,23 @@ class AttributeKeyCategoryItemsAttributeTypeController extends NumberAttributeTy
 	}
 	
 	protected function load() {
+
 		$ak = $this->getAttributeKey();
 		if (!is_object($ak)) {
 			return false;
 		}
 		
 		$db = Loader::db();
-		$row = $db->GetRow('SELECT akCategoryHandle FROM atAttributeKeyCategoryItemsSettings WHERE akID = ?', $ak->getAttributeKeyID());
+		$row = $db->GetRow('SELECT akCategoryHandle, max FROM atAttributeKeyCategoryItemsSettings WHERE akID = ?', $ak->getAttributeKeyID());
 		$this->akCategoryHandle = $row['akCategoryHandle'];
-		$this->set('akCategoryHandle', $this->akCategoryHandle);			
+		$this->set('akCategoryHandle', $this->akCategoryHandle);
+		
+		$this->max = $row['max'];	
+		$this->set('max', $this->max);		
 	}
 	
 	public function type_form() {
+		$this->set('form', Loader::helper('form'));
 		$this->load();
 	}
 	
@@ -113,7 +118,8 @@ class AttributeKeyCategoryItemsAttributeTypeController extends NumberAttributeTy
 		$db = Loader::db();
 		$db->Replace('atAttributeKeyCategoryItemsSettings', array(
 			'akID' => $ak->getAttributeKeyID(), 
-			'akCategoryHandle' => $data['akCategory']
+			'akCategoryHandle' => $data['akCategory'],
+			'max' => $data['max']
 		), array('akID'), true);
 	}
 	
@@ -135,14 +141,16 @@ class AttributeKeyCategoryItemsAttributeTypeController extends NumberAttributeTy
 	// run when we call setAttribute(), instead of saving through the UI
 	public function saveValue($value) {
 		$this->load();
+		$i = 0;
 		$save = '';
 		if(is_array($value)) {
 			foreach($value as $ID) {
+				if($this->max > 0 && $i >= $this->max) break;
 				if(!empty($save)) {
 					$save .= ', '.$ID;
 				} else {
 					$save = $ID;
-				}
+				}				
 			}
 		} else {
 			$save = $value;
