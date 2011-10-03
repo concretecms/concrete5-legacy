@@ -297,9 +297,12 @@
 			if (file_exists($dir . '/' . $pkgHandle . '/' . FILENAME_PACKAGE_CONTROLLER)) {
 				require_once($dir . '/' . $pkgHandle . '/' . FILENAME_PACKAGE_CONTROLLER);
 				$class = Object::camelcase($pkgHandle) . "Package";
-				if (class_exists($class)) {
-					$cl = new $class;
-					return $cl;
+				$pkg=Package::getByHandle($pkgHandle);
+				if($pkg->isPackageInstalled()==1){
+					if (class_exists($class)) {
+						$cl = new $class;
+						return $cl;
+					}
 				}
 			}
 		}
