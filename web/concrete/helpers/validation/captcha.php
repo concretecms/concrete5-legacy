@@ -42,19 +42,19 @@ class ValidationCaptchaHelper {
 		Loader::library("3rdparty/securimage/securimage");
 		
 		$this->securimage = new Securimage();
-		$this->securimage->image_width   = 190;
-		$this->securimage->image_height  = 60;
-		$this->securimage->image_bg_color = new Securimage_Color(227, 218, 237);
-		$this->securimage->line_color = new Securimage_Color(51, 51, 51);
-		$this->securimage->num_lines = 5;
+		$this->securimage->image_width   = CAPTCHA_WIDTH;
+		$this->securimage->image_height  = CAPTCHA_HEIGHT;
+		$this->securimage->image_bg_color = new Securimage_Color(CAPTCHA_BG_COLOR);
+		$this->securimage->line_color = new Securimage_Color(CAPTCHA_LINE_COLOR);
+		$this->securimage->num_lines = CAPTCHA_NUM_LINES;
 		
 		$this->securimage->use_multi_text   = true;
 		$this->securimage->multi_text_color = array(
-			new Securimage_Color(184, 4, 50),
-			new Securimage_Color(12, 67, 157),
-			new Securimage_Color(244, 49, 11)
+			new Securimage_Color(CAPTCHA_TEXT_COLOR_1),
+			new Securimage_Color(CAPTCHA_TEXT_COLOR_2),
+			new Securimage_Color(CAPTCHA_TEXT_COLOR_3)
 			);
-		$this->securimage->text_color = new Securimage_Color(184, 4, 50);		
+		$this->securimage->text_color = new Securimage_Color(CAPTCHA_TEXT_COLOR_1);
 	}
 	
 	/** 
