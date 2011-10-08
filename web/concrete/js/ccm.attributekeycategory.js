@@ -103,6 +103,95 @@ ccm_deleteAndRefeshSearch = function(URIComponents, searchInstance) {
 		console = window.console;	
 	}
 	
+	/* ccm.base.js - eventually 
+	 ========================================================= */
+	 
+	var ccm_widget = {
+		_getCreateOptions: function() {
+			return $.metadata && this.element.metadata({type:"attr", name:"data-options-"+this.widgetName.toLowerCase()});
+		},
+		bind:function(){
+			arguments[0] = (this.widgetEventPrefix+arguments[0]).toLowerCase();
+			this.element.bind.apply(this.element, arguments);
+		}
+	};
+	$.widget("ccm.ccm_widget", ccm_widget);
+	
+	
+	
+	var ccm_contextMenu = {
+		widgetEventPrefix:"ccm_contextMenu_".toLowerCase(),
+		options:{
+			position:{
+				my:"left bottom",
+				at:"left top",
+				offset:"-5 5"
+			}
+		},
+		_init:function(){
+			var I = this;
+			
+			if(this.option("autoShow")){
+				this.show();
+			}
+			$(".ccm-menu").live(this.widgetEventPrefix+"_show", function(){
+				I.hide();
+			});
+		},
+		show:function(pos){
+			var I = this,
+				current = $.ccm.ccm_contextMenu.current;
+			if(current != this){
+				//Hide current context menu
+				if(current){
+					current.hide();
+				}
+				this.element.fadeIn(200, function(){
+					$("body").one("click", function(){
+						I.hide();
+					});
+				});				
+				this.position(pos);
+				//Set this as the currently visible context menu
+				$.ccm.ccm_contextMenu.current = this;
+				this._trigger("show");
+			}
+		},
+		hide:function(){
+			var current = $.ccm.ccm_contextMenu.current;
+			if(current === this){
+				this.element.fadeOut(200);
+				$.ccm.ccm_contextMenu.current = null;
+				this._trigger("hide");
+			}
+		},
+		position:function(pos){
+			var mouse = $.ccm.ccm_contextMenu.mouse,
+				opts = pos || $.extend({of:mouse}, this.option("position"));
+
+			this.element.position(opts);
+			
+		},
+		showing:function(){
+			return this === $.ccm.ccm_contextMenu.current;
+		}
+	};
+	$.widget("ccm.ccm_contextMenu", $.ccm.ccm_widget, ccm_contextMenu);
+	//Store a global for the currently current context menu
+	$.ccm.ccm_contextMenu.current = null;
+	
+	$(window).bind("click mousemove", function(evt){
+		$.ccm.ccm_contextMenu.mouse = evt;
+	});
+	
+
+	/* end ccm.base.js 
+	 ======================================================= */
+	
+	
+	
+	
+	
 	//Prototype for the ccm_akcItemSearchForm widget
 	var ccm_akcItemSearchForm = {
 		widgetEventPrefix:"ccm_akcItemSearchForm_".toLowerCase(),
@@ -208,15 +297,11 @@ ccm_deleteAndRefeshSearch = function(URIComponents, searchInstance) {
 		},
 		
 		getBaseId:function(){
-			var id = this.options.baseId || this.element.attr("id").replace(/^(.+)_\w+$/, "$1");
-			console.log(this.widgetEventPrefix, id, this.element.attr("id"));
+			var id = this.options.baseId || this.element.attr("id").replace(/^(.+)_\w+$/, "$1");	//this is not really necessary...baseId should be a required option for this widget	
 			return id;
 		},
 		
-		bind:function(){
-			arguments[0] = (this.widgetEventPrefix+arguments[0]).toLowerCase();
-			this.element.bind.apply(this.element, arguments);
-		}
+		//bind: ccm_akcItem.bind
 	};
 	
 	$.widget("ccm.ccm_akcItemSearchForm", ccm_akcItemSearchForm);
@@ -240,6 +325,7 @@ ccm_deleteAndRefeshSearch = function(URIComponents, searchInstance) {
 			this._initSorting();		
 			this._initPaging();
 			this._initColumnConfig();			
+			
 			
 		},
 		
@@ -266,7 +352,7 @@ ccm_deleteAndRefeshSearch = function(URIComponents, searchInstance) {
 			this.getRelEl("-list-multiple-operations").bind("change", function(){
 				var action = this.value;
 				if($.trim(this.value).length){
-					I.execItemAction(this.value, I.getItems(true));
+					I.execItemAction(this.value, I.items(true));
 				}
 				
 			});
@@ -324,7 +410,7 @@ ccm_deleteAndRefeshSearch = function(URIComponents, searchInstance) {
 			return $("#"+this.getBaseId()+"_form").data("ccm_akcItemSearchForm");
 		},
 		
-		getItems:function(ifSelected){
+		items:function(ifSelected){
 			var id = this.element.attr("id"),
 				$items = this.element.find(this.options.itemSelector);
 			if(ifSelected === true){
@@ -336,12 +422,12 @@ ccm_deleteAndRefeshSearch = function(URIComponents, searchInstance) {
 		},
 		
 		selectAllToggle:function(isChecked){			
-			this.execItemAction(isChecked ? "select" : "unselect", this.getItems());
+			this.execItemAction(isChecked ? "select" : "unselect", this.items());
 		},
 		
 		multipleActionsToggle:function(isEnabled){
 			var id = this.element.attr("id"),
-				$items = this.getItems(),
+				$items = this.items(),
 				$dropdown = $("#"+id+"-list-multiple-operations");
 				
 			if(isEnabled === true || ($items.has("input[name=ID]:checked").length && isEnabled !== false)){
@@ -372,7 +458,7 @@ ccm_deleteAndRefeshSearch = function(URIComponents, searchInstance) {
 					ids = data.$item.find("input[name=ID]").map(function(){
 						return this.value;
 					}).get();
-				params["newObjectID[]"] = ids;
+				params["akciID[]"] = ids;
 				//console.log($.param(params));
 		
 				jQuery.fn.dialog.open({
@@ -392,7 +478,7 @@ ccm_deleteAndRefeshSearch = function(URIComponents, searchInstance) {
 					ids = data.$item.find("input[name=ID]").map(function(){
 						return this.value;
 					}).get();
-				params["akcID[]"] = ids;
+				params["akciID[]"] = ids;
 		
 				jQuery.fn.dialog.open({
 					width: 300,
@@ -408,10 +494,10 @@ ccm_deleteAndRefeshSearch = function(URIComponents, searchInstance) {
 			var I = this,
 				data = {key:key, $item:$item, widget:I};
 			
-			if($.isArray(extraArgs)){
+			//if($.isArray(extraArgs)){
 				//data = data.push.apply(data, extraArgs);
 				$.extend(data, extraArgs);
-			}
+			//}
 			
 			//Execute the action
 			var result = null;
@@ -419,14 +505,12 @@ ccm_deleteAndRefeshSearch = function(URIComponents, searchInstance) {
 			//copy the data object
 			data = $.extend(true, {}, data);
 			
+			var args = [key+"item", null, data];
+			I._trigger.apply(I, args);			
+			
 			if($.isFunction(I.itemActions[key])){
 				result = I.itemActions[key].apply($item.get(0), [data]);
 			}
-			
-			if(result !== false){
-				var args = [key+"item", null, data];
-				I._trigger.apply(I, args);
-			}	
 					
 		},
 		
@@ -447,124 +531,193 @@ ccm_deleteAndRefeshSearch = function(URIComponents, searchInstance) {
 	var ccm_akcItemSelector = {
 		widgetEventPrefix:"ccm_akcItemSelector_".toLowerCase(),
 		options:{
-			max:Infinity,
+			max:0,
 			baseId:null,
 			akcHandle:null,
 			searchInstance:null,
-			selectItemDialog:{
+			itemTemplate:"<tr data-akciid='${id}' class='ccm-list-record'><td colspan='20'>${id}</td></tr>",
+			itemClickAction:"context",
+			itemSearchDialog:{
 				href:CCM_TOOLS_PATH+"/bricks/search_dialog",
-				width:"90%",
-				height:"70%",
+				width:"80%",
+				height:"80%",
 				modal:false
 			},
 			itemSearchParams:{
 				mode:"choose_multiple"
 			},
-			itemSelector:"tr.ccm-list-record"
+			itemCreateDialog:{
+				href:CCM_TOOLS_PATH+"/bricks/insert_dialog",
+				width:"80%",
+				height:"80%",
+				modal:false
+			},
+			itemCreateParams:{},
+			itemRefreshParams:{
+				"columns[]":[]
+			},
+			itemSelector:"tr.ccm-list-record",
+			itemSortableOptions:{axis:"y", delay:300, helper:function(){return $("<tr style='background:black;padding:0;height:5px;overflow:hidden;'><td colspan='100'/></tr>").css({opacity:.4});}}
 		},
 		_init:function(){
 			var I = this,
-				baseId = this.getBaseId();		
+				baseId = this.getBaseId();
+			
+			//console.log(this._getCreateOptions());
 			
 			this._table = this.element.find("table").first();
 			this._tbody = this._table.children("tbody");
+			//this._itemTemplate = this.items().filter(".template").remove().removeClass("template");
+			
+			//Compile the item template
+			this.option("itemTemplate", $.template(this.option("itemTemplate")));
 			
 			//Setup the item list wrapper
-			this._tbody.sortable({axis:"y", delay:300});
+			this._tbody.sortable(this.option("itemSortableOptions"));
 			this._tbody.disableSelection();
 			
 			this._tbody.bind("sortstop", function(event, ui) {
 				I.restripe();
-			  	//Not sure what the best way to relay this is yet, or if we need to at all.
-			});		
-			
-			//Delegate item actions
-			this._tbody.children("tr").each(function(){
-				//I.delegateItemActions($(this), $(this));
+			  	//Not sure what the best way to relay this is yet, or if we need to at all... as item action?
 			});
-			
-			this.restripe();
 			
 			
 			//Setup the item selector trigger
-			this.element.find(".ccm-akc-select-item").bind("click", function(){
-				if(I._tbody.children(I.options.itemSelector).length < I.options.max){
+			var $thActions = this._table.find("th.list-actions").first();
+			$thActions.find(".search").bind("click", function(){
+				if(I.options.max == 0 || I._tbody.children(I.options.itemSelector).length < I.options.max){
 					I.openItemSearch();
 				}
 			});
-			this.toggleAddItem();
+			$thActions.find(".create").bind("click", function(){
+				if(I.options.max == 0 || I._tbody.children(I.options.itemSelector).length < I.options.max){
+					I.openItemCreate();
+				}
+			});
 
 			
 			//Listen for selected items
 			$("#"+baseId+"_results").live(ccm_akcItemSearchResults.widgetEventPrefix+"chooseitem", function(evt, data){
-				data.$item.each(function(){
-					I.addItem($(this));
-				});
+				var ids = data.$item.map(function(){
+					var id = $(this).find("input[name=ID]").first().val()
+					I.addItem(id, null, true);
+					return id;
+				});							
+				I.refresh(ids);
 				jQuery.fn.dialog.closeTop();	
 			});
 			
 			
-			this._delegateItemActions(this._tbody, this.options.itemSelector +" > td > a", "click");
+			this._delegateItemActions(this._tbody, ".item-actions a", "click");
+			
+			this.items().parent().delegate(this.options.itemSelector, "click", function(evt){
+				var $this = $(this),
+					$target = $(evt.target);
+				if(!$target.hasClass(".item-actions") && !$target.closest(".item-actions").length){
+					I.execItemAction(I.option("itemClickAction"), $this);
+				}				
+			});
+			
+			$("#"+baseId+"_insert_dialog").live(ccm_akcItemInsertDialogForm.widgetEventPrefix+"complete", function(evt, xhr){
+				if(xhr.status === 200){
+					jQuery.fn.dialog.closeTop();
+					var data = eval("("+xhr.responseText+")");
+					I.addItem(data.akciID);					
+				}
+			});
+			
+			
+			//Prep the UI
+			I.refresh(true);
 			
 		},
-		addItem:function($row, position){
-			var $item = $row,
-				$id = $item.find("input[name=ID]"),
-				$existing = this._tbody.find("input[name='"+ this.options.fieldName +"'][value='"+ $id.val() +"']"); //see if this item already exists
+		addItem:function(akciID, position, delayRefresh, data){
+			data = data || {id:akciID, loading:true};
 			
+			var $item = $.tmpl(this.option("itemTemplate"), data),
+				$existing = this.items().filter("[data-akciid="+akciID+"]");
+			
+			//Remove the existing item for replacement
 			if($existing.length){
-				$item = $existing.closest(this.options.itemSelector).remove();
-
-				//this.delegateItemActions($item, $item);
-			}else{
-				//Remove uncessary columns
-				var $cols = $item.children("td");
-					
-				$cols.first().remove();
-				$cols.last().remove();
-				$cols.last().remove();
-				$item.append(this.options.itemActionsCell);
-				
-				$item.children("td").last().append("<input type='hidden' name='"+this.options.fieldName+"' value='"+$id.val()+"' />");
-				
-				//this.delegateItemActions($item, $item);
+				$item = $existing.remove();
 			}
 			
 			//If we've reached the max items, remove the last ones before we add the new one
-			while(this._tbody.children(this.options.itemSelector).length >= this.options.max){		
-				this._tbody.children(this.options.itemSelector).last().remove();
+			var $all,
+				max = this.option("max");
+			while(max != 0 && ($all = this.items()).length >= max){					
+				$all.last().remove();
 			}
-			
+
 			//Now add the new item
-			if(position < 1){
+			if(position == null || position > all.length){
+				this._tbody.append($item);
+			}else if(position < 1){				
 				this._tbody.prepend($item);
-			}else if(position == null || position > this._tbody.children(this.options.itemSelector).length){
-				this._tbody.append($item);	
 			}else{
-				this._tbody.children(this.options.itemSelector).eq(position).insertAfter($item);
+				$all.eq(position).insertAfter($item);
 			}
 			
-			//Toggle the add button, if we're at the max again
-			this.toggleAddItem();
 			
-			//Remove the "none selected" row
-			var $noneSelected = this._tbody.children(".ccm-akc-selected-item-none");
-			if($noneSelected.length){
-				$noneSelected.remove();	
-			}
+			//Update some UI stuff
+			if(!delayRefresh){ 
+				this.execItemAction("refresh", $item);
+				this.refresh(false);
+			}			
 			
-			this.restripe();
-			
-			
-			this._trigger("addItem", null, $row, position);
+			this._trigger("addItem", null, $item, position);
 		},
 		
 		itemActions:{
 			remove:function(data){
 				data.$item.fadeOut(300, function(){
 					data.$item.remove();
-					data.widget.restripe();
-				});				
+					data.widget.refresh();
+				});							
+			},
+			refresh:function(data){
+				var params = {
+					akCategoryHandle:data.widget.options.akcHandle
+				};
+				var ids = data.$item.map(function(){
+					return $(this).data("akciid");
+				}).get();				
+				params["akciID[]"] = ids;
+				if(params["akciID[]"].length){
+					$.getJSON(CCM_TOOLS_PATH+"/bricks/get_item_properties?"+$.param($.extend(data.widget.options.itemRefreshParams, params)), function(json, status, xhr){
+						data.$item.each(function(){
+							var $item = $(this),
+								id = $item.data("akciid");
+							json[id].id = id;
+							var $new = $.tmpl(data.widget.option("itemTemplate"), json[id]);
+							$item.replaceWith($new);
+							$new.find(".ccm-menu").ccm_contextMenu();						
+						});
+					});
+				} 
+			},
+			properties:function(data){
+				var params = {
+						searchInstance:data.widget.options.searchInstance,
+						baseId:data.widget.options.baseId,
+						akCategoryHandle:data.widget.options.akcHandle
+					},
+					ids = data.$item.map(function(){
+						return $(this).data("akciid");
+					}).get();
+				params["akciID[]"] = ids;
+				//console.log($.param(params));
+		
+				jQuery.fn.dialog.open({
+					width: 630,
+					height: 450,
+					modal: true,
+					href: CCM_TOOLS_PATH +'/bricks/bulk_properties?' + $.param(params),
+					title: ccmi18n.properties
+				});	
+			},
+			context:function(data){
+				data.$item.last().find(".ccm-menu").first().ccm_contextMenu("show");			
 			}
 		},		
 		
@@ -597,7 +750,7 @@ ccm_deleteAndRefeshSearch = function(URIComponents, searchInstance) {
 					akCategoryHandle:this.options.akcHandle,
 					baseId:this.options.baseId
 				}, this.options.itemSearchParams, params),
-				dialogOpts = $.extend({}, this.options.selectItemDialog, opts);
+				dialogOpts = $.extend({}, this.options.itemSearchDialog, opts);
 				
 			dialogOpts.href += "?"+$.param(parameters);
 			
@@ -608,34 +761,166 @@ ccm_deleteAndRefeshSearch = function(URIComponents, searchInstance) {
 			
 		},
 		
-		restripe:function(){
+		openItemCreate:function(opts, params){
+			var parameters = $.extend({
+					akCategoryHandle:this.options.akcHandle,
+					baseId:this.options.baseId
+				}, this.options.itemCreateParams, params),
+				dialogOpts = $.extend({}, this.options.itemCreateDialog, opts);
 			
-			var $items = this._tbody.children(this.options.itemSelector);
+			dialogOpts.href += "?"+$.param(parameters);
+			
+			jQuery.fn.dialog.open(dialogOpts);
+		
+		},		
+		
+		toggleListActions:function(){
+			var I = this,
+				$thActions = this.element.find("th.list-actions").first();
+				$search = $thActions.find(".search"),
+				$create = $thActions.find(".create");
+				
+			if(this.options.max > 0 && this.items().length >= this.options.max){
+				$search.add($create).css({opacity:".3"});
+			}else{
+				$search.add($create).css({opacity:""});
+			}
+		},
+		
+		updateCount:function(){			
+			this.element.children(".count").children("var").first().html(this.items().length);			
+		},
+		
+		restripe:function(){			
+			var $items = this.items();
 			$items.removeClass("ccm-list-record-alt").filter(":odd").addClass("ccm-list-record-alt");
 			this._trigger("restripe");
 		},
 		
-		toggleAddItem:function(){
+		items:function(itemIDs){
 			var I = this,
-				$add = this.element.find(".ccm-akc-select-item");
-			if(this._tbody.children(this.options.itemSelector).length >= this.options.max){
-				$add.css({opacity:".3"});
-			}else{
-				$add.css({opacity:""});
+				$all = this._tbody.children(I.options.itemSelector);
+				$items = null;
+			//Filter by IDs, if provided
+			if(itemIDs && itemIDs.length){
+				itemIDs = $.type(itemIDs) == "array" ? itemIDs : [itemIDs];
+				$items = $all.map(function(i, item){
+					var $item = $(item),
+						$field = $item.find("[name='"+I.options.fieldName+"']");
+					if($.inArray(itemIDs, $item.data("akciid"))){
+						return item;
+					}
+				});
+			}		
+			return $items || $all;
+		},
+		
+		refresh:function(itemIDs){
+			if(itemIDs){				
+				if(itemIDs === true){
+					var $items = this.items();
+				}else{
+					var $items = this.items(itemIDs);
+				}		
+				this.execItemAction("refresh", $items);
 			}
+			this.toggleListActions();
+			this.restripe();
+			this.updateCount();			
 		},
 		
 		bind:ccm_akcItemSearchForm.bind,		
 		getRelEl:ccm_akcItemSearchForm.getRelEl,
 		getRelElId:ccm_akcItemSearchForm.getRelElId,
-		getBaseId:ccm_akcItemSearchForm.getBaseId
+		getBaseId:ccm_akcItemSearchForm.getBaseId,
+		
 		
 	};
 	
 	
 	//Register the jQuery.ccm_akcItemSelector widget
-	$.widget("ccm.ccm_akcItemSelector", ccm_akcItemSelector);
+	$.widget("ccm.ccm_akcItemSelector", $.ccm.ccm_widget, ccm_akcItemSelector);
 	
+	
+	
+	
+	
+	
+	
+	
+	var ccm_akcItemInsertDialogForm = {
+		widgetEventPrefix:"ccm_akcItemInsertDialogForm_".toLowerCase(),
+		options:{},
+		_init:function(){
+			var I = this;
+			//Create the tabset
+			this.element.find("> .ccm-dialog-tabs a").click(function(evt){
+				var $a = $(this),
+					$li = $a.closest("li"),
+					idx = $li.prevAll("li").length;
+				$li.siblings("li").removeClass("ccm-nav-active");
+				$li.addClass("ccm-nav-active");
+				I.element.children(".ccm-dialog-tabs-content").eq(idx).show();
+				I.element.children(".ccm-dialog-tabs-content").not(":eq("+idx+")").hide();
+			});
+			
+			//Create the ajax form and proxy its events
+			this.element.ajaxForm({
+				//dataType:"json",
+				type:"post",
+				beforeSubmit: function(){
+					I._trigger.apply(I, ["beforeSubmit", null, arguments]);
+				},				
+				error: function(){
+					I._trigger.apply(I, ["error", null, arguments]);
+				},
+				success: function(){
+					I._trigger.apply(I, ["success", null, arguments]);
+				},
+				complete: function(xhr, status){
+					I.element.replaceWith(xhr.responseText);
+					I._trigger.apply(I, ["complete", null, arguments]);
+				}
+			});
+		}
+	};
+	
+	//Register the jQuery.ccm_akcItemInsertDialog widget
+	$.widget("ccm.ccm_akcItemInsertDialogForm", ccm_akcItemInsertDialogForm);
+	
+	
+	
+	
+	var ccm_akcItemDeleteDialogForm = {
+		widgetEventPrefix:"ccm_akcItemDeleteDialogForm_".toLowerCase(),
+		options:{},
+		_init:function(){
+			var I = this;			
+			
+			//Create the ajax form and proxy its events
+			this.element.ajaxForm({
+				dataType:"json",
+				type:"post",
+				beforeSubmit: function(){
+					I._trigger.apply(I, ["beforeSubmit", null, arguments]);
+				},			
+				error: function(){
+					I._trigger.apply(I, ["error", null, arguments]);
+				},
+				success: function(){
+					I._trigger.apply(I, ["success", null, arguments]);
+				},
+				complete: function(){
+					I.element.replaceWith(xhr.responseText);
+					I._trigger.apply(I, ["complete", null, arguments]);
+				}
+			});
+		}
+	};
+	
+	//Register the jQuery.ccm_akcItemInsertDialog widget
+	$.widget("ccm.ccm_akcItemDeleteDialogForm", ccm_akcItemDeleteDialogForm);
 	
 
+	
 })();

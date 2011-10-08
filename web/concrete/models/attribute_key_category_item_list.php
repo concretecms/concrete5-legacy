@@ -202,6 +202,12 @@ class AttributeKeyCategoryAvailableColumnSet extends AttributeKeyCategoryDefault
 	public function __construct($akCategoryHandle) {
 		parent::__construct($akCategoryHandle);
 		$this->akCategoryHandle = $akCategoryHandle;
+		
+		//Set all of the attribute columns. DefaultColumnSet only sets the standard properties column, or the first attribute column.
+		$akList = AttributeKey::getList($akCategoryHandle);
+		foreach($akList as $ak){
+			$this->addColumn($this->getColumnByKey('ak_'.$ak->getKeyHandle()));
+		}
 	}
 }
 

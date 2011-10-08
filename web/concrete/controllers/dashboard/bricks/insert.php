@@ -2,7 +2,7 @@
 defined('C5_EXECUTE') or die(_("Access Denied."));
 class DashboardBricksInsertController extends Controller {
 	
-	public $helpers = array('html','form');
+	public $helpers = array('html','form','text');
 	
 	public function on_before_render() {
 		$this->set('error', $this->error);
@@ -14,7 +14,12 @@ class DashboardBricksInsertController extends Controller {
 	}
 	
 	public function view($akCategoryHandle = NULL) {
-		if(!$akCategoryHandle) $this->redirect('dashboard/bricks');
+		$req = Request::get();
+		if(!$akCategoryHandle){
+			if(!$req->isIncludeRequest()) $this->redirect('dashboard/bricks');
+		}else{
+			$this->set('akCategoryHandle', $akCategoryHandle);
+		}
 		
 		$akcsh = Loader::helper('attribute_key_category_settings');
 		$rs = $akcsh->getRegisteredSettings($akCategoryHandle);
@@ -31,39 +36,36 @@ class DashboardBricksInsertController extends Controller {
 			}
 		}
 		$this->set('subnav', $subnav);
-	
+		$this->set('ih', Loader::helper('concrete/interface'));
+		
+		$this->addHeaderItem(Loader::helper('html')->javascript('ccm.attributekeycategory.js'));
 		$this->addHeaderItem(Loader::helper('html')->javascript('ccm.attributekeycategory.permissions.js'));
 		
 		Loader::model('attribute_key_category_item_permission');
 		$akcip = AttributeKeyCategoryItemPermission::get($akCategoryHandle);
-		$this->set('permission', $akcip->canAdd());
+		$this->set('akcip', $akcip);
+		
+		$this->set('attribs', AttributeKey::getList($akCategoryHandle));
+		$category = AttributeKeyCategory::getByHandle($akCategoryHandle);
+		$this->set('category', $category);
+		$sets = $category->getAttributeSets();
+		$this->set('sets', $sets);
+		
+		
 		if($this->isPost() && $akcip->canAdd()) {
 			$this->validate();
 			if(!$this->error->has()) {
 				Loader::model('attribute_key_category_item');
 				$akci = new AttributeKeyCategoryItem($akCategoryHandle);
 				$newObject = $akci->add();
+				$this->set('akci', $newObject);
 				$this->saveData($newObject);
-				$this->redirect('/dashboard/bricks/search/'.$akCategoryHandle);
+				
+				if(!$req->isIncludeRequest()) $this->redirect('/dashboard/bricks/search/'.$akCategoryHandle);
+			}else{
+				header("HTTP/1.1 412");
+				
 			}
-		} else {
-			$this->set('ih', Loader::helper('concrete/interface'));
-			$this->set('txt', Loader::helper('text'));
-			$this->set('akCategoryHandle', $akCategoryHandle);
-			$this->set('attribs', AttributeKey::getList($akCategoryHandle));
-			$category = AttributeKeyCategory::getByHandle($akCategoryHandle);
-			$this->set('category', $category);
-			$sets = $category->getAttributeSets();
-			$this->set('sets', $sets);
-			
-			$form = Loader::helper('form');
-			$this->set('form', $form);
-			$this->addHeaderItem(Loader::helper('html')->javascript('ccm.attributekeycategory.js'));
-			$searchInstance = $akCategoryHandle.time();
-			if (isset($_REQUEST['searchInstance'])) {
-				$searchInstance = $_REQUEST['searchInstance'];
-			}
-			$this->addHeaderItem('<script type="text/javascript">$(function(){ccm_setupAdvancedSearch(\''.$searchInstance.'\');});</script>');
 		}
 	}
 	
@@ -86,7 +88,18 @@ class DashboardBricksInsertController extends Controller {
 		$item->reindex();
 	}
 	
-	private function validate() {
-		
+	private function validate() {		
+		if($_POST['akID']) {
+			foreach(array_keys($_POST['akID']) as $akID) {
+				$ak = AttributeKey::getInstanceByID($akID);
+				if(is_object($ak) && !($valid = $ak->getController()->validateForm($_POST['akID'][$akID]))){
+					if(is_string($valid)){
+						$this->error->add($valid, $ak->getAttributeKeyName());
+					}else{
+						$this->error->add(t('%s has an incorrect value.', $ak->getAttributeKeyName()));
+					}
+				}
+			}
+		}
 	}
 } ?>

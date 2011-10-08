@@ -1,39 +1,27 @@
 <?php defined('C5_EXECUTE') or die(_("Access Denied."));
-if($permission) {
+
+if($akcip->canSearch()) {
+
+$vars = array_merge($this->controller->getSets(), $this->controller->getHelperObjects(), array(
+	'controller'=>$this->controller,
+	'view'=>View::getInstance()
+));
+
+$wrapId = $baseId.'_search';
 ?>
 
-<h1><?php if(!$rs['url_insert_hidden']){?><a class="ccm-dashboard-header-option" href="<?php echo $this->url('/dashboard/bricks/insert/', $akCategoryHandle)?>">Add Item</a><?php } ?><span><?php echo $txt->unhandle($akCategoryHandle).t(' Search')?></span></h1>
+<h1><?php if(!$rs['url_insert_hidden']){?><a class="ccm-dashboard-header-option" href="<?php echo $this->url('/dashboard/bricks/insert/', $akCategoryHandle)?>">Add Item</a><?php } ?><span><?php echo $text->unhandle($akCategoryHandle).t(' Search')?></span></h1>
 <div class="ccm-dashboard-inner">
-	<?php
-		$searchInstance = $akCategoryHandle.'_search';
-        if (isset($_REQUEST['searchInstance'])) {
-			$searchInstance = $_REQUEST['searchInstance'];
-		}
-		
-		$baseId = uniqid($searchInstance);
-		if(isset($_REQUEST['baseId'])){
-			$baseId = $_REQUEST['baseId'];
-		}
-		
-		if (!isset($mode)) {
-			$mode = $_REQUEST['mode'];
-		}
-	?>
-    <? if (!isset($_REQUEST['refreshDialog'])) { ?> 
-    <div id="<?php echo $baseId ?>-overlay-wrapper">
-    <? } ?>
-        <div id="<?php echo $baseId ?>-search-overlay">
+	
+    
+        <div id="<?php echo $wrapId ?>">
             <table id="ccm-search-form-table" >
                 <tr>
                     <td valign="top" class="ccm-search-form-advanced-col">
                         <?php
                             Loader::element(
                                 'bricks/search_form_advanced',
-                                array(
-									'baseId' 			=> $baseId,
-                                    'searchInstance'	=> $searchInstance,
-                                    'akCategoryHandle'	=> $akCategoryHandle
-                                )
+                                $vars
                             );
                         ?>
                     </td>
@@ -42,11 +30,7 @@ if($permission) {
 						
 							Loader::element(
 								'bricks/search_results', 
-								array(
-									'baseId' 			=> $baseId,
-									'searchInstance'	=> $searchInstance,
-									'akCategoryHandle'	=> $akCategoryHandle
-								)
+								$vars
 							);
 							
 						/*
@@ -90,7 +74,7 @@ if($permission) {
     <? } ?>
 </div>
 <?php } else { ?>
-<h1><span><?php echo $txt->unhandle($akCategoryHandle).t(' Search')?></span></h1>
+<h1><span><?php echo $text->unhandle($akCategoryHandle).t(' Search')?></span></h1>
 <div class="ccm-dashboard-inner">
 	You do not have permission to search this category.
 </div>

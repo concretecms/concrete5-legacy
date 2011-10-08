@@ -13,39 +13,50 @@ class AttributeKeyCategoryItemsAttributeTypeController extends NumberAttributeTy
 				return $this->getDisplaySanitizedValue();
 			case 'getSearchIndexValue':
 				return $this->getSearchIndexValue();
-			default:
-				$db = Loader::db();
-				$value = $db->GetOne("select value from atDefault where avID = ?", array($this->getAttributeValueID()));
-				$value = explode(', ', $value);
-				
+			case 'getIdArray':				
+				return $this->getIdArray();
+			default:				
+				$IDs = $this->getIdArray();
 				$akc = AttributeKeyCategory::getByHandle($this->akCategoryHandle);
-				foreach($value as $ID) {
-					if(!empty($ID)) {
-						$return[] = $akc->getItemObject($ID);
+				foreach($IDs as $ID) {
+					if(!empty($ID) && ($akci = $akc->getItemObject($ID))) {
+						$return[] = $akci;
 					}
-				}
-				
+				}				
 				return $return;
 		}
+	}
+	
+	public function getIdArray(){
+		$db = Loader::db();
+		$result = $db->GetOne("select value from atDefault where avID = ?", array($this->getAttributeValueID()));
+		$IDs = explode(', ', $result);
+		return $IDs;		
 	}
 	
 	public function getDisplayValue() {
 		$value = $this->getValue();
 		if($value) {
 			foreach($value as $item) {
+				//if(method_exists($item, 'getAttribute')){
 				if($display) {
 					if($name = $item->getAttribute('name')) {
 						$display .= ', '.$name;
+					} else if($title = $item->getAttribute('title')) {
+						$display .= ', '.$title;
 					} else {
 						$display .= ', '.$item->ID;
 					}
 				} else {
-					if($name = $item->getAttribute('name')) {
+					if($name = $item->getAttribute('t')) {
 						$display = $name;
+					} else if($title = $item->getAttribute('title')) {
+						$display = $title;
 					} else {
 						$display = $item->ID;
 					}
 				}
+				//}
 			}
 		}
 		return $display;
@@ -126,16 +137,20 @@ class AttributeKeyCategoryItemsAttributeTypeController extends NumberAttributeTy
 	public function form() {
 		$this->load();
 		$html = Loader::helper('html');
+		$form = Loader::helper('form');
 		$this->akID = $this->attributeKey->getAttributeKeyID();
 		//$searchInstance = $_REQUEST['akCategoryHandle'] . time();
 		$searchInstance = preg_replace("/(\W)+/", '_', $this->field('value'));
 		
-		$this->addHeaderItem(Loader::helper('html')->javascript('ccm.attributekeycategory.js'));
-		$akcis = Loader::helper('form/attribute_key_category_item_selector');		
+		
+		$akcis = Loader::helper('form/attribute_key_category_item_selector');
+		$akcis->addHeaderItems($this);	
+			
 		if (is_object($this->attributeValue)) {
-			$value = $this->getAttributeValue()->getValue();
+			$value = $this->getIdArray();
 		}
-		print $akcis->selectItems($this->akCategoryHandle, $this->field('value').'[]', $value, 5, $searchInstance);
+		
+		echo $akcis->selectItems($this->akCategoryHandle, $this->field('value').'[]', $value, 0, $searchInstance);
 	}
 	
 	// run when we call setAttribute(), instead of saving through the UI
@@ -165,7 +180,7 @@ class AttributeKeyCategoryItemsAttributeTypeController extends NumberAttributeTy
 	
 	public function validateForm($data) {
 		foreach($data['value'] as $ID) {
-			$akc = AttributeKeyCategory::getByHandle($data['akCategoryHandle']);
+			$akc = AttributeKeyCategory::getByHandle($this->akCategoryHandle);
 			if(is_object($akc)) {
 				$return[] = $akc->getItemObject($ID);
 			}

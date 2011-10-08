@@ -1,44 +1,59 @@
 <?php defined('C5_EXECUTE') or die(_("Access Denied."));
 
-$searchInstance = isset($_REQUEST['searchInstance']) ? $_REQUEST['searchInstance'] : NULL;
+$baseId = isset($_REQUEST['baseId']) ? $_REQUEST['baseId'] : $_REQUEST['akCategoryHandle'];
+$wrapId = $baseId.'_bulk_delete_form';
+
+$json = Loader::helper('json');
+$form = Loader::helper('form');
+
+Loader::model('attribute_key_category_item_permission');
 
 if ($_REQUEST['task'] == 'delete') {
 	if (!ini_get('safe_mode')) {
 		@set_time_limit(0);
 	}
-	//$js = Loader::helper('json');
-	//$decoded = $js->decode($_REQUEST['json']);
+	$output = array('deleted'=>array());
 	$akc = AttributeKeyCategory::getByHandle($_REQUEST['akCategoryHandle']);
-	foreach($_REQUEST['akcID'] as $ID) {
-		$akci = $akc->getItemObject($ID);
-		// REALLY NEED TO CHECK PERMISSIONS HERE
-		$akci->delete(); 
+	foreach($_REQUEST['akciID'] as $ID) {
+		$akci = $akc->getItemObject($ID);		
+		$akcip = AttributeKeyCategoryItemPermission::get($akci);
+		if($akcip->canDelete()){
+			$output['deleted'][] = $akci->getID();
+			$akci->delete();		
+		}
 	}
+	echo $json->encode($output);
+	
 } else { ?>
-	<form id="<?php echo $searchInstance ?>_delete" method="post" action="<?php echo $_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING'] ?>&task=delete">
-    	<?php //$form->hidden('akCategoryHandle', $_REQUEST['akCategoryHandle']) ?>
-        <?php //$form->hidden('searchInstance', $_REQUEST['akCategoryHandle']) ?>
-		<p>Are you sure you want to delete the selected items?</p>
+	<form id="<?php echo $wrapId ?>" method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>">
+		<?php echo $form->hidden('task', 'delete') ?>
+    	<?php echo $form->hidden('akCategoryHandle', $_REQUEST['akCategoryHandle']) ?>
+        <?php echo $form->hidden('baseId', $baseId) ?>
     
 		<?php
-            //$js = Loader::helper('json');
-            //$decoded = $js->decode($_REQUEST['json']);
-            $akc = AttributeKeyCategory::getByHandle($_REQUEST['akCategoryHandle']);
-            //foreach($decoded->akcIDs as $ID) {
-                //$akci = $akc->getItemObject($ID);
-            //}
-            $ih = Loader::helper('concrete/interface');
             
-            print $ih->button_js(t('Yes'), '$(\'#'.$searchInstance.'_delete\').submit();');
-            print $ih->button_js(t('No'), 'jQuery.fn.dialog.closeTop()');
+            $akc = AttributeKeyCategory::getByHandle($_REQUEST['akCategoryHandle']);
+            foreach($_REQUEST['akciID'] as $ID) {
+                $akci = $akc->getItemObject($ID);
+				echo $form->hidden('akciID[]', $akci->getID());
+            }            
         ?>
+        
+        <p>Are you sure you want to delete the selected items?</p>
+        
+        <?php
+        
+        	$ih = Loader::helper('concrete/interface');            
+            print $ih->submit(t('Yes'));
+            print $ih->button_js(t('No'), 'jQuery.fn.dialog.closeTop()', 'LEFT');
+		?>
         
         <script type="text/javascript">
             $(function(){
-                $("#<?php echo $searchInstance ?>_delete").ajaxForm({
+                $("#<?php echo $wrapId ?>").ajaxForm({
                     success:function(){
-                        $.fn.dialog.closeTop();	
-                        $("#<?php echo $searchInstance ?>_form").submit();
+                        $.fn.dialog.closeTop();
+                        $("#<?php echo $baseId ?>_form").submit();
                     }
                 });
             });
