@@ -1,6 +1,6 @@
 <?php
 defined('C5_EXECUTE') or die(_("Access Denied."));
-class AttributeKeyCategoryItemsAttributeTypeController extends NumberAttributeTypeController  {
+class AttributeKeyCategoryItemsAttributeTypeController extends DefaultAttributeTypeController  {
 
 	protected $searchIndexFieldDefinition = 'X NULL';
 	
@@ -102,7 +102,7 @@ class AttributeKeyCategoryItemsAttributeTypeController extends NumberAttributeTy
 	}
 	
 	protected function load() {
-
+		
 		$ak = $this->getAttributeKey();
 		if (!is_object($ak)) {
 			return false;
@@ -143,18 +143,20 @@ class AttributeKeyCategoryItemsAttributeTypeController extends NumberAttributeTy
 		$searchInstance = preg_replace("/(\W)+/", '_', $this->field('value'));
 		
 		
-		$akcis = Loader::helper('form/attribute_key_category_item_selector');
-		$akcis->addHeaderItems($this);	
-			
-		if (is_object($this->attributeValue)) {
-			$value = $this->getIdArray();
+		if (is_object($this->getAttributeValue())) {
+			$IDs = $this->getIdArray();
 		}
+
+		$akcis = Loader::helper('form/attribute_key_category_item_selector');
+		$akcis->addHeaderItems($this);			
 		
-		echo $akcis->selectItems($this->akCategoryHandle, $this->field('value').'[]', $value, 0, $searchInstance);
+		echo $form->hidden($this->field('akCategoryHandle'), $this->akCategoryHandle);
+		echo $form->hidden($this->field('max'), $this->max);
+		echo $akcis->selectItems($this->akCategoryHandle, $this->field('value').'[]', $IDs, 0, $searchInstance);
 	}
 	
-	// run when we call setAttribute(), instead of saving through the UI
 	public function saveValue($value) {
+
 		$this->load();
 		$i = 0;
 		$save = '';
@@ -165,13 +167,16 @@ class AttributeKeyCategoryItemsAttributeTypeController extends NumberAttributeTy
 					$save .= ', '.$ID;
 				} else {
 					$save = $ID;
-				}				
+				}
+				$i++;			
 			}
 		} else {
 			$save = $value;
 		}
+
 		$db = Loader::db();
 		$db->Replace('atDefault', array('avID' => $this->getAttributeValueID(), 'value' => $save), 'avID', true);
+
 	}
 	
 	public function saveForm($data) {
@@ -179,14 +184,13 @@ class AttributeKeyCategoryItemsAttributeTypeController extends NumberAttributeTy
 	}
 	
 	public function validateForm($data) {
-		foreach($data['value'] as $ID) {
-			$akc = AttributeKeyCategory::getByHandle($this->akCategoryHandle);
-			if(is_object($akc)) {
-				$return[] = $akc->getItemObject($ID);
-			}
-		}
-		if($return) {
-			return true;
+		$akc = AttributeKeyCategory::getByHandle($data['akCategoryHandle']);
+		if(!is_object($akc)) return t('%s category does not exist.', $this->akCategoryHandle);
+		
+		if(count($data['value'])) {
+			return TRUE;
+		}else{
+			return NULL;
 		}
 	}
 	

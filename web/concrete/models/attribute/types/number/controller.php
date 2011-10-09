@@ -46,7 +46,7 @@ class NumberAttributeTypeController extends AttributeTypeController  {
 	}
 	
 	public function validateForm($p) {
-		return $p['value'] != false;
+		return empty($p['value']) ? NULL : is_numeric($p['value']);
 	}
 
 	// run when we call setAttribute(), instead of saving through the UI

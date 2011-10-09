@@ -107,19 +107,17 @@ ccm_deleteAndRefeshSearch = function(URIComponents, searchInstance) {
 	 ========================================================= */
 	 
 	var ccm_widget = {
-		_getCreateOptions: function() {
+		_getCreateOptions: function(asString) {
 			/*var meta = $.metadata && this.element.metadata({type:"attr", name:"data-options-"+this.widgetName.toLowerCase()});
 			console.log(this.element[0].id, meta, this.element[0]);*/
 			//$.metadata() is acting funny right now (sometimes it grabs the json object and sometimes not)...gonna do a manual eval
-			var opts = this.element.attr("data-options-"+this.widgetName.toLowerCase());			
-			return opts ? eval("("+opts+")") : null;
+			var opts = this.element.attr("data-options-"+this.widgetName.toLowerCase()) || null,
+				obj = !asString && opts ? eval("("+opts+")") : null;			
+			return asString ? opts : obj;
 		},
 		bind:function(){
 			arguments[0] = (this.widgetEventPrefix+arguments[0]).toLowerCase();
 			this.element.bind.apply(this.element, arguments);
-		},
-		instance:function(){
-			return this;
 		}
 	};
 	$.widget("ccm.ccm_widget", ccm_widget);
@@ -280,8 +278,13 @@ ccm_deleteAndRefeshSearch = function(URIComponents, searchInstance) {
 			
 		},
 		
-		_beforeSearchSubmit:function(){
+		_beforeSearchSubmit:function(values){
 			this.disable();
+			
+			//Send the init args for the results
+			var jsInitArgsName = this.getSearchResultsInstance().element.attr("id")+"_jsInitArgs",
+				jsInitArgs = this.getSearchResultsInstance()._getCreateOptions(true);
+			values.push({name:jsInitArgsName, value:jsInitArgs});
 		},
 		_onSearchSuccess:function(resp){
 			
@@ -304,7 +307,7 @@ ccm_deleteAndRefeshSearch = function(URIComponents, searchInstance) {
 		},
 		
 		getSearchResultsInstance:function(){
-			return $("#"+this.getBaseId()+"_results").ccm_akcItemSearchResults("instance");
+			return $("#"+this.getBaseId()+"_results").data("ccm_akcItemSearchResults");
 		},
 		
 		getRelEl:function(sel){
@@ -485,7 +488,10 @@ ccm_deleteAndRefeshSearch = function(URIComponents, searchInstance) {
 					height: 350,
 					modal: false,
 					href: $(this).attr('href')+"&"+$.param(params),
-					title: ccmi18n.customizeSearch				
+					title: ccmi18n.customizeSearch,
+					onClose:function(){
+						I.getSearchFormInstance().element.submit();
+					}
 				});
 				return false;
 				
@@ -495,7 +501,7 @@ ccm_deleteAndRefeshSearch = function(URIComponents, searchInstance) {
 		
 		
 		getSearchFormInstance:function(){
-			return $("#"+this.getBaseId()+"_form").ccm_akcItemSearchForm("instance");
+			return $("#"+this.getBaseId()+"_form").data("ccm_akcItemSearchForm");
 		},
 		
 		items:function(ifSelected){
@@ -574,7 +580,7 @@ ccm_deleteAndRefeshSearch = function(URIComponents, searchInstance) {
 				mode:"choose_multiple"
 			},
 			itemCreateDialog:{
-				href:CCM_TOOLS_PATH+"/bricks/insert_dialog",
+				href:CCM_TOOLS_PATH+"/bricks/edit_dialog",
 				width:"80%",
 				height:"80%",
 				modal:false
@@ -705,7 +711,7 @@ ccm_deleteAndRefeshSearch = function(URIComponents, searchInstance) {
 				}				
 			});
 			
-			$("#"+baseId+"_insert_dialog").live(ccm_akcItemInsertDialogForm.widgetEventPrefix+"complete", function(evt, xhr){
+			$("#"+baseId+"_edit_dialog").live(ccm_akcItemEditDialogForm.widgetEventPrefix+"complete", function(evt, xhr){
 				if(xhr.status === 200){
 					jQuery.fn.dialog.closeTop();
 					var data = eval("("+xhr.responseText+")");
@@ -881,8 +887,8 @@ ccm_deleteAndRefeshSearch = function(URIComponents, searchInstance) {
 	
 	
 	
-	var ccm_akcItemInsertDialogForm = {
-		widgetEventPrefix:"ccm_akcItemInsertDialogForm_".toLowerCase(),
+	var ccm_akcItemEditDialogForm = {
+		widgetEventPrefix:"ccm_akcItemEditDialogForm_".toLowerCase(),
 		options:{},
 		_init:function(){
 			var I = this;
@@ -919,7 +925,7 @@ ccm_deleteAndRefeshSearch = function(URIComponents, searchInstance) {
 	};
 	
 	//Register the jQuery.ccm_akcItemInsertDialog widget
-	$.widget("ccm.ccm_akcItemInsertDialogForm", ccm_akcItemInsertDialogForm);
+	$.widget("ccm.ccm_akcItemEditDialogForm", ccm_akcItemEditDialogForm);
 	
 	
 	

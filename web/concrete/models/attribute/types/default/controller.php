@@ -53,7 +53,7 @@ class DefaultAttributeTypeController extends AttributeTypeController  {
 	}
 
 	public function validateForm($data) {
-		return $data['value'] != '';
+		return empty($data['value']) ? NULL : TRUE;
 	}
 
 	public function deleteValue() {

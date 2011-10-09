@@ -81,7 +81,8 @@ class DateTimeAttributeTypeController extends AttributeTypeController  {
 	}
 
 	public function validateForm($data) {
-		return $data['value'] != '';
+		$dt = Loader::helper('form/date_time');
+		return empty($data['value']) ? NULL : $dt->translate($data['value']) != FALSE;
 	}
 
 	public function getValue() {

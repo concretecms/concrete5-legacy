@@ -30,7 +30,7 @@ $wrapId = $baseId.'_search';
 						
 							Loader::element(
 								'bricks/search_results', 
-								array_merge($vars, array('jsInit'=>FALSE, 'itemClickAction'=>'choose'))
+								array_merge($vars, array('itemClickAction'=>'choose'))
 							);
 							
 						/*
@@ -53,11 +53,10 @@ $wrapId = $baseId.'_search';
 								baseId = "<?php echo $baseId ?>",
 								resultsSelector = "#"+baseId+"_results";
 							
-							$(resultsSelector).ccm_akcItemSearchResults({
-								item_choose:function(evt, data){
-									var id = data.$item.find("input[name=ID]").first().val();
-									location.href = "<?php echo View::url('/dashboard/bricks/edit/', $akCategoryHandle) ?>"+id;
-								}
+							
+							$(resultsSelector).live("ccm_akcitemsearchresults_item_choose", function(evt, data){
+								var id = data.$item.find("input[name=ID]").first().val();
+								location.href = "<?php echo View::url('/dashboard/bricks/edit/', $akCategoryHandle) ?>"+id;
 							});
 						});
 						</script>
@@ -67,10 +66,8 @@ $wrapId = $baseId.'_search';
                 </tr>
             </table>
         </div>
-    <? if (!isset($_REQUEST['refreshDialog'])) { ?> 
     </div>
-    <? } ?>
-</div>
+
 <?php } else { ?>
 <h1><span><?php echo $text->unhandle($akCategoryHandle).t(' Search')?></span></h1>
 <div class="ccm-dashboard-inner">

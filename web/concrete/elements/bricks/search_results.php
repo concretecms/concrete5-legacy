@@ -56,14 +56,19 @@ $jsInitArgs['searchInstance'] = $searchInstance;
 $jsInitArgs['baseId'] = $baseId;
 $jsInitArgs['itemClickAction'] = $itemClickAction;
 $jsInitArgs['itemDoubleClickAction'] = $itemDoubleClickAction;
-$jsInitArgsStr = htmlspecialchars($json->encode($jsInitArgs));
 
+
+if(isset($_REQUEST[$wrapId.'_jsInitArgs'])){
+
+	$jsInitArgsStr = urldecode($_REQUEST[$wrapId.'_jsInitArgs']);
+}else{
+	$jsInitArgsStr = ($json->encode($jsInitArgs));
+}
 ?>
 
-<div id="<?php echo $wrapId ?>" class="ccm-list-wrapper ccm-akci-search" data-options-ccm_akcitemsearchresults="<?php echo $jsInitArgsStr ?>">
+<div id="<?php echo $wrapId ?>" class="ccm-list-wrapper ccm-akci-search" data-options-ccm_akcitemsearchresults="<?php echo htmlspecialchars($jsInitArgsStr, ENT_QUOTES, "UTF-8", FALSE) ?>">
 
 <?php try {	
-
 if(isset($_REQUEST['fieldName'])) $fieldName = $_REQUEST['fieldName'];
 
 
@@ -94,7 +99,7 @@ if(isset($_REQUEST['ccm_order_by'])){
 }
 
 if(isset($_REQUEST['ccm_order_dir'])){
-	$sortDir =$_REQUEST['ccm_order_dir'];
+	$sortDir = $_REQUEST['ccm_order_dir'];
 }else{
 	$sortDir = $sortBy->getColumnDefaultSortDirection();	
 }
@@ -111,6 +116,7 @@ $akciListPage = $akciList->getPage();
 		$soargs = array();	
 		$soargs['akCategoryHandle'] = $akCategoryHandle;
 		$soargs['searchInstance'] = $searchInstance;
+		$soargs[$wrapId.'_jsInitArgs'] = urlencode($jsInitArgsStr);
 		$soargs['baseId'] = $baseId;
 
 		if($fieldName) $soargs['fieldName'] = $fieldName;

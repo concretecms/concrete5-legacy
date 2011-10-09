@@ -4,15 +4,15 @@
 $view = View::getInstance();
 $controller = $this->controller;
 
-$local = array_merge($this->controller->getSets(), $this->controller->getHelperObjects(), array(
+$vars = array_merge($this->controller->getSets(), $this->controller->getHelperObjects(), array(
 	'view'=>$view,
 	'controller'=>$controller
 ));
 
-if($akcip->canAdd()) {	 
+if($akcp->canAdd()) {	 
 	$df = Loader::helper('form/date_time');
 	?>
-	<form method="post" action="<?php echo $view->action($akCategoryHandle); ?>" id="new-object-form">	
+	<form method="post" action="" id="new-object-form">	
 			
         <table width="100%">
             <tbody>
@@ -20,17 +20,17 @@ if($akcip->canAdd()) {
                     <td valign="top">
                         <h1><a class="ccm-dashboard-header-option" style="right:130px;" href="<?php echo $view->url('/dashboard/bricks/structure/');?>">Global Attributes</a><a class="ccm-dashboard-header-option" href="<?php echo $view->url('/dashboard/bricks/structure/'.$akCategoryHandle)?>">Category Attributes</a><span><?php echo 'Insert New '.$text->unhandle($akCategoryHandle).t(' Item')?></span></h1>
 						<div class="ccm-dashboard-inner">
-							<?php Loader::element('bricks/insert/attributes', $local); ?>
+							<?php Loader::element('bricks/edit/attributes', $vars); ?>
                         </div>
                     </td>
                     <td valign="top">
                     	<h1><span><?php echo t('Owner')?></span></h1>
 						<div class="ccm-dashboard-inner">
-                        	<?php Loader::element('bricks/insert/owner', $local); ?>
+                        	<?php Loader::element('bricks/edit/owner', $vars); ?>
                         </div>
                         <h1><span><?php echo t('Permissions')?></span></h1>
                         <div class="ccm-dashboard-inner">
-                        	<?php Loader::element('bricks/insert/permissions', $local); ?>
+                        	<?php Loader::element('bricks/edit/permissions', $vars); ?>
                         </div>
                     </td>
                 </tr>

@@ -513,7 +513,9 @@ class AttributeKey extends Object {
 		$v = array($this->atID, $this->akID, $uID, $avDate);
 		$db->Execute('insert into AttributeValues (atID, akID,  uID, avDateAdded) values (?, ?, ?, ?)', $v);
 		$avID = $db->Insert_ID();
-		return AttributeValue::getByID($avID);
+		$av = AttributeValue::getByID($avID);
+		$av->setAttributeKey($this);
+		return $av;
 	}
 	
 	public function getAttributeKeyIconSRC() {
@@ -551,8 +553,7 @@ class AttributeKey extends Object {
 			if ($passedValue) {
 				$obj->saveAttribute($this, $passedValue);
 			} else {
-				$value = $at->controller->post();
-				$obj->saveAttribute($this, $value['value']);
+				$obj->saveAttributeForm($this);
 			}
 		} else {
 			$attributeValue = $obj;
@@ -561,7 +562,7 @@ class AttributeKey extends Object {
 			if ($passedValue) {
 				$at->controller->saveValue($passedValue);
 			} else {
-				$at->controller->saveForm($at->controller->post());
+				$this->saveAttributeForm($attributeValue);
 			}
 			$at->__destruct();
 			unset($at);
@@ -617,8 +618,24 @@ class AttributeKey extends Object {
 	/** 
 	 * Saves an attribute using its stock form.
 	 */
-	public function saveAttributeForm($obj) {
-		$this->saveAttribute($obj);
+	public function saveAttributeForm($obj, $formValue=NULL) {
+		$at = $this->getAttributeType();	
+		if(is_null($formValue)) $formValue = $at->controller->post();
+		
+		if(method_exists($obj, 'getAttributeValueObject')) {
+			if ($formValue) {
+				$obj->saveAttributeForm($this, $formValue);
+			} else {
+				$obj->saveAttributeForm($this, $formValue);
+			}
+		} else {
+			$attributeValue = $obj;
+			$at->controller->setAttributeKey($this);
+			$at->controller->setAttributeValue($attributeValue);
+			$at->controller->saveForm($formValue);
+			$at->__destruct();
+			unset($at);
+		}
 	}
 	
 	/** 

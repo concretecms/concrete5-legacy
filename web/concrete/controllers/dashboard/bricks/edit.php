@@ -15,7 +15,7 @@ class DashboardBricksEditController extends Controller {
 	
 	public function view($akCategoryHandle = NULL, $akciID = NULL) {
 		$req = Request::get();
-		
+
 		if(!$akciID && !$akCategoryHandle) {
 			if(!$req->isIncludeRequest()) $this->redirect('dashboard/bricks');
 			return;
@@ -41,6 +41,7 @@ class DashboardBricksEditController extends Controller {
 		
 		$this->set('akci', $akci);
 		$this->set('akCategoryHandle', $akCategoryHandle);
+		$this->set('owner', User::getByUserID($akci->uID));
 		
 		$akcsh = Loader::helper('attribute_key_category_settings');
 		$rs = $akcsh->getRegisteredSettings($akCategoryHandle);
@@ -62,7 +63,10 @@ class DashboardBricksEditController extends Controller {
 		$this->addHeaderItem(Loader::helper('html')->javascript('ccm.attributekeycategory.permissions.js'));
 		
 		Loader::model('attribute_key_category_item_permission');
-		$akcip = AttributeKeyCategoryItemPermission::get($akci);
+		$akcp = AttributeKeyCategoryItemPermission::get($akCategoryHandle);
+		$this->set('akcp', $akcp);
+		
+		$akcip = AttributeKeyCategoryItemPermission::get($akci);		
 		$this->set('akcip', $akcip);
 		
 		$this->set('ih', Loader::helper('concrete/interface'));
@@ -71,16 +75,24 @@ class DashboardBricksEditController extends Controller {
 		$this->set('category', $category);
 		$sets = $category->getAttributeSets();
 		$this->set('sets', $sets);
-		$this->set('delete_token', $this->token->generate('delete_akci_'.$akciID));
+		$this->set('delete_token', $this->token->generate('delete_akci_'.$akciID));		
 		
 		if($this->isPost()) {
 			$this->validate();
 			if(!$this->error->has()) {
 				$this->saveData($akci);
-				if(!$req->isIncludeRequest()) $this->redirect('/dashboard/bricks/search/'.$akCategoryHandle);
+				if(isset($_POST['ccm-submit-save-finish'])){
+					if(!$req->isIncludeRequest() && !$this->error->has()) $this->redirect('/dashboard/bricks/search/'.$akCategoryHandle);
+				}else{
+					if(!$req->isIncludeRequest() && !$this->error->has()) $this->redirect('/dashboard/bricks/edit/'.$akCategoryHandle.'/'.$akciID);
+				}
 			}
 		}
+
 	}
+
+
+	
 	
 	public function delete($akciID, $token) {
 		if($this->token->validate('delete_akci_'.$akciID, $token)) {
@@ -92,22 +104,26 @@ class DashboardBricksEditController extends Controller {
 		$this->redirect('/dashboard/bricks/search/'.$akCategoryHandle);
 	}
 	
-	private function saveData($item) {
+	protected function saveData($item, $post=NULL) {
+		if(is_null($post)) $post = $_POST;
+
 		//Save attributes
-		if($_POST['akID']) {
-			foreach(array_keys($_POST['akID']) as $akID) {
+		if($post['akID']) {
+			foreach(array_keys($post['akID']) as $akID) {
 				$ak = AttributeKey::getInstanceByID($akID);
-				$akPostData = $_POST['akID'][$akID];
-				
-				if(!empty($akPostData)){
-					$item->setAttribute($ak, $_POST['akID'][$akPostData]);
-				}else{					
-					$item->clearAttribute($ak);
-				}				
+				if(is_object($ak)){
+					$akPostData = $post['akID'][$akID];
+					$valid = $ak->validateAttributeForm($akPostData);					
+					if($valid === NULL){
+						$item->clearAttribute($ak);
+					}else if($valid === TRUE){
+						$item->saveAttributeForm($ak, $akPostData);
+					}
+				}			
 			}
 		}
 		//Save permissions
-		if($item instanceof AttributeKeyCategoryItem) {
+		if($item instanceof AttributeKeyCategoryItem && is_array($post['selectedEntity'])) {
 			$item->setOwner($post['uID']);
 			$post['akcipID'] = $item->getID();
 			
@@ -118,16 +134,22 @@ class DashboardBricksEditController extends Controller {
 		$item->update();
 	}
 
-	public function validate() {
+	public function validate($post=NULL) {
+		if(is_null($post)) $post = $_POST;
 		//Validate attributes
-		if($_POST['akID']) {			
-			foreach(array_keys($_POST['akID']) as $akID) {
+		if($_POST['akID']) {		
+			foreach(array_keys($post['akID']) as $akID) {
 				$ak = AttributeKey::getInstanceByID($akID);
-				if(!empty($_POST['akID']['value']) && is_object($ak) && !($valid = $ak->validateAttributeForm($_POST['akID'][$akID]))){
+				if(is_object($ak)){
+					$valid = $ak->validateAttributeForm($post['akID'][$akID]);
+					$msg = NULL;
 					if(is_string($valid)){
-						$this->error->add($valid, $ak->getAttributeKeyName());
-					}else{
-						$this->error->add(t('%s has an incorrect value.', $ak->getAttributeKeyName()));
+						$msg = $valid;
+					}else if($valid === FALSE){
+						$msg = t('%s has an incorrect value.', $ak->getAttributeKeyName());
+					}
+					if($msg){
+						$this->error->add($msg, 'ak_'.$akID);
 					}
 				}
 			}

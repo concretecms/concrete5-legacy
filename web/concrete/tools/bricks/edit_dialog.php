@@ -1,29 +1,41 @@
 <?php  defined('C5_EXECUTE') or die(_("Access Denied.")); 
 
 //Prep the controller
-$cnt = Loader::controller('/dashboard/bricks/insert');
-$cnt->on_start();
-$cnt->view($_REQUEST['akCategoryHandle']);
-$cnt->on_before_render();
+if($_REQUEST['akciID']){
+	$isNew = FALSE;
+	$cnt = Loader::controller('/dashboard/bricks/edit');
+	$cnt->on_start();
+	$cnt->view($_REQUEST['akCategoryHandle'], $_REQUEST['akciID']);
+	$cnt->on_before_render();
+}else{
+	$isNew = TRUE;
+	$cnt = Loader::controller('/dashboard/bricks/insert');
+	$cnt->on_start();
+	$cnt->view($_REQUEST['akCategoryHandle']);
+	$cnt->on_before_render();
+}
 
 //Prep the variables array for the elements/view
 $vars = array(
-	'akCategoryHandle' => $_REQUEST['akCategoryHandle'],
 	'view'=>View::getInstance(),
 	'controller'=>$cnt,
-	'baseId'=> isset($_REQUEST['baseId']) ? $_REQUEST['baseId'] : uniqid($_REQUEST['akCategoryHandle']),
-	'urls' => Loader::helper('concrete/urls')
+	'baseId'=> ($_REQUEST['baseId']) ? $_REQUEST['baseId'] : uniqid($_REQUEST['akCategoryHandle'])
 );
 
-$vars['wrapId'] = $vars['baseId'].'_insert_dialog';
+$vars['wrapId'] = $vars['baseId'].'_edit_dialog';
 
-$local = array_merge($cnt->getSets(), $cnt->getHelperObjects(), $vars);
-extract($local);
+$vars = array_merge($cnt->getSets(), $cnt->getHelperObjects(), $vars);
+extract($vars);
 
 $view->setController($controller);
 
-if(!$akcip->canAdd()){	
-	echo t('You are not allowed to add %s items.', $akCategoryHandle);
+if($isNew && !$akcp->canAdd()){
+	header("HTTP/1.1 401");	
+	echo t('You are not allowed to add %s items.', $text->unhandle($akCategoryHandle));
+	exit;
+}else if(!$isNew && !$akcip->canEdit()){
+	header("HTTP/1.1 401");
+	echo t('You are not allowed to edit %s item #%s.', $text->unhandle($akCategoryHandle), $akci->ID);
 	exit;
 }
 //echo '<pre>';
@@ -63,16 +75,16 @@ if($controller->isPost() && !$error->has()) {
     
 	<div class="ccm-dialog-tabs-content">
     	<h1>Attributes</h1>					
-		<?php Loader::element('bricks/insert/attributes', $local); ?>      
+		<?php Loader::element('bricks/edit/attributes', $vars); ?>      
     </div>
     
     <div class="ccm-dialog-tabs-content" style="display:none;">
     	
     	<h1><?php echo t('Owner')?></h1>
-        <?php Loader::element('bricks/insert/owner', $local); ?>
+        <?php Loader::element('bricks/edit/owner', $vars); ?>
     	
     	<h1><?php echo t('Permissions')?></h1>
-        <?php Loader::element('bricks/insert/permissions', $local); ?>
+        <?php Loader::element('bricks/edit/permissions', $vars); ?>
     </div>
     
     <hr/>
@@ -85,7 +97,7 @@ if($controller->isPost() && !$error->has()) {
     
     <script type="text/javascript">
         $(function(){
-            $("#<?php echo $wrapId ?>").ccm_akcItemInsertDialogForm();
+            $("#<?php echo $wrapId ?>").ccm_akcItemEditDialogForm();
         });
     </script>
 </form>

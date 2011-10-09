@@ -124,6 +124,8 @@ class FormAttributeKeyCategoryItemSelectorHelper {
 				}
 				$tmpl .= '</ul></div>';
 			}
+			//Form field
+			$tmpl .= '<input type="hidden" name="'.$fieldName.'" value="${id}" />';
 			$tmpl .= '</td>';
 		}
 		//$tmpl .= str_replace("%input%", '<input type="hidden" name="'.$fieldName.'" value="${id}" />', $itemActionsCell);
@@ -131,6 +133,7 @@ class FormAttributeKeyCategoryItemSelectorHelper {
 		
 	
 		//Add existing item rows
+		//TODO: Need to look at the fieldName in the request to see if values were submitted, in case we're in a postback
 		if(!empty($values)) {
 			foreach($values as $akciId) {
 				$akci = $akc->getItemObject($akciId);
