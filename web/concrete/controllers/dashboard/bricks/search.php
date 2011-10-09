@@ -27,8 +27,8 @@ class DashboardBricksSearchController extends Controller {
 		
 		
 		Loader::model('attribute_key_category_item_permission');
-		$akcip = AttributeKeyCategoryItemPermission::get($akCategoryHandle);
-		$this->set('akcip', $akcip);
+		$akcp = AttributeKeyCategoryItemPermission::get($akCategoryHandle);
+		$this->set('akcp', $akcp);
 		
 		
 		$this->set('text', $text = Loader::helper('text'));
@@ -39,8 +39,10 @@ class DashboardBricksSearchController extends Controller {
 		$rs = $akcsh->getRegisteredSettings($akCategoryHandle);
 		$this->set('rs', $rs);
 		
-		if($akcip->canSearch()) {
-			$this->addHeaderItem($html->javascript('jquery.tmpl.js'));	
+		if($akcp->canSearch()) {
+			$this->addHeaderItem($html->javascript('jquery.ui.js'));			
+			$this->addHeaderItem($html->javascript('jquery.metadata.js'));	
+			$this->addHeaderItem($html->javascript('jquery.tmpl.js'));
 			$this->addHeaderItem($html->javascript('ccm.attributekeycategory.js'));
 			
 			$columns = $this->getResultsColumns($akCategoryHandle, $searchInstance);

@@ -7,39 +7,60 @@ $u = new User();
 
 if(!isset($itemActions)){
 	$itemActions = array(
-		'choose'=>t('Choose'),
-		'properties'=>t('Edit Properties'),
-		'delete'=>t('Delete')
+		'context'=>array(
+			'choose'=>array(
+				'label'=>t('Choose'),
+				'icon'=>ASSETS_URL_IMAGES.'/icons/star_grey.png'
+			),
+			'properties'=>array(
+				'label'=>t('Properties'),
+				'icon'=>ASSETS_URL_IMAGES.'/icons/edit_small.png',
+				'can'=>'write'
+			),
+			'delete'=>array(
+				'label'=>t('Delete'),
+				'icon'=>ASSETS_URL_IMAGES.'/icons/remove.png',
+				'can'=>'delete'
+			)
+		),
+		'bulk'=>array(
+			'choose'=>array(
+				'label'=>t('Choose')
+			),
+			'properties'=>array(
+				'label'=>t('Properties'),
+				'can'=>'write'
+			),
+			'delete'=>array(
+				'label'=>t('Delete'),
+				'can'=>'delete'
+			),
+		)
 	);
-} 
-if(!isset($bulkActions)){
-	$bulkActions = array(
-		'choose'=>t('Choose'),
-		'properties'=>t('Edit Properties'),
-		'delete'=>t('Delete')
-	);
 }
-if(!isset($itemActionPerms)){
-	$itemActionPerms = array(
-		'choose'=>'read',
-		'properties'=>'edit',
-		'delete'=>'delete'
-	);
+
+if(!isset($itemClickAction)){
+	$itemClickAction = 'context';
 }
-foreach($itemActions as $label=>$action){
-	if(!$akcip->can($itemActionPerms[$action])){
-		unset($itemActions[$label]);	
-	}
+if(!isset($itemDoubleClickAction)){
+	$itemDoubleClickAction = 'choose';
 }
-foreach($bulkActions as $label=>$action){
-	if(!$akcip->can($itemActionPerms[$action])){
-		unset($itemActions[$label]);	
-	}
-}
+
+
+
+//Prep the widget options for the wrapper
+$json = Loader::helper('json');
+
+$jsInitArgs['akcHandle'] = $akCategoryHandle;
+$jsInitArgs['searchInstance'] = $searchInstance;
+$jsInitArgs['baseId'] = $baseId;
+$jsInitArgs['itemClickAction'] = $itemClickAction;
+$jsInitArgs['itemDoubleClickAction'] = $itemDoubleClickAction;
+$jsInitArgsStr = htmlspecialchars($json->encode($jsInitArgs));
 
 ?>
 
-<div id="<?php echo $wrapId ?>" class="ccm-list-wrapper ccm-akci-search">
+<div id="<?php echo $wrapId ?>" class="ccm-list-wrapper ccm-akci-search" data-options-ccm_akcitemsearchresults="<?php echo $jsInitArgsStr ?>">
 
 <?php try {	
 
@@ -79,23 +100,19 @@ if(isset($_REQUEST['ccm_order_dir'])){
 }
 
 //Not sure why the DatabaseItemList we get from the controller isn't already sorted correctly. Seems to work fine for Collection, User, and File.
-//TODO: Need to figure out why the 
 $akciList->sortBy($sortBy->getColumnKey(), $sortDir);
 
 $akciListPage = $akciList->getPage();
 
 ?>
 	
-		<?php 
-		if (!isset($mode) || empty($mode)) {		
-			$mode = isset($_REQUEST['mode']) ? $_REQUEST['mode'] : 'admin';			
-		} 
+		<?php
 		
 		$soargs = array();	
 		$soargs['akCategoryHandle'] = $akCategoryHandle;
 		$soargs['searchInstance'] = $searchInstance;
 		$soargs['baseId'] = $baseId;
-		if($mode) $soargs['mode'] = $mode;
+
 		if($fieldName) $soargs['fieldName'] = $fieldName;
 		?>
 		
@@ -103,13 +120,17 @@ $akciListPage = $akciList->getPage();
 		<table border="0" cellspacing="0" cellpadding="0" width="100%">
 			<tr>
 				<td width="100%"><?php echo $akciList->displaySummary();?></td>
-				<?php if(!empty($bulkActions)) { ?>
+				<?php if(!empty($itemActions['bulk'])){ ?>
 				<td style="white-space: nowrap"><?php echo t('With Selected: ')?>&nbsp;</td>
 				<td align="right"><select id="<?php echo $wrapId ?>-list-multiple-operations" data-akCategoryHandle="<?php echo $akCategoryHandle; ?>" disabled>
 						<option value="">**</option>
-						<?php foreach($bulkActions as $action=>$label){
-							echo "<option value=\"$action\">$label</option>";
-						}?>
+						<?php 
+							foreach($itemActions['bulk'] as $actionKey=>$action){
+								if(!is_string($action['can']) || $akcp->can($action['can'])){
+									echo '<option value="'.$actionKey.'">'.$action['label'].'</option>';
+								}
+							}				
+						?>
 					</select></td>
 				<?php } ?>
 			</tr>
@@ -121,7 +142,7 @@ $akciListPage = $akciList->getPage();
 		<table border="0" cellspacing="0" cellpadding="0" id="<?php echo $wrapId ?>-list" class="ccm-results-list">
 			<tr>
 				<th width="20">
-					<?php if(!empty($bulkActions)){ ?>
+					<?php if(!empty($itemActions['bulk'])){ ?>
 					<input id="<?php echo $wrapId ?>-list-cb-all" type="checkbox" />
 					<?php } ?>
 				</th>
@@ -157,10 +178,6 @@ $akciListPage = $akciList->getPage();
 					}
 				}
 				
-				if ($mode == 'choose_one' || $mode == 'choose_multiple') {
-					$onLeftClick = 'ccm_triggerSelectAttributeKeyCategoryItem('.$akCategoryHandle.', $(this).closest("tr")); jQuery.fn.dialog.closeTop();';
-				}
-				
 				if (!isset($striped) || $striped == 'ccm-list-record-alt') {
 					$striped = '';
 				} else if ($striped == '') { 
@@ -170,10 +187,22 @@ $akciListPage = $akciList->getPage();
 				?>
 			<tr class="ccm-list-record <?php echo $striped ?>">
 				<td class="<?php echo $wrapId ?>-list-cb">
-					<?php if(!empty($bulkActions)){ ?>
+					<?php if(!empty($itemActions['bulk'])){ ?>
 					<input type="checkbox" name="ID" value="<?php echo $ID?>" />
 					<?php } ?>
-					
+					<?php if(!empty($itemActions['context'])){ ?>
+					<div class="ccm-menu item-actions" style="display:none">
+						<ul>
+						<?php foreach($itemActions['context'] as $actionKey=>$action){ 
+								if(!is_string($action['can']) || $akcp->can($action['can'])){
+							?>
+								<li><a data-action="<?php echo $actionKey ?>" class="<?php echo $actionKey ?>" href="javascript:;"><img src="<?php echo $action['icon'] ?>"/> <?php echo $action['label'] ?></a></li>							
+						<?php 
+								}
+							} ?>
+						</ul>
+					</div>
+					<? } ?>
 				</td>
 				<?php 
 				if(is_array($columns->getColumns())) foreach($columns->getColumns() as $col) { ?>
@@ -197,22 +226,15 @@ $akciListPage = $akciList->getPage();
 	
     
     
-    <?php
-		//Prep the jsInitArgs
-		$json = Loader::helper('json');
-		
-		$jsInitArgs['akcHandle'] = $akCategoryHandle;
-		$jsInitArgs['mode'] = $mode;
-		$jsInitArgs['searchInstance'] = $searchInstance;
-		$jsInitArgs['baseId'] = $baseId;
-		$jsInitArgsStr = $json->encode($jsInitArgs);
-	?>
+    <?php if($jsInit !== FALSE) { ?>
     
     <script type="text/javascript">
 		$(function(){
-			$("#<?php echo $wrapId ?>").ccm_akcItemSearchResults(<?php echo $jsInitArgsStr ?>);			
+			$("#<?php echo $wrapId ?>").ccm_akcItemSearchResults();			
 		});
 	</script>
+	
+	<?php } ?>
 
 <?php } catch (Exception $e) { ?>
 <h2><span style="color:red">Error</span></h2>

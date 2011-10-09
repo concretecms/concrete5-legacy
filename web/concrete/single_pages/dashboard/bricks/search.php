@@ -1,6 +1,6 @@
 <?php defined('C5_EXECUTE') or die(_("Access Denied."));
 
-if($akcip->canSearch()) {
+if($akcp->canSearch()) {
 
 $vars = array_merge($this->controller->getSets(), $this->controller->getHelperObjects(), array(
 	'controller'=>$this->controller,
@@ -30,7 +30,7 @@ $wrapId = $baseId.'_search';
 						
 							Loader::element(
 								'bricks/search_results', 
-								$vars
+								array_merge($vars, array('jsInit'=>FALSE, 'itemClickAction'=>'choose'))
 							);
 							
 						/*
@@ -52,15 +52,13 @@ $wrapId = $baseId.'_search';
 								akCategoryHandle = "<?php echo $akCategoryHandle ?>",
 								baseId = "<?php echo $baseId ?>",
 								resultsSelector = "#"+baseId+"_results";
-						
 							
-							
-							
-							$(resultsSelector).live("ccm_akcitemsearchresults_chooseitem", function(evt, data){
-								var id = data.$item.find("input[name=ID]").first().val();
-								location.href = "<?php echo View::url('/dashboard/bricks/edit/', $akCategoryHandle) ?>"+id;
+							$(resultsSelector).ccm_akcItemSearchResults({
+								item_choose:function(evt, data){
+									var id = data.$item.find("input[name=ID]").first().val();
+									location.href = "<?php echo View::url('/dashboard/bricks/edit/', $akCategoryHandle) ?>"+id;
+								}
 							});
-							
 						});
 						</script>
                         

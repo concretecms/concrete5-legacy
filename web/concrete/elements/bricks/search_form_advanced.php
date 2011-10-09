@@ -31,6 +31,15 @@ foreach($searchFieldAttributes as $ak) {
 	$searchFieldsAdditional[$ak->getAttributeKeyID()] = $ak->getAttributeKeyName();
 }
 $form = Loader::helper('form');
+
+
+$json = Loader::helper('json');
+$jsInitArgs['searchInstance'] = $searchInstance;
+$jsInitArgs['baseId'] = $baseId;
+
+$jsInitArgsStr = htmlspecialchars($json->encode($jsInitArgs));
+	
+	
 ?>
 <div id="<?php echo $wrapId ?>-field-base-elements" style="display: none">
 	<span class="ccm-search-option" search-field="onlyMine">
@@ -62,8 +71,8 @@ $form = Loader::helper('form');
 	
 </div>
 
-<?php if(!$_REQUEST['disableSubmit']) { ?>
-<form method="get" id="<?php echo $wrapId ?>" action="<?php echo REL_DIR_FILES_TOOLS_REQUIRED . '/bricks/search_results' ?>">
+
+<form method="get" id="<?php echo $wrapId ?>" action="<?php echo REL_DIR_FILES_TOOLS_REQUIRED . '/bricks/search_results' ?>" data-options-ccm_akcitemsearchform="<?php echo $jsInitArgsStr ?>">
 	<?php echo $form->hidden('searchInstance', $searchInstance) ?>
     <?php echo $form->hidden('baseId', $baseId) ?>
     <?php echo $form->hidden('akCategoryHandle', $akCategoryHandle) ?>
@@ -77,7 +86,7 @@ $form = Loader::helper('form');
 		<h2><?php echo t('Search')?></h2>
 	</div>
 	
-<?php } ?>
+
 	<div class="ccm-search-advanced-fields-inner">
 		<div class="ccm-search-field">
 			<table border="0" cellspacing="0" cellpadding="0">
@@ -234,27 +243,23 @@ $form = Loader::helper('form');
 			</div>
 		<?php $i++;}}?>		
 		</div>
-		<?php if(!$_REQUEST['disableSubmit']) { ?>
+		
 		<div id="ccm-search-fields-submit">
 			<?php echo $form->submit('ccm-'.$searchInstance.'-advanced-search-submit', 'Search')?>
 		</div>
-		<?php } ?>
+		
 	</div>
-<?php if(!$_REQUEST['disableSubmit']) { ?>
+
 </div>
 </form>	
 
 
 <?php
-	$json = Loader::helper('json');
-	$jsInitArgs['searchInstance'] = $searchInstance;
-	$jsInitArgs['baseId'] = $baseId;
-	
-	$jsInitArgsStr = $json->encode($jsInitArgs);
+	if($jsInit !== FALSE){
 ?>
 <script type="text/javascript">
 $(function(){
-	$("#<?php echo $wrapId ?>").ccm_akcItemSearchForm(<?php echo $jsInitArgsStr ?>);
+	$("#<?php echo $wrapId ?>").ccm_akcItemSearchForm();
 });
 </script>
 <?php } ?>

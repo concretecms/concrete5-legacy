@@ -16,7 +16,7 @@ $vars = array_merge($cnt->getSets(), $cnt->getHelperObjects(), array(
 
 extract($vars);
 
-if(!$akcip->canSearch()){
+if(!$akcp->canSearch()){
 	die(t('You do not have permission to search this category.'));
 }
 ?>

@@ -110,7 +110,7 @@ class FormAttributeKeyCategoryItemSelectorHelper {
 			if(is_array($itemActions['quick'])){
 				foreach($itemActions['quick'] as $actionKey=>$action){
 					if(is_string($action['can'])) $tmpl .= '{{if typeof _can === "undefined" || _can.'.$action['can'].'}}';
-					$tmpl .= '<a class="'.$actionKey.'" href="javascript:;"><img src="'.$action['icon'].'" title="'.$action['label'].'"/></a>';
+					$tmpl .= '<a class="'.$actionKey.'" data-action="'.$actionKey.'" href="javascript:;"><img src="'.$action['icon'].'" title="'.$action['label'].'"/></a>';
 					if(is_string($action['can'])) $tmpl .= '{{/if}}';
 				}
 			}
@@ -119,7 +119,7 @@ class FormAttributeKeyCategoryItemSelectorHelper {
 				$tmpl .= '<div class="ccm-menu item-actions" style="display:none;position:absolute;"><ul>';
 				foreach($itemActions['context'] as $actionKey=>$action){
 					if(is_string($action['can'])) $tmpl .= '{{if typeof _can === "undefined" || _can.'.$action['can'].'}}';
-					$tmpl .= '<a class="'.$actionKey.'" href="javascript:;">'.(is_string($action['icon']) ? '<img src="'.$action['icon'].'" alt="'.$action['label'].'"/> ' : '').$action['label'].'</a>';
+					$tmpl .= '<a class="'.$actionKey.'" data-action="'.$actionKey.'" href="javascript:;">'.(is_string($action['icon']) ? '<img src="'.$action['icon'].'" alt="'.$action['label'].'"/> ' : '').$action['label'].'</a>';
 					if(is_string($action['can'])) $tmpl .= '{{/if}}';
 				}
 				$tmpl .= '</ul></div>';
