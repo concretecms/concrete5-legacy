@@ -48,9 +48,9 @@ class ValidationStringsHelper {
 	 */
 	public function alphanum($field, $allow_spaces = false) {
 		if($allow_spaces) {
-			return !preg_match("/[^A-Za-z0-9 ]/", $field);
+			return !preg_match('/[^[:alpha:][:digit:] ]/u', utf8_encode($field));
 		} else {
-			return !preg_match('/[^A-Za-z0-9]/', $field);
+			return !preg_match('/[^[:alpha:][:digit:]]/u', utf8_encode($field));
 		}
 	}
 	
