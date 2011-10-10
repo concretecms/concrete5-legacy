@@ -126,8 +126,8 @@
 	}
 	?>
 	
-	<?=$form->hidden('uName', $_POST['uName'])?>
-	<?=$form->hidden('uPassword', $_POST['uPassword'])?>
+	<?=$form->hidden('uName', Loader::helper('text')->entities($_POST['uName']))?>
+	<?=$form->hidden('uPassword', Loader::helper('text')->entities($_POST['uPassword']))?>
 	<?=$form->hidden('uOpenID', $uOpenID)?>
 	<?=$form->hidden('completePartialProfile', true)?>
 
@@ -187,7 +187,7 @@
 	<?=$form->submit('submit', t('Sign In') . ' &gt;')?>
 	</div>
 	<div class="ccm-spacer">&nbsp;</div>
-	<? $rcID = isset($_REQUEST['rcID']) ? preg_replace('/<|>/', '', $_REQUEST['rcID']) : $rcID; ?>
+	<? $rcID = isset($_REQUEST['rcID']) ? Loader::helper('text')->entities($_REQUEST['rcID']) : $rcID; ?>
 	<input type="hidden" name="rcID" value="<?=$rcID?>" />
 </form>
 </div>

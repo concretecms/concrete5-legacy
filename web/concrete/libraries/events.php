@@ -76,6 +76,7 @@ class Events {
 	 * @param string $method name of the method that will be called
 	 * @param string $filename either a relative path to the DIR_BASE or an absolute path to file containing the class 
 	 * @param array $params that will be appended to the arguments of the method
+	 * $param int $priority
 	 * @return void
 	 */
 	public static function extend($event, $class, $method, $filename, $params = array()) {
@@ -85,8 +86,10 @@ class Events {
 			$class,
 			$method,
 			$filename,
-			$params
-		);	
+			$params,
+			$priority
+		);
+		self::sortByPriority();
 	}
 	
 	/** 
@@ -155,6 +158,32 @@ class Events {
 		// TODO only the return value returned by the last callback gets forwarded
 		return $eventReturn;
 	}
+
+	/**
+	 * Sorts registered events by priority
+	 * @return void
+	 */
+	protected static function sortByPriority() {
+		foreach(array_keys(self::$registeredEvents) as $event) {
+			usort(self::$registeredEvents[$event], 'Events::comparePriority');
+		}
+	}
+
+	/**
+	 * compare function to be used with usort
+	 * for sorting the events by priority
+	 * @param array $a
+	 * @param array $b
+	 * @return number|number|number
+	 */
+	public static function comparePriority($a, $b) {
+		if ($a['priority'] == $b['priority']) {
+			return 0;
+		}
+
+		return $a['priority'] < $b['priority'] ? -1 : 1;
+	}
+
 }
 
 

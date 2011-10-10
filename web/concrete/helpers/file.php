@@ -28,6 +28,10 @@ class FileHelper {
 	 */
 	protected $ignoreFiles = array('__MACOSX', DIRNAME_CONTROLLERS);
 	
+	public function reset() {
+		$this->ignoreFiles = array('__MACOSX', DIRNAME_CONTROLLERS);
+	}
+	
 	/** 
 	 * Returns the contents of a directory in an array.
 	 * @param string $directory Directory to get the contents of
@@ -110,6 +114,7 @@ class FileHelper {
 		header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
 		header("Cache-Control: private",false);
 		header("Content-Transfer-Encoding: binary");
+		header("Content-Encoding: plainbinary");  
 		
 		// This code isn't ready yet. It will allow us to no longer force download
 		

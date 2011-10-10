@@ -28,10 +28,29 @@ class MailHelper {
 	protected $template; 
 	protected $bodyHTML = false;
 	
+	
+	/**
+	 * this method is called by the Loader::helper to clean up the instance of this object
+	 * resets the class scope variables
+	 * @return void
+	*/
+	public function reset() {
+		$this->body = '';
+		$this->headers = array();
+		$this->to = array();
+		$this->from = array();
+		$this->data = array();
+		$this->subject = '';
+		$this->body = '';
+		$this->template; 
+		$this->bodyHTML = false;
+	}
+	
+	
 	/**
 	 * @todo documentation
-	 * @return Ambigous <Zend_Mail_Transport_Smtp, Zend_Mail>
-	 */
+	 * @return array <Zend_Mail_Transport_Smtp, Zend_Mail>
+	*/
 	public static function getMailerObject(){
 		Loader::library('3rdparty/Zend/Mail');
 		$response = array();

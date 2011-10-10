@@ -47,7 +47,7 @@
 		 * Loads a model from either an application, the site, or the core Concrete directory
 		 */
 		public function model($mod, $pkgHandle = null) {
-			
+
 			if (file_exists(DIR_MODELS . '/' . $mod . '.php')) {
 				require_once(DIR_MODELS . '/' . $mod . '.php');
 				return;
@@ -117,17 +117,30 @@
 			}
 		}
 
-		public function tool($file, $args = null) {
-			if (is_array($args)) {
-				extract($args);
-			}
-			if (file_exists(DIR_FILES_TOOLS . '/' . $file . '.php')) {
+		 /**
+		 * Loads a tool file from c5 or site
+		 * first checks if its in root/tools. 
+		 * If it isn't and pkgHandle is defined it checks in root/packages/pkghandle
+		 * If it isn't there and pkgHandle is defined it checks in root/concrete/packages/pkghandle
+		 * Finally it checks if its in root/concrete/tools
+		 */
+		public function tool($file, $args = null, $pkgHandle= null) {
+		   if (is_array($args)) {
+			   extract($args);
+		   }
+		   if (file_exists(DIR_FILES_TOOLS . '/' . $file . '.php')) {
 				include(DIR_FILES_TOOLS . '/' . $file . '.php');
-			} else if (file_exists(DIR_FILES_TOOLS_REQUIRED . '/' . $file . '.php')) {
+		   } else if($pkgHandle){
+			   if(file_exists(DIR_PACKAGES . '/' .$pkgHandle.'/'.DIRNAME_TOOLS.'/'. $file . '.php')){
+				   include(DIR_PACKAGES . '/' .$pkgHandle.'/'.DIRNAME_TOOLS.'/'. $file . '.php');
+			   }else{
+				   include(DIR_PACKAGES_CORE . '/' .$pkgHandle.'/'.DIRNAME_TOOLS.'/'. $file . '.php');
+			   }
+		   } else if(file_exists(DIR_FILES_TOOLS_REQUIRED . '/' . $file . '.php')) {
 				include(DIR_FILES_TOOLS_REQUIRED . '/' . $file . '.php');
 			}
 		}
-
+		
 		/** 
 		 * Loads a block's controller/class into memory. 
 		 * <code>
@@ -149,7 +162,7 @@
 					
 					if (file_exists(DIR_PACKAGES . '/' . $pkg . '/' . DIRNAME_BLOCKS . '/' . $bl . '/' . FILENAME_BLOCK_CONTROLLER)) {
 						require_once(DIR_PACKAGES . '/' . $pkg . '/' . DIRNAME_BLOCKS . '/' . $bl . '/' . FILENAME_BLOCK_CONTROLLER);		
-					} else if (file_exists(DIR_PACKAGES . '/' . $pkg . '/' . DIRNAME_BLOCKS . '/' . $bl . '/' . FILENAME_BLOCK_CONTROLLER)) {
+					} else if (file_exists(DIR_PACKAGES_CORE . '/' . $pkg . '/' . DIRNAME_BLOCKS . '/' . $bl . '/' . FILENAME_BLOCK_CONTROLLER)) {
 						require_once(DIR_PACKAGES_CORE . '/' . $pkg . '/' . DIRNAME_BLOCKS . '/' . $bl . '/' . FILENAME_BLOCK_CONTROLLER);
 					}
 				}
@@ -266,6 +279,10 @@
 
 	            $instances[$class] = new $class();
     	        $instance = $instances[$class];
+			}
+			
+			if(method_exists($instance,'reset')) {
+				$instance->reset();
 			}
 			
 			return $instance;
@@ -412,11 +429,13 @@
 			} else if ($item instanceof Block || $item instanceof BlockType) {
 				if (file_exists(DIR_FILES_BLOCK_TYPES . '/' . $item->getBlockTypeHandle() . '/' . FILENAME_BLOCK_CONTROLLER)) {
 					require_once(DIR_FILES_BLOCK_TYPES . "/" . $item->getBlockTypeHandle() . "/" . FILENAME_BLOCK_CONTROLLER);
-				} else if ($item->getPackageID() > 0 && file_exists(DIR_PACKAGES . '/' . $item->getPackageHandle() . '/' . DIRNAME_BLOCKS . '/' . $item->getBlockTypeHandle() . '/' . FILENAME_BLOCK_CONTROLLER)) {
-					require_once(DIR_PACKAGES . '/' . $item->getPackageHandle() . '/' . DIRNAME_BLOCKS . '/' . $item->getBlockTypeHandle() . '/' . FILENAME_BLOCK_CONTROLLER);
 				} else if (file_exists(DIR_FILES_BLOCK_TYPES_CORE . '/' . $item->getBlockTypeHandle() . '/' . FILENAME_BLOCK_CONTROLLER)) {
 					require_once(DIR_FILES_BLOCK_TYPES_CORE . "/" . $item->getBlockTypeHandle() . "/" . FILENAME_BLOCK_CONTROLLER);
-				}
+				} else if ($item->getPackageID() > 0 && file_exists(DIR_PACKAGES . '/' . $item->getPackageHandle() . '/' . DIRNAME_BLOCKS . '/' . $item->getBlockTypeHandle() . '/' . FILENAME_BLOCK_CONTROLLER)) {
+					require_once(DIR_PACKAGES . '/' . $item->getPackageHandle() . '/' . DIRNAME_BLOCKS . '/' . $item->getBlockTypeHandle() . '/' . FILENAME_BLOCK_CONTROLLER);
+				} else if ($item->getPackageID() > 0 && file_exists(DIR_PACKAGES_CORE . '/' . $item->getPackageHandle() . '/' . DIRNAME_BLOCKS . '/' . $item->getBlockTypeHandle() . '/' . FILENAME_BLOCK_CONTROLLER)) {
+					require_once(DIR_PACKAGES_CORE . '/' . $item->getPackageHandle() . '/' . DIRNAME_BLOCKS . '/' . $item->getBlockTypeHandle() . '/' . FILENAME_BLOCK_CONTROLLER);
+				} 
 				$class = Object::camelcase($item->getBlockTypeHandle()) . 'BlockController';
 				if (class_exists($class) && $item instanceof BlockType) {
 					$controller = new $class($item);
