@@ -2,34 +2,58 @@
 defined('C5_EXECUTE') or die(_("Access Denied."));
 class DashboardBricksSearchController extends Controller {
 	
+	//public $helpers = array('html','form','text');
+	
 	public function view($akCategoryHandle = NULL) {
-		if(!$akCategoryHandle) $this->redirect('dashboard/bricks');
+		$req = Request::get();
+		$this->set('request', $req);	
+		
+		if(!$akCategoryHandle){
+			if(!$req->isIncludeRequest()) $this->redirect('dashboard/bricks');
+			return;
+		}
+		$this->set('akCategoryHandle', $akCategoryHandle);
+		$searchInstance = $akCategoryHandle.'_search';
+		if (isset($_REQUEST['searchInstance'])) {
+			$searchInstance = $_REQUEST['searchInstance'];
+		}
+		$this->set('searchInstance', $searchInstance);
+		
+		$baseId = uniqid($searchInstance);
+		if(isset($_REQUEST['baseId'])){
+			$baseId = $_REQUEST['baseId'];
+		}
+		$this->set('baseId', $baseId);
+		
 		
 		Loader::model('attribute_key_category_item_permission');
-		$akcip = AttributeKeyCategoryItemPermission::get($akCategoryHandle);
-		$this->set('permission', $akcip->canSearch());
+		$akcp = AttributeKeyCategoryItemPermission::get($akCategoryHandle);
+		$this->set('akcp', $akcp);
 		
-		$this->set('akCategoryHandle', $akCategoryHandle);
-		$this->set('txt', Loader::helper('text'));
-		$this->set('form', Loader::helper('form'));
+		
+		$this->set('text', $text = Loader::helper('text'));
+		$this->set('form', $form = Loader::helper('form'));
+		$this->set('html', $html = Loader::helper('html'));
 		
 		$akcsh = Loader::helper('attribute_key_category_settings');
 		$rs = $akcsh->getRegisteredSettings($akCategoryHandle);
 		$this->set('rs', $rs);
 		
-		if($akcip->canSearch()) {
-			$searchInstance = $akCategoryHandle.time();
-			if (isset($_REQUEST['searchInstance'])) {
-				$searchInstance = $_REQUEST['searchInstance'];
-			}
-			$this->addHeaderItem(Loader::helper('html')->javascript('attribute_key_category.ui.js'));
-			$this->addHeaderItem('<script type="text/javascript">$(function(){ccm_setupAdvancedSearch(\''.$searchInstance.'\');});</script>');
-			$objectList = $this->getRequestedSearchResults($akCategoryHandle);
-			$objects = $objectList->getPage();
+		if($akcp->canSearch()) {
+			$this->addHeaderItem($html->javascript('jquery.ui.js'));			
+			$this->addHeaderItem($html->javascript('jquery.metadata.js'));	
+			$this->addHeaderItem($html->javascript('jquery.tmpl.js'));
+			$this->addHeaderItem($html->javascript('ccm.attributekeycategory.js'));
 			
-			$this->set('newObjectList', $objectList);		
-			$this->set('newObjects', $objects);		
-			$this->set('pagination', $objectList->getPagination());
+			$columns = $this->getResultsColumns($akCategoryHandle, $searchInstance);
+			$this->set('columns', $columns);
+			
+			$akciList = $this->getRequestedSearchResults($akCategoryHandle);
+			$akciListPage = $akciList->getPage();
+			
+			$this->set('akciList', $akciList);		
+			$this->set('akciListPage', $akciListPage);		
+			$this->set('pagination', $akciList->getPagination());
 		}
 			
 		$subnav = array(array(View::url('dashboard/bricks'), t('Categories')));
@@ -49,23 +73,24 @@ class DashboardBricksSearchController extends Controller {
 	
 	public function getRequestedSearchResults($akCategoryHandle, $sortBy = NULL) {
 		$akc = AttributeKeyCategory::getByHandle($akCategoryHandle);
-		$objectList = $akc->getItemList();
+		$akciList = $akc->getItemList();
+		$akciList->enableStickySearchRequest(true);
 		
 		if ($_GET['keywords'] != '') {
-			$objectList->filterByKeywords($_GET['keywords']);
-		}	
+			$akciList->filterByKeywords($_GET['keywords']);
+		}
 		
 		if($sortBy) {
-			$objectList->sortBy($sortBy->columnKey, $sortBy->defaultSortDirection);
+			$akciList->sortBy($sortBy->columnKey, $sortBy->defaultSortDirection);
 		}
 		
 		if(is_array($_REQUEST['selectedSearchField'])) {
-			$txt = Loader::helper('text');
+			
 			foreach($_REQUEST['selectedSearchField'] as $i => $item) {
 				// due to the way the form is setup, index will always be one more than the arrays
 				if ($item != '') {
 					if(is_numeric($item)) {
-						$className = $txt->camelcase($akCategoryHandle).'AttributeKey';
+						$className = $text->camelcase($akCategoryHandle).'AttributeKey';
 						if(class_exists($className)) {
 							$ak = new $className;
 							$ak = $ak->getByID($item);
@@ -76,7 +101,7 @@ class DashboardBricksSearchController extends Controller {
 						$cnt = $type->getController();
 						$cnt->setRequestArray($req);
 						$cnt->setAttributeKey($ak);
-						$cnt->searchForm($objectList);
+						$cnt->searchForm($akciList);
 					} else {
 						if(!empty($_REQUEST[$item])) {
 							$functionName = 'filterBy';
@@ -84,28 +109,28 @@ class DashboardBricksSearchController extends Controller {
 							switch($item) { 
 								case 'onlyMine':
 									$u = new User();
-									if(method_exists($objectList, 'filterByUserID')) {
-										$objectList->filterByUserID($u->getUserID());
-									} elseif(method_exists($objectList, 'filterByAuthorUID')) {
-										$objectList->filterByAuthorUID($u->getUserID());
-									} elseif(method_exists($objectList, 'filterByUserName')) {
-										$objectList->filterByUserName($u->getUserName());
+									if(method_exists($akciList, 'filterByUserID')) {
+										$akciList->filterByUserID($u->getUserID());
+									} elseif(method_exists($akciList, 'filterByAuthorUID')) {
+										$akciList->filterByAuthorUID($u->getUserID());
+									} elseif(method_exists($akciList, 'filterByUserName')) {
+										$akciList->filterByUserName($u->getUserName());
 									} else {
-										$objectList->filter('uID', $u->getUserID());
+										$akciList->filter('uID', $u->getUserID());
 									}
 									break;
 								case 'uID':
-									$objectList->filterByUserID($_REQUEST[$item]);
+									$akciList->filterByUserID($_REQUEST[$item]);
 									break;
 								default:
 									$functionName = 'filterBy';
 									$handled = Loader::helper('text')->uncamelcase($item);
 									$handled = explode("_", $handled);
 									foreach($handled as $word) $functionName .= ucwords($word);
-									if(method_exists($objectList, $functionName)){
-										call_user_func_array(array($objectList,$functionName), array($_REQUEST[$item]));
+									if(method_exists($akciList, $functionName)){
+										call_user_func_array(array($akciList,$functionName), array($_REQUEST[$item]));
 									} else {
-										$objectList->filter($item, '%'.$_REQUEST[$item].'%', 'LIKE');
+										$akciList->filter($item, '%'.$_REQUEST[$item].'%', 'LIKE');
 									}
 									break;
 							}
@@ -117,24 +142,24 @@ class DashboardBricksSearchController extends Controller {
 		if(is_array($_REQUEST['searchFilters'])) {
 			foreach($_REQUEST['searchFilters'] as $filter) {
 				if(is_numeric($filter['handle'])) {
-					$objectList->filterByAttribute(AttributeKey::getByID($filter['handle'])->getAttributeKeyHandle(), $filter['value'], $filter['comparison']);
+					$akciList->filterByAttribute(AttributeKey::getByID($filter['handle'])->getAttributeKeyHandle(), $filter['value'], $filter['comparison']);
 				} else {
 					if(!empty($filter['handle'])) {
 						$functionName = 'filterBy';
 						$handled = Loader::helper('text')->uncamelcase(v);
 						switch($filter['handle']) { 
 							case 'uID':
-								$objectList->filterByUserID($filter['value']);
+								$akciList->filterByUserID($filter['value']);
 								break;
 							default:
 								$functionName = 'filterBy';
 								$handled = Loader::helper('text')->uncamelcase($filter['handle']);
 								$handled = explode("_", $handled);
 								foreach($handled as $word) $functionName .= ucwords($word);
-								if(method_exists($objectList, $functionName)){
-									call_user_func_array(array($objectList,$functionName), array($filter['value']));
+								if(method_exists($akciList, $functionName)){
+									call_user_func_array(array($akciList,$functionName), array($filter['value']));
 								} else {
-									$objectList->filter($filter['handle'], '%'.$filter['value'].'%', 'LIKE');
+									$akciList->filter($filter['handle'], '%'.$filter['value'].'%', 'LIKE');
 								}
 								break;
 						}
@@ -142,14 +167,44 @@ class DashboardBricksSearchController extends Controller {
 				}
 			}
 		}
-		$req = $objectList->getSearchRequest();
+		$req = $akciList->getSearchRequest();
 		$this->set('searchRequest', $req);
 		
 		if ($_REQUEST['numResults']) {
-			$objectList->setItemsPerPage($_REQUEST['numResults']);
-		} elseif($objectList->getTotal()) {
-			$objectList->setItemsPerPage($objectList->getTotal());
+			$akciList->setItemsPerPage($_REQUEST['numResults']);
+		} elseif($akciList->getTotal()) {
+			$akciList->setItemsPerPage($akciList->getTotal());
 		}
-		return $objectList;
+		return $akciList;
+	}
+
+
+
+	public function getResultsColumns($akCategoryHandle, $searchInstance){
+		global $u;
+		Loader::model('attribute_key_category_item_list');
+		$akccs = new AttributeKeyCategoryColumnSet($akCategoryHandle);
+		$db = Loader::db();
+		$exists = $db->GetOne('SELECT columns FROM BricksCustomColumns WHERE searchInstance = ? AND uID = ? AND akCategoryHandle = ?', array($searchInstance, 0, $akCategoryHandle));
+		if($exists) {
+			$defaults = unserialize(urldecode($exists));
+			$columns = $defaults['columns'];
+		}
+		$exists = $db->GetOne('SELECT columns FROM BricksCustomColumns WHERE searchInstance = ? AND uID = ? AND akCategoryHandle = ?', array($searchInstance, $u->getUserID(), $akCategoryHandle));
+		if($exists) {
+			$defaults = unserialize(urldecode($exists));
+			$columns = $defaults['columns'];
+		} elseif(isset($_REQUEST['defaults'])) {
+			$defaults = unserialize(urldecode($_REQUEST['defaults']));
+			$columns = $defaults['columns'];
+		} elseif(isset($_REQUEST['defaults_'.$searchInstance])) {
+			$defaults = unserialize(urldecode($_REQUEST['defaults_'.$searchInstance]));
+			$columns = $defaults['columns'];
+		}
+		
+		if(is_string($columns)) $columns = unserialize(urldecode($columns));
+		if(!$columns) $columns = $akccs->getCurrent();
+		
+		return $columns;
 	}
 } ?>

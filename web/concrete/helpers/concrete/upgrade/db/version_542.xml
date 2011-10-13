@@ -243,5 +243,6 @@
       <key/>
     </field>
     <field name="akCategoryHandle" type="C" size="255"></field>
+	<field name="max" type="I"><unsigned/><default value="0"/></field>
   </table>
 </schema>

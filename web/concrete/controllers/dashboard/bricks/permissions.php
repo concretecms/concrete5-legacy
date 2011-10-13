@@ -4,7 +4,7 @@ class DashboardBricksPermissionsController extends Controller {
 
 	public function view($akCategoryHandle = NULL, $task = NULL) {
 		Loader::model('attribute_key_category_item_permission');
-		$this->addHeaderItem(Loader::helper('html')->javascript('attribute_key_category.permissions.js'));
+		$this->addHeaderItem(Loader::helper('html')->javascript('ccm.attributekeycategory.permissions.js'));
 		$this->token = Loader::helper('validation/token');
 		$this->set('ih', Loader::helper('concrete/interface'));
 		if(!$akCategoryHandle) {

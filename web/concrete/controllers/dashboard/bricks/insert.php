@@ -1,20 +1,21 @@
 <?php
 defined('C5_EXECUTE') or die(_("Access Denied."));
-class DashboardBricksInsertController extends Controller {
+
+require_once('edit.php');
+
+class DashboardBricksInsertController extends DashboardBricksEditController {
 	
-	public $helpers = array('html','form');
+	public $helpers = array('html','form','text');
 	
-	public function on_before_render() {
-		$this->set('error', $this->error);
-	}
 	
-	public function on_start() {
-		$this->error = Loader::helper('validation/error');
-		$this->token = Loader::helper('validation/token');
-	}
 	
 	public function view($akCategoryHandle = NULL) {
-		if(!$akCategoryHandle) $this->redirect('dashboard/bricks');
+		$req = Request::get();
+		if(!$akCategoryHandle){
+			if(!$req->isIncludeRequest()) $this->redirect('dashboard/bricks');
+		}else{
+			$this->set('akCategoryHandle', $akCategoryHandle);
+		}
 		
 		$akcsh = Loader::helper('attribute_key_category_settings');
 		$rs = $akcsh->getRegisteredSettings($akCategoryHandle);
@@ -31,62 +32,41 @@ class DashboardBricksInsertController extends Controller {
 			}
 		}
 		$this->set('subnav', $subnav);
-	
-		$this->addHeaderItem(Loader::helper('html')->javascript('attribute_key_category.permissions.js'));
+		$this->set('ih', Loader::helper('concrete/interface'));
+		
+		$this->addHeaderItem(Loader::helper('html')->javascript('ccm.attributekeycategory.js'));
+		$this->addHeaderItem(Loader::helper('html')->javascript('ccm.attributekeycategory.permissions.js'));
 		
 		Loader::model('attribute_key_category_item_permission');
-		$akcip = AttributeKeyCategoryItemPermission::get($akCategoryHandle);
-		$this->set('permission', $akcip->canAdd());
-		if($this->isPost() && $akcip->canAdd()) {
+		$akcp = AttributeKeyCategoryItemPermission::get($akCategoryHandle);
+		$this->set('akcp',$akcp);
+		
+		$owner = $_POST['uID'] && $akcp->canAdmin() ? User::getByUserID($_POST['uID']) : new User(); 
+		$this->set('owner', $owner);
+		
+		$this->set('attribs', AttributeKey::getList($akCategoryHandle));
+		$category = AttributeKeyCategory::getByHandle($akCategoryHandle);
+		$this->set('category', $category);
+		$sets = $category->getAttributeSets();
+		$this->set('sets', $sets);
+		
+		
+		if($this->isPost() && $akcp->canAdd()) {
 			$this->validate();
 			if(!$this->error->has()) {
 				Loader::model('attribute_key_category_item');
-				$akci = new AttributeKeyCategoryItem($akCategoryHandle);
-				$newObject = $akci->add();
-				$this->saveData($newObject);
-				$this->redirect('/dashboard/bricks/search/'.$akCategoryHandle);
+				$akcit = new AttributeKeyCategoryItem($akCategoryHandle);
+				$akci = $akcit->add($owner);
+				$this->set('akci', $akci);
+				$this->saveData($akci);
+				
+				if(!$req->isIncludeRequest()) $this->redirect('/dashboard/bricks/edit/'.$akCategoryHandle.'/'.$akci->ID);
+			}else{
+				header("HTTP/1.1 412");
+				
 			}
-		} else {
-			$this->set('ih', Loader::helper('concrete/interface'));
-			$this->set('txt', Loader::helper('text'));
-			$this->set('akCategoryHandle', $akCategoryHandle);
-			$this->set('attribs', AttributeKey::getList($akCategoryHandle));
-			$category = AttributeKeyCategory::getByHandle($akCategoryHandle);
-			$this->set('category', $category);
-			$sets = $category->getAttributeSets();
-			$this->set('sets', $sets);
-			
-			$form = Loader::helper('form');
-			$this->set('form', $form);
-			$this->addHeaderItem(Loader::helper('html')->javascript('attribute_key_category.ui.js'));
-			$searchInstance = $akCategoryHandle.time();
-			if (isset($_REQUEST['searchInstance'])) {
-				$searchInstance = $_REQUEST['searchInstance'];
-			}
-			$this->addHeaderItem('<script type="text/javascript">$(function(){ccm_setupAdvancedSearch(\''.$searchInstance.'\');});</script>');
 		}
 	}
 	
-	private function saveData($item) {
-		if($_POST['akID']) {
-			foreach(array_keys($_POST['akID']) as $akID) {
-				$ak = AttributeKey::getInstanceByID($akID);
-				$item->setAttribute($ak, $_POST['akID'][$akID]['value']);
-			}
-		}
-		
-		if($item instanceof AttributeKeyCategoryItem) {
-			$item->setOwner($post['uID']);
-			$post['akcipID'] = $item->getID();
-			
-			$akciph = Loader::helper('attribute_key_category_item_permissions');
-			$akciph->save($post);
-		}
-		
-		$item->reindex();
-	}
 	
-	private function validate() {
-		
-	}
 } ?>

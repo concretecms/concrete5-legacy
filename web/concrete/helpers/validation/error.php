@@ -25,13 +25,14 @@
 		 * @param Exception | string $e
 		 * @return void
 		 */
-		public function add($e) {
+		public function add($e, $handle=NULL) {
+			$key = $handle ? $handle : count($this->error);
 			if ($e instanceof ValidationErrorHelper) {
 				$this->error = array_merge($e->getList(), $this->error);			
 			} else if (is_object($e) && ($e instanceof Exception)) {
-				$this->error[] = $e->getMessage();
+				$this->error[$key] = $e->getMessage();
 			} else {
-				$this->error[] = $e;
+				$this->error[$key] = $e;
 			}
 		}
 		
@@ -47,8 +48,8 @@
 		 * Returns whether or not this error helper has more than one error registered within it.
 		 * @return bool
 		 */
-		public function has() {
-			return (count($this->error) > 0);
+		public function has($handle=NULL) {
+			return $handle ? array_key_exists($handle, $this->error) : (count($this->error) > 0);
 		}
 
 		/** 

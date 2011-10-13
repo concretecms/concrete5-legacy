@@ -28,7 +28,7 @@ class BricksBlockController extends BlockController {
 		$this->addHeaderItem(Loader::helper('html')->javascript('jquery.rating.js'));
 		$this->addHeaderItem(Loader::helper('html')->javascript('ccm.dialog.js'));
 		$this->addHeaderItem(Loader::helper('html')->javascript('ccm.search.js'));
-		$this->addHeaderItem(Loader::helper('html')->javascript('attribute_key_category.ui.js'));
+		$this->addHeaderItem(Loader::helper('html')->javascript('ccm.attributekeycategory.js'));
 	}
 	
 	function save($data) {

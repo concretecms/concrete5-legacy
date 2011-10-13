@@ -226,12 +226,13 @@ class SelectAttributeTypeController extends AttributeTypeController  {
 	public function validateForm($p) {
 		$this->load();
 		$options = $this->request('atSelectOptionID');
-		if ($this->akSelectAllowMultipleValues) {
+		if(empty($options)){
+			return NULL;
+		}else if ($this->akSelectAllowMultipleValues) {
 			return count($options) > 0;
 		} else {
-			if ($options[0] != false) {
-				return $options[0] > 0;
-			}
+			return count($options[0]) > 0;
+			
 		}
 		return false;
 	}

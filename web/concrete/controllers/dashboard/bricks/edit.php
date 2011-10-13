@@ -2,14 +2,29 @@
 defined('C5_EXECUTE') or die(_("Access Denied."));
 class DashboardBricksEditController extends Controller {
 	
+	public $helpers = array('html','form','text');
+	
+	public function on_before_render() {
+		$this->set('error', $this->error);
+	}
+	
 	public function on_start() {
 		$this->error = Loader::helper('validation/error');
 		$this->token = Loader::helper('validation/token');
 	}
 	
 	public function view($akCategoryHandle = NULL, $akciID = NULL) {
-		if(!$akciID && !$akCategoryHandle) $this->redirect('dashboard/bricks');
-		if(!$akciID && $akCategoryHandle) $this->redirect('dashboard/bricks/search/'.$akCategoryHandle);
+		$req = Request::get();
+
+		if(!$akciID && !$akCategoryHandle) {
+			if(!$req->isIncludeRequest()) $this->redirect('dashboard/bricks');
+			return;
+		}
+		if(!$akciID && $akCategoryHandle){
+			if(!$req->isIncludeRequest()) $this->redirect('dashboard/bricks/search/'.$akCategoryHandle);
+			return;
+		}
+		
 		if($akCategoryHandle) {
 			$akc = AttributeKeyCategory::getByHandle($akCategoryHandle);
 			$akci = $akc->getItemObject($akciID);
@@ -18,8 +33,15 @@ class DashboardBricksEditController extends Controller {
 			$akci = AttributeKeyCategoryItem::getByID($akciID);
 			$akCategoryHandle = $akci->akCategoryHandle;
 		}
+		
+		if(!is_object($akci)){
+			$this->error->add(t('Item #%s does not exist.', $akciID));
+			return;
+		}
+		
 		$this->set('akci', $akci);
 		$this->set('akCategoryHandle', $akCategoryHandle);
+		$this->set('owner', User::getByUserID($akci->uID));
 		
 		$akcsh = Loader::helper('attribute_key_category_settings');
 		$rs = $akcsh->getRegisteredSettings($akCategoryHandle);
@@ -37,38 +59,40 @@ class DashboardBricksEditController extends Controller {
 		}
 		$this->set('subnav', $subnav);
 		
-		$this->addHeaderItem(Loader::helper('html')->javascript('attribute_key_category.permissions.js'));
+		$this->addHeaderItem(Loader::helper('html')->javascript('ccm.attributekeycategory.js'));
+		$this->addHeaderItem(Loader::helper('html')->javascript('ccm.attributekeycategory.permissions.js'));
 		
 		Loader::model('attribute_key_category_item_permission');
-		$akcip = AttributeKeyCategoryItemPermission::get($akci);
-		$this->set('permission', $akcip->canWrite());
+		$akcp = AttributeKeyCategoryItemPermission::get($akCategoryHandle);
+		$this->set('akcp', $akcp);
+		
+		$akcip = AttributeKeyCategoryItemPermission::get($akci);		
+		$this->set('akcip', $akcip);
+		
+		$this->set('ih', Loader::helper('concrete/interface'));
+		$this->set('attribs', AttributeKey::getList($akCategoryHandle));
+		$category = AttributeKeyCategory::getByHandle($akCategoryHandle);
+		$this->set('category', $category);
+		$sets = $category->getAttributeSets();
+		$this->set('sets', $sets);
+		$this->set('delete_token', $this->token->generate('delete_akci_'.$akciID));		
+		
 		if($this->isPost()) {
 			$this->validate();
 			if(!$this->error->has()) {
 				$this->saveData($akci);
-				$this->redirect('/dashboard/bricks/search/'.$akCategoryHandle);
+				if(isset($_POST['ccm-submit-save-finish'])){
+					if(!$req->isIncludeRequest() && !$this->error->has()) $this->redirect('/dashboard/bricks/search/'.$akCategoryHandle);
+				}else{
+					if(!$req->isIncludeRequest() && !$this->error->has()) $this->redirect('/dashboard/bricks/edit/'.$akCategoryHandle.'/'.$akciID);
+				}
 			}
-		} else {
-			$this->set('ih', Loader::helper('concrete/interface'));
-			$this->set('txt', Loader::helper('text'));
-			$this->set('attribs', AttributeKey::getList($akCategoryHandle));
-			$category = AttributeKeyCategory::getByHandle($akCategoryHandle);
-			$this->set('category', $category);
-			$sets = $category->getAttributeSets();
-			$this->set('sets', $sets);
-			
-			$form = Loader::helper('form');
-			$this->set('form', $form);
-			$this->addHeaderItem(Loader::helper('html')->javascript('attribute_key_category.ui.js'));
-			$searchInstance = $akCategoryHandle.time();
-			if (isset($_REQUEST['searchInstance'])) {
-				$searchInstance = $_REQUEST['searchInstance'];
-			}
-			$this->addHeaderItem('<script type="text/javascript">$(function(){ccm_setupAdvancedSearch(\''.$searchInstance.'\');});</script>');
-			
-			$this->set('delete_token', $this->token->generate('delete_akci_'.$akciID));
 		}
+
 	}
+
+
+	
 	
 	public function delete($akciID, $token) {
 		if($this->token->validate('delete_akci_'.$akciID, $token)) {
@@ -80,15 +104,26 @@ class DashboardBricksEditController extends Controller {
 		$this->redirect('/dashboard/bricks/search/'.$akCategoryHandle);
 	}
 	
-	private function saveData($item) {
-		if($_POST['akID']) {
-			foreach(array_keys($_POST['akID']) as $akID) {
+	protected function saveData($item, $post=NULL) {
+		if(is_null($post)) $post = $_POST;
+
+		//Save attributes
+		if($post['akID']) {
+			foreach(array_keys($post['akID']) as $akID) {
 				$ak = AttributeKey::getInstanceByID($akID);
-				$item->setAttribute($ak, $_POST['akID'][$akID]['value']);
+				if(is_object($ak)){
+					$akPostData = $post['akID'][$akID];
+					$valid = $ak->validateAttributeForm($akPostData);					
+					if($valid === NULL){
+						$item->clearAttribute($ak);
+					}else if($valid === TRUE){
+						$item->saveAttributeForm($ak, $akPostData);
+					}
+				}			
 			}
 		}
-		
-		if($item instanceof AttributeKeyCategoryItem) {
+		//Save permissions
+		if($item instanceof AttributeKeyCategoryItem && is_array($post['selectedEntity'])) {
 			$item->setOwner($post['uID']);
 			$post['akcipID'] = $item->getID();
 			
@@ -99,8 +134,26 @@ class DashboardBricksEditController extends Controller {
 		$item->update();
 	}
 
-	public function validate() {
-		
+	public function validate($post=NULL) {
+		if(is_null($post)) $post = $_POST;
+		//Validate attributes
+		if($_POST['akID']) {		
+			foreach(array_keys($post['akID']) as $akID) {
+				$ak = AttributeKey::getInstanceByID($akID);
+				if(is_object($ak)){
+					$valid = $ak->validateAttributeForm($post['akID'][$akID]);
+					$msg = NULL;
+					if(is_string($valid)){
+						$msg = $valid;
+					}else if($valid === FALSE){
+						$msg = t('%s has an incorrect value.', $ak->getAttributeKeyName());
+					}
+					if($msg){
+						$this->error->add($msg, 'ak_'.$akID);
+					}
+				}
+			}
+		}
 	}
 		
 } ?>

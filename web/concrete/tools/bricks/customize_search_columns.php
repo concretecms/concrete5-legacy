@@ -10,6 +10,9 @@ if($u->isRegistered()) {
 	if($_REQUEST['persistantBID'] != 'undefined') $persistantBID = $_REQUEST['persistantBID'];
 	if(!$searchInstance) $searchInstance = 'block'.$persistantBID;
 	
+	$akcsh = Loader::helper('attribute_key_category_settings');
+	$rs = $akcsh->getRegisteredSettings($akCategoryHandle);		
+	
 	Loader::model('attribute_key_category_item_list');
 	$akcdca = new AttributeKeyCategoryAvailableColumnSet($akCategoryHandle);
 	if ($_POST['task'] == 'update_columns') {
@@ -67,16 +70,20 @@ if($u->isRegistered()) {
 		<h1><?=t('Choose Headers')?></h1>
 		
 		<?  
-			if(count($akcdca->getColumns())){
+		if(is_array($rs['standard_properties'])){
 		?>
 		<h2><?=t('Standard Properties')?></h2>
 		
-		<? foreach($akcdca->getColumns() as $col) { ?>
-	
+		<? 
+			foreach($rs['standard_properties'] as $sp) { ?>
+			
 			<div><?=$form->checkbox($col->getColumnKey(), 1, $columns->contains($col), array('style' => 'vertical-align: middle'))?> <label for="<?=$col->getColumnKey()?>"><?=$col->getColumnName()?></label></div>
 		
-		<?	}
-			}?>
+		<?
+			} 
+		
+		}
+		?>
 		
 		<h2><?=t('Additional Attributes')?></h2>
 		
@@ -136,9 +143,7 @@ if($u->isRegistered()) {
 			$("#ccm-<?=$searchInstance?>-advanced-search input[name=ccm_order_dir]").val(sortDirection);
 			$("#ccm-<?=$searchInstance?>-advanced-search input[name=ccm_order_by]").val(sortCol);
 			jQuery.fn.dialog.closeTop();
-			$("#ccm-<?=$searchInstance?>-advanced-search").ajaxSubmit(function(resp) {
-				ccm_parseAdvancedSearchResponse(resp, '<?=$searchInstance?>');
-			});
+			$("#<?=$searchInstance?>_form").submit();
 		});
 		return false;
 	}

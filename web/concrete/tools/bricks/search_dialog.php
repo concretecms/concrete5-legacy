@@ -1,45 +1,37 @@
 <?
 defined('C5_EXECUTE') or die("Access Denied.");
 
-/* permissions
-$tp = new TaskPermission();
-if (!$tp->canAccessUserSearch()) { 
-	die(t("You have no access to users."));
+//Prep the controller
+$cnt = Loader::controller('/dashboard/bricks/search');
+$cnt->on_start();
+$cnt->view($_REQUEST['akCategoryHandle']);
+$cnt->on_before_render();
+
+//Prep the variables array for the elements/view
+$vars = array_merge($cnt->getSets(), $cnt->getHelperObjects(), array(
+	'view'=>View::getInstance(),
+	'controller' => $cnt
+));
+
+
+extract($vars);
+
+if(!$akcp->canSearch()){
+	die(t('You do not have permission to search this category.'));
 }
-*/
-
-$searchInstance = $_REQUEST['akCategoryHandle'] . time();
-if (isset($_REQUEST['searchInstance'])) $searchInstance = $_REQUEST['searchInstance'];
-
-if (!isset($mode)) $mode = $_REQUEST['mode'];
-
 ?>
-<div id="ccm-<?=$searchInstance?>-search-overlay">
-	<table id="ccm-search-form-table" >
+<div id="ccm-<?php echo $baseId ?>-search-overlay">
+	<table width="100%">
 		<tr>
 			<td valign="top" class="ccm-search-form-advanced-col">
 				<?php
-					Loader::element(
-						'bricks/search_form_advanced', 
-						array(
-							'searchInstance' => $searchInstance,
-							'akCategoryHandle' => $_REQUEST['akCategoryHandle'], 
-							'akID' => $_REQUEST['akID']
-						)
-					);
+					Loader::element('bricks/search_form_advanced', $vars);
 				?>
 			</td>
 			<td valign="top" width="100%">
 				<?php
-					Loader::element(
-						'bricks/search_results', 
-						array(
-							'searchInstance' => $searchInstance,
-							'akCategoryHandle' => $_REQUEST['akCategoryHandle'], 
-							'akID' => $_REQUEST['akID']
-						)
-					);
-					?>
+					Loader::element('bricks/search_results',$vars);
+				?>
 			</td>
 		</tr>
 	</table>

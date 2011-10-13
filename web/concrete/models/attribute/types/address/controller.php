@@ -68,7 +68,11 @@ class AddressAttributeTypeController extends AttributeTypeController  {
 	}
 
 	public function validateForm($data) {
-		return ($data['address1'] != '' && $data['city'] != '' && $data['state_province'] != '' && $data['country'] != '' && $data['postal_code'] != '');	
+		if(empty($data['address1']) && empty($data['city']) && empty($data['state_province']) && empty($data['postal_code'])){
+			return NULL;
+		}else{
+			return (!empty($data['address1']) && !empty($data['city']) && !empty($data['state_province']) && !empty($data['country']) != '' && !empty($data['postal_code']));
+		}
 	}	
 	
 	public function getSearchIndexValue() {

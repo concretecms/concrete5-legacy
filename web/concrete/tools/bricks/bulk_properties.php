@@ -3,20 +3,22 @@
 $form = Loader::helper('form');
 Loader::model('attribute_key_category_item');
 
+$searchInstance = $_REQUEST['searchInstance'];
+
 $attribs = AttributeKey::getList($_REQUEST['akCategoryHandle']);
 
-$newObjects = array();
-if (is_array($_REQUEST['newObjectID'])) {
-	foreach($_REQUEST['newObjectID'] as $newObjectID) {
+$akcItems = array();
+if (is_array($_REQUEST['akciID'])) {
+	foreach($_REQUEST['akciID'] as $akciID) {
 		$akc = AttributeKeyCategory::getByHandle($_REQUEST['akCategoryHandle']);
-		$akci = $akc->getItemObject($newObjectID);
-		$newObjects[] = $akci;
+		$akci = $akc->getItemObject($akciID);
+		$akcItems[] = $akci;
 	}
 }
 
 if ($_POST['task'] == 'update_extended_attribute') {
 	$akc = AttributeKeyCategory::getByHandle($_POST['akCategoryHandle']);
-	foreach($newObjects as $akci) {
+	foreach($akcItems as $akci) {
 		$ak = AttributeKey::getInstanceByID($_POST['fakID']);
 		$akci->setAttribute($ak, $_POST['akID'][$_POST['fakID']]['value']);
 		$val = $akci->getAttributeValueObject($ak)->getValue('display');
@@ -29,7 +31,7 @@ if ($_POST['task'] == 'update_extended_attribute') {
 if ($_POST['task'] == 'clear_extended_attribute') {
 
 	$ak = AttributeKey::getInstanceByID($_POST['fakID']);
-	foreach($newObjects as $akci) {
+	foreach($akcItems as $akci) {
 		$akci->clearAttribute($ak);
 	}
 
@@ -39,12 +41,12 @@ if ($_POST['task'] == 'clear_extended_attribute') {
 
 
 function printAttributeRow($ak, $akCategoryHandle) {
-	global $newObjects, $form;
+	global $akcItems, $form;
 	
 	$value = '';
-	for ($i = 0; $i < count($newObjects); $i++) {
+	for ($i = 0; $i < count($akcItems); $i++) {
 		$lastValue = $value;
-		$noO = $newObjects[$i];
+		$noO = $akcItems[$i];
 		$vo = $noO->getAttributeValueObject($ak);
 		if (is_object($vo)) {
 			$value = $vo->getValue('display');
@@ -65,12 +67,12 @@ function printAttributeRow($ak, $akCategoryHandle) {
 	if ($ak->isAttributeKeyEditable()) { 
 	$type = $ak->getAttributeType();
 	$hiddenFIDfields='';
-	foreach($newObjects as $noO) {
+	foreach($akcItems as $noO) {
 		$ID = $noO->ID;
 		if(!$ID) {
 			eval('$ID = $noO->'.substr($akCategoryHandle, 0, 1).'ID;');
 		}
-		$hiddenfields.=' '.$form->hidden('newObjectID[]' , $ID).' ';
+		$hiddenfields.=' '.$form->hidden('akciID[]' , $ID).' ';
 	}	
 	
 	$html = '
@@ -140,4 +142,4 @@ if (!isset($_REQUEST['reload'])) { ?>
 <?php  } ?>
 <?php 
 $ih = Loader::helper("concrete/interface");
-print $ih->button_js(t('Close'), 'ccm_closeModalRefeshSearch(\''.$_REQUEST['searchInstance'].'\')', 'right'); ?>
+print $ih->button_js(t('Close'), (!empty($searchInstance) ? '$(\'#'.$searchInstance.'_form\').submit();' : '').'jQuery.fn.dialog.closeTop()', 'right'); ?>
