@@ -1000,9 +1000,9 @@ INSERT INTO atSelectOptionsSelected VALUES(40,1)
 
 INSERT INTO atSelectSettings VALUES(11,1,'display_asc',1);
 
-INSERT INTO btContentImage VALUES(8,4,0,0,0,'','')
- ,(11,2,0,0,0,'','')
- ,(13,1,0,0,0,'','');
+INSERT INTO btContentImage VALUES(8,4,0,0,0,'',0,'')
+ ,(11,2,0,0,0,'',0,'')
+ ,(13,1,0,0,0,'',0,'');
 
 INSERT INTO btContentLocal VALUES(4,'<h2>Sidebar</h2>\r\n<p>Everything about concrete5 is completely customizable through the CMS. This is a separate area from the main content on the homepage. You can&nbsp;<a title=\"Move blocks in concrete5\" href=\"http://www.concrete5.org/documentation/general-topics/blocks-and-areas\" target=\"_blank\">drag and drop blocks</a>&nbsp;like this around your layout.</p>\r\n<p>&nbsp;</p>')
  ,(5,'<h1>Welcome to concrete5 - an Open Source CMS</h1>\r\n<p>Content Management is easy with concrete5\'s in-context editing. Just&nbsp;<a title=\"Login\" href=\"{CCM:BASE_URL}/index.php/login\">login</a>&nbsp;and you can add and change things as you browse your site.&nbsp;</p>\r\n<p>Here\'s some videos you can watch learn how to:</p>\r\n<ul>\r\n<li><a title=\"In-context editing CMS\" href=\"http://www.concrete5.org/documentation/general-topics/in-context-editing/\">Edit</a>&nbsp;this page.</li>\r\n<li>Add a&nbsp;<a title=\"Add a page in concrete5\" href=\"http://www.concrete5.org/documentation/general-topics/add-a-page/\" target=\"_blank\">new page</a>.</li>\r\n<li>Add some basic functionality, like&nbsp;<a title=\"Add a simple form in concrete5\" href=\"http://www.concrete5.org/documentation/general-topics/add_a_form\" target=\"_blank\">a Form</a>.</li>\r\n<li><a title=\"add-on marketplace for concrete5\" href=\"http://www.concrete5.org/marketplace/how_to_install_add_ons_and_themes_/\" target=\"_blank\">Finding &amp; adding</a>&nbsp;more functionality and themes.</li>\r\n</ul>\r\n<p>We\'ve taken the liberty to build out the rest of this site with some sample content that will help you learn concrete5. Wander around a bit, or just goto the&nbsp;<a title=\"Sitemap\" href=\"{CCM:BASE_URL}/index.php/dashboard/sitemap/full/\">Dashboard &gt; Sitemap</a>&nbsp;and delete the parts you don\'t want quickly.</p>\r\n<p>&nbsp;</p>')
