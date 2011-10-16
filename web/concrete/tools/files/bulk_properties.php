@@ -16,6 +16,10 @@ $files = array();
 $extensions = array();
 $file_versions = array();
 
+if (!isset($_REQUEST['fID'])) {
+	die(t("Nothing selected"));
+}
+
 //load all the requested files
 if (is_array($_REQUEST['fID'])) {
 	foreach($_REQUEST['fID'] as $fID) {
