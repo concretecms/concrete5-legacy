@@ -1968,6 +1968,31 @@
       <col>uName</col>
     </index>
   </table>
+
+  <table name="UserSessions">
+    <field name="usID" type="I" size="10">
+       <KEY/>
+       <AUTOINCREMENT/>
+       <UNSIGNED/>
+    </field>
+       <field name="uID" type="I" size="10">
+       <UNSIGNED/>
+    </field>
+    <field name="sessionStart" type="T">
+      <NOTNULL/>
+      <DEFAULT value="0000-00-00 00:00:00"/>
+    </field>             
+    <field name="lastSeen" type="T">
+      <NOTNULL/>
+      <DEFAULT value="0000-00-00 00:00:00"/>
+    </field>             
+       <field name="ipAddress" type="C" size="40" />
+       <field name="userAgent" type="C" size="254" />
+       <field name="c5Session" type="C" size="40" />
+    <index name="index_uID">
+      <col>uID</col>
+    </index>
+  </table>
   
   <table name="UsersFriends">
     <field name="ufID" type="I" size="10">

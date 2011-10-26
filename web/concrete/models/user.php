@@ -1,6 +1,8 @@
 <?php
 defined('C5_EXECUTE') or die("Access Denied.");
 
+Loader::library('login/session_check');
+
 /**
  * @package Users
  * @author Andrew Embler <andrew@concrete5.org>
@@ -27,6 +29,8 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		public $superUser = false;
 		public $uTimezone = NULL;
 		protected $uDefaultLanguage = null;
+
+		protected $limiter;
 		
 		/**
 		 * @param int $uID
@@ -58,6 +62,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 					$_SESSION['uTimezone'] = $row['uTimezone'];
 					$_SESSION['uDefaultLanguage'] = $row['uDefaultLanguage'];
 					$nu->recordLogin();
+					$this->_limiter->updateSessionID();
 				}
 			}
 			return $nu;
@@ -66,8 +71,11 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		protected static function regenerateSession() {
 			$tmpSession = $_SESSION; 
 			session_write_close(); 
+			$oldSession = session_id();
 			setcookie(session_name(), session_id(), time()-100000);
-			session_id(sha1(mt_rand())); 
+			$newSession = sha1(mt_rand());
+			session_id($newSession);
+			//$this->_limiter->updateSessionID($newSession);
 			session_start(); 
 			$_SESSION = $tmpSession; 
 		}
@@ -90,23 +98,24 @@ defined('C5_EXECUTE') or die("Access Denied.");
 				$row = $db->GetRow("select uID, uIsActive from Users where uID = ? and uName = ?", array($_SESSION['uID'], $_SESSION['uName']));
 				$checkUID = $row['uID'];
 				if ($checkUID == $_SESSION['uID']) {
-					if (!$row['uIsActive']) {
-						return false;
-					}
+					if (!$row['uIsActive']) return USER_INACTIVE;
+					if (defined('ENABLE_CONCURRENT_SESSION_LIMIT') && !$this->_limiter->allowSession()) return USER_SESSION_DENIED;
 					$_SESSION['uOnlineCheck'] = time();
 					if (($_SESSION['uOnlineCheck'] - $_SESSION['uLastOnline']) > (ONLINE_NOW_TIMEOUT / 2)) {
 						$db = Loader::db();
 						$db->query("update Users set uLastOnline = {$_SESSION['uOnlineCheck']} where uID = {$this->uID}");
 						$_SESSION['uLastOnline'] = $_SESSION['uOnlineCheck'];
 					}
+					$this->_limiter->updateLastSeen();
 					return true;
 				} else {
-					return false;
+					return USER_INVALID;
 				}
 			}
 		}
 		
 		public function __construct() {
+			$this->_limiter = new SessionCheck();
 			$args = func_get_args();
 			
 			if (isset($args[1])) {
@@ -119,50 +128,43 @@ defined('C5_EXECUTE') or die("Access Denied.");
 					$_SESSION['uGroups'] = false;
 				}
 				$password = User::encryptPassword($password, PASSWORD_SALT);
-				$v = array($username, $password);
 				if (defined('USER_REGISTRATION_WITH_EMAIL_ADDRESS') && USER_REGISTRATION_WITH_EMAIL_ADDRESS == true) {
 					$q = "select uID, uName, uIsActive, uIsValidated, uTimezone, uDefaultLanguage from Users where uEmail = ? and uPassword = ?";
 				} else {
 					$q = "select uID, uName, uIsActive, uIsValidated, uTimezone, uDefaultLanguage from Users where uName = ? and uPassword = ?";
 				}
 				$db = Loader::db();
-				$r = $db->query($q, $v);
-				if ($r) {
-					$row = $r->fetchRow(); 
-					if ($row['uID'] && $row['uIsValidated'] === '0' && defined('USER_VALIDATE_EMAIL_REQUIRED') && USER_VALIDATE_EMAIL_REQUIRED == TRUE) {
-						$this->loadError(USER_NON_VALIDATED);
-					} else if ($row['uID'] && $row['uIsActive']) {
-						$this->uID = $row['uID'];
-						$this->uName = $row['uName'];
-						$this->uIsActive = $row['uIsActive'];
-						$this->uTimezone = $row['uTimezone'];
-						$this->uDefaultLanguage = $row['uDefaultLanguage'];
-						$this->uGroups = $this->_getUserGroups($args[2]);
-						if ($row['uID'] == USER_SUPER_ID) {
-							$this->superUser = true;
-						} else {
-							$this->superUser = false;
-						}
-						$this->recordLogin();
-						if (!$args[2]) {
-							User::regenerateSession();
-							$_SESSION['uID'] = $row['uID'];
-							$_SESSION['uName'] = $row['uName'];
-							$_SESSION['superUser'] = $this->superUser;
-							$_SESSION['uBlockTypesSet'] = false;
-							$_SESSION['uGroups'] = $this->uGroups;
-							$_SESSION['uTimezone'] = $this->uTimezone;
-							$_SESSION['uDefaultLanguage'] = $this->uDefaultLanguage;
-						}
-					} else if ($row['uID'] && !$row['uIsActive']) {
-						$this->loadError(USER_INACTIVE);
-					} else {
-						$this->loadError(USER_INVALID);
+				$r = $db->query($q, array($username, $password));
+				$row = $r->fetchRow(); 
+
+				$this->_limiter->setUserID($row['uID'], $row['uName']);
+				$state = $this->checkLoginErrors($row);
+
+				if($state === true) {
+					$this->uID = $row['uID'];
+					$this->uName = $row['uName'];
+					$this->uIsActive = $row['uIsActive'];
+					$this->uTimezone = $row['uTimezone'];
+					$this->uDefaultLanguage = $row['uDefaultLanguage'];
+					$this->uGroups = $this->_getUserGroups($args[2]);
+					if ($row['uID'] == USER_SUPER_ID) { $this->superUser = true; } else { $this->superUser = false; }
+					$this->recordLogin();
+					if (!$args[2]) {
+						User::regenerateSession();
+						$_SESSION['uID'] = $row['uID'];
+						$_SESSION['uName'] = $row['uName'];
+						$_SESSION['superUser'] = $this->superUser;
+						$_SESSION['uBlockTypesSet'] = false;
+						$_SESSION['uGroups'] = $this->uGroups;
+						$_SESSION['uTimezone'] = $this->uTimezone;
+						$_SESSION['uDefaultLanguage'] = $this->uDefaultLanguage;
+						$this->_limiter->createSession();
+						//updateSessionID();
 					}
 					$r->free();
-				} else {
-					$this->loadError(USER_INVALID);
 				}
+
+				if($state !== true) { $this->loadError($state); }
 			} else {
 				// then we just get session info
 				if (isset($_SESSION['uID'])) {
@@ -186,13 +188,24 @@ defined('C5_EXECUTE') or die("Access Denied.");
 				}
 			}
 			
+			$this->_limiter->setUserID($this->uID, $this->uName);
 			return $this;
 		}
-		
+
+		function checkLoginErrors($row) {
+			$needEmail = defined('USER_VALIDATE_EMAIL_REQUIRED') && USER_VALIDATE_EMAIL_REQUIRED == TRUE ? true : false;
+
+			if (!$row || !$row['uID']) return USER_INVALID;
+			if ($needEmail && $row['uIsValidated'] === '0') return USER_NON_VALIDATED;
+			if (!$row['uIsActive']) return USER_INACTIVE;
+			if (defined('ENABLE_CONCURRENT_SESSION_LIMIT') && !$this->_limiter->allowSession()) return USER_SESSION_DENIED;
+
+			return true;
+		} 
+
 		function recordLogin() {
 			$db = Loader::db();
 			$uLastLogin = $db->getOne("select uLastLogin from Users where uID = ?", array($this->uID));
-			
 			$db->query("update Users set uLastLogin = ?, uPreviousLogin = ?, uNumLogins = uNumLogins + 1 where uID = ?", array(time(), $uLastLogin, $this->uID));
 		}
 		
@@ -238,6 +251,8 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		}
 		
 		function logout() {
+			if (defined('ENABLE_CONCURRENT_SESSION_LIMIT')) $this->_limiter->deleteSession();
+
 			// First, we check to see if we have any collection in edit mode
 			$this->unloadCollectionEdit();
 			@session_unset();
@@ -510,5 +525,5 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			$r = $db->query($q);
 			return $r;
 		}
-				
+
 	}
