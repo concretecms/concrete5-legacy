@@ -37,6 +37,11 @@ class PageList extends DatabaseItemList {
 		}			
 	}
 	
+	public function filterBySelectAttribute($column, $value) {
+		$this->filterByAttribute($column, "%\n{$value}\n%", "like");
+	}
+
+	
 	public function ignorePermissions() {
 		$this->ignorePermissions = true;
 	}
