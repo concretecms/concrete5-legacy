@@ -141,6 +141,115 @@ class DateHelper {
 		}
 		return $timeRemaining;
 	}//end timeSince
+	
+	/**
+	 * A substitution for the native php strftime() function
+	 * that uses the C5 translation function t() for month names,
+	 * day names, am/pm name and preferred date formats
+	 * @author Patrick Heck <patrick@patrickheck.de>
+	 *
+	 * @param string $format uses the same format as strftime, see: http://www.php.net/manual/de/function.strftime.php
+	 * @param int $timestamp 
+	 * @param bool $recursive if true no deeper recursion will happen
+	 * @return string
+	 */
+	public function strftime($format,$timestamp=NULL,$recursive=false) {
+		if (!$timestamp) {
+			$timestamp = time();
+		}
+		setlocale(LC_ALL, LOCALE);
+		/* tokens that get replaced by localized name */
+		/* A full textual representation of the day */
+		$format = str_replace('%A', $this->intToDayname(date('w', $timestamp)),$format);
+		/* An abbreviated textual representation of the day */
+		$format = str_replace('%a', $this->intToDayname(date('w', $timestamp), true),$format);
+		/* Full month name, based on the locale */
+		$format = str_replace('%B', $this->intToMonthname(date('n', $timestamp)),$format); 
+		/* Abbreviated month name, based on the locale */
+		$format = str_replace('%b', $this->intToMonthname(date('n', $timestamp), true),$format);
+		/* lower-case 'am' or 'pm' based on the given time */
+		$format = str_replace('%P', $this->amPmToName(date('a', $timestamp)),$format);
+		/* UPPER-CASE 'AM' or 'PM' based on the given time */
+		$format = str_replace('%p', strtoupper($this->amPmToName(date('a', $timestamp))),$format);
+		/* tokens that get replaced by a pattern */
+		/* recursive calls can't use patterns to prevent endless loops */
+		if (!$recursive) {
+			/* Same as "%I:%M:%S %p" */
+			$format = str_replace('%r', $this->strftime('%I:%M:%S %p',$timestamp,true),$format);
+			/* Preferred date representation based on locale, without the time */
+			$format = str_replace('%x', $this->strftime(t('%m/%d/%Y'),$timestamp,true),$format);
+			/* Preferred time representation based on locale, without the date */
+			$format = str_replace('%X', $this->strftime(t('%H:%M'),$timestamp,true),$format); 
+		}
+		return strftime($format, $timestamp);		
+	}
+
+	/**
+	 * Get the localized month name from a number
+	 * @author Patrick Heck <patrick@patrickheck.de>
+	 *
+	 * @param int $month January = 1, December = 12
+	 * @param bool $short get short form of month
+	 * @return string
+	 */
+	public function intToMonthname($month,$short=false) {
+		if ($short) {
+			$format = "short";
+		} else {
+			$format = "long";
+		}
+		$monthNames = array( "long" => array(t("January"),t("February"),t("March"),t("April"),t("May"),t("June"),
+										 t("July"),t("August"),t("September"),t("October"),t("November"),t("December")),
+						 	 "short" => array(t("Jan"),t("Feb"),t("Mar"),t("Apr"),t("May"),t("Jun"),t("Jul"),t("Aug"),
+										 t("Sep"),t("Oct"),t("Nov"),t("Dec")));
+		$idx = intval($month,10)-1;
+		if (isset($monthNames[$format][$idx])) {
+			return $monthNames[$format][$idx];
+		} else {
+			return "";
+		}
+	}
+	
+	/**
+	 * Get the localized day name from a number
+	 * @author Patrick Heck <patrick@patrickheck.de>
+	 * 
+	 * @param int $day Sunday = 0, Saturday = 6
+	 * @param bool $short get short form of day
+	 * @return string
+	 */
+	public function intToDayname($day,$short=false) {
+		if ($short) {
+			$format = "short";
+		} else {
+			$format = "long";
+		}
+		$dayNames = array("long" => array(t("Sunday"),t("Monday"),t("Tuesday"),t("Wednesday"),t("Thursday"),
+										t("Friday"),t("Saturday")),
+						  "short" => array(t("Su"),t("Mo"),t("Tu"),t("We"),t("Th"),
+										t("Fr"),t("Sa")));
+		$idx = intval($day,10);
+		if (isset($dayNames[$format][$idx])) {
+			return $dayNames[$format][$idx];
+		} else {
+			return "";
+		}
+	}
+	
+	/**
+	 * Get the localized name of "am" or "pm"
+	 * @author Patrick Heck <patrick@patrickheck.de>
+	 *
+	 * @param string $ampm "am" or "pm"
+     * @return string
+	 */
+	public function amPmToName($ampm) {
+		if ($ampm == "am") {
+			return t("am");
+		} else {
+			return t("pm");
+		}
+	}
 
 }
 
