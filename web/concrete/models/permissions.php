@@ -895,7 +895,9 @@ class FileSetPermissions extends Permissions {
 			
 			$fsIDStr = 'fsID in (' . implode(',', $setIDs) . ')';
 		}
-		$_uID = ($u->getUserID() > -1) ? " or uID = " . $u->getUserID() : "";
+		
+		$user_id = $u->getUserID();
+		$_uID = !empty($user_id) ? " or uID = " . $user_id : "";
 		
 		$q = "select max(canAdmin) as canAdmin, max(canSearch) as canSearch, max(canRead) as canRead, max(canWrite) as canWrite, max(canAdd) as canAdd from FileSetPermissions where {$fsIDStr} and (gID in $inStr $_uID)";
 		$p = $db->GetRow($q);
@@ -941,7 +943,8 @@ class FilePermissions extends Permissions {
 			$groups = $u->getUserGroups();
 			
 			$inStr = '(' . implode(',', array_keys($groups)) . ')';
-			$_uID = ($u->getUserID() > -1) ? " or uID = " . $u->getUserID() : "";
+			$user_id = $u->getUserID();
+			$_uID = !empty($user_id) ? " or uID = " . $user_id : "";
 			$fID = $f->getFileID();
 			$p = $db->GetRow("select max(canAdmin) as canAdmin, max(canRead) as canRead, max(canSearch) as canSearch, max(canWrite) as canWrite from FilePermissions where fID = {$fID} and (gID in $inStr $_uID)");
 			$this->permissions = $p;
