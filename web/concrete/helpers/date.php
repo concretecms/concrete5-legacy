@@ -143,45 +143,97 @@ class DateHelper {
 	}//end timeSince
 	
 	/**
-	 * A substitution for the native php strftime() function
+	 * A substitute for the native php strftime() function
 	 * that uses the C5 translation function t() for month names,
 	 * day names, am/pm name and preferred date formats
+	 * It also re-implements tokens that are unsupported or
+	 * incompatible on Windows 
+	 * In addition to the strftime tokens, it also defines "%O" for
+	 * adding a ordinal suffix (st,nd,rd,th) 
 	 * @author Patrick Heck <patrick@patrickheck.de>
-	 *
+	 * @todo implement %g and %G
 	 * @param string $format uses the same format as strftime, see: http://www.php.net/manual/de/function.strftime.php
-	 * @param int $timestamp 
+	 * @param int $ts unix timestamp
 	 * @param bool $recursive if true no deeper recursion will happen
 	 * @return string
 	 */
-	public function strftime($format,$timestamp=NULL,$recursive=false) {
-		if (!$timestamp) {
-			$timestamp = time();
+	public function strftime($format,$ts=NULL,$recursive=false) {
+		if (!$ts) {
+			$ts = time();
 		}
 		setlocale(LC_ALL, LOCALE);
 		/* tokens that get replaced by localized name */
-		/* A full textual representation of the day */
-		$format = str_replace('%A', $this->intToDayname(date('w', $timestamp)),$format);
-		/* An abbreviated textual representation of the day */
-		$format = str_replace('%a', $this->intToDayname(date('w', $timestamp), true),$format);
-		/* Full month name, based on the locale */
-		$format = str_replace('%B', $this->intToMonthname(date('n', $timestamp)),$format); 
-		/* Abbreviated month name, based on the locale */
-		$format = str_replace('%b', $this->intToMonthname(date('n', $timestamp), true),$format);
-		/* lower-case 'am' or 'pm' based on the given time */
-		$format = str_replace('%P', $this->amPmToName(date('a', $timestamp)),$format);
-		/* UPPER-CASE 'AM' or 'PM' based on the given time */
-		$format = str_replace('%p', strtoupper($this->amPmToName(date('a', $timestamp))),$format);
+		$mapping = array(
+			/* A full textual representation of the day */
+			'%A' => $this->intToDayname(date('w', $ts)),
+			/* An abbreviated textual representation of the day */
+			'%a' => $this->intToDayname(date('w', $ts), true),
+			/* Full month name, based on the locale */
+			'%B' => $this->intToMonthname(date('n', $ts)), 
+			/* Abbreviated month name, based on the locale */
+			'%b' => $this->intToMonthname(date('n', $ts), true),
+			/* lower-case 'am' or 'pm' based on the given time */
+			'%P' => $this->amPmToName(date('a', $ts)),
+			/* UPPER-CASE 'AM' or 'PM' based on the given time */
+			'%p' => strtoupper($this->amPmToName(date('a', $ts))),
+			/* Ordinal sufix like "st", "nd", "rd", "th"
+			   inspired by http://de2.php.net/manual/en/function.strftime.php#104894
+			*/ 
+			'%O' => $this->ordinalSuffixToName(date('S', $ts))
+		);   
 		/* tokens that get replaced by a pattern */
 		/* recursive calls can't use patterns to prevent endless loops */
 		if (!$recursive) {
-			/* Same as "%I:%M:%S %p" */
-			$format = str_replace('%r', $this->strftime('%I:%M:%S %p',$timestamp,true),$format);
-			/* Preferred date representation based on locale, without the time */
-			$format = str_replace('%x', $this->strftime(t('%m/%d/%Y'),$timestamp,true),$format);
-			/* Preferred time representation based on locale, without the date */
-			$format = str_replace('%X', $this->strftime(t('%H:%M'),$timestamp,true),$format); 
+			$mapping = array_merge($mapping, array(
+				/* Same as "%I:%M:%S %p" */
+				'%r' => $this->strftime('%I:%M:%S %p',$ts,true),
+				/* Preferred date representation based on locale, without the time */
+				'%x' => $this->strftime(t('%m/%d/%Y'),$ts,true),
+				/* Preferred time representation based on locale, without the date */
+				'%X' => $this->strftime(t('%H:%M'),$ts,true)
+			)); 
 		}
-		return strftime($format, $timestamp);		
+		/* tokens that are missing/incompatible on win32 machines 
+		 * see: http://de2.php.net/manual/en/function.strftime.php#53340 */
+		$mapping = array_merge($mapping, array(
+			/* Two digit representation of the century (year divided by 100, truncated to an integer) */
+			'%C' => sprintf("%02d", date("Y", $ts) / 100),
+			/* Same as "%m/%d/%y" */
+			'%D' => '%m/%d/%y',
+			/* Day of the month, with a space preceding single digits. */
+			'%e' => sprintf("%' 2d", date("j", $ts)),
+			/* Same as "%Y-%m-%d" (commonly used in database datestamps) */
+			'%F' => '%Y-%m-%d',
+			/* Abbreviated month name, based on the locale (an alias of %b) */
+			'%h' => '%b',
+			/* Hour in 12-hour format, with a space preceeding single digits */
+			'%l' => sprintf("%' 2d", date("g", $ts)),
+			/* A newline character ("\n") */
+			'%n' => "\n",
+			/* Same as "%H:%M" */
+			'%R' => date("H:i", $ts),
+			/* Unix Epoch Time timestamp (same as the time() function) */
+			'%s' => $ts, 
+			/* A Tab character ("\t") */
+			'%t' => "\t",
+			/* Same as "%H:%M:%S" */
+			'%T' => '%H:%M:%S',
+			/* ISO-8601 numeric representation of the day of the week */
+			'%u' => ($w = date("w", $ts)) ? $w : 7,
+			/* ISO-8601:1988 week number of the given year, starting with the first week of the
+			 * year with at least 4 weekdays, with Monday being the start of the week */
+			'%V' => $this->weekIsonumber($ts),
+			/* The time zone abbreviation  */
+			'%z' => date('T',$ts),
+			/* The time zone offset  */
+			'%Z' => date('O',$ts)
+		));
+		$format = str_replace(
+			array_keys($mapping),
+			array_values($mapping),
+			$format
+		);
+		return strftime($format, $ts);		
 	}
 
 	/**
@@ -190,7 +242,7 @@ class DateHelper {
 	 *
 	 * @param int $month January = 1, December = 12
 	 * @param bool $short get short form of month
-	 * @return string
+	 * @return string name of month according to current locale
 	 */
 	public function intToMonthname($month,$short=false) {
 		if ($short) {
@@ -216,7 +268,7 @@ class DateHelper {
 	 * 
 	 * @param int $day Sunday = 0, Saturday = 6
 	 * @param bool $short get short form of day
-	 * @return string
+	 * @return string name of day according to current locale
 	 */
 	public function intToDayname($day,$short=false) {
 		if ($short) {
@@ -241,7 +293,7 @@ class DateHelper {
 	 * @author Patrick Heck <patrick@patrickheck.de>
 	 *
 	 * @param string $ampm "am" or "pm"
-     * @return string
+	 * @return string localized name of "am" or "pm"
 	 */
 	public function amPmToName($ampm) {
 		if ($ampm == "am") {
@@ -249,6 +301,58 @@ class DateHelper {
 		} else {
 			return t("pm");
 		}
+	}
+	
+	/**
+	 * Get the localized name of an ordinal suffix
+	 * @author Patrick Heck <patrick@patrickheck.de>
+	 *
+	 * @param string $ordinalSuffix "st", "nd", "rd" or "th"
+	 * @return string localized name of an ordinal suffix
+	 */
+	public function ordinalSuffixToName($ordinalSuffix) {
+		switch ($ordinalSuffix) {
+			case "st":
+				return t("st");
+			case "nd":
+				return t("nd");
+			case "rd":
+				return t("rd");
+			default:
+				return t("th");
+		}
+	}
+	
+	/** 
+	 * When strftime("%V") fails, some unoptimized workaround
+	 * http://en.wikipedia.org/wiki/ISO_8601 : week 1 is "the week with the year's first Thursday in it (the formal ISO definition)"
+	 * @link http://de2.php.net/manual/en/function.strftime.php#100385
+	 * 
+	 * @param int $time unix timestamp
+	 * @returns string week of the year according to ISO-8601:1988
+	 */
+	function weekIsonumber ($time) {	
+		$year = strftime("%Y", $time);
+	
+		$first_day = strftime("%w", mktime(0, 0, 0, 1, 1, $year));
+		$last_day = strftime("%w", mktime(0, 0, 0, 12, 31, $year));
+		   
+		$number = $isonumber = strftime("%W", $time);
+	
+		// According to strftime("%W"), 1st of january is in week 1 if and only if it is a monday
+		if ($first_day == 1)
+			$isonumber--;
+	
+		// 1st of january is between monday and thursday; starting (now) at 0 when it should be 1
+		if ($first_day >= 1 && $first_day <= 4)
+			$isonumber++;
+		else if ($number == 0)
+			$isonumber = $this->weekIsonumber(mktime(0, 0, 0, 12, 31, $year - 1));
+	
+		if ($isonumber == 53 && ($last_day == 1 || $last_day == 2 || $last_day == 3))
+			$isonumber = 1;
+	
+		return sprintf("%02d", $isonumber);
 	}
 
 }
