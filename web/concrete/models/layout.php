@@ -432,7 +432,7 @@ class LayoutPreset extends Object{
  	
 	static public function getList() {
 		$db = Loader::db();
-		$r = $db->Execute('select lp.* FROM LayoutPresets AS lp, Layouts AS l WHERE lp.layoutID=l.layoutID order by lpName asc');
+		$r = $db->_Execute('select lp.* FROM LayoutPresets AS lp, Layouts AS l WHERE lp.layoutID=l.layoutID order by lpName asc');
 		$presets = array();
 		while ($row = $r->FetchRow()) {
 			$layoutPreset = new LayoutPreset();
@@ -456,7 +456,7 @@ class LayoutPreset extends Object{
 	//Removes a preset. Does NOT remove the associated rule
 	public function delete() {
 		$db = Loader::db();
-		$db->Execute('delete from LayoutPresets where lpID = '.intval($this->lpID) );
+		$db->_Execute('delete from LayoutPresets where lpID = '.intval($this->lpID) );
 	}	 
 	
 	public function add($lpName, $layout) {

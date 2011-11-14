@@ -309,7 +309,7 @@ class Job extends Object {
 	 */
 	public static function clearLog() {
 		$db = Loader::db();
-		$db->Execute("delete from JobsLog");
+		$db->_Execute("delete from JobsLog");
 	}
 
 }

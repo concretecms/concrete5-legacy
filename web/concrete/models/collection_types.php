@@ -130,7 +130,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		public function getComposerPageTypes() {
 			$db = Loader::db();
 			$ctArray = array();
-			$r = $db->Execute('select ctID from ComposerTypes order by ctID asc');
+			$r = $db->_Execute('select ctID from ComposerTypes order by ctID asc');
 			while ($row = $r->FetchRow()) {
 				$ct = CollectionType::getByID($row['ctID']);
 				if (is_object($ct)) {

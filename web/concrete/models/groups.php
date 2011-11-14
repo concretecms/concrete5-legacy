@@ -31,7 +31,7 @@
 				$db = Loader::db();
 				$minGID = ($omitRequiredGroups) ? 2 : 0;
 				$q = "select gID from Groups where gID > $minGID order by gID asc";	
-				$r = $db->Execute($q);
+				$r = $db->_Execute($q);
 				while ($row = $r->FetchRow()) {
 					$g = Group::getByID($row['gID']);
 					$g->setPermissionsForObject($obj);
