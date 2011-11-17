@@ -1,5 +1,6 @@
 <? defined('C5_EXECUTE') or die("Access Denied."); 
 $h = Loader::helper('concrete/interface');
+$form = Loader::helper('form');
 ?>
 
 <style type="text/css">
@@ -117,11 +118,28 @@ $h = Loader::helper('concrete/interface');
 			$b1 = $h->submit(t('Save'), 'registration-type-form');
 			print $h->buttons($b1);
 			?>
-			<br class="clear" />	   
+			<br class="clear" />
 		</div>
-    </form> 	
-    
-   
+    </form>
+
+		<form method="post" id="registration-type-form" action="<?=$this->url('/dashboard/users/registration', 'update_gravatar_settings')?>">
+		<h1><span><?=t('Gravatar Settings')?></span></h1>
+		<div class="ccm-dashboard-inner">
+			<div class="ccm-dashboard-checkbox"><input type="checkbox" name="enable_gravatar_fallback" value="1" style="vertical-align: middle" <? if ($enable_gravatar_fallback) { ?> checked <? } ?> /> <?=t('Fall back to <a href="%s" target="_blank">Gravatar</a> if the user has not uploaded an avatar', 'http://gravatar.com')?></div>
+			<br />
+			<?=$form->select('gravatar_max_level', $gravatar_level_options, $gravatar_max_level);?> <?=t('Maximum Gravatar Rating')?>
+			<br />
+			<?=$form->select('gravatar_image_set', $gravatar_set_options, $gravatar_image_set);?> <?=t('Gravatar Image Set')?>
+			<br />
+			<?
+			$b1 = $h->submit(t('Save'), 'update_gravatar_settings');
+			print $h->buttons($b1);
+			?>
+			<br class="clear" />
+		</div>
+		</form>
+
+
  <script type="text/javascript">
  $(function() {
  	var val = $("input[name=registration_type]:checked").val();

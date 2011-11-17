@@ -21,6 +21,11 @@ class DashboardUsersRegistrationController extends Controller {
 		$this->set('login_redirect_cid', intval(Config::get('LOGIN_REDIRECT_CID')) ); 
 		$adminToDash=Config::get('LOGIN_ADMIN_TO_DASHBOARD');
 		$this->set('site_login_admin_to_dashboard', intval($adminToDash) );				
+		$this->set('enable_gravatar_fallback', Config::get('GRAVATAR_FALLBACK'));
+		$this->set('gravatar_max_level', Config::get('GRAVATAR_MAX_LEVEL'));
+		$this->set('gravatar_level_options', array('g' => 'g', 'pg' => 'pg', 'r' => 'r', 'x' => 'x'));
+		$this->set('gravatar_image_set', Config::get('GRAVATAR_IMAGE_SET'));
+		$this->set('gravatar_set_options', array('404' => '404', 'mm' => 'mm', 'identicon' => 'identicon', 'monsterid' => 'monsterid', 'wavatar' => "wavatar"));
 	}
 	
 	public function update_registration_type() { 
@@ -93,7 +98,14 @@ class DashboardUsersRegistrationController extends Controller {
 		}
 	}
 
-	
+	public function update_gravatar_settings() {
+	  if ($this->isPost()) {
+	    Config::save('GRAVATAR_FALLBACK', ($this->post('enable_gravatar_fallback')?true:false));
+	    Config::save('GRAVATAR_MAX_LEVEL', $this->post('gravatar_max_level'));
+	    Config::save('GRAVATAR_IMAGE_SET', $this->post('gravatar_image_set'));
+      $this->redirect('/dashboard/users/registration', t('Gravatar Settings Updated'));
+	  }
+	}
 	
 	public function view($message = NULL) {
 		if($message) {
