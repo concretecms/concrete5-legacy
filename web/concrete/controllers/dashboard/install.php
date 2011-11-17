@@ -364,4 +364,23 @@ class DashboardInstallController extends Controller {
 		}
     }
 
+	public function blocktype_display_order() {
+		if ($this->post()) {
+			$orderedBtIDs = $this->post('btIDs');
+			$orderedBtDisplaysInAddList = $this->post('btDisplaysInAddList');
+			$data = array_combine($orderedBtIDs, $orderedBtDisplaysInAddList);
+			BlockType::updateListDisplay($data);
+			$this->redirect('/dashboard/install', 'blocktype_display_order_updated');
+		} else {
+			$btl = new BlockTypeList();
+			$btArray = $btl->getBlockTypeList();
+			$this->set('btArray', $btArray);
+			$this->set('form', Loader::helper('form'));
+		}
+	}
+
+	public function blocktype_display_order_updated() {
+		$this->set('message', t('List display order has been successfully updated.'));
+	}
+
 }

@@ -37,7 +37,10 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			return $blockTypes;
 		}
 		
-		function BlockTypeList($allowedBlocks = null) {
+		//CONSTRUCTOR
+		// $allowedBlocks is for permissions.
+		// $excludeHidden is for ui/display purposes only (for the "Add Block" popup list) -- don't use this for permissions!
+		function BlockTypeList($allowedBlocks = null, $excludeHidden = false) {
 			$db = Loader::db();
 			$this->btArray = array();
 						
@@ -45,7 +48,10 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			if ($allowedBlocks != null) {
 				$q .= ' and btID in (' . implode(',', $allowedBlocks) . ') ';
 			}
-			$q .= ' order by btID asc';
+			if ($excludeHidden) {
+				$q .= ' and btDisplayInAddList';
+			}
+			$q .= ' order by btDisplayOrder ASC, btID ASC'; //keep btID as secondary sort field in case someone upgraded from prior version of c5 and hasn't yet set their own display order (this way the "add blocks" list will look the same to them as it always did, because older versions of C5 just sorted on btID)
 			
 			$r = $db->query($q);
 	
@@ -231,7 +237,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		private static function get($where, $properties) {
 			$db = Loader::db();
 			
-			$q = "SELECT btID, btName, btDescription, btHandle, pkgID, btActiveWhenAdded, btIsInternal, btCopyWhenPropagate, btIncludeAll, btInterfaceWidth, btInterfaceHeight from BlockTypes where {$where}";
+			$q = "SELECT btID, btName, btDescription, btHandle, pkgID, btActiveWhenAdded, btIsInternal, btCopyWhenPropagate, btIncludeAll, btInterfaceWidth, btInterfaceHeight, btDisplayOrder, btDisplayInAddList from BlockTypes where {$where}";
 			$r = $db->query($q, $properties);
 			
 			if ($r->numRows() > 0) {
@@ -526,6 +532,8 @@ defined('C5_EXECUTE') or die("Access Denied.");
 				$btd->btIsInternal = $bta->isBlockTypeInternal();
 				$btd->btInterfaceHeight = $bta->getInterfaceHeight();
 				$btd->btInterfaceWidth = $bta->getInterfaceWidth();
+				$db->Execute('UPDATE BlockTypes SET btDisplayOrder = btDisplayOrder + 1'); //make room for this new block type to be first in the display order (so most recently-installed block is at the top of the "add blocks" list)
+				$btd->btDisplayOrder = 1;
 				$btd->pkgID = $bt->getPackageID();
 				
 				if ($btID > 0) {
@@ -676,7 +684,23 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			$ca->delete('blockTypeByHandle', $btHandle);
 			$ca->delete('blockTypeList', false);		 	
 		 }
-		 
+		
+		//$data must be a one-dimensional associative array,
+		// whose key=btID and value=btDisplayInAddList (1 or 0).
+		// The order of the array elements determines display order
+		// (so the array should always contain every block type).
+		public static function updateListDisplay($data) {
+			$db = Loader::db();
+			$sql = "UPDATE BlockTypes SET btDisplayInAddList = ?, btDisplayOrder = ? WHERE btID = ?";
+			$stmt = $db->Prepare($sql);
+			$displayOrder = 1;
+			foreach ($data as $btID => $btDisplayInAddList) {
+				$btDisplayInAddList = (bool)$btDisplayInAddList ? 1 : 0; //just in case
+				$vals = array($btDisplayInAddList, $displayOrder, $btID);
+				$db->Execute($stmt, $vals);
+				$displayOrder++;
+			}
+		}
 		 
 		/* 
 		 * Adds a block to the system without adding it to a collection. 
@@ -788,6 +812,14 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		
 		function hasCustomAddTemplate() {
 			return $this->hasCustomAddTemplate;
+		}
+		
+		function getDisplayOrder() {
+			return $this->btDisplayOrder;
+		}
+		
+		function getDisplayInAddList() {
+			return $this->btDisplayInAddList;
 		}
 
 	}
