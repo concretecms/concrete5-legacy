@@ -129,7 +129,11 @@ class LoginController extends Controller {
 	public function account_deactivated() {
 		$this->error->add(t('This user is inactive. Please contact us regarding this account.'));
 	}
-	
+
+	public function session_denied() {
+		$this->error->add(t('You have reached your session limit.  Please log out of your current session first.'));
+	}
+
 	public function do_login() { 
 		$ip = Loader::helper('validation/ip');
 		$vs = Loader::helper('validation/strings');
@@ -161,6 +165,8 @@ class LoginController extends Controller {
 			$u = new User($this->post('uName'), $this->post('uPassword'));
 			if ($u->isError()) {
 				switch($u->getError()) {
+					case USER_SESSION_DENIED:
+						throw new Exception(t('You have reached your session limit.  Please log out of your current session first'));
 					case USER_NON_VALIDATED:
 						throw new Exception(t('This account has not yet been validated. Please check the email associated with this account and follow the link it contains.'));
 						break;
@@ -176,7 +182,6 @@ class LoginController extends Controller {
 						break;
 				}
 			} else {
-			
 				if (OpenIDAuth::isEnabled() && $_SESSION['uOpenIDExistingUser'] > 0) {
 					$oa = new OpenIDAuth();
 					if ($_SESSION['uOpenIDExistingUser'] == $u->getUserID()) {

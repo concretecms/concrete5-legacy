@@ -79,6 +79,10 @@ if (!defined('ENABLE_CUSTOM_USER_ATTRIBUTES_MODEL')) {
 	define('ENABLE_CUSTOM_USER_ATTRIBUTES_MODEL', false);
 }
 
+if (!defined('ENABLE_CONCURRENT_SESSION_LIMIT')) {
+	define('ENABLE_CONCURRENT_SESSION_LIMIT', false);
+}
+
 if (!defined("PAGE_TITLE_FORMAT")) {
 	define('PAGE_TITLE_FORMAT', '%1$s :: %2$s');
 }
@@ -365,6 +369,14 @@ define('DIR_AL_ICONS', DIR_BASE_CORE . '/images/icons/filetypes');
 define('REL_DIR_AL_ICONS', ASSETS_URL_IMAGES . '/icons/filetypes');
 define('AL_ICON_DEFAULT', ASSETS_URL_IMAGES . '/icons/filetypes/default.png');
 
+if (!defined('CONCURRENT_SESSION_LIFE')) {
+	define('CONCURRENT_SESSION_LIFE', 8);  /* Number of hours the session will last for once established */
+}
+
+if (!defined('CONCURRENT_SESSION_LIMIT')) {
+	define('CONCURRENT_SESSION_LIMIT', 1);
+}
+
 if (!defined('AL_THUMBNAIL_JPEG_COMPRESSION')){ 
 	define('AL_THUMBNAIL_JPEG_COMPRESSION', 80); 
 }
@@ -430,6 +442,7 @@ define('VERSION_NOT_RECENT', 50);
 define('USER_INVALID', 20);
 define('USER_INACTIVE', 21);
 define('USER_NON_VALIDATED', 22);
+define('USER_SESSION_DENIED', 23);
 define('COLLECTION_MASTER_UNAUTH', 30);
 define('COLLECTION_PRIVATE', 40);
 define('BLOCK_NOT_AVAILABLE', 50);
