@@ -87,7 +87,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			extract($this->controller->getSets());
 			extract($this->controller->getHelperObjects());
 
-			include($base . '/' . $file);
+			include_once($base . '/' . $file);
 		}
 		
 		
@@ -347,4 +347,3 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			
 		}
 	}
-	
