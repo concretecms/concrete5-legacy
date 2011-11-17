@@ -177,7 +177,7 @@ class CustomStylePreset extends Object {
 
 	public function getList() {
 		$db = Loader::db();
-		$r = $db->Execute('select cspID, cspName, csrID from CustomStylePresets order by cspName asc');
+		$r = $db->_Execute('select cspID, cspName, csrID from CustomStylePresets order by cspName asc');
 		$presets = array();
 		while ($row = $r->FetchRow()) {
 			$obj = new CustomStylePreset();

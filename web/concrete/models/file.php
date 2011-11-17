@@ -72,7 +72,7 @@ class File extends Object {
 
 		$db->Execute('delete from FileSearchIndexAttributes where fID = ?', array($this->getFileID()));
 		$searchableAttributes = array('fID' => $this->getFileID());
-		$rs = $db->Execute('select * from FileSearchIndexAttributes where fID = -1');
+		$rs = $db->_Execute('select * from FileSearchIndexAttributes where fID = -1');
 		AttributeKey::reindex('FileSearchIndexAttributes', $searchableAttributes, $attribs, $rs);
 	}
 

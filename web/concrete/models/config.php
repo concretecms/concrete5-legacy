@@ -148,7 +148,7 @@ class ConfigStore {
 			$this->rows = $val;
 		} else {
 			$this->rows = array();
-			$r = $this->db->Execute('select * from Config where uID = 0 order by cfKey asc');
+			$r = $this->db->_Execute('select * from Config where uID = 0 order by cfKey asc');
 			while ($row = $r->FetchRow()) {
 				if (!$row['pkgID']) {
 					$row['pkgID'] = 0;

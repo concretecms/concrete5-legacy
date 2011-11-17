@@ -346,7 +346,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 	
 			$db->Execute('delete from UserSearchIndexAttributes where uID = ?', array($this->getUserID()));
 			$searchableAttributes = array('uID' => $this->getUserID());
-			$rs = $db->Execute('select * from UserSearchIndexAttributes where uID = -1');
+			$rs = $db->_Execute('select * from UserSearchIndexAttributes where uID = -1');
 			AttributeKey::reindex('UserSearchIndexAttributes', $searchableAttributes, $attribs, $rs);
 		}
 		
@@ -827,7 +827,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			} else if ($obj instanceof TaskPermissionList) {
 				$tpis = $obj->getTaskPermissionIDs();
 				$q = "select distinct uID from TaskPermissionUserGroups where tpID in (" . implode(',', $tpis) . ") and uID > 0";
-				$r = $db->Execute($q);
+				$r = $db->_Execute($q);
 				while ($row = $r->FetchRow()) {
 					$userPermissionsArray['permissions'] = $row;
 					$ui = UserInfo::getByID($row['uID'], $userPermissionsArray);
@@ -843,7 +843,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 
 				$gID = $this->gID;
 				$q = "select uID, MAX(canRead) as canRead, MAX(canSearch) as canSearch, max(canWrite) as canWrite, max(canAdmin) as canAdmin from FileSetPermissions where {$where} and uID > 0 group by uID";
-				$r = $db->Execute($q);
+				$r = $db->_Execute($q);
 				while ($row = $r->fetchRow()) {
 					$userPermissionsArray['permissions'] = $row;
 					$ui = UserInfo::getByID($row['uID'], $userPermissionsArray);
