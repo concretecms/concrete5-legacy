@@ -123,7 +123,7 @@ class FileList extends DatabaseItemList {
 					if ($i == 0) {
 						$this->addToQuery("left join FileSetFiles fsfl on fsfl.fID = f.fID");
 					}
-					$this->filter(false,'f.fID IN (SELECT DISTINCT fID FROM FileSetFiles WHERE fsID = '.$db->quote($fsID).')');
+					$this->filter(false,'f.fID IN (SELECT DISTINCT fID FROM FileSetFiles WHERE fsID = '.$db->quote($fsID).') AND fsID = '.$db->quote($fsID).'');
 					$i++;
 				}
 			}
