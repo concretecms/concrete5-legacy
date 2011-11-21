@@ -340,7 +340,7 @@ class SelectAttributeTypeController extends AttributeTypeController  {
             $l = (is_object($l) && method_exists($l,'__toString')) ? $l->__toString() : $l;
             $str .= $l . "\n";
         }
-        return $str;
+        return trim($str, "\n");
     }
 	
 	public function getSelectedOptions() {
