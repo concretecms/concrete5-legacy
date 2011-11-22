@@ -6,7 +6,7 @@ class PageNotFoundController extends Controller {
 	public $helpers = array('form');
 	
 	public function view() {
-		header("HTTP/1.0 404 Not Found");
+		header("HTTP/1.0 404 Not Found", true, 404);
 	}
 	
 }
