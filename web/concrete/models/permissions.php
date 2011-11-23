@@ -554,7 +554,8 @@ class CollectionPermissions extends Permissions {
 			}
 			$inStr .= ')';
 			
-			$_uID = ($u->getUserID() > 0) ? " or uID = " . $u->getUserID() : "";
+			$user_id = $u->getUserID();
+			$_uID = !empty($user_id) ? " or uID = " . $user_id : "";
 			$_cID = $cObj->getPermissionsCollectionID();
 		
 			$q = "select cgPermissions, cgStartDate, cgEndDate, gID from PagePermissions where cID = '{$_cID}' and (gID in $inStr $_uID)";
@@ -679,7 +680,9 @@ class AreaPermissions extends Permissions {
 		// now we get collection type permissions for all the groups that this user is in
 		
 		$inStr = '(' . implode(', ', $groupIDs) . ')';
-		$_uID = ($u->getUserID() > -1) ? " or uID = " . $u->getUserID() : "";
+		
+		$user_id = $u->getUserID();
+		$_uID = !empty($user_id) ? " or uID = " . $user_id : "";
 		
 		$v = array($aObj->getCollectionID(), $aObj->getAreaHandle());
 		$q = "select agPermissions from AreaGroups where cID = ? and arHandle = ? and (gID in $inStr $_uID)";
@@ -763,7 +766,8 @@ class BlockPermissions extends Permissions {
 		$cID = $bObj->getBlockCollectionID();
 		$bID = $bObj->getBlockID();
 		$cvID = $cv->getVersionID();
-		$_uID = ($u->getUserID() > -1) ? " or uID = " . $u->getUserID() : "";
+		$user_id = $u->getUserID();
+		$_uID = !empty($user_id) ? " or uID = " . $user_id : "";
 		
 		$q = "select cbgPermissions from CollectionVersionBlockPermissions where cID = '$cID' and bID = '$bID' and cvID = '$cvID' and (gID in $inStr $_uID)";
 		$r = $db->query($q);
@@ -858,8 +862,9 @@ class FileSetPermissions extends Permissions {
 
 		$groups = $u->getUserGroups();
 		$inStr = '(' . implode(',', array_keys($groups)) . ')';
-		$_uID = ($u->getUserID() > -1) ? " or FileSetPermissions.uID = " . $u->getUserID() : "";
 		
+		$user_id = $u->getUserID();
+		$_uID = !empty($user_id) ? " or FileSetPermissions.uID = " . $user_id : "";
 		$q = "select max({$pcolumn}) as {$pcolumn}, FileSets.fsID from FileSetPermissions inner join FileSets on (FileSets.fsID = FileSetPermissions.fsID) where (gID in $inStr $_uID) and fsOverrideGlobalPermissions = 1 group by fsID";
 		$r = $db->query($q);
 		$sets = array();
@@ -898,7 +903,9 @@ class FileSetPermissions extends Permissions {
 			
 			$fsIDStr = 'fsID in (' . implode(',', $setIDs) . ')';
 		}
-		$_uID = ($u->getUserID() > -1) ? " or uID = " . $u->getUserID() : "";
+		
+		$user_id = $u->getUserID();
+		$_uID = !empty($user_id) ? " or uID = " . $user_id : "";
 		
 		$q = "select max(canAdmin) as canAdmin, max(canSearch) as canSearch, max(canRead) as canRead, max(canWrite) as canWrite, max(canAdd) as canAdd from FileSetPermissions where {$fsIDStr} and (gID in $inStr $_uID)";
 		$p = $db->GetRow($q);
@@ -944,7 +951,8 @@ class FilePermissions extends Permissions {
 			$groups = $u->getUserGroups();
 			
 			$inStr = '(' . implode(',', array_keys($groups)) . ')';
-			$_uID = ($u->getUserID() > -1) ? " or uID = " . $u->getUserID() : "";
+			$user_id = $u->getUserID();
+			$_uID = !empty($user_id) ? " or uID = " . $user_id : "";
 			$fID = $f->getFileID();
 			$p = $db->GetRow("select max(canAdmin) as canAdmin, max(canRead) as canRead, max(canSearch) as canSearch, max(canWrite) as canWrite from FilePermissions where fID = {$fID} and (gID in $inStr $_uID)");
 			$this->permissions = $p;
