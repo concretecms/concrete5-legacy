@@ -21,9 +21,9 @@ if (count($drafts) > 0) { ?>
 	} ?></a></td>
 	<td><?=$dr->getCollectionTypeName()?></td>
 	<td><?
-		$mask = 'F jS Y - g:i a';
+		$mask = t('F jS Y - g:i a');
 		if ($today == $dr->getCollectionDateLastModified("Y-m-d")) {
-			$mask = 'g:i a';
+			$mask = t('g:i a');
 		}
 		print $dr->getCollectionDateLastModified($mask)?></td>
 <? } ?>
