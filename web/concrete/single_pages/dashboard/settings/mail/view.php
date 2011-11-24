@@ -64,7 +64,7 @@ $form = Loader::helper('form');
 	
 <? } else { ?>
 	
-	<h1><span><?=t('Sitewide Mail Settings')?></span></h1>
+	<h1><span><?=t('SMTP Method')?></span></h1>
 	<div class="ccm-dashboard-inner">
 	<form method="post" action="<?=$this->action('save_settings')?>" id="mail-settings-form">
 	
