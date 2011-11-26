@@ -1,7 +1,12 @@
 var ccm_attributeTypeAddressStates;
 
 $(function() {
-	ccm_attributeTypeAddressStates = ccm_attributeTypeAddressStatesTextList.split('|');
+	try {
+		ccm_attributeTypeAddressStates = ccm_attributeTypeAddressStatesTextList.split('|');
+	} 
+	catch(e) {
+		ccm_attributeTypeAddressStates = [];
+	}
 });
 
 ccm_attributeTypeAddressSelectCountry = function(cls, country) {
