@@ -117,6 +117,11 @@ ccm_activateFileManager = function(altype, searchInstance) {
 }
 
 ccm_alSetupSingleUploadForm = function() {
+	$(".ccm-file-manager-submit-single input.ccm-al-upload-single-file").live("change", function() {
+		$(this).closest("form").submit();
+	});
+	
+	
 	$(".ccm-file-manager-submit-single").submit(function() {  
 		$(this).attr('target', ccm_alProcessorTarget);
 		ccm_alSubmitSingle($(this).get(0));	 
