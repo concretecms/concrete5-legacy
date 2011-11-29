@@ -67,7 +67,7 @@
 			
 			$langtmp = array();
 			foreach($languages as $lang) {
-				if ($lang != DIRNAME_LANGUAGES_SITE_INTERFACE) {
+				if ($lang != DIRNAME_LANGUAGES_SITE_INTERFACE && $lang != 'messages.po' && $lang != 'messages.pot') { //if there isn't a valid language name then the installer freaks out
 					$langtmp[] = $lang;
 				}
 			}
