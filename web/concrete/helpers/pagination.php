@@ -124,14 +124,37 @@ class PaginationHelper {
 	}
 	
 	public function hasNextPage() {
+		if($this->number_of_pages==1) return;		
 		return $this->current_page < ($this->number_of_pages-1);
+	}
+
+	public function hasPreviousPage() {
+		if($this->number_of_pages==1) return false;
+		if ($this->current_page=="0") {
+			return false;
+		}
+		return true;
 	}
 	
 	public function getTotalPages() {
 		return $this->number_of_pages;
 	}
 	
-	public function getNext($linkText = false){
+	public function getNextURL() {
+		if ($this->hasNextPage()) { 
+			$linkURL = str_replace("%pageNum%", $this->getNextInt()+1, $this->URL);
+			return $linkURL;
+		}
+	}
+
+	public function getPreviousURL() {
+		if ($this->hasPreviousPage()) { 
+			$linkURL = str_replace("%pageNum%", $this->getPreviousInt()+1, $this->URL);
+			return $linkURL;
+		}
+	}
+	
+	function getNext($linkText = false){
 		if (!$linkText) {
 			$linkText = t('Next') . ' &raquo;';
 		}
@@ -169,22 +192,35 @@ class PaginationHelper {
 		return $this->current_page-1;
 	}		
 
-	public function getPages(){
+	function getPages($wrapper='span'){
 		if($this->number_of_pages==1) return;
 		$pages_made=0;
 		for ($i=0;$i<$this->number_of_pages;$i++){
 			//preceeding dots for high number of pages
 			if($i<($this->current_page-5) && $i!=0){
 				if($predotted!=1){
-				   $pages.='<span class="ccm-pagination-ellipses">...</span>';
+					
+					if($wrapper == 'li'){
+						$pages.='<li class="ccm-pagination-ellipses disabled"><a href="#">...</a></li>';
+					} else {
+						$pages.='<span class="ccm-pagination-ellipses">...</span>';
+					}
+					
 				   $predotted=1;
+				   
 				}
 				continue;
 			}
 			//following dots for high number of pages
 			if($i>($this->current_page+5) && $i!=($this->number_of_pages-1)){
 				if($postdotted!=1){
-				   $pages.='<span class="ccm-pagination-ellipses">...</span>';
+				   
+				   if($wrapper == 'li'){
+						$pages.='<li class="ccm-pagination-ellipses disabled"><a href="#">...</a></li>';
+					} else {
+						$pages.='<span class="ccm-pagination-ellipses">...</span>';
+					}
+				   
 				   $postdotted=1;
 				}
 				continue;
@@ -192,10 +228,23 @@ class PaginationHelper {
 			
 			//if not current page
 			if ($this->current_page==$i){ 
-					$pages.="<span class='$this->classCurrent'><strong>".($i+1)."</strong></span>";
-			   }else{
-					$linkURL=str_replace("%pageNum%", $i+1, $this->URL);
-					$pages.="<span class='$this->classOn'><a href='$linkURL' ".$this->getJSFunctionCall($i+1).">".($i+1)."</a></span>";
+			
+					if($wrapper == 'li'){
+						$pages.="<li class='$this->classCurrent'><strong>".($i+1)."</strong></li>";
+					} else {
+						$pages.="<span class='$this->classCurrent'><strong>".($i+1)."</strong></span>";
+					}
+					
+			} else {
+				   
+				   $linkURL=str_replace("%pageNum%", $i+1, $this->URL);
+				   
+					if($wrapper == 'li'){
+						$pages.="<li class='$this->classOn'><a href='$linkURL' ".$this->getJSFunctionCall($i+1).">".($i+1)."</a></li>";
+					} else {
+						$pages.="<span class='$this->classOn'><a href='$linkURL' ".$this->getJSFunctionCall($i+1).">".($i+1)."</a></span>";
+					}
+					
 			} //end if not current page
 			$pages_made++;
 		}

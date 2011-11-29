@@ -273,7 +273,7 @@ class LoginController extends Controller {
 			$this->set('unfilledAttributes', $unfilledAttributes);
 		}
 		$txt = Loader::helper('text');
-		$rcID = $txt->entities($this->post('rcID'));
+		$rcID = $this->post('rcID');
 		$nh = Loader::helper('validation/numbers');
 
 		//set redirect url
@@ -314,6 +314,10 @@ class LoginController extends Controller {
 		//Full page login, standard redirection	
 		$u = new User(); // added for the required registration attribute change above. We recalc the user and make sure they're still logged in
 		if ($u->isRegistered()) { 
+			if ($u->config('NEWSFLOW_LAST_VIEWED') == 'FIRSTRUN') {
+				$u->saveConfig('NEWSFLOW_LAST_VIEWED', 0);
+			}
+			
 			if ($loginData['redirectURL']) {
 				//make double secretly sure there's no caching going on
 				header("Cache-Control: no-store, no-cache, must-revalidate");
@@ -358,7 +362,10 @@ class LoginController extends Controller {
 	}
 	
 	public function forward($cID = 0) {
-		$this->set('rcID', $cID);
+		$nh = Loader::helper('validation/numbers');
+		if ($nh->integer($cID)) {
+			$this->set('rcID', $cID);
+		}
 	}
 	
 	// responsible for validating a user's email address

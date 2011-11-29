@@ -5,15 +5,6 @@ class ConcreteInterfaceMenuHelper {
 
 	protected $pageHeaderMenuItems = array();
 	
-	/**
-	 * this method is called by the Loader::helper to clean up the instance of this object
-	 * resets the class scope variables
-	 * @return void
-	*/
-	public function reset() {
-		$this->pageHeaderMenuItems = array();
-	}
-	
 	/** 
 	 * Adds a menu item to the header menu area 
 	 * <code>
@@ -165,7 +156,7 @@ class ConcreteInterfaceMenuItemController extends Controller {
 							$this->addHeaderItem($h->css($this->menuItem->getMenuItemFileURL($i)));
 							break;
 						case 'JAVASCRIPT':
-							$this->addHeaderItem($h->javascript($this->menuItem->getMenuItemFileURL($i)));
+							$this->addFooterItem($h->javascript($this->menuItem->getMenuItemFileURL($i)));
 							break;
 					}
 				}
@@ -181,6 +172,9 @@ class ConcreteInterfaceMenuItemController extends Controller {
 		$attribs = '';
 		if (is_array($this->menuItem->getLinkAttributes())) {
 			foreach($this->menuItem->getLinkAttributes() as $key => $value) {
+				if ($key == 'class') {
+					$value = 'ccm-header-nav-package-item ' . $value;
+				}
 				$attribs .= $key . '="' . $value . '" ';
 			}
 		}

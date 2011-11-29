@@ -64,6 +64,7 @@ class UsersFriends extends Object {
 			$sql = 'INSERT INTO UsersFriends ( friendUID, uID, status, uDateAdded ) values (?, ?, ?, ?)'; 
 		}			
 		$db->query($sql,$vals); 
+		Events::fire('on_user_friend_add', $uID, $friendUID);
 		return true;
 	}	
 	
@@ -77,6 +78,10 @@ class UsersFriends extends Object {
 		$db = Loader::db();	 
 		$vals = array( $friendUID, $uID);
 		$sql = 'DELETE FROM UsersFriends WHERE friendUID=? AND uID=?'; 
+		$ret = Events::fire('on_user_friend_remove', $uID, $friendUID);
+		if($ret < 0) {
+			return;
+		}
 		$db->query($sql,$vals); 
 		return true;
 	}		
