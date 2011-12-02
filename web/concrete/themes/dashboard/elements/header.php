@@ -32,7 +32,7 @@ if (!isset($enableEditing) || $enableEditing == false) {
 }
 
 // Required JavaScript
-
+$v->addHeaderItem($html->javascript('jquery.js'));
 $v->addFooterItem($html->javascript('jquery.backstretch.js'));
 $v->addFooterItem($html->javascript('jquery.ui.js'));
 $v->addFooterItem($html->javascript('jquery.form.js'));

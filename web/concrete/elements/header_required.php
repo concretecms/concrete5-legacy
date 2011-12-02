@@ -62,10 +62,6 @@ var CCM_REL = "<?php echo DIR_REL?>";
 </script>
 
 <?php
-$html = Loader::helper('html');
-$this->addHeaderItem($html->css('ccm.base.css'), 'CORE');
-$this->addHeaderItem($html->javascript('jquery.js'), 'CORE');
-$this->addHeaderItem($html->javascript('ccm.base.js', false, true), 'CORE');
 
 $favIconFID=intval(Config::get('FAVICON_FID'));
 
