@@ -1260,7 +1260,7 @@
 			ed.windowManager.open({
 				url : this.url + '/color_picker.htm',
 				width : 375 + parseInt(ed.getLang('concrete.colorpicker_delta_width', 0)),
-				height : 250 + parseInt(ed.getLang('concrete.colorpicker_delta_height', 0)),
+				height : 270 + parseInt(ed.getLang('concrete.colorpicker_delta_height', 0)),
 				close_previous : false,
 				inline : true
 			}, {
