@@ -22,7 +22,7 @@ class TextareaAttributeTypeController extends DefaultAttributeTypeController  {
 		return htmLawed(parent::getValue(), array('safe'=>1, 'deny_attribute'=>'style'));
 	}
 	
-	public function form() {
+	public function form($additionalClass = false) {
 		$this->load();
 		if (is_object($this->attributeValue)) {
 			$value = $this->getAttributeValue()->getValue();
@@ -30,16 +30,32 @@ class TextareaAttributeTypeController extends DefaultAttributeTypeController  {
 		$this->addHeaderItem(Loader::helper('html')->javascript('tiny_mce/tiny_mce.js'));
 		// switch display type here
 		if ($this->akTextareaDisplayMode == 'text' || $this->akTextareaDisplayMode == '') {
-			print Loader::helper('form')->textarea($this->field('value'), $value);
+			print Loader::helper('form')->textarea($this->field('value'), $value, array('class' => $additionalClass, 'rows' => 5));
 		} else {
+			$this->addHeaderItem(Loader::helper('html')->css('ccm.dialog.css'));
+			$this->addHeaderItem(Loader::helper('html')->css('ccm.forms.css'));
+			$this->addHeaderItem(Loader::helper('html')->css('ccm.filemanager.css'));
+			$this->addHeaderItem(Loader::helper('html')->css('ccm.search.css'));
+			$this->addHeaderItem(Loader::helper('html')->css('ccm.menus.css'));
+			$this->addHeaderItem(Loader::helper('html')->javascript('ccm.filemanager.js'));
+			$this->addHeaderItem(Loader::helper('html')->javascript('ccm.dialog.js'));
+			$this->addHeaderItem(Loader::helper('html')->javascript('ccm.ui.js'));
+			$this->addHeaderItem(Loader::helper('html')->javascript('jquery.form.js'));
+			$this->addHeaderItem(Loader::helper('html')->javascript('jquery.liveupdate.js'));
+			$this->addHeaderItem(Loader::helper('html')->javascript('ccm.search.js'));
+			$this->addHeaderItem('<script type="text/javascript" src="' . REL_DIR_FILES_TOOLS_REQUIRED . '/i18n_js"></script>'); 
 			Loader::element('editor_init');
 			$editor_mode = strtoupper(str_replace('rich_text_', '', $this->akTextareaDisplayMode));
 			Loader::element('editor_config', array('editor_mode' => $editor_mode, 'editor_selector' => 'ccm-advanced-editor-' . $this->attributeKey->getAttributeKeyID()));
 			if (in_array($this->akTextareaDisplayMode, array('rich_text', 'rich_text_advanced', 'rich_text_office', 'rich_text_custom'))) {
 				Loader::element('editor_controls', array('mode'=>'full'));
 			}
-			print Loader::helper('form')->textarea($this->field('value'), $value, array('class' => 'ccm-advanced-editor-' . $this->attributeKey->getAttributeKeyID()));
+			print Loader::helper('form')->textarea($this->field('value'), $value, array('class' => $additionalClass . ' ccm-advanced-editor-' . $this->attributeKey->getAttributeKeyID()));
 		}
+	}
+	
+	public function composer() {
+		$this->form('span12');
 	}
 
 	public function searchForm($list) {
@@ -95,6 +111,19 @@ class TextareaAttributeTypeController extends DefaultAttributeTypeController  {
 		$row = $db->GetRow('select akTextareaDisplayMode from atTextareaSettings where akID = ?', $ak->getAttributeKeyID());
 		$this->akTextareaDisplayMode = $row['akTextareaDisplayMode'];
 		$this->set('akTextareaDisplayMode', $this->akTextareaDisplayMode);
+	}
+	
+	public function exportKey($akey) {
+		$this->load();
+		$akey->addChild('type')->addAttribute('mode', $this->akTextareaDisplayMode);
+		return $akey;
+	}
+
+	public function importKey($akey) {
+		if (isset($akey->type)) {
+			$data['akTextareaDisplayMode'] = $akey->type['mode'];
+			$this->saveKey($data);
+		}
 	}
 	
 	public function duplicateKey($newAK) {

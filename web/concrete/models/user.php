@@ -33,7 +33,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		 * @param boolean $login
 		 * @return User
 		 */
-		public static function getByUserID($uID, $login = false) {
+		public static function getByUserID($uID, $login = false, $cacheItemsOnLogin = true) {
 			$db = Loader::db();
 			$v = array($uID);
 			$q = "SELECT uID, uName, uIsActive, uLastOnline, uTimezone, uDefaultLanguage FROM Users WHERE uID = ?";
@@ -48,7 +48,9 @@ defined('C5_EXECUTE') or die("Access Denied.");
 				$nu->uLastLogin = $row['uLastLogin'];
 				$nu->uTimezone = $row['uTimezone'];
 				$nu->uGroups = $nu->_getUserGroups(true);
+				$nu->superUser = ($nu->getUserID() == USER_SUPER_ID);
 				if ($login) {
+					User::regenerateSession();
 					$_SESSION['uID'] = $row['uID'];
 					$_SESSION['uName'] = $row['uName'];
 					$_SESSION['uBlockTypesSet'] = false;
@@ -56,10 +58,22 @@ defined('C5_EXECUTE') or die("Access Denied.");
 					$_SESSION['uLastOnline'] = $row['uLastOnline'];
 					$_SESSION['uTimezone'] = $row['uTimezone'];
 					$_SESSION['uDefaultLanguage'] = $row['uDefaultLanguage'];
+					if ($cacheItemsOnLogin) { 
+						Loader::helper('concrete/interface')->cacheInterfaceItems();
+					}
 					$nu->recordLogin();
 				}
 			}
 			return $nu;
+		}
+		
+		protected static function regenerateSession() {
+			$tmpSession = $_SESSION; 
+			session_write_close(); 
+			setcookie(session_name(), session_id(), time()-100000);
+			session_id(sha1(mt_rand())); 
+			session_start(); 
+			$_SESSION = $tmpSession; 
 		}
 		
 		/**
@@ -135,6 +149,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 						}
 						$this->recordLogin();
 						if (!$args[2]) {
+							User::regenerateSession();
 							$_SESSION['uID'] = $row['uID'];
 							$_SESSION['uName'] = $row['uName'];
 							$_SESSION['superUser'] = $this->superUser;
@@ -142,6 +157,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 							$_SESSION['uGroups'] = $this->uGroups;
 							$_SESSION['uTimezone'] = $this->uTimezone;
 							$_SESSION['uDefaultLanguage'] = $this->uDefaultLanguage;
+							Loader::helper('concrete/interface')->cacheInterfaceItems();
 						}
 					} else if ($row['uID'] && !$row['uIsActive']) {
 						$this->loadError(USER_INACTIVE);
@@ -231,7 +247,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			$this->unloadCollectionEdit();
 			@session_unset();
 			@session_destroy();
-			
+			Events::fire('on_user_logout');
 			if ($_COOKIE['ccmUserHash']) {
 				setcookie("ccmUserHash", "", 315532800, DIR_REL . '/');
 			}
@@ -363,6 +379,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 					'ugEntered' => $dt->getSystemDateTime()
 				),
 				array('uID', 'gID'), true);
+				Events::fire('on_user_enter_group', $this, $g);
 			}
 		}
 		
@@ -380,6 +397,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 				$gID = $g->getGroupID();
 				$db = Loader::db();
 				
+				$ret = Events::fire('on_user_exit_group', $this, $g);
 				$q = "delete from UserGroups where uID = '{$this->uID}' and gID = '{$gID}'";
 				$r = $db->query($q);	
 			}		

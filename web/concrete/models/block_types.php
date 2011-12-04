@@ -37,6 +37,29 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			return $blockTypes;
 		}
 		
+		public static function exportList($xml) {
+			$attribs = BlockTypeList::getInstalledList();
+			$nxml = $xml->addChild('blocktypes');
+			foreach($attribs as $bt) {
+				$type = $nxml->addChild('blocktype');
+				$type->addAttribute('handle', $bt->getBlockTypeHandle());
+				$type->addAttribute('package', $bt->getPackageHandle());
+			}
+		}
+		
+		public static function getDashboardBlockTypes($ap) {
+			$blockTypeIDs = $ap->getAddBlockTypes();
+			$db = Loader::db();
+			$btIDs = $db->GetCol('select btID from BlockTypes where btHandle like "dashboard_%" order by btID asc');
+			$blockTypes = array();
+			foreach($btIDs as $btID) {
+				if (in_array($btID, $blockTypeIDs)) {
+					$blockTypes[] = BlockType::getByID($btID);
+				}
+			}
+			return $blockTypes;
+		}
+		
 		function BlockTypeList($allowedBlocks = null) {
 			$db = Loader::db();
 			$this->btArray = array();
@@ -261,6 +284,17 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		public function isCoreBlockType() {
 			return is_dir(DIR_FILES_BLOCK_TYPES_CORE . '/' . $this->getBlockTypeHandle());
 		}
+
+		public function hasAddTemplate() {
+			$bv = new BlockView();
+			$bv->setBlockObject($this);
+			$path = $bv->getBlockPath(FILENAME_BLOCK_ADD);
+			if (file_exists($path . '/' . FILENAME_BLOCK_ADD)) {
+				return true;
+			}
+			return false;
+		}
+		
 		
 		function getBlockTypeInterfaceWidth() {return $this->btInterfaceWidth;}
 		function getBlockTypeInterfaceHeight() {return $this->btInterfaceHeight;}
@@ -427,10 +461,10 @@ defined('C5_EXECUTE') or die("Access Denied.");
 				$dir = $dir2;
 			}
 
-			// now we check to see if it's been overridden in the core and if so we do it there
+			// now we check to see if it's been overridden in the site root and if so we do it there
 			if ($btID > 0) { 
 				// this is only necessary when it's an existing refresh
-				if (is_dir(DIR_FILES_BLOCK_TYPES . '/' . $btHandle)) {
+				if (file_exists(DIR_FILES_BLOCK_TYPES . '/' . $btHandle . '/' . FILENAME_BLOCK_CONTROLLER)) {
 					$dir = DIR_FILES_BLOCK_TYPES;
 				}
 			}
@@ -468,7 +502,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 				}
 			}
 			
-			if (is_dir(DIR_FILES_BLOCK_TYPES . '/' . $btHandle)) {
+			if (file_exists(DIR_FILES_BLOCK_TYPES . '/' . $btHandle . '/' . FILENAME_BLOCK_CONTROLLER)) {
 				$dir = DIR_FILES_BLOCK_TYPES;
 			} else {
 				$dir = DIR_FILES_BLOCK_TYPES_CORE;
@@ -545,7 +579,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 					return $db->ErrorMsg();
 				}
 			} else {
-				return t("No block found with the handle %s found.", $btHandle);
+				return t("No block found with the handle %s.", $btHandle);
 			}
 		}
 		

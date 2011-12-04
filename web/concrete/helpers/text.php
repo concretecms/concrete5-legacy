@@ -20,38 +20,26 @@ defined('C5_EXECUTE') or die("Access Denied.");
 class TextHelper { 
 	
 	/** 
-	 * Takes text and returns it in the "lowercase_and_underscored_with_no_punctuation" format
+	 * Takes text and returns it in the "lowercase-and-dashed-with-no-punctuation" format
 	 * @param string $handle
-	 * @return string
+	 * @param bool $leaveSlashes
+	 * @return string $handle
 	 */
 	function sanitizeFileSystem($handle, $leaveSlashes=false) {
 		$handle = trim($handle);
 		$handle = str_replace(PAGE_PATH_SEPARATOR, '-', $handle);
-		$searchMulti = array(
-			"ä",
-			"ö",
-			"ß",
-			"ü",
-			"æ",
-			"ø",
-			"å",
-			"é",
-			"è"	
+		$multi = array(
+			"ä"=>"ae",
+			"ö"=>"oe",
+			"ß"=>"ss",
+			"ü"=>"ue",
+			"æ"=>"ae",
+			"ø"=>"oe",
+			"å"=>"aa",
+			"é"=>"e",
+			"è"=>"e"	
 		);
-
-		$replaceMulti = array(
-			'ae',
-			'oe',
-			'ss',
-			'ue',
-			'ae',
-			'oe',
-			'aa',
-			'e',
-			'e'
-		);
-		
-		$handle = str_replace($searchMulti, $replaceMulti, $handle);
+		$handle = str_replace(array_keys($multi), array_values($multi), $handle);
 
 		$searchNormal = array("/[&]/", "/[\s]+/", "/[^0-9A-Za-z-_.]/", "/-+/");
 		$searchSlashes = array("/[&]/", "/[\s]+/", "/[^0-9A-Za-z-_.\/]/", "/-+/");
@@ -63,7 +51,7 @@ class TextHelper {
 		}
 
 		$handle = preg_replace($search, $replace, $handle);
-		if (function_exists('mb_substr')) {
+		if (function_exists('mb_strtolower')) {
 			$handle = mb_strtolower($handle, APP_CHARSET);
 		} else {
 			$handle = strtolower($handle);
@@ -77,6 +65,7 @@ class TextHelper {
 	 * Strips tags and optionally reduces string to specified length.
 	 * @param string $string
 	 * @param int $maxlength
+	 * @param string $allowed
 	 * @return string
 	 */
 	function sanitize($string, $maxlength = 0, $allowed = '') {	
@@ -95,30 +84,47 @@ class TextHelper {
 	}
 
 	/**
+	 * Leaves only characters that are valid in email addresses (RFC)
+	 * @param string $email
+	 * @return string
+	 */
+	public function email($email) {
+		$regex = "/[^a-zA-Z0-9_\.!#\$\&'\*\+-?^`{|}~@]/i";
+		return preg_replace($regex, '', $email);
+	}
+
+	/**
 	 * always use in place of htmlentites(), so it works with different langugages
-	**/
+	 * @param string $v
+	 * @return string
+	 */
 	public function entities($v){
 		return htmlentities( $v, ENT_COMPAT, APP_CHARSET); 
 	}
 	 
 	 
 	/**
-	 * Like sanitize, but requiring a certain number characters, and assuming a tail
+	 * An alias for shorten()
 	 * @param string $textStr
 	 * @param int $numChars
 	 * @param string $tail
+	 * @return string
 	 */
-	public function shorten($textStr, $numChars = 255, $tail = '...') {
+	public function shorten($textStr, $numChars = 255, $tail = '…') {
 		return $this->shortText($textStr, $numChars, $tail);
 	}
 	
 	/** 
-	 * An alias for shorten()
+	 * Like sanitize, but requiring a certain number characters, and assuming a tail
+	 * @param string $textStr
+	 * @param int $numChars
+	 * @param string $tail
+	 * @return string $textStr
 	 */	
-	function shortText($textStr, $numChars=255, $tail='...') {
+	function shortText($textStr, $numChars=255, $tail='…') {
 		if (intval($numChars)==0) $numChars=255;
 		$textStr=strip_tags($textStr);
-		if (function_exists('mb_substr')) {
+		if (function_exists('mb_substr') && function_exists('mb_strlen')) {
 			if (mb_strlen($textStr, APP_CHARSET) > $numChars) { 
 				$textStr = mb_substr($textStr, 0, $numChars, APP_CHARSET) . $tail;
 			}
@@ -129,6 +135,28 @@ class TextHelper {
 		}
 		return $textStr;			
 	}
+        
+        /**
+        * Shortens and sanitizes a string but only cuts at word boundaries
+	* @param string $textStr
+	* @param int $numChars
+	* @param string $tail
+        */
+        function shortenTextWord($textStr, $numChars=255, $tail='…') {
+		if (intval($numChars)==0) $numChars=255;
+		$textStr=strip_tags($textStr);
+		if (function_exists('mb_substr')) {
+			if (mb_strlen($textStr, APP_CHARSET) > $numChars) { 
+				$textStr=preg_replace('/\s+?(\S+)?$/', '', mb_substr($textStr, 0, $numChars + 1, APP_CHARSET)) . $tail;
+			}
+		} else {
+			if (strlen($textStr) > $numChars) { 
+				$textStr = preg_replace('/\s+?(\S+)?$/', '', substr($textStr, 0, $numChars + 1)) . $tail;
+			}
+		}
+		return $textStr;		
+	}
+
 	
 	
 	/**
@@ -143,6 +171,7 @@ class TextHelper {
 	/** 
 	 * Scans passed text and automatically hyperlinks any URL inside it
 	 * @param string $input
+	 * @param int $newWindow
 	 * @return string $output
 	 */
 	public function autolink($input,$newWindow=0) {
@@ -154,6 +183,8 @@ class TextHelper {
 	/** 
 	 * automatically add hyperlinks to any twitter style @usernames in a string
 	 * @param string $input
+	 * @param int $newWindow
+	 * @param int $withSearch
 	 * @return string $output
 	 */	
 	public function twitterAutolink($input,$newWindow=0,$withSearch=0) {
@@ -166,7 +197,7 @@ class TextHelper {
 	
 	/**
 	 * Runs a number of text functions, including autolink, nl2br, strip_tags. Assumes that you want simple
-	 * text comments but witih a few niceties.
+	 * text comments but with a few niceties.
 	 * @param string $input
 	 * @return string $output
 	 */
@@ -179,6 +210,9 @@ class TextHelper {
 	
 	/** 
 	 * A wrapper for PHP's fnmatch() function, which some installations don't have.
+	 * @param string $pattern
+	 * @param string $string
+	 * @return bool
 	 */
 	public function fnmatch($pattern, $string) {
 		if(!function_exists('fnmatch')) {
@@ -191,6 +225,8 @@ class TextHelper {
 	
 	/** 
 	 * Takes a CamelCase string and turns it into camel_case
+	 * @param string $string
+	 * @return string
 	 */
 	public function uncamelcase($string) {
 		$v = preg_split('/([A-Z])/', $string, false, PREG_SPLIT_DELIM_CAPTURE);
@@ -209,30 +245,86 @@ class TextHelper {
 	}
 	
 	/**
-	 * Takes a handle-based string like "blah_blah" and turns it into "Blah Blah"
+	 * Takes a handle-based string like "blah_blah" or "blah-blah" or "blah/blah" and turns it into "Blah Blah"
 	 * @param string $string
-	 * @return string
+	 * @return string $r1
 	 */
 	public function unhandle($string) {
-		// takes something like collection_types and turns it into "Collection Types"
-		$r1 = ucwords(str_replace(array('_', '/'), ' ', $string));
+		$r1 = ucwords(str_replace(array('_', '-', '/'), ' ', $string));
 		return $r1;
 	}
 
+	/** 
+	 * Takes a string and turns it into a handle.
+	 */
+	public function handle($handle, $leaveSlashes=false) {
+		return $this->sanitizeFileSystem($handle, $leaveSlashes=false);
+	}
+	
 	/**
 	 * Strips out non-alpha-numeric characters
 	 * @param string $val
 	 * @return string
 	 */
-	public function filterNonAlphaNum($val){ return preg_replace('/[^[:alnum:]]/', '', $val);  }
+	public function filterNonAlphaNum($val){ 
+		return preg_replace('/[^[:alnum:]]/', '', $val);
+	}
 	
 	/** 
-	 * Useful for highlighting search strings within results (for nice display)
+	 * Highlights a string within a string with the class ccm-hightlight-search
+	 * @param string $value
+	 * @param string $searchString
+	 * @return string
 	 */
 	 
 	public function highlightSearch($value, $searchString) {
 		return str_ireplace($searchString, '<em class="ccm-highlight-search">' . $searchString . '</em>', $value);
 	}
+	
+	/** 
+	 * Formats a passed XML string nicely
+	 * @param string $xml
+	 */
+	public function formatXML($xml) {  
+	
+		// add marker linefeeds to aid the pretty-tokeniser (adds a linefeed between all tag-end boundaries)
+		$xml = preg_replace('/(>)(<)(\/*)/', "$1\n$2$3", $xml);
+		
+		// now indent the tags
+		$token      = strtok($xml, "\n");
+		$result     = ''; // holds formatted version as it is built
+		$pad        = 0; // initial indent
+		$matches    = array(); // returns from preg_matches()
+		
+		// scan each line and adjust indent based on opening/closing tags
+		while ($token !== false) : 
+		
+		// test for the various tag states
+		
+		// 1. open and closing tags on same line - no change
+		if (preg_match('/.+<\/\w[^>]*>$/', $token, $matches)) : 
+		  $indent=0;
+		// 2. closing tag - outdent now
+		elseif (preg_match('/^<\/\w/', $token, $matches)) :
+		  $pad -= 4;
+		// 3. opening tag - don't pad this one, only subsequent tags
+		elseif (preg_match('/^<\w[^>]*[^\/]>.*$/', $token, $matches)) :
+		  $indent=4;
+		// 4. no indentation needed
+		else :
+		  $indent = 0; 
+		endif;
+		
+		// pad the line with the required number of leading spaces
+		$line    = str_pad($token, strlen($token)+$pad, ' ', STR_PAD_LEFT);
+		$result .= $line . "\n"; // add to the cumulative result, with linefeed
+		$token   = strtok("\n"); // get the next token
+		$pad    += $indent; // update the pad size for subsequent lines    
+		endwhile; 
+		
+		return $result;
+	}
+
 }
 
 ?>

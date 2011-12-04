@@ -27,7 +27,7 @@ $("select#cParentIDLocation").change(function() {
 	
 			if (is_array($ctArray)) { ?>
 	  <select name="ctID" id="selectCTID">
-		<option value="0">** All **</option>
+		<option value="0">** <?php echo t('All')?> **</option>
 		<?php  foreach ($ctArray as $ct) { ?>
 		<option value="<?php echo $ct->getCollectionTypeID()?>" <?php  if ($controller->ctID == $ct->getCollectionTypeID()) { ?> selected <?php  } ?>>
 		<?php echo $ct->getCollectionTypeName()?>
@@ -70,20 +70,20 @@ $("select#cParentIDLocation").change(function() {
 	
 	<div class="ccm-block-field-group">
 	 	<h2><?php echo t('Display Format')?></h2>	  
-		<input type="radio" name="flatDisplay" value="0" <?php  if (!$controller->flatDisplay) { ?> checked<?php  } ?> />Hierarchy&nbsp; 
-		<input type="radio" name="flatDisplay" value="1" <?php  if ($controller->flatDisplay) { ?> checked<?php  } ?> />Flat 
+		<input type="radio" name="flatDisplay" value="0" <?php  if (!$controller->flatDisplay) { ?> checked<?php  } ?> /><? echo t('Hierarchy')?>&nbsp; 
+		<input type="radio" name="flatDisplay" value="1" <?php  if ($controller->flatDisplay) { ?> checked<?php  } ?> /><? echo t('Flat')?> 
 	</div>		
 	 
 	<div class="ccm-block-field-group">
 	 	<h2><?php echo t('Open by default to the...')?></h2>	  
-		<input type="radio" name="defaultNode" value="current_page" <?php  if ($controller->defaultNode!='current_month') { ?> checked<?php  } ?> />Current Page&nbsp; 
-		<input type="radio" name="defaultNode" value="current_month" <?php  if ($controller->defaultNode=='current_month') { ?> checked<?php  } ?> />Current Month 
+		<input type="radio" name="defaultNode" value="current_page" <?php  if ($controller->defaultNode!='current_month') { ?> checked<?php  } ?> /><? echo t('Current Page')?>&nbsp; 
+		<input type="radio" name="defaultNode" value="current_month" <?php  if ($controller->defaultNode=='current_month') { ?> checked<?php  } ?> /><? echo t('Current Month')?> 
 	</div>		 
 	 
 	<div class="ccm-block-field-group">
 	 	<h2><?php echo t('Page Info')?></h2>	  
-		<input type="radio" name="showDescriptions" value="0" <?php  if (!$controller->showDescriptions) { ?> checked<?php  } ?> />Titles&nbsp; 
-		<input type="radio" name="showDescriptions" value="1" <?php  if ($controller->showDescriptions) { ?> checked<?php  } ?> />Titles &amp; Descriptions
+		<input type="radio" name="showDescriptions" value="0" <?php  if (!$controller->showDescriptions) { ?> checked<?php  } ?> /><? echo t('Titles')?>&nbsp;
+		<input type="radio" name="showDescriptions" value="1" <?php  if ($controller->showDescriptions) { ?> checked<?php  } ?> /><? echo t('Titles &amp; Descriptions')?>
 	</div>	
 
 	<?php  if($controller->truncateTitleChars==0 && !$controller->truncateTitles) $controller->truncateTitleChars=128; ?>

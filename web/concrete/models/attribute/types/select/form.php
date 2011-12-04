@@ -39,9 +39,9 @@ if ($akSelectAllowMultipleValues && $akSelectAllowOtherValues) { // display auto
 	<span style="position: relative">
 	
 	<?php 
-	echo $form->text('newAttrValueRows'.$attrKeyID, array('class' => 'ccm-attribute-type-select-autocomplete-text', 'style'=>'position:relative; width: 200px; z-index: 260;'));
+	echo $form->text('newAttrValueRows'.$attrKeyID, array('class' => 'ccm-attribute-type-select-autocomplete-text', 'style'=>'position:relative; width: 200px'));
 	?>
-	<input type="button" class="ccm-input-button" value="<?=t('Add')?>" onclick="ccmAttributeTypeSelectTagHelper<?=$attrKeyID?>.addButtonClick(); return false" />
+	<input type="button" class="btn ccm-input-button" value="<?=t('Add')?>" onclick="ccmAttributeTypeSelectTagHelper<?=$attrKeyID?>.addButtonClick(); return false" />
 	</span>
 </div>
 
@@ -59,7 +59,7 @@ if ($akSelectAllowMultipleValues && $akSelectAllowOtherValues) { // display auto
 		});
 
 		$("#newAttrValueRows<?php echo $attrKeyID?>").bind("keydown", function(e) {
-			if (e.keyCode == 13 || e.keyCode == 188) { // comma or enter
+			if (e.keyCode == 13) { // comma or enter
 				if($(this).val().length > 0) {
 					ccmAttributeTypeSelectTagHelper<?php echo $attrKeyID?>.add($(this).val());
 					$(this).val('');

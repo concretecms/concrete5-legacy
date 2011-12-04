@@ -61,6 +61,64 @@ class SelectAttributeTypeController extends AttributeTypeController  {
 		}
 	}
 	
+	public function exportKey($akey) {
+		$this->load();
+		$db = Loader::db();
+		$type = $akey->addChild('type');
+		$type->addAttribute('allow-multiple-values', $this->akSelectAllowMultipleValues);
+		$type->addAttribute('display-order', $this->akSelectOptionDisplayOrder);
+		$type->addAttribute('allow-other-values', $this->akSelectAllowOtherValues);
+		$r = $db->Execute('select value, displayOrder, isEndUserAdded from atSelectOptions where akID = ? order by displayOrder asc', $this->getAttributeKey()->getAttributeKeyID());
+		$options = $type->addChild('options');
+		while ($row = $r->FetchRow()) {
+			$opt = $options->addChild('option');
+			$opt->addAttribute('value', $row['value']);
+			$opt->addAttribute('is-end-user-added', $row['isEndUserAdded']);
+		}
+		return $akey;
+	}
+	
+	public function exportValue($akn) {
+		$list = $this->getSelectedOptions();
+		if ($list->count() > 0) {
+			$av = $akn->addChild('value');
+			foreach($list as $l) {
+				$av->addChild('option', (string) $l);
+			}
+		}
+	}
+	
+	public function importValue(SimpleXMLElement $akv) {
+		if (isset($akv->value)) {
+			$vals = array();
+			foreach($akv->value->children() as $ch) {
+				$vals[] = (string) $ch;
+			}
+			return $vals;
+		}
+	}
+	
+	public function importKey($akey) {
+		if (isset($akey->type)) {
+			$akSelectAllowMultipleValues = $akey->type['allow-multiple-values'];
+			$akSelectOptionDisplayOrder = $akey->type['display-order'];
+			$akSelectAllowOtherValues = $akey->type['allow-other-values'];
+			$db = Loader::db();
+			$db->Replace('atSelectSettings', array(
+				'akID' => $this->attributeKey->getAttributeKeyID(), 
+				'akSelectAllowMultipleValues' => $akSelectAllowMultipleValues, 
+				'akSelectAllowOtherValues' => $akSelectAllowOtherValues,
+				'akSelectOptionDisplayOrder' => $akSelectOptionDisplayOrder
+			), array('akID'), true);
+
+			if (isset($akey->type->options)) {
+				foreach($akey->type->options->children() as $option) {
+					SelectAttributeTypeOption::add($this->attributeKey, $option['value'], $option['is-end-user-added']);
+				}
+			}
+		}
+	}
+	
 	private function getSelectValuesFromPost() {
 		$options = new SelectAttributeTypeOptionList();
 		$displayOrder = 0;		
@@ -97,6 +155,8 @@ class SelectAttributeTypeController extends AttributeTypeController  {
 		}
 		$this->set('selectedOptionValues',$selectedOptionValues);
 		$this->set('selectedOptions', $selectedOptions);
+		$this->addHeaderItem(Loader::helper('html')->javascript('jquery.ui.js'));
+		$this->addHeaderItem(Loader::helper('html')->css('jquery.ui.css'));
 	}
 	
 	public function search() {
@@ -175,7 +235,7 @@ class SelectAttributeTypeController extends AttributeTypeController  {
 		
 		if (is_array($value) && $this->akSelectAllowMultipleValues) {
 			foreach($value as $v) {
-				$opt = SelectAttributeTypeOption::getByValue($v);
+				$opt = SelectAttributeTypeOption::getByValue($v, $this->attributeKey);
 				if (is_object($opt)) {
 					$options[] = $opt;	
 				}
@@ -185,7 +245,7 @@ class SelectAttributeTypeController extends AttributeTypeController  {
 				$value = $value[0];
 			}
 			
-			$opt = SelectAttributeTypeOption::getByValue($value);
+			$opt = SelectAttributeTypeOption::getByValue($value, $this->attributeKey);
 			if (is_object($opt)) {
 				$options[] = $opt;	
 			}
@@ -224,6 +284,12 @@ class SelectAttributeTypeController extends AttributeTypeController  {
 	public function validateForm($p) {
 		$this->load();
 		$options = $this->request('atSelectOptionID');
+		if ($this->akSelectAllowOtherValues) {
+			$options = $this->request('atSelectNewOption');
+			if (is_array($options) && count($options) > 0) {
+				return true;
+			}
+		}
 		if ($this->akSelectAllowMultipleValues) {
 			return count($options) > 0;
 		} else {
@@ -245,8 +311,10 @@ class SelectAttributeTypeController extends AttributeTypeController  {
 		foreach($options as $id) {
 			if ($id > 0) {
 				$opt = SelectAttributeTypeOption::getByID($id);
-				$optionText[] = $opt->getSelectAttributeOptionValue(true);
-				$optionQuery[] = $opt->getSelectAttributeOptionValue(false);
+				if (is_object($opt)) {
+					$optionText[] = $opt->getSelectAttributeOptionValue(true);
+					$optionQuery[] = $opt->getSelectAttributeOptionValue(false);
+				}
 			}
 		}
 		if (count($optionText) == 0) {
@@ -486,9 +554,13 @@ class SelectAttributeTypeOption extends Object {
 		}
 	}
 	
-	public static function getByValue($value) {
+	public static function getByValue($value, $ak = false) {
 		$db = Loader::db();
-		$row = $db->GetRow("select ID, displayOrder, value from atSelectOptions where value = ?", array($value));
+		if (is_object($ak)) {
+			$row = $db->GetRow("select ID, displayOrder, value from atSelectOptions where value = ? and akID = ?", array($value, $ak->getAttributeKeyID()));
+		} else {
+			$row = $db->GetRow("select ID, displayOrder, value from atSelectOptions where value = ?", array($value));
+		}
 		if (isset($row['ID'])) {
 			$obj = new SelectAttributeTypeOption($row['ID'], $row['value'], $row['displayOrder']);
 			return $obj;

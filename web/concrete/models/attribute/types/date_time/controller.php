@@ -29,13 +29,14 @@ class DateTimeAttributeTypeController extends AttributeTypeController  {
 	}
 
 	public function getDisplayValue() {
+		$this->load();
 		$v = $this->getValue();
 		if ($v == '' || $v == false) {
 			return '';
 		}
 		$v2 = date('H:i:s', strtotime($v));
 		$r = '';
-		if ($v2 != '00:00:00') {
+		if ($v2 != '00:00:00' && $this->akDateDisplayMode != 'date') {
 			$r .= date(DATE_APP_DATE_ATTRIBUTE_TYPE_T, strtotime($v));
 			$r .= t(' on ' );
 		}
@@ -61,17 +62,36 @@ class DateTimeAttributeTypeController extends AttributeTypeController  {
 		$this->load();
 		$dt = Loader::helper('form/date_time');
 		$caValue = $this->getValue();
+		$html = Loader::helper('html');
 		switch($this->akDateDisplayMode) {
 			case 'text':
 				$form = Loader::helper('form');
 				print $form->text($this->field('value'), $this->getDisplayValue());
 				break;
 			case 'date':
+				$this->addHeaderItem($html->css('jquery.ui.css'));
+				$this->addHeaderItem($html->javascript('jquery.ui.js'));
 				print $dt->date($this->field('value'), $caValue);
 				break;
 			default:
+				$this->addHeaderItem($html->css('jquery.ui.css'));
+				$this->addHeaderItem($html->javascript('jquery.ui.js'));
 				print $dt->datetime($this->field('value'), $caValue);
 				break;
+		}
+	}
+
+	public function exportKey($akey) {
+		$this->load();
+		$type = $akey->addChild('type');
+		$type->addAttribute('mode', $this->akDateDisplayMode);
+		return $akey;
+	}
+
+	public function importKey($akey) {
+		if (isset($akey->type)) {
+			$data['akDateDisplayMode'] = $akey->type['mode'];
+			$this->saveKey($data);
 		}
 	}
 

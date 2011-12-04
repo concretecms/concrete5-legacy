@@ -20,6 +20,8 @@ class UpgradeController extends Controller {
 	public $upgrade_db = true;
 	
 	public function on_start() {
+		$cnt = Loader::controller('/dashboard/system/backup_restore/update');
+		$cnt->secCheck();
 		// if you just reverted, but didn't manually clear out your files - cache would be a prob here.
 		$ca = new Cache();
 		$ca->flush();
@@ -131,27 +133,16 @@ class UpgradeController extends Controller {
 			$ugvs[] = "version_5411";
 			$ugvs[] = "version_542";
 		}
+		if (version_compare($sav, '5.4.2.1', '<')) { 
+			$ugvs[] = "version_5421";
+		}
+
+		if (version_compare($sav, '5.5.0', '<')) { 
+			$ugvs[] = "version_550";
+		}
+
 		foreach($ugvs as $ugh) {
 			$this->upgrades[] = Loader::helper('concrete/upgrade/' . $ugh);
-		}
-	}
-	
-	public function refresh_schema() {
-		if ($this->upgrade_db) {
-			$installDirectory = DIR_BASE_CORE . '/config';
-			$file = $installDirectory . '/db.xml';
-			if (!file_exists($file)) {
-				throw new Exception(t('Unable to locate database import file.'));
-			}		
-			$err = Package::installDB($file);
-			
-			// now we refresh the block schema
-			$btl = new BlockTypeList();
-			$btArray = $btl->getInstalledList();
-			foreach($btArray as $bt) {
-				$bt->refresh();
-			}
-			$this->upgrade_db = false;
 		}
 	}
 	
@@ -198,11 +189,11 @@ class UpgradeController extends Controller {
 			$upgrade = true;
 		} catch(Exception $e) {
 			$upgrade = false;
-			$message .= t('An Unexpected Error occurred while upgrading: %s', $e->getMessage());
+			$message .= '<div class="alert-message block-message error"><p>' . t('An Unexpected Error occurred while upgrading: %s', $e->getMessage()) . '</p></div>';
 		}
 		
 		if ($upgrade) {
-			$completeMessage .= t('Upgrade to <b>%s</b> complete!', APP_VERSION) . '<br/><br/>';
+			$completeMessage .= '<div class="alert-message block-message success"><p>' . t('Upgrade to <b>%s</b> complete!', APP_VERSION) . '</p></div>';
 			Config::save('SITE_APP_VERSION', APP_VERSION);
 		}
 		$this->set('completeMessage',$completeMessage);	

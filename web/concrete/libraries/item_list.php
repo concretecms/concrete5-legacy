@@ -344,7 +344,11 @@ class ItemList {
 			return false;
 		}
 		$summary = $this->getSummary();
-		$html = '<div class="ccm-paging-top">'. t('Viewing <b>%s</b> to <b>%s</b> (<b>%s</b> Total)', $summary->currentStart, "<span id=\"pagingPageResults\">" . $summary->currentEnd . "</span>", "<span id=\"pagingTotalResults\">" . $this->total . "</span>") . ( $right_content != '' ? '<span class="ccm-paging-top-content">'. $right_content .'</span>' : '' ) .'</div>';
+		if ($summary->currentEnd == -1) {
+			$html = '<div class="ccm-paging-top">'. t('Viewing <b>%s</b> to <b>%s</b> (<b>%s</b> Total)', $summary->currentStart, "<span id=\"pagingPageResults\">" . $summary->total . "</span>", "<span id=\"pagingTotalResults\">" . $this->total . "</span>") . ( $right_content != '' ? '<span class="ccm-paging-top-content">'. $right_content .'</span>' : '' ) .'</div>';
+		} else {
+			$html = '<div class="ccm-paging-top">'. t('Viewing <b>%s</b> to <b>%s</b> (<b>%s</b> Total)', $summary->currentStart, "<span id=\"pagingPageResults\">" . $summary->currentEnd . "</span>", "<span id=\"pagingTotalResults\">" . $this->total . "</span>") . ( $right_content != '' ? '<span class="ccm-paging-top-content">'. $right_content .'</span>' : '' ) .'</div>';
+		}
 		print $html;
 	}
 	
@@ -409,6 +413,27 @@ class ItemList {
 		$pagination->init($this->currentPage, $this->getTotal(), $url, $this->itemsPerPage);
 		return $pagination;
 	}
+
+	/** 
+	 * Gets paging that works in our new format */
+	public function displayPagingV2($script = false, $return = false, $additionalVars = array()) {
+		$summary = $this->getSummary();
+		$paginator = $this->getPagination($script, $additionalVars);
+		if ($summary->pages > 1) {
+			$html .= '<div class="pagination ccm-pagination"><ul>';
+			$html .= '<li class="prev">' . $paginator->getPrevious() . '</li>';
+			$html .= $paginator->getPages('li');
+			$html .= '<li class="next">' . $paginator->getNext() . '</li>';
+			$html .= '</ul></div>';
+		}
+		if (isset($html)) {
+			if ($return) {
+				return $html;
+			} else {
+				print $html;
+			}
+		}
+	}
 	
 	/** 
 	 * Gets standard HTML to display paging */
@@ -469,8 +494,12 @@ class ItemList {
 	 */
 	public function sortBy($column, $direction = 'asc') {
 		$this->sortBy = $column;
-		$this->sortByDirection = $direction;
-	} 
+		if (in_array($direction, array('asc','desc'))) {
+			$this->sortByDirection = $direction;
+		} else {
+			$this->sortByDirection = 'asc';
+		}
+	}
 
 	/** 
 	 * Sets up a column to sort by
@@ -490,7 +519,7 @@ class DatabaseItemListColumn {
 
 	public function getColumnValue($obj) {
 		if (is_array($this->callback)) {
-			return call_user_func_array($this->callback, array($obj));
+			return call_user_func($this->callback, $obj);
 		} else {
 			return call_user_func(array($obj, $this->callback));
 		}
@@ -559,7 +588,7 @@ class DatabaseItemListColumnSet {
 	}
 	public function getColumnByKey($key) {
 		if (substr($key, 0, 3) == 'ak_') {
-			$ak = call_user_func_array(array($this->attributeClass, 'getByHandle'), array(substr($key, 3)));
+			$ak = call_user_func(array($this->attributeClass, 'getByHandle'), substr($key, 3));
 			$col = new DatabaseItemListAttributeKeyColumn($ak);
 			return $col;
 		} else {

@@ -114,12 +114,19 @@ class SinglePage extends Page {
 		return $c;
 	}
 	
+	/* 
+	 * Adds a new single page at the given path, optionally specify a Package
+	 * @param string $cPath
+	 * @param Package $pkg
+	 * @return Page
+	 */
 	public function add($cPath, $pkg = null) {
 		// if we get to this point, we create a special collection 
 		// without a specific type. This collection has a special cFilename that
 		// points to the passed node
 		$db = Loader::db();
 		$txt = Loader::helper('text');
+		Loader::helper('concrete/interface')->clearInterfaceItemsCache();
 		
 		// trim off a leading / if there is one
 		$cPath = trim($cPath, '/');

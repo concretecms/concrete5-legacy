@@ -2,7 +2,11 @@
 defined('C5_EXECUTE') or die("Access Denied.");
 class FormAttributeHelper {
 	
-	private $obj;
+	protected $obj;
+	
+	public function reset() {
+		unset($this->obj);
+	}
 	
 	public function setAttributeObject($obj) {
 		$this->obj = $obj;
@@ -21,7 +25,7 @@ class FormAttributeHelper {
 					$class = $oclass . 'AttributeKey';
 					break;
 			}
-			$obj = call_user_func_array(array($class, 'getByHandle'), array($key));
+			$obj = call_user_func(array($class, 'getByHandle'), $key);
 		}
 		
 		if (!is_object($obj)) {
@@ -31,20 +35,18 @@ class FormAttributeHelper {
 		if (is_object($this->obj)) {
 			$value = $this->obj->getAttributeValueObject($obj);
 		}
-		$html = '';
-		if ($includeLabel || $required) {
-			$html .= '<div>';
-		}
+		$html = '<div class="clearfix">';
 		if ($includeLabel) {
 			$html .= $obj->render('label', false, true);
 		}
 		if ($required) {
 			$html .= ' <span class="ccm-required">*</span>';
 		}
-		if ($includeLabel || $required) {
-			$html .= '</div>';
-		}
-		$html .= $obj->render('form', $value, true);
+		$html .= '<div class="input">';
+		$html .= $obj->render('composer', $value, true);
+			
+		$html .= '</div></div>';
+		
 		return $html;
 	}
 

@@ -271,9 +271,8 @@ class PageTheme extends Object {
 			
 			// replace all url( instances with url starting with path to theme
 			$contents = preg_replace('/(url\(\')(.*)/', '$1' . $this->getThemeURL() . '/$2', $contents);
-                        $contents = preg_replace('/(url\(")(.*)/', '$1' . $this->getThemeURL() . '/$2', $contents);
-                        $contents = preg_replace('/(url\((?![\'"]))(.*)/', '$1' . $this->getThemeURL() . '/$2', $contents);
-			
+			$contents = preg_replace('/(url\(")(.*)/', '$1' . $this->getThemeURL() . '/$2', $contents);
+            $contents = preg_replace('/(url\((?![\'"]))(.*)/', '$1' . $this->getThemeURL() . '/$2', $contents);
 			
 			// load up all tokens from the db for this stylesheet.
 			// if a replacement style array is passed then we use that instead of the database (as is the case when previewing)
@@ -459,6 +458,10 @@ class PageTheme extends Object {
 		return $styles;
 	}
 	
+	/**
+	 * @param string $ptHandle
+	 * @return PageTheme
+	 */
 	public function getByHandle($ptHandle) {
 		$pt = Cache::get('page_theme_by_handle', $ptHandle);
 		if ($pt instanceof PageTheme) {
@@ -472,6 +475,10 @@ class PageTheme extends Object {
 		return $pt;
 	}
 	
+	/**
+	 * @param int $ptID
+	 * @return PageTheme
+	 */
 	public function getByID($ptID) {
 		$pt = Cache::get('page_theme_by_id', $ptID);
 		if ($pt instanceof PageTheme) {
@@ -582,6 +589,24 @@ class PageTheme extends Object {
 			$res->ptDescription = trim($con[1]);	
 		}
 		return $res;
+	}
+	
+	public static function exportList($xml) {
+		$nxml = $xml->addChild('themes');
+		$list = PageTheme::getList();
+		$pst = PageTheme::getSiteTheme();
+		
+		foreach($list as $pt) {
+			$activated = 0;
+			if ($pst->getThemeID() == $pt->getThemeID()) {
+				$activated = 1;
+			}
+			$type = $nxml->addChild('theme');
+			$type->addAttribute('handle', $pt->getThemeHandle());
+			$type->addAttribute('package', $pt->getPackageHandle());
+			$type->addAttribute('activated', $activated);
+		}
+
 	}
 	
 	private function install($dir, $ptHandle, $pkgID) {

@@ -47,7 +47,7 @@
 		 * Loads a model from either an application, the site, or the core Concrete directory
 		 */
 		public function model($mod, $pkgHandle = null) {
-			
+
 			if (file_exists(DIR_MODELS . '/' . $mod . '.php')) {
 				require_once(DIR_MODELS . '/' . $mod . '.php');
 				return;
@@ -117,17 +117,30 @@
 			}
 		}
 
-		public function tool($file, $args = null) {
-			if (is_array($args)) {
-				extract($args);
-			}
-			if (file_exists(DIR_FILES_TOOLS . '/' . $file . '.php')) {
+		 /**
+		 * Loads a tool file from c5 or site
+		 * first checks if its in root/tools. 
+		 * If it isn't and pkgHandle is defined it checks in root/packages/pkghandle
+		 * If it isn't there and pkgHandle is defined it checks in root/concrete/packages/pkghandle
+		 * Finally it checks if its in root/concrete/tools
+		 */
+		public function tool($file, $args = null, $pkgHandle= null) {
+		   if (is_array($args)) {
+			   extract($args);
+		   }
+		   if (file_exists(DIR_FILES_TOOLS . '/' . $file . '.php')) {
 				include(DIR_FILES_TOOLS . '/' . $file . '.php');
-			} else if (file_exists(DIR_FILES_TOOLS_REQUIRED . '/' . $file . '.php')) {
+		   } else if($pkgHandle){
+			   if(file_exists(DIR_PACKAGES . '/' .$pkgHandle.'/'.DIRNAME_TOOLS.'/'. $file . '.php')){
+				   include(DIR_PACKAGES . '/' .$pkgHandle.'/'.DIRNAME_TOOLS.'/'. $file . '.php');
+			   }else{
+				   include(DIR_PACKAGES_CORE . '/' .$pkgHandle.'/'.DIRNAME_TOOLS.'/'. $file . '.php');
+			   }
+		   } else if(file_exists(DIR_FILES_TOOLS_REQUIRED . '/' . $file . '.php')) {
 				include(DIR_FILES_TOOLS_REQUIRED . '/' . $file . '.php');
 			}
 		}
-
+		
 		/** 
 		 * Loads a block's controller/class into memory. 
 		 * <code>
@@ -149,7 +162,7 @@
 					
 					if (file_exists(DIR_PACKAGES . '/' . $pkg . '/' . DIRNAME_BLOCKS . '/' . $bl . '/' . FILENAME_BLOCK_CONTROLLER)) {
 						require_once(DIR_PACKAGES . '/' . $pkg . '/' . DIRNAME_BLOCKS . '/' . $bl . '/' . FILENAME_BLOCK_CONTROLLER);		
-					} else if (file_exists(DIR_PACKAGES . '/' . $pkg . '/' . DIRNAME_BLOCKS . '/' . $bl . '/' . FILENAME_BLOCK_CONTROLLER)) {
+					} else if (file_exists(DIR_PACKAGES_CORE . '/' . $pkg . '/' . DIRNAME_BLOCKS . '/' . $bl . '/' . FILENAME_BLOCK_CONTROLLER)) {
 						require_once(DIR_PACKAGES_CORE . '/' . $pkg . '/' . DIRNAME_BLOCKS . '/' . $bl . '/' . FILENAME_BLOCK_CONTROLLER);
 					}
 				}
@@ -177,8 +190,8 @@
 		 * </code>
 		 */
 		public function db($server = null, $username = null, $password = null, $database = null, $create = false, $autoconnect = true) {
-			static $_db;
-			if ((!isset($_db) || $create) && ($autoconnect)) {
+			static $_dba;
+			if ((!isset($_dba) || $create) && ($autoconnect)) {
 				if ($server == null && defined('DB_SERVER')) {	
 					$dsn = DB_TYPE . '://' . DB_USERNAME . ':' . rawurlencode(DB_PASSWORD) . '@' . rawurlencode(DB_SERVER) . '/' . DB_DATABASE;
 				} else if ($server) {
@@ -203,9 +216,6 @@
 						}
 						
 						ADOdb_Active_Record::SetDatabaseAdapter($_dba);
-						$_db = new Database();
-						$_db->setDatabaseObject($_dba);
-						//$_db->setLogging(true);
 					} else if (defined('DB_SERVER')) {
 						$v = View::getInstance();
 						$v->renderError(t('Unable to connect to database.'), t('A database error occurred while processing this request.'));
@@ -215,7 +225,7 @@
 				}
 			}
 			
-			return $_db;
+			return $_dba;
 		}
 		
 		/** 
@@ -267,6 +277,10 @@
     	        $instance = $instances[$class];
 			}
 			
+			if(method_exists($instance,'reset')) {
+				$instance->reset();
+			}
+			
 			return $instance;
 		}
 		
@@ -289,54 +303,20 @@
 		/**
 		 * @access private
 		 */
-		public function dashboardModuleController($dbhHandle, $pkg = null) {
-			$class = Object::camelcase($dbhHandle . 'DashboardModuleController');
-			if (!class_exists($class)) {
-				$file1 = DIR_FILES_CONTROLLERS . '/' . DIRNAME_DASHBOARD . '/' . DIRNAME_DASHBOARD_MODULES . '/' . $dbhHandle . '.php';
-				if (is_object($pkg)) {
-					$pkgHandle = $pkg->getPackageHandle();
-					$dir = (is_dir(DIR_PACKAGES . '/' . $pkgHandle)) ? DIR_PACKAGES : DIR_PACKAGES_CORE;
-					$file2 = $dir . '/' . $pkgHandle . '/' . DIRNAME_CONTROLLERS . '/' . DIRNAME_DASHBOARD . '/' . DIRNAME_DASHBOARD_MODULES . '/' . $dbhHandle . '.php';
+		public function startingPointPackage($pkgHandle) {
+			// loads and instantiates the object
+			$dir = (is_dir(DIR_STARTING_POINT_PACKAGES . '/' . $pkgHandle)) ? DIR_STARTING_POINT_PACKAGES : DIR_STARTING_POINT_PACKAGES_CORE;
+			if (file_exists($dir . '/' . $pkgHandle . '/' . FILENAME_PACKAGE_CONTROLLER)) {
+				require_once($dir . '/' . $pkgHandle . '/' . FILENAME_PACKAGE_CONTROLLER);
+				$class = Object::camelcase($pkgHandle) . "StartingPointPackage";
+				if (class_exists($class)) {
+					$cl = new $class;
+					return $cl;
 				}
-				$file3 = DIR_FILES_CONTROLLERS_REQUIRED . '/' . DIRNAME_DASHBOARD . '/' . DIRNAME_DASHBOARD_MODULES . '/' . $dbhHandle . '.php';
-				if (file_exists($file1)) {
-					include($file1);
-				} else if (isset($file2) && file_exists($file2)) {
-					include($file2);
-				} else {
-					include($file3);
-				}
-			}
-
-			$controller = new $class();
-			return $controller;
-		}
-		
-		/** 
-		 * @access private
-		 */		
-		public function dashboardModule($dbhHandle, $pkg = null) {
-			$controller = Loader::dashboardModuleController($dbhHandle, $pkg);
-			extract($controller->getSets());
-			extract($controller->getHelperObjects());
-			$this->controller = $controller;
-
-			// now the view
-			$file1 = DIR_FILES_ELEMENTS . '/' . DIRNAME_DASHBOARD . '/' . DIRNAME_DASHBOARD_MODULES . '/' . $dbhHandle . '.php';
-			if (is_object($pkg)) {
-				$pkgHandle = $pkg->getPackageHandle();
-				$file2 = DIR_PACKAGES . '/' . $pkgHandle . '/' . DIRNAME_ELEMENTS . '/' . DIRNAME_DASHBOARD . '/' . DIRNAME_DASHBOARD_MODULES . '/' . $dbhHandle . '.php';
-			}
-			$file3 = DIR_FILES_ELEMENTS_CORE . '/' . DIRNAME_DASHBOARD . '/' . DIRNAME_DASHBOARD_MODULES . '/' . $dbhHandle . '.php';
-			if (file_exists($file1)) {
-				include($file1);
-			} else if (isset($file2) && file_exists($file2)) {
-				include($file2);
-			} else {
-				include($file3);
 			}
 		}
 		
+
 		/** 
 		 * Gets the path to a particular page type controller
 		 */
@@ -411,11 +391,13 @@
 			} else if ($item instanceof Block || $item instanceof BlockType) {
 				if (file_exists(DIR_FILES_BLOCK_TYPES . '/' . $item->getBlockTypeHandle() . '/' . FILENAME_BLOCK_CONTROLLER)) {
 					require_once(DIR_FILES_BLOCK_TYPES . "/" . $item->getBlockTypeHandle() . "/" . FILENAME_BLOCK_CONTROLLER);
-				} else if ($item->getPackageID() > 0 && file_exists(DIR_PACKAGES . '/' . $item->getPackageHandle() . '/' . DIRNAME_BLOCKS . '/' . $item->getBlockTypeHandle() . '/' . FILENAME_BLOCK_CONTROLLER)) {
-					require_once(DIR_PACKAGES . '/' . $item->getPackageHandle() . '/' . DIRNAME_BLOCKS . '/' . $item->getBlockTypeHandle() . '/' . FILENAME_BLOCK_CONTROLLER);
 				} else if (file_exists(DIR_FILES_BLOCK_TYPES_CORE . '/' . $item->getBlockTypeHandle() . '/' . FILENAME_BLOCK_CONTROLLER)) {
 					require_once(DIR_FILES_BLOCK_TYPES_CORE . "/" . $item->getBlockTypeHandle() . "/" . FILENAME_BLOCK_CONTROLLER);
-				}
+				} else if ($item->getPackageID() > 0 && file_exists(DIR_PACKAGES . '/' . $item->getPackageHandle() . '/' . DIRNAME_BLOCKS . '/' . $item->getBlockTypeHandle() . '/' . FILENAME_BLOCK_CONTROLLER)) {
+					require_once(DIR_PACKAGES . '/' . $item->getPackageHandle() . '/' . DIRNAME_BLOCKS . '/' . $item->getBlockTypeHandle() . '/' . FILENAME_BLOCK_CONTROLLER);
+				} else if ($item->getPackageID() > 0 && file_exists(DIR_PACKAGES_CORE . '/' . $item->getPackageHandle() . '/' . DIRNAME_BLOCKS . '/' . $item->getBlockTypeHandle() . '/' . FILENAME_BLOCK_CONTROLLER)) {
+					require_once(DIR_PACKAGES_CORE . '/' . $item->getPackageHandle() . '/' . DIRNAME_BLOCKS . '/' . $item->getBlockTypeHandle() . '/' . FILENAME_BLOCK_CONTROLLER);
+				} 
 				$class = Object::camelcase($item->getBlockTypeHandle()) . 'BlockController';
 				if (class_exists($class) && $item instanceof BlockType) {
 					$controller = new $class($item);
@@ -480,7 +462,7 @@
 				}
 			}
 			
-			if (is_object($c)) {
+			if (isset($c) && is_object($c)) {
 				$controller->setCollectionObject($c);
 			}
 			

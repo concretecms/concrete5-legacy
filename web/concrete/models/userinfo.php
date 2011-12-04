@@ -221,6 +221,8 @@ defined('C5_EXECUTE') or die("Access Denied.");
 				}
 			}
 
+			$r = $db->query("DELETE FROM UsersFriends WHERE friendUID = ?",array(intval($this->uID)) );
+			
 			$r = $db->query("DELETE FROM UserGroups WHERE uID = ?",array(intval($this->uID)) );
 			$r = $db->query("DELETE FROM UserOpenIDs WHERE uID = ?",array(intval($this->uID)));
 			$r = $db->query("DELETE FROM Users WHERE uID = ?",array(intval($this->uID)));
@@ -538,6 +540,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			$v = array($this->uID);
 			$db->query("update Users set uIsValidated = 1, uIsFullRecord = 1 where uID = ?", $v);
 			$db->query("update UserValidationHashes set uDateRedeemed = " . time() . " where uID = ?", $v);
+			Events::fire('on_user_validate', $this);
 			return true;
 		}
 		

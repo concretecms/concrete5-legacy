@@ -72,8 +72,9 @@ class Cache {
 	}
 	
 	public function enableCache() {
-		if (defined('ENABLE_CACHE') && ENABLE_CACHE == TRUE) {
-			Cache::getLibrary()->setOption('caching', true);
+		$ca = Cache::getLibrary();
+		if (is_object($ca)) {
+			$ca->setOption('caching', true);
 		}
 	}
 	
@@ -113,27 +114,38 @@ class Cache {
 	 */	
 	public function get($type, $id, $mustBeNewerThan = false, $forceGet = false) {
 		$loc = CacheLocal::get();
-		if ($loc->enabled && isset($loc->cache[Cache::key($type, $id)])) {
-			return $loc->cache[Cache::key($type, $id)];
+		$key = Cache::key($type, $id);
+		if ($loc->enabled && array_key_exists($key, $loc->cache)) {
+			return $loc->cache[$key];
 		}
 			
 		$cache = Cache::getLibrary();
 		if (!$cache) {
+			if ($loc->enabled) {
+				$loc->cache[$key] = false;
+			}
 			return false;
 		}
 		
 		// if mustBeNewerThan is set, we check the cache mtime
 		// if mustBeNewerThan is newer than that time, we relinquish
 		if ($mustBeNewerThan != false) {
-			$metadata = $cache->getMetadatas(Cache::key($type, $id));
+			$metadata = $cache->getMetadatas($key);
 			if ($metadata['mtime'] < $mustBeNewerThan) {
 				// clear cache record and return false
-				Cache::getLibrary()->remove(Cache::key($type, $id));
+				Cache::getLibrary()->remove($key);
+				if ($loc->enabled) {
+					$loc->cache[$key] = false;
+				}
 				return false;
 			}
 		}
 		
-		return $cache->load(Cache::key($type, $id));
+		$loaded = $cache->load($key);
+		if ($loc->enabled) {
+			$loc->cache[$key] = $loaded;
+		}
+		return $loaded;
 	}
 
 	/** 
@@ -152,11 +164,10 @@ class Cache {
 	 */	
 	public function delete($type, $id){
 		$cache = Cache::getLibrary();
-		if (!$cache) {
-			return false;
+		if ($cache) {
+			$cache->remove(Cache::key($type, $id));
 		}
 
-		$cache->remove(Cache::key($type, $id));
 		$loc = CacheLocal::get();
 		if ($loc->enabled && isset($loc->cache[Cache::key($type, $id)])) {
 			unset($loc->cache[Cache::key($type, $id)]);

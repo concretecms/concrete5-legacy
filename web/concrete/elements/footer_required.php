@@ -1,8 +1,10 @@
 <?
 
-if (!isset($disableTrackingCode) || $disableTrackingCode == false) {
+$_trackingCodePosition = Config::get('SITE_TRACKING_CODE_POSITION');
+if (empty($disableTrackingCode) && (empty($_trackingCodePosition) || $_trackingCodePosition === 'bottom')) {
 	echo Config::get('SITE_TRACKING_CODE');
 }
 
-// not working yet
-// print $this->outputFooterItems();
+print $this->controller->outputFooterItems();
+
+?>
