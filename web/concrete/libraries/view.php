@@ -118,7 +118,27 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			$this->footerItems[$namespace][] = $item;
 		}
 		
+		public function getConfiguredAssets() {
+			$html = Loader::helper('html');
+			$js = unserialize(Config::get('LOADED_JS_ASSETS'));
+			$css = unserialize(Config::get('LOADED_CSS_ASSETS'));
+			$jsheader = array('jquery.js', 'ccm.base.js'); //these js items need to go in the header (jquery, base)
+			foreach($js as $j) {
+				if(in_array($j, $jsheader)) {
+					$this->addHeaderItem($html->javascript($j), 'CORE');
+				} else {
+					$this->addFooterItem($html->javascript($j));
+				}
+			}
+			
+			foreach($css as $j) {
+				$this->addHeaderItem($html->css($j));
+			}
+			
+		}
+		
 		public function getHeaderItems() {
+			$this->getConfiguredAssets();
 			$a1 = (is_array($this->headerItems['CORE'])) ? $this->headerItems['CORE'] : array();
 			$a2 = (is_array($this->headerItems['VIEW'])) ? $this->headerItems['VIEW'] : array();
 			$a3 = (is_array($this->headerItems['CONTROLLER'])) ? $this->headerItems['CONTROLLER'] : array();
@@ -134,6 +154,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		}
 		
 		public function getFooterItems() {
+			$this->getConfiguredAssets();
 			$a1 = (is_array($this->footerItems['CORE'])) ? $this->footerItems['CORE'] : array();
 			$a2 = (is_array($this->footerItems['VIEW'])) ? $this->footerItems['VIEW'] : array();
 			$a3 = (is_array($this->footerItems['CONTROLLER'])) ? $this->footerItems['CONTROLLER'] : array();

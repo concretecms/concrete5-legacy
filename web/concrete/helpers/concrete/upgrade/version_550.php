@@ -76,7 +76,12 @@ class ConcreteUpgradeVersion550Helper {
 		}
 		
 		Config::save('SEEN_INTRODUCTION', 1);
-
+		if(!Config::get('LOADED_JS_ASSETS')) {
+			Config::save('LOADED_JS_ASSETS', serialize(array('ccm.base.js', 'jquery.js')));
+		}
+		if(!Config::get('LOADED_CSS_ASSETS')) {
+			Config::save('LOADED_CSS_ASSETS', serialize(array('ccm.base.css')));
+		}
 		
 	}
 	
