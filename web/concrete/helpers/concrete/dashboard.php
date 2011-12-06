@@ -102,7 +102,7 @@ class ConcreteDashboardHelper {
 						$class = '';
 					}
 					
-					$relatedPages .= '<li class="' . $class . '"><a href="' . $nh->getLinkToCollection($sc) . '">' . $sc->getCollectionName() . '</a></li>';
+					$relatedPages .= '<li class="' . $class . '"><a href="' . $nh->getLinkToCollection($sc) . '">' . t($sc->getCollectionName()) . '</a></li>';
 				}
 		
 				if ($upToPage) { 
@@ -111,7 +111,7 @@ class ConcreteDashboardHelper {
 				}
 				$relatedPages .= '</ul>';
 				$relatedPages .= '</div>';
-				$navigateTitle = $parent->getCollectionName();
+				$navigateTitle = t($parent->getCollectionName());
 			}
 		}
 		
