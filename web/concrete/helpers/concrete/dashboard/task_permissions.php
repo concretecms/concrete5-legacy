@@ -77,7 +77,7 @@ class ConcreteDashboardTaskPermissionsHelper {
 		if ($obj != false) {
 			if (is_a($obj, 'Group')) {
 				$identifier = 'gID_' . $obj->getGroupID();
-				$name = $obj->getGroupName();
+				$name = t($obj->getGroupName());
 			} else if (is_a($obj, 'UserInfo')) {
 				$identifier = 'uID_' . $obj->getUserID();
 				$name = $obj->getUserName();
@@ -106,7 +106,7 @@ class ConcreteDashboardTaskPermissionsHelper {
 			}
 			
 			$html .= '<tr class="ccm-permissions-access">
-				<td><strong>' . $tp->getTaskPermissionName() . '</strong></td>
+				<td><strong>' . t($tp->getTaskPermissionName()) . '</strong></td>
 				<td>' . $form->radio($id . $tpID, '1', $canRead) . ' ' . t('Yes') . '</td>
 				<td>' . $form->radio($id . $tpID, 0, $canRead) . ' ' . t('No') . '</td>
 			</tr>';
