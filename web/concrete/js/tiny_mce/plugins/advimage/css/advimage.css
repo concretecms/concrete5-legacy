@@ -2,13 +2,15 @@
 .mceActionPanel {margin-top:7px;}
 .alignPreview {border:1px solid #000; width:140px; height:140px; overflow:hidden; padding:5px;}
 .checkbox {border:0;}
-.panel_wrapper div.current {height:315px;}
-#appearance_panel.current {height:265px;}
-#advanced_panel.current {height:325px;}
-#prev {margin:0; border:1px solid #000; width:413px; height:150px; overflow:auto;}
+.panel_wrapper div.current {height:255px;}
+#appearance_panel.current {height:205px;}
+#advanced_panel.current {height:230px;}
+#prev {margin:0; border:1px solid #000; width:430px; height:150px; overflow:auto;}
 #align, #classlist {width:150px;}
 #width, #height {vertical-align:middle; width:50px; text-align:center;}
 #vspace, #hspace, #border {vertical-align:middle; width:30px; text-align:center;}
 #class_list {width:180px;}
 #constrain, #onmousemovecheck {width:auto;}
 #id, #dir, #lang, #usemap, #longdesc {width:200px;}
+.ccm-dialog-tabs{ margin-bottom:0!important;}
+.panel_wrapper{ border:1px solid #DDD; border-top: 0px;}

@@ -1207,7 +1207,7 @@
 			ed.windowManager.open({
 				url : this.url + '/anchor.htm',
 				width : 320 + parseInt(ed.getLang('concrete.anchor_delta_width', 0)),
-				height : 90 + parseInt(ed.getLang('concrete.anchor_delta_height', 0)),
+				height : 110 + parseInt(ed.getLang('concrete.anchor_delta_height', 0)),
 				inline : true
 			}, {
 				theme_url : this.url
