@@ -118,7 +118,7 @@
 
 						['div', {id : id + '_middle', 'class' : 'mceMiddle'}, 
 							['div', {id : id + '_left', 'class' : 'mceLeft'}],
-							['span', {id : id + '_content'}],
+							['div', {id : id + '_content'}],
 							['div', {id : id + '_right', 'class' : 'mceRight'}]
 						],
 
@@ -138,6 +138,7 @@
 						['a', {id : id + '_resize_s', 'class' : 'mceResize mceResizeS', tabindex : '-1', href : 'javascript:;'}],
 						['a', {id : id + '_resize_w', 'class' : 'mceResize mceResizeW', tabindex : '-1', href : 'javascript:;'}],
 						['a', {id : id + '_resize_e', 'class' : 'mceResize mceResizeE', tabindex : '-1', href : 'javascript:;'}],
+						['div', {id : id + '_resize_se_icon', 'class' : 'mceResize mceResizeE', 'class' : 'ui-resizable-handle ui-resizable-se ui-icon ui-icon-gripsmall-diagonal-se ui-icon-grip-diagonal-se'}],
 						['a', {id : id + '_resize_nw', 'class' : 'mceResize mceResizeNW', tabindex : '-1', href : 'javascript:;'}],
 						['a', {id : id + '_resize_ne', 'class' : 'mceResize mceResizeNE', tabindex : '-1', href : 'javascript:;'}],
 						['a', {id : id + '_resize_sw', 'class' : 'mceResize mceResizeSW', tabindex : '-1', href : 'javascript:;'}],
@@ -176,10 +177,10 @@
 				DOM.setStyles(id + '_ifr', {width : f.width, height : f.height});
 				DOM.setAttrib(id + '_ifr', 'src', u);
 			} else {
-				DOM.add(id + '_wrapper', 'a', {id : id + '_ok', 'class' : 'mceButton mceOk', href : 'javascript:;', onmousedown : 'return false;'}, 'Ok');
+				DOM.add(id + '_wrapper', 'a', {id : id + '_ok', 'class' : 'mceButton mceOk btn', href : 'javascript:;', onmousedown : 'return false;'}, 'Ok');
 
 				if (f.type == 'confirm')
-					DOM.add(id + '_wrapper', 'a', {'class' : 'mceButton mceCancel', href : 'javascript:;', onmousedown : 'return false;'}, 'Cancel');
+					DOM.add(id + '_wrapper', 'a', {'class' : 'mceButton mceCancel btn', href : 'javascript:;', onmousedown : 'return false;'}, 'Cancel');
 
 				DOM.add(id + '_middle', 'div', {'class' : 'mceIcon'});
 				DOM.setHTML(id + '_content', f.content.replace('\n', '<br />'));
