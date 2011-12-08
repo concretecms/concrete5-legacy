@@ -140,7 +140,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		}
 		/**
 		* Gets the user object that was sent a message
-		* @return object ui
+		* @return UserInfo object $ui
 		*/
 		public function getMessageRelevantUserObject() {
 			$ui = UserInfo::getByID($this->getMessageRelevantUserID());
