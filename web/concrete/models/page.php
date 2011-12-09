@@ -1203,7 +1203,7 @@ class Page extends Collection {
             $cHandle = $txt->sanitizeFileSystem($data['cHandle']);
         }
 		
-		$cName = $txt->sanitize($cName);
+		$cName = htmlspecialchars($cName, ENT_COMPAT, APP_CHARSET);
 		
 		// Update the non-canonical page paths
 		if (isset($data['ppURL']))
