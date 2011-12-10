@@ -335,6 +335,7 @@ class FormBlockController extends BlockController {
 				}elseif($row['inputType']=='email'){
 					$answerLong="";
 					$answer=$txt->sanitize($_POST['Question'.$row['msqID']]);
+					$replyTo = $answer;
 				}elseif($row['inputType']=='telephone'){
 					$answerLong="";
 					$answer=$txt->sanitize($_POST['Question'.$row['msqID']]);
@@ -382,7 +383,11 @@ class FormBlockController extends BlockController {
 				
 				$mh = Loader::helper('mail');
 				$mh->to( $this->recipientEmail ); 
-				$mh->from( $formFormEmailAddress ); 
+				$mh->from( $formFormEmailAddress );
+				//UM: enable reply
+                                if($replyTo != ''){
+                                    $mh->replyto($replyTo);
+                                }
 				$mh->addParameter('formName', $this->surveyName);
 				$mh->addParameter('questionSetId', $this->questionSetId);
 				$mh->addParameter('questionAnswerPairs', $questionAnswerPairs); 
