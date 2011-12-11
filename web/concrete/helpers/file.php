@@ -51,7 +51,7 @@ class FileHelper {
                 			$dir2 = $dir.'/'.$file; 
                 			$aDir = array_merge($this->getDirectoryContents($dir2, array(), true), $aDir); 
             			} else { 
-              				$aDir[] = $dir.'/'.$file; 
+              				$aDir[] = $file; 
             			} 
 					}
 				}
