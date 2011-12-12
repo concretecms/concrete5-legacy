@@ -193,7 +193,7 @@ $saveMsg = t('Save permissions first.');
 			<strong><?=t('This page inherits its permissions from:');?> <a target="_blank" href="<?=DIR_REL?>/<?=DISPATCHER_FILENAME?>?cID=<?=$cpc->getCollectionID()?>"><?=$cpc->getCollectionName()?></a></strong><br/><br/>
 			<? } ?>		
 				
-            <table id="ccmPermissionsTablePage" width="100%" class="ccm-grid" border="0" cellspacing="0" cellpadding="0">
+            <table id="ccmPermissionsTablePage" width="100%" class="ccm-grid ccm-ui-table" border="0" cellspacing="0" cellpadding="0">
             <tr>
               <th><div style="width: 200px">&nbsp;</div></th>
               <th class="permissions"><?=t('Read')?></th>

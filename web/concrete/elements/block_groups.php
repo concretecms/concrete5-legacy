@@ -132,7 +132,7 @@
 
 		<div class="ccm-spacer">&nbsp;</div>
 <br/>
-            <table id="ccmPermissionsTableBlock" border="0" cellspacing="0" cellpadding="0" class="ccm-grid" style="width: 100%">
+            <table id="ccmPermissionsTableBlock" border="0" cellspacing="0" cellpadding="0" class="ccm-grid ccm-ui-table" style="width: 100%">
             <tr>
                <th style="width: 100%">&nbsp;</th>
               <th><?=t('Read')?></th>

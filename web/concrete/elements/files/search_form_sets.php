@@ -9,7 +9,7 @@ if (count($s1) > 0) { ?>
 
 <div id="ccm-search-advanced-sets">
 	<div>
-	<table border="0" cellspacing="0" cellpadding="0" id="ccm-file-search-advanced-sets-header">
+	<table border="0" cellspacing="0" cellpadding="0" id="ccm-file-search-advanced-sets-header" class="ccm-ui-table">
 	<tr>
 		<td width="100%"><h2><?=t('Sets')?></h2></td>
 		<td>
