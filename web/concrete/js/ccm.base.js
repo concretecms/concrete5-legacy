@@ -69,7 +69,7 @@ ccm_addHeaderItem = function(item, type) {
 			}
 		}
 	} else if (type == 'JAVASCRIPT') {
-		if (!($('head').children('script[src*="' + item + '"]').length)) {
+		if (!($('script[src*="' + item + '"]').length)) {
 			$('head').append('<script type="text/javascript" src="' + item + qschar + new Date().getTime() + '"></script>');
 		}
 	} else {

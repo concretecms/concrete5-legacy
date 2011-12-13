@@ -105,7 +105,6 @@ $usedKeysCombined = array_merge($requiredKeys, $usedKeys);
 	
 	<script type="text/javascript">
 	<? 
-	/*
 	$v = View::getInstance();
 	$headerItems = $v->getHeaderItems();
 	foreach($headerItems as $item) {
@@ -117,7 +116,6 @@ $usedKeysCombined = array_merge($requiredKeys, $usedKeys);
 		 ccm_addHeaderItem("<?=$item->file?>", '<?=$type?>');
 		<? 
 	} 
-	*/
 	?>
 	</script>
 	
@@ -228,7 +226,7 @@ var ccmPathHelper={
 				this.value = "";
 			}
 		});
-    	$(field).replaceWith('<a href="javascript:void(0)" class="ccm-meta-path-del">Remove Path</a>');
+    	$(field).replaceWith('<a href="javascript:void(0)" class="ccm-meta-path-del"><?php echo t('Remove Path')?></a>');
 		clone.appendTo(parent.parent());
 
 		$("a.ccm-meta-path-add,a.ccm-meta-path.del").unbind('click');
