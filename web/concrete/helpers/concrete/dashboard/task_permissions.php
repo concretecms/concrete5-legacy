@@ -93,7 +93,7 @@ class ConcreteDashboardTaskPermissionsHelper {
 		$html .= '<span>' . $name . '</span></h3>';
 
 		
-		$html .= '<table border="0" cellspacing="0" cellpadding="0" id="ccm-sitemap-permissions-grid">';
+		$html .= '<table border="0" cellspacing="0" cellpadding="0" id="ccm-sitemap-permissions-grid" class="ccm-ui-table">';
 		$tasks = $tps->getTaskPermissions();
 		foreach($tasks as $tp) {
 			$tpID = $tp->getTaskPermissionID();

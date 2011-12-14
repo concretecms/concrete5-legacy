@@ -12,7 +12,7 @@ foreach($s1 as $s) {
 <? if ($_REQUEST['fType'] != false) { ?>
 	<div class="ccm-file-manager-pre-filter"><?=t('Only displaying %s files.', FileType::getGenericTypeText($_REQUEST['fType']))?></div>
 <? } ?>
-<table border="0" cellspacing="0" cellpadding="0">
+<table border="0" cellspacing="0" cellpadding="0" class="ccm-ui-table">
 <tr>
 	<td valign="top">
 	<? /* I'm not proud of this */ ?>
@@ -25,7 +25,7 @@ foreach($s1 as $s) {
 	?>
 
 	<input type="hidden" name="search" value="1" />
-	<table border="0" cellspacing="0" cellpadding="0">
+	<table border="0" cellspacing="0" cellpadding="0" class="ccm-ui-table">
 	<tr>
 		<td valign="top">
 			<div style="position: relative">

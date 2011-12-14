@@ -32,7 +32,7 @@ ccm_marketplaceRefreshInstalledBlockTypes = function() {
 
 <? if (count($marketplaceBlockTypes) > 0) { ?>
 
-	<table class="ccm-block-type-table">
+	<table class="ccm-block-type-table ccm-ui-table">
 
 	<? foreach($marketplaceBlockTypes as $bt) { 
 		$btIcon = $bt->getRemoteListIconURL();

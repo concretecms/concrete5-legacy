@@ -88,7 +88,7 @@ if ($ctEditMode) {
     
 	<div class="ccm-pane-body">
 		
-        <table border="0" cellspacing="0" cellpadding="0">
+        <table border="0" cellspacing="0" cellpadding="0" class="ccm-ui-table">
             <thead>
                 <tr>
                     <th class="header"><?=t('Name')?> <span class="required">*</span></th>
@@ -107,7 +107,7 @@ if ($ctEditMode) {
 			</tbody>
 		</table>
         
-        <table border="0" cellspacing="0" cellpadding="0">
+        <table border="0" cellspacing="0" cellpadding="0" class="ccm-ui-table">
             <thead>
                 <tr>
                     <th class="subheader">
@@ -167,7 +167,7 @@ if ($ctEditMode) {
 			</tbody>
 		</table>
         
-        <table border="0" cellspacing="0" cellpadding="0">
+        <table border="0" cellspacing="0" cellpadding="0" class="ccm-ui-table">
             <thead>
                 <tr>
                     <th colspan="3" class="subheader"><?= t('Default Attributes'); ?></th>
@@ -259,7 +259,7 @@ if ($ctEditMode) {
 		<br/><strong><?=t('No page types found.')?></strong><br/><br>
 	<? } else { ?>
 	
-	<table border="0" cellspacing="0" cellpadding="0" class="zebra-striped">
+	<table border="0" cellspacing="0" cellpadding="0" class="zebra-striped ccm-ui-table">
     	<thead>
             <tr>
                 <th width="100%"><?=t('Name')?></th>

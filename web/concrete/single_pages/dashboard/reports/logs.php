@@ -49,7 +49,7 @@ $areEntries = count($entries) > 0 ? true : false;
         
 	<div class="ccm-pane-body <? if(!$paginator || !strlen($paginator->getPages())>0) { ?>ccm-pane-body-footer <? } ?>">
 
-        <table border="0" cellspacing="0" cellpadding="0" class="grid-list zebra-striped">
+        <table border="0" cellspacing="0" cellpadding="0" class="grid-list zebra-striped ccm-ui-table">
         	<thead>
                 <tr>
                     <th class="subheaderActive"><?=t('Date/Time')?></th>
