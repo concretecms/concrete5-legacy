@@ -50,7 +50,7 @@ if ($controller->getFileOnstateID() > 0) {
 
 <div class="ccm-block-field-group">
 <h2><?=t('Maximum Dimensions')?></h2>
-<table border="0" cellspacing="0" cellpadding="0">
+<table border="0" cellspacing="0" cellpadding="0" class="ccm-ui-table">
 <tr>
 <td><?=t('Width')?>&nbsp;</td>
 <td><?= $form->text('maxWidth', intval($maxWidth), array('style' => 'width: 60px')); ?></td>

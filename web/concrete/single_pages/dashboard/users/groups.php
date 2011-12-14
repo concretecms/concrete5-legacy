@@ -186,7 +186,7 @@ foreach ($gResults as $g) { ?>
 	<div class="clearfix">
 	<label><?=t('Accounts expire after')?></label>
 	<div class="input">
-	<table style="width: 1%; margin-bottom: 0px">
+	<table style="width: 1%; margin-bottom: 0px" class="ccm-ui-table">
 	<tr>
 	<?
 	$days = $g->getGroupExpirationIntervalDays();

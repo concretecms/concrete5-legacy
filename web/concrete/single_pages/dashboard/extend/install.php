@@ -173,7 +173,7 @@ if ($this->controller->getTask() == 'install_package' && $showInstallOptionsScre
 
 			<ul class="breadcrumb"><li><a href="<?=$this->url('/dashboard/extend/install')?>">&lt; <?=t('Return to Add Functionality')?></a></li></ul>
 
-			<table class="zebra-striped">
+			<table class="zebra-striped ccm-ui-table">
 			<tr>
 				<td class="ccm-marketplace-list-thumbnail"><img src="<?=$ci->getPackageIconURL($pkg)?>" /></td>
 				<td class="ccm-addon-list-description" style="width: 100%"><h3><?=$pkg->getPackageName()?> - <?=$pkg->getPackageVersion()?></a></h3><?=$pkg->getPackageDescription()?></td>
@@ -234,7 +234,7 @@ if ($this->controller->getTask() == 'install_package' && $showInstallOptionsScre
 				</div>
 			<? } ?>
 
-			<table class="zebra-striped">
+			<table class="zebra-striped ccm-ui-table">
 		
 			<?	foreach ($pkgArray as $pkg) { ?>
 				<tr>
@@ -261,7 +261,7 @@ if ($this->controller->getTask() == 'install_package' && $showInstallOptionsScre
 			
 		<? } else { ?>
 	
-			<table class="zebra-striped">
+			<table class="zebra-striped ccm-ui-table">
 			<? foreach ($purchasedBlocks as $pb) {
 				$file = $pb->getRemoteFileURL();
 				if (!empty($file)) {?>

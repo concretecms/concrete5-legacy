@@ -126,9 +126,9 @@ if (!isset($_REQUEST['reload'])) { ?>
 <h1><?=t('Page Details')?></h1>
 
 
-<div id="ccm-page-properties">
+<div id="ccm-page-properties" class="ccm-ui">
 
-<table border="0" cellspacing="0" cellpadding="0" class="ccm-grid">
+<table border="0" cellspacing="0" cellpadding="0" class="ccm-grid ccm-ui-table">
 <?
 
 foreach($attribs as $at) {

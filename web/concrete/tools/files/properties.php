@@ -207,7 +207,7 @@ if (!$previewMode) {
 
 <div id="ccm-file-properties">
 <h4><?=t('Basic Properties')?></h4>
-<table border="0" cellspacing="0" cellpadding="0" class="ccm-grid">
+<table border="0" cellspacing="0" cellpadding="0" class="ccm-grid ccm-ui-table">
 <tr>
 	<td><strong><?=t('ID')?></strong></strong></td>
 	<td width="100%" colspan="2"><?=$fv->getFileID()?> <span style="color: #afafaf">(<?=t('Version')?> <?=$fv->getFileVersionID()?>)</span></td>
@@ -287,7 +287,7 @@ if (count($attribs) > 0) { ?>
 <br/>
 
 <h4><?=t('%s File Properties', $ft)?></h4>
-<table border="0" cellspacing="0" cellpadding="0" class="ccm-grid">
+<table border="0" cellspacing="0" cellpadding="0" class="ccm-grid ccm-ui-table">
 <?
 
 foreach($attribs as $at) {
@@ -308,7 +308,7 @@ if (count($attribs) > 0) { ?>
 <br/>
 
 <h4><?=t('Other Properties')?></h4>
-<table border="0" cellspacing="0" cellpadding="0" class="ccm-grid">
+<table border="0" cellspacing="0" cellpadding="0" class="ccm-grid ccm-ui-table">
 <?
 
 foreach($attribs as $at) {
@@ -339,7 +339,7 @@ foreach($attribs as $at) {
 	
 		<h3><?=t('File Versions')?></h3>
 	
-		<table border="0" cellspacing="0" width="100%" id="ccm-file-versions-grid" class="ccm-grid" cellpadding="0">
+		<table border="0" cellspacing="0" width="100%" id="ccm-file-versions-grid" class="ccm-grid ccm-ui-table" cellpadding="0">
 		<tr>
 			<th>&nbsp;</th>
 			<th><?=t('Filename')?></th>
@@ -412,7 +412,7 @@ foreach($attribs as $at) {
 	$downloadStatistics = $f->getDownloadStatistics();
 	?>
 	<h4><?=count($downloadStatistics).' '.t('Downloads')?></h4>
-	<table border="0" cellspacing="0" width="100%" id="ccm-file-versions-grid" class="ccm-grid" cellpadding="0">
+	<table border="0" cellspacing="0" width="100%" id="ccm-file-versions-grid" class="ccm-grid ccm-ui-table" cellpadding="0">
 		<tr> 
 			<th><?=t('User')?></th>
 			<th><?=t('Download Time')?></th>

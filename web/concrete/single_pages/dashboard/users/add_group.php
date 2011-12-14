@@ -65,7 +65,7 @@ $form = Loader::helper('form');
 <div class="clearfix">
 <label><?=t('Accounts expire after')?></label>
 <div class="input">
-<table style="width: 1%; margin-bottom: 0px">
+<table style="width: 1%; margin-bottom: 0px" class="ccm-ui-table">
 <tr>
 <td valign="top"><strong><?=t('Days')?></strong><br/>
 <?=$form->text('gUserExpirationIntervalDays', array('style' => $style, 'class' => 'span1'))?>

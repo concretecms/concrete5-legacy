@@ -63,7 +63,7 @@ $searchInstance = $_REQUEST['searchInstance'];
 
 	<form id="ccm-<?=$searchInstance?>-delete-form" method="post" action="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/pages/delete">
 	<?=$form->hidden('task', 'delete_pages')?>
-	<table border="0" cellspacing="0" cellpadding="0" width="100%" class="zebra-striped">
+	<table border="0" cellspacing="0" cellpadding="0" width="100%" class="zebra-striped ccm-ui-table">
 	<tr>
 		<th><?=t('Name')?></th>
 		<th><?=t('Page Type')?></th>

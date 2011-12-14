@@ -22,7 +22,7 @@ if ($cap->canAccessComposer()) { ?>
 	<div class="ccm-pane-body">
 	<?=$form->hidden('ctID', $ct->getCollectionTypeID()); ?>
     
-        <table cellspacing="0" cellpadding="0" border="0">
+        <table cellspacing="0" cellpadding="0" border="0" class="ccm-ui-table">
             <thead>
                 <tr>
                     <th class="header"><?=t('Included in Composer?')?></th>
@@ -42,7 +42,7 @@ if ($cap->canAccessComposer()) { ?>
 			</tbody>
 		</table>
         
-        <table cellspacing="0" cellpadding="0" border="0">
+        <table cellspacing="0" cellpadding="0" border="0" class="ccm-ui-table">
             <thead>
                 <tr>
                     <th class="subheader"><?=t('Composer Publishing Settings')?></th>
@@ -89,7 +89,7 @@ if ($cap->canAccessComposer()) { ?>
 			</tbody>
 		</table>
                 
-		<table cellspacing="0" cellpadding="0" border="0">
+		<table cellspacing="0" cellpadding="0" border="0" class="ccm-ui-table">
             <thead>
                 <tr class="row-composer">
                     <th colspan="3" class="subheader"><?=t('Attributes to Display in Composer')?></th>
@@ -136,7 +136,7 @@ if ($cap->canAccessComposer()) { ?>
 			</tbody>
 		</table>
                 
-		<table cellspacing="0" cellpadding="0" border="0">
+		<table cellspacing="0" cellpadding="0" border="0" class="ccm-ui-table">
             <thead>
 				<tr>
                     <th class="header"><?=t('Composer Content Order')?></th>
