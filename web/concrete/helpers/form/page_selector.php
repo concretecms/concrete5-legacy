@@ -120,7 +120,7 @@ class FormPageSelectorHelper {
 	/** 
 	 * Creates a text form field with Javascript autocomplete for selecting a page
 	 * <code>
-	 *     $dh->quickSelect('query', '1');
+	 *     $dh->quickSelect('pageID', '1');
 	 * </code>
 	 * @param string $key request parameter to check for page id
 	 * @param int $cID page id to use if request parameter is not set
