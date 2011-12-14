@@ -89,7 +89,7 @@ if ($tp->canInstallPackages()) {
 		$pagination = $list->getPagination();
 		?>
 	
-		<table class="ccm-marketplace-results">
+		<table class="ccm-marketplace-results ccm-ui-table">
 			<tr>
 			<?php 
 			$numCols=3;

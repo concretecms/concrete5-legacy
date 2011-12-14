@@ -48,7 +48,7 @@
 	$bu = REL_DIR_FILES_TOOLS_REQUIRED . '/users/search_results';
 	
 	if (count($users) > 0) { ?>	
-		<table border="0" cellspacing="0" cellpadding="0" id="ccm-user-list" class="ccm-results-list">
+		<table border="0" cellspacing="0" cellpadding="0" id="ccm-user-list" class="ccm-results-list ccm-ui-table">
 		<tr>
 			<th width="1"><input id="ccm-user-list-cb-all" type="checkbox" /></th>
 			<? foreach($columns->getColumns() as $col) { ?>

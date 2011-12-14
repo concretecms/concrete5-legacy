@@ -276,7 +276,7 @@ table.ccm-grid th {width: 70px}
 		<div class="block-message alert-message success"><p><?=t('%s files uploaded successfully.', count($_REQUEST['fID']))?></p></div>
 	<? } ?>
 <? } ?>
-
+		<div>
 <ul class="tabs" id="ccm-file-manager-add-complete-tabs">
 	<li class="active"><a href="javascript:void(0)" id="ccm-file-manager-add-complete-basic"><?=t('Basic Properties')?></a></li>
 	<? if (count($attribs) > 0) { ?>
@@ -286,10 +286,11 @@ table.ccm-grid th {width: 70px}
 		<li><a href="javascript:void(0)" id="ccm-file-manager-add-complete-sets"><?=t('Sets')?></a></li>
 	<? } ?>
 </ul>
-
+			<div>
+<br class="clearfix"/>
 <div id="ccm-file-properties">
-<div id="ccm-file-manager-add-complete-basic-tab">
-<table border="0" cellspacing="0" cellpadding="0" class="ccm-grid">  
+<div id="ccm-file-manager-add-complete-basic-tab" class="ccm-file-properties-details-tab">
+<table border="0" cellspacing="0" cellpadding="0" class="ccm-grid ccm-ui-table">  
 <? if (count($files) == 1) { ?>
 <tr>
 	<td><strong><?=t('ID')?></strong></td>
@@ -331,9 +332,9 @@ printCorePropertyRow(t('Tags'), 'fvTags', $defaultPropertyVals['tags'], $form->t
 
 </div>
 
-<div id="ccm-file-manager-add-complete-attributes-tab" style="display: none">
+<div id="ccm-file-manager-add-complete-attributes-tab" style="display: none" class="ccm-file-properties-details-tab">
 
-<table border="0" cellspacing="0" cellpadding="0" class="ccm-grid" width="100%">  
+<table border="0" cellspacing="0" cellpadding="0" class="ccm-grid ccm-ui-table" width="100%">  
 <?
 foreach($attribs as $at) { 
 	printFileAttributeRow($at, $fv, $defaultPropertyVals['ak' . $at->getAttributeKeyID()]);
@@ -345,7 +346,7 @@ foreach($attribs as $at) {
 
 <? if ($_REQUEST['uploaded']) { ?>
 
-	<div id="ccm-file-manager-add-complete-sets-tab" style="display: none">	
+	<div id="ccm-file-manager-add-complete-sets-tab" style="display: none" class="ccm-file-properties-details-tab">	
 		<div class="ccm-files-add-to-sets-wrapper"><? Loader::element('files/add_to_sets', array('disableForm' => FALSE, 'disableTitle' => true)) ?></div>
 	</div>
 

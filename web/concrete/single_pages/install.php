@@ -204,7 +204,7 @@ $(function() {
 		$uh = Loader::helper('concrete/urls');
 		?>
 		
-		<table class="zebra-striped" id="sample-content-selector">
+		<table class="zebra-striped ccm-ui-table" id="sample-content-selector">
 		<tbody>
 		<? 
 		$availableSampleContent = StartingPointPackage::getAvailableList();
@@ -289,7 +289,7 @@ $(function() {
 <div class="row">
 <div class="span8 columns">
 
-<table class="zebra-striped requirements-table">
+<table class="zebra-striped requirements-table ccm-ui-table">
 <tbody>
 <tr>
 	<td><? if ($phpVtest) { ?><img src="<?=ASSETS_URL_IMAGES?>/icons/success.png" /><? } else { ?><img src="<?=ASSETS_URL_IMAGES?>/icons/warning.png" /><? } ?></td>
@@ -319,7 +319,7 @@ $(function() {
 </div>
 <div class="span8 columns">
 
-<table class="requirements-table zebra-striped">
+<table class="requirements-table zebra-striped ccm-ui-table">
 
 <tr>
 	<td><? if ($imageTest) { ?><img src="<?=ASSETS_URL_IMAGES?>/icons/success.png" /><? } else { ?><img src="<?=ASSETS_URL_IMAGES?>/icons/error.png" /><? } ?></td>
@@ -353,7 +353,7 @@ $(function() {
 <div class="span8 columns">
 
 
-<table class="requirements-table zebra-striped">
+<table class="requirements-table zebra-striped ccm-ui-table">
 <tbody>
 <tr>
 	<td><? if ($remoteFileUploadTest) { ?><img src="<?=ASSETS_URL_IMAGES?>/icons/success.png" /><? } else { ?><img src="<?=ASSETS_URL_IMAGES?>/icons/warning.png" /><? } ?></td>
@@ -365,7 +365,7 @@ $(function() {
 
 </div>
 <div class="span8 columns">
-<table class="requirements-table zebra-striped">
+<table class="requirements-table zebra-striped ccm-ui-table">
 
 <tr>
 	<td><? if ($diffTest) { ?><img src="<?=ASSETS_URL_IMAGES?>/icons/success.png" /><? } else { ?><img src="<?=ASSETS_URL_IMAGES?>/icons/warning.png" /><? } ?></td>

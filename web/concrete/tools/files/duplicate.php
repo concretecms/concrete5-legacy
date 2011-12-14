@@ -72,8 +72,7 @@ if (!is_array($_REQUEST['fID'])) {
 	$searchInstance = $_REQUEST['searchInstance'];
 
 	?>
-	
-	<h1><?=t('Copy Files')?></h1>
+<div class="ccm-ui">>
 	
 	<? if ($fcnt == 0) { ?>
 		<?=t("You do not have permission to copy any of the selected files."); ?>
@@ -82,7 +81,7 @@ if (!is_array($_REQUEST['fID'])) {
 	
 		<form id="ccm-<?=$searchInstance?>-duplicate-form" method="post" action="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/files/duplicate">
 		<?=$form->hidden('task', 'duplicate_multiple_files')?>
-		<table border="0" cellspacing="0" cellpadding="0" width="100%" class="ccm-results-list">
+		<table border="0" cellspacing="0" cellpadding="0" width="100%" class="ccm-results-list ccm-ui-table">
 		
 		<? foreach($files as $f) { 
 			$fp = new Permissions($f);
@@ -121,6 +120,6 @@ if (!is_array($_REQUEST['fID'])) {
 		<?
 		
 	}
-
-
-}
+?>
+</div>
+<?php }

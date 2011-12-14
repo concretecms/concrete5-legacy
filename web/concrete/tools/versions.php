@@ -363,7 +363,7 @@ $("input[name=vRemove]").click(function() {
 	
 	</form>
 	<br/>
-	<table border="0" cellspacing="0" width="100%" class="zebra-striped" cellpadding="0" id="ccm-versions-list">
+	<table border="0" cellspacing="0" width="100%" class="zebra-striped ccm-ui-table" cellpadding="0" id="ccm-versions-list">
 	<tr>
 		<th>&nbsp;</th>
 		<th><?=t('Name')?></th>

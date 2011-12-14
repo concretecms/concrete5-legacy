@@ -22,7 +22,7 @@ $pageTypeIconsFS = FileSet::getByName("Page Type Icons");
 	
     <div class="ccm-pane-body">
     
-        <table border="0" cellspacing="0" cellpadding="0">
+        <table border="0" cellspacing="0" cellpadding="0" class="ccm-ui-table">
             <thead>
                 <tr>
                     <th class="header"><?=t('Name')?> <span class="required">*</span></th>
@@ -41,7 +41,7 @@ $pageTypeIconsFS = FileSet::getByName("Page Type Icons");
 			</tbody>
 		</table>
         
-        <table border="0" cellspacing="0" cellpadding="0">
+        <table border="0" cellspacing="0" cellpadding="0" class="ccm-ui-table">
             <thead>
                 <tr>
                     <th class="subheader">
@@ -109,7 +109,7 @@ $pageTypeIconsFS = FileSet::getByName("Page Type Icons");
 			</tbody>
 		</table>
         
-        <table border="0" cellspacing="0" cellpadding="0">
+        <table border="0" cellspacing="0" cellpadding="0" class="ccm-ui-table">
             <thead>
                 <tr>
                     <th colspan="3" class="subheader"><?=t('Default Attributes to Display')?></th>

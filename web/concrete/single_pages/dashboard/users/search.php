@@ -145,7 +145,7 @@ if (is_object($uo)) {
 	<?=$valt->output('update_account_' . intval($_GET['uID']) )?>
 	<input type="hidden" name="_disableLogin" value="1">
 
-		<table border="0" cellspacing="0" cellpadding="0" width="100%">
+		<table border="0" cellspacing="0" cellpadding="0" width="100%" class="ccm-ui-table">
             <thead>
                 <tr>
                     <th colspan="3"><?=t('User Information')?></th>
@@ -171,7 +171,7 @@ if (is_object($uo)) {
             </tbody>
 		</table>
         
-		<table border="0" cellspacing="0" cellpadding="0" width="100%">
+		<table border="0" cellspacing="0" cellpadding="0" width="100%" class="ccm-ui-table">
         	<thead>
             	<tr>
                 	<th colspan="2">
@@ -235,7 +235,7 @@ if (is_object($uo)) {
 			</tbody>
 		</table>
     
-		<table border="0" cellspacing="0" cellpadding="0" class="zebra-striped">
+		<table border="0" cellspacing="0" cellpadding="0" class="zebra-striped ccm-ui-table">
         	<thead>
             	<tr>
                 	<th>
@@ -283,7 +283,7 @@ if (is_object($uo)) {
 
 		</form>
 		
-		<table border="0" cellspacing="0" cellpadding="0" width="100%" class="zebra-striped inputs-list">
+		<table border="0" cellspacing="0" cellpadding="0" width="100%" class="zebra-striped inputs-list ccm-ui-table">
         	<thead>
             	<tr>
                 	<th colspan="3">

@@ -157,7 +157,7 @@ $(function() {
 
 <form id="form1" action="<?=DISPATCHER_FILENAME?>" method="post" enctype="multipart/form-data">
 		
-		<table border="0" width="100%" cellspacing="0" cellpadding="0" id="ccm-file-upload-multiple-list">
+		<table border="0" width="100%" cellspacing="0" cellpadding="0" id="ccm-file-upload-multiple-list" class="ccm-ui-table">
 		<tr>
 			<th colspan="2"><div style="width: 80px; float: right"><span id="ccm-file-upload-multiple-spanButtonPlaceHolder"></span></div><?=t('Upload Queue');?></th>
 		</tr>
@@ -214,7 +214,7 @@ $(function() {
 <form id="ccm-file-manager-multiple-incoming" method="post" action="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/files/importers/incoming">
 	<input type="hidden" name="searchInstance" value="<?=$searchInstance?>" />
     <input type="hidden" name="ocID" value="<?=$ocID?>" />
-		<table id="incoming_file_table" width="100%" cellpadding="0" cellspacing="0">
+		<table id="incoming_file_table" width="100%" cellpadding="0" cellspacing="0" class="ccm-ui-table">
 			<tr>
 				<td width="10%" valign="middle" class="center theader"><input type="checkbox" id="check_all_imports" name="check_all_imports" onclick="ccm_alSelectMultipleIncomingFiles(this);" value="" /></td>
 				<td width="20%" valign="middle" class="center theader"></td>
@@ -223,7 +223,7 @@ $(function() {
 			</tr>
 		</table>
 	<div id="incoming_files" class="incoming_file_importer">
-		<table id="incoming_file_table" width="100%">
+		<table id="incoming_file_table" width="100%" class="ccm-ui-table">
 		<?php foreach($incoming_contents as $filenum=>$file_array) { 
 				$ft = FileTypeList::getType($file_array['name']);
 		?>

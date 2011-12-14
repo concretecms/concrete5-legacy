@@ -97,7 +97,7 @@ jQuery(function($) {
 <?if ($jobList->numRows() == 0):?>
 <?=t('You currently have no jobs installed.')?>
 <?else:?>
-<table class="zebra-striped">
+<table class="zebra-striped ccm-ui-table">
 <thead>
 <tr>
 	<th><a class="run-all" href="<?=BASE_URL.$this->url('/tools/required/jobs?auth='.$auth.'&debug=1')?>" title="<?=t('Run all')?>"></a><span class="run-indicator"></span></th>

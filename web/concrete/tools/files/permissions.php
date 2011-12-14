@@ -120,7 +120,7 @@ if ($_POST['task'] == 'set_advanced_permissions') {
 $gArray = $gl->getGroupList();
 $uArray = $ul->getUserInfoList();
 ?>
-	<table id="ccmPermissionsTable" border="0" cellspacing="0" cellpadding="0" class="ccm-grid" style="width: 100%">
+	<table id="ccmPermissionsTable" border="0" cellspacing="0" cellpadding="0" class="ccm-grid ccm-ui-table" style="width: 100%">
 	<tr>
 	   <th style="width: 100%">&nbsp;</th>
 	  <th><?=t('Read')?></th>

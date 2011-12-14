@@ -22,7 +22,7 @@ echo Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Sing
 			</div>
 		</form>
 		<h3><?php echo t('Already Installed')?></h3>
-		<table border="0" cellspacing="1" cellpadding="0" class="zebra-striped">
+		<table border="0" cellspacing="1" cellpadding="0" class="zebra-striped ccm-ui-table">
 			<thead>
 				<tr>
 					<th class="subheader" width="100%"><?php echo t('Name')?></th>

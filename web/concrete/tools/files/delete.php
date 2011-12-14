@@ -60,7 +60,7 @@ $searchInstance = $_REQUEST['searchInstance'];
 
 	<form id="ccm-<?=$searchInstance?>-delete-form" method="post" action="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/files/delete">
 	<?=$form->hidden('task', 'delete_files')?>
-	<table border="0" cellspacing="0" cellpadding="0" width="100%" class="ccm-results-list">
+	<table border="0" cellspacing="0" cellpadding="0" width="100%" class="ccm-results-list ccm-ui-table">
 	
 	<? foreach($files as $f) { 
 		$fp = new Permissions($f);

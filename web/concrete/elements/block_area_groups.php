@@ -255,7 +255,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 	<a dialog-modal="false" href="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/user_group_selector.php?cID=<?=$_REQUEST['cID']?>" dialog-width="90%" dialog-title="<?=t('Choose User/Group')?>"  dialog-height="70%" class="btn dialog-launch ccm-button-right"><?=t('Add Group or User')?></a>
 	</div>
 	
-	<table id="ccmPermissionsTableArea" border="0" cellspacing="0" cellpadding="0" style="width: 100%">
+	<table id="ccmPermissionsTableArea" border="0" cellspacing="0" cellpadding="0" style="width: 100%" class="ccm-ui-table">
 		<? 
 		
 		$rowNum = 1;
