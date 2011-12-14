@@ -27,7 +27,10 @@ class FormPageSelectorHelper {
 	 * <code>
 	 *     $dh->selectPage('pageID', '1'); // prints out the home page and makes it selectable. 
 	 * </code>
+	 * @param string $fieldName
 	 * @param int $cID
+	 * @param string $javascriptFunc
+	 * @return string
 	 */
 	 
 	public function selectPage($fieldName, $cID = false, $javascriptFunc='ccm_selectSitemapNode') {
@@ -113,6 +116,16 @@ class FormPageSelectorHelper {
 		}
     	Loader::element('dashboard/sitemap', $args);
 	}
+
+	/** 
+	 * Creates a text form field with Javascript autocomplete for selecting a page
+	 * <code>
+	 *     $dh->quickSelect('query', '1');
+	 * </code>
+	 * @param string $key request parameter to check for page id
+	 * @param int $cID page id to use if request parameter is not set
+	 * @return string
+	 */
 
 	public function quickSelect($key, $cID = false, $args = array()) {
 		$selectedCID = 0;
