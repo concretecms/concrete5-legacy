@@ -19,7 +19,7 @@ $al = Loader::helper('concrete/asset_library');
 <div class="ccm-block-field-group">
 	<h2>
 		<?=t('Image Links to:')?>
-		<select name="linkType" id="linkType">
+		<select name="linkType" id="linkType" style="margin-left:5px; font-size:13px; color:#4F4F4F;">
 			<option value="0"><?=t('Nothing')?></option>
 			<option value="1" selected="selected"><?=t('Another Page')?></option>
 			<option value="2"><?=t('External URL')?></option>
@@ -40,11 +40,12 @@ $al = Loader::helper('concrete/asset_library');
 
 <div class="ccm-block-field-group">
 <h2><?=t('Maximum Dimensions')?></h2>
-<table border="0" cellspacing="0" cellpadding="0">
+<table border="0" cellspacing="0" cellpadding="3">
 <tr>
-<td><?=t('Width')?>&nbsp;</td>
+<td><?=t('Width')?></td>
 <td><?= $form->text('maxWidth', array('style' => 'width: 60px')); ?></td>
-<td><?=t('Height')?>&nbsp;</td>
+<td></td>
+<td><?=t('Height')?></td>
 <td><?= $form->text('maxHeight', array('style' => 'width: 60px')); ?></td>
 </tr>
 </table>
