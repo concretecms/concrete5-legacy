@@ -7,6 +7,9 @@
 #class { width: 120px }
 #prev { margin: 0; border: 1px solid black; width: 380px; height: 260px; overflow: auto }
 .panel_wrapper div.current { height: 420px; overflow: auto }
+.panel_wrapper #general_panel.current{ height: 380px;}
+.panel_wrapper #advanced_panel.current{ height: 260px;}
+.panel_wrapper #source_panel.current{ height: 380px;}
 #flash_options, #shockwave_options, #qt_options, #wmp_options, #rmp_options { display: none }
 .mceAddSelectValue { background-color: #DDDDDD }
 #qt_starttime, #qt_endtime, #qt_fov, #qt_href, #qt_moveid, #qt_moviename, #qt_node, #qt_pan, #qt_qtsrc, #qt_qtsrcchokespeed, #qt_target, #qt_tilt, #qt_urlsubstituten, #qt_volume { width: 70px }
@@ -15,3 +18,24 @@
 #shockwave_swvolume, #shockwave_swframe, #shockwave_swurl, #shockwave_swstretchvalign, #shockwave_swstretchhalign, #shockwave_swstretchstyle { width: 90px }
 #qt_qtsrc { width: 200px }
 iframe {border: 1px solid gray}
+.ccm-dialog-tabs{ margin-bottom:0!important;}
+.panel_wrapper{ border:1px solid #DDD; border-top: 0px;}
+.ui-dialog-buttonpane {
+text-align: left;
+border-width: 1px 0 0 0;
+background-color: whiteSmoke;
+padding: 10px 20px 10px;
+line-height: 12px;
+font-size: 12px;
+border-top: 1px solid #DDD;
+webkit-border-radius: 6px;
+-moz-border-radius: 6px;
+border-radius: 6px;
+}
+.ui-helper-clearfix::after {
+content: ".";
+display: block;
+height: 0;
+clear: both;
+visibility: hidden;
+}

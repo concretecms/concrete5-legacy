@@ -22,7 +22,11 @@
 /* General */
 .concreteMCE {
 	position:absolute;
-	direction:ltr
+	direction:ltr;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	border: 1px solid #666 !important;
 }
 .concreteMCE .mceWrapper {
 	position:static
@@ -31,7 +35,7 @@
 	position:absolute;
 	left:0;
 	top:0;
-	background:url(img/horizontal.gif) no-repeat 0 -75px;
+	/*background:url(img/horizontal.gif) no-repeat 0 -75px;*/
 	width:100%;
 	height:100%
 }
@@ -49,21 +53,51 @@
 	display:none
 }
 /* Top */
+
+
 .concreteMCE .mceTop, .concreteMCE .mceTop div {
 	top:0;
 	width:100%;
-	height:40px
+	height:30px;
+background-color: #D1D1D1;
+background-repeat: repeat-x;
+background-image: -khtml-gradient(linear, left top, left bottom, from(#F1F1F1), to(#D1D1D1));
+background-image: -moz-linear-gradient(top, #F1F1F1, #D1D1D1);
+background-image: -ms-linear-gradient(top, #F1F1F1, #D1D1D1);
+background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #F1F1F1), color-stop(100%, #D1D1D1));
+background-image: -webkit-linear-gradient(top, #F1F1F1, #D1D1D1);
+background-image: -o-linear-gradient(top, #F1F1F1, #D1D1D1);
+background-image: linear-gradient(top, #F1F1F1, #D1D1D1);
+filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f1f1f1', endColorstr='#d1d1d1', GradientType=0);
+background-clip: padding-box;
+-webkit-border-top-left-radius: 5px;
+-webkit-border-top-right-radius: 5px;
+-moz-border-radius-topleft: 5px;
+-moz-border-radius-topright: 5px;
+border-top-left-radius: 5px;
+border-top-right-radius: 5px;
+border-bottom: 1px solid #EEE;
+padding: 0;
+position: relative;
+font-size: 18px;
+line-height: 36px;
+box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+
 }
+
+
 .concreteMCE .mceTop .mceLeft, .concreteMCE .mceFocus .mceTop .mceLeft {
 	width:22px;
 	height:30px;
-	background:url(img/bg_dialog_tl.png)
+	background:url(img/bg_dialog_tl.png);
+	display:none;
 }
 .concreteMCE .mceTop .mceRight {
 	right:0;
 	width:22px;
 	height:30px;
-	background:url(img/bg_dialog_tr.png)
+	background:url(img/bg_dialog_tr.png);
+	display:none;
 }
 .concreteMCE .mceFocus .mceTop .mceCenter, .concreteMCE .mceTop .mceCenter {
 	right:22px;
@@ -71,6 +105,7 @@
 	height:30px;
 	background:url(img/bg_dialog_t_long.png) repeat-x top right;
 	clip:rect(auto auto auto 44px);
+	display:none;
 }
 .concreteMCE .mceFocus .mceTop span, .concreteMCE .mceTop span {
 	display:block;
@@ -82,22 +117,27 @@
 	color:#666666;
 }
 /* Middle */
-.concreteMCE .mceMiddle, .concreteMCE .mceMiddle div {
-	top:0;
+.concreteMCE .mceMiddle .mceContent{
 	overflow:hidden;
+	background:#F0F0EE;
+	width:99%;
+	padding:0 5px;
 }
 .concreteMCE .mceMiddle {
 	width:100%;
 	height:100%;
-	clip:rect(30px auto auto auto);
 	overflow:hidden;
+	top:30px;
+	background:#F0F0EE;
+	
 }
+
 .concreteMCE .mceMiddle .mceLeft {
-	left:0;
+	left:0;display:none;
 	width:22px;
 	height:100%;
 	background:url(img/bg_dialog_l.png);
-	top: -23px
+	top: -23px;
 }
 .concreteMCE .mceMiddle div.mceContentWrapper {
 	top: -20px;
@@ -111,11 +151,10 @@
 
 .concreteMCE .mceMiddle span {
 	top:30px;
-	left:22px;
+	left:0;
 	padding: 0px 0px 0px 0px;
-	right: 20px;
-	bottom: 20px;
-	background-color:#fafafa;
+	right: 0px;
+	bottom: 0;
 }
 /* 
 div.concreteMCE div.mceMiddle div.mceContentWrap {
@@ -134,7 +173,7 @@ div.concreteMCE div.mceMiddle div.mceContentWrap {
 }
 */
 .concreteMCE .mceMiddle .mceRight {
-	right:0;
+	right:0;display:none;
 	width:22px;
 	height:100%;
 	background:url(img/bg_dialog_r.png);
@@ -142,29 +181,43 @@ div.concreteMCE div.mceMiddle div.mceContentWrap {
 }
 /* Bottom */
 .concreteMCE .mceBottom, .concreteMCE .mceBottom div {
-	height:23px
+	height:23px;
 }
 .concreteMCE .mceBottom {
 	left:0;
 	bottom:0;
-	width:100%
+	width:100%;
+	text-align: left;
+	border-width: 1px 0 0 0;
+	background-color: whiteSmoke;
+	padding: 0;
+	line-height: 12px;
+	font-size: 12px;
+	border: 1px solid #DDD;
+	background-clip: padding-box;
+	-webkit-border-bottom-left-radius: 5px;
+	-webkit-border-bottom-right-radius: 5px;
+	-moz-border-radius-bottomleft: 5px;
+	-moz-border-radius-bottomright: 5px;
+	border-bottom-left-radius: 5px;
+	border-bottom-right-radius: 5px;
 }
 .concreteMCE .mceBottom div {
 	top:0
 }
 .concreteMCE .mceBottom .mceLeft {
-	left:0;
+	left:0;display:none;
 	width:22px;
 	background:url(img/bg_dialog_bl.png);
 }
 .concreteMCE .mceBottom .mceCenter, .concreteMCE .mceStatusbar .mceBottom .mceCenter {
-	right:22px;
+	right:0;
 	width:100%;
-	background:url(img/bg_dialog_b.png) 44px 0;
+	/*background:url(img/bg_dialog_b.png) 44px 0;*/
 	clip:rect(auto auto auto 44px);
 }
 .concreteMCE .mceBottom .mceRight {
-	right:0;
+	right:0;display:none;
 	width:22px;
 	background: url(img/bg_dialog_br.png)
 }
@@ -188,80 +241,86 @@ div.concreteMCE div.mceMiddle div.mceContentWrap {
 
 .concreteMCE a {
 	width:29px;
+	width:15px;
 	height:16px;
 	top:3px;
+	top:6px;
 }
 .concreteMCE .mceClose {
 	right:6px;
-	background:url(img/buttons.gif) -87px 0;
-	display:none;
+	/*background:url(img/buttons.gif) -87px 0;*/
+	background:url(../../../../../../css/images/icon_sprite.png) 0px -15px no-repeat;
+	display:block;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
 }
 .concreteMCE .mceMin {
 	display:none;
 	right:68px;
-	background:url(img/buttons.gif) 0 0;
+	/*background:url(img/buttons.gif) 0 0;*/
 	display:none;
 }
 .concreteMCE .mceMed {
 	display:none;
 	right:37px;
-	background:url(img/buttons.gif) -29px 0;
+	/*background:url(img/buttons.gif) -29px 0;*/
 	display:none;
 }
 .concreteMCE .mceMax {
 	display:none;
 	right:37px;
-	background:url(img/buttons.gif) -58px 0;
+	/*background:url(img/buttons.gif) -58px 0;*/
 	display:none;
 }
 .concreteMCE .mceMove {
 	display:none;
 	width:100%;
 	cursor:move;
-	background:url(img/corners.gif) no-repeat -100px -100px
+	/*background:url(img/corners.gif) no-repeat -100px -100px*/
 }
 .concreteMCE .mceMovable .mceMove {
 	display:block
 }
 .concreteMCE .mceFocus .mceClose {
-	right:22px;
-	background:url(img/buttons.gif) -87px -16px;
+	right:6px;
+	/*background:url(img/buttons.gif) -87px -16px;*/
 	display:none;
+	background:url(../../../../../../css/images/icon_sprite.png) 0px -15px no-repeat;
+	display:block;
 }
 .concreteMCE .mceFocus .mceMin {
 	right:68px;
-	background:url(img/buttons.gif) 0 -16px;
+	/*background:url(img/buttons.gif) 0 -16px;*/
 	display:none;
 }
 .concreteMCE .mceFocus .mceMed {
 	right:37px;
-	background:url(img/buttons.gif) -29px -16px;
+	/*background:url(img/buttons.gif) -29px -16px;*/
 	display:none;
 }
 .concreteMCE .mceFocus .mceMax {
 	right:37px;
-	background:url(img/buttons.gif) -58px -16px;
+	/*background:url(img/buttons.gif) -58px -16px;*/
 	display:none;
 }
+
 .concreteMCE .mceFocus .mceClose:hover {
-	right:6px;
-	background:url(img/buttons.gif) -87px -32px
-}
-.concreteMCE .mceFocus .mceClose:hover {
-	right:6px;
-	background:url(img/buttons.gif) -87px -32px
+	/*right:6px;
+	background:url(img/buttons.gif) -87px -32px*/
+	background-color:#c3c3c3;
 }
 .concreteMCE .mceFocus .mceMin:hover {
 	right:68px;
-	background:url(img/buttons.gif) 0 -32px
+	/*background:url(img/buttons.gif) 0 -32px*/
 }
 .concreteMCE .mceFocus .mceMed:hover {
 	right:37px;
-	background:url(img/buttons.gif) -29px -32px
+	/*background:url(img/buttons.gif) -29px -32px*/
 }
 .concreteMCE .mceFocus .mceMax:hover {
 	right:37px;
-	background:url(img/buttons.gif) -58px -32px
+	/*background:url(img/buttons.gif) -58px -32px*/
 }
 /* Resize */
 .concreteMCE .mceResize {
@@ -270,7 +329,7 @@ div.concreteMCE div.mceMiddle div.mceContentWrap {
 	display:none;
 	width:5px;
 	height:5px;
-	background:url(img/horizontal.gif) no-repeat 0 -75px
+	/*background:url(img/horizontal.gif) no-repeat 0 -75px*/
 }
 .concreteMCE .mceResizable .mceResize {
 	display:block
@@ -332,13 +391,50 @@ div.concreteMCE div.mceMiddle div.mceContentWrap {
 .concreteMCE .mceButton {
 	font-weight:bold;
 	bottom:10px;
-	width:80px;
-	height:30px;
-	background:url(img/button.gif);
+	/*width:80px;
+	height:30px;*/
+	/*background:url(img/button.gif);*/
 	line-height:30px;
 	vertical-align:middle;
 	text-align:center;
 	outline:0
+	cursor: pointer;
+display: inline-block;
+background-color: #E6E6E6;
+background-repeat: no-repeat;
+background-image: -webkit-gradient(linear, 0 0, 0 100%, from(white), color-stop(25%, white), to(#E6E6E6));
+background-image: -webkit-linear-gradient(white, white 25%, #E6E6E6);
+background-image: -moz-linear-gradient(top, white, white 25%, #E6E6E6);
+background-image: -ms-linear-gradient(white, white 25%, #E6E6E6);
+background-image: -o-linear-gradient(white, white 25%, #E6E6E6);
+background-image: linear-gradient(white, white 25%, #E6E6E6);
+filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#e6e6e6', GradientType=0);
+padding: 5px 14px 6px;
+text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
+color: #333;
+font-size: 13px;
+line-height: normal;
+border: 1px solid #CCC;
+border-bottom-color: #BBB;
+-webkit-border-radius: 4px;
+-moz-border-radius: 4px;
+border-radius: 4px;
+-webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2),0 1px 2px rgba(0, 0, 0, 0.05);
+-moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2),0 1px 2px rgba(0, 0, 0, 0.05);
+box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2),0 1px 2px rgba(0, 0, 0, 0.05);
+-webkit-transition: 0.1s linear all;
+-moz-transition: 0.1s linear all;
+-ms-transition: 0.1s linear all;
+-o-transition: 0.1s linear all;
+transition: 0.1s linear all;
+outline:0;
+}
+.concreteMCE .mceButton:focus{outline:thin dotted;}
+.concreteMCE .mceButton:hover {
+background-position: 0 -15px;outline:0;
+}
+.concreteMCE .mceButton:active{
+-webkit-box-shadow:inset 0 2px 4px rgba(0, 0, 0, 0.25),0 1px 2px rgba(0, 0, 0, 0.05);-moz-box-shadow:inset 0 2px 4px rgba(0, 0, 0, 0.25),0 1px 2px rgba(0, 0, 0, 0.05);box-shadow:inset 0 2px 4px rgba(0, 0, 0, 0.25),0 1px 2px rgba(0, 0, 0, 0.05);}
 }
 .concreteMCE .mceMiddle .mceIcon {
 	left:15px;
@@ -352,7 +448,9 @@ div.concreteMCE div.mceMiddle div.mceContentWrap {
 .concreteMCE a:hover {
 	font-weight:bold;
 }
-.concreteMCE .mceAlert .mceMiddle, .concreteMCE .mceConfirm .mceMiddle {
+.concreteMCE .mceAlert .mceMiddle span, .concreteMCE .mceConfirm .mceMiddle span {
+	background:#FFF;
+	padding:5px;
 }
 .concreteMCE .mceAlert .mceOk {
 	left:50%;
@@ -360,7 +458,7 @@ div.concreteMCE div.mceMiddle div.mceContentWrap {
 	margin-left: -40px
 }
 .concreteMCE .mceAlert .mceIcon {
-	background:url(img/alert.gif)
+	/*background:url(img/alert.gif)*/
 }
 .concreteMCE .mceConfirm .mceOk {
 	left:50%;

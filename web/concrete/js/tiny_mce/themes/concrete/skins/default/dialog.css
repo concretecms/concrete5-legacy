@@ -14,7 +14,7 @@ a:link, a:visited {color:black;}
 a:hover {color:#2B6FB6;}
 */
 /* Forms */
-/*
+
 fieldset {margin:0; padding:4px; border:1px solid #919B9C; font-family:Verdana, Arial; font-size:10px;}
 legend {color:#2B6FB6; font-weight:bold;}
 label.msg {display:none;}
@@ -26,7 +26,7 @@ input, select, textarea {border:1px solid #808080;}
 input.radio {border:1px none #000000; background:transparent; vertical-align:middle;}
 input.checkbox {border:1px none #000000; background:transparent; vertical-align:middle;}
 .input_noborder {border:0;}
-*/
+
 /* Buttons */
 /*
 #insert, #cancel, input.button, .updateButton {

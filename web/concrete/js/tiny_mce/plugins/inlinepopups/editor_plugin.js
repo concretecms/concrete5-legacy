@@ -17,6 +17,8 @@
 			ed.onBeforeRenderUI.add(function() {
 				ed.windowManager = new tinymce.InlineWindowManager(ed);
 				DOM.loadCSS(url + '/skins/' + (ed.settings.inlinepopups_skin || 'clearlooks2') + "/window.css");
+				DOM.loadCSS(url + '../../../../../css/ccm.app.css');
+				DOM.loadCSS(url + '../../../../../css/ccm.tinymce.css');
 			});
 		},
 
@@ -107,7 +109,7 @@
 
 			// Create DOM objects
 			t._addAll(DOM.doc.body, 
-				['div', {id : id, 'class' : ed.settings.inlinepopups_skin || 'clearlooks2', style : 'width:100px;height:100px'}, 
+				['div', {id : id, 'class' : ed.settings.inlinepopups_skin || 'concreteMCE', style : 'width:100px;height:100px'}, 
 					['div', {id : id + '_wrapper', 'class' : 'mceWrapper' + opt},
 						['div', {id : id + '_top', 'class' : 'mceTop'}, 
 							['div', {'class' : 'mceLeft'}],
@@ -118,7 +120,7 @@
 
 						['div', {id : id + '_middle', 'class' : 'mceMiddle'}, 
 							['div', {id : id + '_left', 'class' : 'mceLeft'}],
-							['span', {id : id + '_content'}],
+							['div', {id : id + '_content','class':'mceContent'}],
 							['div', {id : id + '_right', 'class' : 'mceRight'}]
 						],
 
@@ -126,18 +128,20 @@
 							['div', {'class' : 'mceLeft'}],
 							['div', {'class' : 'mceCenter'}],
 							['div', {'class' : 'mceRight'}],
+							//['a', {'class' : 'btn', style:'float:left', href:'javascript:void(0)', onmousedown:'return false;'}, 'Cancel'],
 							['span', {id : id + '_status'}, 'Content']
 						],
 
 						['a', {'class' : 'mceMove', tabindex : '-1', href : 'javascript:;'}],
-						['a', {'class' : 'mceMin', tabindex : '-1', href : 'javascript:;', onmousedown : 'return false;'}],
-						['a', {'class' : 'mceMax', tabindex : '-1', href : 'javascript:;', onmousedown : 'return false;'}],
-						['a', {'class' : 'mceMed', tabindex : '-1', href : 'javascript:;', onmousedown : 'return false;'}],
+						//['a', {'class' : 'mceMin', tabindex : '-1', href : 'javascript:;', onmousedown : 'return false;'}],
+						//['a', {'class' : 'mceMax', tabindex : '-1', href : 'javascript:;', onmousedown : 'return false;'}],
+						//['a', {'class' : 'mceMed', tabindex : '-1', href : 'javascript:;', onmousedown : 'return false;'}],
 						['a', {'class' : 'mceClose', tabindex : '-1', href : 'javascript:;', onmousedown : 'return false;'}],
 						['a', {id : id + '_resize_n', 'class' : 'mceResize mceResizeN', tabindex : '-1', href : 'javascript:;'}],
 						['a', {id : id + '_resize_s', 'class' : 'mceResize mceResizeS', tabindex : '-1', href : 'javascript:;'}],
 						['a', {id : id + '_resize_w', 'class' : 'mceResize mceResizeW', tabindex : '-1', href : 'javascript:;'}],
 						['a', {id : id + '_resize_e', 'class' : 'mceResize mceResizeE', tabindex : '-1', href : 'javascript:;'}],
+						//['div', {id : id + '_resize_se_icon', 'class' : 'mceResize mceResizeE', 'class' : 'ui-resizable-handle ui-resizable-se ui-icon ui-icon-gripsmall-diagonal-se ui-icon-grip-diagonal-se', tabindex : '-1', href : 'javascript:;'}],
 						['a', {id : id + '_resize_nw', 'class' : 'mceResize mceResizeNW', tabindex : '-1', href : 'javascript:;'}],
 						['a', {id : id + '_resize_ne', 'class' : 'mceResize mceResizeNE', tabindex : '-1', href : 'javascript:;'}],
 						['a', {id : id + '_resize_sw', 'class' : 'mceResize mceResizeSW', tabindex : '-1', href : 'javascript:;'}],
@@ -176,12 +180,12 @@
 				DOM.setStyles(id + '_ifr', {width : f.width, height : f.height});
 				DOM.setAttrib(id + '_ifr', 'src', u);
 			} else {
-				DOM.add(id + '_wrapper', 'a', {id : id + '_ok', 'class' : 'mceButton mceOk', href : 'javascript:;', onmousedown : 'return false;'}, 'Ok');
+				DOM.add(id + '_wrapper', 'a', {id : id + '_ok', 'class' : 'mceButton mceOk', href : 'javascript:;', onmousedown : 'return false; '}, 'Ok');
 
 				if (f.type == 'confirm')
 					DOM.add(id + '_wrapper', 'a', {'class' : 'mceButton mceCancel', href : 'javascript:;', onmousedown : 'return false;'}, 'Cancel');
 
-				DOM.add(id + '_middle', 'div', {'class' : 'mceIcon'});
+				//DOM.add(id + '_middle', 'div', {'class' : 'mceIcon'});
 				DOM.setHTML(id + '_content', f.content.replace('\n', '<br />'));
 			}
 
