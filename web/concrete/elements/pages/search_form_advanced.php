@@ -70,8 +70,8 @@ foreach($searchFieldAttributes as $ak) {
 		
 		<br/><strong><?=t('Search All Children?')?></strong><br/>
 		<ul class="inputs-list">
-		<li><label><?=$form->radio('cParentAll', 0, false)?> <span><?=t('Yes')?></label></li>
-		<li><label><?=$form->radio('cParentAll', 1, false)?> <span><?=t('No')?></span></label></li>
+		<li><label><?=$form->radio('cParentAll', 0, false)?> <span><?=t('No')?></label></li>
+		<li><label><?=$form->radio('cParentAll', 1, false)?> <span><?=t('Yes')?></span></label></li>
 		</ul>
 		
 
