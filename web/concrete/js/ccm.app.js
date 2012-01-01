@@ -1031,7 +1031,7 @@
 /*
  * Metadata - jQuery plugin for parsing metadata from elements
  *
- * Copyright (c) 2006 John Resig, Yehuda Katz, Jörn Zaefferer, Paul McLanahan
+ * Copyright (c) 2006 John Resig, Yehuda Katz, Jï¿½rn Zaefferer, Paul McLanahan
  *
  * Dual licensed under the MIT and GPL licenses:
  *   http://www.opensource.org/licenses/mit-license.php
@@ -6358,7 +6358,7 @@ $(function() {
 			}
 		});
 		
-		$("#ccm-nav-dashboard").click(function() {
+		$("#ccm-nav-dashboard, #ccm-nav-edit").click(function() {
 			void(0);
 			return false;
 		});
