@@ -6360,7 +6360,7 @@ $(function() {
 			}
 		});
 		
-		$("#ccm-nav-dashboard").click(function() {
+		$("#ccm-nav-dashboard, #ccm-nav-edit").click(function() {
 			void(0);
 			return false;
 		});
