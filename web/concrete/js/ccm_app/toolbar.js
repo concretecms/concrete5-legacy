@@ -94,6 +94,11 @@ $(function() {
 			}, 1000);
 		});
 		
+		$("#ccm-quick-nav").hoverIntent(function() {
+			ccm_hideToolbarMenus();
+			$("#ccm-intelligent-search-results").hide();
+		}, function() {});
+		
 		$("#ccm-dashboard-overlay").css('visibility','visible').hide();
 	
 		$("#ccm-nav-intelligent-search-wrapper").click(function() {
@@ -108,7 +113,7 @@ $(function() {
 			}
 		});
 		
-		$("#ccm-nav-dashboard").click(function() {
+		$("#ccm-nav-dashboard,#ccm-nav-edit").click(function() {
 			void(0);
 			return false;
 		});
@@ -117,7 +122,7 @@ $(function() {
 			clearTimeout(ccm_hideToolbarMenusTimer);
 		});
 		
-		$("#ccm-nav-dashboard").mouseover(function() {
+		$("#ccm-nav-dashboard").hoverIntent(function() {
 			clearTimeout(ccm_hideToolbarMenusTimer);
 			$(".ccm-system-nav-selected").removeClass('ccm-system-nav-selected');
 			$(this).parent().addClass('ccm-system-nav-selected');
@@ -142,12 +147,12 @@ $(function() {
 				});
 			//}
 			return false;
-		});
+		}, function() {});
 		
 		$("#ccm-nav-dashboard,#ccm-dashboard-overlay,#ccm-nav-edit,#ccm-edit-overlay").mouseout(function() {
 			ccm_hideToolbarMenusTimer = setTimeout(function() {
 				ccm_hideToolbarMenus();
-			}, 2000);
+			}, 1500);
 		});
 	
 		$("#ccm-nav-intelligent-search").bind('keydown.ccm-intelligent-search', function(e) {
@@ -208,7 +213,8 @@ $(function() {
 		$("#ccm-toolbar-nav-move-copy").dialog();
 		$("#ccm-toolbar-nav-delete").dialog();
 	
-		$("#ccm-nav-edit").mouseover(function() {
+		
+		$("#ccm-nav-edit").hoverIntent(function() {
 			clearTimeout(ccm_hideToolbarMenusTimer);
 			$(".ccm-system-nav-selected").removeClass('ccm-system-nav-selected');
 			$(this).parent().addClass('ccm-system-nav-selected');
@@ -225,7 +231,7 @@ $(function() {
 				$('#ccm-edit-overlay').fadeOut(90, 'easeOutExpo');
 				$(window).unbind('click.ccm-edit');
 			} else {*/
-				$("#ccm-edit-overlay").click(function(e) {
+				$("#ccm-edit-overlay,#ccm-dashboard-overlay-main").click(function(e) {
 					e.stopPropagation();
 				});
 				setTimeout("$('#ccm-check-in-comments').focus();",300);
@@ -258,7 +264,7 @@ $(function() {
 				});
 			//}
 			return false;
-		});
+		}, function() {});
 
 	}
 	var ajaxtimer = null;
