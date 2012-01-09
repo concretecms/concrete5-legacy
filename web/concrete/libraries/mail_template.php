@@ -88,23 +88,24 @@ class MailTemplate extends Object {
 		
 		// loads template from mail templates directory
 		// the main template file contains the basic data for the template
+		// first checks template/data.php and then template.php
 		$dataFile = FILENAME_MAIL_DATA;
-		if (file_exists(DIR_FILES_EMAIL_TEMPLATES . "/{$template}.php")) {			
-			include(DIR_FILES_EMAIL_TEMPLATES . "/{$template}.php");
-		} else if ($pkgHandle != null && file_exists(DIR_PACKAGES . '/' . $pkgHandle . '/' . DIRNAME_MAIL_TEMPLATES . "/{$template}.php")) {
-			include(DIR_PACKAGES . '/' . $pkgHandle . '/' . DIRNAME_MAIL_TEMPLATES . "/{$template}.php");
-		} else if ($pkgHandle != null && file_exists(DIR_PACKAGES_CORE . '/' . $pkgHandle . '/' . DIRNAME_MAIL_TEMPLATES . "/{$template}.php")) {
-			include(DIR_PACKAGES_CORE . '/' . $pkgHandle . '/' . DIRNAME_MAIL_TEMPLATES . "/{$template}.php");
-		} else if (file_exists(DIR_FILES_EMAIL_TEMPLATES_CORE . "/{$template}.php")) {
-			include(DIR_FILES_EMAIL_TEMPLATES_CORE . "/{$template}.php");
-		} else if (file_exists(DIR_FILES_EMAIL_TEMPLATES . '/' . $template . '/' . $dataFile)) {
+		if (file_exists(DIR_FILES_EMAIL_TEMPLATES . '/' . $template . '/' . $dataFile)) {
 			include(DIR_FILES_EMAIL_TEMPLATES . '/' . $template . '/' . $dataFile);
 		} else if ($pkgHandle != null && file_exists(DIR_PACKAGES . '/' . $pkgHandle . '/' . DIRNAME_MAIL_TEMPLATES . '/' . $template . '/' . $dataFile)) {
 			include(DIR_PACKAGES . '/' . $pkgHandle . '/' . DIRNAME_MAIL_TEMPLATES . '/' . $template . '/' . $dataFile);
 		} else if ($pkgHandle != null && file_exists(DIR_PACKAGES_CORE . '/' . $pkgHandle . '/' . DIRNAME_MAIL_TEMPLATES . '/' . $template . '/' . $dataFile)) {
 			include(DIR_PACKAGES_CORE . '/' . $pkgHandle . '/' . DIRNAME_MAIL_TEMPLATES . '/' . $template . '/' . $dataFile);
-		} else {
+		} else if (file_exists(DIR_FILES_EMAIL_TEMPLATES_CORE . '/' . $template . '/' . $dataFile)) {
 			include(DIR_FILES_EMAIL_TEMPLATES_CORE . '/' . $template . '/' . $dataFile);
+		} else if (file_exists(DIR_FILES_EMAIL_TEMPLATES . "/{$template}.php")) {			
+			include(DIR_FILES_EMAIL_TEMPLATES . "/{$template}.php");
+		} else if ($pkgHandle != null && file_exists(DIR_PACKAGES . '/' . $pkgHandle . '/' . DIRNAME_MAIL_TEMPLATES . "/{$template}.php")) {
+			include(DIR_PACKAGES . '/' . $pkgHandle . '/' . DIRNAME_MAIL_TEMPLATES . "/{$template}.php");
+		} else if ($pkgHandle != null && file_exists(DIR_PACKAGES_CORE . '/' . $pkgHandle . '/' . DIRNAME_MAIL_TEMPLATES . "/{$template}.php")) {
+			include(DIR_PACKAGES_CORE . '/' . $pkgHandle . '/' . DIRNAME_MAIL_TEMPLATES . "/{$template}.php");
+		} else {
+			include(DIR_FILES_EMAIL_TEMPLATES_CORE . "/{$template}.php");
 		}
 		
 		$this->subject = $subject;
