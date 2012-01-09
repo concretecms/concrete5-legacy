@@ -182,17 +182,15 @@ class MailTemplate extends Object {
 		
 		$this->controller->on_before_render();
 		
-		if (file_exists($this->theme)) {
-			ob_start();
-			include($this->theme);
-			$bodyHTML = ob_get_contents();
-			ob_end_clean();
+		if (strlen($bodyHTML)) {
+			if (file_exists($this->theme)) {
+				ob_start();
+				include($this->theme);
+				$bodyHTML = ob_get_contents();
+				ob_end_clean();
+			}
 			$this->bodyHTML = $bodyHTML;
-		} else {
-			throw new Exception(t("Mail template's theme file does not exist!"));
 		}
-		
-		$this->controller->on_before_render();
 	}
 	
 }
