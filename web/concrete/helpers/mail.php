@@ -106,7 +106,7 @@ class MailHelper {
 	public function load($template, $pkgHandle = null) {
 		Loader::library("mail_template");
 		$mv = new MailTemplate();
-		$mv->load($template, $this->data);
+		$mv->load($template, $this->data, $pkgHandle);
 		
 		if ($from = $mv->getFrom()) {
 			$this->from($from['email'], $from['name']);
