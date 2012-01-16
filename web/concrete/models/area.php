@@ -36,7 +36,9 @@ class Area extends Object {
 	public $attributes = array();
 
 	public $enclosingStart = '';
+	public $enclosingStartHasReplacements = false; //Denotes if we should run sprintf() on blockWrapperStart
 	public $enclosingEnd = '';
+	public $enclosingEndHasReplacements = false; //Denotes if we should run sprintf() on blockWrapperStartEnd
 	
 	/* run-time variables */
 
@@ -403,8 +405,7 @@ class Area extends Object {
 				echo '<div class="ccm-layouts-block-arrange-placeholder ccm-block-arrange"></div>';
 			}
 		}
-
-
+		
 		foreach ($blocksToDisplay as $b) {
 			$bv = new BlockView();
 			$bv->setAreaObject($ourArea); 
@@ -424,7 +425,7 @@ class Area extends Object {
 
 			if ($p->canRead()) {
 				if (!$c->isEditMode()) {
-					echo $this->enclosingStart;
+					$this->outputBlockWrapper(true, $b);
 				}
 				if ($includeEditStrip) {
 					$bv->renderElement('block_controls', array(
@@ -444,7 +445,7 @@ class Area extends Object {
 					$bv->renderElement('block_footer');
 				}
 				if (!$c->isEditMode()) {
-					echo $this->enclosingEnd;
+					$this->outputBlockWrapper(false, $b);
 				}
 			}
 		}
@@ -453,6 +454,26 @@ class Area extends Object {
 
 		if (($this->showControls) && ($c->isEditMode() && ($ap->canAddBlocks() || $u->isSuperUser()))) {
 			$bv->renderElement('block_area_footer', array('a' => $ourArea));	
+		}
+	}
+	
+	/**
+	 * Internal helper function for display()
+	 */
+	private function outputBlockWrapper($isStart, &$block) {
+		static $th = null;
+		$enclosing = $isStart ? $this->enclosingStart : $this->enclosingEnd;
+		$hasReplacements = $isStart ? $this->enclosingStartHasReplacements : $this->enclosingEndHasReplacements;
+		
+		if (!empty($enclosing) && $hasReplacements) {
+			$bID = $block->getBlockID();
+			$btHandle = $block->getBlockTypeHandle();
+			$bName = ($btHandle == 'core_stack_display') ? Stack::getByID($block->getInstance()->stID)->getStackName() : $block->getBlockName();
+			$th = is_null($th) ? Loader::helper('text') : $th;
+			$bSafeName = $th->entities($bName);
+			echo sprintf($enclosing, $bID, $btHandle, $bSafeName);
+		} else {
+			echo $enclosing;
 		}
 	}
 	
@@ -515,16 +536,22 @@ class Area extends Object {
 
 	/** 
 	 * Specify HTML to automatically print before blocks contained within the area
+	 * Pass true for $hasReplacements if the $html contains sprintf replacements tokens
+	 * ( %1$s -> Block ID, %2$s -> Block Type Handle, %3$s -> Block/Stack Name )
 	 */
-	function setBlockWrapperStart($html) {
+	function setBlockWrapperStart($html, $hasReplacements = false) {
 		$this->enclosingStart = $html;
+		$this->enclosingStartHasReplacements = $hasReplacements;
 	}
 	
 	/** 
 	 * Set HTML that automatically prints after any blocks contained within the area
+	 * Pass true for $hasReplacements if the $html contains sprintf replacements tokens
+	 * ( %1$s -> Block ID, %2$s -> Block Type Handle, %3$s -> Block/Stack Name )
 	 */
-	function setBlockWrapperEnd($html) {
+	function setBlockWrapperEnd($html, $hasReplacements = false) {
 		$this->enclosingEnd = $html;
+		$this->enclosingEndHasReplacements = $hasReplacements;
 	}
 
 	function update() {
