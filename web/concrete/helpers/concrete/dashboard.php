@@ -148,7 +148,9 @@ class ConcreteDashboardHelper {
 		if ($help) {
 			$html .= '<li><span style="display: none" id="ccm-page-help-content">' . $help . '</span><a href="javascript:void(0)" onclick="ccm_togglePopover(event, this)" class="ccm-icon-help" title="' . t('Help') . '" id="ccm-page-help">' . t('Help') . '</a></li>';
 		}
-		$html .= '<li><a href="javascript:void(0)" id="ccm-add-to-quick-nav" onclick="ccm_toggleQuickNav(' . $c->getCollectionID() . ',\'' . $token . '\')" class="' . $class . '">' . t('Add to Favorites') . '</a></li>';
+		if (Config::get('TOOLBAR_QUICK_NAV_BEHAVIOR') != 'disabled') {
+			$html .= '<li><a href="javascript:void(0)" id="ccm-add-to-quick-nav" onclick="ccm_toggleQuickNav(' . $c->getCollectionID() . ',\'' . $token . '\')" class="' . $class . '">' . t('Add to Favorites') . '</a></li>';
+		}
 		$html .= '<li><a href="javascript:void(0)" onclick="ccm_closeDashboardPane(this)" class="ccm-icon-close">' . t('Close') . '</a></li>';
 		$html .= '</ul>';
 		if (!$title) {
@@ -166,14 +168,29 @@ class ConcreteDashboardHelper {
 		$filename = date('Ymd') . '.jpg';
 		$obj = new stdClass;
 		$obj->checkData = false;
+		$obj->displayCaption = false;
 		
 		if (defined('WHITE_LABEL_DASHBOARD_BACKGROUND_FEED') && WHITE_LABEL_DASHBOARD_BACKGROUND_FEED != '') {
 			$image = WHITE_LABEL_DASHBOARD_BACKGROUND_FEED . '/' . $filename;
 		} else if (defined('WHITE_LABEL_DASHBOARD_BACKGROUND_SRC') && WHITE_LABEL_DASHBOARD_BACKGROUND_SRC != '') {
 			$image = WHITE_LABEL_DASHBOARD_BACKGROUND_SRC;
+			if ($image == 'none') {
+				$image = '';
+			}
 		} else {
-			$image = DASHBOARD_BACKGROUND_FEED . '/' . $filename;
 			$obj->checkData = true;
+			$imageSetting = Config::get('DASHBOARD_BACKGROUND_IMAGE');
+			if ($imageSetting == 'custom') {
+				$fo = File::getByID(Config::get('DASHBOARD_BACKGROUND_IMAGE_CUSTOM_FILE_ID'));
+				if (is_object($fo)) {
+					$image = $fo->getRelativePath();
+				}
+			} else if ($imageSetting == 'none') {
+				$image = '';
+			} else { 
+				$image = DASHBOARD_BACKGROUND_FEED . '/' . $filename;
+				$obj->displayCaption = true;
+			}
 		}
 		$obj->filename = $filename;
 		$obj->image = $image;
