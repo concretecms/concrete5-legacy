@@ -73,7 +73,9 @@
 			// I know this is very unnecessary because most pages aren't stacks, but this is the cleanest way to make this happen
 			// We will redo this so that you don't even need to cache data about pages that aren't the most recent or the active page, because how much data do you really need besides that?
 			Cache::delete('stack', $cID . ':' . $cvID); 			
+			Cache::delete('composerpage', $cID . ':' . $cvID); 			
 			Cache::delete('collection_blocks', $cID . ':' . $cvID);
+			Events::fire('on_page_version_refresh_cache', $this);
 			
 		}
 		
@@ -121,6 +123,7 @@
 		function isMostRecent() {return $this->cvIsMostRecent;}
 		function isNew() {return $this->cvIsNew;}
 		function getVersionID() {return $this->cvID;}
+		function getCollectionID() {return $this->cID;}
 		function getVersionName() {return $this->cvName;}	
 		function getVersionComments() {return $this->cvComments;}
 		function getVersionAuthorUserID() {return $this->cvAuthorUID;}
@@ -210,7 +213,7 @@
 			return ($cvID == $this->cvID);
 		}
 		
-		function approve() {
+		function approve($doReindexImmediately = true) {
 			$db = Loader::db();
 			$u = new User();
 			$uID = $u->getUserID();
@@ -264,9 +267,8 @@
 			}
 
 			Events::fire('on_page_version_approve', $c);
-			$c->reindex();
+			$c->reindex(false, $doReindexImmediately);
 			$this->refreshCache();
-
 		}
 		
 		public function discard() {
@@ -276,7 +278,12 @@
 				$this->delete();
 			}
 			$this->refreshCache();
-
+		}
+		
+		public function canDiscard() {
+			$db = Loader::db();
+			$total = $db->GetOne('select count(cvID) from CollectionVersions where cID = ?', array($this->cID));
+			return $this->isNew() && $total > 1;
 		}
 		
 		public function removeNewStatus() {

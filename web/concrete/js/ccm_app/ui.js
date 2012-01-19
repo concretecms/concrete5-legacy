@@ -154,7 +154,8 @@ ccm_showAreaMenu = function(obj, e) {
 			el = document.createElement("DIV");
 			el.id = "ccm-area-menu" + obj.aID;
 			el.className = "ccm-menu ccm-ui";
-			el.style.display = "none";
+			el.style.display = "block";
+			el.style.visibility = "hidden";
 			document.body.appendChild(el);
 			
 			aobj = $("#ccm-area-menu" + obj.aID);
@@ -484,6 +485,14 @@ ccm_triggerSelectGroup = function(gID, gName) {
 	alert(gName);
 }
 
+ccm_setupGroupSearchPaging = function() {
+	$("div#ccm-group-paging").each(function() {
+		$(this).closest('.ui-dialog-content').dialog('option', 'buttons', [{}]);
+		$(this).closest('.ui-dialog').find('.ui-dialog-buttonpane .ccm-pane-dialog-pagination').remove();
+		$(this).appendTo($(this).closest('.ui-dialog').find('.ui-dialog-buttonpane').addClass('ccm-ui'));
+	});
+}
+
 ccm_setupGroupSearch = function() {
 	$('div.ccm-group a').unbind();
 	$('div.ccm-group a').each(function(i) {
@@ -504,6 +513,7 @@ ccm_setupGroupSearch = function() {
 	});
 	
 	/* setup paging */
+	ccm_setupGroupSearchPaging();
 	$("div#ccm-group-paging a").click(function() {
 		$("#ccm-group-search-wrapper").html("");	
 		$.ajax({

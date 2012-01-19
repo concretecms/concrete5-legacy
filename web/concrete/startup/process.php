@@ -316,18 +316,26 @@
 					if ($vn->integer($_GET['bID'])) {
 						$b = Block::getByID($_GET['bID']);
 						if (is_object($b)) {
-							if (!$b->isGlobal()) { 
-								$a = Area::get($c, $_GET['arHandle']);
-								$b = Block::getByID($_GET['bID'], $c, $a);
-								// basically, we hand off the current request to the block
-								// which handles permissions and everything
-								$p = new Permissions($b);
-								if ($p->canRead()) {
-									$action = $b->passThruBlock($_REQUEST['method']);
-								}
-							} else if (is_object($b) && (!$b->isError())) { 
-								// global blocks are less restricted
-								// we still have to have a valid ccm token to get here
+							$a = Area::get($c, $_GET['arHandle']);
+							$b = Block::getByID($_GET['bID'], $c, $a);
+							// basically, we hand off the current request to the block
+							// which handles permissions and everything
+							$p = new Permissions($b);
+							if ($p->canRead()) {
+								$action = $b->passThruBlock($_REQUEST['method']);
+							}
+						}
+					}
+				}
+				break;
+			case 'passthru_stack':
+				if (isset($_GET['bID'])) {
+					$vn = Loader::helper('validation/numbers');
+					if ($vn->integer($_GET['bID'])) {
+						$b = Block::getByID($_GET['bID'], Page::getByID($_REQUEST['stackID'], 'ACTIVE'), STACKS_AREA_NAME);
+						if (is_object($b)) {
+							$p = new Permissions($b);
+							if ($p->canRead()) {
 								$action = $b->passThruBlock($_REQUEST['method']);
 							}
 						}
@@ -612,24 +620,22 @@
 			case 'check-in':
 				if ($cp->canWrite() || $cp->canApproveCollection()) {
 
-					if ($_REQUEST['approve'] == 'APPROVE' && $cp->canApproveCollection()) {
-						$u->unloadCollectionEdit(false);
-					} else {
-						$u->unloadCollectionEdit();
-					}
-
 					$v = CollectionVersion::get($c, "RECENT");
 					
 					$v->setComment($_REQUEST['comments']);
 					if ($_REQUEST['approve'] == 'APPROVE' && $cp->canApproveCollection()) {
-						$v->approve();
+						$v->approve(false);
 					} 
-					
-					if ($_REQUEST['approve'] == 'DISCARD') {
+
+					if ($_REQUEST['approve'] == 'DISCARD' && $v->canDiscard()) {
 						$v->discard();
 					} else {
 						$v->removeNewStatus();
 					}
+
+					$u->unloadCollectionEdit();
+
+					
 					header('Location: ' . BASE_URL . DIR_REL . '/' . DISPATCHER_FILENAME . '?cID=' . $c->getCollectionID() . $step);
 					exit;
 				}
@@ -639,7 +645,7 @@
 					// checking out the collection for editing
 					$v = CollectionVersion::get($c, "RECENT");
 					$v->setComment($_REQUEST['comments']);
-					$v->approve();
+					$v->approve(false);
 					header('Location: ' . BASE_URL . DIR_REL . '/' . DISPATCHER_FILENAME . '?cID=' . $c->getCollectionID() . $step);
 					exit;
 				}
@@ -841,7 +847,7 @@
 						$obj->cID = $c->getCollectionID();
 					
 						if ((!is_object($e)) || (($e instanceof ValidationErrorHelper) && (!$e->has()))) {
-
+							
 							if (!$bt->includeAll()) {
 								$nvc = $cx->getVersionToModify();
 								$nb = $nvc->addBlock($bt, $ax, $data);
@@ -850,7 +856,7 @@
 								$nb = $cx->addBlock($bt, $ax, $data);
 							}
 							
-							if ($a->isGlobalArea()) {
+							if ($a->isGlobalArea() && $nvc instanceof Collection) {
 								$xvc = $c->getVersionToModify(); // we need to create a new version of THIS page as well.
 								$xvc->relateVersionEdits($nvc);
 							}
@@ -1028,7 +1034,7 @@
 
 				if (($_POST['rel'] == 'SITEMAP' || $_POST['approveImmediately']) && ($cp->canApproveCollection())) {
 					$v = CollectionVersion::get($c, "RECENT");
-					$v->approve();
+					$v->approve(false);
 					$u = new User();
 					$u->unloadCollectionEdit();
 					$obj->rel = $_POST['rel'];
@@ -1105,12 +1111,21 @@
 				
 				$nc = $c->add($ct, $data);
 
-				
 				if (is_object($nc)) {
+
+					Loader::model('collection_attributes');
+					$attributes = $ct->getAvailableAttributeKeys();
+					if (is_array($attributes)) {
+						foreach($attributes as $ak) { 
+							$ak->saveAttributeForm($nc);
+						} 
+					}			
+					
+
 					if ($_POST['rel'] == 'SITEMAP') { 
 						if ($cp->canApproveCollection()) {
 							$v = CollectionVersion::get($nc, "RECENT");
-							$v->approve();
+							$v->approve(false);
 						}
 						$u = new User();
 						$u->unloadCollectionEdit();
