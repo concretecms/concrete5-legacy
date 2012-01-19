@@ -233,18 +233,20 @@ showBranch = function(nodeID) {
 
 rescanDisplayOrder = function(nodeID) {
 	setLoading(nodeID);
-	var queryString = "?foo=1";
+	var pages = new Array();
 	var nodes = $('#tree-root' + nodeID).children('li.tree-node');
 	for (i = 0; i < nodes.length; i++) {
 		if( $(nodes[i]).hasClass('ui-draggable-dragging') ) continue;
-		queryString += "&cID[]=" + $(nodes[i]).attr('id').substring(9);
+		pages[i] = $(nodes[i]).attr('id').substring(9);
 	}
+	arr = new Object();
+	arr.cID = pages;
+	var queryString = $.param(arr);
 	$.getJSON(CCM_TOOLS_PATH + '/dashboard/sitemap_update.php', queryString, function(resp) {
 		ccm_parseJSON(resp, function() {});
 		removeLoading(nodeID);	
 	});
 }
-
 var SITEMAP_LAST_DIALOGUE_URL='';
 var ccm_sitemap_html = '';
 
