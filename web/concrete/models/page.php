@@ -1238,7 +1238,9 @@ class Page extends Collection {
 			}
 		}
 		// run any internal event we have for page update
-		$this->reindex();
+		// i don't think we need to do this because approve reindexes
+		//$this->reindex();
+		parent::refreshCache();
 		$ret = Events::fire('on_page_update', $this);
 	}
 	
@@ -1718,7 +1720,7 @@ class Page extends Collection {
 	function clearPendingAction() {
 		$db = Loader::db();
 		$cID = $this->getCollectionID();
-		$q = "update Pages set cPendingAction = null, cPendingActionUID = null, cPendingActionDatetime = null where cID = {$cID}";
+		$q = "update Pages set cPendingAction = null, cPendingActionUID = null, cPendingActionDatetime = 0 where cID = {$cID}";
 		$r = $db->query($q);
 		parent::refreshCache();
 	}
