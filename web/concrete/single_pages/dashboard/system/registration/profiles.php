@@ -8,7 +8,7 @@ $h = Loader::helper('concrete/interface');
     <div class="ccm-pane-body"> 
     	
     	<div class="clearfix">
-            <label id="optionsCheckboxes" for="public_profiles"><strong><?php echo t('Profile Options')?></strong></label>
+            <label id="optionsCheckboxes" for="public_profiles"><?php echo t('Profile Options')?></label>
             <div class="input">
 			  <ul class="inputs-list">
 			    <li>
