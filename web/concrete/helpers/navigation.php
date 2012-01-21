@@ -111,7 +111,7 @@ class NavigationHelper {
 		// If we've made it this far we know our Page object is at least 3rd tier
 		// so our breadcrumb array will have the home page and a 2nd tier Page object at minimum
 		$arrTrail = array();
-		$arrTrail = Loader::helper('navigation')->getTrailToCollection($cObj);
+		$arrTrail = $this->getTrailToCollection($cObj);
 		// Shift off the last Page object since it's the home page
 		array_pop($arrTrail);
 		
