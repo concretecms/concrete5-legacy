@@ -37,11 +37,17 @@
 				$updates++;
 				$localHandles[] = $_pkg->getPackageHandle();
 			}
-			foreach($remote as $_pkg) {
-				if (!in_array($_pkg->getPackageHandle(), $localHandles)) {
-					$updates++;
+
+			// only allow if user or group has permissions to connect to 
+			// the marketplace
+			if ($remote) {
+				foreach($remote as $_pkg) {
+					if (!in_array($_pkg->getPackageHandle(), $localHandles)) {
+						$updates++;
+					}
 				}
 			}
+
 			$this->set('updates', $updates);
 		}
 		
