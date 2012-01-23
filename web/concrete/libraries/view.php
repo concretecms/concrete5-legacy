@@ -848,7 +848,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 					$pageContent = ob_get_contents();
 					ob_end_clean();
 					
-					$ret = Events::fire('on_page_output', $pageContent);
+					$ret = Events::fire('on_page_output', $pageContent,$c);
 					if($ret != '') {
 						print $ret;
 					} else {
