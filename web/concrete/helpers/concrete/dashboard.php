@@ -72,14 +72,17 @@ class ConcreteDashboardHelper {
 		$trail = $nh->getTrailToCollection($c);
 		if (count($trail) > 1 || count($navigatePages) > 1 || is_object($upToPage)) { 
 			$parent = Page::getByID($c->getCollectionParentID());
-			if (count($trail) > 2 && (!is_object($upToPage))) {
+			if (count($trail) > 1 && (!is_object($upToPage))) {
 				$upToPage = Page::getByID($parent->getCollectionParentID());
 			}
 			Loader::block('autonav');
-			if (count($navigatePages) > 0) { 
-				$subpages = $navigatePages;
-			} else { 
-				$subpages = AutonavBlockController::getChildPages($parent);
+			$subpages = array();
+			if ($navigatePages !== -1) { 
+				if (count($navigatePages) > 0) { 
+					$subpages = $navigatePages;
+				} else { 
+					$subpages = AutonavBlockController::getChildPages($parent);
+				}
 			}
 			
 			$subpagesP = array();
@@ -364,7 +367,7 @@ class ConcreteDashboardHelper {
 			<div id="ccm-dashboard-overlay-misc" <? if (count($packagepages) == 0)  { ?>class="ccm-dashboard-overlay-misc-rounded" <? } ?>>
 			<div class="ccm-dashboard-overlay-inner">
 			<ul>
-			<li><a href="<?=View::url('/dashboard')?>"><strong><?=t('News')?></strong></a> – <?=t('Learn about your site and concrete5')?></li>
+			<li><a href="<?=View::url('/dashboard/news')?>"><strong><?=t('News')?></strong></a> – <?=t('Learn about your site and concrete5.')?></li>
 			<?
 			$systemSettings = Page::getByPath('/dashboard/system');
 			$systemSettingsP = new Permissions($systemSettings);
@@ -375,11 +378,18 @@ class ConcreteDashboardHelper {
 			$tpa = new TaskPermission();
 			if ($tpa->canInstallPackages()) { ?>
 				<li><a href="<?php echo View::url('/dashboard/extend') ?>"><strong><?php echo t("Extend concrete5") ?></strong></a> – 
-			<?php echo sprintf(t('<a href="%s">Install</a>, <a href="%s">update</a> or download more <a href="%s">themes</a> and <a href="%s">add-ons</a>.'),
-				View::url('/dashboard/extend/install'),
-				View::url('/dashboard/extend/update'),
-				View::url('/dashboard/extend/themes'),
-				View::url('/dashboard/extend/add-ons')); ?>
+				<? if (ENABLE_MARKETPLACE_SUPPORT) { ?>
+				<?php echo sprintf(t('<a href="%s">Install</a>, <a href="%s">update</a> or download more <a href="%s">themes</a> and <a href="%s">add-ons</a>.'),
+					View::url('/dashboard/extend/install'),
+					View::url('/dashboard/extend/update'),
+					View::url('/dashboard/extend/themes'),
+					View::url('/dashboard/extend/add-ons')); ?>
+				<? } else { ?>
+				<?php echo sprintf(t('<a href="%s">Install</a> or <a href="%s">update</a> packages.'),
+					View::url('/dashboard/extend/install'),
+					View::url('/dashboard/extend/update'))?>
+					
+				<? } ?>
 			</li>
 			<? } ?>
 			</ul>
@@ -388,6 +398,7 @@ class ConcreteDashboardHelper {
 			<? if (count($packagepages) > 0) { ?>
 			<div id="ccm-dashboard-overlay-footer">
 			<div class="ccm-dashboard-overlay-inner" id="ccm-dashboard-overlay-packages">
+
 			<?php
 			
 			

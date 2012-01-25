@@ -27,6 +27,13 @@ class ConcreteUpgradeVersion551Helper {
 			$d1a = SinglePage::add('/dashboard/system/basics/interface');
 			$d1a->update(array('cName'=>t('Interface Preferences')));
 		}
+		$sp = Page::getByPath('/dashboard/news');
+		if ($sp->isError()) {
+			$d1a = SinglePage::add('/dashboard/news');
+			$d1a->update(array('cName'=>t('Newsflow')));
+			$d1a->setAttribute('exclude_nav', 1);
+			$d1a->setAttribute('exclude_search_index', 1);
+		}
 	}
 
 	public function prepare() {
