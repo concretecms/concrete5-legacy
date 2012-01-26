@@ -87,10 +87,6 @@ msgstr "件名: %s"
 
 #: concrete5/web/concrete/mail/private_message_response_enabled.php:10
 #: concrete5/web/concrete/mail/private_message.php:12
-#, php-format
-msgid "Message: %s"
-8820 "本文: %s"
-
 #: concrete5/web/concrete/mail/private_message_response_enabled.php:14
 #: concrete5/web/concrete/mail/private_message.php:16
 #, php-format
@@ -349,7 +345,7 @@ msgstr "ページ"
 #: concrete5/web/concrete/jobs/index_search.php:47
 #, php-format
 msgid "Index updated. %s %s required reindexing."
-msgstr "索引インデックス更新."
+msgstr "索引インデックス更新 %s 完了。未完了 %s."
 
 #: concrete5/web/concrete/config/file_types.php:16
 msgid "JPEG"
@@ -2192,7 +2188,7 @@ msgstr "このファイルは、一部分しかアップロードされません
 #: concrete5/web/concrete/libraries/file/importer.php:61
 #, php-format
 msgid "Uploaded file is too large. The current value of upload_max_filesize is %s"
-msgstr "ファイルは一部のみしかアップロードされていません"
+msgstr "ファイルは一部のみしかアップロードされていません。現在許可されているファイルアップロード値（upload_max_filesize）は %s です"
 
 #: concrete5/web/concrete/libraries/file/importer.php:64
 msgid "Unable to copy file to storage directory. Please check permissions on your upload directory and ensure they can be written to by your web server."
@@ -4892,7 +4888,7 @@ msgstr "戻る"
 #: concrete5/web/concrete/single_pages/dashboard/system/optimization/jobs.php:126
 #, php-format
 msgid "Currently Running (Since %s)"
-msgstr "現在(％s)の実行中"
+msgstr "現在 (%s) の実行中"
 
 #: concrete5/web/concrete/single_pages/dashboard/system/optimization/jobs.php:129
 msgid "Never"
@@ -9597,7 +9593,7 @@ msgstr "シングルページは concrete5 一箇所でいくつかの処理を�
 
 #: concrete5/web/concrete/helpers/concrete/interface/help.php:36
 msgid ""
-"Keep small collections of blocks.  Within a stack you can control the presentation order, content and permissions of different blocks you want to use together.  Stacks are like "mini-pages", complete with versioning.\n"
+"Keep small collections of blocks.  Within a stack you can control the presentation order, content and permissions of different blocks you want to use together.  Stacks are like \"mini-pages\", complete with versioning.\n"
 "\n"
 " Use stacks on your site to update frequently used content from one place."
 msgstr ""
