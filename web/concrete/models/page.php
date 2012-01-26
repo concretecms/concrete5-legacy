@@ -705,7 +705,7 @@ class Page extends Collection {
 	 * @return string
 	 */	
 	function getCollectionPath() {
-		return $this->cPath;
+		return $this->getEncodePath($this->cPath);
 	}
 	
 	/**
@@ -717,8 +717,25 @@ class Page extends Collection {
 		$db = Loader::db();
 		$path = $db->GetOne("select cPath from PagePaths inner join CollectionVersions on (PagePaths.cID = CollectionVersions.cID and CollectionVersions.cvIsApproved = 1) where PagePaths.cID = ?", array($cID));
 		$path .= '/';
-		return $path;
+		return $this->getEncodePath($path);
 	}
+	
+	function getEncodePath($path){
+	    if(mb_strpos($path,"/") !== false){
+	      $path = explode("/",$path);
+	      $path = array_map("rawurlencode",$path);
+	      return implode("/",$path);
+	    }else if(is_null($path)){
+          return NULL;
+	    }else{
+	      return rawurlencode($path);
+	    }	
+	}
+
+	function getEscapePath($path){
+        return htmlentities($path,ENT_QUOTES, APP_CHARSET);
+	}
+
 
 	/**
 	 * Returns the uID for a page ownder
@@ -1238,9 +1255,7 @@ class Page extends Collection {
 			}
 		}
 		// run any internal event we have for page update
-		// i don't think we need to do this because approve reindexes
-		//$this->reindex();
-		parent::refreshCache();
+		$this->reindex();
 		$ret = Events::fire('on_page_update', $this);
 	}
 	
@@ -1720,7 +1735,7 @@ class Page extends Collection {
 	function clearPendingAction() {
 		$db = Loader::db();
 		$cID = $this->getCollectionID();
-		$q = "update Pages set cPendingAction = null, cPendingActionUID = null, cPendingActionDatetime = 0 where cID = {$cID}";
+		$q = "update Pages set cPendingAction = null, cPendingActionUID = null, cPendingActionDatetime = null where cID = {$cID}";
 		$r = $db->query($q);
 		parent::refreshCache();
 	}
@@ -2367,7 +2382,6 @@ class Page extends Collection {
 			// run any internal event we have for page addition
 			Events::fire('on_page_add', $pc);
 			$pc->rescanCollectionPath();
-
 
 		}
 		

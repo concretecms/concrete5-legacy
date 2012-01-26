@@ -287,7 +287,7 @@ class Request {
 		// I think the regexps take care of the trimming for us but just to be sure..
 		$cPath = trim($this->cPath, '/');
 		if ($cPath != '') {
-			return '/' . $cPath;
+			return '/' . rawurldecode($cPath);
 		}
 		return '';
 	}

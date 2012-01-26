@@ -39,17 +39,9 @@ if ($cp->canAdminPage()) {
 			$("#" + ccm_activePropertiesTab + "-tab").show();
 			
 			if (ccm_activePropertiesTab == 'ccm-properties-custom') {
-				<? if ($_REQUEST['approveImmediately']) { ?>
-					$('#ccm-dialog-content1').dialog('option','height','620');
-				<? } else { ?>
-					$('#ccm-dialog-content1').dialog('option','height','570');
-				<? } ?>
+				$('#ccm-dialog-content1').dialog('option','height','570');
 			} else {
-				<? if ($_REQUEST['approveImmediately']) { ?>
-					$('#ccm-dialog-content1').dialog('option','height','540');
-				<? } else { ?>
-					$('#ccm-dialog-content1').dialog('option','height','490');
-				<? } ?>
+				$('#ccm-dialog-content1').dialog('option','height','490');
 			}
 			$('#ccm-dialog-content1').dialog('option','position','center');
 
@@ -82,22 +74,18 @@ if ($cp->canAdminPage()) {
 
 	<div id="ccm-required-meta">
 	
-	
-	<? if (!$c->isMasterCollection()) { ?>
+		
 	<ul class="tabs" id="ccm-properties-tabs">
-		<li class="active"><a href="javascript:void(0)" id="ccm-properties-standard"><?=t('Standard Properties')?></a></li>
+		<li <? if (!$c->isMasterCollection()) { ?>class="active"<? } else { ?>style="display: none"<? } ?>><a href="javascript:void(0)" id="ccm-properties-standard"><?=t('Standard Properties')?></a></li>
 		<li><a href="javascript:void(0)" id="ccm-properties-custom"><?=t('Custom Attributes')?></a></li>
 		<li <? if ($c->isMasterCollection()) { ?>style="display: none"<? } ?>><a href="javascript:void(0)" id="ccm-page-paths"><?=t('Page Paths and Location')?></a></li>
 	</ul>
-	<? } ?>
 
-	<div id="ccm-properties-standard-tab" <? if ($c->isMasterCollection()) { ?>style="display: none" <? } ?>>
+	<div id="ccm-properties-standard-tab">
 	
 	<div class="clearfix">
 		<label for="cName"><?=t('Name')?></label>
-		<div class="input"><input type="text" id="cName" name="cName" value="<?=htmlentities( $c->getCollectionName(), ENT_QUOTES, APP_CHARSET) ?>" />
-			<span class="help-inline"><?=t("Page ID: %s", $c->getCollectionID())?></span>
-		</div>
+		<div class="input"><input type="text" id="cName" name="cName" value="<?=htmlentities( $c->getCollectionName(), ENT_QUOTES, APP_CHARSET) ?>" /></div>
 	</div>
 
 	<div class="clearfix">
@@ -109,6 +97,7 @@ if ($cp->canAdminPage()) {
 	<div class="clearfix">
 	<label><?=t('Owner')?></label>
 	<div class="input">
+	
 		<? 
 		print $uh->selectUser('uID', $c->getCollectionUserID());
 		?>
@@ -130,10 +119,10 @@ if ($cp->canAdminPage()) {
 		<div class="input">
 		<?php if (!$c->isGeneratedCollection()) { ?>
 			<?=BASE_URL . DIR_REL;?><? if (URL_REWRITING == false) { ?>/<?=DISPATCHER_FILENAME?><? } ?><?
-			$cPath = substr($c->getCollectionPath(), strrpos($c->getCollectionPath(), '/') + 1);
-			print substr($c->getCollectionPath(), 0, strrpos($c->getCollectionPath(), '/'))?>/<input type="text" name="cHandle" value="<?php echo $cPath?>" id="cHandle"><input type="hidden" name="oldCHandle" id="oldCHandle" value="<?php echo $c->getCollectionHandle()?>"><br /><br />
+			$cPath = substr($c->cPath, strrpos($c->cPath, '/') + 1);
+			print htmlentities(substr($c->cPath, 0, strrpos($c->cPath, '/')),ENT_QUOTES,APP_CHARSET)?>/<input type="text" name="cHandle" value="<?php echo htmlentities($cPath,ENT_QUOTES,APP_CHARSET)?>" id="cHandle"><input type="hidden" name="oldCHandle" id="oldCHandle" value="<?php echo htmlentities($c->getCollectionHandle(),ENT_QUOTES,APP_CHARSET)?>"><br /><br />
 		<?php  } else { ?>
-			<?php echo $c->getCollectionHandle()?><br /><br />
+			<?php echo htmlentities($c->getCollectionHandle(),ENT_QUOTES,APP_CHARSET)?><br /><br />
 		<?php  } ?>
 			<span class="help-block"><?=t('This page must always be available from at least one URL. That URL is listed above.')?></span>
 		</div>
@@ -150,7 +139,7 @@ if ($cp->canAdminPage()) {
 						$ppID = $path['ppID'];
 						$cPath = $path['cPath'];
 						echo '<div class="input ccm-meta-path">' .
-			     			'<input type="text" name="ppURL-' . $ppID . '" class="ccm-input-text" value="' . $cPath . '" id="ppID-'. $ppID . '"> ' .
+			     			'<input type="text" name="ppURL-' . $ppID . '" class="ccm-input-text" value="' . htmlentities($cPath,ENT_QUOTES,APP_CHARSET) . '" id="ppID-'. $ppID . '"> ' .
 			     			'<a href="javascript:void(0)" class="ccm-meta-path-del">' . t('Remove Path') . '</a></div>'."\n";
 					}
 				}
@@ -168,7 +157,7 @@ if ($cp->canAdminPage()) {
 	#ccm-more-page-paths div.input {margin-bottom: 10px;}
 	</style>
 	
-	<div id="ccm-properties-custom-tab" <? if (!$c->isMasterCollection()) { ?>style="display: none" <? } ?>>
+	<div id="ccm-properties-custom-tab" style="display: none">
 		<? Loader::element('collection_metadata_fields', array('c'=>$c ) ); ?>
 	</div>
 

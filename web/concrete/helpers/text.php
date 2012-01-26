@@ -37,17 +37,17 @@ class TextHelper {
 			"ø"=>"oe",
 			"å"=>"aa",
 			"é"=>"e",
-			"è"=>"e"	
+			"è"=>"e",
+			"?"=>"？"	
 		);
 		$handle = str_replace(array_keys($multi), array_values($multi), $handle);
 
-		$searchNormal = array("/[&]/", "/[\s]+/", "/[^0-9A-Za-z-_.]/", "/-+/");
-		$searchSlashes = array("/[&]/", "/[\s]+/", "/[^0-9A-Za-z-_.\/]/", "/-+/");
-		$replace = array("and", "-", "", "-");
+		$search = array("/[&]/", "/[\s]+/", "/-+/");
+		$replace = array("and", "-", "-");
 		
-		$search = $searchNormal;
 		if ($leaveSlashes) {
-			$search = $searchSlashes;
+			$search = array("/[&]/", "/[\s]+/", "/[\/]/", "/-+/");
+			$replace = array("and", "-", "", "-");
 		}
 
 		$handle = preg_replace($search, $replace, $handle);
