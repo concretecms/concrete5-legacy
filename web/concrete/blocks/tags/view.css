@@ -1,3 +1,12 @@
+.ccm-tags-display ul.ccm-tag-list li.clearfix {
+    clear: both;
+    height: 0px !important;
+    display: block !important;
+    background:none !important;
+    float: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
 .ccm-tags-display ul.ccm-tag-list li {
 	display: inline;
 	color: #fff;
