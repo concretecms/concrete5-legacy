@@ -14,6 +14,9 @@ if (is_object($c)) {
 } else {
 	$cID = 1;
 }
+
+
+$v = View::getInstance();
 ?>
 
 <meta http-equiv="content-type" content="text/html; charset=<?php echo APP_CHARSET?>" />
@@ -63,9 +66,11 @@ var CCM_REL = "<?php echo DIR_REL?>";
 
 <?php
 $html = Loader::helper('html');
-$this->addHeaderItem($html->css('ccm.base.css'), 'CORE');
-$this->addHeaderItem($html->javascript('jquery.js'), 'CORE');
-$this->addHeaderItem($html->javascript('ccm.base.js', false, true), 'CORE');
+
+//$bv->getInstance();
+$v->addHeaderItem($html->css('ccm.base.css'), 'CORE');
+$v->addHeaderItem($html->javascript('jquery.js'), 'CORE');
+$v->addHeaderItem($html->javascript('ccm.base.js', false, true), 'CORE');
 
 $favIconFID=intval(Config::get('FAVICON_FID'));
 $appleIconFID =intval(Config::get('IPHONE_HOME_SCREEN_THUMBNAIL_FID'));
@@ -85,21 +90,21 @@ if($appleIconFID) {
 <?php 
 if (is_object($cp)) { 
 
-	if ($this->editingEnabled()) {
+	if ($v->editingEnabled()) {
 		Loader::element('page_controls_header', array('cp' => $cp, 'c' => $c));
 	}
 
-	if ($this->areLinksDisabled()) { 
-		$this->addHeaderItem('<script type="text/javascript">window.onload = function() {ccm_disableLinks()}</script>', 'CORE');
+	if ($v->areLinksDisabled()) {
+		$v->addHeaderItem('<script type="text/javascript">window.onload = function() {ccm_disableLinks()}</script>', 'CORE');
 	}
 	$cih = Loader::helper('concrete/interface');
 	if ($cih->showNewsflowOverlay()) {
-		$this->addFooterItem('<script type="text/javascript">$(function() { ccm_showDashboardNewsflowWelcome(); });</script>');
+		$v->addFooterItem('<script type="text/javascript">$(function() { ccm_showDashboardNewsflowWelcome(); });</script>');
 	}	
 
 }
 
-print $this->controller->outputHeaderItems();
+print $v->controller->outputHeaderItems();
 $_trackingCodePosition = Config::get('SITE_TRACKING_CODE_POSITION');
 if (empty($disableTrackingCode) && $_trackingCodePosition === 'top') {
 	echo Config::get('SITE_TRACKING_CODE');
