@@ -609,7 +609,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		 * @return void
 		*/	
 		public function render($view, $args = null) { 
-			
+			global $db;
 			try {			
 				if (is_array($args)) {
 					extract($args);
