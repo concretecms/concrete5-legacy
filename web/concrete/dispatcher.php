@@ -34,6 +34,8 @@
 	Loader::library('events');
 	Loader::library('model');
 	Loader::library('item_list');
+    Loader::library('singleton_interface');
+    Loader::library('base_view');
 	Loader::library('view');
 	Loader::library('controller');
 	Loader::library('file/types');
