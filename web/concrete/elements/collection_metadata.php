@@ -117,22 +117,22 @@ if ($cp->canAdminPage()) {
 		<div class="clearfix">
 		<label for="cHandle"><?= t('Canonical URL')?></label>
 		<div class="input">
-		<?php if (!$c->isGeneratedCollection()) { ?>
-			<?=BASE_URL . DIR_REL;?><? if (URL_REWRITING == false) { ?>/<?=DISPATCHER_FILENAME?><? } ?><?
+		<?  if (!$c->isGeneratedCollection()) { ?>
+			<? echo BASE_URL . DIR_REL;?><?  if (URL_REWRITING == false) { ?>/<? echo DISPATCHER_FILENAME?><?  } ?><? 
 			$cPath = substr($c->cPath, strrpos($c->cPath, '/') + 1);
-			print htmlentities(substr($c->cPath, 0, strrpos($c->cPath, '/')),ENT_QUOTES,APP_CHARSET)?>/<input type="text" name="cHandle" value="<?php echo htmlentities($cPath,ENT_QUOTES,APP_CHARSET)?>" id="cHandle"><input type="hidden" name="oldCHandle" id="oldCHandle" value="<?php echo htmlentities($c->getCollectionHandle(),ENT_QUOTES,APP_CHARSET)?>"><br /><br />
-		<?php  } else { ?>
-			<?php echo htmlentities($c->getCollectionHandle(),ENT_QUOTES,APP_CHARSET)?><br /><br />
-		<?php  } ?>
-			<span class="help-block"><?=t('This page must always be available from at least one URL. That URL is listed above.')?></span>
+			print htmlentities(substr($c->cPath, 0, strrpos($c->cPath, '/')),ENT_QUOTES,APP_CHARSET)?>/<input type="text" name="cHandle" value="<?= htmlentities($cPath,ENT_QUOTES,APP_CHARSET)?>" id="cHandle"><input type="hidden" name="oldCHandle" id="oldCHandle" value="<?= htmlentities($c->getCollectionHandle(),ENT_QUOTES,APP_CHARSET)?>"><br /><br />
+		<?   } else { ?>
+			<?= $c->getCollectionHandle()?><br /><br />
+		<?   } ?>
+			<span class="help-block"><? echo t('This page must always be available from at least one URL. That URL is listed above.')?></span>
 		</div>
 		</div>
 		
-		<?php if (!$c->isGeneratedCollection()) { ?>
+		<?  if (!$c->isGeneratedCollection()) { ?>
 		<div class="clearfix" id="ccm-more-page-paths">
-			<label><?= t('More URLs') ?></label>
+			<label><? echo  t('More URLs') ?></label>
 
-			<?php
+			<? 
 				$paths = $c->getPagePaths();
 				foreach ($paths as $path) {
 					if (!$path['ppIsCanonical']) {
@@ -146,10 +146,10 @@ if ($cp->canAdminPage()) {
 			?>
 		    <div class="input ccm-meta-path">
 	     		<input type="text" name="ppURL-add-0" class="ccm-input-text" value="" id="ppID-add-0">
-		 		<a href="javascript:void(0)" class="ccm-meta-path-add"><?=t('Add Path')?></a>
+		 		<a href="javascript:void(0)" class="ccm-meta-path-add"><? echo t('Add Path')?></a>
 			</div>
 		</div>
-		<?php } ?>
+		<?  } ?>
 	
 	</div>
 	
