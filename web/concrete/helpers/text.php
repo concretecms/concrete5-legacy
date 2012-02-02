@@ -42,12 +42,12 @@ class TextHelper {
 		);
 		$handle = str_replace(array_keys($multi), array_values($multi), $handle);
 
-		$search = array("/[&]/", "/[\s]+/", "/-+/");
-		$replace = array("and", "-", "-");
+		$search = array("/[&]/", "/[\s]+/", "/[\/]/", "/-+/");
+		$replace = array("and", "-", "","-");
 		
 		if ($leaveSlashes) {
-			$search = array("/[&]/", "/[\s]+/", "/[\/]/", "/-+/");
-			$replace = array("and", "-", "", "-");
+			$search = array("/[&]/", "/[\s]+/",  "/-+/");
+			$replace = array("and", "-", "-");
 		}
 
 		$handle = preg_replace($search, $replace, $handle);
