@@ -1,14 +1,14 @@
 # concrete5 Japanese language file.
-# Copyright (C) 2011 Katsuyuki Ueno, Takezo Ishimaru, Tao Sasaki, Kazuo Yamanoi, Takuro Hishikawa & Naoki Hirayama (Usagi Project)
+# Copyright (C) 2012 Katsuyuki Ueno, Takezo Ishimaru, Tao Sasaki, Kazuo Yamanoi, Takuro Hishikawa & Naoki Hirayama (Usagi Project)
 # This file is distributed under the same license as the concrete5 package (MIT License).
-# Katsuyuki Ueno, Takezo Ishimaru, Tao Sasaki, Kazuo Yamanoi, Takuro Hishikawa & Naoki Hirayama 2011.
+# Katsuyuki Ueno, Takezo Ishimaru, Tao Sasaki, Kazuo Yamanoi, Takuro Hishikawa & Naoki Hirayama 2012.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: concrete5.4.2.1 Japanese\n"
 "Report-Msgid-Bugs-To: concrete5@concrete5-japan.org\n"
 "POT-Creation-Date: 2009-04-20 12:54-0700\n"
-"PO-Revision-Date: 2012-02-03 09:23+0900\n"
+"PO-Revision-Date: \n"
 "Last-Translator: Takuro Hishikawa <hishikawa@notnil-creative.com>\n"
 "Language-Team: Usagi Project <concrete5@concrete5-japan.org>\n"
 "MIME-Version: 1.0\n"
@@ -75,15 +75,12 @@ msgid ""
 "\n"
 msgstr ""
 "\n"
-"concrete5サイトからのお知らせです。\n"
-"\n"
-"お使いのconcrete5サイト中のフォーム「%s」から、新しいお問い合わせがありました。\n"
-"--------------------\n"
+"お使いのconcrete5ウェブサイトに新しいコメントがありました。\n"
 "\n"
 "%s\n"
 "\n"
-"このメッセージのログを見る\n"
-"%s\n"
+"ゲストブックを確認するには、こちらにアクセス: \n"
+"%s \n"
 "\n"
 
 #: c5j/concrete5/web/concrete/mail/spam_detected.php:5
@@ -99,6 +96,11 @@ msgid ""
 "\n"
 "%s"
 msgstr ""
+"\n"
+"\n"
+"誰かがあなたのウェブサイトを通じてあなたにスパムを送信しようとしました。詳細はこちら:\n"
+"\n"
+"%s"
 
 #: c5j/concrete5/web/concrete/mail/mail_importer_error.php:4
 msgid "Error Processing Importer Mail"
@@ -120,7 +122,7 @@ msgstr "エラー: %s"
 
 #: c5j/concrete5/web/concrete/mail/forgot_password.php:4
 msgid "Forgot Password"
-msgstr "パスワード通知"
+msgstr "パスワード再発行"
 
 #: c5j/concrete5/web/concrete/mail/forgot_password.php:5
 #, php-format
@@ -140,6 +142,20 @@ msgid ""
 "Thanks for browsing the site!\n"
 "\n"
 msgstr ""
+"\n"
+"\n"
+"%s さん\n"
+"\n"
+"サイト %s での新規パスワード発行リクエストを受け付けました。\n"
+"\n"
+"あなたのユーザー名: %s\n"
+"\n"
+"以下のURLにアクセスしてパスワードを変更できます:\n"
+"\n"
+"%s\n"
+"\n"
+"ご利用ありがとうございます！\n"
+"\n"
 
 #: c5j/concrete5/web/concrete/mail/private_message_response_enabled.php:4
 #: c5j/concrete5/web/concrete/mail/private_message.php:4
@@ -158,7 +174,9 @@ msgstr "%sさんより、プロフィール ( %s ) を通じてメッセージ�
 msgid ""
 "Message:\n"
 "%s"
-msgstr "本文: %s"
+msgstr ""
+"本文: \n"
+"%s"
 
 #: c5j/concrete5/web/concrete/mail/private_message_response_enabled.php:14
 #: c5j/concrete5/web/concrete/mail/private_message.php:16
@@ -182,6 +200,14 @@ msgid ""
 "Thanks for your interest in %s\n"
 "\n"
 msgstr ""
+"\n"
+"\n"
+"次のURLにアクセスして、 %s のあなたのアカウントを有効にしてください。:\n"
+"\n"
+"%s \n"
+"\n"
+"%s\n"
+"\n"
 
 #: c5j/concrete5/web/concrete/mail/private_message.php:6
 msgid "*** DO NOT REPLY TO THE MESSAGE BELOW. ***"
@@ -322,7 +348,7 @@ msgstr "「%s」へは変更を保存せずに、このレイアウトを使用�
 
 #: c5j/concrete5/web/concrete/elements/block_area_layout.php:124
 msgid "Save this style as a new preset?"
-msgstr "このスタイルを新プリセットとして保存しますか？"
+msgstr "このスタイルを新規プリセットとして保存しますか？"
 
 #: c5j/concrete5/web/concrete/elements/block_area_layout.php:130
 msgid "Save this style as a new preset."
@@ -353,7 +379,7 @@ msgstr "保存"
 #: c5j/concrete5/web/concrete/elements/block_area_footer.php:51
 #, php-format
 msgid "Add To Sitewide %s"
-msgstr "%sに追加"
+msgstr "サイト全体の%sに追加"
 
 #: c5j/concrete5/web/concrete/elements/block_area_footer.php:53
 #, php-format
@@ -374,7 +400,7 @@ msgstr "サイトエリア（階層順）"
 
 #: c5j/concrete5/web/concrete/elements/collection_permissions.php:167
 msgid "By Page Type Defaults (in Dashboard)"
-msgstr "標準ページタイプ（管理画面内）"
+msgstr "ページタイプの標準（管理画面内）"
 
 #: c5j/concrete5/web/concrete/elements/collection_permissions.php:168
 msgid "Manually"
@@ -382,7 +408,7 @@ msgstr "任意"
 
 #: c5j/concrete5/web/concrete/elements/collection_permissions.php:173
 msgid "Currently Viewing"
-msgstr "現在のページ"
+msgstr "表示中"
 
 #: c5j/concrete5/web/concrete/elements/collection_permissions.php:175
 msgid "Page Permissions"
@@ -398,7 +424,7 @@ msgstr "公開設定"
 
 #: c5j/concrete5/web/concrete/elements/collection_permissions.php:181
 msgid "Add User"
-msgstr "ユーザー追加"
+msgstr "ユーザーを追加"
 
 #: c5j/concrete5/web/concrete/elements/collection_permissions.php:182
 msgid "Add Group"
@@ -406,7 +432,7 @@ msgstr "グループを追加"
 
 #: c5j/concrete5/web/concrete/elements/collection_permissions.php:195
 msgid "This page inherits its permissions from:"
-msgstr "このページの権限はこちらから継承されています: "
+msgstr "このページの権限はこちらから継承されています:"
 
 #: c5j/concrete5/web/concrete/elements/collection_permissions.php:201
 msgid "Read"
@@ -435,7 +461,7 @@ msgstr "管理者"
 
 #: c5j/concrete5/web/concrete/elements/collection_permissions.php:207
 msgid "User/Group May Add the Following Pages"
-msgstr "ユーザー/グループは以下のページの追加ができます："
+msgstr "ユーザー/グループは以下のページの追加ができます"
 
 #: c5j/concrete5/web/concrete/elements/collection_permissions.php:208
 msgid "Start Date/Time"
@@ -480,7 +506,7 @@ msgstr "（該当なし）"
 
 #: c5j/concrete5/web/concrete/elements/collection_attribute_values.php:71
 msgid "Allow users to add to this list."
-msgstr "ユーザーがこのリストを追加・更新するのを許可する。"
+msgstr "ユーザーがこのリストを追加するのを許可する。"
 
 #: c5j/concrete5/web/concrete/elements/collection_mcd.php:12
 msgid "Move, Copy or Delete this Page"
@@ -546,11 +572,11 @@ msgstr "%sページの子ページを削除します。"
 
 #: c5j/concrete5/web/concrete/elements/collection_metadata.php:16
 msgid "Note: Since you haven't checked this page out for editing, these changes will immediately be approved."
-msgstr "注意：このページは編集モードではないので、変更は直ぐに反映されます。"
+msgstr "注意：このページは編集モードではないので、これらの変更はすぐに反映されます。"
 
 #: c5j/concrete5/web/concrete/elements/collection_metadata.php:79
 msgid "Standard Properties"
-msgstr "基本属性"
+msgstr "基本プロパティー"
 
 #: c5j/concrete5/web/concrete/elements/collection_metadata.php:80
 msgid "Custom Attributes"
@@ -558,7 +584,7 @@ msgstr "カスタム属性"
 
 #: c5j/concrete5/web/concrete/elements/collection_metadata.php:81
 msgid "Page Paths and Location"
-msgstr "ページパスと保存場所"
+msgstr "ページパスとロケーション"
 
 #: c5j/concrete5/web/concrete/elements/collection_metadata.php:87
 msgid "Name"
@@ -623,19 +649,19 @@ msgstr "次のエリアの権限は、以下のエリアの権限を継承して
 
 #: c5j/concrete5/web/concrete/elements/block_area_groups.php:234
 msgid "To change them everywhere, edit this area on that page. To override them here and on all sub-pages, edit below."
-msgstr "この部分をすべて変更するには、オリジナルのエリアを編集してください。この部分と属性のページを独立して編集する際は、下の部分を編集してください。"
+msgstr "この変更を全体に反映するには、オリジナルのエリアを編集してください。上書きするには、以下を編集してください。"
 
 #: c5j/concrete5/web/concrete/elements/block_area_groups.php:242
 msgid "The following area permissions are inherited from the page's permissions. To override them, edit below."
-msgstr "次のエリアの権限は、属している親ページの権限を継承しています。独立して編集する時は、以下を編集してください。"
+msgstr "次のエリアの権限設定は、所属しているページの権限設定を継承しています。上書きするには、以下を編集してください。"
 
 #: c5j/concrete5/web/concrete/elements/block_area_groups.php:249
 msgid "Permissions for this area currently override those of the page. To revert to the page's permissions, click <strong>revert to page permissions</strong> below."
-msgstr "このエリアの権限は、親ページの権限と別になっています。権限を親ページと同じに戻すには、<strong>権限設定を戻す</strong>をクリックしてください。"
+msgstr "このエリアの権限設定は、ページの権限設定とは異なります。ページの権限設定に戻すには、<strong>ページ権限設定に戻す</strong>をクリックしてください。"
 
 #: c5j/concrete5/web/concrete/elements/block_area_groups.php:339
 msgid "Revert to Page Permissions"
-msgstr "権限設定を戻す"
+msgstr "ページ権限設定に戻す"
 
 #: c5j/concrete5/web/concrete/elements/block_area_groups.php:341
 #: c5j/concrete5/web/concrete/elements/block_groups.php:191
@@ -650,7 +676,7 @@ msgstr "アクセス拒否"
 #: c5j/concrete5/web/concrete/elements/collection_theme.php:51
 #: c5j/concrete5/web/concrete/elements/collection_theme.php:56
 msgid "Choose a Page Type"
-msgstr "ページタイプを選択してください。"
+msgstr "ページタイプを選択"
 
 #: c5j/concrete5/web/concrete/elements/collection_theme.php:46
 #, php-format
@@ -680,11 +706,11 @@ msgstr "閉じる"
 
 #: c5j/concrete5/web/concrete/elements/collection_delete.php:51
 msgid "Cancel Delete"
-msgstr "削除"
+msgstr "削除をキャンセル"
 
 #: c5j/concrete5/web/concrete/elements/collection_delete.php:86
 msgid "Deleted pages are moved to the trash can in the sitemap."
-msgstr "サイトマップへのアクセス権限を変更する権限が与えられていません。"
+msgstr "削除されたページはサイトマップのゴミ箱に移動されます。"
 
 #: c5j/concrete5/web/concrete/elements/collection_delete.php:88
 msgid "This cannot be undone."
@@ -692,15 +718,15 @@ msgstr "これは取り消すことができません。"
 
 #: c5j/concrete5/web/concrete/elements/block_area_add_new.php:188
 msgid "Learn more about this block type."
-msgstr "このブロックについて"
+msgstr "このブロックタイプについて"
 
 #: c5j/concrete5/web/concrete/elements/block_area_add_new.php:219
 msgid "No block types can be added to this area."
-msgstr "ブロックはこの場所に追加できません。"
+msgstr "このエリアにはどのブロックタイプも追加できません。"
 
 #: c5j/concrete5/web/concrete/elements/block_area_add_new.php:231
 msgid "More Blocks"
-msgstr "基本ブロック一覧"
+msgstr "その他のブロック"
 
 #: c5j/concrete5/web/concrete/elements/block_area_add_new.php:232
 msgid "Browse our marketplace of add-ons to extend your site!"
@@ -732,11 +758,11 @@ msgstr "CSS"
 
 #: c5j/concrete5/web/concrete/elements/custom_style.php:92
 msgid "You are changing a preset"
-msgstr "変更を保存"
+msgstr "プリセットを変更しています"
 
 #: c5j/concrete5/web/concrete/elements/custom_style.php:93
 msgid "Update \"%s\" preset everywhere it is used"
-msgstr "プリセット名「%s」を使用するすべてのレイアウトを変更しますか？"
+msgstr "プリセット名「%s」を使用するすべてのブロックを更新しますか？"
 
 #: c5j/concrete5/web/concrete/elements/custom_style.php:94
 #, php-format
@@ -781,11 +807,11 @@ msgstr "この編集を、このブロックから転載されたすべてのエ
 
 #: c5j/concrete5/web/concrete/elements/block_groups.php:121
 msgid "Permissions for this block are currently dependent on the area containing this block. If you override those permissions here, they will not match those of the area."
-msgstr "現在、このブロックのアクセス権限は、このエリアの権限が元になっています。ここでブロックの権限を変更すると、設定が矛盾することになります。"
+msgstr "このブロックの権限設定は、所属するエリアの権限設定に依存しています。ここでブロックの権限を上書きすると、エリアの設定と異なる設定になります。"
 
 #: c5j/concrete5/web/concrete/elements/block_groups.php:123
 msgid "Permissions for this block currently override those of the parent area. To revert to the area's permissions, click the button below."
-msgstr "このブロックは、ここのエリアのアクセス権限ではない設定になっています。このエリアの権限の設定に戻すには、以下のボタンを押してください。"
+msgstr "このブロックの権限設定は、所属するエリアの権限設定を上書きしています。このエリアの権限の設定に戻すには、以下のボタンを押してください。"
 
 #: c5j/concrete5/web/concrete/elements/block_groups.php:128
 msgid "Revert to Area Permissions"
@@ -801,7 +827,7 @@ msgstr "編集を許可するグループは？"
 
 #: c5j/concrete5/web/concrete/elements/block_master_collection_composer.php:17
 msgid "Include block in Composer"
-msgstr "コンポーザーにブロックを入れる"
+msgstr "このブロックをコンポーザーで使用する"
 
 #: c5j/concrete5/web/concrete/elements/block_master_collection_composer.php:23
 #: c5j/concrete5/web/concrete/elements/block_custom_template.php:45
@@ -852,7 +878,7 @@ msgstr "<b>%s</b>から<b>%s</b>までを表示 (計<b>%s</b>)"
 
 #: c5j/concrete5/web/concrete/elements/collection_metadata_fields.php:24
 msgid "All Attributes"
-msgstr "属性管理"
+msgstr "すべての属性"
 
 #: c5j/concrete5/web/concrete/elements/collection_metadata_fields.php:58
 msgid "Other"
@@ -860,15 +886,15 @@ msgstr "その他"
 
 #: c5j/concrete5/web/concrete/elements/collection_metadata_fields.php:74
 msgid "Selected Attributes"
-msgstr "属性を削除"
+msgstr "選択された属性"
 
 #: c5j/concrete5/web/concrete/elements/collection_metadata_fields.php:78
 msgid "No attributes assigned. Any attributes you set here will automatically be set on pages when they are created."
-msgstr "このファイルは、テンプレートが適用されていないページに使用されます。"
+msgstr "属性が割り当てられていません。ここで設定した属性はページが作成された際に自動的に割り当てられます。"
 
 #: c5j/concrete5/web/concrete/elements/collection_metadata_fields.php:80
 msgid "No attributes assigned."
-msgstr "属性が指定されていません。"
+msgstr "属性が割り当てられていません。"
 
 #: c5j/concrete5/web/concrete/elements/collection_metadata_fields.php:95
 msgid "remove"
@@ -983,7 +1009,7 @@ msgstr "セットを編集"
 #: c5j/concrete5/web/concrete/elements/dashboard/attributes_table.php:58
 #: c5j/concrete5/web/concrete/elements/dashboard/attributes_table.php:121
 msgid "No attributes defined."
-msgstr "属性が指定されていません。"
+msgstr "属性が定義されていません。"
 
 #: c5j/concrete5/web/concrete/elements/dashboard/sitemap.php:35
 msgid "Sitemap"
@@ -1076,7 +1102,7 @@ msgstr "自分のサイトを離れることなく手続きが完了します。
 
 #: c5j/concrete5/web/concrete/elements/dashboard/marketplace_connect_failed.php:52
 msgid "Connect to Community"
-msgstr "マーケットプレイスに接続"
+msgstr "コミュニティに接続"
 
 #: c5j/concrete5/web/concrete/elements/dashboard/notification_update.php:4
 #, php-format
@@ -1096,7 +1122,7 @@ msgstr "選択したアイテムを:"
 #: c5j/concrete5/web/concrete/elements/users/search_results.php:34
 #: c5j/concrete5/web/concrete/elements/pages/search_results.php:36
 msgid "Edit Properties"
-msgstr "ファイル情報編集"
+msgstr "プロパティーを編集"
 
 #: c5j/concrete5/web/concrete/elements/users/search_results.php:36
 msgid "Choose"
@@ -1108,7 +1134,7 @@ msgstr "該当するユーザーが見つかりませんでした。"
 
 #: c5j/concrete5/web/concrete/elements/users/search_results.php:106
 msgid "Export"
-msgstr "全エクスポート"
+msgstr "エクスポート"
 
 #: c5j/concrete5/web/concrete/elements/users/search_form_advanced.php:4
 #: c5j/concrete5/web/concrete/elements/pages/search_form_advanced.php:5
@@ -1155,12 +1181,12 @@ msgstr "グループ"
 #: c5j/concrete5/web/concrete/elements/users/search_form_advanced.php:72
 #: c5j/concrete5/web/concrete/elements/pages/search_form_advanced.php:143
 msgid "# Per Page"
-msgstr "結果（ページ）"
+msgstr "表示ページ数"
 
 #: c5j/concrete5/web/concrete/elements/users/search_form_advanced.php:90
 #: c5j/concrete5/web/concrete/elements/pages/search_form_advanced.php:158
 msgid "Advanced Search"
-msgstr "検索オプション"
+msgstr "詳細検索"
 
 #: c5j/concrete5/web/concrete/elements/users/search_form_advanced.php:95
 #: c5j/concrete5/web/concrete/elements/pages/search_form_advanced.php:163
@@ -1219,7 +1245,7 @@ msgstr "所有者"
 
 #: c5j/concrete5/web/concrete/elements/pages/search_form_advanced.php:11
 msgid "# Children"
-msgstr "下階層数"
+msgstr "子ページ数"
 
 #: c5j/concrete5/web/concrete/elements/pages/search_form_advanced.php:12
 msgid "Approved Version"
@@ -1300,7 +1326,7 @@ msgstr "ハンドル"
 #: c5j/concrete5/web/concrete/elements/attribute/type_form_required.php:51
 #: c5j/concrete5/web/concrete/elements/attribute/type_form_required.php:59
 msgid "Required"
-msgstr "必須コード"
+msgstr "必須"
 
 #: c5j/concrete5/web/concrete/elements/attribute/type_form_required.php:68
 msgid "** None"
@@ -1332,7 +1358,7 @@ msgstr "ファイル検索インデックスに含める"
 
 #: c5j/concrete5/web/concrete/elements/attribute/type_form_required.php:94
 msgid "Field available in File Manager Search."
-msgstr "ファイルマネージャ検索"
+msgstr "ファイルマネージャ検索で有効にする"
 
 #: c5j/concrete5/web/concrete/elements/attribute/type_form_required.php:97
 msgid "Content included in user keyword search."
@@ -1344,11 +1370,11 @@ msgstr "ダッシュボードのユーザー検索で使用する"
 
 #: c5j/concrete5/web/concrete/elements/attribute/categories/user.php:14
 msgid "User Attribute Options"
-msgstr "ユーザー項目"
+msgstr "ユーザー属性設定"
 
 #: c5j/concrete5/web/concrete/elements/attribute/categories/user.php:16
 msgid "Public Display"
-msgstr "公開"
+msgstr "公開表示"
 
 #: c5j/concrete5/web/concrete/elements/attribute/categories/user.php:19
 msgid "Displayed in Public Profile."
@@ -1416,16 +1442,16 @@ msgstr "サイズ"
 
 #: c5j/concrete5/web/concrete/elements/custom_style/fonts.php:31
 msgid "Line Height"
-msgstr "行間 (Line Height)"
+msgstr "行間"
 
 #: c5j/concrete5/web/concrete/elements/custom_style/fonts.php:39
 #: c5j/concrete5/web/concrete/elements/custom_style/border.php:48
 msgid "Color"
-msgstr "カラー (Color)"
+msgstr "色"
 
 #: c5j/concrete5/web/concrete/elements/custom_style/fonts.php:48
 msgid "Alignment"
-msgstr "配置 (Align)"
+msgstr "位置合わせ"
 
 #: c5j/concrete5/web/concrete/elements/custom_style/fonts.php:52
 msgid "Default"
@@ -1440,7 +1466,7 @@ msgstr "左寄せ"
 
 #: c5j/concrete5/web/concrete/elements/custom_style/fonts.php:54
 msgid "Center"
-msgstr "中寄せ"
+msgstr "中央寄せ"
 
 #: c5j/concrete5/web/concrete/elements/custom_style/fonts.php:55
 #: c5j/concrete5/web/concrete/elements/custom_style/border.php:40
@@ -1509,13 +1535,13 @@ msgstr "すべて"
 #: c5j/concrete5/web/concrete/elements/custom_style/spacing.php:9
 #: c5j/concrete5/web/concrete/elements/custom_style/spacing.php:46
 msgid "Top"
-msgstr "上寄"
+msgstr "上寄せ"
 
 #: c5j/concrete5/web/concrete/elements/custom_style/border.php:41
 #: c5j/concrete5/web/concrete/elements/custom_style/spacing.php:25
 #: c5j/concrete5/web/concrete/elements/custom_style/spacing.php:62
 msgid "Bottom"
-msgstr "下寄"
+msgstr "下寄せ"
 
 #: c5j/concrete5/web/concrete/elements/custom_style/css.php:7
 msgid "CSS ID"
@@ -1584,16 +1610,16 @@ msgstr "並び替え"
 
 #: c5j/concrete5/web/concrete/elements/marketplace/search_form.php:40
 msgid "Compatibility"
-msgstr ""
+msgstr "互換性"
 
 #: c5j/concrete5/web/concrete/elements/marketplace/search_form.php:43
 msgid "Include only add-ons compatible with my version of concrete5."
-msgstr ""
+msgstr "お使いのconcrete5のバージョンと互換性のあるアドオンのみが含まれています。"
 
 #: c5j/concrete5/web/concrete/elements/files/upload_single.php:7
 #: c5j/concrete5/web/concrete/elements/files/upload_single.php:31
 msgid "Upload File"
-msgstr "アップロード"
+msgstr "ファイルをアップロード"
 
 #: c5j/concrete5/web/concrete/elements/files/upload_single.php:14
 msgid "Upload"
@@ -1646,7 +1672,7 @@ msgstr "ファイルセットがまだ作成されていません。"
 #: c5j/concrete5/web/concrete/elements/files/add_to_sets.php:180
 #, php-format
 msgid "If a file set does not appear above, you either have no access to add files to it, or it does not accept the file types %s."
-msgstr "ファイルセットが上に表示されない場合、許可されていないか、%s タイプのファイルを受け付けていません。"
+msgstr "ファイルセットが上に表示されない場合、ファイルの追加が許可されていないか、%s タイプのファイルを受け付けていません。"
 
 #: c5j/concrete5/web/concrete/elements/files/add_to_sets.php:185
 msgid "Add to New Set"
@@ -1684,11 +1710,11 @@ msgstr "拡張子"
 
 #: c5j/concrete5/web/concrete/elements/files/search_form_advanced.php:10
 msgid "Added Between"
-msgstr "追加日時"
+msgstr "追加された期間"
 
 #: c5j/concrete5/web/concrete/elements/files/search_form_advanced.php:11
 msgid "Added to Page"
-msgstr "ページに追加"
+msgstr "追加されたページ"
 
 #: c5j/concrete5/web/concrete/elements/files/search_form_advanced.php:86
 #, php-format
@@ -1709,7 +1735,7 @@ msgstr "保存された検索条件"
 
 #: c5j/concrete5/web/concrete/elements/files/search_form_advanced.php:138
 msgid "In Set(s)"
-msgstr "マイセット"
+msgstr "セット"
 
 #: c5j/concrete5/web/concrete/elements/files/search_form_advanced.php:146
 msgid "Files in no sets."
@@ -1785,7 +1811,7 @@ msgstr "ユーザー詳細"
 #: c5j/concrete5/web/concrete/single_pages/login.php:99
 #: c5j/concrete5/web/concrete/single_pages/login.php:170
 msgid "Username"
-msgstr "ユーザーID"
+msgstr "ユーザー名"
 
 #: c5j/concrete5/web/concrete/single_pages/register.php:48
 #: c5j/concrete5/web/concrete/single_pages/login.php:74
@@ -1893,7 +1919,7 @@ msgstr "ログインする前に以下の情報を入力してください。"
 
 #: c5j/concrete5/web/concrete/single_pages/login.php:163
 msgid "User Account"
-msgstr "ユーザーアカウント削除"
+msgstr "ユーザーアカウント"
 
 #: c5j/concrete5/web/concrete/single_pages/login.php:191
 msgid "OpenID"
@@ -1910,7 +1936,7 @@ msgstr "言語"
 
 #: c5j/concrete5/web/concrete/single_pages/login.php:217
 msgid "Remember Me"
-msgstr "次回から自動的にログイン"
+msgstr "ログイン状態を保存"
 
 #: c5j/concrete5/web/concrete/single_pages/login.php:220
 msgid "Remain logged in to website."
@@ -1930,7 +1956,7 @@ msgstr "パスワードをリセット・メールで送信"
 
 #: c5j/concrete5/web/concrete/single_pages/login.php:262
 msgid "Not a Member"
-msgstr "登録ユーザーで無い方"
+msgstr "メンバー登録が未だの方"
 
 #: c5j/concrete5/web/concrete/single_pages/login.php:263
 msgid "Create a user account for use on this website."
@@ -1942,7 +1968,7 @@ msgstr "ここからユーザー登録！"
 
 #: c5j/concrete5/web/concrete/single_pages/user_error.php:2
 msgid "Unexpected User Error"
-msgstr "不正なユーザーエラーです。"
+msgstr "予期しないユーザーエラー"
 
 #: c5j/concrete5/web/concrete/single_pages/user_error.php:4
 msgid "Something about your user account has changed. You have been logged out. Please refresh this page to continue."
@@ -1970,7 +1996,7 @@ msgstr "インストールの開始"
 
 #: c5j/concrete5/web/concrete/single_pages/install.php:128
 msgid "Site Information"
-msgstr "その他情報"
+msgstr "サイト情報"
 
 #: c5j/concrete5/web/concrete/single_pages/install.php:130
 msgid "Name Your Site"
@@ -1978,7 +2004,7 @@ msgstr "サイト名を入力"
 
 #: c5j/concrete5/web/concrete/single_pages/install.php:139
 msgid "Administrator Information"
-msgstr "詳しい情報"
+msgstr "管理情報"
 
 #: c5j/concrete5/web/concrete/single_pages/install.php:165
 msgid "Database Information"
@@ -2006,7 +2032,7 @@ msgstr "サンプルデータ"
 
 #: c5j/concrete5/web/concrete/single_pages/install.php:227
 msgid "concrete5 veterans can choose \"Empty Site,\" but otherwise we recommend starting with some sample content."
-msgstr "cconcrete5の操作に慣れた方は「Blank (空白) 」を、そうでない方は「スタンダード (Standard Website) 」か「ブログ (Blog) 」 を選ぶことをお勧めします。"
+msgstr "concrete5の操作に慣れた方は「Blank (空白) 」を、そうでない方は「スタンダード (Standard Website) 」か「ブログ (Blog) 」 を選ぶことをお勧めします。"
 
 #: c5j/concrete5/web/concrete/single_pages/install.php:288
 msgid "Testing Required Items"
@@ -2014,7 +2040,7 @@ msgstr "サーバーの必須機能を確認"
 
 #: c5j/concrete5/web/concrete/single_pages/install.php:296
 msgid "PHP 5.2"
-msgstr "PHP"
+msgstr "PHP 5.2"
 
 #: c5j/concrete5/web/concrete/single_pages/install.php:297
 msgid "While concrete5 will mostly run on PHP 5.1, 5.2 is strongly encouraged and some functions will not work properly without it."
@@ -2050,7 +2076,7 @@ msgstr "GD Library 2.0.1以上のライブラリが、サーバーにインス�
 
 #: c5j/concrete5/web/concrete/single_pages/install.php:332
 msgid "XML Support"
-msgstr "XMLサポート？"
+msgstr "XMLサポート"
 
 #: c5j/concrete5/web/concrete/single_pages/install.php:334
 msgid "concrete5 requires PHP XML Parser and SimpleXML extensions"
@@ -2070,7 +2096,7 @@ msgstr "サーバーのオプション機能を確認"
 
 #: c5j/concrete5/web/concrete/single_pages/install.php:360
 msgid "Remote File Importing Available"
-msgstr "画像機能（GD Lib）利用可？"
+msgstr "リモートファイルのインポートが可能"
 
 #: c5j/concrete5/web/concrete/single_pages/install.php:362
 msgid "Remote file importing through the file manager requires the iconv PHP extension."
@@ -2083,7 +2109,7 @@ msgstr "編集差分のチェックが可能"
 #: c5j/concrete5/web/concrete/single_pages/install.php:374
 #, php-format
 msgid "You must chmod 755 %s and disable PHP safe mode."
-msgstr "%sの権限をchmodコマンドで「755」に設定し、PHPセーフモードを無効化すると、編集履歴のバージョン（差分）チェックができるようになります。"
+msgstr "%sの権限をchmodコマンドで「755」に設定し、PHPセーフモードを無効化してください。"
 
 #: c5j/concrete5/web/concrete/single_pages/install.php:384
 msgid "Continue to Installation"
@@ -2104,7 +2130,7 @@ msgstr "<a href=\"%s\">ヘルプフォーラム</a>にはインストールに�
 
 #: c5j/concrete5/web/concrete/single_pages/install.php:425
 msgid "Choose Language"
-msgstr "ページを選択"
+msgstr "言語を選択"
 
 #: c5j/concrete5/web/concrete/single_pages/maintenance_mode.php:3
 msgid "Coming Back Soon"
@@ -2112,7 +2138,7 @@ msgstr "またのお越しをお待ちしております。"
 
 #: c5j/concrete5/web/concrete/single_pages/maintenance_mode.php:5
 msgid "This site is currently down for maintenance."
-msgstr "このサイトは、現在、メンテナンス中です。<br />This site is currenly down for maintenance"
+msgstr "このサイトは、現在、メンテナンス中です。<br />This site is currenly down for maintenance."
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/view.php:1
 msgid "Dashboard"
@@ -2124,19 +2150,19 @@ msgstr "新着"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/view.php:8
 msgid "Learn about your site and concrete5."
-msgstr "自分のサイトの状態やconcrete5について知る"
+msgstr "サイトの状態＆concrete5情報"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/view.php:14
 msgid "System &amp; Settings"
-msgstr "システム設定"
+msgstr "システム＆設定"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/view.php:14
 msgid "Secure and setup your site."
-msgstr "コンテンツをサイトで共有"
+msgstr "お使いのサイトの設定を行なう"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/view.php:19
 msgid "Extend concrete5"
-msgstr "concrete5をアップグレード"
+msgstr "concrete5を拡張"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/view.php:21
 #, php-format
@@ -2146,7 +2172,7 @@ msgstr "<a href=\"%s\">インストール</a>、<a href=\"%s\">アップデー�
 #: c5j/concrete5/web/concrete/single_pages/dashboard/view.php:27
 #, php-format
 msgid "<a href=\"%s\">Install</a> or <a href=\"%s\">update</a> packages."
-msgstr ""
+msgstr "パッケージを<a href=\"%s\">インストール</a>または<a href=\"%s\">アップデート</a>する。"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/users/add_group.php:34
 #: c5j/concrete5/web/concrete/single_pages/dashboard/users/groups.php:155
@@ -2217,11 +2243,11 @@ msgstr "ユーザーアカウントを無効にする"
 #: c5j/concrete5/web/concrete/single_pages/dashboard/users/add_group.php:91
 #: c5j/concrete5/web/concrete/single_pages/dashboard/users/groups.php:216
 msgid "Remove the user from the group and deactivate the account"
-msgstr "ユーザーをグループから外しアカウント無効にする"
+msgstr "ユーザーをグループから外しアカウントを無効にする"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/users/search.php:72
 msgid "Only the super user may edit this account."
-msgstr "管理権限を持ったユーザーしかこのアカウントを変種できません。"
+msgstr "管理権限を持ったユーザーしかこのアカウントを編集できません。"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/users/search.php:78
 msgid "Invalid token.  Unable to activate user."
@@ -2248,7 +2274,7 @@ msgstr "ユーザー情報"
 #: c5j/concrete5/web/concrete/single_pages/dashboard/users/search.php:156
 #: c5j/concrete5/web/concrete/single_pages/dashboard/users/add.php:44
 msgid "User Avatar"
-msgstr "プロフィール画像を削除"
+msgstr "プロフィール画像"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/users/search.php:163
 msgid "Remove Avatar"
@@ -2273,7 +2299,7 @@ msgstr "既定の言語"
 #: c5j/concrete5/web/concrete/single_pages/dashboard/users/search.php:205
 #: c5j/concrete5/web/concrete/single_pages/dashboard/users/add.php:62
 msgid "** Default"
-msgstr "デフォルト"
+msgstr "** デフォルト"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/users/search.php:220
 msgid "Time Zone"
@@ -2288,15 +2314,15 @@ msgstr "グループ"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/users/search.php:241
 msgid "Add Groups"
-msgstr "グループ追加"
+msgstr "グループを追加"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/users/search.php:279
 msgid "Update User"
-msgstr "ユーザー更新"
+msgstr "ユーザーを更新"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/users/search.php:288
 msgid "Other Information"
-msgstr "その他情報"
+msgstr "その他の情報"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/users/search.php:289
 msgid "Click field name to edit"
@@ -2308,7 +2334,7 @@ msgstr "ユーザー表示"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/users/search.php:311
 msgid "View User accounts."
-msgstr "ユーザーアカウント削除"
+msgstr "ユーザーアカウントを表示する。"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/users/search.php:319
 msgid "Mark Email as Valid"
@@ -2333,7 +2359,7 @@ msgstr "このユーザーとしてログイン"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/users/search.php:359
 msgid "Are you sure you want to permanently remove this user?"
-msgstr "このユーザーを削除してもよろしいですか（データが完全に消去されます）"
+msgstr "このユーザーを完全に削除してもよろしいですか？"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/users/search.php:361
 msgid "You may not remove the super user account."
@@ -2353,7 +2379,7 @@ msgstr "ユーザーアカウント削除"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/users/search.php:384
 msgid "Basic Details"
-msgstr "ファイル詳細"
+msgstr "基本情報"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/users/search.php:387
 msgid "Account created on %s"
@@ -2431,7 +2457,7 @@ msgstr "ユーザー登録情報"
 #: c5j/concrete5/web/concrete/single_pages/dashboard/pages/attributes.php:17
 #: c5j/concrete5/web/concrete/single_pages/dashboard/pages/attributes.php:31
 msgid "Page Attributes"
-msgstr "ページ属性情報"
+msgstr "ページ属性"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/pages/single.php:5
 msgid "Single Pages"
@@ -2447,7 +2473,7 @@ msgstr "追加したいページのアドレスを入力：（この機能は上
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/pages/single.php:23
 msgid "Already Installed"
-msgstr "使用中のシングルページ一覧"
+msgstr "インストール済み"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/pages/single.php:28
 msgid "Path"
@@ -2494,7 +2520,7 @@ msgstr "有効"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/pages/themes/view.php:92
 msgid "Inspect"
-msgstr "チェック"
+msgstr "検査"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/pages/themes/view.php:93
 msgid "Customize"
@@ -2514,7 +2540,7 @@ msgstr "インストール"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/pages/themes/view.php:150
 msgid "Want more themes?"
-msgstr "マーケットプレイスのテーマ"
+msgstr "もっとテーマをお探しですか？"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/pages/themes/view.php:151
 msgid "You can download themes and add-ons from the concrete5 marketplace."
@@ -2541,7 +2567,7 @@ msgstr "リセット"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/pages/themes/customize.php:111
 msgid "Reset styles in this theme?"
-msgstr "はい。有効化します。"
+msgstr "このテーマのスタイルをリセットしますか？"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/pages/themes/customize.php:345
 msgid "This theme contains no styles that can be customized."
@@ -2549,11 +2575,11 @@ msgstr "このテーマにはカスタマイズできるスタイルが入って
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/pages/themes/inspect.php:9
 msgid "Inspect Theme"
-msgstr "テーマチェック:"
+msgstr "テーマ検査"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/pages/themes/inspect.php:15
 msgid "Theme name: "
-msgstr "テーマ名"
+msgstr "テーマ名: "
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/pages/themes/inspect.php:29
 msgid "Files in Theme"
@@ -2585,7 +2611,7 @@ msgstr "concrete5内部用（シングルページ用）のテーマ"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/pages/themes/inspect.php:67
 msgid "New template."
-msgstr "新規テーマ"
+msgstr "新規テンプレート"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/pages/themes/inspect.php:70
 msgid "Template for existing page type."
@@ -2606,7 +2632,7 @@ msgstr "このファイルは、<strong>%s</strong>ページに自動的に適�
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/pages/themes/inspect.php:89
 msgid "Create page type."
-msgstr "新規ページタイプを作成"
+msgstr "新規ページタイプを作成する。"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/pages/themes/inspect.php:92
 #, php-format
@@ -2615,7 +2641,7 @@ msgstr "このファイルは、<strong>%s</strong>ページタイプに自動�
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/pages/themes/add.php:2
 msgid "Add a Template"
-msgstr "テーマを追加"
+msgstr "テンプレートを追加"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/pages/themes/add.php:6
 msgid "Upload a template bundle by using the form below. Files must be zipped and contain only HTML files and sub directories. All items referenced in HTML must be done so with relative links."
@@ -2623,15 +2649,15 @@ msgstr "下のフォームを使って、テンプレートパッケージをア
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/pages/themes/add.php:11
 msgid "Add Theme"
-msgstr "テーマ追加"
+msgstr "テーマを追加"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/pages/themes/add.php:16
 msgid "Return to Template List"
-msgstr "テーマ一覧に戻る"
+msgstr "テンプレート一覧に戻る"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/pages/types/view.php:41
 msgid "Handle required."
-msgstr "システムの識別用にハンドル（半角英文字）が必要です。"
+msgstr "ハンドル（半角英文字）は必須です。"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/pages/types/view.php:44
 msgid "Name required."
@@ -2643,11 +2669,11 @@ msgstr "ページタイプが更新されました。"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/pages/types/view.php:81
 msgid "Edit Page Type"
-msgstr "ページタイプ編集"
+msgstr "ページタイプを編集"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/pages/types/view.php:81
 msgid "* required field"
-msgstr "必須項目"
+msgstr "* は必須項目"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/pages/types/view.php:114
 #: c5j/concrete5/web/concrete/single_pages/dashboard/pages/types/add.php:49
@@ -2665,7 +2691,7 @@ msgstr "ページタイプアイコン"
 #: c5j/concrete5/web/concrete/single_pages/dashboard/pages/types/add.php:53
 #, php-format
 msgid "(To add your own page type icons, create a file set named \"%s\" and add files to that set)"
-msgstr "（作成されたページタイプ専用のアイコン画像を作成される場合は、\"%s\" というファイルセットを作成し、そこに追加してください。）"
+msgstr "（オリジナルのアイコン画像を追加される場合は、\"%s\" というファイルセットを作成し、そこに追加してください。）"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/pages/types/view.php:122
 #: c5j/concrete5/web/concrete/single_pages/dashboard/pages/types/add.php:57
@@ -2732,11 +2758,11 @@ msgstr "コンポーザー公開設定"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/pages/types/composer.php:57
 msgid "Choose from all pages when publishing."
-msgstr "すべてのページから選択する。"
+msgstr "公開時にすべてのページから選択する。"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/pages/types/composer.php:62
 msgid "Choose from pages of a certain type when publishing."
-msgstr "特定のページタイプの中から選択する。"
+msgstr "公開時に特定のページタイプの中から選択する。"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/pages/types/composer.php:77
 msgid "Always publish below a certain page."
@@ -2748,16 +2774,16 @@ msgstr "コンポーザーに表示する属性"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/pages/types/composer.php:142
 msgid "Composer Content Order"
-msgstr "サンプルデータ"
+msgstr "コンポーザー表示順"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/pages/types/composer.php:189
 #: c5j/concrete5/web/concrete/single_pages/dashboard/pages/types/composer.php:248
 msgid "Back to Page Types"
-msgstr "ページタイプに戻る"
+msgstr "ページタイプ一欄に戻る"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/pages/types/composer.php:244
 msgid "Unable to access composer settings."
-msgstr "ファイルマネージャーにアクセスできませんでした。"
+msgstr "コンポーザー設定にアクセスできませんでした。"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/pages/types/add.php:17
 msgid "Add Page Type"
@@ -2824,23 +2850,23 @@ msgstr "現在、あなたのサイトはconcrete５コミュニティに接続�
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/extend/connect.php:7
 msgid "External marketplace support has been disabled for this website."
-msgstr ""
+msgstr "外部マーケットプレイスの利用はウェブサイトによって無効になっています。"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/extend/themes.php:12
 msgid "Browse Themes"
-msgstr "追加テーマ"
+msgstr "テーマを探す"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/extend/themes.php:12
 msgid "Get more themes from concrete5.org."
-msgstr "concrete5.orgのマーケットプレイスから更にテーマをダウンロードする。"
+msgstr "concrete5.orgからテーマを入手する。"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/extend/add-ons.php:12
 msgid "Browse Add-Ons"
-msgstr "追加アドオン"
+msgstr "アドオンを探す"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/extend/add-ons.php:12
 msgid "Get more add-ons from concrete5.org."
-msgstr "concrete5.orgからアドオンを得ましょう。"
+msgstr "concrete5.orgからアドオンを入手する。"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/extend/install.php:15
 #: c5j/concrete5/web/concrete/single_pages/dashboard/extend/install.php:44
@@ -2858,7 +2884,7 @@ msgstr "%s はウェブサイトの既存のコンテンツを完全に消去し
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/extend/install.php:26
 msgid "This will clear your home page, uploaded files and any content pages out of your site completely. It will completely reset your site and any content you have added will be lost."
-msgstr "これはあなたのホームページ、アップロードされたファイルと完全にあなたのサイトの任意のコンテンツページからクリアされます。それは完全にあなたのサイトをリセットされ、追加した内容は失われます。"
+msgstr "これはあなたのホームページ、アップロードされたファイルと完全にあなたのサイトの任意のコンテンツページからクリアされます。あなたのサイトは完全にリセットされ、追加したコンテンツは失われます。"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/extend/install.php:29
 msgid "Only the %s user may reset the site's content."
@@ -2896,7 +2922,7 @@ msgstr "%sをアンインストールすると、以下のデータをシステ�
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/extend/install.php:80
 msgid "Move package to trash directory on server?"
-msgstr "サーバのごみ箱ディレクトリにパッケージを移動しますか？"
+msgstr "サーバのゴミ箱ディレクトリにパッケージを移動しますか？"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/extend/install.php:83
 msgid "Yes, remove the package's directory from of the installation directory."
@@ -2904,16 +2930,16 @@ msgstr "はい。インストールディレクトリからパッケージのデ
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/extend/install.php:94
 msgid "Uninstall"
-msgstr "インストール"
+msgstr "アンインストール"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/extend/install.php:172
 msgid "Inspect Package"
-msgstr "パッケージを削除"
+msgstr "パッケージを検査"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/extend/install.php:191
 #: c5j/concrete5/web/concrete/single_pages/dashboard/blocks/types/view.php:7
 msgid "Block Types"
-msgstr "ブロック種類"
+msgstr "ブロックタイプ"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/extend/install.php:210
 msgid "Back to Add Functionality"
@@ -2921,15 +2947,15 @@ msgstr "「機能追加」に戻る"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/extend/install.php:217
 msgid "Add Functionality"
-msgstr "「機能追加」に戻る"
+msgstr "機能追加"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/extend/install.php:217
 msgid "Install custom add-ons or those downloaded from the concrete5.org marketplace."
-msgstr "concrete5.orgのマーケットプレイスから更にテーマをダウンロードする。"
+msgstr "concrete5.orgのマーケットプレイスから更にアドオンやテーマをダウンロードする。"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/extend/install.php:224
 msgid "Add-On updates are available!"
-msgstr "いいえ、テーマが有効化されています"
+msgstr "アドオンのアップデートが利用可能です！"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/extend/install.php:226
 msgid "There is currently <strong>1</strong> update available."
@@ -2975,11 +3001,11 @@ msgstr "ページ検索"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/sitemap/search.php:7
 msgid "Search the pages of your site and perform bulk actions on them."
-msgstr "サイトのページを検索し、それらの一括操作を実行します"
+msgstr "サイトのページを検索し、それらの一括操作を実行します。"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/sitemap/search.php:21
 msgid "You must have access to the dashboard sitemap to search pages."
-msgstr "管理画面のサイトマップへのアクセス権限がありません。"
+msgstr "ページを検索するには管理画面のサイトマップにアクセスできる必要があります。"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/sitemap/explore.php:12
 msgid "Sitemap flat view lets you page through particular long lists of pages."
@@ -3003,16 +3029,16 @@ msgstr "内部"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/blocks/types/view.php:22
 msgid "This is an internal block type."
-msgstr "これは内部ブロックです。"
+msgstr "これは内部ブロックタイプです。"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/blocks/types/view.php:27
 msgid "Back to Block Types"
-msgstr "拡張ブロック一覧"
+msgstr "ブロックタイプ一覧に戻る"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/blocks/types/view.php:34
 #, php-format
 msgid "This will remove all instances of the %s block type. This cannot be undone. Are you sure?"
-msgstr "この操作は %s タイプに保存されているすべての情報を削除します。やり直す事ができませんがよろしいですか？"
+msgstr "この操作は %s ブロックタイプに保存されているすべての情報を削除します。やり直す事ができませんがよろしいですか？"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/blocks/types/view.php:47
 msgid "Only the super user may remove block types."
@@ -3020,19 +3046,19 @@ msgstr "管理権限を持ったユーザーのみがブロックタイプを取
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/blocks/types/view.php:56
 msgid "Custom Block Types"
-msgstr "拡張ブロック一覧"
+msgstr "カスタムブロックタイプ"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/blocks/types/view.php:70
 msgid "No custom block types are awaiting installation."
-msgstr "インストールされたブロックはありません。"
+msgstr "インストール待ちのカスタムブロックタイプはありません。"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/blocks/types/view.php:86
 msgid "No custom block types are installed."
-msgstr "インストールされたブロックはありません。"
+msgstr "インストールされたカスタムブロックタイプはありません。"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/blocks/types/view.php:101
 msgid "Core Block Types"
-msgstr "基本ブロック一覧"
+msgstr "基本ブロックタイプ"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/blocks/stacks/view.php:32
 msgid "Add Block"
@@ -3040,7 +3066,7 @@ msgstr "ブロックを追加"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/blocks/stacks/view.php:38
 msgid "Stack Permissions"
-msgstr "権限を設定"
+msgstr "スタック権限"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/blocks/stacks/view.php:38
 msgid "Permissions"
@@ -3060,7 +3086,7 @@ msgstr "変更を保存"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/blocks/stacks/view.php:80
 msgid "Stacks"
-msgstr "ステータス"
+msgstr "スタック"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/blocks/stacks/view.php:80
 msgid "Stacks give you a central place to stash blocks, where you can control their order, permissions, and even version them.<br><br>Add stacks to your site and you can update them in one place."
@@ -3080,7 +3106,7 @@ msgstr "他のスタック"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/blocks/stacks/view.php:115
 msgid "No stacks have been added."
-msgstr "インストールされたブロックはありません。"
+msgstr "追加されたスタックはありません。"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/blocks/stacks/view.php:120
 msgid "Add Stack"
@@ -3236,7 +3262,7 @@ msgstr "データベースXMLのエクスポートに戻る"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/system/backup_restore/database.php:27
 msgid "Export Database Schema"
-msgstr "データベース定義（スキーム）を書き出す"
+msgstr "データベース定義（スキーマ）を書き出す"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/system/backup_restore/database.php:28
 msgid "Click below to view your database schema in a format that can imported into concrete5 later."
@@ -3244,7 +3270,7 @@ msgstr "下をクリックするとconcrete5に取り込む事ができるデー
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/system/backup_restore/database.php:32
 msgid "Export Database Tables"
-msgstr "データベーステーブル書き出し"
+msgstr "データベーステーブルのエクスポート"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/system/backup_restore/database.php:43
 msgid "Database Refresh"
@@ -3316,11 +3342,11 @@ msgstr "DBバックアップを実行"
 #: c5j/concrete5/web/concrete/single_pages/dashboard/system/backup_restore/backup.php:135
 #: c5j/concrete5/web/concrete/single_pages/dashboard/system/backup_restore/backup.php:138
 msgid "Use Encryption"
-msgstr "DBバックアップを暗号化？"
+msgstr "暗号化する"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/system/backup_restore/backup.php:144
 msgid "Important Information about Backup & Restore"
-msgstr "データベース(DB)バックアップ&復元機能について"
+msgstr "【重要】データベースバックアップ&復元機能について"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/system/backup_restore/backup.php:146
 msgid "Running a backup will create a database export file and store it on your server. Encryption is only advised if you plan on storing the backup on the server indefinitely. This is <strong>not recommended</strong>. After running backup, download the file and make sure that the entire database was saved correctly. If any error messages appear during the backup process, do <b>not</b> attempt to restore from that backup."
@@ -3414,11 +3440,11 @@ msgstr "有効 - 手動で承認"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/system/registration/public_registration.php:35
 msgid "On - signup and go"
-msgstr "有効 - サインアップしてすぐに有効"
+msgstr "有効 - 登録してすぐに有効"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/system/registration/public_registration.php:49
 msgid "CAPTCHA required"
-msgstr "Captchaが必要です"
+msgstr "CAPTCHAが必要です"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/system/registration/public_registration.php:55
 msgid "Enable OpenID"
@@ -3470,7 +3496,7 @@ msgstr "サイト管理者はログイン後管理画面に移動"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/system/seo/urls.php:5
 msgid "Pretty URLs"
-msgstr "プリティーURLを使用する"
+msgstr "プリティーURL"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/system/seo/urls.php:5
 #, php-format
@@ -3544,7 +3570,7 @@ msgstr "ページのフッター"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/system/permissions/files.php:10
 msgid "File Manager Permissions"
-msgstr "ファイル権限"
+msgstr "ファイルマネージャー権限"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/system/permissions/files.php:23
 msgid "Add users or groups to determine access to the file manager."
@@ -3565,7 +3591,7 @@ msgstr "これらの権限を変更する許可を与えられていません。
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/system/permissions/ip_blacklist.php:6
 msgid "IP Address Blacklist"
-msgstr "IPアドレス・アクセス制限"
+msgstr "IPアドレスブラックリスト"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/system/permissions/ip_blacklist.php:9
 msgid "Smart IP Banning"
@@ -3577,7 +3603,7 @@ msgstr "IP自動ロック有効条件："
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/system/permissions/ip_blacklist.php:14
 msgid "failed login attempts"
-msgstr "回ログインを"
+msgstr "回ログインを失敗"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/system/permissions/ip_blacklist.php:15
 msgid "in"
@@ -3593,7 +3619,7 @@ msgstr "そのIPアドレスを"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/system/permissions/ip_blacklist.php:23
 msgid "Forever"
-msgstr "無期限ブロック"
+msgstr "無期限"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/system/permissions/ip_blacklist.php:25
 msgid "Automatically Banned IP Addresses"
@@ -3609,7 +3635,7 @@ msgstr "ブロック理由"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/system/permissions/ip_blacklist.php:31
 msgid "Expires In"
-msgstr "ブロック有効期限"
+msgstr "期限"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/system/permissions/ip_blacklist.php:34
 msgid "Make Ban Permanent"
@@ -3629,7 +3655,7 @@ msgstr "ブロックされたいIPアドレスを1行1アドレス毎に入力�
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/system/permissions/captcha.php:2
 msgid "Captcha Settings"
-msgstr "設定"
+msgstr "Captcha設定"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/system/permissions/captcha.php:11
 msgid "Active Captcha"
@@ -3642,7 +3668,7 @@ msgstr "現在、インストールされているCaptchaはありません。"
 #: c5j/concrete5/web/concrete/single_pages/dashboard/system/permissions/captcha.php:42
 #: c5j/concrete5/web/concrete/single_pages/dashboard/system/permissions/antispam.php:68
 msgid "Save Additional Settings"
-msgstr "ログ設定を保存"
+msgstr "追加設定を保存"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/system/permissions/file_types.php:1
 msgid "Allowed File Types"
@@ -3663,7 +3689,7 @@ msgstr "無効"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/system/permissions/antispam.php:2
 msgid "Spam Control"
-msgstr "スパム コントロール"
+msgstr "スパムコントロール"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/system/permissions/antispam.php:12
 msgid "Active Library"
@@ -3671,7 +3697,7 @@ msgstr "有効なライブラリー"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/system/permissions/antispam.php:36
 msgid "Log settings"
-msgstr "設定"
+msgstr "ログ設定"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/system/permissions/antispam.php:39
 msgid "Log entries marked as spam."
@@ -3858,7 +3884,7 @@ msgstr "ログイン"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/system/basics/multilingual/view.php:20
 msgid "Offer choice of language on login."
-msgstr "ログイン時に言語の選択を提供します。"
+msgstr "ログイン時に言語が選択できるようにします。"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/system/optimization/jobs.php:38
 msgid "Are you sure you want to uninstall this job?"
@@ -3895,7 +3921,7 @@ msgstr "戻る"
 #: c5j/concrete5/web/concrete/single_pages/dashboard/system/optimization/jobs.php:126
 #, php-format
 msgid "Currently Running (Since %s)"
-msgstr "現在 (%s) の実行中"
+msgstr "現在実行中(%sから)"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/system/optimization/jobs.php:129
 msgid "Never"
@@ -3972,11 +3998,11 @@ msgstr "自動"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/system/optimization/cache.php:45
 msgid "Every "
-msgstr "常に"
+msgstr "等間隔("
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/system/optimization/cache.php:47
 msgid " minutes."
-msgstr "分"
+msgstr "分)"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/system/optimization/cache.php:52
 msgid "Manually cleared."
@@ -3996,11 +4022,11 @@ msgstr "来訪者からエラーを隠します。"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/system/environment/file_storage_locations.php:1
 msgid "File Storage Locations"
-msgstr "保存場所"
+msgstr "ファイル保存場所"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/system/environment/file_storage_locations.php:7
 msgid "Standard File Location"
-msgstr "ファイル保存場所"
+msgstr "標準のファイル保存場所"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/system/environment/file_storage_locations.php:12
 msgid "Alternate Storage Directory"
@@ -4028,7 +4054,7 @@ msgstr "このサイトから送信されたメールを記録します。メー
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/system/environment/logging.php:19
 msgid "Log Application Exceptions"
-msgstr "アプリケーション・エラー・ログ"
+msgstr "アプリケーション例外ログ"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/system/environment/logging.php:25
 msgid "Log Emails Sent"
@@ -4040,7 +4066,7 @@ msgstr "コンポーザー下書き"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/composer/drafts.php:18
 msgid "(Untitled Page)"
-msgstr "(無題)"
+msgstr "(無題ページ)"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/composer/drafts.php:34
 #, php-format
@@ -4049,11 +4075,11 @@ msgstr "下書きがありません。 <a href=\"%s\">コンポーザーに行�
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/composer/write.php:15
 msgid "Basic Information"
-msgstr "ページ情報"
+msgstr "基本情報"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/composer/write.php:22
 msgid "Short Description"
-msgstr "Metaタグ説明"
+msgstr "短い概要"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/composer/write.php:27
 msgid "Date Posted"
@@ -4065,11 +4091,11 @@ msgstr "公開場所"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/composer/write.php:53
 msgid "Choose publish location."
-msgstr "ファイルの保存場所を選択"
+msgstr "保存場所を選択"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/composer/write.php:62
 msgid "Attributes &amp; Content"
-msgstr "属性タイプ"
+msgstr "属性とコンテンツ"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/composer/write.php:89
 msgid "Block not found. Unable to edit in composer."
@@ -4102,7 +4128,7 @@ msgstr "どのタイプのページを作成しますか？"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/composer/write.php:289
 msgid "You have not setup any page types for Composer."
-msgstr "まだページタイプが追加されていません。"
+msgstr "まだどのページタイプもコンポーザー設定がされていません。"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/reports/logs.php:16
 msgid "Logs"
@@ -4130,7 +4156,7 @@ msgstr "テキスト"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/reports/logs.php:65
 msgid " at "
-msgstr "at"
+msgstr " at "
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/reports/forms.php:21
 msgid "Are you sure you want to delete this form submission?"
@@ -4261,7 +4287,7 @@ msgstr "IPアドレス"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/reports/surveys.php:56
 msgid "Back to List"
-msgstr "メッセージ一覧に戻る"
+msgstr "一覧に戻る"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/reports/surveys.php:63
 msgid "Surveys"
@@ -4298,11 +4324,11 @@ msgstr "ファイルマネージャーへのアクセス権限がありません
 #: c5j/concrete5/web/concrete/single_pages/dashboard/files/attributes.php:20
 #: c5j/concrete5/web/concrete/single_pages/dashboard/files/attributes.php:36
 msgid "File Attributes"
-msgstr "ファイル属性を追加"
+msgstr "ファイル属性"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/files/sets.php:6
 msgid "File Set"
-msgstr "ファイルセット："
+msgstr "ファイルセット"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/files/sets.php:15
 msgid "Details"
@@ -4326,11 +4352,11 @@ msgstr "このセットでは権限設定の変更を許可する。"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/files/sets.php:117
 msgid "Click and drag to reorder the files in this set. New files added to this set will automatically be appended to the end."
-msgstr "ドラッグしてこのセット内のファイル順を変更。"
+msgstr "ドラッグしてこのセット内のファイル順を変更できます。新しいファイルは常にセットの末尾に追加されます。"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/files/sets.php:138
 msgid "There are no files in this set."
-msgstr "このセットにはファイルがありません"
+msgstr "このセットにはファイルがありません。"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/files/sets.php:200
 msgid "File Sets"
@@ -4354,7 +4380,7 @@ msgstr "ファイルセットが見つかりませんでした。"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/files/sets.php:278
 msgid "Are you sure you want to delete this file set?"
-msgstr "このセットを削除してもよろしいですか？"
+msgstr "このファイルセットを削除してもよろしいですか？"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/scrapbook/view.php:151
 msgid "Choose a Scrapbook"
@@ -4362,7 +4388,7 @@ msgstr "スクラップブックを選択"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/scrapbook/view.php:153
 msgid "<strong>Note</strong>: Scrapbooks are preserved for backward compatibility, but you really should be using <a href=\"%s\">stacks</a> instead."
-msgstr "<strong>ノート</strong>: スクラップブックは過去バージョンとの互換性を保つために残していますが、できれば <a href=\"%s\">スタック</a> を使ってください。"
+msgstr "<strong>ノート</strong>: スクラップブックは過去バージョンとの互換性を保つために残していますが、できれば <a href=\"%s\">スタック</a> をお使いください。"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/scrapbook/view.php:157
 #: c5j/concrete5/web/concrete/single_pages/dashboard/scrapbook/view.php:203
@@ -4392,7 +4418,7 @@ msgstr "ブロックをスクラップブックに追加"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/scrapbook/view.php:240
 msgid "You have no items in this scrapbook."
-msgstr "保存されたスクラップブックがありません。"
+msgstr "このスクラップブックは空です。"
 
 #: c5j/concrete5/web/concrete/single_pages/profile/messages.php:9
 msgid "Back to Mailbox"
@@ -4440,7 +4466,7 @@ msgstr "ステータス"
 #: c5j/concrete5/web/concrete/single_pages/profile/messages.php:180
 #: c5j/concrete5/web/concrete/single_pages/profile/messages.php:190
 msgid "F d, Y \\a\\t g:i A"
-msgstr "Y年n月j日 \a\t g:i A"
+msgstr "Y年n月j日 g:i A"
 
 #: c5j/concrete5/web/concrete/single_pages/profile/messages.php:84
 msgid "No messages found."
@@ -4533,7 +4559,7 @@ msgstr "プロフィール画像が保存されました。"
 
 #: c5j/concrete5/web/concrete/single_pages/profile/friends.php:5
 msgid "My Friends"
-msgstr "「マイフレンド」に追加"
+msgstr "マイフレンド"
 
 #: c5j/concrete5/web/concrete/single_pages/profile/friends.php:10
 msgid "No results found."
@@ -4628,7 +4654,7 @@ msgstr "サイトマップファイルを作成"
 
 #: c5j/concrete5/web/concrete/jobs/generate_sitemap.php:16
 msgid "Generate the sitemap.xml file that search engines use to crawl your site."
-msgstr "sitemap.xmlをルートフォルダーに生成します。これを検索サイトに巡回させる事により、検索サイトへの登録がスムーズになる可能性があります。"
+msgstr "sitemap.xmlを生成します。これを検索サイトに巡回させる事により、検索サイトへの登録がスムーズになる可能性があります。"
 
 #: c5j/concrete5/web/concrete/jobs/generate_sitemap.php:49
 #, php-format
@@ -4646,7 +4672,7 @@ msgstr "%sファイルは、書き込み許可されていません。"
 
 #: c5j/concrete5/web/concrete/jobs/remove_old_page_versions.php:12
 msgid "Remove Old Page Versions"
-msgstr "権限設定を戻す"
+msgstr "古いページバージョンを削除"
 
 #: c5j/concrete5/web/concrete/jobs/remove_old_page_versions.php:16
 msgid "Removes all except the 10 most recent page versions for each page."
@@ -4666,15 +4692,15 @@ msgstr "ページ"
 
 #: c5j/concrete5/web/concrete/jobs/remove_old_page_versions.php:72
 msgid "versions deleted from"
-msgstr "削除されたバージョン"
+msgstr "バージョンが削除されました"
 
 #: c5j/concrete5/web/concrete/jobs/index_search.php:14
 msgid "Index Search Engine"
-msgstr "検索用索引の作成"
+msgstr "検索インデックスの作成"
 
 #: c5j/concrete5/web/concrete/jobs/index_search.php:18
 msgid "Index the site to allow searching to work quickly and accurately."
-msgstr "サイト索引は、検索機能をすばやく正確に行うことができるようになります。"
+msgstr "検索インデックスは、検索機能をすばやく正確に行うことができるようになります。"
 
 #: c5j/concrete5/web/concrete/jobs/index_search.php:42
 msgid "Indexing complete. Index is up to date"
@@ -4683,7 +4709,7 @@ msgstr "インデックスが作成されました。インデックスは最新
 #: c5j/concrete5/web/concrete/jobs/index_search.php:45
 #, php-format
 msgid "Index partially updated. %s pages indexed (maximum number.) Re-run this job to continue this process."
-msgstr "ページ索引が部分的に更新 %s ページが索引済み (最大値) このジョブを再実行すると残りを索引します。"
+msgstr "インデックスが部分的に更新されました。 %s ページが索引済み (最大値) このジョブを再実行すると残りを索引します。"
 
 #: c5j/concrete5/web/concrete/jobs/index_search.php:47
 msgid "page"
@@ -4696,7 +4722,7 @@ msgstr "ページ"
 #: c5j/concrete5/web/concrete/jobs/index_search.php:47
 #, php-format
 msgid "Index updated. %s %s required reindexing."
-msgstr "検索インデックスが更新されました。%s %s 再インデックスが必要です。"
+msgstr "検索インデックスが更新されました。%s %s の再インデックスが必要です。"
 
 #: c5j/concrete5/web/concrete/jobs/process_email.php:12
 msgid "Process Email Posts"
@@ -4722,7 +4748,7 @@ msgstr "フェード時間"
 
 #: c5j/concrete5/web/concrete/blocks/slideshow/image_row_include.php:16
 msgid "Set Number"
-msgstr "セットID"
+msgstr "セット番号"
 
 #: c5j/concrete5/web/concrete/blocks/slideshow/image_row_include.php:18
 msgid "Link URL (optional)"
@@ -4730,7 +4756,7 @@ msgstr "リンク先URL（オプション）"
 
 #: c5j/concrete5/web/concrete/blocks/slideshow/form_setup_html.php:23
 msgid "Custom Slideshow"
-msgstr "スライドショー設定"
+msgstr "カスタムスライドショー"
 
 #: c5j/concrete5/web/concrete/blocks/slideshow/form_setup_html.php:24
 msgid "Pictures from File Set"
@@ -4778,7 +4804,7 @@ msgstr "おすすめのテーマ"
 
 #: c5j/concrete5/web/concrete/blocks/dashboard_featured_theme/view.php:12
 msgid "Cannot retrieve data from the concrete5 marketplace."
-msgstr "concrete5.org マーケットプレイスからのデータが取得できません。"
+msgstr "concrete5マーケットプレイスからのデータが取得できません。"
 
 #: c5j/concrete5/web/concrete/blocks/dashboard_featured_theme/controller.php:17
 msgid "Features a theme from concrete5.org."
@@ -4786,7 +4812,7 @@ msgstr "concrete5.org の注目テーマ。"
 
 #: c5j/concrete5/web/concrete/blocks/dashboard_featured_theme/controller.php:21
 msgid "Dashboard Featured Theme"
-msgstr "ファイルマネージャー"
+msgstr "注目テーマ"
 
 #: c5j/concrete5/web/concrete/blocks/file/edit.php:10
 #: c5j/concrete5/web/concrete/blocks/file/add.php:7
@@ -4809,7 +4835,7 @@ msgstr "ファイルを選択してください。"
 
 #: c5j/concrete5/web/concrete/blocks/file/controller.php:38
 msgid "You must give your file a link."
-msgstr "ファイルにはリンクが必要です。"
+msgstr "リンクテキストを入力してください。"
 
 #: c5j/concrete5/web/concrete/blocks/date_archive/form.php:7
 msgid "Display Title"
@@ -4824,7 +4850,7 @@ msgstr "リンクを追加"
 
 #: c5j/concrete5/web/concrete/blocks/date_archive/controller.php:21
 msgid "Displays month archive for pages"
-msgstr "開始レベルから現在のレベル"
+msgstr "ページとして月別アーカイブを表示する"
 
 #: c5j/concrete5/web/concrete/blocks/date_archive/controller.php:25
 msgid "Blog Date Archive"
@@ -4840,7 +4866,7 @@ msgstr "表示"
 
 #: c5j/concrete5/web/concrete/blocks/date_nav/form_setup_html.php:24
 msgid "pages of type"
-msgstr "ページタイプ"
+msgstr "ページ / ページタイプ"
 
 #: c5j/concrete5/web/concrete/blocks/date_nav/form_setup_html.php:39
 msgid "Featured pages only."
@@ -5097,7 +5123,7 @@ msgstr "captchaの入力が間違っていました。"
 
 #: c5j/concrete5/web/concrete/blocks/form/controller.php:264
 msgid "Complete required fields *"
-msgstr "必須項目(*)"
+msgstr "必須項目を入力してください *"
 
 #: c5j/concrete5/web/concrete/blocks/form/controller.php:285
 msgid "Invalid file extension."
@@ -5150,7 +5176,7 @@ msgstr "表示数よりもアイテムが多い場合、ページ付けインタ
 
 #: c5j/concrete5/web/concrete/blocks/page_list/page_list_form.php:81
 msgid "Include all child pages"
-msgstr "無効なパッケージ構造です。"
+msgstr "すべての子ページを含む"
 
 #: c5j/concrete5/web/concrete/blocks/page_list/page_list_form.php:85
 msgid "Sort Pages"
@@ -5355,7 +5381,7 @@ msgstr "上へ"
 #: c5j/concrete5/web/concrete/blocks/external_form/edit.php:5
 #: c5j/concrete5/web/concrete/blocks/external_form/add.php:4
 msgid "File to include"
-msgstr "読み込む外部フォームファイル"
+msgstr "読み込むファイル"
 
 #: c5j/concrete5/web/concrete/blocks/external_form/edit.php:8
 #: c5j/concrete5/web/concrete/blocks/external_form/add.php:7
@@ -5382,7 +5408,7 @@ msgstr "フォームを選択してください。"
 #: c5j/concrete5/web/concrete/blocks/external_form/controller.php:62
 #, php-format
 msgid "Unable load external form block controller file: %s"
-msgstr "「%s」ファイルが見つかりませんでした"
+msgstr "外部フォームのcontrollerファイルが見つかりませんでした: %s"
 
 #: c5j/concrete5/web/concrete/blocks/external_form/forms/test_form.php:9
 msgid "This is just an example of how a custom form works."
@@ -5449,7 +5475,7 @@ msgstr "更新日時："
 
 #: c5j/concrete5/web/concrete/blocks/youtube/form_setup_html.php:24
 msgid "YouTube URL"
-msgstr "YouTubeビデオURL"
+msgstr "YouTube URL"
 
 #: c5j/concrete5/web/concrete/blocks/youtube/form_setup_html.php:44
 msgid "iFrame - Works in more devices"
@@ -5477,7 +5503,7 @@ msgstr "YouTubeビデオ"
 
 #: c5j/concrete5/web/concrete/blocks/youtube/controller.php:38
 msgid "My Video"
-msgstr "マイVideo"
+msgstr "マイビデオ"
 
 #: c5j/concrete5/web/concrete/blocks/guestbook/edit.php:11
 #: c5j/concrete5/web/concrete/blocks/guestbook/view.php:10
@@ -5514,12 +5540,12 @@ msgstr "投稿にユーザー認証必須とする"
 #: c5j/concrete5/web/concrete/blocks/guestbook/edit.php:47
 #: c5j/concrete5/web/concrete/blocks/guestbook/add.php:47
 msgid "Email Only"
-msgstr "Email入力のみ"
+msgstr "Emailのみ"
 
 #: c5j/concrete5/web/concrete/blocks/guestbook/edit.php:48
 #: c5j/concrete5/web/concrete/blocks/guestbook/add.php:48
 msgid "Users must login"
-msgstr "ユーザー登録 & ログイン必須"
+msgstr "ログイン必須"
 
 #: c5j/concrete5/web/concrete/blocks/guestbook/edit.php:54
 #: c5j/concrete5/web/concrete/blocks/guestbook/add.php:54
@@ -5593,7 +5619,7 @@ msgstr "コメント保存中にエラーが発生しました"
 
 #: c5j/concrete5/web/concrete/blocks/guestbook/controller.php:162
 msgid "Thanks! Your comment has been received. It will require approval before it appears."
-msgstr "ありがとう！ あなたのコメントを受信しました。コメントが表示されるには認証が必要です。"
+msgstr "ありがとう！ あなたのコメントを受信しました。コメントが表示されるには承認が必要です。"
 
 #: c5j/concrete5/web/concrete/blocks/guestbook/controller.php:164
 msgid "Thanks! Your comment has been posted."
@@ -5621,7 +5647,7 @@ msgstr "このブロックは別の場所からコピーされましたが、編
 
 #: c5j/concrete5/web/concrete/blocks/core_scrapbook_display/edit.php:21
 msgid "You don't have access to edit the original instance of this block."
-msgstr "このサイトをマーケットプレイスに接続する権限がありません。"
+msgstr "このブロックのオリジナルのインスタンスを編集する権限がありません。"
 
 #: c5j/concrete5/web/concrete/blocks/core_scrapbook_display/controller.php:10
 msgid "Proxy block for blocks pasted through the scrapbook."
@@ -5754,7 +5780,7 @@ msgstr "送信ボタンのラベル"
 
 #: c5j/concrete5/web/concrete/blocks/search/form_setup_html.php:21
 msgid "Search Within Path"
-msgstr "検索対象ページ"
+msgstr "検索対象パス"
 
 #: c5j/concrete5/web/concrete/blocks/search/form_setup_html.php:54
 msgid "Results Page"
@@ -5762,15 +5788,15 @@ msgstr "結果ページ"
 
 #: c5j/concrete5/web/concrete/blocks/search/form_setup_html.php:58
 msgid "Post to Another Page Elsewhere"
-msgstr "新規ページを別の場所で追加する"
+msgstr "検索結果を他のページで表示する"
 
 #: c5j/concrete5/web/concrete/blocks/search/view.php:27
 msgid "There were no results found. Please try another keyword or phrase."
-msgstr "検索語句に一致するページは見つかりませんでした。"
+msgstr "検索語句に一致するページは見つかりませんでした。他のキーワードを入力してみてください。"
 
 #: c5j/concrete5/web/concrete/blocks/search/controller.php:59
 msgid "Add a search box to your site."
-msgstr "検索ブロックを追加します。「管理画面」ー「メンテナンス」で検索用索引を作成する必要があります。"
+msgstr "検索ブロックを追加します。"
 
 #: c5j/concrete5/web/concrete/blocks/search/controller.php:67
 msgid "Please enter a valid search title."
@@ -5795,7 +5821,7 @@ msgstr "concrete5.org の最新ニュースを取得する。"
 
 #: c5j/concrete5/web/concrete/blocks/dashboard_newsflow_latest/controller.php:19
 msgid "Dashboard Newsflow Latest"
-msgstr "ダッシュボードニュース (Newsflow) 最新"
+msgstr "ダッシュボード最新ニュースフロー"
 
 #: c5j/concrete5/web/concrete/blocks/rss_displayer/form_setup_html.php:11
 #: c5j/concrete5/web/concrete/blocks/rss_displayer/view.php:14
@@ -5837,7 +5863,7 @@ msgstr "RSSやATOMフィードを取得し表示します。"
 
 #: c5j/concrete5/web/concrete/blocks/rss_displayer/controller.php:27
 msgid "RSS Displayer"
-msgstr "RSSブロック"
+msgstr "RSS表示"
 
 #: c5j/concrete5/web/concrete/blocks/rss_displayer/controller.php:32
 msgid "Please enter a valid feed address."
@@ -5883,17 +5909,17 @@ msgstr "画像リンク"
 #: c5j/concrete5/web/concrete/blocks/image/edit.php:33
 #: c5j/concrete5/web/concrete/blocks/image/add.php:23
 msgid "Nothing"
-msgstr "評価"
+msgstr "なし"
 
 #: c5j/concrete5/web/concrete/blocks/image/edit.php:34
 #: c5j/concrete5/web/concrete/blocks/image/add.php:24
 msgid "Another Page"
-msgstr "ページを並び替え"
+msgstr "他のページ"
 
 #: c5j/concrete5/web/concrete/blocks/image/edit.php:35
 #: c5j/concrete5/web/concrete/blocks/image/add.php:25
 msgid "External URL"
-msgstr "外部フォーム"
+msgstr "外部URL"
 
 #: c5j/concrete5/web/concrete/blocks/image/edit.php:47
 #: c5j/concrete5/web/concrete/blocks/image/add.php:37
@@ -6018,7 +6044,7 @@ msgstr "HTMLのコードを直接追加。"
 
 #: c5j/concrete5/web/concrete/blocks/html/controller.php:24
 msgid "HTML"
-msgstr "HTMLコード"
+msgstr "HTML"
 
 #: c5j/concrete5/web/concrete/blocks/dashboard_featured_addon/view.php:2
 msgid "Featured Add-On"
@@ -6092,15 +6118,15 @@ msgstr "エラー: 必須ページ属性 \"%s\" が存在しません。"
 
 #: c5j/concrete5/web/concrete/blocks/tags/tag_form.php:27
 msgid "Display Tags for the current page"
-msgstr "開始レベルから現在のレベル"
+msgstr "表示中のページのタグを表示"
 
 #: c5j/concrete5/web/concrete/blocks/tags/tag_form.php:28
 msgid "Display available tags"
-msgstr "ページエリアスを表示"
+msgstr "利用可能なタグを表示"
 
 #: c5j/concrete5/web/concrete/blocks/tags/tag_form.php:44
 msgid "Number to Display"
-msgstr "フィード表示件数"
+msgstr "表示件数"
 
 #: c5j/concrete5/web/concrete/blocks/tags/tag_form.php:54
 msgid "Link Tags to Page"
@@ -6136,7 +6162,7 @@ msgstr "新しいバージョンの concrete5 がダウンロードされまし�
 
 #: c5j/concrete5/web/concrete/blocks/dashboard_app_status/view.php:10
 msgid "Update concrete5."
-msgstr "concrete5をアップグレード"
+msgstr "concrete5をアップグレードする。"
 
 #: c5j/concrete5/web/concrete/blocks/dashboard_app_status/view.php:14
 msgid "Add-On Updates"
@@ -6210,7 +6236,7 @@ msgstr "新バージョン： %s."
 
 #: c5j/concrete5/web/concrete/libraries/database_indexed_search.php:32
 msgid "Y-m-d H:i:s"
-msgstr "Y/m/d H;i;s"
+msgstr "Y/m/d H:i:s"
 
 #: c5j/concrete5/web/concrete/libraries/view.php:502
 #: c5j/concrete5/web/concrete/libraries/view.php:880
@@ -6232,7 +6258,7 @@ msgstr "リクエストの処理中にデータベースエラーが発生しま
 #: c5j/concrete5/web/concrete/libraries/view.php:888
 #: c5j/concrete5/web/concrete/libraries/view.php:897
 msgid "Exception Occurred: "
-msgstr "予期せぬエラー："
+msgstr "例外が発生しました: "
 
 #: c5j/concrete5/web/concrete/libraries/loader.php:216
 msgid "Unable to connect to database."
@@ -6240,7 +6266,7 @@ msgstr "データベースに接続できません。"
 
 #: c5j/concrete5/web/concrete/libraries/controller.php:374
 msgid "Invalid Redirect URL"
-msgstr "ユーザーIDが無効です"
+msgstr "無効なリダイレクトURL"
 
 #: c5j/concrete5/web/concrete/libraries/log.php:96
 msgid "debug"
@@ -6269,11 +6295,11 @@ msgstr "このファイルは、一部分しかアップロードされません
 #: c5j/concrete5/web/concrete/libraries/file/importer.php:61
 #, php-format
 msgid "Uploaded file is too large. The current value of upload_max_filesize is %s"
-msgstr "ファイルは一部のみしかアップロードされていません。現在許可されているファイルアップロード値（upload_max_filesize）は %s です"
+msgstr "アップロードされたファイルが大きすぎます。現在許可されているファイルアップロード値（upload_max_filesize）は %s です"
 
 #: c5j/concrete5/web/concrete/libraries/file/importer.php:64
 msgid "Unable to copy file to storage directory. Please check permissions on your upload directory and ensure they can be written to by your web server."
-msgstr "ファイルをサーバー上にアップローヂオする事ができませんでした。サーバー上のパーミッションをチェックし、保存先が書き込み許可されているかを確認してください。"
+msgstr "ストレージディレクトリにファイルをコピーすることができませんでした。サーバー上のパーミッションをチェックし、保存先が書き込み許可されているかを確認してください。"
 
 #: c5j/concrete5/web/concrete/libraries/file/importer.php:68
 #, php-format
@@ -6431,7 +6457,7 @@ msgstr "MP3"
 
 #: c5j/concrete5/web/concrete/config/file_types.php:37
 msgid "Realaudio"
-msgstr "RealAudio"
+msgstr "Realaudio"
 
 #: c5j/concrete5/web/concrete/config/file_types.php:38
 msgid "Windows Audio"
@@ -6505,7 +6531,7 @@ msgstr "コンポーザー、日付ナビゲーション、タグ検索、カス
 
 #: c5j/concrete5/web/concrete/config/install/packages/standard/controller.php:8
 msgid "Sample Content with Blog"
-msgstr "サンプルデータ"
+msgstr "ブログ付きサンプルデータ"
 
 #: c5j/concrete5/web/concrete/config/install/packages/standard/controller.php:12
 msgid "A great starting point for an attractive website with a blog."
@@ -6595,16 +6621,16 @@ msgstr "無効なフォームのトークンです。再読み込みして送信
 #: c5j/concrete5/web/concrete/helpers/validation/antispam.php:39
 #, php-format
 msgid "URL: %s"
-msgstr "Re: %s"
+msgstr "URL: %s"
 
 #: c5j/concrete5/web/concrete/helpers/validation/antispam.php:43
 msgid "User: %s (ID %s)"
-msgstr "(ユーザーID: %s)"
+msgstr "ユーザー: %s (ID %s)"
 
 #: c5j/concrete5/web/concrete/helpers/validation/antispam.php:46
 #, php-format
 msgid "Type: %s"
-msgstr "Re: %s"
+msgstr "Type: %s"
 
 #: c5j/concrete5/web/concrete/helpers/validation/antispam.php:53
 msgid "spam"
@@ -6620,7 +6646,7 @@ msgstr "サーバー上の禁止ワード一覧ファイル権限が無効です
 
 #: c5j/concrete5/web/concrete/helpers/concrete/interface.php:215
 msgid "(No Name)"
-msgstr "フォーム名"
+msgstr "(名前なし)"
 
 #: c5j/concrete5/web/concrete/helpers/concrete/user.php:52
 #, php-format
@@ -6643,7 +6669,7 @@ msgstr "ヘルプ"
 
 #: c5j/concrete5/web/concrete/helpers/concrete/dashboard.php:155
 msgid "Add to Favorites"
-msgstr "「マイフレンド」に追加"
+msgstr "お気に入りに追加"
 
 #: c5j/concrete5/web/concrete/helpers/concrete/dashboard.php:254
 msgid "View All"
@@ -6848,7 +6874,7 @@ msgstr "アップロードファイルの保存先を別の場所に指定し、
 
 #: c5j/concrete5/web/concrete/helpers/concrete/interface/help.php:59
 msgid "Use this to export a copy of your database. Be mindful of where you keep these."
-msgstr "データベースをコピーをエクスポートするときに使用します。保存する場所に注意してください。"
+msgstr "データベースのコピーをエクスポートするときに使用します。保存する場所に注意してください。"
 
 #: c5j/concrete5/web/concrete/helpers/concrete/interface/help.php:60
 msgid "You can perform a one-click upgrade from this page. "
@@ -6860,7 +6886,7 @@ msgstr "オンにすると管理者だけがサイトにアクセスできます
 
 #: c5j/concrete5/web/concrete/helpers/concrete/interface/help.php:62
 msgid "Click \"play\" to run a job right now."
-msgstr "プレイボタンをクリックするとすぐにジョブを実行できます。"
+msgstr "「プレイ」ボタンをクリックするとすぐにジョブを実行できます。"
 
 #: c5j/concrete5/web/concrete/helpers/concrete/interface/help.php:63
 msgid ""
@@ -6878,7 +6904,7 @@ msgstr "基本キャッシュはconcrete5のコードの一部をメモリーに
 
 #: c5j/concrete5/web/concrete/helpers/concrete/interface/help.php:65
 msgid "Keep your web page addresses easy for humans and search engines to read. You may need to create a file called .htaccess on your server for this to work, but we will try to do it for you first."
-msgstr "サイトURLをユーザーや検索エンジンに読みやすくします。.htaccessというファイルを作成しアップロードしてもらう必要があるかもしれません。"
+msgstr "サイトURLをユーザーや検索エンジンに読みやすくします。動作させるには.htaccessというファイルをサーバーに作成する必要がありますが、まずconcrete5が自動的に作成を試みます。"
 
 #: c5j/concrete5/web/concrete/helpers/concrete/interface/help.php:66
 msgid "Insert any HTML or JavaScript code you need on every page for analytics tracking. Google Analytics is free and works well here. "
@@ -6890,7 +6916,7 @@ msgstr "concrete5 でページ閲覧ログを記録します。無効にする�
 
 #: c5j/concrete5/web/concrete/helpers/concrete/interface/help.php:68
 msgid "The most basic control of permissions. The sitemap can also be used to control permissions.  If more granularity is required research \"advanced permissions\"."
-msgstr "基本的なサイト権限。サイトマップは権限をコントロールするのにも使われます。もっと精度の高い権限が必要であれば”上級権限モード”を調べてみてください。"
+msgstr "基本的なサイト権限。サイトマップは権限をコントロールするのにも使われます。もっと精度の高い権限が必要であれば「上級権限モード」を調べてみてください。"
 
 #: c5j/concrete5/web/concrete/helpers/concrete/upgrade/version_540.php:94
 msgid "Flat View"
@@ -6942,7 +6968,7 @@ msgstr "他ユーザーとしてログインできる"
 
 #: c5j/concrete5/web/concrete/helpers/concrete/upgrade/version_540.php:176
 msgid "Uninstall Packages"
-msgstr "パッケージを削除できる"
+msgstr "パッケージをアンインストール"
 
 #: c5j/concrete5/web/concrete/helpers/concrete/upgrade/version_520.php:95
 msgid "All documents and images."
@@ -7014,7 +7040,7 @@ msgstr "ニュースフロー"
 
 #: c5j/concrete5/web/concrete/helpers/concrete/upgrade/version_500a1.php:24
 msgid "Make sure your web root contains a jobs/ directory, or upgrading will not go smoothly."
-msgstr "親フォルダーに「jobs」フォルダーがきちんと作成されているかを確認してください。そうでないとアップグレードが上手く行かない可能性があります。"
+msgstr "ウェブサイトのルートディレクトリーに「jobs」フォルダーがきちんと作成されているかを確認してください。そうでないとアップグレードが上手く行かない可能性があります。"
 
 #: c5j/concrete5/web/concrete/helpers/concrete/upgrade/version_500a1.php:37
 msgid "Maintenance"
@@ -7022,7 +7048,7 @@ msgstr "メンテナンス"
 
 #: c5j/concrete5/web/concrete/helpers/concrete/upgrade/version_500a1.php:37
 msgid "Run common cleanup tasks."
-msgstr "設定されたジョブを実行"
+msgstr "共通のクリーンナップタスクを実行する。"
 
 #: c5j/concrete5/web/concrete/helpers/concrete/upgrade/version_550.php:54
 msgid "View Newsflow"
@@ -7042,7 +7068,7 @@ msgstr "下書き"
 
 #: c5j/concrete5/web/concrete/helpers/concrete/upgrade/version_532.php:118
 msgid "Exclude From sitemap.xml"
-msgstr "ページリストから除く"
+msgstr "sitemap.xmlから除く"
 
 #: c5j/concrete5/web/concrete/helpers/concrete/upgrade/version_532.php:124
 msgid "Login & Registration"
@@ -7146,7 +7172,7 @@ msgstr "パッケージダウンロード後に正常に保存する事ができ
 
 #: c5j/concrete5/web/concrete/models/package.php:509
 msgid "An error occurred while trying to unzip the package."
-msgstr "ZIPファイルを解凍中にエラーが発生しました。"
+msgstr "パッケージのZIPファイルを解凍中にエラーが発生しました。"
 
 #: c5j/concrete5/web/concrete/models/package.php:510
 msgid "An error occurred while trying to install the package."
@@ -7155,7 +7181,7 @@ msgstr "パッケージをインストール中にエラーが発生しました
 #: c5j/concrete5/web/concrete/models/package.php:511
 #, php-format
 msgid "Unable to backup old package directory to %s"
-msgstr "旧パッケージを“%s”ディレクトリーバックアップできませんでした。"
+msgstr "旧パッケージを「%s」ディレクトリーにバックアップできませんでした。"
 
 #: c5j/concrete5/web/concrete/models/package.php:512
 msgid "This package isn't currently available for this version of concrete5. Please contact the maintainer of this package for assistance."
@@ -7163,11 +7189,11 @@ msgstr "このパッケージは今のバージョンのconcrete5では利用す
 
 #: c5j/concrete5/web/concrete/models/job.php:34
 msgid "Error: The Job::run() method must be overridden by your child Job class."
-msgstr "エラー：run()が子ジョブのクラスに上書きされています。"
+msgstr "エラー：Job::run()メソッドは子クラスによってオーバーライドされていなければなりません。"
 
 #: c5j/concrete5/web/concrete/models/job.php:208
 msgid "Error: The Job class must be a child class of Job."
-msgstr "エラー：このジョブは子クラスのジョブです。"
+msgstr "エラー：ジョブのクラスはクラスJobの子クラスでなければなりません。"
 
 #: c5j/concrete5/web/concrete/models/job.php:215
 #, php-format
@@ -7181,7 +7207,7 @@ msgstr "エラー：ジョブディレクトリー %s が無効です"
 
 #: c5j/concrete5/web/concrete/models/job.php:252
 msgid "The Job was run successfully."
-msgstr "この処理は成功しました。"
+msgstr "このジョブは正常に実行されました。"
 
 #: c5j/concrete5/web/concrete/models/marketplace_remote_item.php:176
 msgid "Unable to connect to marketplace to retrieve item"
@@ -7220,7 +7246,7 @@ msgstr "有効"
 #: c5j/concrete5/web/concrete/models/block_types.php:552
 #, php-format
 msgid "%s not found. Please check that the block controller file contains the correct class name."
-msgstr "%s が見つかりません。"
+msgstr "%s が見つかりません。ブロックのcontrollerファイルに正しいクラス名が含まれているか確認してください。"
 
 #: c5j/concrete5/web/concrete/models/block_types.php:591
 #, php-format
@@ -7282,67 +7308,67 @@ msgstr "無効なタスク権限です。"
 
 #: c5j/concrete5/web/concrete/models/package/starting_point.php:22
 msgid "Starting installation and creating directories."
-msgstr "インストールとディレクトリ作成の開始"
+msgstr "インストールとディレクトリ作成の開始。"
 
 #: c5j/concrete5/web/concrete/models/package/starting_point.php:23
 msgid "Creating database tables."
-msgstr "データベーステーブル書き出し"
+msgstr "データベーステーブルを作成中。"
 
 #: c5j/concrete5/web/concrete/models/package/starting_point.php:24
 msgid "Adding admin user."
-msgstr "管理者の追加"
+msgstr "管理者の追加中。"
 
 #: c5j/concrete5/web/concrete/models/package/starting_point.php:25
 msgid "Creating home page."
-msgstr "新規ページタイプを作成"
+msgstr "ホームページを作成中。"
 
 #: c5j/concrete5/web/concrete/models/package/starting_point.php:26
 msgid "Installing attributes."
-msgstr "属性の設定"
+msgstr "属性のインストール中。"
 
 #: c5j/concrete5/web/concrete/models/package/starting_point.php:27
 msgid "Adding block types."
-msgstr "ブロック種類"
+msgstr "ブロックタイプを追加中。"
 
 #: c5j/concrete5/web/concrete/models/package/starting_point.php:28
 msgid "Adding themes."
-msgstr "テーマ追加"
+msgstr "テーマを追加中。"
 
 #: c5j/concrete5/web/concrete/models/package/starting_point.php:29
 msgid "Installing automated jobs."
-msgstr "自動ジョブをインストールします。"
+msgstr "自動ジョブをインストール中。"
 
 #: c5j/concrete5/web/concrete/models/package/starting_point.php:30
 msgid "Installing dashboard."
-msgstr "インストール中：管理画面"
+msgstr "管理画面をインストール中。"
 
 #: c5j/concrete5/web/concrete/models/package/starting_point.php:31
 msgid "Installing login and registration pages."
-msgstr "インストール中：ログイン、ユーザー登録ページ"
+msgstr "ログイン・ユーザー登録ページをインストール中。"
 
 #: c5j/concrete5/web/concrete/models/package/starting_point.php:32
 msgid "Configuring site."
-msgstr "サイトを開く"
+msgstr "サイトの初期設定中。"
 
 #: c5j/concrete5/web/concrete/models/package/starting_point.php:33
 msgid "Importing files."
-msgstr "ファイルの取り込み"
+msgstr "ファイルの取り込み中。"
 
 #: c5j/concrete5/web/concrete/models/package/starting_point.php:34
 msgid "Adding pages and content."
-msgstr "ページやコンテンツを追加する"
+msgstr "ページとコンテンツを追加中。"
 
 #: c5j/concrete5/web/concrete/models/package/starting_point.php:35
 msgid "Setting up site permissions."
-msgstr "サイト権限の設定"
+msgstr "サイト権限の設定中。"
 
 #: c5j/concrete5/web/concrete/models/package/starting_point.php:36
 msgid "Prefetching information."
-msgstr "ページ情報"
+msgstr "情報の取得中。"
 
 #: c5j/concrete5/web/concrete/models/package/starting_point.php:37
 msgid "Finishing."
-msgstr "完了"
+msgstr "完了。"
 
 #: c5j/concrete5/web/concrete/models/package/starting_point.php:126
 #, php-format
@@ -7717,7 +7743,7 @@ msgstr "ログイン成功"
 
 #: c5j/concrete5/web/concrete/controllers/login.php:355
 msgid "An email containing instructions on resetting your password has been sent to your account address."
-msgstr "登録されているアドレス宛てに、パスワードをリセットする為のEメールを送信しました。"
+msgstr "登録されているメールアドレスに、パスワードをリセットするためのEメールを送信しました。"
 
 #: c5j/concrete5/web/concrete/controllers/login.php:391
 msgid "Key Expired. Please visit the forgot password page again to have a new key generated."
@@ -7843,7 +7869,7 @@ msgstr "ユーザーIDが無効です。"
 
 #: c5j/concrete5/web/concrete/controllers/dashboard/users/search.php:296
 msgid "User deleted successfully."
-msgstr "ユーザーが削除されました。"
+msgstr "ユーザーが正常に削除されました。"
 
 #: c5j/concrete5/web/concrete/controllers/dashboard/users/attributes.php:25
 #: c5j/concrete5/web/concrete/controllers/dashboard/users/attributes.php:50
@@ -7866,11 +7892,11 @@ msgstr "ユーザー属性が更新されました。"
 
 #: c5j/concrete5/web/concrete/controllers/dashboard/users/groups.php:42
 msgid "Group added successfully"
-msgstr "グループが追加されました"
+msgstr "グループが正常に追加されました"
 
 #: c5j/concrete5/web/concrete/controllers/dashboard/users/groups.php:46
 msgid "Group update successfully"
-msgstr "グループが更新されました"
+msgstr "グループが正常に更新されました"
 
 #: c5j/concrete5/web/concrete/controllers/dashboard/users/groups.php:61
 msgid "Invalid group ID."
@@ -7878,7 +7904,7 @@ msgstr "無効なグループIDです。"
 
 #: c5j/concrete5/web/concrete/controllers/dashboard/users/groups.php:70
 msgid "Group deleted successfully."
-msgstr "グループが削除されました。"
+msgstr "グループが正常に削除されました。"
 
 #: c5j/concrete5/web/concrete/controllers/dashboard/users/add.php:108
 msgid "An error occurred while trying to create the account."
@@ -8234,7 +8260,7 @@ msgstr "検索インデックスの優先度がアップデートされました
 
 #: c5j/concrete5/web/concrete/controllers/dashboard/system/seo/tracking_codes/controller.php:24
 msgid "Tracking code settings updated successfully."
-msgstr "ファイルセットが削除されました。"
+msgstr "アクセス解析の設定が正常に更新されました。"
 
 #: c5j/concrete5/web/concrete/controllers/dashboard/system/permissions/files.php:37
 msgid "View Site Files"
@@ -8333,7 +8359,7 @@ msgstr "アイコンが正常に更新されました。"
 
 #: c5j/concrete5/web/concrete/controllers/dashboard/system/basics/icons.php:16
 msgid "Icon removed successfully."
-msgstr "アイコンは正常に削除されました。"
+msgstr "アイコンが正常に削除されました。"
 
 #: c5j/concrete5/web/concrete/controllers/dashboard/system/basics/icons.php:21
 msgid "iPhone icon updated successfully."
@@ -8341,7 +8367,7 @@ msgstr "iPhoneアイコンが正常に更新されました。"
 
 #: c5j/concrete5/web/concrete/controllers/dashboard/system/basics/icons.php:26
 msgid "iPhone icon removed successfully."
-msgstr "iPhoneアイコンは正常に削除されました。"
+msgstr "iPhoneアイコンが正常に削除されました。"
 
 #: c5j/concrete5/web/concrete/controllers/dashboard/system/basics/site_name.php:11
 msgid "Your site's name has been saved."
@@ -8468,7 +8494,7 @@ msgstr "使用中のアカウントは、その場所にこのページタイプ
 
 #: c5j/concrete5/web/concrete/controllers/dashboard/composer/write.php:103
 msgid "Draft saved successfully."
-msgstr "下書きが正常に更新されました。"
+msgstr "下書きが正常に保存されました。"
 
 #: c5j/concrete5/web/concrete/controllers/dashboard/composer/write.php:159
 msgid "Invalid composer draft."
@@ -8493,15 +8519,15 @@ msgstr "ファイル属性が更新されました。"
 
 #: c5j/concrete5/web/concrete/controllers/dashboard/files/sets.php:26
 msgid "New file set added successfully."
-msgstr "新規ファイルセットが追加されました。"
+msgstr "新規ファイルセットが正常に追加されました。"
 
 #: c5j/concrete5/web/concrete/controllers/dashboard/files/sets.php:31
 msgid "File set updated successfully."
-msgstr "ファイルセットが更新されました。"
+msgstr "ファイルセットが正常に更新されました。"
 
 #: c5j/concrete5/web/concrete/controllers/dashboard/files/sets.php:36
 msgid "File set deleted successfully."
-msgstr "ファイルセットが削除されました。"
+msgstr "ファイルセットが正常に削除されました。"
 
 #: c5j/concrete5/web/concrete/controllers/dashboard/files/sets.php:76
 msgid "Invalid ID"
@@ -8546,7 +8572,7 @@ msgstr "エラー：ジョブが見つかりません"
 
 #: c5j/concrete5/web/concrete/tools/jobs.php:74
 msgid "All Jobs Run Successfully"
-msgstr "すべてのジョブの処理が成功しました。"
+msgstr "すべてのジョブの処理が正常に実行されました。"
 
 #: c5j/concrete5/web/concrete/tools/jobs.php:76
 msgid "All Jobs"
@@ -8650,7 +8676,7 @@ msgstr "バージョン %s"
 #: c5j/concrete5/web/concrete/tools/page_controls_menu_js.php:185
 #, php-format
 msgid "Page currently in edit mode on %s"
-msgstr "ページの編集モードは%s"
+msgstr "編集開始: %s"
 
 #: c5j/concrete5/web/concrete/tools/page_controls_menu_js.php:173
 msgid "Version Comments"
@@ -8985,11 +9011,11 @@ msgstr "完全に削除"
 
 #: c5j/concrete5/web/concrete/tools/i18n_js.php:92
 msgid "Page permissions updated successfully."
-msgstr "ページパーミッションは無事アップデートされました。"
+msgstr "ページ権限は正常に更新されました。"
 
 #: c5j/concrete5/web/concrete/tools/i18n_js.php:93
 msgid "Theme and page type updated successfully."
-msgstr "テーマとページタイプは正常にアップデートされました。"
+msgstr "テーマとページタイプは正常に更新されました。"
 
 #: c5j/concrete5/web/concrete/tools/i18n_js.php:97
 msgid "Delete Pages"
@@ -9437,12 +9463,12 @@ msgstr "記事"
 
 #: c5j/concrete5/web/concrete/tools/files/bulk_properties.php:274
 msgid "1 file uploaded successfully."
-msgstr "ファイルがアップロードされました。"
+msgstr "ファイルが正常にアップロードされました。"
 
 #: c5j/concrete5/web/concrete/tools/files/bulk_properties.php:276
 #, php-format
 msgid "%s files uploaded successfully."
-msgstr "%s 個のファイルがアップロードされました。"
+msgstr "%s 個のファイルが正常にアップロードされました。"
 
 #: c5j/concrete5/web/concrete/tools/files/bulk_properties.php:281
 #: c5j/concrete5/web/concrete/tools/files/properties.php:209
