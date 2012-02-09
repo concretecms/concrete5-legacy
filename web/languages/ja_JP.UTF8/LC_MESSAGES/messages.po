@@ -3892,7 +3892,7 @@ msgstr "このジョブをアンインストールしてもよろしいですか
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/system/optimization/jobs.php:95
 msgid "Automated Jobs"
-msgstr "インストールされているジョブ"
+msgstr "自動実行ジョブ"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/system/optimization/jobs.php:98
 msgid "You currently have no jobs installed."
