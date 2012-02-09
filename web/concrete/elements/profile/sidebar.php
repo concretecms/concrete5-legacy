@@ -1,4 +1,7 @@
-<? $av = Loader::helper('concrete/avatar'); ?>
+<?
+$av = Loader::helper('concrete/avatar');
+$v = View::getInstance();
+?>
 <div id="ccm-profile-sidebar">
 	<div class="ccm-profile-header">
 		<a href="<?=View::url('/profile',$profile->getUserID())?>"><?= $av->outputUserAvatar($profile)?></a><br />
@@ -24,7 +27,7 @@
 		
 		</div>
 		<? if ($profile->getUserProfilePrivateMessagesEnabled() == 1) { ?>
-			<a href="<?=$this->url('/profile/messages', 'write', $profile->getUserID())?>"><?=t('Send Private Message')?></a>	
+			<a href="<?=$v->url('/profile/messages', 'write', $profile->getUserID())?>"><?=t('Send Private Message')?></a>
 		<? } ?>
 		
 	</div>
@@ -47,7 +50,7 @@
 	?>
 	</div>
 
-		<form method="get" action="<?=$this->url('/members')?>">
+		<form method="get" action="<?=$v->url('/members')?>">
 		<h4><?=t('Search Members')?></h4>
 		<?
 		$form = Loader::helper('form');

@@ -2,10 +2,11 @@
 defined('C5_EXECUTE') or die("Access Denied.");
 if ($action == null) { 
 	// we can pass an action from the block, but in most instances we won't, we'll use the default
+	/** @var BlockType $bt  */
 	$action = $bt->getBlockAddAction($a);
 	global $c;
-} ?>
-
+}
+?>
 <a name="_add<?=$bt->getBlockTypeID()?>"></a>
 
 <script type="text/javascript">
@@ -71,7 +72,7 @@ if (isset($help)) { ?>
 
 <input type="hidden" name="ccm-block-form-method" value="REGULAR" />
 
-<? foreach($this->controller->getJavaScriptStrings() as $key => $val) { ?>
+<? foreach($bt->controller->getJavaScriptStrings() as $key => $val) { ?>
 	<input type="hidden" name="ccm-string-<?=$key?>" value="<?=$val?>" />
 <? } ?>
 

@@ -25,14 +25,16 @@ if (is_object($key)) {
 
 <? if (is_object($key)) { ?>
 	<?
+	$v = View::getInstance();
 	$valt = Loader::helper('validation/token');
 	$ih = Loader::helper('concrete/interface');
 	$delConfirmJS = t('Are you sure you want to remove this attribute?');
 	?>
 	<script type="text/javascript">
 	deleteAttribute = function() {
-		if (confirm('<?=$delConfirmJS?>')) { 
-			location.href = "<?=$this->action('delete', $key->getAttributeKeyID(), $valt->generate('delete_attribute'))?>";				
+		if (confirm('<?=$delConfirmJS?>')) {
+
+			location.href = "<?=$v->action('delete', $key->getAttributeKeyID(), $valt->generate('delete_attribute'))?>";
 		}
 	}
 	</script>

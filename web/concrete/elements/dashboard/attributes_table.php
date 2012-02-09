@@ -2,6 +2,7 @@
 <? 
 //Used on both page and file attributes
 $c = Page::getCurrentPage();
+$v = View::getInstance(); // Grabbing the instance of the current view
 
 $sets = array();
 if (is_object($category) && $category->allowAttributeSets()) {
@@ -26,7 +27,7 @@ if (is_object($category) && $category->allowAttributeSets()) {
 	</div>
 	
 	<? } ?>
-	<a href="<?=$this->url('/dashboard/system/attributes/sets', 'category', $category->getAttributeKeyCategoryID())?>" id="ccm-list-view-customize-top"><span class="ccm-menu-icon ccm-icon-properties"></span><?=t('Manage Sets')?></a>
+	<a href="<?=$v->url('/dashboard/system/attributes/sets', 'category', $category->getAttributeKeyCategoryID())?>" id="ccm-list-view-customize-top"><span class="ccm-menu-icon ccm-icon-properties"></span><?=t('Manage Sets')?></a>
 </div>
 
 <div class="ccm-pane-body">
@@ -66,7 +67,7 @@ if (count($attribs) > 0) { ?>
 			foreach($setattribs as $ak) { ?>
 			
 			<div class="ccm-attribute" id="akID_<?=$as->getAttributeSetID()?>_<?=$ak->getAttributeKeyID()?>">
-				<img class="ccm-attribute-icon" src="<?=$ak->getAttributeKeyIconSRC()?>" width="16" height="16" /><a href="<?=$this->url($editURL, 'edit', $ak->getAttributeKeyID())?>"><?=$ak->getAttributeKeyName()?></a>
+				<img class="ccm-attribute-icon" src="<?=$ak->getAttributeKeyIconSRC()?>" width="16" height="16" /><a href="<?=$v->url($editURL, 'edit', $ak->getAttributeKeyID())?>"><?=$ak->getAttributeKeyName()?></a>
 			</div>
 	
 
@@ -88,7 +89,7 @@ if (count($attribs) > 0) { ?>
 			foreach($unsetattribs as $ak) { ?>
 	
 			<div class="ccm-attribute" id="akID_<?=$as->getAttributeSetID()?>_<?=$ak->getAttributeKeyID()?>">
-				<img class="ccm-attribute-icon" src="<?=$ak->getAttributeKeyIconSRC()?>" width="16" height="16" /><a href="<?=$this->url($editURL, 'edit', $ak->getAttributeKeyID())?>"><?=$ak->getAttributeKeyName()?></a>
+				<img class="ccm-attribute-icon" src="<?=$ak->getAttributeKeyIconSRC()?>" width="16" height="16" /><a href="<?=$v->url($editURL, 'edit', $ak->getAttributeKeyID())?>"><?=$ak->getAttributeKeyName()?></a>
 			</div>
 	
 
@@ -105,7 +106,7 @@ if (count($attribs) > 0) { ?>
 		<?
 		foreach($attribs as $ak) { ?>
 		<div class="ccm-attribute" id="akID_<?=$ak->getAttributeKeyID()?>">
-			<img class="ccm-attribute-icon" src="<?=$ak->getAttributeKeyIconSRC()?>" width="16" height="16" /><a href="<?=$this->url($editURL, 'edit', $ak->getAttributeKeyID())?>"><?=$ak->getAttributeKeyName()?></a>
+			<img class="ccm-attribute-icon" src="<?=$ak->getAttributeKeyIconSRC()?>" width="16" height="16" /><a href="<?=$v->url($editURL, 'edit', $ak->getAttributeKeyID())?>"><?=$ak->getAttributeKeyName()?></a>
 		</div>
 		
 		<? } ?>
