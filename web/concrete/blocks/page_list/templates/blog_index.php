@@ -8,7 +8,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 	$truncateChars = ($controller->truncateSummaries ? $controller->truncateChars : 0);
 	foreach ($cArray as $cobj):
 		$title = $cobj->getCollectionName();
-		$date = $cobj->getCollectionDatePublic('F j, Y');
+		$date = $cobj->getCollectionDatePublic('Y/m/d');
 		$author = $cobj->getVersionObject()->getVersionAuthorUserName();
 		$link = $nh->getLinkToCollection($cobj);
 		$firstClass = $isFirst ? 'first-entry' : '';
@@ -24,7 +24,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 				<a href="<?php echo $link; ?>"><?php echo $title; ?></a>
 			</h3>
 			<h4>
-				Posted by <?php echo $author; ?> on <?php echo $date; ?>
+				<?php echo t('Posted by'); ?> <?php echo $author; ?> on <?php echo $date; ?>
 			</h4>
 		</div>
 		<div class="excerpt">
