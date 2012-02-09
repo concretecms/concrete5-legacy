@@ -180,7 +180,7 @@
                 <block type="content" name="">
                     <data table="btContentLocal">
                         <record>
-                            <content><![CDATA[<h3>Links:</h3>]]></content>
+                            <content><![CDATA[<h3>リンク:</h3>]]></content>
                             </record>
                         </data>
                     </block>
