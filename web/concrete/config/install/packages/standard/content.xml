@@ -91,7 +91,7 @@
                 </area>
             </page>
         </pagetype>
-        <pagetype handle="full" name="Full" internal="0" icon="main.png" package="">
+        <pagetype handle="full" name="全幅" internal="0" icon="main.png" package="">
             <page name="" path="" filename="" pagetype="full" description="" package="">
                 <area name="HeaderImage"/>
                 <area name="Main"/>
@@ -112,7 +112,7 @@
                 </area>
             </page>
         </pagetype>
-        <pagetype handle="left_sidebar" name="Left Sidebar" internal="0" icon="template1.png" package="">
+        <pagetype handle="left_sidebar" name="左サイドバー" internal="0" icon="template1.png" package="">
             <page name="" path="" filename="" pagetype="left_sidebar" description="" package="">
                 <area name="HeaderImage"/>
                 <area name="Sidebar"/>
@@ -134,7 +134,7 @@
                 </area>
             </page>
         </pagetype>
-        <pagetype handle="right_sidebar" name="Right Sidebar" internal="0" icon="right_sidebar.png" package="">
+        <pagetype handle="right_sidebar" name="右サイドバー" internal="0" icon="right_sidebar.png" package="">
             <page name="" path="" filename="" pagetype="right_sidebar" description="" package="">
                 <area name="Header Image">
                     <block type="image" name="" mc-block-id="v0zvw8ct">
