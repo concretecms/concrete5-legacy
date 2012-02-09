@@ -1,4 +1,4 @@
-<?
+<?php 
 defined('C5_EXECUTE') or die("Access Denied.");
 
 class SearchBlockController extends BlockController {
@@ -12,16 +12,23 @@ class SearchBlockController extends BlockController {
 	public $baseSearchPath = "";
 	public $resultsURL = "";
 		
-	protected $hColor = '#EFE795';
+	protected $hColor = array('#EFE795','#D1E095','#95F0C8','#95DAF0','#9E95F0');
 
 	public function highlightedMarkup($fulltext, $highlight) {
-		if (!$highlight) {
-			return $fulltext;
-		}
-
+	    if(!$highlight){
+	       return $fulltext;
+	    }
+	    $highlight = str_replace("　"," ",$highlight);
+	    if(strpos($highlight," ") !== false){
+	       $highlights = explode(" ",$highlight);
+	    }else{
+	       $highlights = array($highlight);
+	    }
 		$this->hText = $fulltext;
-		$this->hHighlight  = str_replace(array('"',"'","&quot;"),'',$highlight); // strip the quotes as they mess the regex
-		$this->hText = @preg_replace( "#$this->hHighlight#ui", '<span style="background-color:'. $this->hColor .';">$0</span>', $this->hText );	
+		foreach($highlights as $hkey=>$highlight){
+    		$this->hHighlight  = str_replace(array('"',"'","&quot;"),'',$highlight); // strip the quotes as they mess the regex
+    		$this->hText = @preg_replace( "#$this->hHighlight#i", '<span style="background-color:'. $this->hColor[$hkey] .';">$0</span>', $this->hText );
+		}
 		return $this->hText; 
 	}
 	
@@ -29,27 +36,28 @@ class SearchBlockController extends BlockController {
 		$text = @preg_replace("#\n|\r#", ' ', $fulltext);
 		
 		$matches = array();
-		$highlight = str_replace(array('"',"'","&quot;"),'',$highlight); // strip the quotes as they mess the regex
-		
-		$regex = '([[:alnum:]|\'|\.|_|\s]{0,45})'. $highlight .'([[:alnum:]|\.|_|\s]{0,45})';
-		preg_match_all("#$regex#ui", $text, $matches);
-		
-		if(!empty($matches[0])) {
-			$body_length = 0;
-			$body_string = array();
-			foreach($matches[0] as $line) {
-				$body_length += strlen($line);
-				
-				$r = $this->highlightedMarkup($line, $highlight);
-				if ($r) {
-					$body_string[] = $r;
-				}
-				if($body_length > 150)
-					break;
-			}
-			if(!empty($body_string))
-				return @implode("&hellip;", $body_string);
-		}
+	    if(strpos($highlight," ") !== false){
+	       $highlights = explode(" ",$highlight);
+	    }else{
+	       $highlights = array($highlight);
+	    }
+	    foreach($highlights as $highlight){
+	       $fulltext = str_replace($highlight,'<span style="background-color:'. $this->hColor[0] .';">'.$highlight."</span>",$fulltext);
+	    }
+	    $fulltext = explode('<span style="background-color:'. $this->hColor[0] .';">',$fulltext);
+	    foreach($fulltext as $key=>$text){
+	       if($key == 0){
+	           $result = mb_substr($text,strlen($text)-40,40,"UTF-8");
+	           continue;
+	       }
+	       $texts = explode("</span>",$text);
+	       if(strlen($texts[1]) > 47){
+	           $result .= '<span style="background-color:'. $this->hColor[0] .';">'.$texts[0].'</span>'.mb_substr($texts[1], 0 , 47 , "UTF-8")."…";
+	       }else{
+	           $result .= '<span style="background-color:'. $this->hColor[0] .';">'.$text;
+	       }
+	    }
+        return $result;
 	}
 	
 	/** 
