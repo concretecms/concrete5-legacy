@@ -845,7 +845,7 @@ msgstr "何も選択されていません"
 
 #: c5j/concrete5/web/concrete/elements/collection_add.php:30
 msgid "Alias"
-msgstr "転載（エイリアス）"
+msgstr "エイリアス"
 
 #: c5j/concrete5/web/concrete/elements/collection_add.php:107
 msgid "Add Page"
