@@ -37,7 +37,7 @@ if (!$dh->inDashboard()) {
 	}
 	$cih = Loader::helper('concrete/interface');
 	if (ACTIVE_LOCALE != 'en_US') {
-		$dlocale = str_replace('_', '-', ACTIVE_LOCALE);
+		$dlocale = str_replace('_', '-', LANGUAGE);
 		$this->addFooterItem($html->javascript('i18n/ui.datepicker-' . $dlocale . '.js'));
 		$this->addFooterItem('<script type="text/javascript">$(function() { jQuery.datepicker.setDefaults({dateFormat: \'yy-mm-dd\'}); });</script>');
 	}
