@@ -2,7 +2,7 @@
 defined('C5_EXECUTE') or die("Access Denied."); 
 
 $u = new User();
-Config::getOrDefine('SITE_LOCALE', 'en_US');
+Config::getOrDefine('SITE_LOCALE', 'ja_JP.UTF8');
 
 if ($u->getUserDefaultLanguage() != '') {
 	define('ACTIVE_LOCALE', $u->getUserDefaultLanguage());
