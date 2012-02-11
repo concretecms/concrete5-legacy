@@ -37,32 +37,34 @@
 		}
 		
 		public function setLocale($locale) {
-                    if ($locale != 'en_US' && is_dir(DIR_BASE . '/languages/' . $locale)) {
-                        if(defined("DIRNAME_APP_UPDATED")){
-                            if(is_dir(DIR_BASE . "/". DIRNAME_UPDATES ."/" . DIRNAME_APP_UPDATED . '/languages/' . $locale)) {
-                                if (!isset($this->translate)) {
-                                    $this->translate = new Zend_Translate('gettext', DIR_BASE . "/". DIRNAME_UPDATES ."/" . DIRNAME_APP_UPDATED . '/languages/' . $locale, $locale);
-                                } else {
-                                    if (!in_array($locale, $this->translate->getList())) {
-                                        $this->translate->addTranslation(DIR_BASE . "/". DIRNAME_UPDATES ."/" . DIRNAME_APP_UPDATED . '/languages/' . $locale, $locale);
-                                    }
-                                    $this->translate->setLocale($locale);
-                                }
-                            }
+			if ($locale != 'en_US') {
+				if(defined("DIRNAME_APP_UPDATED")){
+					if(is_dir(DIR_BASE . "/". DIRNAME_UPDATES ."/" . DIRNAME_APP_UPDATED . '/languages/' . $locale)) {
+						if (!isset($this->translate)) {
+							$this->translate = new Zend_Translate('gettext', DIR_BASE . "/". DIRNAME_UPDATES ."/" . DIRNAME_APP_UPDATED . '/languages/' . $locale, $locale);
+						} else {
+							if (!in_array($locale, $this->translate->getList())) {
+								$this->translate->addTranslation(DIR_BASE . "/". DIRNAME_UPDATES ."/" . DIRNAME_APP_UPDATED . '/languages/' . $locale, $locale);
+							}
+							$this->translate->setLocale($locale);
+						}
+				
+					}
 
-                        }else{
-                            if (!isset($this->translate)) {
-                        	$this->translate = new Zend_Translate('gettext', DIR_BASE . '/languages/' . $locale, $locale);
-                            } else {
-				if (!in_array($locale, $this->translate->getList())) {
-                                    $this->translate->addTranslation(DIR_BASE . '/languages/' . $locale, $locale);
-				}
-				$this->translate->setLocale($locale);
-                            }
+				}else{
+					if(is_dir(DIR_BASE . '/languages/' . $locale){
+						if (!isset($this->translate)) {
+							$this->translate = new Zend_Translate('gettext', DIR_BASE . '/languages/' . $locale, $locale);
+						} else {
+							if (!in_array($locale, $this->translate->getList())) {
+								$this->translate->addTranslation(DIR_BASE . '/languages/' . $locale, $locale);
+							}
+							$this->translate->setLocale($locale);
+						}
+					}
+                    		}
 			}
-                    }
 		}
-		
 		public function getLocale() {
 			return isset($this->translate) ? $this->translate->getLocale() : 'en_US';
 		}
@@ -90,43 +92,42 @@
 		}
 	
 		public static function getAvailableInterfaceLanguages() {
-                    $languages = array();
-                    $fh = Loader::helper('file');
+			$languages = array();
+			$fh = Loader::helper('file');
 			
-                    if(defined("DIRNAME_APP_UPDATED")){
-                        $update_dir_languages = DIR_BASE . "/". DIRNAME_UPDATES ."/" . DIRNAME_APP_UPDATED . '/languages/';
-                        if (file_exists($update_dir_languages)) {
-                            $contents = $fh->getDirectoryContents($update_dir_languages);
-                            foreach($contents as $con) {
-                                if (is_dir($update_dir_languages . '/' . $con) && file_exists($update_dir_languages . '/' . $con . '/LC_MESSAGES/messages.mo')) {
-                                    $languages[] = $con;					
-                                }
-                            }
-                        }
-                    }else{
-                        if (file_exists(DIR_LANGUAGES)) {
-                            $contents = $fh->getDirectoryContents(DIR_LANGUAGES);
-                            foreach($contents as $con) {
-                                if (is_dir(DIR_LANGUAGES . '/' . $con) && file_exists(DIR_LANGUAGES . '/' . $con . '/LC_MESSAGES/messages.mo')) {
-                                    $languages[] = $con;					
-                                }
-                            }
-                        }
-                        if (file_exists(DIR_LANGUAGES_CORE)) {
-                            $contents = $fh->getDirectoryContents(DIR_LANGUAGES_CORE);
-                            foreach($contents as $con) {
-                                if (is_dir(DIR_LANGUAGES_CORE . '/' . $con) && file_exists(DIR_LANGUAGES_CORE . '/' . $con . '/LC_MESSAGES/messages.mo') && (!in_array($con, $languages))) {
-                                    $languages[] = $con;					
-                                }
-                            }
-                        }
-                    }
-                    return $languages;
+			if(defined("DIRNAME_APP_UPDATED")){
+				$update_dir_languages = DIR_BASE . "/". DIRNAME_UPDATES ."/" . DIRNAME_APP_UPDATED . '/languages/';
+				if (file_exists($update_dir_languages)) {
+					$contents = $fh->getDirectoryContents($update_dir_languages);
+					foreach($contents as $con) {
+						if (is_dir($update_dir_languages . '/' . $con) && file_exists($update_dir_languages . '/' . $con . '/LC_MESSAGES/messages.mo')) {
+							$languages[] = $con;
+						}
+					}
+				}
+			}else{
+				if (file_exists(DIR_LANGUAGES)) {
+					$contents = $fh->getDirectoryContents(DIR_LANGUAGES);
+					foreach($contents as $con) {
+						if (is_dir(DIR_LANGUAGES . '/' . $con) && file_exists(DIR_LANGUAGES . '/' . $con . '/LC_MESSAGES/messages.mo')) {
+							$languages[] = $con;
+						}
+					}
+				}
+				if (file_exists(DIR_LANGUAGES_CORE)) {
+					$contents = $fh->getDirectoryContents(DIR_LANGUAGES_CORE);
+					foreach($contents as $con) {
+						if (is_dir(DIR_LANGUAGES_CORE . '/' . $con) && file_exists(DIR_LANGUAGES_CORE . '/' . $con . '/LC_MESSAGES/messages.mo') && (!in_array($con, $languages))) {
+							$languages[] = $con;					
+						}
+					}
+				}
+			}
+			return $languages;
 		}
-	
-             
-            }
-            function t($text) {
+	}
+
+	function t($text) {
 		$zt = Localization::getTranslate();
 		if (func_num_args() == 1) {
 			if (is_object($zt)) {
@@ -137,9 +138,9 @@
 		}
 		
 		$arg = array();
-	    for($i = 1 ; $i < func_num_args(); $i++) {
-	        $arg[] = func_get_arg($i); 
-	    }
+		for($i = 1 ; $i < func_num_args(); $i++) {
+			$arg[] = func_get_arg($i); 
+		}
 		if (is_object($zt)) {
 			return vsprintf($zt->_($text), $arg);
 		} else {
