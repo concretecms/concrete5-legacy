@@ -52,7 +52,7 @@
 					}
 
 				}else{
-					if(is_dir(DIR_BASE . '/languages/' . $locale){
+					if(is_dir(DIR_BASE . '/languages/' . $locale)){
 						if (!isset($this->translate)) {
 							$this->translate = new Zend_Translate('gettext', DIR_BASE . '/languages/' . $locale, $locale);
 						} else {
