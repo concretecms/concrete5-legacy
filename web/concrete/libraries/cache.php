@@ -60,7 +60,7 @@ class Cache {
 		return $cache;
 	}
 	
-	public function startup() {
+	public static function startup() {
 		$cache = Cache::getLibrary();
 	}
 	
