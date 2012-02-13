@@ -63,6 +63,7 @@ class FormDateTimeHelper {
 	 * @param string $value
 	 * @param bool $includeActivation
 	 * @param bool $calendarAutoStart
+	 * @param array extraOptions Hash of extra options to pass to js date plugin
 	 */
 	public function datetime($prefix, $value = null, $includeActivation = false, $calendarAutoStart = true, $extraOptions = array()) {
 		if (substr($prefix, -1) == ']') {
@@ -186,6 +187,7 @@ EOS;
 	 * @param string $value
 	 * @param bool $includeActivation
 	 * @param bool $calendarAutoStart
+	 * @param array extraOptions Hash of extra options to pass to js date plugin
 	 */
 	public function date($field, $value = null, $calendarAutoStart = true, $extraOptions = array()) {
 		$id = preg_replace("/[^0-9A-Za-z-]/", "_", $field);
@@ -213,8 +215,7 @@ EOS;
 	
 	/**
 	 * Build js friendly option string.
-	 * @param array $extraOptions
-	 * @param array $defaultOptions
+	 * @param array $extraOptions hash of extra options
 	 * return js option string
 	 */
 	protected function getJsOptionString($extraOptions)
