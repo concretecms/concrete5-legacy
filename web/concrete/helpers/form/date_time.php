@@ -217,11 +217,8 @@ EOS;
 	 * @param array $defaultOptions
 	 * return js option string
 	 */
-	protected function getJsOptionString($extraOptions, $defaultOptions = null)
+	protected function getJsOptionString($extraOptions)
 	{
-	    if ($defaultOptions == null) {
-	        $defaultOptions = $this->_defaultDateOptions;
-	    }
 	    $opts = array_merge($defaultOptions, $extraOptions);
 	    $optString = '';
 	    foreach ($opts as $key => $val) {
