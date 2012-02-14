@@ -34,11 +34,6 @@ class Area extends Object {
 	public $ratingThreshold = 0; // if set higher, any blocks that aren't rated high enough aren't seen (unless you have sufficient privs)
 	public $showControls = true;
 	public $attributes = array();
-
-	public $enclosingStart = '';
-	public $enclosingStartHasReplacements = false; //Denotes if we should run sprintf() on blockWrapperStart
-	public $enclosingEnd = '';
-	public $enclosingEndHasReplacements = false; //Denotes if we should run sprintf() on blockWrapperStartEnd
 	
 	/* run-time variables */
 
@@ -466,8 +461,8 @@ class Area extends Object {
 	 */
 	private function outputBlockWrapper($isStart, &$block, $blockPositionInArea) {
 		static $th = null;
-		$enclosing = $isStart ? $this->enclosingStart : $this->enclosingEnd;
-		$hasReplacements = $isStart ? $this->enclosingStartHasReplacements : $this->enclosingEndHasReplacements;
+		$enclosing = $isStart ? $this->getAttribute('enclosingStart') : $this->getAttribute('enclosingEnd');
+		$hasReplacements = $isStart ? $this->getAttribute('enclosingStartHasReplacements') : $this->getAttribute('enclosingEndHasReplacements');
 		
 		if (!empty($enclosing) && $hasReplacements) {
 			$bID = $block->getBlockID();
@@ -550,8 +545,8 @@ class Area extends Object {
 	 *  %5$s -> 'odd' or 'even' (useful for "zebra stripes" CSS classes)
 	 */
 	function setBlockWrapperStart($html, $hasReplacements = false) {
-		$this->enclosingStart = $html;
-		$this->enclosingStartHasReplacements = $hasReplacements;
+		$this->setAttribute('enclosingStart', $html);
+		$this->setAttribute('enclosingStartHasReplacements', $hasReplacements);
 	}
 	
 	/** 
@@ -560,8 +555,8 @@ class Area extends Object {
 	 * See setBlockWrapperStart() comments for available tokens.
 	 */
 	function setBlockWrapperEnd($html, $hasReplacements = false) {
-		$this->enclosingEnd = $html;
-		$this->enclosingEndHasReplacements = $hasReplacements;
+		$this->setAttribute('enclosingEnd', $html);
+		$this->setAttribute('enclosingEndHasReplacements', $hasReplacements);
 	}
 
 	function update() {
