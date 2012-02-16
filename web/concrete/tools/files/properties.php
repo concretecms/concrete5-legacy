@@ -461,3 +461,7 @@ $(function() {
 if (!isset($_REQUEST['reload'])) { ?>
 </div>
 <? }
+$ih = Loader::helper('concrete/interface')?>
+<div class="dialog-buttons">
+<?=$ih->button_js(t('Close'), 'jQuery.fn.dialog.closeTop()', 'left')?>	
+</div>
