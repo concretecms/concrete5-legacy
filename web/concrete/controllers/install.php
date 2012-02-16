@@ -67,6 +67,12 @@ class InstallController extends Controller {
 		if (isset($_POST['locale']) && $_POST['locale']) {
 			define("ACTIVE_LOCALE", $_POST['locale']);
 			$this->set('locale', $_POST['locale']);
+		} else if (file_exists(DIR_CONFIG_SITE . '/site_install.php')) {
+			require_once(DIR_CONFIG_SITE . '/site_install.php');
+			if(defined('LOCALE')){
+				define("ACTIVE_LOCALE", LOCALE);
+				$this->set('locale', LOCALE);
+			}
 		}
 		require(DIR_BASE_CORE . '/config/file_types.php');
 		Cache::disableCache();
@@ -82,8 +88,8 @@ class InstallController extends Controller {
 	
 	protected function testAndRunInstall() {
 		if (file_exists(DIR_CONFIG_SITE . '/site_install_user.php')) {
-			require(DIR_CONFIG_SITE . '/site_install.php');
-			@include(DIR_CONFIG_SITE . '/site_install_user.php');
+			require_once(DIR_CONFIG_SITE . '/site_install.php');
+			@include_once(DIR_CONFIG_SITE . '/site_install_user.php');
 			$e = Loader::helper('validation/error');
 			$e = $this->validateDatabase($e);
 			if ($e->has()) {
