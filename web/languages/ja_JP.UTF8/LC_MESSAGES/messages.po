@@ -9459,7 +9459,7 @@ msgstr "パッケージの名前の隣にあるインストールボタンをク
 #: c5j/concrete5/web/concrete/tools/files/bulk_properties.php:274
 #: c5j/concrete5/web/concrete/tools/files/bulk_properties.php:276
 msgid "Continue"
-msgstr "記事"
+msgstr "続ける"
 
 #: c5j/concrete5/web/concrete/tools/files/bulk_properties.php:274
 msgid "1 file uploaded successfully."
