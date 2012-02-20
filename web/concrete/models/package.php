@@ -719,7 +719,7 @@ class Package extends Object {
 				$pkg = Loader::package($p);
                 if (!empty($pkg)) {
 				    $packagesTemp[] = $pkg;
-				    $this->setupPackageLocalization();
+				    $pkg->setupPackageLocalization();
                 }
 			}
 			$packages = $packagesTemp;
