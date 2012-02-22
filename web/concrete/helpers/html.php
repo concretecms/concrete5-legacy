@@ -117,7 +117,7 @@ class HtmlHelper {
 			}else{
 				$version=$options['version'];
 				if(!isset($options['version'])){
-					$version='1.0';//if we aren't given a version we assume its 1.0	
+					$version='0';//if we aren't given a version we assume its 0	
 				}
 				$footer=1;
 				if(isset($options['footer'])){
