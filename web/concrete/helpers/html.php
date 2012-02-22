@@ -18,7 +18,7 @@
 
 defined('C5_EXECUTE') or die("Access Denied.");
 class HtmlHelper {
-	
+	var $usedJsFiles=array();
 	protected $legacyJavascript = array(
 		'ccm.dialog.js' => 'ccm.app.js',
 		'jquery.metadata.js' => 'ccm.app.js',
@@ -94,41 +94,111 @@ class HtmlHelper {
 	 * First, if the item is either a path or a URL it just returns the link to that item (as XHTML-formatted script tag.) 
 	 * If a package is specified it checks there. Otherwise if nothing is found it
 	 * fires off a request to the relative directory JavaScript directory.
+	 * In the options you can specify handle, version, and footer to eliminate duplicate js file loading.
 	 * @param $file
+	 * @param $pkgHandle
+	 * @param $options
 	 * @return $str
 	 */
-	public function javascript($file, $pkgHandle = null) {
+	public function javascript($file, $pkgHandle = null,$options=array()) {
+		if(isset($options['handle'])){
+			if(isset($this->usedJsFiles[$options['handle']])){
+				$v=explode(',', $this->usedJsFiles[$options['handle']]);
+				$v=$v[3];
+				if($options['version']>$v){//if the version is greater than the one we already have then we use this new one.
+					if(isset($options['version'])&&is_numeric($options['version'])){//if the version isn't given to us and we already have that handle we forget about it
+						$footer=1;
+						if(isset($options['footer'])){
+							$footer=$options['footer'];
+						}
+						$this->usedJsFiles[$options['handle']]=$pkgHandle.','.$footer.','.$file.','.$version;
+					}
+				}
+			}else{
+				$version=$options['version'];
+				if(!isset($options['version'])){
+					$version='1.0';//if we aren't given a version we assume its 1.0	
+				}
+				$footer=1;
+				if(isset($options['footer'])){
+					$footer=$options['footer'];
+				}
+				$this->usedJsFiles[$options['handle']]=$pkgHandle.','.$footer.','.$file.','.$version;
+			}
+		}else{//if they haven't updated their file yet then don't give 'em the fancy treatment
+			$js = new JavaScriptOutputObject();	
 
-		$js = new JavaScriptOutputObject();
-		
-		if (substr($file, 0, 1) == '/' || substr($file, 0, 4) == 'http' || strpos($file, DISPATCHER_FILENAME) > -1) {
-			$js->compress = false;
-			$js->file = $file;
+			if (substr($file, 0, 1) == '/' || substr($file, 0, 4) == 'http' || strpos($file, DISPATCHER_FILENAME) > -1) {
+				$js->compress = false;
+				$js->file = $file;
+			}	
+
+			if (file_exists(DIR_BASE . '/' . DIRNAME_JAVASCRIPT . '/' . $file)) {
+				$js->file = DIR_REL . '/' . DIRNAME_JAVASCRIPT . '/' . $file;
+			} else if ($pkgHandle != null) {
+				if (file_exists(DIR_BASE . '/' . DIRNAME_PACKAGES . '/' . $pkgHandle . '/' . DIRNAME_JAVASCRIPT . '/' . $file)) {
+					$js->file = DIR_REL . '/' . DIRNAME_PACKAGES . '/' . $pkgHandle . '/' . DIRNAME_JAVASCRIPT . '/' . $file;
+				} else if (file_exists(DIR_BASE_CORE . '/' . DIRNAME_PACKAGES . '/' . $pkgHandle . '/' . DIRNAME_JAVASCRIPT . '/' . $file)) {
+					$js->file = ASSETS_URL . '/' . DIRNAME_PACKAGES . '/' . $pkgHandle . '/' . DIRNAME_JAVASCRIPT . '/'. $file;
+				}
+			}	
+
+			if ($js->file == '') {
+				if (isset($this->legacyJavascript[$file])) {
+					$file = $this->legacyJavascript[$file];
+				}
+				$js->file = ASSETS_URL_JAVASCRIPT . '/' . $file;
+			}	
+
+			$js->file .= (strpos($js->file, '?') > -1) ? '&amp;' : '?';
+			$js->file .= 'v=' . md5(APP_VERSION . PASSWORD_SALT);	
+
+			// for the javascript addHeaderItem we need to have a full href available
+			$js->href = $js->file;
+			return $js;
 		}
+	}
+	public function outputPendingItems($footer=1){
+		$info=array();
+		foreach($this->usedJsFiles as $handle=>$data){
+			$dataArr=explode(',',$data);
+			$pkgHandle=$dataArr[0];
+			$f=$dataArr[1];
+			$file=$dataArr[2];
+			//echo $footer;echo $f; echo $file;
+			if($footer==$f){
+				$js = new JavaScriptOutputObject();
+				if (substr($file, 0, 1) == '/' || substr($file, 0, 4) == 'http' || strpos($file, DISPATCHER_FILENAME) > -1) {
+					$js->compress = false;
+					$js->file = $file;
+				}		
 
-		if (file_exists(DIR_BASE . '/' . DIRNAME_JAVASCRIPT . '/' . $file)) {
-			$js->file = DIR_REL . '/' . DIRNAME_JAVASCRIPT . '/' . $file;
-		} else if ($pkgHandle != null) {
-			if (file_exists(DIR_BASE . '/' . DIRNAME_PACKAGES . '/' . $pkgHandle . '/' . DIRNAME_JAVASCRIPT . '/' . $file)) {
-				$js->file = DIR_REL . '/' . DIRNAME_PACKAGES . '/' . $pkgHandle . '/' . DIRNAME_JAVASCRIPT . '/' . $file;
-			} else if (file_exists(DIR_BASE_CORE . '/' . DIRNAME_PACKAGES . '/' . $pkgHandle . '/' . DIRNAME_JAVASCRIPT . '/' . $file)) {
-				$js->file = ASSETS_URL . '/' . DIRNAME_PACKAGES . '/' . $pkgHandle . '/' . DIRNAME_JAVASCRIPT . '/'. $file;
+				if (file_exists(DIR_BASE . '/' . DIRNAME_JAVASCRIPT . '/' . $file)) {
+					$js->file = DIR_REL . '/' . DIRNAME_JAVASCRIPT . '/' . $file;
+				} else if ($pkgHandle != null) {
+					if (file_exists(DIR_BASE . '/' . DIRNAME_PACKAGES . '/' . $pkgHandle . '/' . DIRNAME_JAVASCRIPT . '/' . $file)) {
+						$js->file = DIR_REL . '/' . DIRNAME_PACKAGES . '/' . $pkgHandle . '/' . DIRNAME_JAVASCRIPT . '/' . $file;
+					} else if (file_exists(DIR_BASE_CORE . '/' . DIRNAME_PACKAGES . '/' . $pkgHandle . '/' . DIRNAME_JAVASCRIPT . '/' . $file)) {
+						$js->file = ASSETS_URL . '/' . DIRNAME_PACKAGES . '/' . $pkgHandle . '/' . DIRNAME_JAVASCRIPT . '/'. $file;
+					}
+				}
+					
+				if ($js->file == '') {
+					if (isset($this->legacyJavascript[$file])) {
+						$file = $this->legacyJavascript[$file];
+					}
+					$js->file = ASSETS_URL_JAVASCRIPT . '/' . $file;
+				}		
+
+				$js->file .= (strpos($js->file, '?') > -1) ? '&amp;' : '?';
+				$js->file .= 'v=' . md5(APP_VERSION . PASSWORD_SALT);
+				
+				// for the javascript addHeaderItem we need to have a full href available
+				$js->href = $js->file;
+				$info[]= $js;
 			}
 		}
-			
-		if ($js->file == '') {
-			if (isset($this->legacyJavascript[$file])) {
-				$file = $this->legacyJavascript[$file];
-			}
-			$js->file = ASSETS_URL_JAVASCRIPT . '/' . $file;
-		}
-
-		$js->file .= (strpos($js->file, '?') > -1) ? '&amp;' : '?';
-		$js->file .= 'v=' . md5(APP_VERSION . PASSWORD_SALT);
-		
-		// for the javascript addHeaderItem we need to have a full href available
-		$js->href = $js->file;
-		return $js;
+		return $info;
 	}
 	
 	
@@ -214,6 +284,7 @@ class HeaderOutputObject {
 	public $href = '';
   	public $script = '';
 	public $compress = true;
+	public $version = '';
 
 }
 
