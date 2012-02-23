@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: concrete5@concrete5-japan.org\n"
 "POT-Creation-Date: 2009-04-20 12:54-0700\n"
 "PO-Revision-Date: \n"
-"Last-Translator: Takuro Hishikawa <hishikawa@notnil-creative.com>\n"
+"Last-Translator: \n"
 "Language-Team: Usagi Project <concrete5@concrete5-japan.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -2846,7 +2846,7 @@ msgstr "現在このサイトはconcrete５コミュニティに接続してい�
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/extend/update.php:125
 msgid "Your site is not connected to the concrete5 community. Connecting lets you easily extend a site with themes and add-ons. Connecting enables automatic updates."
-msgstr "現在、あなたのサイトはconcrete５コミュニティに接続しています。<a href=\"%s\">プロジェクトページを訪問</a>。"
+msgstr "現在、あなたのサイトはconcrete５コミュニティに接続されていません。接続すると簡単にテーマやアドオンでサイトを拡張できます。また自動更新が有効になります。"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/extend/connect.php:7
 msgid "External marketplace support has been disabled for this website."
@@ -2981,7 +2981,7 @@ msgstr "インストール可能なものは何もありません。"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/extend/install.php:298
 msgid "Your site is not connected to the concrete5 community. Connecting lets you easily extend a site with themes and add-ons."
-msgstr "現在、あなたのサイトはconcrete５コミュニティに接続しています。<a href=\"%s\">プロジェクトページを訪問</a>。"
+msgstr "現在、あなたのサイトはconcrete５コミュニティに接続されていません。接続すると簡単にテーマやアドオンでサイトを拡張できます。"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/sitemap/full.php:29
 msgid "The sitemap allows you to view your site as a tree and easily organize its hierarchy."
@@ -3603,11 +3603,11 @@ msgstr "IP自動ロック有効条件："
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/system/permissions/ip_blacklist.php:14
 msgid "failed login attempts"
-msgstr "回ログインを失敗"
+msgstr "回ログインを失敗時"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/system/permissions/ip_blacklist.php:15
 msgid "in"
-msgstr "in"
+msgstr " "
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/system/permissions/ip_blacklist.php:17
 msgid "seconds"
@@ -3615,7 +3615,7 @@ msgstr "秒"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/system/permissions/ip_blacklist.php:20
 msgid "Ban IP For"
-msgstr "そのIPアドレスを"
+msgstr "そのIPアドレスをブロック"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/system/permissions/ip_blacklist.php:23
 msgid "Forever"
