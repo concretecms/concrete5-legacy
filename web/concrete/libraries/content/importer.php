@@ -373,13 +373,13 @@ class ContentImporter {
 		if (isset($sx->taskpermissions)) {
 			foreach($sx->taskpermissions->taskpermission as $tp) {
 				$pkg = ContentImporter::getPackageObject($at['package']);
-				$tpa = TaskPermission::addTask($tp['handle'], $tp['name'], $tp['description'], $pkg);
+				$tpa = TaskPermission::addTask($tp['handle'], t($tp['name']), t($tp['description']), $pkg);
 				if (isset($tp->access)) {
 					foreach($tp->access->children() as $ch) {
 						if ($ch->getName() == 'group') {
-							$g = Group::getByName($ch['name']);
+							$g = Group::getByName(t($ch['name']));
 							if (!is_object($g)) {
-								$g = Group::add($g['name'], $g['description']);
+								$g = Group::add(t($g['name']), t($g['description']));
 							}
 							$tpa->addAccess($g);
 						}
