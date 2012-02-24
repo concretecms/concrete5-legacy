@@ -19,6 +19,7 @@
 defined('C5_EXECUTE') or die("Access Denied.");
 class HtmlHelper {
 	var $usedJsFiles=array();
+	var $usedCssFiles=array();
 	protected $legacyJavascript = array(
 		'ccm.dialog.js' => 'ccm.app.js',
 		'jquery.metadata.js' => 'ccm.app.js',
@@ -48,45 +49,71 @@ class HtmlHelper {
 	 * @param $file
 	 * @return $str
 	 */
-	public function css($file, $pkgHandle = null) {
-
-		$css = new CSSOutputObject();
-
-		// if the first character is a / then that means we just go right through, it's a direct path
-		if (substr($file, 0, 1) == '/' || substr($file, 0, 4) == 'http' || strpos($file, DISPATCHER_FILENAME) > -1) {
-			$css->compress = false;
-			$css->file = $file;
-		}
-		
-		$v = View::getInstance();
-		// checking the theme directory for it. It's just in the root.
-		if ($v->getThemeDirectory() != '' && file_exists($v->getThemeDirectory() . '/' . $file)) {
-			$css->file = $v->getThemePath() . '/' . $file;
-		} else if (file_exists(DIR_BASE . '/' . DIRNAME_CSS . '/' . $file)) {
-			$css->file = DIR_REL . '/' . DIRNAME_CSS . '/' . $file;
-		} else if ($pkgHandle != null) {
-			if (file_exists(DIR_BASE . '/' . DIRNAME_PACKAGES . '/' . $pkgHandle . '/' . DIRNAME_CSS . '/' . $file)) {
-				$css->file = DIR_REL . '/' . DIRNAME_PACKAGES . '/' . $pkgHandle . '/' . DIRNAME_CSS . '/' . $file;
-			} else if (file_exists(DIR_BASE_CORE . '/' . DIRNAME_PACKAGES . '/' . $pkgHandle . '/' . DIRNAME_CSS . '/' . $file)) {
-				$css->file = ASSETS_URL . '/' . DIRNAME_PACKAGES . '/' . $pkgHandle . '/' . DIRNAME_CSS . '/' . $file;
+	public function css($file, $pkgHandle = null,$options=array()) {
+		if(isset($options['handle'])){
+			if(isset($this->usedCssFiles[$options['handle']])){
+				$v=explode(',', $this->usedCssFiles[$options['handle']]);
+				$v=$v[3];
+				if($options['version']>$v){//if the version is greater than the one we already have then we use this new one.
+					if(isset($options['version'])&&is_numeric($options['version'])){//if the version isn't given to us and we already have that handle we forget about it
+						$footer=1;
+						if(isset($options['footer'])){
+							$footer=$options['footer'];
+						}
+						$this->usedCssFiles[$options['handle']]=$pkgHandle.','.$footer.','.$file.','.$version;
+					}
+				}
+			}else{
+				$version=$options['version'];
+				if(!isset($options['version'])){
+					$version='1.0';//if we aren't given a version we assume its 1.0	
+				}
+				$footer=1;
+				if(isset($options['footer'])){
+					$footer=$options['footer'];
+				}
+				$this->usedCssFiles[$options['handle']]=$pkgHandle.','.$footer.','.$file.','.$version;
 			}
-		}
+		}else{//if they haven't updated their file yet then don't give 'em the fancy treatment	
+
+			$css = new CSSOutputObject();	
+
+			// if the first character is a / then that means we just go right through, it's a direct path
+			if (substr($file, 0, 1) == '/' || substr($file, 0, 4) == 'http' || strpos($file, DISPATCHER_FILENAME) > -1) {
+				$css->compress = false;
+				$css->file = $file;
+			}
 			
-		if ($css->file == '') {
-			if (isset($this->legacyCSS[$file])) {
-				$file = $this->legacyCSS[$file];
+			$v = View::getInstance();
+			// checking the theme directory for it. It's just in the root.
+			if ($v->getThemeDirectory() != '' && file_exists($v->getThemeDirectory() . '/' . $file)) {
+				$css->file = $v->getThemePath() . '/' . $file;
+			} else if (file_exists(DIR_BASE . '/' . DIRNAME_CSS . '/' . $file)) {
+				$css->file = DIR_REL . '/' . DIRNAME_CSS . '/' . $file;
+			} else if ($pkgHandle != null) {
+				if (file_exists(DIR_BASE . '/' . DIRNAME_PACKAGES . '/' . $pkgHandle . '/' . DIRNAME_CSS . '/' . $file)) {
+					$css->file = DIR_REL . '/' . DIRNAME_PACKAGES . '/' . $pkgHandle . '/' . DIRNAME_CSS . '/' . $file;
+				} else if (file_exists(DIR_BASE_CORE . '/' . DIRNAME_PACKAGES . '/' . $pkgHandle . '/' . DIRNAME_CSS . '/' . $file)) {
+					$css->file = ASSETS_URL . '/' . DIRNAME_PACKAGES . '/' . $pkgHandle . '/' . DIRNAME_CSS . '/' . $file;
+				}
 			}
-			$css->file = ASSETS_URL_CSS . '/' . $file;
-		}
+				
+			if ($css->file == '') {
+				if (isset($this->legacyCSS[$file])) {
+					$file = $this->legacyCSS[$file];
+				}
+				$css->file = ASSETS_URL_CSS . '/' . $file;
+			}	
 
-		$css->file .= (strpos($css->file, '?') > -1) ? '&amp;' : '?';
-		$css->file .= 'v=' . md5(APP_VERSION . PASSWORD_SALT);		
-		// for the javascript addHeaderItem we need to have a full href available
-		$css->href = $css->file;
-		if (substr($css->file, 0, 4) != 'http') {
-			$css->href = BASE_URL . $css->file;
+			$css->file .= (strpos($css->file, '?') > -1) ? '&amp;' : '?';
+			$css->file .= 'v=' . md5(APP_VERSION . PASSWORD_SALT);		
+			// for the javascript addHeaderItem we need to have a full href available
+			$css->href = $css->file;
+			if (substr($css->file, 0, 4) != 'http') {
+				$css->href = BASE_URL . $css->file;
+			}
+			return $css;
 		}
-		return $css;
 	}
 	
 	/** 
@@ -196,6 +223,52 @@ class HtmlHelper {
 				// for the javascript addHeaderItem we need to have a full href available
 				$js->href = $js->file;
 				$info[]= $js;
+			}
+		}
+		foreach($this->usedCssFiles as $handle=>$data){
+			$dataArr=explode(',',$data);
+			$pkgHandle=$dataArr[0];
+			$f=$dataArr[1];
+			$file=$dataArr[2];
+			//echo $footer;echo $f; echo $file;
+			if($footer==$f){
+				$css = new CSSOutputObject();	
+
+			// if the first character is a / then that means we just go right through, it's a direct path
+			if (substr($file, 0, 1) == '/' || substr($file, 0, 4) == 'http' || strpos($file, DISPATCHER_FILENAME) > -1) {
+				$css->compress = false;
+				$css->file = $file;
+			}
+			
+			$v = View::getInstance();
+			// checking the theme directory for it. It's just in the root.
+			if ($v->getThemeDirectory() != '' && file_exists($v->getThemeDirectory() . '/' . $file)) {
+				$css->file = $v->getThemePath() . '/' . $file;
+			} else if (file_exists(DIR_BASE . '/' . DIRNAME_CSS . '/' . $file)) {
+				$css->file = DIR_REL . '/' . DIRNAME_CSS . '/' . $file;
+			} else if ($pkgHandle != null) {
+				if (file_exists(DIR_BASE . '/' . DIRNAME_PACKAGES . '/' . $pkgHandle . '/' . DIRNAME_CSS . '/' . $file)) {
+					$css->file = DIR_REL . '/' . DIRNAME_PACKAGES . '/' . $pkgHandle . '/' . DIRNAME_CSS . '/' . $file;
+				} else if (file_exists(DIR_BASE_CORE . '/' . DIRNAME_PACKAGES . '/' . $pkgHandle . '/' . DIRNAME_CSS . '/' . $file)) {
+					$css->file = ASSETS_URL . '/' . DIRNAME_PACKAGES . '/' . $pkgHandle . '/' . DIRNAME_CSS . '/' . $file;
+				}
+			}
+				
+			if ($css->file == '') {
+				if (isset($this->legacyCSS[$file])) {
+					$file = $this->legacyCSS[$file];
+				}
+				$css->file = ASSETS_URL_CSS . '/' . $file;
+			}	
+
+			$css->file .= (strpos($css->file, '?') > -1) ? '&amp;' : '?';
+			$css->file .= 'v=' . md5(APP_VERSION . PASSWORD_SALT);		
+			// for the javascript addHeaderItem we need to have a full href available
+			$css->href = $css->file;
+			if (substr($css->file, 0, 4) != 'http') {
+				$css->href = BASE_URL . $css->file;
+			}
+				$info[]= $css;
 			}
 		}
 		return $info;
