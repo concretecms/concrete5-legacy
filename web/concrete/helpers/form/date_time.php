@@ -78,12 +78,12 @@ class FormDateTimeHelper {
 		$dfhe = (DATE_FORM_HELPER_FORMAT_HOUR == '12') ? '12' : '23';
 		$dfhs = (DATE_FORM_HELPER_FORMAT_HOUR == '12') ? '1' : '0';
 		if ($value != null) {
-			$dt = date(DATE_APP_DATE_PICKER, strtotime($value));
+			$dt = date(DATE_APP_GENERIC_MDY, strtotime($value));
 			$h = date($dfh, strtotime($value));
 			$m = date('i', strtotime($value));
 			$a = date('A', strtotime($value));
 		} else {
-			$dt = date(DATE_APP_DATE_PICKER);
+			$dt = date(DATE_APP_GENERIC_MDY);
 			$h = date($dfh);
 			$m = date('i');
 			$a = date('A');
@@ -184,11 +184,11 @@ EOS;
 		if (isset($_REQUEST[$field])) {
 			$dt = $_REQUEST[$field];
 		} else if ($value != "") {
-			$dt = date(DATE_APP_DATE_PICKER, strtotime($value));
+			$dt = date(DATE_APP_GENERIC_MDY, strtotime($value));
 		} else if ($value === '') {
 			$dt = '';
 		} else {
-			$dt = date(DATE_APP_DATE_PICKER);
+			$dt = date(DATE_APP_GENERIC_MDY);
 		}
 		//$id = preg_replace("/[^0-9A-Za-z-]/", "_", $prefix);
 		$html = '';
