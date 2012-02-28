@@ -54,7 +54,7 @@ class HtmlHelper {
 			if(isset($this->usedCssFiles[$options['handle']])){
 				$v=explode(',', $this->usedCssFiles[$options['handle']]);
 				$v=$v[3];
-				if($options['version']>$v){//if the version is greater than the one we already have then we use this new one.
+				if(version_compare($options['version'],$v,'>')){//if the version is greater than the one we already have then we use this new one.
 					if(isset($options['version'])&&is_numeric($options['version'])){//if the version isn't given to us and we already have that handle we forget about it
 						$footer=1;
 						if(isset($options['footer'])){
@@ -66,7 +66,7 @@ class HtmlHelper {
 			}else{
 				$version=$options['version'];
 				if(!isset($options['version'])){
-					$version='1.0';//if we aren't given a version we assume its 1.0	
+					$version='0';//if we aren't given a version we assume its 0	
 				}
 				$footer=1;
 				if(isset($options['footer'])){
@@ -132,7 +132,7 @@ class HtmlHelper {
 			if(isset($this->usedJsFiles[$options['handle']])){
 				$v=explode(',', $this->usedJsFiles[$options['handle']]);
 				$v=$v[3];
-				if($options['version']>$v){//if the version is greater than the one we already have then we use this new one.
+				if(version_compare($options['version'],$v,'>')){//if the version is greater than the one we already have then we use this new one.
 					if(isset($options['version'])&&is_numeric($options['version'])){//if the version isn't given to us and we already have that handle we forget about it
 						$footer=1;
 						if(isset($options['footer'])){
