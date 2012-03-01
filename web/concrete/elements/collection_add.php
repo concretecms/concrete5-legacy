@@ -22,7 +22,7 @@ $dh = Loader::helper('date');
 
 		<div class="clearfix">
 			<?=$form->label('cName', t('Name'))?>
-			<div class="input"><input type="text" name="cName" value="" class="text span8" onKeyUp="makeAlias(this.value, 'cHandle')" ></div>
+			<div class="input"><input type="text" name="cName" value="" class="text span8"></div>
 		</div>
 
 		
