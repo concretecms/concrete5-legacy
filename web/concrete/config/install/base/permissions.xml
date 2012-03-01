@@ -1,55 +1,55 @@
 <?xml version="1.0"?>
 <concrete5-cif version="1.0">
     <taskpermissions>
-        <taskpermission handle="access_task_permissions" name="Change Task Permissions" description="" package="">
+        <taskpermission handle="access_task_permissions" name="タスク権限を変更" description="" package="">
             <access>
-                <group name="Administrators"/>
+                <group name="管理者"/>
             </access>
         </taskpermission>
-        <taskpermission handle="access_sitemap" name="Access Sitemap and Page Search" description="" package="">
+        <taskpermission handle="access_sitemap" name="サイトマップ・ページ検索へのアクセス" description="" package="">
             <access>
-                <group name="Administrators"/>
+                <group name="管理者"/>
             </access>
         </taskpermission>
-        <taskpermission handle="access_user_search" name="Access User Search" description="" package="">
+        <taskpermission handle="access_user_search" name="ユーザー検索へのアクセス" description="" package="">
             <access>
-                <group name="Administrators"/>
+                <group name="管理者"/>
             </access>
         </taskpermission>
-        <taskpermission handle="access_group_search" name="Access Group Search" description="" package="">
+        <taskpermission handle="access_group_search" name="グループ検索へのアクセス" description="" package="">
             <access>
-                <group name="Administrators"/>
+                <group name="管理者"/>
             </access>
         </taskpermission>
-        <taskpermission handle="access_page_defaults" name="Change Content on Page Type Default Pages" description="" package="">
+        <taskpermission handle="access_page_defaults" name="ページタイプのデフォルトの変更" description="" package="">
             <access>
-                <group name="Administrators"/>
+                <group name="管理者"/>
             </access>
         </taskpermission>
-        <taskpermission handle="backup" name="Perform Full Database Backups" description="" package="">
+        <taskpermission handle="backup" name="完全データベースバックアップの実行" description="" package="">
             <access>
-                <group name="Administrators"/>
+                <group name="管理者"/>
             </access>
         </taskpermission>
-        <taskpermission handle="sudo" name="Sign in as User" description="" package=""/>
-        <taskpermission handle="uninstall_packages" name="Uninstall Packages" description="" package="">
+        <taskpermission handle="sudo" name="ユーザーとしてログイン" description="" package=""/>
+        <taskpermission handle="uninstall_packages" name="パッケージのアンインストール" description="" package="">
             <access>
-                <group name="Administrators"/>
+                <group name="管理者"/>
             </access>
         </taskpermission>
-        <taskpermission handle="install_packages" name="Install Packages and Connect to the Marketplace" description="" package="">
+        <taskpermission handle="install_packages" name="パッケージのインストール・マーケットプレイスへの接続" description="" package="">
             <access>
-                <group name="Administrators"/>
+                <group name="管理者"/>
             </access>
         </taskpermission>
-        <taskpermission handle="delete_user" name="Delete Users" description="" package="">
+        <taskpermission handle="delete_user" name="ユーザーの削除" description="" package="">
             <access>
-                <group name="Administrators"/>
+                <group name="管理者"/>
             </access>
         </taskpermission>
-        <taskpermission handle="view_newsflow" name="View Newsflow Updates in an Overlay" description="" package="">
+        <taskpermission handle="view_newsflow" name="ニュースフローをオーバーレイで表示" description="" package="">
             <access>
-                <group name="Administrators"/>
+                <group name="管理者"/>
             </access>
         </taskpermission>
     </taskpermissions>
