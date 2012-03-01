@@ -64,6 +64,7 @@ class InstallController extends Controller {
 	 * Testing
 	 */
 	public function on_start() {
+/*
 		if (isset($_POST['locale']) && $_POST['locale']) {
 			define("ACTIVE_LOCALE", $_POST['locale']);
 			$this->set('locale', $_POST['locale']);
@@ -74,6 +75,12 @@ class InstallController extends Controller {
 				$this->set('locale', LOCALE);
 			}
 		}
+*/
+		if(!defined("ACTIVE_LOCALE")){
+			define("ACTIVE_LOCALE", "ja_JP.UTF8");
+		}
+		$this->set('locale', "ja_JP.UTF8");
+
 		require(DIR_BASE_CORE . '/config/file_types.php');
 		Cache::disableCache();
 		$this->setRequiredItems();
