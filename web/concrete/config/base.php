@@ -107,6 +107,10 @@ if (!defined("DB_COLLATE")) {
 
 define("LANGUAGE_DOMAIN_CORE", "messages");
 
+if (!defined('FILE_PERMISSIONS_MODE')) {
+	define('FILE_PERMISSIONS_MODE', 0775);
+}
+
 # Path to the core files shared between all concrete 5 installations
 if (!defined('DIR_BASE_CORE')) {
 	define('DIR_BASE_CORE', dirname(__FILE__) . '/..');
@@ -346,6 +350,9 @@ if (defined('DIR_FILES_CACHE') && !is_dir(DIR_FILES_CACHE)) {
 # Sessions/TMP directories
 if (!defined('DIR_TMP')) {
 	define('DIR_TMP', DIR_BASE . '/files/tmp');
+}
+if (!defined('DIR_SESSIONS')) {
+	define('DIR_SESSIONS', DIR_TMP);
 }
 define('DISPATCHER_FILENAME_CORE', 'dispatcher.php');
 

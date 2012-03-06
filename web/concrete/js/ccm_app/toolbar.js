@@ -117,7 +117,7 @@ $(function() {
 			}
 		});
 		
-		$("#ccm-nav-dashboard,#ccm-nav-edit").click(function() {
+		$(".ccm-nav-edit-mode-active").click(function() {
 			void(0);
 			return false;
 		});
@@ -216,6 +216,10 @@ $(function() {
 		$("#ccm-toolbar-nav-speed-settings").dialog();
 		$("#ccm-toolbar-nav-move-copy").dialog();
 		$("#ccm-toolbar-nav-delete").dialog();
+
+		$("#ccm-edit-overlay,#ccm-dashboard-overlay").click(function(e) {
+			e.stopPropagation();
+		});
 	
 		
 		$("#ccm-nav-edit").hoverIntent(function() {
@@ -235,9 +239,6 @@ $(function() {
 				$('#ccm-edit-overlay').fadeOut(90, 'easeOutExpo');
 				$(window).unbind('click.ccm-edit');
 			} else {*/
-				$("#ccm-edit-overlay,#ccm-dashboard-overlay-main").click(function(e) {
-					e.stopPropagation();
-				});
 				setTimeout("$('#ccm-check-in-comments').focus();",300);
 				$("#ccm-check-in-preview").click(function() {
 					$("#ccm-approve-field").val('PREVIEW');
@@ -293,18 +294,19 @@ $(function() {
 	}
 	
 	ccm_intelligentSearchDoRemoteCalls = function(query) {	
+		query = jQuery.trim(query);
 		if (!query) {
 			return;
 		}
-		if (query.trim().length > 2) {
-			if (query.trim() == ajaxquery) {
+		if (query.length > 2) {
+			if (query == ajaxquery) {
 				return;
 			}
 			
 			if (ajaxtimer) {
 				window.clearTimeout(ajaxtimer);
 			}
-			ajaxquery = query.trim();
+			ajaxquery = query;
 			ajaxtimer = window.setTimeout(function() {
 				ajaxtimer = null;
 				$("#ccm-intelligent-search-results-list-marketplace").parent().show();

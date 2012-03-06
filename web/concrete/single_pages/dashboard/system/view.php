@@ -1,4 +1,7 @@
-<?=Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('System &amp; Settings')); ?>
+<?
+$upToPage = Page::getByPath("/dashboard");
+?>
+<?=Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('System &amp; Settings'), false, false, true, -1, $upToPage); ?>
 
 <?
 print '<div class="row">';
@@ -7,12 +10,12 @@ for ($i = 0; $i < count($categories); $i++) {
 	?>
 
 	
-	<? if ($i % 2 == 0) { ?>
+	<? if ($i % 4 == 0) { ?>
 		</div>
 		<div class="row">
 	<? } ?>
 	
-	<div class="span-pane-half">
+	<div class="span-pane-fourth">
 	
 
 
