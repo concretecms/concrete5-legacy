@@ -95,7 +95,7 @@ class NavigationHelper {
 	 */
 	public function getCollectionAncestor($cObj, $nth = NULL){		
 		// We return null if passed argument is not a valid Page object, if we're on the home page, a system page, a master collection or the current highest ancestor
-		if((!is_object($cObj) || !$oObj instanceof Page || $cObj->error) || $cObj->cID === HOME_CID || $cObj->isSystemPage() || $cObj->isMasterCollection() || $cObj->cParentID === HOME_CID){
+		if((!is_object($cObj) || !$cObj instanceof Page || $cObj->error) || $cObj->cID === HOME_CID || $cObj->isSystemPage() || $cObj->isMasterCollection() || $cObj->getCollectionParentID() === HOME_CID){
 			return NULL;
 		// We return our current Page object if we haven't requested any ancestors
 		}elseif($nth === 0){
