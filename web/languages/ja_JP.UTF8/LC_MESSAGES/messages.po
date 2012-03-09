@@ -2750,7 +2750,7 @@ msgstr "コンポーザーで選択可能にしますか？"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/pages/types/composer.php:37
 msgid "Yes, include this page type in Composer."
-msgstr "はい、このフィールドを検索対象にします。"
+msgstr "はい、このページタイプをコンポーザーで選択可能にします。"
 
 #: c5j/concrete5/web/concrete/single_pages/dashboard/pages/types/composer.php:48
 msgid "Composer Publishing Settings"
@@ -8659,7 +8659,7 @@ msgstr "（すべての変更はすぐに反映されます）"
 
 #: c5j/concrete5/web/concrete/tools/page_controls_menu_js.php:107
 msgid "Editing"
-msgstr "編集"
+msgstr "編集中"
 
 #: c5j/concrete5/web/concrete/tools/page_controls_menu_js.php:161
 msgid "Exit Edit Mode"
