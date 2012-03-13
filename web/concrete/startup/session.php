@@ -15,7 +15,7 @@ session_set_cookie_params(
 	(defined('SESSION_COOKIE_PARAM_HTTPONLY')?SESSION_COOKIE_PARAM_HTTPONLY:false)
 	);
 if (!is_dir(DIR_SESSIONS)) {
-	mkdir(DIR_SESSIONS, FILE_PERMISSIONS_MODE);
+	mkdir(DIR_SESSIONS, FILE_PERMISSIONS_MODE, true);
 	chmod(DIR_SESSIONS, FILE_PERMISSIONS_MODE);
 	touch(DIR_SESSIONS . '/index.html');
 }
