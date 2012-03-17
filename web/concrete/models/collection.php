@@ -689,7 +689,20 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			Cache::delete('page_path', $this->getCollectionID());
 			Cache::delete('request_path_page', $this->getCollectionPath()  );
 			Cache::delete('page_id_from_path', $this->getCollectionPath());
+
+			if(defined('PAGE_CONTENT_CACHE_ALLOWED_GET_VARS'))
+			{
+				$allowedGetVars = explode(',', PAGE_CONTENT_CACHE_ALLOWED_GET_VARS);
+
+				//loop and delete cache for each supported GET vars
+				foreach($allowedGetVars as $value) {
+					Cache::delete('page_content', $this->getCollectionID() . $value);
+				}
+			}
+			
+			//Still need to do standard cache deletion in all cases
 			Cache::delete('page_content', $this->getCollectionID());
+			
 			if (is_object($vo)) {
 				$vo->refreshCache();
 			}

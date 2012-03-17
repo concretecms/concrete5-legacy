@@ -2371,17 +2371,39 @@ class Page extends Collection {
 		
 		return $pc;
 	}
+
+	private function getAllowedGetVars()
+	{
+		if(is_array($_GET) && defined('PAGE_CONTENT_CACHE_ALLOWED_GET_VARS'))
+		{
+			//we have GET parameters and the variable is set
+			$allowedGetVars = explode(',', PAGE_CONTENT_CACHE_ALLOWED_GET_VARS);
+
+			//loop and return as soon as we find a variable
+			foreach($_GET as $key => $value) {
+				if (in_array(strtolower($key), $allowedGetVars)) {
+					return $key;
+				}
+			}
+		}
+		
+		//nothing allowed found
+		return "";
+	}
 	
 	public function addToPageCache($content) {
-		Cache::set('page_content', $this->getCollectionID(), $content, $this->getCollectionFullPageCachingLifetimeValue());
+		$getVar = $this->getAllowedGetVars();
+		Cache::set('page_content', $this->getCollectionID() . $getVar, $content, $this->getCollectionFullPageCachingLifetimeValue());
 	}
 	
 	public function getFromPageCache() {
-		return Cache::get('page_content', $this->getCollectionID());
+		$getVar = $this->getAllowedGetVars();
+		return Cache::get('page_content', $this->getCollectionID() . $getVar);
 	}
 	
 	public function renderFromCache() {
-		$content = Cache::get('page_content', $this->getCollectionID());
+		$getVar = $this->getAllowedGetVars();
+		$content = Cache::get('page_content', $this->getCollectionID() . $getVar);
 		if ($content != false) {
 			print $content;
 			exit;
@@ -2440,7 +2462,7 @@ class Page extends Collection {
 		}
 		
 		// test get variables
-		$allowedGetVars = array('cid');
+		$allowedGetVars = explode(',', PAGE_CONTENT_CACHE_ALLOWED_GET_VARS);
 		if (is_array($_GET)) {
 			foreach($_GET as $key => $value) {
 				if (!in_array(strtolower($key), $allowedGetVars)) {
