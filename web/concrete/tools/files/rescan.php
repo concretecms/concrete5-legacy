@@ -43,3 +43,7 @@ print '</ol>';
 if ($fcnt == 0) { ?>
 	<?=t('You do not have permission to rescan any of the selected files.'); ?>
 <? } ?>
+<? $ih = Loader::helper('concrete/interface')?>
+<div class="dialog-buttons">
+<?=$ih->button_js(t('Close'), 'jQuery.fn.dialog.closeTop()', 'left')?>	
+</div>
