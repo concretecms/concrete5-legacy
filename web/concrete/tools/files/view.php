@@ -2,6 +2,7 @@
 defined('C5_EXECUTE') or die("Access Denied.");
 $u = new User();
 $form = Loader::helper('form');
+$ih = Loader::helper('concrete/interface');
 
 $f = File::getByID($_REQUEST['fID']);
 if (isset($_REQUEST['fvID'])) {
@@ -31,6 +32,7 @@ if ($to->getPackageHandle() != '') {
 <form method="post" action="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/files/download/" style="margin: 0px">
 <?=$form->hidden('fID', $f->getFileID()); ?>
 <?=$form->hidden('fvID', $f->getFileVersionID()); ?>
+<?=$ih->button_js(t('Close'), 'jQuery.fn.dialog.closeTop()', 'left')?>	
 <?=$form->submit('submit', t('Download'), array('class' => 'ccm-button-right primary'))?>
 </form>
 </div>
