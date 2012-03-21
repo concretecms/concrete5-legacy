@@ -1,2 +1,2 @@
-<?
-require('concrete/dispatcher.php');
+<?php
+require 'concrete/dispatcher.php';
