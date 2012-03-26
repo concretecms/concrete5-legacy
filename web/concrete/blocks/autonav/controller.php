@@ -1,4 +1,4 @@
-<?
+<?php
 /**
  * @package Blocks
  * @subpackage BlockTypes
@@ -659,5 +659,3 @@
 			return ($cParentID) ? $cParentID : 0;
 		}
 	}
-
-?>
