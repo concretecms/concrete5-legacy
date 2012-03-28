@@ -338,6 +338,10 @@ if (defined('DIR_FILES_CACHE') && !is_dir(DIR_FILES_CACHE)) {
 	@chmod(DIR_FILES_CACHE, DIRECTORY_PERMISSIONS_MODE);
 }
 
+if (!defined('PAGE_CONTENT_CACHE_ALLOWED_GET_VARS')) {
+	define('PAGE_CONTENT_CACHE_ALLOWED_GET_VARS', 'cid');
+}
+
 # Sessions/TMP directories
 if (!defined('DIR_TMP')) {
 	define('DIR_TMP', DIR_BASE . '/files/tmp');
