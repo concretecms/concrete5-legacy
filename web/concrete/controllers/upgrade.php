@@ -1,9 +1,9 @@
 <?php
 defined('C5_EXECUTE') or die("Access Denied.");
 if (!defined('E_DEPRECATED')) {
-	error_reporting(E_ALL ^ E_NOTICE);
+	error_reporting(E_ALL ^ E_NOTICE ^ E_STRICT);
 } else {
-	error_reporting(E_ALL ^ E_NOTICE ^ E_DEPRECATED);
+	error_reporting(E_ALL ^ E_NOTICE ^ E_STRICT ^ E_DEPRECATED);
 }
 ini_set('display_errors', 1);
 if (!ini_get('safe_mode')) {
@@ -18,23 +18,23 @@ class UpgradeController extends Controller {
 	private $upgrades = array();
 	private $site_version = null;
 	public $upgrade_db = true;
-	
+
 	public function on_start() {
 		$cnt = Loader::controller('/dashboard/system/backup_restore/update');
 		$cnt->secCheck();
 		// if you just reverted, but didn't manually clear out your files - cache would be a prob here.
 		$ca = new Cache();
 		$ca->flush();
-		
+
 		$this->site_version = Config::get('SITE_APP_VERSION');
 	}
-	
+
 	public function view() {
 		if ($this->get('force') == 1 || $this->get('source') == 'dashboard_update') {
 			$this->do_upgrade();
-		} else {	
+		} else {
 			$sav = $this->site_version;
-	
+
 			if (!$sav) {
 				$message = t('Unable to determine your current version of Concrete. Upgrading cannot continue.');
 			} else 	if (version_compare($sav, APP_VERSION, '>')) {
@@ -66,85 +66,85 @@ class UpgradeController extends Controller {
 							}
 						}
 					}
-					
+
 					$message = '';
 					$message .= t('Upgrading from <b>%s</b>', $sav) . '<br/>';
 					$message .= t('Upgrading to <b>%s</b>', APP_VERSION) . '<br/><br/>';
-	
-					if (count($allnotes) > 0) { 
+
+					if (count($allnotes) > 0) {
 						$message .= '<ul>';
 						foreach($allnotes as $n) {
 							$message .= '<li>' . $n . '</li>';
 						}
 						$message .= '</ul><br/>';
 					}
-					
-					$this->set('do_upgrade', true);			
+
+					$this->set('do_upgrade', true);
 					$this->set('message', $message);
 				}
 			}
-		}		
+		}
 	}
-	
+
 	private function set_upgrades() {
 		$ugvs = array();
-		
-		
+
+
 		$sav = $this->site_version;
 
-		if (version_compare($sav, '5.0.0b1', '<')) { 
+		if (version_compare($sav, '5.0.0b1', '<')) {
 			$ugvs[] = "version_500a1";
 		}
-		if (version_compare($sav, '5.0.0b2', '<')) { 
+		if (version_compare($sav, '5.0.0b2', '<')) {
 			$ugvs[] = "version_500b1";
 		}
-		if (version_compare($sav, '5.0.0', '<')) { 
+		if (version_compare($sav, '5.0.0', '<')) {
 			$ugvs[] = "version_500b2";
 		}
-		if (version_compare($sav, '5.1.0', '<')) { 
+		if (version_compare($sav, '5.1.0', '<')) {
 			$ugvs[] = "version_500";
 		}
-		if (version_compare($sav, '5.2.0', '<')) { 
+		if (version_compare($sav, '5.2.0', '<')) {
 			$ugvs[] = "version_510";
 		}
-		if (version_compare($sav, '5.3.0', '<')) { 
+		if (version_compare($sav, '5.3.0', '<')) {
 			$ugvs[] = "version_520";
 		}
-		if (version_compare($sav, '5.3.2', '<')) { 
+		if (version_compare($sav, '5.3.2', '<')) {
 			$ugvs[] = "version_530";
 		}
 
-		if (version_compare($sav, '5.3.3', '<')) { 
+		if (version_compare($sav, '5.3.3', '<')) {
 			$ugvs[] = "version_532";
 		}
 
-		if (version_compare($sav, '5.3.3.1', '<')) { 
+		if (version_compare($sav, '5.3.3.1', '<')) {
 			$ugvs[] = "version_533";
 		}
-		if (version_compare($sav, '5.4.0', '<')) { 
+		if (version_compare($sav, '5.4.0', '<')) {
 			$ugvs[] = "version_5331";
 			$ugvs[] = "version_540";
 		}
-		if (version_compare($sav, '5.4.1', '<')) { 
+		if (version_compare($sav, '5.4.1', '<')) {
 			$ugvs[] = "version_5406";
 			$ugvs[] = "version_541";
 		}
-		if (version_compare($sav, '5.4.2', '<')) { 
+		if (version_compare($sav, '5.4.2', '<')) {
 			$ugvs[] = "version_5411";
 			$ugvs[] = "version_542";
 		}
-		if (version_compare($sav, '5.4.2.1', '<')) { 
+		if (version_compare($sav, '5.4.2.1', '<')) {
 			$ugvs[] = "version_5421";
 		}
 
-		if (version_compare($sav, '5.5.0', '<')) { 
+		if (version_compare($sav, '5.5.0', '<')) {
 			$ugvs[] = "version_550";
 		}
 
-		if (version_compare($sav, '5.5.1', '<')) { 
+		if (version_compare($sav, '5.5.1', '<')) {
 			$ugvs[] = "version_551";
 		}
-		if (version_compare($sav, '5.5.2', '<')) { 
+		if (version_compare($sav, '5.5.2', '<')) {
 			$ugvs[] = "version_552";
 		}
 
@@ -159,9 +159,9 @@ class UpgradeController extends Controller {
 			$file = $installDirectory . '/db.xml';
 			if (!file_exists($file)) {
 				throw new Exception(t('Unable to locate database import file.'));
-			}		
+			}
 			$err = Package::installDB($file);
-			
+
 			// now we refresh the block schema
 			$btl = new BlockTypeList();
 			$btArray = $btl->getInstalledList();
@@ -171,7 +171,7 @@ class UpgradeController extends Controller {
 			$this->upgrade_db = false;
 		}
 	}
-	
+
 	private function do_upgrade() {
 		$runMessages = array();
 		$prepareMessages = array();
@@ -184,46 +184,46 @@ class UpgradeController extends Controller {
 					$prepareMessages[] =$ugh->prepare($this);
 				}
 			}
-			
+
 			foreach($this->upgrades as $ugh) {
 				if (method_exists($ugh, 'run')) {
 					$runMessages[] = $ugh->run();
 				}
 			}
-			
+
 			$message = '';
 			if(is_array($prepareMessages) && count($prepareMessages)) {
 				foreach($prepareMessages as $m) {
 					if(is_array($m)) {
 						$message .= implode("<br/>",$m);
-					}	
+					}
 				}
 			}
-			
+
 			if(is_array($runMessages) && count($runMessages)) {
 				foreach($runMessages as $m) {
 					if(is_array($m)) {
 						$message .= implode("<br/>",$m);
-					}	
+					}
 				}
-				
+
 				if(strlen($message)) {
 					$this->set('had_failures',true);
 				}
-			
-			}			
+
+			}
 			$upgrade = true;
 		} catch(Exception $e) {
 			$upgrade = false;
 			$message .= '<div class="alert-message block-message error"><p>' . t('An Unexpected Error occurred while upgrading: %s', $e->getMessage()) . '</p></div>';
 		}
-		
+
 		if ($upgrade) {
 			$completeMessage .= '<div class="alert-message block-message success"><p>' . t('Upgrade to <b>%s</b> complete!', APP_VERSION) . '</p></div>';
 			Config::save('SITE_APP_VERSION', APP_VERSION);
 		}
-		$this->set('completeMessage',$completeMessage);	
+		$this->set('completeMessage',$completeMessage);
 		$this->set('message', $message);
 	}
 }
-	
+
