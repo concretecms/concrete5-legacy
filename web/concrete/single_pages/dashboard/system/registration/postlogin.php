@@ -8,7 +8,7 @@ $h = Loader::helper('concrete/interface');
     <div class="ccm-pane-body"> 
     	
     	<div class="clearfix">
-            <label id="optionsCheckboxes"><strong><?php echo t('Redirect users to:')?></strong></label>
+            <label id="optionsCheckboxes"><?php echo t('Redirect users to')?></label>
             <div class="input">
 			  <ul class="inputs-list">
 			    <li>
