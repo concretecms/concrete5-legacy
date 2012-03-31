@@ -1,11 +1,5 @@
 <?
 defined('C5_EXECUTE') or die("Access Denied.");
-if (!defined('E_DEPRECATED')) {
-	error_reporting(E_ALL ^ E_NOTICE);
-} else {
-	error_reporting(E_ALL ^ E_NOTICE ^ E_DEPRECATED);
-}
-
 ini_set('display_errors', 1);
 if (!ini_get('safe_mode')) {
 	@set_time_limit(120);
@@ -137,7 +131,7 @@ class InstallController extends Controller {
 			$this->set('diffTest', false);
 		}
 		
-		if (version_compare(PHP_VERSION, '5.2.0', '>')) {
+		if (version_compare(PHP_VERSION, '5.2.0', '>=')) {
 			$phpVtest = true;
 		} else {
 			$phpVtest = false;
@@ -200,6 +194,7 @@ class InstallController extends Controller {
 		} catch(Exception $e) {
 			$js->error = true;
 			$js->message = $e->getMessage();
+			$this->reset();
 		}
 		print $jsx->encode($js);
 		exit;
@@ -220,7 +215,7 @@ class InstallController extends Controller {
 
 			// attempt to connect to the database
 			if (defined('DB_SERVER')) {
-				$db = Loader::db($DB_SERVER, $DB_USERNAME, $DB_PASSWORD, $DB_DATABASE, true);			
+				$db = Loader::db($DB_SERVER, $DB_USERNAME, $DB_PASSWORD, $DB_DATABASE, true);
 				$DB_SERVER = DB_SERVER;
 				$DB_DATABASE = DB_DATABASE;
 			} else {
@@ -241,6 +236,23 @@ class InstallController extends Controller {
 			}
 		}	
 		return $e;
+	}
+	
+	public function reset() {
+		// remove site.php so that we can try again ?
+		if (is_resource($this->fp)) {
+			fclose($this->fp);
+		}
+		if (file_exists(DIR_CONFIG_SITE . '/site_install.php')) {
+			unlink(DIR_CONFIG_SITE . '/site_install.php');
+		}
+		if (file_exists(DIR_CONFIG_SITE . '/site_install_user.php')) {
+			unlink(DIR_CONFIG_SITE . '/site_install_user.php');
+		}
+
+		if (file_exists(DIR_CONFIG_SITE . '/site.php')) {
+			unlink(DIR_CONFIG_SITE . '/site.php');
+		}
 	}
 	
 	public function configure() {	
@@ -315,7 +327,9 @@ class InstallController extends Controller {
 					$res = fwrite($this->fpu, $configuration);
 					fclose($this->fpu);
 					chmod(DIR_CONFIG_SITE . '/site_install_user.php', 0700);
-					$this->redirect('/');
+					if (PHP_SAPI != 'cli') {
+						$this->redirect('/');
+					}
 				} else {
 					throw new Exception(t('Unable to open config/site_user.php for writing.'));
 				}
@@ -330,13 +344,7 @@ class InstallController extends Controller {
 			}
 			
 		} catch (Exception $e) {
-			// remove site.php so that we can try again ?
-			if (is_resource($this->fp)) {
-				fclose($this->fp);
-			}
-			if (file_exists(DIR_CONFIG_SITE . '/site.php')) {
-				unlink(DIR_CONFIG_SITE . '/site.php');
-			}
+			$this->reset();
 			$this->set('error', $e);
 		}
 	}

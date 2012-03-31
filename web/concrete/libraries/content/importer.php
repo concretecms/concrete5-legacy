@@ -372,8 +372,8 @@ class ContentImporter {
 	protected function importTaskPermissions(SimpleXMLElement $sx) {
 		if (isset($sx->taskpermissions)) {
 			foreach($sx->taskpermissions->taskpermission as $tp) {
-				$pkg = ContentImporter::getPackageObject($at['package']);
-				$tpa = TaskPermission::addTask($tp['handle'], t($tp['name']), t($tp['description']), $pkg);
+				$pkg = ContentImporter::getPackageObject($tp['package']);
+				$tpa = TaskPermission::addTask($tp['handle'], $tp['name'], $tp['description'], $pkg);
 				if (isset($tp->access)) {
 					foreach($tp->access->children() as $ch) {
 						if ($ch->getName() == 'group') {

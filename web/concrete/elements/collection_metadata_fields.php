@@ -24,12 +24,10 @@ $usedKeysCombined = array_merge($requiredKeys, $usedKeys);
 	<h6><?=t("All Attributes")?></h6>
 	<div class="ccm-block-type-search-wrapper ">
 
-		<form onsubmit="return ccmPageAttributeSearchFormCheckResults()">
 		<div class="ccm-block-type-search">
 		<?=$form->text('ccmSearchAttributeListField', array('tabindex' => 1, 'autocomplete' => 'off', 'style' => 'width: 155px'))?>
 		</div>
 		
-		</form>
 	</div>
 	
 	<?
@@ -241,7 +239,6 @@ $(function() {
 	$(window).css('overflow', 'hidden');
 	$(window).unbind('keydown.attribs');
 	ccmPageAttributesMapKeys();
-	$("#ccmSearchAttributeListField").get(0).focus();
 
 	$("a.ccm-meta-close").click(function() {
 		var thisField = $(this).attr('id').substring(19);
