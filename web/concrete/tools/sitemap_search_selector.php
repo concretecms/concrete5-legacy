@@ -25,7 +25,7 @@ $("#ccm-ss-tabs a").click(function() {
 <li><a href="javascript:void(0)" id="ccm-show-search" onclick="ccm_sitemapSearchSelectorShowBottom()"><?=t('Search')?></a></li>
 </ul>
 
-<br/>
+<div class="clearfix"></div>
 
 <div id="ccm-show-sitemap-tab">
 <? $sitemapCombinedMode = true; ?>
