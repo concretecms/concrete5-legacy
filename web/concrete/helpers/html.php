@@ -221,7 +221,7 @@ class HtmlHelper {
 	
 	public function separateBody($html) {
 		$start = '';
-		$body = '';
+		$body = $html;
 		$end = '';
 		if (($spos = strpos($html, '<body')) !== false) {
 			$spos = strpos($html, '>', $spos)+1;
