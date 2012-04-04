@@ -56,7 +56,11 @@ $usedKeysCombined = array_merge($requiredKeys, $usedKeys);
 		<li class="icon-select-list-header"><span><?=t('Other')?></span></li>
 	<? }
 	
-	foreach($unsetattribs as $ak) { ?>
+	foreach($unsetattribs as $ak) {
+		if(is_null($ak)) {
+			continue;
+		}
+		?>
 		
 		<li id="sak<?=$ak->getAttributeKeyID()?>" class="ccm-attribute-available <? if (in_array($ak->getAttributeKeyID(), $usedKeysCombined)) { ?>ccm-attribute-added<? } ?>"><a style="background-image: url('<?=$ak->getAttributeKeyIconSRC()?>')" href="javascript:void(0)" onclick="ccmShowAttributeKey(<?=$ak->getAttributeKeyID()?>)"><?=$ak->getAttributeKeyName()?></a></li>	
 	
