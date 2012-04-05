@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-31 23:02+0900\n"
 "PO-Revision-Date: \n"
-"Last-Translator: \n"
+"Last-Translator: Katsuyuki Ueno <info@deerstudio.com>\n"
 "Language-Team: Usagi Project <concrete5@concrete5-japan.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
@@ -233,7 +233,7 @@ msgstr "*** 下記のメッセージに直接返信しないでください ***"
 
 #: web/concrete/mail/user_register.php:5
 msgid "Registration - A New User Has Registered"
-msgstr ""
+msgstr "ユーザー登録 - 新しいユーザーが登録されました"
 
 #: web/concrete/mail/user_register.php:6
 #, php-format
@@ -512,7 +512,7 @@ msgstr "AVI"
 
 #: web/concrete/config/file_types.php:27
 msgid "3GP"
-msgstr ""
+msgstr "3GP"
 
 #: web/concrete/config/file_types.php:28
 msgid "Plain Text"
@@ -953,7 +953,7 @@ msgstr "ホームページは削除できません。"
 #: web/concrete/elements/collection_delete.php:40
 #: web/concrete/elements/collection_mcd.php:52
 msgid "This page has been marked for deletion."
-msgstr "このページは削除対象です。"
+msgstr "このページは削除対象になりました。"
 
 #: web/concrete/elements/collection_delete.php:47
 #: web/concrete/elements/collection_mcd.php:60
@@ -1033,7 +1033,7 @@ msgstr "ページ削除"
 
 #: web/concrete/elements/collection_delete_external.php:48
 msgid "Remove this alias or external link?"
-msgstr ""
+msgstr "このエイリアス、もしくは外部リンクを削除しますか？"
 
 #: web/concrete/elements/block_edit_mode_disabled.php:8
 msgid "Content disabled in edit mode."
@@ -1144,7 +1144,7 @@ msgstr "基本プロパティー"
 
 #: web/concrete/elements/collection_add.php:30
 msgid "URL Slug"
-msgstr ""
+msgstr "ページパス"
 
 #: web/concrete/elements/collection_add.php:35
 msgid "Public Date/Time"
@@ -1850,7 +1850,7 @@ msgstr "検索条件を保存"
 
 #: web/concrete/elements/files/edit/image.php:17
 msgid "Undo"
-msgstr ""
+msgstr "取り消す"
 
 #: web/concrete/elements/files/edit/image.php:20
 msgid "Zoom"
@@ -1858,7 +1858,7 @@ msgstr "ズーム"
 
 #: web/concrete/elements/files/edit/image.php:27
 msgid "Rotate"
-msgstr ""
+msgstr "回転"
 
 #: web/concrete/elements/custom_style/css.php:7
 msgid "CSS ID"
@@ -2896,7 +2896,7 @@ msgstr "パスワード変更"
 
 #: web/concrete/single_pages/profile/edit.php:49
 msgid "Leave this blank to keep your current password."
-msgstr ""
+msgstr "パスワードを変更しない場合は空白のままにしてください。"
 
 #: web/concrete/single_pages/profile/edit.php:56
 msgid "Confirm New Password"
@@ -3470,7 +3470,7 @@ msgstr "<strong>%s</strong>個のアップデートが利用可能です。"
 
 #: web/concrete/single_pages/dashboard/extend/install.php:248
 msgid "No packages have been installed."
-msgstr "新しいパッケージがインストールされました。"
+msgstr "パッケージはなにもインストールされていません。"
 
 #: web/concrete/single_pages/dashboard/extend/install.php:252
 msgid "Awaiting Installation"
@@ -4560,11 +4560,11 @@ msgstr "有効 - 登録してすぐに有効"
 
 #: web/concrete/single_pages/dashboard/system/registration/public_registration.php:48
 msgid "Send email when a user registers"
-msgstr ""
+msgstr "ユーザー新規登録した時にメールを送る"
 
 #: web/concrete/single_pages/dashboard/system/registration/public_registration.php:49
 msgid "Email address"
-msgstr ""
+msgstr "メールアドレス"
 
 #: web/concrete/single_pages/dashboard/system/registration/public_registration.php:54
 msgid "CAPTCHA required"
@@ -5480,7 +5480,7 @@ msgstr "作成者"
 
 #: web/concrete/tools/i18n_js.php:111
 msgid "Choose a Page"
-msgstr ""
+msgstr "ページを選択"
 
 #: web/concrete/tools/i18n_js.php:112
 msgid "Viewing"
@@ -6202,11 +6202,11 @@ msgstr "更新日時"
 #: web/concrete/tools/files/properties.php:413
 #, php-format
 msgid "Total Downloads: %s"
-msgstr ""
+msgstr "ダウンロード総数: %s"
 
 #: web/concrete/tools/files/properties.php:414
 msgid "Most recent 20 downloads:"
-msgstr ""
+msgstr "最近の 20 ダウンロード:"
 
 #: web/concrete/tools/files/properties.php:418
 msgid "Download Time"
@@ -6903,7 +6903,7 @@ msgstr "属性IDが無効です。"
 
 #: web/concrete/controllers/dashboard/users/attributes.php:90
 msgid "Invalid Attribute Type."
-msgstr ""
+msgstr "無効な属性タイプです。"
 
 #: web/concrete/controllers/dashboard/users/attributes.php:128
 msgid "User Attribute Deleted."
@@ -7170,7 +7170,7 @@ msgstr "「%s」ファイルが見つかりませんでした"
 
 #: web/concrete/controllers/dashboard/system/backup_restore/backup.php:91
 msgid "Invalid backup file specified."
-msgstr ""
+msgstr "無効なバックアップファイルが指定されました。"
 
 #: web/concrete/controllers/dashboard/system/backup_restore/database.php:27
 msgid "Core database files and installed blocks refreshed."
@@ -8404,7 +8404,7 @@ msgstr "画像がみつかりません。"
 
 #: web/concrete/blocks/image/form.php:16
 msgid "Image to Display"
-msgstr ""
+msgstr "表示する画像"
 
 #: web/concrete/blocks/image/form.php:34
 msgid "Image On-State"
@@ -8416,7 +8416,7 @@ msgstr "マウスオーバー画像を選択してください"
 
 #: web/concrete/blocks/image/form.php:43
 msgid "Link and Caption"
-msgstr ""
+msgstr "リンクと見出し"
 
 #: web/concrete/blocks/image/form.php:46
 msgid "Image Links to:"
@@ -8436,11 +8436,11 @@ msgstr "外部URL"
 
 #: web/concrete/blocks/image/form.php:57
 msgid "Choose Page:"
-msgstr ""
+msgstr "選択ページ"
 
 #: web/concrete/blocks/image/form.php:63
 msgid "URL:"
-msgstr ""
+msgstr "URL:"
 
 #: web/concrete/blocks/image/form.php:71
 msgid "Alt Text/Caption"
@@ -8448,27 +8448,27 @@ msgstr "Altテキスト・キャプション"
 
 #: web/concrete/blocks/image/form.php:80
 msgid "Constrain Image Dimensions"
-msgstr ""
+msgstr "画像の縦横比を固定する。"
 
 #: web/concrete/blocks/image/form.php:90
 msgid "Max Width"
-msgstr ""
+msgstr "最大横幅"
 
 #: web/concrete/blocks/image/form.php:97
 msgid "Max Height"
-msgstr ""
+msgstr "最大縦幅"
 
 #: web/concrete/blocks/image/form.php:105
 msgid "Scale Image"
-msgstr ""
+msgstr "画像を拡大縮小"
 
 #: web/concrete/blocks/image/form.php:108
 msgid "Automatically"
-msgstr ""
+msgstr "自動で"
 
 #: web/concrete/blocks/image/form.php:109
 msgid "Force Exact Image Match"
-msgstr ""
+msgstr "画像サイズを強制で合わせる"
 
 #: web/concrete/blocks/guestbook/controller.php:39
 msgid "Adds blog-style comments (a guestbook) to your page."
@@ -8690,7 +8690,7 @@ msgstr "フォーム送信の後に特定のページに移動させますか？
 
 #: web/concrete/blocks/form/form_setup_html.php:93
 msgid "Add uploaded files to a set?"
-msgstr ""
+msgstr "アップロードした画像をセットに追加しますか？"
 
 #: web/concrete/blocks/form/form_setup_html.php:121
 msgid "Add a New Question"
@@ -9416,7 +9416,7 @@ msgstr "メール機能は無効。このメールはログに記録されまし
 
 #: web/concrete/helpers/file.php:299
 msgid "An error occured while attempting to determine file permissions."
-msgstr ""
+msgstr "ファイル権限の設定時にエラーが発生しました。"
 
 #: web/concrete/helpers/concrete/dashboard.php:113
 #, php-format
@@ -9564,7 +9564,7 @@ msgstr "マーケットプレイスに接続し、パッケージをインスト
 #: web/concrete/helpers/concrete/upgrade/version_54111.php:19
 #: web/concrete/helpers/concrete/upgrade/version_54111.php:20
 msgid "Layout"
-msgstr ""
+msgstr "レイアウト"
 
 #: web/concrete/helpers/concrete/upgrade/version_542.php:28
 msgid "Delete Users"
@@ -9950,70 +9950,50 @@ msgstr "ページを選択"
 #~ msgstr ""
 #~ "外部イメージエディタを使用するには、お使いのサーバーに cURL エクステンショ"
 #~ "ンが必要です。"
-
 #~ msgid "Leave blank if you'd like your password to remain the same"
 #~ msgstr "パスワードを変更されたくない場合は空白のままにしてください。"
-
 #~ msgid "Download Statistics"
 #~ msgstr "ダウンロード数"
-
 #~ msgid "Choose User/Group"
 #~ msgstr "ユーザー/グループを選択"
-
 #~ msgid "Add Group or User"
 #~ msgstr "グループやユーザーを追加"
-
 #~ msgid "Page Information"
 #~ msgstr "ページ情報"
-
 #~ msgid "Change"
 #~ msgstr "変更"
-
 #~ msgid "You must choose a page type."
 #~ msgstr "ページタイプを選択してください。"
-
 #~ msgid "Add User/Group"
 #~ msgstr "ユーザー・グループ追加"
-
 #~ msgid "concrete5.org Marketplace"
 #~ msgstr "concrete5.org マーケットプレイス"
-
 #~ msgid "Loading Details"
 #~ msgstr "ページ詳細"
-
 #~ msgid ""
 #~ "Add users or groups to determine access to the file manager. These "
 #~ "permissions affect only this set."
 #~ msgstr ""
 #~ "ファイルマネージャーにアクセスを許可するユーザー・グループを追加する。これ"
 #~ "らの権限はこのセットにのみ影響を与えます。"
-
 #~ msgid "Select Group"
 #~ msgstr "グループを選択"
-
 #~ msgid "Add-Ons &amp; Themes"
 #~ msgstr "アドオン &amp; テーマ"
-
 #~ msgid "IP Blacklist"
 #~ msgstr "IPブラックリスト"
-
 #~ msgid "Environment Information"
 #~ msgstr "環境情報"
-
 #~ msgid "Captcha Setup"
 #~ msgstr "Captcha設定"
-
 #~ msgid "Debug Settings"
 #~ msgstr "デバッグ設定"
-
 #~ msgid "Logging Settings"
 #~ msgstr "ログ設定"
-
 #~ msgid "Types"
 #~ msgstr "種類"
-
 #~ msgid "Email Importers"
 #~ msgstr "メール・インポーター"
-
 #~ msgid "User Groups"
 #~ msgstr "ユーザーグループ"
+
