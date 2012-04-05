@@ -75,8 +75,9 @@
 				print $val;
 			} else {
 				//print t('You must make %s executable in order to compare versions of pages.',DIR_FILES_BIN_HTMLDIFF);
-				$from = file_get_contents($fh->getTemporaryDirectory() . '/' . $src1);
-				$to = file_get_contents($fh->getTemporaryDirectory() . '/' . $src2);
+				$fh = Loader::helper('file');
+				$from = $fh->getContents($fh->getTemporaryDirectory() . '/' . $src1);
+				$to = $fh->getContents($fh->getTemporaryDirectory() . '/' . $src2);
 				print Loader::helper('html')->diff($from, $to);
 			}
 			exit;
