@@ -7,9 +7,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: concrete5.4.2.1 Japanese\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-03-31 23:02+0900\n"
+"POT-Creation-Date: 2012-04-09 23:18+0900\n"
 "PO-Revision-Date: \n"
-"Last-Translator: Katsuyuki Ueno <info@deerstudio.com>\n"
+"Last-Translator: \n"
 "Language-Team: Usagi Project <concrete5@concrete5-japan.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
@@ -349,20 +349,20 @@ msgstr "投稿者"
 msgid "Built with <a href=\"http://www.concrete5.org/\" alt=\"Free Content Management System\" target=\"_blank\">concrete5 - an open source CMS"
 msgstr "Built with <a href=\"http://www.concrete5-japan.org/\" alt=\"Free Content Management System\" target=\"_blank\">concrete5 - オープンソース CMS"
 
-#: web/concrete/themes/dashboard/elements/header.php:95
+#: web/concrete/themes/dashboard/elements/header.php:90
 msgid "Return to Website"
 msgstr "サイトに戻る"
 
-#: web/concrete/themes/dashboard/elements/header.php:97
+#: web/concrete/themes/dashboard/elements/header.php:92
 #, php-format
 msgid "Powered by <a href=\"%s\">concrete5</a>."
 msgstr "Powered by <a href=\"%s\">concrete5</a>."
 
-#: web/concrete/themes/dashboard/elements/header.php:102
+#: web/concrete/themes/dashboard/elements/header.php:97
 msgid "Dashboard"
 msgstr "管理画面"
 
-#: web/concrete/themes/dashboard/elements/header.php:103
+#: web/concrete/themes/dashboard/elements/header.php:98
 msgid "Intelligent Search"
 msgstr "検索"
 
@@ -2503,8 +2503,8 @@ msgid "Forgot Your Password?"
 msgstr "パスワードを忘れた方はこちら"
 
 #: web/concrete/single_pages/login.php:239
-msgid "If you've forgotten your password, enter your email address below. We will reset it to a new password, and send the new one to you."
-msgstr "パスワードをお忘れの方は、登録時のメールアドレスを入力してください。パスワードをリセットして新しいパスワードをメールでお送りします。"
+msgid "Enter your email address below. We will send you instructions to reset your password."
+msgstr ""
 
 #: web/concrete/single_pages/login.php:254
 msgid "Reset and Email Password"
@@ -4120,52 +4120,65 @@ msgstr "このスクラップブックは空です。"
 msgid "Download Update"
 msgstr "更新をダウンロード"
 
-#: web/concrete/single_pages/dashboard/system/backup_restore/update.php:8
-#: web/concrete/single_pages/dashboard/system/backup_restore/update.php:32
-#: web/concrete/single_pages/dashboard/system/backup_restore/update.php:63
-#, php-format
-msgid "Current Version %s"
-msgstr "現バージョン: %s"
+#: web/concrete/single_pages/dashboard/system/backup_restore/update.php:9
+#: web/concrete/single_pages/dashboard/system/backup_restore/update.php:70
+msgid "Check For Updates"
+msgstr ""
 
-#: web/concrete/single_pages/dashboard/system/backup_restore/update.php:14
+#: web/concrete/single_pages/dashboard/system/backup_restore/update.php:11
+#: web/concrete/single_pages/dashboard/system/backup_restore/update.php:72
+#, php-format
+msgid "Currently Running %s"
+msgstr ""
+
+#: web/concrete/single_pages/dashboard/system/backup_restore/update.php:15
+msgid "Available Update"
+msgstr ""
+
+#: web/concrete/single_pages/dashboard/system/backup_restore/update.php:21
 #, php-format
 msgid "Version: %s"
 msgstr "バージョン： %s"
 
-#: web/concrete/single_pages/dashboard/system/backup_restore/update.php:14
+#: web/concrete/single_pages/dashboard/system/backup_restore/update.php:21
 #, php-format
 msgid "Release Date: %s"
 msgstr "リリース日時： %s"
 
-#: web/concrete/single_pages/dashboard/system/backup_restore/update.php:20
+#: web/concrete/single_pages/dashboard/system/backup_restore/update.php:27
 msgid "Note: Downloading an update will NOT automatically install it."
 msgstr "注：アップデートをダウンロードしても、自動的にはインストールされません。"
 
-#: web/concrete/single_pages/dashboard/system/backup_restore/update.php:25
+#: web/concrete/single_pages/dashboard/system/backup_restore/update.php:32
 msgid "Install Local Update"
 msgstr "ローカルアップデートをインストール"
 
-#: web/concrete/single_pages/dashboard/system/backup_restore/update.php:27
+#: web/concrete/single_pages/dashboard/system/backup_restore/update.php:34
 #, php-format
 msgid "Make sure you <a href=\"%s\">backup your database</a> before updating."
 msgstr "アップデートする前に、必ず <a href=\"%s\">データベースをバックアップ</a> してください"
 
-#: web/concrete/single_pages/dashboard/system/backup_restore/update.php:31
+#: web/concrete/single_pages/dashboard/system/backup_restore/update.php:38
 #, php-format
 msgid "An update is available. Click below to update to <strong>%s</strong>."
 msgstr "アップデートが利用可能です。以下をクリックして<strong>%s</strong>にアップデートしてください。"
 
-#: web/concrete/single_pages/dashboard/system/backup_restore/update.php:41
+#: web/concrete/single_pages/dashboard/system/backup_restore/update.php:39
+#, php-format
+msgid "Current Version %s"
+msgstr "現バージョン: %s"
+
+#: web/concrete/single_pages/dashboard/system/backup_restore/update.php:48
 msgid "Several updates are available. Please choose the desired update from the list below."
 msgstr "いくつかのアップデートが利用可能です。以下のリストから適用したいアップデートを選択してください。"
 
-#: web/concrete/single_pages/dashboard/system/backup_restore/update.php:42
+#: web/concrete/single_pages/dashboard/system/backup_restore/update.php:49
 msgid "Current Version"
 msgstr "現バージョン： %s"
 
-#: web/concrete/single_pages/dashboard/system/backup_restore/update.php:62
-msgid "You are currently up to date!"
-msgstr "現在は最新です！"
+#: web/concrete/single_pages/dashboard/system/backup_restore/update.php:77
+msgid "No updates available."
+msgstr ""
 
 #: web/concrete/single_pages/dashboard/system/backup_restore/backup.php:11
 msgid "Confirm Delete"
@@ -6754,8 +6767,6 @@ msgid "Password incorrect. Please try again."
 msgstr "パスワードが間違っています。"
 
 #: web/concrete/controllers/profile/controller.php:35
-#: web/concrete/controllers/profile/edit.php:14
-#: web/concrete/controllers/profile/friends.php:34
 msgid "You must sign in order to access this page!"
 msgstr "このページを閲覧するにはログインが必要です"
 
@@ -6831,6 +6842,7 @@ msgid "This page will be published beneath %s."
 msgstr "このページは %s 以下の階層に公開されます。"
 
 #: web/concrete/controllers/dashboard/users/add_group.php:39
+#: web/concrete/controllers/dashboard/users/groups.php:29
 #, php-format
 msgid "A group named \"%s\" already exists"
 msgstr "グループ名\"%s\"は既に存在します"
@@ -7136,30 +7148,30 @@ msgstr "ファイル属性が新規作成されました。"
 msgid "File Attribute Updated."
 msgstr "ファイル属性が更新されました。"
 
-#: web/concrete/controllers/dashboard/system/backup_restore/update.php:74
+#: web/concrete/controllers/dashboard/system/backup_restore/update.php:80
 #, php-format
 msgid "The directory %s does not exist."
 msgstr "ディレクトリ「%s」がサーバー上に存在していません。"
 
-#: web/concrete/controllers/dashboard/system/backup_restore/update.php:76
+#: web/concrete/controllers/dashboard/system/backup_restore/update.php:82
 #, php-format
 msgid "The directory %s must be writable by the web server."
 msgstr "ディレクトリー「%s」はサーバーが読み書きできるようにしてください。"
 
-#: web/concrete/controllers/dashboard/system/backup_restore/update.php:110
+#: web/concrete/controllers/dashboard/system/backup_restore/update.php:116
 msgid "Unable to retrieve software from update server."
 msgstr "サーバーから更新ファイルをダウンロードできませんでした。"
 
-#: web/concrete/controllers/dashboard/system/backup_restore/update.php:134
 #: web/concrete/controllers/dashboard/system/backup_restore/update.php:140
+#: web/concrete/controllers/dashboard/system/backup_restore/update.php:146
 msgid "Invalid version"
 msgstr "無効なバージョンです"
 
-#: web/concrete/controllers/dashboard/system/backup_restore/update.php:143
+#: web/concrete/controllers/dashboard/system/backup_restore/update.php:149
 msgid "You may only apply updates with a greater version number than the version you are currently running."
 msgstr "今のconcrete5バージョンが、最新バージョンよりも古い場合のみ、アップグレード可能です。"
 
-#: web/concrete/controllers/dashboard/system/backup_restore/update.php:152
+#: web/concrete/controllers/dashboard/system/backup_restore/update.php:158
 msgid "Unable to write to config/site.php. You must make config/site.php writable in order to upgrade in this manner."
 msgstr "config/site.php ファイルを書き換えできませんでした。更新するには、config/site.phpを書き換えられなくてはいけません。"
 
@@ -8118,6 +8130,7 @@ msgstr "このアンケートに既に答えています。"
 
 #: web/concrete/blocks/survey/view.php:32
 #: web/concrete/blocks/survey/edit.php:17
+#: web/concrete/blocks/survey/add.php:17
 msgid "Question"
 msgstr "質問"
 
@@ -8143,14 +8156,17 @@ msgid "Please Login to Vote"
 msgstr "回答にはログインする必要があります"
 
 #: web/concrete/blocks/survey/edit.php:21
+#: web/concrete/blocks/survey/add.php:20
 msgid "Open to all site visitors?"
 msgstr "一般公開させますか？"
 
 #: web/concrete/blocks/survey/edit.php:24
+#: web/concrete/blocks/survey/add.php:23
 msgid "No. Registration is required to answer."
 msgstr "いいえ、ユーザー登録者のみが回答可能"
 
 #: web/concrete/blocks/survey/edit.php:42
+#: web/concrete/blocks/survey/add.php:31
 msgid "Add option"
 msgstr "答えを追加"
 
@@ -9946,54 +9962,84 @@ msgid "Select Page"
 msgstr "ページを選択"
 
 #~ msgid ""
+#~ "If you've forgotten your password, enter your email address below. We "
+#~ "will reset it to a new password, and send the new one to you."
+#~ msgstr ""
+#~ "パスワードをお忘れの方は、登録時のメールアドレスを入力してください。パス"
+#~ "ワードをリセットして新しいパスワードをメールでお送りします。"
+
+#~ msgid "You are currently up to date!"
+#~ msgstr "現在は最新です！"
+
+#~ msgid ""
 #~ "You must have the curl extension installed to use the remote image editor."
 #~ msgstr ""
 #~ "外部イメージエディタを使用するには、お使いのサーバーに cURL エクステンショ"
 #~ "ンが必要です。"
+
 #~ msgid "Leave blank if you'd like your password to remain the same"
 #~ msgstr "パスワードを変更されたくない場合は空白のままにしてください。"
+
 #~ msgid "Download Statistics"
 #~ msgstr "ダウンロード数"
+
 #~ msgid "Choose User/Group"
 #~ msgstr "ユーザー/グループを選択"
+
 #~ msgid "Add Group or User"
 #~ msgstr "グループやユーザーを追加"
+
 #~ msgid "Page Information"
 #~ msgstr "ページ情報"
+
 #~ msgid "Change"
 #~ msgstr "変更"
+
 #~ msgid "You must choose a page type."
 #~ msgstr "ページタイプを選択してください。"
+
 #~ msgid "Add User/Group"
 #~ msgstr "ユーザー・グループ追加"
+
 #~ msgid "concrete5.org Marketplace"
 #~ msgstr "concrete5.org マーケットプレイス"
+
 #~ msgid "Loading Details"
 #~ msgstr "ページ詳細"
+
 #~ msgid ""
 #~ "Add users or groups to determine access to the file manager. These "
 #~ "permissions affect only this set."
 #~ msgstr ""
 #~ "ファイルマネージャーにアクセスを許可するユーザー・グループを追加する。これ"
 #~ "らの権限はこのセットにのみ影響を与えます。"
+
 #~ msgid "Select Group"
 #~ msgstr "グループを選択"
+
 #~ msgid "Add-Ons &amp; Themes"
 #~ msgstr "アドオン &amp; テーマ"
+
 #~ msgid "IP Blacklist"
 #~ msgstr "IPブラックリスト"
+
 #~ msgid "Environment Information"
 #~ msgstr "環境情報"
+
 #~ msgid "Captcha Setup"
 #~ msgstr "Captcha設定"
+
 #~ msgid "Debug Settings"
 #~ msgstr "デバッグ設定"
+
 #~ msgid "Logging Settings"
 #~ msgstr "ログ設定"
+
 #~ msgid "Types"
 #~ msgstr "種類"
+
 #~ msgid "Email Importers"
 #~ msgstr "メール・インポーター"
+
 #~ msgid "User Groups"
 #~ msgstr "ユーザーグループ"
-
