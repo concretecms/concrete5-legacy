@@ -172,7 +172,7 @@
         <page name="テーマ" path="/dashboard/pages/themes" filename="/dashboard/pages/themes/view.php" pagetype="" description="デザイン管理" package="">
 			<attributes>
 				<attributekey handle="meta_keywords">
-					<value>new theme, installed theme, active theme, change theme, template, css</value>
+					<value>new theme, theme, active theme, change theme, template, css</value>
 				</attributekey>
 			</attributes>
         </page>
@@ -253,7 +253,7 @@
         <page name="機能追加" path="/dashboard/extend/install" filename="/dashboard/extend/install.php" pagetype="" description="アドオン・テーマをインストール" package="">
 			<attributes>
 				<attributekey handle="meta_keywords">
-					<value>add-on, addon, add on, package,applications, ecommerce, discussions, forums, themes, templates, blocks</value>
+					<value>add-on, addon, ecommerce, install, discussions, forums, themes, templates, blocks</value>
 				</attributekey>
 			</attributes>
         </page>
@@ -274,7 +274,7 @@
         <page name="テーマを入手" path="/dashboard/extend/themes" filename="/dashboard/extend/themes.php" pagetype="" description="concrete5.orgからテーマをダウンロード" package="">
 			<attributes>
 				<attributekey handle="meta_keywords">
-					<value>buy theme, new theme, install theme, marketplace, template</value>
+					<value>buy theme, new theme, marketplace, template</value>
 				</attributekey>
 			</attributes>
         </page>
@@ -345,7 +345,7 @@
         <page name="プリティURL" path="/dashboard/system/seo/urls" filename="/dashboard/system/seo/urls.php" pagetype="" description="" package="">
 			<attributes>
 				<attributekey handle="meta_keywords">
-					<value>vanity,pretty url, clean url, seo</value>
+					<value>vanity, pretty url, seo</value>
 				</attributekey>
 			</attributes>
         </page>
