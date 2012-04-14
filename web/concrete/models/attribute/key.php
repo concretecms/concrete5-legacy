@@ -556,10 +556,21 @@ class AttributeKey extends Object {
 		$e = true;
 		if (method_exists($at->controller, 'validateForm')) {
 			$e = $at->controller->validateForm($at->controller->post());
+      // This leaves everything as it is unless validateForm returns
+      // and object. This gives room in the future for custom
+      // attribute types that can validate themselves and pass
+      // a validation error object to display error messages
+      if(is_object($e)) {
+        $this->akErrors = $e;
+        $e = false;
+      }
 		}
 		return $e;
 	}
 
+  public function getValidationErrors() {
+    return $this->akErrors;
+  }
 
 	public function createIndexedSearchTable() {
 		if ($this->getIndexedSearchTable() != false) {
