@@ -109,8 +109,8 @@ class ConcreteDashboardTaskPermissionsHelper {
 			
 			$html .= '<tr class="ccm-permissions-access">
 				<td><strong>' . $tp->getTaskPermissionName() . '</strong></td>
-				<td>' . $form->radio($id . $tpID, '1', $canRead) . ' ' . t('Yes') . '</td>
-				<td>' . $form->radio($id . $tpID, 0, $canRead) . ' ' . t('No') . '</td>
+				<td>' . $form->radio($id . $tpID, '1', $canRead ? true : "") . ' ' . t('Yes') . '</td>
+				<td>' . $form->radio($id . $tpID, 0, $canRead ? "" : true) . ' ' . t('No') . '</td>
 			</tr>';
 		}
 		
