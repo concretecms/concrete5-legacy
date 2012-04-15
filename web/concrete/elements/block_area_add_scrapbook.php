@@ -20,7 +20,7 @@ ccmPrepareScrapbookItemsDelete=function(){
 		}  
 		$.ajax({
 			type: 'POST',
-			url: CCM_DISPATCHER_FILENAME,
+			url: CCM_REL+'/'+CCM_DISPATCHER_FILENAME,
 			data: qStr,
 			success: function(msg) {
 				if(pcID) $("#ccm-pc-" + pcID).slideUp({easing: 'easeOutExpo', duration: 300});
