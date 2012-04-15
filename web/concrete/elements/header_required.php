@@ -46,7 +46,6 @@ if($c->getCollectionAttributeValue('exclude_search_index')) { ?>
 <?php $u = new User(); ?>
 <script type="text/javascript">
 <?php
-	echo("var CCM_DISPATCHER_FILENAME = '" . DIR_REL . '/' . DISPATCHER_FILENAME . "';\r");
 	echo("var CCM_CID = ".($cID?$cID:0).";\r");
 	if (isset($isEditMode)) {
 		echo("var CCM_EDIT_MODE = {$isEditMode};\r");
@@ -59,6 +58,7 @@ var CCM_IMAGE_PATH = "<?php echo ASSETS_URL_IMAGES?>";
 var CCM_TOOLS_PATH = "<?php echo REL_DIR_FILES_TOOLS_REQUIRED?>";
 var CCM_BASE_URL = "<?php echo BASE_URL?>";
 var CCM_REL = "<?php echo DIR_REL?>";
+var CCM_DISPATCHER_FILENAME = "<?php echo DISPATCHER_FILENAME?>";
 
 </script>
 
