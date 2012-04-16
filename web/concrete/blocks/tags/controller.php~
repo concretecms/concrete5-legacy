@@ -39,13 +39,8 @@ class TagsBlockController extends BlockController {
 	
 	protected function loadAttribute() {
 		Loader::model('attribute/categories/collection');
-		if ($this->customHandle && is_object(CollectionAttributeKey::getByHandle($this->customHandle))) {
-					$ak = CollectionAttributeKey::getByHandle($this->customHandle);
-					return $ak;
-			} else {
-			$ak = CollectionAttributeKey::getByHandle($this->attributeHandle);
-			return $ak;
-			}
+		$ak = CollectionAttributeKey::getByHandle($this->attributeHandle);
+		return $ak;
 	}
 	
 	public function edit() { 
