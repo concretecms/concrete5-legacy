@@ -17,11 +17,11 @@ class CacheLocal {
 
 class Cache {
 	
-	public function key($type, $id) {
+	public static function key($type, $id) {
 		return md5($type . $id);
 	}
 	
-	public function getLibrary() {
+	public static function getLibrary() {
 		static $cache;
 		if (!isset($cache) && defined('DIR_FILES_CACHE')) {
 			if (is_dir(DIR_FILES_CACHE) && is_writable(DIR_FILES_CACHE)) {
@@ -112,7 +112,7 @@ class Cache {
 	 * If $forceGet is true, we sidestep ENABLE_CACHE. This is for certain operations that
 	 * the cache must always be enabled for (getting remote data, etc..)
 	 */	
-	public function get($type, $id, $mustBeNewerThan = false, $forceGet = false) {
+	public static function get($type, $id, $mustBeNewerThan = false, $forceGet = false) {
 		$loc = CacheLocal::get();
 		$key = Cache::key($type, $id);
 		if ($loc->enabled && array_key_exists($key, $loc->cache)) {

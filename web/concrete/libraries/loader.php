@@ -189,7 +189,7 @@
 		 * $db->query($sql);
 		 * </code>
 		 */
-		public function db($server = null, $username = null, $password = null, $database = null, $create = false, $autoconnect = true) {
+		public static function db($server = null, $username = null, $password = null, $database = null, $create = false, $autoconnect = true) {
 			static $_dba;
 			if ((!isset($_dba) || $create) && ($autoconnect)) {
 				if ($server == null && defined('DB_SERVER')) {	
@@ -226,7 +226,7 @@
 		/** 
 		 * Loads a helper file. If the same helper file is contained in both the core concrete directory and the site's directory, it will load the site's first, which could then extend the core.
 		 */
-		public function helper($file, $pkgHandle = false) {
+		public static function helper($file, $pkgHandle = false) {
 		
 			static $instances = array();
 			$class = false;		
@@ -282,7 +282,7 @@
 		/**
 		 * @access private
 		 */
-		public function package($pkgHandle) {
+		public static function package($pkgHandle) {
 			// loads and instantiates the object
 			$dir = (is_dir(DIR_PACKAGES . '/' . $pkgHandle)) ? DIR_PACKAGES : DIR_PACKAGES_CORE;
 			if (file_exists($dir . '/' . $pkgHandle . '/' . FILENAME_PACKAGE_CONTROLLER)) {
