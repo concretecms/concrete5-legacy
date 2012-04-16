@@ -13,6 +13,5 @@
 		<field name="cloudCount" type="I">
 			<default value="10"/>
 		</field>
-		<field name="customHandle" type="C" size="255"></field>
 	</table>
 </schema>
