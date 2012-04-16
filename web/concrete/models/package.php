@@ -561,7 +561,7 @@ class Package extends Object {
 	 * @param string $pkgHandle
 	 * @return Package
 	 */
-	public function getByHandle($pkgHandle) {
+	public static function getByHandle($pkgHandle) {
 		$db = Loader::db();
 		$row = $db->GetRow("select * from Packages where pkgHandle = ?", array($pkgHandle));
 		if ($row) {

@@ -59,7 +59,7 @@ class Config extends Object {
 	* @param bool $getFullObject
 	* @return string or full object $cv
 	*/
-	public function get($cfKey, $getFullObject = false) {
+	public static function get($cfKey, $getFullObject = false) {
 		$pkgID = null;
 		if (isset($this) && is_object($this->pkg)) {
 			$pkgID = $this->pkg->getPackageID();

@@ -102,7 +102,7 @@ class Log {
 	/** 
 	 * Removes all "custom" log entries - these are entries that an app owner has written and don't have a builtin C5 type
 	 */
-	public function clearCustom() {
+	public static function clearCustom() {
 		$db = Loader::db();
 		$db->Execute("delete from Logs where logIsInternal = 0");
 	}
@@ -111,12 +111,12 @@ class Log {
 	 * Removes log entries by type- these are entries that an app owner has written and don't have a builtin C5 type
 	 * @param string $type Is a lowercase string that uses underscores instead of spaces, e.g. sent_emails
 	 */
-	public function clearByType($type) {
+	public static function clearByType($type) {
 		$db = Loader::db();
 		$db->Execute("delete from Logs where logType = ?", array($type));
 	}
 	
-	public function clearInternal() {
+	public static function clearInternal() {
 		$db = Loader::db();
 		$db->Execute("delete from Logs where logIsInternal = 1");
 	}
@@ -125,7 +125,7 @@ class Log {
 	/** 
 	 * Removes all log entries
 	 */
-	public function clearAll() {
+	public static function clearAll() {
 		$db = Loader::db();
 		$db->Execute("delete from Logs");
 	}

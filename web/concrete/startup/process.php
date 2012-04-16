@@ -22,7 +22,7 @@
 	}
 	
 	// Modification for step editing
-	$step = ($_REQUEST['step']) ? '&step=' . $_REQUEST['step'] : '';
+	$step = (isset($_REQUEST['step'])) ? '&step=' . $_REQUEST['step'] : '';
 	
 	// if we don't have a valid token we die
 	$valt = Loader::helper('validation/token');
@@ -33,7 +33,7 @@
 		$u = new User();
 		$u->refreshCollectionEdit($c);
 	}
-	if ($_REQUEST['btask'] && $valt->validate()) {
+	if (isset($_REQUEST['btask']) && $valt->validate()) {
 	
 		// these are tasks dealing with blocks (moving up, down, removing)
 		
@@ -345,7 +345,7 @@
 		}
 	}
 	
-	if ($_GET['atask'] && $valt->validate()) {
+	if (isset($_GET['atask']) && $valt->validate()) {
 		switch($_GET['atask']) { 		
 			case 'update':
 				if ($cp->canAdminPage()) {
@@ -535,7 +535,7 @@
 		}
 	}
 	
-	if ($_REQUEST['ctask'] && $valt->validate()) {
+	if (isset($_REQUEST['ctask']) && $valt->validate()) {
 		
 		switch ($_REQUEST['ctask']) {
 			case 'delete':
@@ -670,7 +670,7 @@
 		}
 	}			
 	
-	if ($_REQUEST['ptask'] && $valt->validate()) {
+	if (isset($_REQUEST['ptask']) && $valt->validate()) {
 		Loader::model('pile');
 
 		// piles !
@@ -708,7 +708,7 @@
 		}
 	}
 	
-	if ($_REQUEST['processBlock'] && $valt->validate()) {
+	if (isset($_REQUEST['processBlock']) && $valt->validate()) {
 		
 		// some admin (or unscrupulous person) is doing something to a block of content on the site
 		$edit = ($_REQUEST['enterViewMode']) ? "" : "&mode=edit";
@@ -806,7 +806,7 @@
 					$ax = Area::get($cx, STACKS_AREA_NAME);
 				}
 				$ap = new Permissions($ax);	
-				if ($_REQUEST['btask'] == 'alias_existing_block') {
+				if (isset($_REQUEST['btask']) && $_REQUEST['btask'] == 'alias_existing_block') {
 					if (is_array($_REQUEST['pcID'])) {		
 						Loader::model('pile');
 
@@ -896,7 +896,7 @@
 		}	
 	}
 
-	if ($_POST['processCollection'] && $valt->validate()) { 
+	if (isset($_POST['processCollection']) && $valt->validate()) { 
 
 	
 		/*

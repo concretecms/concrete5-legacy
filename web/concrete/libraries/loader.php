@@ -23,7 +23,7 @@
 		/** 
 		 * Loads a library file, either from the site's files or from Concrete's
 		 */
-		public function library($lib, $pkgHandle = null) {
+		public static function library($lib, $pkgHandle = null) {
 		
 			if (file_exists(DIR_LIBRARIES . '/' . $lib . '.php')) {
 				require_once(DIR_LIBRARIES . '/' . $lib . '.php');
@@ -46,7 +46,7 @@
 		/** 
 		 * Loads a model from either an application, the site, or the core Concrete directory
 		 */
-		public function model($mod, $pkgHandle = null) {
+		public static function model($mod, $pkgHandle = null) {
 
 			if (file_exists(DIR_MODELS . '/' . $mod . '.php')) {
 				require_once(DIR_MODELS . '/' . $mod . '.php');
@@ -66,7 +66,7 @@
 			Loader::legacyModel($mod);
 		}
 		
-		protected function legacyModel($model) {
+		protected static function legacyModel($model) {
 			switch($model) {
 				case 'collection_attributes':
 					Loader::model('attribute/categories/collection');
@@ -341,7 +341,7 @@
 		/** 
 		 * Loads a controller for either a page or view
 		 */
-		public function controller($item) {
+		public static function controller($item) {
 			
 			$include = false;
 			
