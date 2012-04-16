@@ -92,7 +92,7 @@ class Config extends Object {
 	}	
 	
 	// Misleading old functionname
-	public function getOrDefine($key, $defaultValue) {
+	public static function getOrDefine($key, $defaultValue) {
 		return self::getAndDefine($key, $defaultValue);
 	}
 	/**
@@ -101,7 +101,7 @@ class Config extends Object {
 	* @param string $key
 	* @param string $defaultValue
 	*/
-	public function getAndDefine($key, $defaultValue) {
+	public static function getAndDefine($key, $defaultValue) {
 		$val = Config::get($key, true);
 		if (!$val) {
 			$val = $defaultValue;

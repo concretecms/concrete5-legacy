@@ -79,7 +79,7 @@
 			
 		}
 		
-		public function get(&$c, $cvID) {
+		public static function get(&$c, $cvID) {
 			if (is_string($cvID)) {
 				$cvID = CollectionVersion::getNumericalVersionID($c->getCollectionID(), $cvID);
 			}

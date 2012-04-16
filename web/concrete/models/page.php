@@ -37,6 +37,7 @@ class Page extends Collection {
 	 * @return Page
 	 */
 	public static function getByID($cID, $versionOrig = 'RECENT', $class = 'Page') {
+		$version = 0;
 		if ($versionOrig) {
 			$version = CollectionVersion::getNumericalVersionID($cID, $versionOrig);
 		}

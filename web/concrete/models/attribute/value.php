@@ -52,6 +52,7 @@ class AttributeValueList extends Object implements Iterator {
 class AttributeValue extends Object {
 	
 	protected $attributeType;
+	protected $attributeKey;
 	
 	public static function getByID($avID) {
 		$av = new AttributeValue();

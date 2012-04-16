@@ -23,7 +23,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
  */
 class FileTypeList {
 	
-	public function getInstance() {
+	public static function getInstance() {
 		static $instance;
 		if (!isset($instance)) {
 			$v = __CLASS__;

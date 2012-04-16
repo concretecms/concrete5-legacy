@@ -124,7 +124,7 @@
 		 * If it isn't there and pkgHandle is defined it checks in root/concrete/packages/pkghandle
 		 * Finally it checks if its in root/concrete/tools
 		 */
-		public function tool($file, $args = null, $pkgHandle= null) {
+		public static function tool($file, $args = null, $pkgHandle= null) {
 		   if (is_array($args)) {
 			   extract($args);
 		   }
@@ -147,7 +147,7 @@
 		 * <?php Loader::block('autonav'); ?>
 		 * </code>
 		 */
-		public function block($bl) {
+		public static function block($bl) {
 			if (file_exists(DIR_FILES_BLOCK_TYPES . '/' . $bl . '/' . FILENAME_BLOCK_CONTROLLER)) {
 				require_once(DIR_FILES_BLOCK_TYPES . '/' . $bl . '/' . FILENAME_BLOCK_CONTROLLER);
 			} else if (file_exists(DIR_FILES_BLOCK_TYPES_CORE . '/' . $bl . '/' . FILENAME_BLOCK_CONTROLLER)) {
@@ -173,7 +173,7 @@
 		 * Loads the various files for the database abstraction layer. We would bundle these in with the db() method below but
 		 * these need to be loaded before the models which need to be loaded before db() 
 		 */
-		public function database() {
+		public static function database() {
 			Loader::library('3rdparty/adodb/adodb.inc');
 			Loader::library('3rdparty/adodb/adodb-exceptions.inc');
 			Loader::library('3rdparty/adodb/adodb-active-record.inc');
