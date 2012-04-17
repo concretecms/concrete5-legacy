@@ -47,10 +47,17 @@ if(!$ak instanceof CollectionAttributeKey) {?>
 	</div>
 	</div>
 
+	<div class="clearfix">
+	<?=$form->label('customHandle', t('Custom Tag Attribute Handle'))?>
+	<div class="input">
+		<?php echo $form->text('customHandle',$customHandle);?>
+	</div>
+	</div>
+
 </div>
 
 <div id="ccm-tagsPane-advanced" class="ccm-tagsPane" style="display:none";>
-	<div class="clearfix">
+	<div class="clearfix" style="clear: both">
 	<label><?=t('Link Tags to Page')?></label>
 	<div class="input">
 		<?php
