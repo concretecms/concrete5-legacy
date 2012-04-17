@@ -23,9 +23,6 @@ class HtmlDiff {
 	}
 	
 	public function diff($from, $to) {
-		Loader::library('3rdparty/php-diff/Diff');
-		Loader::library('3rdparty/php-diff/Diff/Renderer/Html/Markup');
-		
 		$a = $this->htmlToList($from);
 		$b = $this->htmlToList($to);
 		
@@ -74,7 +71,9 @@ class HtmlDiff {
 			if ($mode == 'tag') {
 				if ($c == '>') {
 					$cur .= $b > 0 ? ']' : $c;
-					array_push($out, $cur);
+					if ($cur != '') {
+						array_push($out, $cur);
+					}
 					$cur = '';
 					$mode = 'char';
 				} else {
