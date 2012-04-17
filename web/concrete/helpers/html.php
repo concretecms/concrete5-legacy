@@ -210,10 +210,10 @@ class HtmlHelper {
 		$fromElems = $this->separateBody($from);
 		$toElems = $this->separateBody($to);
 		
-		Loader::library('3rdparty/daisydiff/HTMLDiff');
-		$diff = new HTMLDiffer();
-		$ret = str_replace('</head>', '<style type="text/css">@import "' . ASSETS_URL_CSS . '/ccm.daisydiff.css";</style></head>', $fromElems['start']);
-		$ret .= $diff->htmlDiff($fromElems['body'], $toElems['body']);
+		Loader::library('3rdparty/htmldiff/htmldiff');
+		$diff = new HtmlDiff();
+		$ret = str_replace('</head>', '<style type="text/css">@import "' . ASSETS_URL_CSS . '/ccm.compare.css";</style></head>', $fromElems['start']);
+		$ret .= $diff->diff($fromElems['body'], $toElems['body']);
 		$ret .= $fromElems['end'];
 		
 		return $ret;
