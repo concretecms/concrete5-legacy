@@ -317,6 +317,7 @@
 		 */
 		public function pageTypeControllerPath($ctHandle) {
 			
+			$path = false;
 			Loader::model('collection_types');
 			$ct = CollectionType::getByHandle($ctHandle);
 			if (!is_object($ct)) {
@@ -344,6 +345,7 @@
 		public static function controller($item) {
 			
 			$include = false;
+			$path = false;
 			
 			if (is_string($item)) {
 				$db = Loader::db();
@@ -448,7 +450,7 @@
 			}
 			
 			if (!isset($controller)) {
-				if ($class && class_exists($class)) {
+				if (isset($class) && class_exists($class)) {
 					// now we get just the filename for this guy, so we can extrapolate
 					// what our controller is named
 					$controller = new $class($item);

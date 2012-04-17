@@ -34,6 +34,7 @@ class Area extends Object {
 	public $ratingThreshold = 0; // if set higher, any blocks that aren't rated high enough aren't seen (unless you have sufficient privs)
 	public $showControls = true;
 	public $attributes = array();
+	protected $arIsGlobal = 0;
 
 	public $enclosingStart = '';
 	public $enclosingStartHasReplacements = false; //Denotes if we should run sprintf() on blockWrapperStart
@@ -409,6 +410,7 @@ class Area extends Object {
 		$blockPositionInArea = 1; //for blockWrapper output
 		
 		foreach ($blocksToDisplay as $b) {
+			$includeEditStrip = false;
 			$bv = new BlockView();
 			$bv->setAreaObject($ourArea); 
 			

@@ -31,6 +31,7 @@ class Controller {
 	protected $c; // collection
 	protected $task = false;
 	protected $parameters = false;
+	protected $renderOverride;
 	
 	
 	/**
@@ -65,6 +66,7 @@ class Controller {
 	 */
 	private function setupRequestTask() {
 		
+		$method = '';
 		$req = Request::get();
 		
 		// we are already on the right page now

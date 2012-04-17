@@ -5,8 +5,8 @@ global $cp;
 global $cvID;
 
 if (is_object($c)) {
-	$pageTitle = (!$pageTitle) ? $c->getCollectionName() : $pageTitle;
-	$pageDescription = (!$pageDescription) ? $c->getCollectionDescription() : $pageDescription;
+	$pageTitle = (!isset($pageTitle)) ? $c->getCollectionName() : $pageTitle;
+	$pageDescription = (!isset($pageDescription)) ? $c->getCollectionDescription() : $pageDescription;
 	$cID = $c->getCollectionID(); 
 	$isEditMode = ($c->isEditMode()) ? "true" : "false";
 	$isArrangeMode = ($c->isArrangeMode()) ? "true" : "false";

@@ -460,7 +460,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 	public function getAreaCustomStyleRule($area) {
 		$db = Loader::db();
 		
-		$csrID = $this->vObj->customAreaStyles[$area->getAreaHandle()];
+		$csrID = (isset($this->vObj->customAreaStyles[$area->getAreaHandle()])) ? $this->vObj->customAreaStyles[$area->getAreaHandle()] : 0;
 		
 		if ($csrID > 0) {
 			$txt = Loader::helper('text');

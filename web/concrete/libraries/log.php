@@ -150,6 +150,7 @@ class Log {
 	 */
 	public static function getTotal($keywords, $type) {
 		$db = Loader::db();
+		$kw = '';
 		if ($keywords != '') {
 			$kw = 'and logText like ' . $db->quote('%' . $keywords . '%');
 		}
@@ -167,6 +168,7 @@ class Log {
 	 */
 	public static function getList($keywords, $type, $limit) {
 		$db = Loader::db();
+		$kw = '';
 		if ($keywords != '') {
 			$kw = 'and logText like ' . $db->quote('%' . $keywords . '%');
 		}
