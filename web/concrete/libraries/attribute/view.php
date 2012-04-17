@@ -61,6 +61,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		}
 		
 		protected function getIncludeFile($view) {
+			$file = false;
 			$atHandle = $this->attributeType->getAttributeTypeHandle();
 			if (file_exists(DIR_MODELS . '/' . DIRNAME_ATTRIBUTES . '/' . DIRNAME_ATTRIBUTE_TYPES . '/' . $atHandle . '/' . $view . '.php')) {
 				$file = DIR_MODELS . '/' . DIRNAME_ATTRIBUTES . '/' . DIRNAME_ATTRIBUTE_TYPES . '/' .  $atHandle . '/' . $view . '.php';
@@ -109,7 +110,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			extract($this->controller->getHelperObjects());
 			$atHandle = $this->attributeType->getAttributeTypeHandle();
 			
-			if (is_object($attributeKey)) {
+			if (isset($attributeKey) && is_object($attributeKey)) {
 				$this->controller->set('akID', $this->attributeKey->getAttributeKeyID());
 			}
 

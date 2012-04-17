@@ -23,6 +23,7 @@ class TextareaAttributeTypeController extends DefaultAttributeTypeController  {
 	}
 	
 	public function form($additionalClass = false) {
+		$value = null;
 		$this->load();
 		if (is_object($this->attributeValue)) {
 			$value = $this->getAttributeValue()->getValue();

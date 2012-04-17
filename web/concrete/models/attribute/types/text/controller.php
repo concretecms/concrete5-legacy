@@ -8,6 +8,7 @@ class TextAttributeTypeController extends DefaultAttributeTypeController  {
 	protected $searchIndexFieldDefinition = 'X NULL';
 
 	public function form() {
+		$value = null;
 		if (is_object($this->attributeValue)) {
 			$value = Loader::helper('text')->entities($this->getAttributeValue()->getValue());
 		}

@@ -106,6 +106,7 @@ class FormHelper {
 	 * @return $html
 	 */
 	public function checkbox($key, $value, $isChecked = false, $miscFields = array()) {
+		$checked = false;
 		$id = $key;
 		$_field = $key;
 

@@ -48,7 +48,7 @@ $listHTML = $sh->outputRequestHTML($instanceID, 'full', false, $nodes);
 		<div id="ccm-sitemap-message"></div>
 	
 		
-		<div id="tree" sitemap-instance-id="<?=$instance_id?>">
+		<div id="tree" sitemap-instance-id="<?=$instanceID?>">
 			<ul id="tree-root0" tree-root-node-id="0" sitemap-mode="full" sitemap-instance-id="<?=$instanceID?>">
 			<?=$listHTML?>
 			</ul>

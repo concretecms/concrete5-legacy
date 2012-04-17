@@ -51,6 +51,8 @@ defined('C5_EXECUTE') or die("Access Denied.");
 	
 		private $areLinksDisabled = false;
 		
+		private $themeDir;
+		
 		/**
 		 * editing mode is enabled or not
 		 * @access private

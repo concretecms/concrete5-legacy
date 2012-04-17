@@ -27,6 +27,7 @@ class ConcreteDashboardSitemapHelper {
 	// integrate droppables
 	
 	public $html = '';
+	public $selectedPageID;
 	
 	/**
 	 * this method is called by the Loader::helper to clean up the instance of this object
@@ -60,7 +61,7 @@ class ConcreteDashboardSitemapHelper {
 	}
 	
 	function isOneTimeActiveNode($cID) {
-		return ($_SESSION['dsbSitemapActiveNode'] == $cID);
+		return (isset($_SESSION['dsbSitemapActiveNode']) && $_SESSION['dsbSitemapActiveNode'] == $cID);
 	}
 	
 	function getNode($cItem, $level = 0, $autoOpenNodes = true) {
@@ -105,7 +106,7 @@ class ConcreteDashboardSitemapHelper {
 		$canWrite = ($cp->canWrite()) ? true : false;
 		
 		$nodeOpen = false;
-		if (is_array($_SESSION['dsbSitemapNodes'])) {
+		if (isset($_SESSION['dsbSitemapNodes']) && is_array($_SESSION['dsbSitemapNodes'])) {
 			if (in_array($cID, $_SESSION['dsbSitemapNodes'])) {
 				$nodeOpen = true;
 			}
@@ -321,7 +322,7 @@ class ConcreteDashboardSitemapHelper {
 						$this->html .= '<li>';
 					}
 					$this->html .= '<ul tree-root-state="closed" tree-root-node-id="' . $ri['id'] . '" tree-root-num-subpages="' . $ri['numSubpages'] . '" id="tree-root' . $ri['id'] . '" selected-page-id="' . $this->selectedPageID . '" sitemap-instance-id="' . $instanceID . '" sitemap-display-mode="' . $display_mode . '" sitemap-select-mode="' . $select_mode . '">';
-					if (is_object($ri['subnodes']) && count($ri['subnodes']->results) > 0) {
+					if (isset($ri['subnodes']) && is_object($ri['subnodes']) && count($ri['subnodes']->results) > 0) {
 						$this->outputRequestHTML($instanceID, $display_mode, $select_mode, $ri['subnodes']);
 					}
 					$this->html .= '</ul>';

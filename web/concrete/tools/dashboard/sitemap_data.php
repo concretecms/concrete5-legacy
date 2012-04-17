@@ -24,7 +24,7 @@ if (isset($_REQUEST['show_system'])) {
 	exit;
 }
 
-if (!$_REQUEST['keywords']) { // if there ARE keywords then we don't want to cache the node 
+if (!isset($_REQUEST['keywords'])) { // if there ARE keywords then we don't want to cache the node 
 	if (!is_array($_SESSION['dsbSitemapNodes'])) {
 		$_SESSION['dsbSitemapNodes'] = array();
 		if (isset($_REQUEST['node'])) {
@@ -32,7 +32,7 @@ if (!$_REQUEST['keywords']) { // if there ARE keywords then we don't want to cac
 		} else {
 			$_SESSION['dsbSitemapNodes'][] = 1;
 		}
-	} else if ($_REQUEST['ctask'] == 'close-node') {
+	} else if (isset($_REQUEST['ctask']) && $_REQUEST['ctask'] == 'close-node') {
 		for ($i = 0; $i < count($_SESSION['dsbSitemapNodes']); $i++) {
 			if ($_SESSION['dsbSitemapNodes'][$i] == $_REQUEST['node']) {
 				unset($_SESSION['dsbSitemapNodes'][$i]);
@@ -59,11 +59,13 @@ if (!$_REQUEST['keywords']) { // if there ARE keywords then we don't want to cac
 }
 
 $node = (isset($_REQUEST['node'])) ? $_REQUEST['node'] : 0;
+$level = (isset($_REQUEST['level'])) ? $_REQUEST['level'] : 0;
+$keywords = (isset($_REQUEST['keywords'])) ? $_REQUEST['keywords'] : false;
 
-if ($_REQUEST['mode'] == 'move_copy_delete') {
-	$nodes = $dh->getSubNodes($node, $_REQUEST['level'], $_REQUEST['keywords'], false);
+if (isset($_REQUEST['mode']) && $_REQUEST['mode'] == 'move_copy_delete') {
+	$nodes = $dh->getSubNodes($node, $level, $keywords, false);
 } else {
-	$nodes = $dh->getSubNodes($node, $_REQUEST['level'], $_REQUEST['keywords']);
+	$nodes = $dh->getSubNodes($node, $level, $keywords);
 }
 
 $js = Loader::helper('json');

@@ -24,9 +24,10 @@ defined('C5_EXECUTE') or die("Access Denied.");
 */	
 class Block extends Object {
 
-	var $cID;
-	var $arHandle;
-	var $c;
+	public $cID;
+	public $arHandle;
+	public $c;
+	public $bActionCID;
 
 	public static function populateManually($blockInfo, $c, $a) {
 		$b = new Block;
@@ -603,6 +604,7 @@ class Block extends Object {
 		unset($this->c);
 		unset($this->a);
 		unset($this->instance);
+		unset($this->bActionCID);
 	}
 	
 	public function setBlockCustomStyle($csr, $updateAll = false) {

@@ -2525,7 +2525,7 @@ class Page extends Collection {
 		$db = Loader::db();
 
 		$q = "select ppID, cPath, ppIsCanonical from PagePaths where cID = {$this->cID}";
-		$r = $db->query($q, $v);
+		$r = $db->query($q);
 		$paths = array();
 		if ($r) {
 			while ($row = $r->fetchRow()) {
