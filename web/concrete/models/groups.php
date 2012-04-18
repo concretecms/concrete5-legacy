@@ -359,6 +359,7 @@
 			$r = $db->query("DELETE FROM PagePermissions WHERE gID = ?",array(intval($this->gID)) );
 			$r = $db->query("DELETE FROM AreaGroupBlockTypes WHERE gID = ?",array(intval($this->gID)) );
 			$r = $db->query("DELETE FROM AreaGroups WHERE gID = ?",array(intval($this->gID)) ); 
+			$r = $db->query("DELETE FROM TaskPermissionUserGroups WHERE gID = ?",array(intval($this->gID)) );
 		}
 
 		function inGroup() {
