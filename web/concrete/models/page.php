@@ -12,6 +12,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 class Page extends Collection {
 
 	protected $blocksAliasedFromMasterCollection = null;
+	protected $cCheckedOutUID = 0;
 	
 	/**
 	 * @param string $path /path/to/page
@@ -809,7 +810,7 @@ class Page extends Collection {
 	 * @return string
 	 */		
 	function getCollectionName() {
-		if (isset($this->vObj)) {
+		if (isset($this->vObj) && isset($this->vObj->cvName)) {
 			return $this->vObj->cvName;
 		}
 		return $this->cvName;
@@ -895,7 +896,7 @@ class Page extends Collection {
 	 * @return string
 	 */	
 	function getCollectionDescription() {
-		return $this->vObj->cvDescription;
+		return (isset($this->vObj) && isset($this->vObj->cvDescription)) ? $this->vObj->cvDescription : '';
 	}
 
 	/**

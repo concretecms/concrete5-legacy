@@ -151,7 +151,7 @@ class Request {
 			}			
 		}	
 		
-		if (is_array($r)) { 
+		if (is_array($r) && count($r) > 0) { 
 			$req = Request::get();
 			$cPath = $r['cPath'];
 			$cID = $r['cID'];

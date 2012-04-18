@@ -25,6 +25,8 @@ defined('C5_EXECUTE') or die("Access Denied.");
 	class Collection extends Object {
 		
 		public $cID;
+		public $vObj;
+		public $cvName;
 		protected $attributes = array();
 		/* version specific stuff */
 
@@ -744,7 +746,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			}
 			
 			if ($arHandle != false) {
-				$blockIDsTmp = $blockIDs[strtolower($arHandle)];
+				$blockIDsTmp = (isset($blockIDs[strtolower($arHandle)])) ? $blockIDs[strtolower($arHandle)] : null;
 				$blockIDs = $blockIDsTmp;
 			} else {
 			

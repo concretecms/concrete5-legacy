@@ -269,6 +269,7 @@ class Permissions extends Object {
 	function mergePermissions($permissions) {
 		// given an array of different permission sets, we merge them (additive) into one set, and return
 		// first we concatenate all the permissions together
+		$permissionSet = '';
 		$i = 0;
 		foreach ($permissions as $value) {
 			$permissionSet .= ($i != 0) ? ':' : '';

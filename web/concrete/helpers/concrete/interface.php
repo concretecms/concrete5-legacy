@@ -174,7 +174,7 @@ class ConcreteInterfaceHelper {
 			return;
 		}
 		
-		if (!is_array($_SESSION['ccmQuickNavRecentPages'])) {
+		if (!isset($_SESSION['ccmQuickNavRecentPages']) || !is_array($_SESSION['ccmQuickNavRecentPages'])) {
 			$_SESSION['ccmQuickNavRecentPages'] = array();
 		}
 		if (in_array($c->getCollectionID(), $_SESSION['ccmQuickNavRecentPages'])) {

@@ -589,6 +589,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 					$theme = DIR_FILES_THEMES_CORE . "/" . $pl . '/' . FILENAME_THEMES_VIEW;
 					$themeDir = DIR_FILES_THEMES_CORE . "/" . $pl;
 				} else if (file_exists(DIR_FILES_THEMES_CORE_ADMIN . "/" . $pl . '.php')) {
+					$themePath = ASSETS_URL . '/' . DIRNAME_THEMES . '/' . DIRNAME_THEMES_CORE . '/' .$pl;
 					$theme = DIR_FILES_THEMES_CORE_ADMIN . "/" . $pl . '.php';
 					$themeDir = DIR_FILES_THEMES_CORE_ADMIN;
 				}

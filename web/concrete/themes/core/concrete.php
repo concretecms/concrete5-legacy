@@ -28,7 +28,11 @@ if (is_object($c)) {
 
 <div class="container">
 
-<?php Loader::element('system_errors', array('format' => 'block', 'error' => $error)); ?>
+<?php
+if(!isset($error)) {
+	$error = false;
+}
+Loader::element('system_errors', array('format' => 'block', 'error' => $error)); ?>
 <?php print $innerContent ?>
 
 </div>
