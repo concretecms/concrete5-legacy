@@ -47,6 +47,7 @@ class DashboardComposerWriteController extends Controller {
 				}
 			} else if ($this->post('ccm-submit-discard') && !$this->error->has()) {
 				if ($entry->isComposerDraft()) {
+					Events::fire('on_composer_delete_draft', $entry);
 					$entry->delete();
 					$this->redirect('/dashboard/composer/drafts', 'draft_discarded');
 				} else {
@@ -72,10 +73,12 @@ class DashboardComposerWriteController extends Controller {
 					if ($entry->isComposerDraft()) { 
 						$entry->move($parent);
 						$entry->markComposerPageAsPublished();
+						Events::fire('on_composer_publish', $entry);
 					}
 					$this->redirect('?cID=' . $entry->getCollectionID());
 				} else if ($this->post('autosave')) { 
 					// this is done by javascript. we refresh silently and send a json success back
+					Events::fire('on_composer_save_draft', $entry);
 					$json = Loader::helper('json');
 					$obj = new stdClass;
 					$dh = Loader::helper('date');
