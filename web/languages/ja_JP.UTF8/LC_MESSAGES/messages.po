@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-04-09 23:18+0900\n"
 "PO-Revision-Date: \n"
-"Last-Translator: \n"
+"Last-Translator: Katsuyuki Ueno <info@deerstudio.com>\n"
 "Language-Team: Usagi Project <concrete5@concrete5-japan.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
@@ -2504,7 +2504,7 @@ msgstr "パスワードを忘れた方はこちら"
 
 #: web/concrete/single_pages/login.php:239
 msgid "Enter your email address below. We will send you instructions to reset your password."
-msgstr ""
+msgstr "ユーザー登録したメールアドレスを入力ください。パスワードリセットの方法をお送りします。"
 
 #: web/concrete/single_pages/login.php:254
 msgid "Reset and Email Password"
@@ -4123,17 +4123,17 @@ msgstr "更新をダウンロード"
 #: web/concrete/single_pages/dashboard/system/backup_restore/update.php:9
 #: web/concrete/single_pages/dashboard/system/backup_restore/update.php:70
 msgid "Check For Updates"
-msgstr ""
+msgstr "アップデートをチェック"
 
 #: web/concrete/single_pages/dashboard/system/backup_restore/update.php:11
 #: web/concrete/single_pages/dashboard/system/backup_restore/update.php:72
 #, php-format
 msgid "Currently Running %s"
-msgstr ""
+msgstr "現在実行中 %s"
 
 #: web/concrete/single_pages/dashboard/system/backup_restore/update.php:15
 msgid "Available Update"
-msgstr ""
+msgstr "新しいアップデート"
 
 #: web/concrete/single_pages/dashboard/system/backup_restore/update.php:21
 #, php-format
@@ -4178,7 +4178,7 @@ msgstr "現バージョン： %s"
 
 #: web/concrete/single_pages/dashboard/system/backup_restore/update.php:77
 msgid "No updates available."
-msgstr ""
+msgstr "新しいアップデートはありません。"
 
 #: web/concrete/single_pages/dashboard/system/backup_restore/backup.php:11
 msgid "Confirm Delete"
@@ -9967,79 +9967,57 @@ msgstr "ページを選択"
 #~ msgstr ""
 #~ "パスワードをお忘れの方は、登録時のメールアドレスを入力してください。パス"
 #~ "ワードをリセットして新しいパスワードをメールでお送りします。"
-
 #~ msgid "You are currently up to date!"
 #~ msgstr "現在は最新です！"
-
 #~ msgid ""
 #~ "You must have the curl extension installed to use the remote image editor."
 #~ msgstr ""
 #~ "外部イメージエディタを使用するには、お使いのサーバーに cURL エクステンショ"
 #~ "ンが必要です。"
-
 #~ msgid "Leave blank if you'd like your password to remain the same"
 #~ msgstr "パスワードを変更されたくない場合は空白のままにしてください。"
-
 #~ msgid "Download Statistics"
 #~ msgstr "ダウンロード数"
-
 #~ msgid "Choose User/Group"
 #~ msgstr "ユーザー/グループを選択"
-
 #~ msgid "Add Group or User"
 #~ msgstr "グループやユーザーを追加"
-
 #~ msgid "Page Information"
 #~ msgstr "ページ情報"
-
 #~ msgid "Change"
 #~ msgstr "変更"
-
 #~ msgid "You must choose a page type."
 #~ msgstr "ページタイプを選択してください。"
-
 #~ msgid "Add User/Group"
 #~ msgstr "ユーザー・グループ追加"
-
 #~ msgid "concrete5.org Marketplace"
 #~ msgstr "concrete5.org マーケットプレイス"
-
 #~ msgid "Loading Details"
 #~ msgstr "ページ詳細"
-
 #~ msgid ""
 #~ "Add users or groups to determine access to the file manager. These "
 #~ "permissions affect only this set."
 #~ msgstr ""
 #~ "ファイルマネージャーにアクセスを許可するユーザー・グループを追加する。これ"
 #~ "らの権限はこのセットにのみ影響を与えます。"
-
 #~ msgid "Select Group"
 #~ msgstr "グループを選択"
-
 #~ msgid "Add-Ons &amp; Themes"
 #~ msgstr "アドオン &amp; テーマ"
-
 #~ msgid "IP Blacklist"
 #~ msgstr "IPブラックリスト"
-
 #~ msgid "Environment Information"
 #~ msgstr "環境情報"
-
 #~ msgid "Captcha Setup"
 #~ msgstr "Captcha設定"
-
 #~ msgid "Debug Settings"
 #~ msgstr "デバッグ設定"
-
 #~ msgid "Logging Settings"
 #~ msgstr "ログ設定"
-
 #~ msgid "Types"
 #~ msgstr "種類"
-
 #~ msgid "Email Importers"
 #~ msgstr "メール・インポーター"
-
 #~ msgid "User Groups"
 #~ msgstr "ユーザーグループ"
+
