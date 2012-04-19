@@ -956,7 +956,7 @@
 			}	
 		} else */
 		
-		if ($_POST['update_theme']) { 
+		if (isset($_POST['update_theme'])) { 
 			if ($cp->canAdminPage()) {
 				$nvc = $c->getVersionToModify();
 				
@@ -998,7 +998,7 @@
 					exit;
 				}
 			}		
-		} else if ($_POST['update_speed_settings']) {
+		} else if (isset($_POST['update_speed_settings'])) {
 			// updating a collection
 			if ($cp->canAdminPage()) {
 				
@@ -1015,7 +1015,7 @@
 				print Loader::helper('json')->encode($obj);
 				exit;
 			}	
-		} else if ($_POST['update_metadata']) { 
+		} else if (isset($_POST['update_metadata'])) { 
 			// updating a collection
 			if ($cp->canWrite()) {
 				$nvc = $c->getVersionToModify();
@@ -1060,13 +1060,13 @@
 				print Loader::helper('json')->encode($obj);
 				exit;
 			}	
-		} else if ($_POST['update_external']) {
+		} else if (isset($_POST['update_external'])) {
 			if ($cp->canWrite()) {
 				$ncID = $c->updateCollectionAliasExternal($_POST['cName'], $_POST['cExternalLink'], $_POST['cExternalLinkNewWindow']);						
 				header('Location: ' . URL_SITEMAP);
 				exit;
 			}
-		} else if ($_POST['update_permissions']) { 
+		} else if (isset($_POST['update_permissions'])) { 
 			// updating a collection
 			if ($cp->canAdminPage()) {
 				if (PERMISSIONS_MODEL == 'simple') {
@@ -1109,7 +1109,7 @@
 				exit;
 
 			}	
-		} else if ($_POST['add']) { 
+		} else if (isset($_POST['add'])) { 
 			// adding a collection to a collection
 			Loader::model('collection_types');
 
@@ -1166,7 +1166,7 @@
 			// adding a collection to a collection
 			Loader::model('collection_types');
 			if ($cp->canWrite()) {
-				$ncID = $c->addCollectionAliasExternal($_POST['cName'], $_POST['cExternalLink'], $_POST['cExternalLinkNewWindow']);						
+				$ncID = $c->addCollectionAliasExternal($_POST['cName'], $_POST['cExternalLink'], (isset($_POST['cExternalLinkNewWindow'])) ? true : false);						
 				header('Location: ' . URL_SITEMAP);
 				exit;
 			}

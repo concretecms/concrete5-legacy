@@ -64,7 +64,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		}
 		
 		public function setPropertiesFromArray($row) {
-			if (!$row['ctIcon']) {
+			if (!isset($row['ctIcon'])) {
 				$row['ctIcon'] = FILENAME_COLLECTION_TYPE_DEFAULT_ICON;
 			}
 			parent::setPropertiesFromArray($row);

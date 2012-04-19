@@ -25,7 +25,7 @@ if (isset($_REQUEST['show_system'])) {
 }
 
 if (!isset($_REQUEST['keywords'])) { // if there ARE keywords then we don't want to cache the node 
-	if (!is_array($_SESSION['dsbSitemapNodes'])) {
+	if (!isset($_SESSION['dsbSitemapNodes']) && !is_array($_SESSION['dsbSitemapNodes'])) {
 		$_SESSION['dsbSitemapNodes'] = array();
 		if (isset($_REQUEST['node'])) {
 			$_SESSION['dsbSitemapNodes'][] = $_REQUEST['node'];

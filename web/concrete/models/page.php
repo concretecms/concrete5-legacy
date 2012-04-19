@@ -12,7 +12,15 @@ defined('C5_EXECUTE') or die("Access Denied.");
 class Page extends Collection {
 
 	protected $blocksAliasedFromMasterCollection = null;
-	protected $cCheckedOutUID = 0;
+	public $cCheckedOutUID = 0;
+	public $cParentID;
+	public $cPointerID;
+	public $cPointerOriginalID;
+	public $cInheritPermissionsFromCID;
+	public $uID;
+	public $isMasterCollection;
+	public $cPointerExternalLink;
+	public $allowedSubCollections;
 	
 	/**
 	 * @param string $path /path/to/page

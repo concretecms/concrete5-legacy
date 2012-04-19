@@ -53,11 +53,13 @@ class ConcreteDashboardSitemapHelper {
 	}
 	
 	function clearOneTimeActiveNodes() {
-		unset($_SESSION['dsbSitemapActiveNode']);
+		if(isset($_SESSION['dsbSitemapShowSystem'])) {
+			unset($_SESSION['dsbSitemapActiveNode']);
+		}
 	}
 	
 	function showSystemPages() {
-		return $_SESSION['dsbSitemapShowSystem'] == 1;
+		return isset($_SESSION['dsbSitemapShowSystem']) && $_SESSION['dsbSitemapShowSystem'] == 1;
 	}
 	
 	function isOneTimeActiveNode($cID) {

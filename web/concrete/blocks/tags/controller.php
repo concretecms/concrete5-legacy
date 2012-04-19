@@ -77,9 +77,9 @@ class TagsBlockController extends BlockController {
 			$target = Page::getByID($this->targetCID);
 			$this->set('target',$target);
 		}		
-		
+		$selectedOptionID = null;
 		// grab selected tag, if we're linking to a page with a tag block on it.
-		if(is_array($_REQUEST['akID'])) {
+		if(isset($_REQUEST['akID']) && is_array($_REQUEST['akID'])) {
 			$res = $_REQUEST['akID'][$ak->getAttributeKeyID()]['atSelectOptionID'][0];
 			if(is_numeric($res) && $res > 0) {
 				$selectedOptionID = $res;

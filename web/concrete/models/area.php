@@ -135,7 +135,7 @@ class Area extends Object {
 		$v = array($c->getCollectionID(), $arHandle);
 		$q = "select arID, arOverrideCollectionPermissions, arInheritPermissionsFromAreaOnCID, arIsGlobal from Areas where cID = ? and arHandle = ?";
 		$arRow = $db->getRow($q, $v);
-		if ($arRow['arID'] > 0) {
+		if (isset($arRow['arID']) && $arRow['arID'] > 0) {
 			$area = new Area($arHandle);
 
 			$area->arID = $arRow['arID'];

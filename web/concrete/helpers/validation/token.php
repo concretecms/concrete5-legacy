@@ -80,8 +80,10 @@ class ValidationTokenHelper {
 	 * @param string $token
 	 */
 	 public function validate($action = '', $token = null) {
-		if ($token == null) {
+		if ($token == null && isset($_REQUEST['ccm_token'])) {
 			$token = $_REQUEST['ccm_token'];
+		} else {
+			return false;
 		}
 		$parts = explode(':', $token);
 		if ($parts[0]) {

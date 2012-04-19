@@ -284,7 +284,7 @@
 					$this->cgEndDate = $row['cgEndDate'];
 				}
 				$q = "select count(*) from PagePermissionPageTypes where cID = '{$cID}' and gID = '{$gID}'";
-				$total = $db->getOne($q, $v);
+				$total = $db->getOne($q);
 				if ($total > 0) {
 					$this->canAddPages = true;
 				}

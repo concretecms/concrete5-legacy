@@ -14,7 +14,7 @@
 		die(t("Access Denied."));
 	}
 	
-	if ($_GET['vtask'] == 'view_version') { ?>
+	if (isset($_GET['vtask']) && $_GET['vtask'] == 'view_version') { ?>
 		<? /*
 		we use the always-updated ID below so that Safari doesn't cache the iframe's contents. We probably shouldn't be
 		making a new iframe on every request to this anyway, but it doesn't happen very often and it represents a significant
@@ -162,10 +162,8 @@
 			}
 		}
 		
-		$page = $_REQUEST[PAGING_STRING];
-		if (!$page) {
-			$page = 1;
-		}
+		$page = (isset($_REQUEST[PAGING_STRING])) ? $_REQUEST[PAGING_STRING] : 1;
+
 		$vl = new VersionList($c,20, $page);
 		$total = $vl->getVersionListCount();
 		$vArray = $vl->getVersionListArray();
@@ -175,7 +173,7 @@
 
 
 
-if (!$_GET['versions_reloaded']) { ?>
+if (!isset($_GET['versions_reloaded'])) { ?>
 	<div id="ccm-versions-container">
 <? } ?>
 
@@ -202,7 +200,7 @@ $(function() {
 		
 	});
 	
-	<? if ($_REQUEST['forcereload']) { ?>
+	<? if (isset($_REQUEST['forcereload'])) { ?>
 		ccm_versionsMustReload = true;
 	<? } ?>
 
@@ -382,6 +380,7 @@ $("input[name=vRemove]").click(function() {
 	</tr>
 	<? 
 	$vIsPending = true;
+	$vrAlt = false;
 	foreach ($vArray as $v) { 
 		if ($v->isApproved()) {
 			$vIsPending = false;
@@ -452,8 +451,8 @@ $("input[name=vRemove]").click(function() {
 				<? if ($children == 0) { ?>
 				
 					<div class="ccm-buttons">
-					<a href="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/versions.php?cID=<?=$cID?>&ctask=approve_pending_action<?=$token?>" class="ccm-button-right accept" onclick="return ccm_runAction(this)"><span><?=t('Approve')?></span></a>
-					<a href="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/versions.php?cID=<?=$cID?>&ctask=clear_pending_action<?=$token?>" class="ccm-button-left cancel" onclick="return ccm_runAction(this)"><span><em class="ccm-button-close"><?=t('Deny')?></em></span></a>
+					<a href="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/versions.php?cID=<?=$cID?>&amp;ctask=approve_pending_action<?=$token?>" class="ccm-button-right accept" onclick="return ccm_runAction(this)"><span><?=t('Approve')?></span></a>
+					<a href="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/versions.php?cID=<?=$cID?>&amp;ctask=clear_pending_action<?=$token?>" class="ccm-button-left cancel" onclick="return ccm_runAction(this)"><span><em class="ccm-button-close"><?=t('Deny')?></em></span></a>
 					</div>
 			
 				<? } else if ($children > 0) { ?>
@@ -461,13 +460,13 @@ $("input[name=vRemove]").click(function() {
 					<? if (!$cp->canAdminPage()) { ?>
 						<?=t('Only the super user may remove multiple pages.')?><br>
 						<div class="ccm-buttons">
-						<a href="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/versions.php?cID=<?=$cID?>&ctask=clear_pending_action<?=$token?>" class="ccm-button-left cancel" onclick="return ccm_runAction(this)"><span><em class="ccm-button-close"><?=t('Deny')?></em></span></a>
+						<a href="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/versions.php?cID=<?=$cID?>&amp;ctask=clear_pending_action<?=$token?>" class="ccm-button-left cancel" onclick="return ccm_runAction(this)"><span><em class="ccm-button-close"><?=t('Deny')?></em></span></a>
 						</div>
 
 					<? } else { ?>
 						<div class="ccm-buttons">
-						<a href="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/versions.php?cID=<?=$cID?>&ctask=approve_pending_action<?=$token?>" class="ccm-button-right accept" onclick="return ccm_runAction(this)"><span><?=t('Approve')?></span></a>
-						<a href="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/versions.php?cID=<?=$cID?>&ctask=clear_pending_action<?=$token?>" class="ccm-button-left cancel" onclick="return ccm_runAction(this)"><span><em class="ccm-button-close"><?=t('Deny')?></em></span></a>
+						<a href="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/versions.php?cID=<?=$cID?>&amp;ctask=approve_pending_action<?=$token?>" class="ccm-button-right accept" onclick="return ccm_runAction(this)"><span><?=t('Approve')?></span></a>
+						<a href="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/versions.php?cID=<?=$cID?>&amp;ctask=clear_pending_action<?=$token?>" class="ccm-button-left cancel" onclick="return ccm_runAction(this)"><span><em class="ccm-button-close"><?=t('Deny')?></em></span></a>
 						</div>
 
 					<? } ?>
@@ -490,8 +489,8 @@ $("input[name=vRemove]").click(function() {
 			?>
 			<? if ($cp->canApproveCollection()) { ?>
 				<div class="ccm-buttons">
-				<a href="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/versions.php?cID=<?=$cID?>&ctask=approve_pending_action<?=$token?>" class="ccm-button-right accept" onclick="return ccm_runAction(this)"><span><?=t('Approve')?></span></a>
-				<a href="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/versions.php?cID=<?=$cID?>&ctask=clear_pending_action<?=$token?>" class="ccm-button-left cancel" onclick="return ccm_runAction(this)"><span><em class="ccm-button-close"><?=t('Deny')?></em></span></a>
+				<a href="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/versions.php?cID=<?=$cID?>&amp;ctask=approve_pending_action<?=$token?>" class="ccm-button-right accept" onclick="return ccm_runAction(this)"><span><?=t('Approve')?></span></a>
+				<a href="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/versions.php?cID=<?=$cID?>&amp;ctask=clear_pending_action<?=$token?>" class="ccm-button-left cancel" onclick="return ccm_runAction(this)"><span><em class="ccm-button-close"><?=t('Deny')?></em></span></a>
 				</div>
 			<? } ?>
 		<? break;
@@ -513,6 +512,6 @@ $("input[name=vRemove]").click(function() {
 </div>
 </div>
 
-<? if (!$_GET['versions_reloaded']) { ?>
+<? if (!isset($_GET['versions_reloaded'])) { ?>
 </div>
 <? } ?>
