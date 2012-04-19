@@ -78,7 +78,7 @@
 		 * Returns a target for the nav item
 		 */
 		public function getTarget() {
-			if ($this->cPointerExternalLink != '') {
+			if (isset($this->cPointerExternalLink) && $this->cPointerExternalLink != '') {
 				if ($this->cPointerExternalLinkNewWindow) {
 					return '_blank';
 				}
@@ -101,7 +101,7 @@
 			if (!URL_REWRITING) {
 				$dispatcher = '/' . DISPATCHER_FILENAME;
 			}
-			if ($this->cPointerExternalLink != '') {
+			if (isset($this->cPointerExternalLink) && $this->cPointerExternalLink != '') {
 				$link = $this->cPointerExternalLink;
 			} else if ($this->cPath) {
 				$link = DIR_REL . $dispatcher . $this->cPath . '/';
@@ -471,7 +471,7 @@
 			$sorted_array = $this->sorted_array;
 			$navObjectNames = $this->navObjectNames;
 
-			$allowedParentIDs = ($allowedParentIDs) ? $allowedParentIDs : array();
+			$allowedParentIDs = (isset($allowedParentIDs)) ? $allowedParentIDs : array();
 			$q = "select Pages.cID from Pages where cIsTemplate = 0 and cIsActive = 1 and cParentID = '{$cParentID}' {$orderBy}";
 			$r = $db->query($q);
 			if ($r) {

@@ -53,6 +53,8 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		
 		private $themeDir;
 		
+		private $isPreview;
+		
 		/**
 		 * editing mode is enabled or not
 		 * @access private

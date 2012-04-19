@@ -1,7 +1,7 @@
 <? defined('C5_EXECUTE') or die("Access Denied."); ?>
 <? $c = Page::getCurrentPage(); ?>
 <h4 class="guestBook-title"><?=$controller->title?></h4>
-<?php if($invalidIP) { ?>
+<?php if(isset($invalidIP)) { ?>
 <div class="ccm-error"><p><?=$invalidIP?></p></div>
 <? } ?>
 <?
@@ -63,9 +63,16 @@ foreach($posts as $p) { ?>
 			<form method="post" action="<?=$this->action('form_save_entry', '#guestBookForm-'.$controller->bID)?>">
 			<? if(isset($Entry->entryID)) { ?>
 				<input type="hidden" name="entryID" value="<?=$Entry->entryID?>" />
-			<? } ?>
+			<? } 
 			
-			<? if(!$controller->authenticationRequired){ ?>
+			if(!isset($Entry)) { //filler info
+				$Entry = new stdClass;
+				$Entry->user_name = '';
+				$Entry->user_email = '';
+				$Entry->commentText = '';
+			}
+			
+			if(!$controller->authenticationRequired){ ?>
 				<label for="name"><?=t('Name')?>:</label><?=(isset($errors['name'])?"<span class=\"error\">".$errors['name']."</span>":"")?><br />
 				<input type="text" name="name" value="<?=$Entry->user_name ?>" /> <br />
 				<label for="email"><?=t('Email')?>:</label><?=(isset($errors['email'])?"<span class=\"error\">".$errors['email']."</span>":"")?><br />

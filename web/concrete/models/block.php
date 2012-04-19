@@ -725,7 +725,7 @@ class Block extends Object {
 		$cID = $this->getBlockActionCollectionID();
 		$bID = $this->getBlockID();
 		$arHandle = urlencode($this->getAreaHandle());
-		$step = ($_REQUEST['step']) ? '&amp;step=' . $_REQUEST['step'] : '';
+		$step = (isset($_REQUEST['step'])) ? '&amp;step=' . $_REQUEST['step'] : '';
 		$valt = Loader::helper('validation/token');
 		$token = $valt->generate();
 		$str = DIR_REL . "/" . DISPATCHER_FILENAME . "?cID={$cID}&amp;bID={$bID}&amp;arHandle={$arHandle}" . $step . "&amp;ccm_token=" . $token;

@@ -21,8 +21,10 @@
  */
 	class CollectionVersion extends Object {
 	
-		var $cvIsApproved;
-		var $cID;
+		public $cvIsApproved;
+		public $cID;
+		public $cvID;
+		public $cvCanWrite;
 		protected $attributes = array();
 		public $customAreaStyles = array();
 		public $layoutStyles = array();

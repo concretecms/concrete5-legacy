@@ -3,6 +3,8 @@
 	$aBlocks = $controller->generateNav();
 	$c = Page::getCurrentPage();
 	$containsPages = false;
+	$lastLevel = null;
+	$i = 0;
 	
 	$nh = Loader::helper('navigation');
 	

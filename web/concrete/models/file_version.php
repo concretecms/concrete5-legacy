@@ -4,6 +4,11 @@ class FileVersion extends Object {
 	
 	private $numThumbnailLevels = 3; 
 	private $attributes = array();
+
+	public $fID;
+	public $fvID;
+	public $fvPrefix;
+	public $fvFilename;
 	
 	// Update type constants
 	const UT_REPLACE_FILE = 1;
