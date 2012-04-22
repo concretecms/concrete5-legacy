@@ -10,7 +10,14 @@ if (!defined('C5_ENVIRONMENT_ONLY')) {
 if (!defined('ENABLE_CMS_FOR_DIRECTORY')) {
 	define('ENABLE_CMS_FOR_DIRECTORY', true);
 }
-
+//If the installation is in a subdirectory, this will grab that sub directory.
+if(!defined('BASE_URL_SUB_FOLDER'))
+{
+	$sc = substr($_SERVER['PHP_SELF'], 0, strrpos($_SERVER['PHP_SELF'], "/"));
+	$sc = explode("/".DISPATCHER_FILENAME,$sc);
+	$sc = $sc[0];
+	define("BASE_URL_SUB_FOLDER",$sc);
+}
 # These items should be set by site.php in config/ but if they're not that means we're installing and we need something there
 /* https patch applied here */
 if (!defined('BASE_URL')) { 
