@@ -194,6 +194,8 @@ class PaginationHelper {
 
 	function getPages($wrapper='span'){
 		if($this->number_of_pages==1) return;
+		$postdotted = 0;
+		$predotted = 0;
 		$pages = '';
 		$pages_made=0;
 		for ($i=0;$i<$this->number_of_pages;$i++){
