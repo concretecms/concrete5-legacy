@@ -1138,7 +1138,7 @@
 					}			
 					
 
-					if ($_POST['rel'] == 'SITEMAP') { 
+					if (isset($_POST['rel']) && $_POST['rel'] == 'SITEMAP') { 
 						if ($cp->canApproveCollection()) {
 							$v = CollectionVersion::get($nc, "RECENT");
 							$v->approve(false);
@@ -1146,10 +1146,10 @@
 						$u = new User();
 						$u->unloadCollectionEdit();
 
-						if ($_POST['mode'] == 'explore' ) {
+						if (isset($_POST['mode']) && $_POST['mode'] == 'explore' ) {
 							header('Location: ' . BASE_URL . View::url('/dashboard/sitemap/explore', $c->getCollectionID()));
 							exit;
-						} else if ($_POST['mode'] == 'search') {
+						} else if (isset($_POST['mode']) && $_POST['mode'] == 'search') {
 							header('Location: ' . BASE_URL . DIR_REL . '/' . DISPATCHER_FILENAME . '?cID=' . $nc->getCollectionID() . '&mode=edit&ctask=check-out-first' . $step . $token);
 							exit;
 						} else {
@@ -1162,7 +1162,7 @@
 					}
 				}
 			}
-		} else if ($_POST['add_external']) { 
+		} else if (isset($_POST['add_external'])) { 
 			// adding a collection to a collection
 			Loader::model('collection_types');
 			if ($cp->canWrite()) {

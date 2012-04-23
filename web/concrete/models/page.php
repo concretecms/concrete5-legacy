@@ -21,6 +21,7 @@ class Page extends Collection {
 	public $isMasterCollection;
 	public $cPointerExternalLink;
 	public $allowedSubCollections;
+	public $pkg;
 	
 	/**
 	 * @param string $path /path/to/page
@@ -155,7 +156,7 @@ class Page extends Collection {
 	 * Returns 1 if the page is in arrange mode
 	 * @return bool
 	 */
-	public function isArrangeMode() {return ($this->isCheckedOutByMe() && ($_REQUEST['btask'] == 'arrange'));}
+	public function isArrangeMode() {return ($this->isCheckedOutByMe() && isset($_REQUEST['btask']) && ($_REQUEST['btask'] == 'arrange'));}
 	
 	/**
 	 * Forces the page to be checked in if its checked out
@@ -741,7 +742,7 @@ class Page extends Collection {
 	 * @return string
 	 */	
 	function getCollectionHandle() {
-		return $this->vObj->cvHandle;
+		return (isset($this->vObj->cvHandle)) ? $this->vObj->cvHandle : '';
 	}
 
 	/**

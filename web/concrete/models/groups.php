@@ -323,13 +323,13 @@
 			}
 			
 			// if we have a permissions array, we set the character tokens for backwards compatibility 
-			if ($this->permissions['canRead']) {
+			if (isset($this->permissions['canRead']) && $this->permissions['canRead']) {
 				$this->permissionSet .= 'r:';
 			}
-			if ($this->permissions['canWrite']) {
+			if (isset($this->permissions['canWrite']) && $this->permissions['canWrite']) {
 				$this->permissionSet .= 'wa:';
 			}
-			if ($this->permissions['canAdmin']) {
+			if (isset($this->permissions['canAdmin']) && $this->permissions['canAdmin']) {
 				$this->permissionSet .= 'adm:';
 			}
 

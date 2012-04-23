@@ -20,6 +20,10 @@ $dh = Loader::helper('concrete/dashboard');
 $ish = Loader::helper('concrete/interface');
 $token = '&' . $valt->getParameter();
 
+if(!isset($cantCheckOut)) {
+	$cantCheckOut = false;
+}
+
 if (isset($cp)) {
 
 	$u = new User();

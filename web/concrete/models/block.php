@@ -140,7 +140,7 @@ class Block extends Object {
 						
 						if ($ctID && $ccbID) {
 							$cb = $db->GetRow('select bID, ccFilename from ComposerContentLayout where ctID = ? and bID = ?', array($ctID, $ccbID));
-							if (is_array($cb) && $cb['bID'] == $ccbID) {
+							if (is_array($cb) && isset($cb['bID']) && $cb['bID'] == $ccbID) {
 								$b->bIncludeInComposer = 1;
 								$b->cbFilename = $cb['ccFilename'];
 							}

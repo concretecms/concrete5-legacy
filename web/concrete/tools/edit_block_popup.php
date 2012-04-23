@@ -5,10 +5,15 @@ $c = Page::getByID($_REQUEST['cID']);
 $a = Area::get($c, $_REQUEST['arHandle']);
 if (!$a->isGlobalArea()) {
 	$b = Block::getByID($_REQUEST['bID'], $c, $a);
+	$isGlobalArea = false;
 } else {
 	$b = Block::getByID($_REQUEST['bID'], Stack::getByName($_REQUEST['arHandle']), STACKS_AREA_NAME);
 	$b->setBlockAreaObject($a); // set the original area object
 	$isGlobalArea = true;
+}
+
+if(!isset($rcID)) {
+	$rcID = 0;
 }
 
 $bp = new Permissions($b);

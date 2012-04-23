@@ -29,7 +29,7 @@
 	} else {
 		$deleteMessage = t('Do you want to delete this block?');
 	}
-	if ($_GET['step']) {
+	if (isset($_GET['step'])) {
 		$step = "&step={$_GET['step']}";
 	}
 ?>
@@ -99,7 +99,7 @@ if ($p->canWrite() && (!$a->isGlobalArea())) {  ?>
 	ccm_menuObj<?=$id?>.canArrange = true;
 <? 
 }
-if ($editMessage) { ?>
+if (isset($editMessage)) { ?>
 ccm_menuObj<?=$id?>.editMessage = "<?=$editMessage?>";
 <? } ?>
 $(function() {ccm_menuInit(ccm_menuObj<?=$id?>)});
