@@ -527,7 +527,7 @@
 				</attributekey>
 			</attributes>
         </page>
-        <page name="ログイン設定" path="/dashboard/system/environment/logging" filename="/dashboard/system/environment/logging.php" pagetype="" description="" package="">
+        <page name="ログ設定" path="/dashboard/system/environment/logging" filename="/dashboard/system/environment/logging.php" pagetype="" description="" package="">
 			<attributes>
 				<attributekey handle="meta_keywords">
 					<value>logs, email, error, exceptions</value>
