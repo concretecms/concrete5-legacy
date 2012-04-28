@@ -5,6 +5,9 @@ defined('C5_EXECUTE') or die("Access Denied.");
 $c = Page::getByID($_GET['cID'], 'RECENT');
 $cp = new Permissions($c);
 $canViewPane = false;
+if(!isset($ct)) {
+	$ct = null;
+}
 
 $additionalArgs = array();
 
@@ -48,7 +51,7 @@ switch($_GET['ctask']) {
 		$toolSection = "collection_add";
 		$divID = 'ccm-edit-collection-design';
 		$canViewPane = $cp->canAddSubContent();
-		if ($_REQUEST['ctID']) {
+		if (isset($_REQUEST['ctID'])) {
 			$ct = CollectionType::getByID($_REQUEST['ctID']);
 			if (!is_object($ct)) {
 				$canViewPane = false;
@@ -90,14 +93,14 @@ if (!$canViewPane) {
 
 ?>
 
-<? if ($_REQUEST['toppane'] == 1) {
+<? if (isset($_REQUEST['toppane']) && $_REQUEST['toppane'] == 1) {
 	Loader::element('pane_header', array('c'=>$c));
 }
 ?>
 
 <div id="<?=$divID?>">
 
-<? if (!$_GET['close']) {
+<? if (!isset($_GET['close'])) {
 
 	if (!$c->isEditMode() && (!in_array($_GET['ctask'], array('add', 'edit_external', 'delete_external')))) {
 		// first, we attempt to check the user in as editing the collection
@@ -121,13 +124,13 @@ if (!$canViewPane) {
 
 }
 
-if ($error) {
+if (isset($error)) {
 	echo($error);
 } ?>
 <div class="ccm-spacer">&nbsp;</div>
 
 </div>
 
-<? if ($_REQUEST['toppane'] == 1) { ?>
+<? if (isset($_REQUEST['toppane']) && $_REQUEST['toppane'] == 1) { ?>
 	<? Loader::element('pane_footer', array('c'=>$c)); ?>
 <? } ?>

@@ -1,4 +1,4 @@
-<?
+<? defined('C5_EXECUTE') or die('Access Denied');
 
 Loader::model('file_version');
 
@@ -7,6 +7,9 @@ class File extends Object {
 	const CREATE_NEW_VERSION_THRESHOLD = 300; // in seconds (5 minutes)
 	const F_ERROR_INVALID_FILE = 1;
 	const F_ERROR_FILE_NOT_FOUND = 2;
+	
+	public $fID;
+	public $fvID;
 	
 	/**
 	 * returns a file object for the given file ID
@@ -25,7 +28,7 @@ class File extends Object {
 		$row = $db->GetRow("SELECT Files.*, FileVersions.fvID
 		FROM Files LEFT JOIN FileVersions on Files.fID = FileVersions.fID and FileVersions.fvIsApproved = 1
 		WHERE Files.fID = ?", array($fID));
-		if ($row['fID'] == $fID) {
+		if (isset($row['fID']) && $row['fID'] == $fID) {
 			$f->setPropertiesFromArray($row);
 			Cache::set('file_approved', $fID, $f);
 		} else {
@@ -476,10 +479,13 @@ class File extends Object {
 		
 		$db = Loader::db();
 		$row = $db->GetRow("select * from FileVersions where fvID = ? and fID = ?", array($fvID, $this->fID));
+		
+		$row['fvAuthorUID'] = (isset($row['fvAuthorUID'])) ? $row['fvAuthorUID'] : null;
+		
 		$row['fvAuthorName'] = $db->GetOne("select uName from Users where uID = ?", array($row['fvAuthorUID']));
 		
 		$fv = new FileVersion();
-		$row['fslID'] = $this->fslID;
+		$row['fslID'] = (isset($this->fslID)) ? $this->fslID : null;
 		$fv->setPropertiesFromArray($row);
 		$fv->populateAttributes();
 		

@@ -34,6 +34,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		protected $btActiveWhenAdded = 1;
 		protected $btCopyWhenPropagate = 0;
 		protected $btIncludeAll = 0;
+		protected $btTable = '';
 		protected $dbFile = 'db.xml';
 		protected $btInterfaceWidth = "400";
 		protected $btInterfaceHeight = "400";

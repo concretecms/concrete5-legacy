@@ -65,18 +65,18 @@ class Marketplace {
 		return $this->connectionError;
 	}
 	
-	public function generateSiteToken() {
+	public static function generateSiteToken() {
 		$fh = Loader::helper('file');
 		$token = $fh->getContents(MARKETPLACE_URL_CONNECT_TOKEN_NEW);
 		return $token;	
 	}
 
-	public function getSiteToken() {
+	public static function getSiteToken() {
 		$token = Config::get('MARKETPLACE_SITE_TOKEN');
 		return $token;
 	}
 	
-	public function getSitePageURL() {
+	public static function getSitePageURL() {
 		$token = Config::get('MARKETPLACE_SITE_URL_TOKEN');
 		return MARKETPLACE_BASE_URL_SITE_PAGE . '/' . $token;
 	}

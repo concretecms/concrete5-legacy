@@ -11,6 +11,8 @@
 		protected $btCacheBlockOutputForRegisteredUsers = true;
 		protected $btIsInternal = true;
 		
+		public $btHelpContent;
+		
 		public function getBlockTypeDescription() {
 			return t("Grabs the latest newsflow data from concrete5.org.");
 		}
@@ -33,8 +35,6 @@
 					$this->set('editionDescription', $ni->getDescription());
 					$this->set('editionDate', $ni->getDate());
 					$this->set('editionID', $ni->getID());
-				} else {
-				
 				}
 			}
 		}

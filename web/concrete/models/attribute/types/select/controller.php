@@ -149,6 +149,7 @@ class SelectAttributeTypeController extends AttributeTypeController  {
 		$this->load();
 		$options = $this->getSelectedOptions();
 		$selectedOptions = array();
+		$selectedOptionValues = array();
 		foreach($options as $opt) {
 			$selectedOptions[] = $opt->getSelectAttributeOptionID();
 			$selectedOptionValues[$opt->getSelectAttributeOptionID()] = $opt->getSelectAttributeOptionValue();

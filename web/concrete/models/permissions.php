@@ -11,12 +11,12 @@ class PermissionsCache {
 
 	static $permCache = array();
 	
-	function exists($obj) {
+	public static function exists($obj) {
 		$identifier = PermissionsCache::getIdentifier($obj);
 		return (isset(PermissionsCache::$permCache[$identifier]));
 	}
 	
-	function getIdentifier($obj) {
+	public static function getIdentifier($obj) {
 		if (is_a($obj, "Page")) {
 			$id = $obj->getPermissionsCollectionID();
 			$prefix = 'page';
@@ -41,12 +41,12 @@ class PermissionsCache {
 		return $identifier;
 	}
 	
-	function getObject($obj) {
+	public static function getObject($obj) {
 		$identifier = PermissionsCache::getIdentifier($obj);
 		return PermissionsCache::$permCache[$identifier];
 	}
 	
-	function add($originalObj, $obj) {
+	public static function add($originalObj, $obj) {
 		
 		// I don't know if globals is the best way to do this or not, but it seems better than hitting the database a million times
 		$identifier = PermissionsCache::getIdentifier($originalObj);
@@ -98,7 +98,7 @@ class PermissionsProxy {
 		return $po;
 	}
 	
-	public function get($unknownObj) {
+	public static function get($unknownObj) {
 		if (is_a($unknownObj, 'File')) {
 			if (!$unknownObj->overrideFileSetPermissions()) {				
 				$po = PermissionsProxy::getNewOrCached($unknownObj, 'FileSetPermissions');
@@ -150,6 +150,13 @@ class Permissions extends Object {
 	*
 	*/
 	public $permissionSet;
+	
+	/**
+	 *
+	 * @access private
+	 *
+	 */
+	protected $permissions;
 
 	/**
 	*
@@ -262,6 +269,7 @@ class Permissions extends Object {
 	function mergePermissions($permissions) {
 		// given an array of different permission sets, we merge them (additive) into one set, and return
 		// first we concatenate all the permissions together
+		$permissionSet = '';
 		$i = 0;
 		foreach ($permissions as $value) {
 			$permissionSet .= ($i != 0) ? ':' : '';
@@ -798,7 +806,9 @@ class BlockPermissions extends Permissions {
 */
 class VersionPermissions extends Permissions {
 
-	function VersionPermissions(&$vObj) {
+	public $permissions;
+
+	public function VersionPermissions(&$vObj) {
 		if (!$vObj->getVersionID()) {
 			$this->permError = ($vObj->canWrite()) ? COLLECTION_NOT_FOUND : COLLECTION_FORBIDDEN;
 		} else if (!$vObj->isMostRecent()) {

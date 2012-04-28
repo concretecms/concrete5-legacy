@@ -37,7 +37,7 @@ class Events {
 	/** 
 	 * Returns an instance of the systemwide Events object.
 	 */
-	public function getInstance() {
+	public static function getInstance() {
 		static $instance;
 		if (!isset($instance)) {
 			$v = __CLASS__;
@@ -131,7 +131,7 @@ class Events {
 		}
 
 		$ce = Events::getInstance();
-		$events = $ce->registeredEvents[$event];
+		$events = (isset($ce->registeredEvents[$event])) ? $ce->registeredEvents[$event] : false;
 		$eventReturn = false;
 		
 		if (is_array($events)) {

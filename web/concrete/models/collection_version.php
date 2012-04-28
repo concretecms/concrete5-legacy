@@ -21,8 +21,10 @@
  */
 	class CollectionVersion extends Object {
 	
-		var $cvIsApproved;
-		var $cID;
+		public $cvIsApproved;
+		public $cID;
+		public $cvID;
+		public $cvCanWrite;
 		protected $attributes = array();
 		public $customAreaStyles = array();
 		public $layoutStyles = array();
@@ -79,7 +81,7 @@
 			
 		}
 		
-		public function get(&$c, $cvID) {
+		public static function get(&$c, $cvID) {
 			if (is_string($cvID)) {
 				$cvID = CollectionVersion::getNumericalVersionID($c->getCollectionID(), $cvID);
 			}

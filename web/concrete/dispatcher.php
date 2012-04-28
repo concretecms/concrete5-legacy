@@ -226,12 +226,12 @@
 		## object, which the function will use to determine what version we get to see
 	
 		if ($cp->canWrite() || $cp->canReadVersions()) {
-			$cvID = ($_REQUEST['cvID']) ? $_REQUEST['cvID'] : "RECENT";
+			$cvID = (isset($_REQUEST['cvID'])) ? $_REQUEST['cvID'] : "RECENT";
 		} else {
 			$cvID = "ACTIVE";
 		}
 	
-		if ($_REQUEST['ccm-disable-controls'] == true || intval($cvID) > 0) {
+		if (isset($_REQUEST['ccm-disable-controls']) && $_REQUEST['ccm-disable-controls'] == true || intval($cvID) > 0) {
 			$v = View::getInstance();
 			$v->disableEditing();
 			$v->disableLinks();

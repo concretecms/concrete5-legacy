@@ -48,6 +48,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		protected $block;
 		private $area;
 		private $blockObj;
+		protected $hasRendered;
 		
 		/**
 		 * Includes a file from the core elements directory. Used by the CMS.
@@ -169,6 +170,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			if ($this->hasRendered) {
 				return false;
 			}
+			$_filename = null;
 			$this->blockObj = $obj;
 			$customAreaTemplates = array();
 			

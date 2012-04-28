@@ -22,7 +22,7 @@
 	}
 	
 	// Modification for step editing
-	$step = ($_REQUEST['step']) ? '&step=' . $_REQUEST['step'] : '';
+	$step = (isset($_REQUEST['step'])) ? '&step=' . $_REQUEST['step'] : '';
 	
 	// if we don't have a valid token we die
 	$valt = Loader::helper('validation/token');
@@ -33,7 +33,7 @@
 		$u = new User();
 		$u->refreshCollectionEdit($c);
 	}
-	if ($_REQUEST['btask'] && $valt->validate()) {
+	if (isset($_REQUEST['btask']) && $valt->validate()) {
 	
 		// these are tasks dealing with blocks (moving up, down, removing)
 		
@@ -345,7 +345,7 @@
 		}
 	}
 	
-	if ($_GET['atask'] && $valt->validate()) {
+	if (isset($_GET['atask']) && $valt->validate()) {
 		switch($_GET['atask']) { 		
 			case 'update':
 				if ($cp->canAdminPage()) {
@@ -535,7 +535,7 @@
 		}
 	}
 	
-	if ($_REQUEST['ctask'] && $valt->validate()) {
+	if (isset($_REQUEST['ctask']) && $valt->validate()) {
 		
 		switch ($_REQUEST['ctask']) {
 			case 'delete':
@@ -670,7 +670,7 @@
 		}
 	}			
 	
-	if ($_REQUEST['ptask'] && $valt->validate()) {
+	if (isset($_REQUEST['ptask']) && $valt->validate()) {
 		Loader::model('pile');
 
 		// piles !
@@ -708,7 +708,7 @@
 		}
 	}
 	
-	if ($_REQUEST['processBlock'] && $valt->validate()) {
+	if (isset($_REQUEST['processBlock']) && $valt->validate()) {
 		
 		// some admin (or unscrupulous person) is doing something to a block of content on the site
 		$edit = ($_REQUEST['enterViewMode']) ? "" : "&mode=edit";
@@ -806,7 +806,7 @@
 					$ax = Area::get($cx, STACKS_AREA_NAME);
 				}
 				$ap = new Permissions($ax);	
-				if ($_REQUEST['btask'] == 'alias_existing_block') {
+				if (isset($_REQUEST['btask']) && $_REQUEST['btask'] == 'alias_existing_block') {
 					if (is_array($_REQUEST['pcID'])) {		
 						Loader::model('pile');
 
@@ -896,7 +896,7 @@
 		}	
 	}
 
-	if ($_POST['processCollection'] && $valt->validate()) { 
+	if (isset($_POST['processCollection']) && $valt->validate()) { 
 
 	
 		/*
@@ -956,7 +956,7 @@
 			}	
 		} else */
 		
-		if ($_POST['update_theme']) { 
+		if (isset($_POST['update_theme'])) { 
 			if ($cp->canAdminPage()) {
 				$nvc = $c->getVersionToModify();
 				
@@ -998,7 +998,7 @@
 					exit;
 				}
 			}		
-		} else if ($_POST['update_speed_settings']) {
+		} else if (isset($_POST['update_speed_settings'])) {
 			// updating a collection
 			if ($cp->canAdminPage()) {
 				
@@ -1015,7 +1015,7 @@
 				print Loader::helper('json')->encode($obj);
 				exit;
 			}	
-		} else if ($_POST['update_metadata']) { 
+		} else if (isset($_POST['update_metadata'])) { 
 			// updating a collection
 			if ($cp->canWrite()) {
 				$nvc = $c->getVersionToModify();
@@ -1060,13 +1060,13 @@
 				print Loader::helper('json')->encode($obj);
 				exit;
 			}	
-		} else if ($_POST['update_external']) {
+		} else if (isset($_POST['update_external'])) {
 			if ($cp->canWrite()) {
 				$ncID = $c->updateCollectionAliasExternal($_POST['cName'], $_POST['cExternalLink'], $_POST['cExternalLinkNewWindow']);						
 				header('Location: ' . URL_SITEMAP);
 				exit;
 			}
-		} else if ($_POST['update_permissions']) { 
+		} else if (isset($_POST['update_permissions'])) { 
 			// updating a collection
 			if ($cp->canAdminPage()) {
 				if (PERMISSIONS_MODEL == 'simple') {
@@ -1109,7 +1109,7 @@
 				exit;
 
 			}	
-		} else if ($_POST['add']) { 
+		} else if (isset($_POST['add'])) { 
 			// adding a collection to a collection
 			Loader::model('collection_types');
 
@@ -1138,7 +1138,7 @@
 					}			
 					
 
-					if ($_POST['rel'] == 'SITEMAP') { 
+					if (isset($_POST['rel']) && $_POST['rel'] == 'SITEMAP') { 
 						if ($cp->canApproveCollection()) {
 							$v = CollectionVersion::get($nc, "RECENT");
 							$v->approve(false);
@@ -1146,10 +1146,10 @@
 						$u = new User();
 						$u->unloadCollectionEdit();
 
-						if ($_POST['mode'] == 'explore' ) {
+						if (isset($_POST['mode']) && $_POST['mode'] == 'explore' ) {
 							header('Location: ' . BASE_URL . View::url('/dashboard/sitemap/explore', $c->getCollectionID()));
 							exit;
-						} else if ($_POST['mode'] == 'search') {
+						} else if (isset($_POST['mode']) && $_POST['mode'] == 'search') {
 							header('Location: ' . BASE_URL . DIR_REL . '/' . DISPATCHER_FILENAME . '?cID=' . $nc->getCollectionID() . '&mode=edit&ctask=check-out-first' . $step . $token);
 							exit;
 						} else {
@@ -1162,11 +1162,11 @@
 					}
 				}
 			}
-		} else if ($_POST['add_external']) { 
+		} else if (isset($_POST['add_external'])) { 
 			// adding a collection to a collection
 			Loader::model('collection_types');
 			if ($cp->canWrite()) {
-				$ncID = $c->addCollectionAliasExternal($_POST['cName'], $_POST['cExternalLink'], $_POST['cExternalLinkNewWindow']);						
+				$ncID = $c->addCollectionAliasExternal($_POST['cName'], $_POST['cExternalLink'], (isset($_POST['cExternalLinkNewWindow'])) ? true : false);						
 				header('Location: ' . URL_SITEMAP);
 				exit;
 			}

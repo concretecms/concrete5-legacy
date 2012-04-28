@@ -33,7 +33,7 @@ class CollectionAttributeKey extends AttributeKey {
 	 * against its object.
 	 * @return AttributeValueList
 	 */
-	public function getAttributes($cID, $cvID, $method = 'getValue') {
+	public static function getAttributes($cID, $cvID, $method = 'getValue') {
 		$db = Loader::db();
 		$values = $db->GetAll("select akID, avID from CollectionAttributeValues where cID = ? and cvID = ?", array($cID, $cvID));
 		$avl = new AttributeValueList();

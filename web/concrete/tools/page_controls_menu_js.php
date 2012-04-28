@@ -5,7 +5,7 @@ header('Content-type: text/javascript');?>
 var menuHTML = '';
 
 <?
-if ($_REQUEST['cvID'] > 0) {
+if (isset($_REQUEST['cvID']) && $_REQUEST['cvID'] > 0) {
 	$c = Page::getByID($_REQUEST['cID'], $_REQUEST['cvID']);
 } else {
 	$c = Page::getByID($_REQUEST['cID']);
@@ -19,6 +19,10 @@ $sh = Loader::helper('concrete/dashboard/sitemap');
 $dh = Loader::helper('concrete/dashboard');
 $ish = Loader::helper('concrete/interface');
 $token = '&' . $valt->getParameter();
+
+if(!isset($cantCheckOut)) {
+	$cantCheckOut = false;
+}
 
 if (isset($cp)) {
 

@@ -50,7 +50,16 @@ if (!$dh->inDashboard()) {
 
 $cID = ($c->isAlias()) ? $c->getCollectionPointerOriginalID() : $c->getCollectionID();
 
-$this->addFooterItem('<script type="text/javascript" src="' . REL_DIR_FILES_TOOLS_REQUIRED . '/page_controls_menu_js?cID=' . $cID . '&amp;cvID=' . $cvID . '&amp;btask=' . $_REQUEST['btask'] . '&amp;ts=' . time() . '"></script>'); 
+$path = '';
+if(isset($cvID)) {
+	$path .= '&amp;cvID=' . $cvID;
+}
+if(isset($_REQUEST['btask'])) {
+	$path .= '&amp;btask=' . $_REQUEST['btask'];
+}
+$path .= '&amp;ts=' . time();
+
+$this->addFooterItem('<script type="text/javascript" src="' . REL_DIR_FILES_TOOLS_REQUIRED . '/page_controls_menu_js?cID=' . $cID . $path . '"></script>'); 
 
 	}
 	

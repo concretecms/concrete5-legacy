@@ -25,6 +25,8 @@ defined('C5_EXECUTE') or die("Access Denied.");
 	class Collection extends Object {
 		
 		public $cID;
+		public $vObj;
+		public $cvName;
 		protected $attributes = array();
 		/* version specific stuff */
 
@@ -460,7 +462,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 	public function getAreaCustomStyleRule($area) {
 		$db = Loader::db();
 		
-		$csrID = $this->vObj->customAreaStyles[$area->getAreaHandle()];
+		$csrID = (isset($this->vObj->customAreaStyles[$area->getAreaHandle()])) ? $this->vObj->customAreaStyles[$area->getAreaHandle()] : 0;
 		
 		if ($csrID > 0) {
 			$txt = Loader::helper('text');
@@ -744,7 +746,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			}
 			
 			if ($arHandle != false) {
-				$blockIDsTmp = $blockIDs[strtolower($arHandle)];
+				$blockIDsTmp = (isset($blockIDs[strtolower($arHandle)])) ? $blockIDs[strtolower($arHandle)] : null;
 				$blockIDs = $blockIDsTmp;
 			} else {
 			
@@ -806,7 +808,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			$db = Loader::db();
 			$dh = Loader::helper('date');
 			$cDate = $dh->getSystemDateTime(); 
-			$cDatePublic = ($data['cDatePublic']) ? $data['cDatePublic'] : $cDate;
+			$cDatePublic = (isset($data['cDatePublic'])) ? $data['cDatePublic'] : $cDate;
 			
 			if (isset($data['cID'])) {
 				$res = $db->query("insert into Collections (cID, cHandle, cDateAdded, cDateModified) values (?, ?, ?, ?)", array($data['cID'], $data['handle'], $cDate, $cDate));
@@ -821,6 +823,12 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			$data['name'] = Loader::helper('text')->sanitize($data['name']);
 			
 			if ($res) {
+				if(!isset($data['cDescription'])) {
+					$data['cDescription'] = '';
+				}
+				if(!isset($data['uID'])) {
+					$data['uID'] = USER_SUPER_ID;
+				}
 				// now we add a pending version to the collectionversions table
 				$v2 = array($newCID, 1, $data['name'], $data['handle'], $data['cDescription'], $cDatePublic, $cDate, VERSION_INITIAL_COMMENT, $data['uID'], $cvIsApproved, 1);
 				$q2 = "insert into CollectionVersions (cID, cvID, cvName, cvHandle, cvDescription, cvDatePublic, cvDateCreated, cvComments, cvAuthorUID, cvIsApproved, cvIsNew) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";

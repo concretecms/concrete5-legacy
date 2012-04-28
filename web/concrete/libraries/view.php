@@ -51,6 +51,10 @@ defined('C5_EXECUTE') or die("Access Denied.");
 	
 		private $areLinksDisabled = false;
 		
+		private $themeDir;
+		
+		private $isPreview;
+		
 		/**
 		 * editing mode is enabled or not
 		 * @access private
@@ -59,7 +63,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		private $isEditingEnabled = true;
 		
 		// getInstance() grabs one instance of the view w/the singleton pattern
-		public function getInstance() {
+		public static function getInstance() {
 			static $instance;
 			if (!isset($instance)) {
 				$v = __CLASS__;
@@ -119,9 +123,9 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		}
 		
 		public function getHeaderItems() {
-			$a1 = (is_array($this->headerItems['CORE'])) ? $this->headerItems['CORE'] : array();
-			$a2 = (is_array($this->headerItems['VIEW'])) ? $this->headerItems['VIEW'] : array();
-			$a3 = (is_array($this->headerItems['CONTROLLER'])) ? $this->headerItems['CONTROLLER'] : array();
+			$a1 = (isset($this->headerItems['CORE']) && is_array($this->headerItems['CORE'])) ? $this->headerItems['CORE'] : array();
+			$a2 = (isset($this->headerItems['VIEW']) && is_array($this->headerItems['VIEW'])) ? $this->headerItems['VIEW'] : array();
+			$a3 = (isset($this->headerItems['CONTROLLER']) && is_array($this->headerItems['CONTROLLER'])) ? $this->headerItems['CONTROLLER'] : array();
 			
 			$items = array_merge($a1, $a2, $a3);
 			if (version_compare(PHP_VERSION, '5.2.9', '<')) {
@@ -134,10 +138,10 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		}
 		
 		public function getFooterItems() {
-			$a1 = (is_array($this->footerItems['CORE'])) ? $this->footerItems['CORE'] : array();
-			$a2 = (is_array($this->footerItems['VIEW'])) ? $this->footerItems['VIEW'] : array();
-			$a3 = (is_array($this->footerItems['CONTROLLER'])) ? $this->footerItems['CONTROLLER'] : array();
-			$a4 = (is_array($this->footerItems['SCRIPT'])) ? $this->footerItems['SCRIPT'] : array();
+			$a1 = (isset($this->footerItems['CORE']) && is_array($this->footerItems['CORE'])) ? $this->footerItems['CORE'] : array();
+			$a2 = (isset($this->footerItems['VIEW']) && is_array($this->footerItems['VIEW'])) ? $this->footerItems['VIEW'] : array();
+			$a3 = (isset($this->footerItems['CONTROLLER']) && is_array($this->footerItems['CONTROLLER'])) ? $this->footerItems['CONTROLLER'] : array();
+			$a4 = (isset($this->footerItems['SCRIPT']) && is_array($this->footerItems['SCRIPT'])) ? $this->footerItems['SCRIPT'] : array();
 			
 			$items = array_merge($a1, $a2, $a3, $a4);
 			if (version_compare(PHP_VERSION, '5.2.9', '<')) {
@@ -398,7 +402,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		 * @param string $url
 		 * @return boolean | void
 		*/	
-		public function section($url) {
+		public static function section($url) {
 			$cPath = Page::getCurrentPage()->getCollectionPath();
 			if (!empty($cPath)) {
 				$url = '/' . trim($url, '/');
@@ -416,7 +420,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		 * @param string $task
 		 * @return string $url
 		*/	
-		public function url($action, $task = null) {
+		public static function url($action, $task = null) {
 			$dispatcher = '';
 			if ((!URL_REWRITING_ALL) || !defined('URL_REWRITING_ALL')) {
 				$dispatcher = '/' . DISPATCHER_FILENAME;
@@ -599,6 +603,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 					$theme = DIR_FILES_THEMES_CORE . "/" . $pl . '/' . FILENAME_THEMES_VIEW;
 					$themeDir = DIR_FILES_THEMES_CORE . "/" . $pl;
 				} else if (file_exists(DIR_FILES_THEMES_CORE_ADMIN . "/" . $pl . '.php')) {
+					$themePath = ASSETS_URL . '/' . DIRNAME_THEMES . '/' . DIRNAME_THEMES_CORE . '/' .$pl;
 					$theme = DIR_FILES_THEMES_CORE_ADMIN . "/" . $pl . '.php';
 					$themeDir = DIR_FILES_THEMES_CORE_ADMIN;
 				}

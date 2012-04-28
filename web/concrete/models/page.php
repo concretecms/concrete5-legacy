@@ -12,6 +12,16 @@ defined('C5_EXECUTE') or die("Access Denied.");
 class Page extends Collection {
 
 	protected $blocksAliasedFromMasterCollection = null;
+	public $cCheckedOutUID = 0;
+	public $cParentID;
+	public $cPointerID;
+	public $cPointerOriginalID;
+	public $cInheritPermissionsFromCID;
+	public $uID;
+	public $isMasterCollection;
+	public $cPointerExternalLink;
+	public $allowedSubCollections;
+	public $pkg;
 	
 	/**
 	 * @param string $path /path/to/page
@@ -37,6 +47,7 @@ class Page extends Collection {
 	 * @return Page
 	 */
 	public static function getByID($cID, $versionOrig = 'RECENT', $class = 'Page') {
+		$version = 0;
 		if ($versionOrig) {
 			$version = CollectionVersion::getNumericalVersionID($cID, $versionOrig);
 		}
@@ -145,7 +156,7 @@ class Page extends Collection {
 	 * Returns 1 if the page is in arrange mode
 	 * @return bool
 	 */
-	public function isArrangeMode() {return ($this->isCheckedOutByMe() && ($_REQUEST['btask'] == 'arrange'));}
+	public function isArrangeMode() {return ($this->isCheckedOutByMe() && isset($_REQUEST['btask']) && ($_REQUEST['btask'] == 'arrange'));}
 	
 	/**
 	 * Forces the page to be checked in if its checked out
@@ -731,7 +742,7 @@ class Page extends Collection {
 	 * @return string
 	 */	
 	function getCollectionHandle() {
-		return $this->vObj->cvHandle;
+		return (isset($this->vObj->cvHandle)) ? $this->vObj->cvHandle : '';
 	}
 
 	/**
@@ -808,7 +819,7 @@ class Page extends Collection {
 	 * @return string
 	 */		
 	function getCollectionName() {
-		if (isset($this->vObj)) {
+		if (isset($this->vObj) && isset($this->vObj->cvName)) {
 			return $this->vObj->cvName;
 		}
 		return $this->cvName;
@@ -894,7 +905,7 @@ class Page extends Collection {
 	 * @return string
 	 */	
 	function getCollectionDescription() {
-		return $this->vObj->cvDescription;
+		return (isset($this->vObj) && isset($this->vObj->cvDescription)) ? $this->vObj->cvDescription : '';
 	}
 
 	/**
@@ -2524,7 +2535,7 @@ class Page extends Collection {
 		$db = Loader::db();
 
 		$q = "select ppID, cPath, ppIsCanonical from PagePaths where cID = {$this->cID}";
-		$r = $db->query($q, $v);
+		$r = $db->query($q);
 		$paths = array();
 		if ($r) {
 			while ($row = $r->fetchRow()) {

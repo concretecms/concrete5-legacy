@@ -4,12 +4,15 @@
 Loader::model('collection_attributes');
 Loader::model('collection_types');
 $dh = Loader::helper('date');
+if(!isset($ctID)) {
+	$ctID = false;
+}
 
 ?>
 	
 <div class="ccm-ui">
 
-<? if ($_REQUEST['ctID']) { ?>
+<? if (isset($_REQUEST['ctID'])) { ?>
 
 	<form method="post" action="<?=$c->getCollectionAction()?>" id="ccmAddPage" onsubmit="jQuery.fn.dialog.showLoader()">		
 	<input type="hidden" name="rel" value="<?=$_REQUEST['rel']?>" />

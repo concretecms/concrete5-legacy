@@ -23,7 +23,9 @@ class AttributeValueList extends Object implements Iterator {
 	}
 	
 	public function getAttribute($akHandle) {
-		return $this->attributes[$akHandle];
+		if(isset($this->attributes[$akHandle])) {
+			return $this->attributes[$akHandle];
+		}
 	}
 	
 	public function rewind() {
@@ -52,6 +54,7 @@ class AttributeValueList extends Object implements Iterator {
 class AttributeValue extends Object {
 	
 	protected $attributeType;
+	protected $attributeKey;
 	
 	public static function getByID($avID) {
 		$av = new AttributeValue();
@@ -76,7 +79,8 @@ class AttributeValue extends Object {
 	public function __destruct() {
 		if (is_object($this->attributeType)) {
 			$this->attributeType->__destruct();
-			unset($this->attributeType);
+			//unset($this->attributeType); //unsetting this caused notices that $attributeType was not set
+			$this->attributeType = null;
 		}
 	}
 	

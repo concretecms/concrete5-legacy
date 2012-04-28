@@ -8,8 +8,9 @@
 
 	<? if( strlen($title)>0){ ?><h3><?=$title?></h3><? } ?>
 	
-	<? if(strlen($query)==0){ ?>
-	<input name="search_paths[]" type="hidden" value="<?=htmlentities($baseSearchPath, ENT_COMPAT, APP_CHARSET) ?>" />
+	<? if(!isset($query) || strlen($query)==0){ 
+		$query = '';?>
+		<input name="search_paths[]" type="hidden" value="<?=htmlentities($baseSearchPath, ENT_COMPAT, APP_CHARSET) ?>" />
 	<? } else if (is_array($_REQUEST['search_paths'])) { 
 		foreach($_REQUEST['search_paths'] as $search_path){ ?>
 			<input name="search_paths[]" type="hidden" value="<?=htmlentities($search_path, ENT_COMPAT, APP_CHARSET) ?>" />
@@ -22,7 +23,7 @@
 
 <? 
 $tt = Loader::helper('text');
-if ($do_search) {
+if (isset($do_search) && $do_search) {
 	if(count($results)==0){ ?>
 		<h4 style="margin-top:32px"><?=t('There were no results found. Please try another keyword or phrase.')?></h4>	
 	<? }else{ ?>

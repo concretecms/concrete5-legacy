@@ -27,7 +27,7 @@
 			?>
 			<li>
 			<?php if($target instanceof Page) { ?>
-					<a href="<?php echo $navigation->getLinkToCollection($target)."?year=".$workingDt->format('Y'). "&month=".$workingDt->format('m') ?>" <?php echo ($workingDt->format('m-Y') == $_REQUEST['month']?'class="selected"':'')?>><?php echo $workingDt->format('M') ?></a>
+					<a href="<?php echo $navigation->getLinkToCollection($target)."?year=".$workingDt->format('Y'). "&month=".$workingDt->format('m') ?>" <?php echo ($workingDt->format('m-Y') == isset($_REQUEST['month'])?'class="selected"':'')?>><?php echo $workingDt->format('M') ?></a>
 			<?php } else { ?>
 					<?php echo $workingDt->format('M') ?>
 			<?php } ?>

@@ -80,7 +80,7 @@
 		}
 		
 		public static function isLoggedIn() {
-			return $_SESSION['uID'] > 0 && $_SESSION['uName'] != '';
+			return isset($_SESSION['uID']) && $_SESSION['uID'] > 0 && isset($_SESSION['uName']) && $_SESSION['uName'] != '';
 		}
 		
 		public function checkLogin() {
@@ -93,6 +93,7 @@
 						return false;
 					}
 					$_SESSION['uOnlineCheck'] = time();
+					$_SESSION['uLastOnline'] = (isset($_SESSION['uLastOnline'])) ? $_SESSION['uLastOnline'] : 0;
 					if (($_SESSION['uOnlineCheck'] - $_SESSION['uLastOnline']) > (ONLINE_NOW_TIMEOUT / 2)) {
 						$db = Loader::db();
 						$db->query("update Users set uLastOnline = {$_SESSION['uOnlineCheck']} where uID = {$this->uID}");
@@ -114,6 +115,9 @@
 				
 				$username = $args[0];
 				$password = $args[1];
+				if(!isset($args[2])) {
+					$args[2] = null;
+				}
 				if (!$args[2]) {
 					$_SESSION['uGroups'] = false;
 				}
@@ -249,7 +253,7 @@
 		}
 		
 		function checkUserForeverCookie() {
-			if ($_COOKIE['ccmUserHash']) {
+			if (isset($_COOKIE['ccmUserHash'])) {
 				$hashVal = explode(':', $_COOKIE['ccmUserHash']);
 				$_uID = $hashVal[0];
 				$uHash = $hashVal[1];

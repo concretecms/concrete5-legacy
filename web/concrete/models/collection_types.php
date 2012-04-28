@@ -30,6 +30,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		public $addCTGArray = array();
 		public $akIDArray = array();
 		public $composerAKIDArray = array();
+		public $ctIncludeInComposer;
 		
 		/**
 		 * @description returns a collection type object for the given CollectionType handle
@@ -56,14 +57,14 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		public function setComposerProperties() {
 			$db = Loader::db();
 			$row = $db->GetRow('select * from ComposerTypes where ctID = ?', array($this->getCollectionTypeID()));
-			if (is_array($row) && $row['ctID'] > 0) {
+			if (is_array($row) && isset($row['ctID']) && $row['ctID'] > 0) {
 				$this->ctIncludeInComposer = true;
 				$this->setPropertiesFromArray($row);
 			}
 		}
 		
 		public function setPropertiesFromArray($row) {
-			if (!$row['ctIcon']) {
+			if (!isset($row['ctIcon'])) {
 				$row['ctIcon'] = FILENAME_COLLECTION_TYPE_DEFAULT_ICON;
 			}
 			parent::setPropertiesFromArray($row);
@@ -77,6 +78,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 
 		public static function getByID($ctID, $obj = null) {
 			
+			$ct = false;
 			$db = Loader::db();
 			$q = "SELECT ctID, ctHandle, ctName, ctIsInternal, ctIcon, pkgID from PageTypes where PageTypes.ctID = ?";
 			$r = $db->query($q, array($ctID));

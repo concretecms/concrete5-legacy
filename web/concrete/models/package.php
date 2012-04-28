@@ -561,7 +561,7 @@ class Package extends Object {
 	 * @param string $pkgHandle
 	 * @return Package
 	 */
-	public function getByHandle($pkgHandle) {
+	public static function getByHandle($pkgHandle) {
 		$db = Loader::db();
 		$row = $db->GetRow("select * from Packages where pkgHandle = ?", array($pkgHandle));
 		if ($row) {
@@ -642,7 +642,7 @@ class Package extends Object {
 		$db = Loader::db();
 		foreach($packages as $p) {
 			$row = $db->GetRow("select pkgID, pkgVersion from Packages where pkgHandle = ? and pkgIsInstalled = 1", array($p->getPackageHandle()));
-			if ($row['pkgID'] > 0) { 
+			if (isset($row['pkgID']) && $row['pkgID'] > 0) { 
 				if (version_compare($p->getPackageVersion(), $row['pkgVersion'], '>')) {
 					$p->pkgCurrentVersion = $row['pkgVersion'];
 					$upgradeables[] = $p;

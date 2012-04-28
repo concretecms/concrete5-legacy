@@ -18,7 +18,7 @@ class LoginController extends Controller {
 		}
 		
 		$txt = Loader::helper('text');
-		if (strlen($_GET['uName'])) { // pre-populate the username if supplied, if its an email address with special characters the email needs to be urlencoded first,
+		if (isset($_GET['uName']) && strlen($_GET['uName'])) { // pre-populate the username if supplied, if its an email address with special characters the email needs to be urlencoded first,
 		   $this->set("uName",trim($txt->email($_GET['uName'])));
 		}
 		
@@ -207,7 +207,7 @@ class LoginController extends Controller {
 			$loginData['error']=$e->getMessage();
 		}
 		
-		if( $_REQUEST['format']=='JSON' ){
+		if(isset($_REQUEST['format']) && $_REQUEST['format']=='JSON' ){
 			$jsonHelper=Loader::helper('json'); 
 			echo $jsonHelper->encode($loginData);
 			die;
@@ -305,7 +305,7 @@ class LoginController extends Controller {
 		Events::fire('on_user_login',$this);
 		
 		//End JSON Login
-		if($_REQUEST['format']=='JSON') 
+		if(isset($_REQUEST['format']) && $_REQUEST['format']=='JSON') 
 			return $loginData;		
 		
 		//should administrator be redirected to dashboard?  defaults to yes if not set. 

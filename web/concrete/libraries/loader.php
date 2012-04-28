@@ -23,7 +23,7 @@
 		/** 
 		 * Loads a library file, either from the site's files or from Concrete's
 		 */
-		public function library($lib, $pkgHandle = null) {
+		public static function library($lib, $pkgHandle = null) {
 		
 			if (file_exists(DIR_LIBRARIES . '/' . $lib . '.php')) {
 				require_once(DIR_LIBRARIES . '/' . $lib . '.php');
@@ -46,7 +46,7 @@
 		/** 
 		 * Loads a model from either an application, the site, or the core Concrete directory
 		 */
-		public function model($mod, $pkgHandle = null) {
+		public static function model($mod, $pkgHandle = null) {
 
 			if (file_exists(DIR_MODELS . '/' . $mod . '.php')) {
 				require_once(DIR_MODELS . '/' . $mod . '.php');
@@ -66,7 +66,7 @@
 			Loader::legacyModel($mod);
 		}
 		
-		protected function legacyModel($model) {
+		protected static function legacyModel($model) {
 			switch($model) {
 				case 'collection_attributes':
 					Loader::model('attribute/categories/collection');
@@ -124,7 +124,7 @@
 		 * If it isn't there and pkgHandle is defined it checks in root/concrete/packages/pkghandle
 		 * Finally it checks if its in root/concrete/tools
 		 */
-		public function tool($file, $args = null, $pkgHandle= null) {
+		public static function tool($file, $args = null, $pkgHandle= null) {
 		   if (is_array($args)) {
 			   extract($args);
 		   }
@@ -147,7 +147,7 @@
 		 * <?php Loader::block('autonav'); ?>
 		 * </code>
 		 */
-		public function block($bl) {
+		public static function block($bl) {
 			if (file_exists(DIR_FILES_BLOCK_TYPES . '/' . $bl . '/' . FILENAME_BLOCK_CONTROLLER)) {
 				require_once(DIR_FILES_BLOCK_TYPES . '/' . $bl . '/' . FILENAME_BLOCK_CONTROLLER);
 			} else if (file_exists(DIR_FILES_BLOCK_TYPES_CORE . '/' . $bl . '/' . FILENAME_BLOCK_CONTROLLER)) {
@@ -173,7 +173,7 @@
 		 * Loads the various files for the database abstraction layer. We would bundle these in with the db() method below but
 		 * these need to be loaded before the models which need to be loaded before db() 
 		 */
-		public function database() {
+		public static function database() {
 			Loader::library('3rdparty/adodb/adodb.inc');
 			Loader::library('3rdparty/adodb/adodb-exceptions.inc');
 			Loader::library('3rdparty/adodb/adodb-active-record.inc');
@@ -189,7 +189,7 @@
 		 * $db->query($sql);
 		 * </code>
 		 */
-		public function db($server = null, $username = null, $password = null, $database = null, $create = false, $autoconnect = true) {
+		public static function db($server = null, $username = null, $password = null, $database = null, $create = false, $autoconnect = true) {
 			static $_dba;
 			if ((!isset($_dba) || $create) && ($autoconnect)) {
 				if ($server == null && defined('DB_SERVER')) {	
@@ -226,7 +226,7 @@
 		/** 
 		 * Loads a helper file. If the same helper file is contained in both the core concrete directory and the site's directory, it will load the site's first, which could then extend the core.
 		 */
-		public function helper($file, $pkgHandle = false) {
+		public static function helper($file, $pkgHandle = false) {
 		
 			static $instances = array();
 			$class = false;		
@@ -282,7 +282,7 @@
 		/**
 		 * @access private
 		 */
-		public function package($pkgHandle) {
+		public static function package($pkgHandle) {
 			// loads and instantiates the object
 			$dir = (is_dir(DIR_PACKAGES . '/' . $pkgHandle)) ? DIR_PACKAGES : DIR_PACKAGES_CORE;
 			if (file_exists($dir . '/' . $pkgHandle . '/' . FILENAME_PACKAGE_CONTROLLER)) {
@@ -317,6 +317,7 @@
 		 */
 		public function pageTypeControllerPath($ctHandle) {
 			
+			$path = false;
 			Loader::model('collection_types');
 			$ct = CollectionType::getByHandle($ctHandle);
 			if (!is_object($ct)) {
@@ -341,9 +342,10 @@
 		/** 
 		 * Loads a controller for either a page or view
 		 */
-		public function controller($item) {
+		public static function controller($item) {
 			
 			$include = false;
+			$path = false;
 			
 			if (is_string($item)) {
 				$db = Loader::db();
@@ -448,7 +450,7 @@
 			}
 			
 			if (!isset($controller)) {
-				if ($class && class_exists($class)) {
+				if (isset($class) && class_exists($class)) {
 					// now we get just the filename for this guy, so we can extrapolate
 					// what our controller is named
 					$controller = new $class($item);

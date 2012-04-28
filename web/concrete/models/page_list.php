@@ -321,6 +321,7 @@ class PageList extends DatabaseItemList {
 	}
 	
 	protected function setBaseQuery($additionalFields = '') {
+		$ik = '';
 		if ($this->isIndexedSearch()) {
 			$db = Loader::db();
 			$ik = ', match(psi.cName, psi.cDescription, psi.content) against (' . $db->quote($this->indexedKeywords) . ') as cIndexScore ';
@@ -409,6 +410,7 @@ class PageList extends DatabaseItemList {
 			} else {
 				$nc->loadVersionObject();
 			}
+			$row['cIndexScore'] = (isset($row['cIndexScore'])) ? $row['cIndexScore'] : false;
 			$nc->setPageIndexScore($row['cIndexScore']);
 			$pages[] = $nc;
 		}

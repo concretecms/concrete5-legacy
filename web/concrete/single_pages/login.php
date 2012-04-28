@@ -16,13 +16,13 @@ $(function() {
 	<h1><?=t('Sign in to %s', SITE)?></h1>
 </div>
 
-<? if( $passwordChanged ){ ?>
+<? if(isset($passwordChanged)){ ?>
 
 	<div class="block-message info alert-message"><p><?=t('Password changed.  Please login to continue. ') ?></p></div>
 
 <? } ?> 
 
-<? if($changePasswordForm){ ?>
+<? if(isset($changePasswordForm)){ ?>
 
 	<p><?=t('Enter your new password below.') ?></p>
 
@@ -50,7 +50,7 @@ $(function() {
 	
 	</div>
 
-<? }elseif($validated) { ?>
+<? }elseif(isset($validated)) { ?>
 
 <h3><?=t('Email Address Verified')?></h3>
 
@@ -117,7 +117,7 @@ $(function() {
 
 </div>
 
-<? } else if ($invalidRegistrationFields == true) { ?>
+<? } else if (isset($invalidRegistrationFields) && $invalidRegistrationFields == true) { ?>
 
 <div class="ccm-form">
 
