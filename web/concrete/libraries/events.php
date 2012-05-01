@@ -167,7 +167,11 @@ class Events {
 	
 					if (method_exists($ev[1], $ev[2])) {
 						// Note: DO NOT DO RETURN HERE BECAUSE THEN MULTIPLE EVENTS WON'T WORK
-						$eventReturn = call_user_func_array(array($ev[1], $ev[2]), $params);
+						$response = call_user_func_array(array($ev[1], $ev[2]), $params);
+						
+						if(!is_null($response)){
+							$eventReturn = $response;
+						}
 					}
 				}
 			}
