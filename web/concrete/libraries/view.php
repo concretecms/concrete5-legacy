@@ -119,11 +119,12 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		}
 		
 		public function getHeaderItems() {
+			$a4=loader::helper('html')->outputPendingItems(0);
 			$a1 = (is_array($this->headerItems['CORE'])) ? $this->headerItems['CORE'] : array();
 			$a2 = (is_array($this->headerItems['VIEW'])) ? $this->headerItems['VIEW'] : array();
 			$a3 = (is_array($this->headerItems['CONTROLLER'])) ? $this->headerItems['CONTROLLER'] : array();
 			
-			$items = array_merge($a1, $a2, $a3);
+			$items = array_merge($a1, $a2, $a3,$a4);
 			if (version_compare(PHP_VERSION, '5.2.9', '<')) {
 				$items = array_unique($items);
 			} else {
@@ -134,6 +135,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		}
 		
 		public function getFooterItems() {
+			$a4= loader::helper('html')->outputPendingItems(); 
 			$a1 = (is_array($this->footerItems['CORE'])) ? $this->footerItems['CORE'] : array();
 			$a2 = (is_array($this->footerItems['VIEW'])) ? $this->footerItems['VIEW'] : array();
 			$a3 = (is_array($this->footerItems['CONTROLLER'])) ? $this->footerItems['CONTROLLER'] : array();
