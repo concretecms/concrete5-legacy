@@ -564,15 +564,18 @@ class Area extends Object {
 		$this->enclosingEndHasReplacements = $hasReplacements;
 	}
 
-	function update() {
+	function update($data = null) {
+		if($data == null) {
+			$data = $_POST;
+		}
 		$db = Loader::db();
 
 		// now it's permissions time
 
 		$gIDArray = array();
 		$uIDArray = array();
-		if (is_array($_POST['areaRead'])) {
-			foreach ($_POST['areaRead'] as $ugID) {
+		if (is_array($data['areaRead'])) {
+			foreach ($data['areaRead'] as $ugID) {
 				if (strpos($ugID, 'uID') > -1) {
 					$uID = substr($ugID, 4);
 					$uIDArray[$uID] .= "r:";
@@ -583,8 +586,8 @@ class Area extends Object {
 			}
 		}
 
-		if (is_array($_POST['areaReadAll'])) {
-			foreach ($_POST['areaReadAll'] as $ugID) {
+		if (is_array($data['areaReadAll'])) {
+			foreach ($data['areaReadAll'] as $ugID) {
 				if (strpos($ugID, 'uID') > -1) {
 					$uID = substr($ugID, 4);
 					$uIDArray[$uID] .= "rb:";
@@ -595,8 +598,8 @@ class Area extends Object {
 			}
 		}
 
-		if (is_array($_POST['areaEdit'])) {
-			foreach ($_POST['areaEdit'] as $ugID) {
+		if (is_array($data['areaEdit'])) {
+			foreach ($data['areaEdit'] as $ugID) {
 				if (strpos($ugID, 'uID') > -1) {
 					$uID = substr($ugID, 4);
 					$uIDArray[$uID] .= "wa:";
@@ -607,8 +610,8 @@ class Area extends Object {
 			}
 		}
 
-		if (is_array($_POST['areaDelete'])) {
-			foreach ($_POST['areaDelete'] as $ugID) {
+		if (is_array($data['areaDelete'])) {
+			foreach ($data['areaDelete'] as $ugID) {
 				if (strpos($ugID, 'uID') > -1) {
 					$uID = substr($ugID, 4);
 					$uIDArray[$uID] .= "db:";
@@ -621,8 +624,8 @@ class Area extends Object {
 
 		$gBTArray = array();
 		$uBTArray = array();
-		if (is_array($_POST['areaAddBlockType'])) {
-			foreach($_POST['areaAddBlockType'] as $btID => $ugArray) {
+		if (is_array($data['areaAddBlockType'])) {
+			foreach($data['areaAddBlockType'] as $btID => $ugArray) {
 				// this gets us the block type that particular groups/users are given access to
 				foreach($ugArray as $ugID) {
 					if (strpos($ugID, 'uID') > -1) {
