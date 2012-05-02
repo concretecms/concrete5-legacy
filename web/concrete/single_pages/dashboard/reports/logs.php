@@ -54,8 +54,12 @@ $areEntries = count($entries) > 0 ? true : false;
                 <tr>
                     <th class="subheaderActive"><?=t('Date/Time')?></th>
                     <th class="subheader"><?=t('Type')?></th>
-                    <th class="subheader" style="position: relative">       <input class="btn error" style="position: absolute; top: 4px; right: 4px" type="button" onclick="if (confirm('<?=t("Are you sure you want to clear this log?")?>')) { location.href='<?=$this->url('/dashboard/reports/logs', 'clear', $valt->generate(), $_POST['logType'])?>'}" value="<?=t('Clear Log')?>" />
-<?=t('Text')?></th>
+                    <th class="subheader">
+                      <div style="position:relative">
+                        <input class="btn error" style="position:absolute; top:-6px; right:0" type="button" onclick="if (confirm('<?=t("Are you sure you want to clear this log?")?>')) { location.href='<?=$this->url('/dashboard/reports/logs', 'clear', $valt->generate(), $_POST['logType'])?>'}" value="<?=t('Clear Log')?>" />
+                        <?=t('Text')?>
+                      </div>
+                    </th>
                 </tr>
 			</thead>
             <tbody>
