@@ -8,6 +8,7 @@ else $textEditorHeight= $textEditorHeight-70;
 ?> 
 <script language="javascript">
 tinyMCE.init({
+	language: "<?php echo LANGUAGE?>",
 	mode : "textareas",
 	width: "100%", 
 	height: "<?=$textEditorHeight?>px", 	

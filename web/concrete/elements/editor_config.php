@@ -27,6 +27,7 @@ if (!isset($editor_mode)) {
 <script language="javascript">
 $(function() {
 	tinyMCE.init({
+		language: "<?php echo LANGUAGE?>",
 		mode : "textareas",
 		width: "<?=$textEditorWidth?>", 
 		height: "<?=$textEditorHeight?>px", 	
