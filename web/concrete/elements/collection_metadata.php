@@ -11,19 +11,19 @@ if ($cp->canAdminPage()) {
 	$ctArray = CollectionType::getList();
 }
 
-if ($_REQUEST['approveImmediately'] == 1) {
-	$approveImmediately = 1;
+if ($_REQUEST['approveImmediately'] != 1) {
+	$_REQUEST['approveImmediately'] = 0;
 }
 ?>
 <div class="ccm-pane-controls ccm-ui">
-<? if ($approveImmediately) { ?>
+<? if ($_REQUEST['approveImmediately']) { ?>
 	<div class="alert-message block-message notice">
 		<?=t("Note: Since you haven't checked this page out for editing, these changes will immediately be approved.")?>
 	</div>
 <? } ?>
 
 <form method="post" name="permissionForm" id="ccmMetadataForm" action="<?=$c->getCollectionAction()?>">
-<input type="hidden" name="approveImmediately" value="<?=$approveImmediately?>" />
+<input type="hidden" name="approveImmediately" value="<?=$_REQUEST['approveImmediately']?>" />
 <input type="hidden" name="rel" value="<?=$_REQUEST['rel']?>" />
 
 	<script type="text/javascript"> 
@@ -44,13 +44,13 @@ if ($_REQUEST['approveImmediately'] == 1) {
 			$("#" + ccm_activePropertiesTab + "-tab").show();
 			
 			if (ccm_activePropertiesTab == 'ccm-properties-custom') {
-				<? if ($approveImmediately) { ?>
+				<? if ($_REQUEST['approveImmediately']) { ?>
 					$('#ccm-dialog-content1').dialog('option','height','620');
 				<? } else { ?>
 					$('#ccm-dialog-content1').dialog('option','height','570');
 				<? } ?>
 			} else {
-				<? if ($approveImmediately) { ?>
+				<? if ($_REQUEST['approveImmediately']) { ?>
 					$('#ccm-dialog-content1').dialog('option','height','540');
 				<? } else { ?>
 					$('#ccm-dialog-content1').dialog('option','height','490');
