@@ -722,12 +722,13 @@ class Page extends Collection {
 	    if(mb_strpos($path,"/") !== false){
 	      $path = explode("/",$path);
 	      $path = array_map("rawurlencode",$path);
-	      return implode("/",$path);
+	      $newPath = implode("/",$path);
 	    }else if(is_null($path)){
-          return NULL;
+          $newPath = NULL;
 	    }else{
-	      return rawurlencode($path);
-	    }	
+	      $newPath = rawurlencode($path);
+	    } 
+	    return str_replace('%21','!',$newPath);
 	}
 
 	function getEscapePath($path){
