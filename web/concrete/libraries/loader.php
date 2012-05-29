@@ -69,9 +69,22 @@
 		/** 
 		 * Loads an element from C5 or the site
 		 */
-		public function element($file, $args = null, $pkgHandle= null) {
-			if (is_array($args)) {
-				extract($args);
+		public function element($file, $pkgHandle = null, $args = null) {
+		
+			if($pkgHandle != null) {
+				if (is_array($pkgHandle)) { //legacy
+					extract($pkgHandle);
+				} else {
+					$args = $pkgHandle;
+				}
+			}
+			
+			if($args != null) {
+				if (is_array($args)) {
+					extract($args);
+				} else {
+					$pkgHandle = $args; //not legacy but here for consistency
+				}
 			}
 
 			$env = Environment::get();
