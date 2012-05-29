@@ -63,7 +63,7 @@
 		 * @access private
 		 */
 		public function packageElement($file, $pkgHandle, $args = null) {
-			Loader::element($file, $args, $pkgHandle);
+			Loader::element($file, $pkgHandle, $args);
 		}
 
 		/** 
