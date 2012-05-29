@@ -68,6 +68,10 @@
 
 		/** 
 		 * Loads an element from C5 or the site
+		 * @param string $file Relative path to a file with .php included
+		 * @param string $pkgHandle Package Handle
+		 * @param array $args Array of values that will be extracted into the element's scope
+		 * @return void
 		 */
 		public function element($file, $pkgHandle = null, $args = null) {
 		
