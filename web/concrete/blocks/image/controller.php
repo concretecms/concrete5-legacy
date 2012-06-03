@@ -76,6 +76,8 @@
 			parent::save($args);
 		}
 
+		
+
 		function getContentAndGenerate($align = false, $style = false, $id = null) {
 			$c = Page::getCurrentPage();
 			$bID = $this->bID;
