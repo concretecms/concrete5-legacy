@@ -76,7 +76,57 @@
 			parent::save($args);
 		}
 
-		
+		public function view(){
+			$f = $this->getFileObject();
+			$fullPath = $f->getPath();
+			$relPath = $f->getRelativePath();			
+			$size = @getimagesize($fullPath);
+			if (empty($size)) {
+				$this->set('error', t( 'Image Not Found. '));
+				$this->set('image', false);
+			}else{
+				if ($this->maxWidth == $size[0] && $this->maxHeight == $size[1]) {
+					$image->width = $size[0];
+					$image->height = $size[1];
+					$image->src = $f->getRelativePath();
+				} else if (!$this->forceImageToMatchDimensions && ($this->maxWidth > 0 || $this->maxHeight > 0)){
+					$mw = $this->maxWidth > 0 ? $this->maxWidth : $size[0];
+					$mh = $this->maxHeight > 0 ? $this->maxHeight : $size[1];
+					$ih = Loader::helper('image');
+					$thumb = $ih->getThumbnail($f, $mw, $mh);
+					$image->width = $thumb->width;
+					$image->height = $thumb->height;
+					$image->src = $thumb->src;
+				} else {
+					$image->width = $size[0];
+					$image->height = $size[1];
+					$image->src = $f->getRelativePath();
+				}
+
+				if($this->fOnstateID != 0) {
+					$fos = $this->getFileOnstateObject();
+					$fullPathOnstate = $f->getPath();
+					$sizehover = @getimagesize($fullPathOnstate);
+
+					if ($this->maxWidth == $sizehover[0] && $this->maxHeight == $sizehover[1]) {
+						$relPathHover = $fos->getRelativePath();
+					} else if (!$this->forceImageToMatchDimensions && ($this->maxWidth > 0 || $this->maxHeight > 0)) {
+						$thumbHover = $ih->getThumbnail($fos, $mw, $mh);				
+						$relPathHover = $thumbHover->src;
+					} else {
+						$relPathHover = $fos->getRelativePath();
+					}
+
+					$image->relPathHover = $relPathHover;
+				}
+
+
+				$image->altText = $this->altText;
+
+				$this->set('image', $image);
+				$this->set('link', $this->getLinkURL());
+			}
+		}		
 
 		function getContentAndGenerate($align = false, $style = false, $id = null) {
 			$c = Page::getCurrentPage();
