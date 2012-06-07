@@ -235,7 +235,8 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			$r = $db->query("DELETE FROM AreaGroups WHERE uID = ?",array(intval($this->uID)));
 			$r = $db->query("DELETE FROM PagePermissions WHERE uID = ?",array(intval($this->uID)));
 			$r = $db->query("DELETE FROM Piles WHERE uID = ?",array(intval($this->uID)));
-			
+			$r = $db->query("DELETE FROM TaskPermissionUserGroups WHERE uID = ?",array(intval($this->uID)));
+
 			$r = $db->query("UPDATE Blocks set uID=? WHERE uID = ?",array( intval(USER_SUPER_ID), intval($this->uID)));
 			$r = $db->query("UPDATE Pages set uID=? WHERE uID = ?",array( intval(USER_SUPER_ID), intval($this->uID)));
 		}
