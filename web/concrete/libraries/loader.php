@@ -288,7 +288,7 @@
 			if (file_exists($dir . '/' . $pkgHandle . '/' . FILENAME_PACKAGE_CONTROLLER)) {
 				require_once($dir . '/' . $pkgHandle . '/' . FILENAME_PACKAGE_CONTROLLER);
 				$class = Object::camelcase($pkgHandle) . "Package";
-				if (class_exists($class)) {
+				if (class_exists($class, false)) {
 					$cl = new $class;
 					return $cl;
 				}
@@ -304,7 +304,7 @@
 			if (file_exists($dir . '/' . $pkgHandle . '/' . FILENAME_PACKAGE_CONTROLLER)) {
 				require_once($dir . '/' . $pkgHandle . '/' . FILENAME_PACKAGE_CONTROLLER);
 				$class = Object::camelcase($pkgHandle) . "StartingPointPackage";
-				if (class_exists($class)) {
+				if (class_exists($class, false)) {
 					$cl = new $class;
 					return $cl;
 				}
@@ -394,7 +394,7 @@
 					require_once(DIR_PACKAGES_CORE . '/' . $item->getPackageHandle() . '/' . DIRNAME_BLOCKS . '/' . $item->getBlockTypeHandle() . '/' . FILENAME_BLOCK_CONTROLLER);
 				} 
 				$class = Object::camelcase($item->getBlockTypeHandle()) . 'BlockController';
-				if (class_exists($class) && $item instanceof BlockType) {
+				if (class_exists($class, false) && $item instanceof BlockType) {
 					$controller = new $class($item);
 				}
 				
@@ -448,7 +448,7 @@
 			}
 			
 			if (!isset($controller)) {
-				if ($class && class_exists($class)) {
+				if ($class && class_exists($class, false)) {
 					// now we get just the filename for this guy, so we can extrapolate
 					// what our controller is named
 					$controller = new $class($item);
