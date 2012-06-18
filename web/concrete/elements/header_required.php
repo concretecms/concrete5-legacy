@@ -102,7 +102,15 @@ if (is_object($cp)) {
 
 print $this->controller->outputHeaderItems();
 $_trackingCodePosition = Config::get('SITE_TRACKING_CODE_POSITION');
-if (empty($disableTrackingCode) && $_trackingCodePosition === 'top') {
+if (
+	empty($disableTrackingCode)
+	&&
+	$_trackingCodePosition === 'top'
+	&&
+	!$c->isSystemPage()
+	&&
+	!$c->isEditMode()
+) {
 	echo Config::get('SITE_TRACKING_CODE');
 }
 echo $c->getCollectionAttributeValue('header_extra_content');
