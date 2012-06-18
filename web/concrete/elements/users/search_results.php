@@ -73,17 +73,26 @@
 
 			?>
 		
-			<tr class="ccm-list-record <?=$striped?>">
-			<td class="ccm-user-list-cb" style="vertical-align: middle !important"><input type="checkbox" value="<?=$ui->getUserID()?>" user-email="<?=$ui->getUserEmail()?>" user-name="<?=$ui->getUserName()?>" /></td>
-			<? foreach($columns->getColumns() as $col) { ?>
-				<? if ($col->getColumnKey() == 'uName') { ?>
-					<td><a href="<?=$action?>"><?=$ui->getUserName()?></a></td>
-				<? } else { ?>
-					<td><?=$col->getColumnValue($ui)?></td>
-				<? } ?>
-			<? } ?>
-
-			</tr>
+			<tr class="ccm-list-record <?php echo $striped?>"><?php
+			$u = new User();
+			if (($u->getUserID() != USER_SUPER_ID) && ($ui->getUserID() == USER_SUPER_ID)){?>
+				<td> </td>
+			<?php } else { ?>
+				<td class="ccm-user-list-cb" style="vertical-align: middle !important"><input type="checkbox" value="<?php echo $ui->getUserID()?>" user-email="<?php echo $ui->getUserEmail()?>" user-name="<?php echo $ui->getUserName()?>" /></td>
+			<?php
+			}
+			foreach($columns->getColumns() as $col) { ?>
+				<?php  if ($col->getColumnKey() == 'uName') { 
+					if (($u->getUserID() != USER_SUPER_ID) && ($ui->getUserID() == USER_SUPER_ID)){
+					?><td><?php echo $ui->getUserName()?></td><?php  
+					} else {
+					?><td><a href="<?php echo $action?>"><?php echo $ui->getUserName()?></a></td><?php  
+					}
+				} else { ?>
+					<td><?php echo $col->getColumnValue($ui)?></td>
+				<?php  } ?>
+			<?php 
+			} ?></tr>
 			<?
 		}
 
