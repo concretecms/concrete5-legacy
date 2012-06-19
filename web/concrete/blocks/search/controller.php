@@ -26,7 +26,7 @@ class SearchBlockController extends BlockController {
 		$this->hText = @preg_replace( "#$this->hHighlight#ui", '<span style="background-color:'. $this->hColor .';">$0</span>', $this->hText );
 		return $this->hText;
 	}
-	
+
 	public function validate($post) {
 		$exception = array();
 		$errors = Loader::helper('validation/error');
@@ -36,10 +36,10 @@ class SearchBlockController extends BlockController {
 		if ($post['buttonText'] === false || $post['buttonText'] == '') {
 			$errors->add(t("Please enter your Submit Button Text."));
 		}
-		
+
 		return $errors;
 	}
-	
+
 	public function highlightedExtendedMarkup($fulltext, $highlight) {
 		$text = @preg_replace("#\n|\r#", ' ', $fulltext);
 
@@ -111,7 +111,7 @@ class SearchBlockController extends BlockController {
 		$this->set('postTo_cID', $this->postTo_cID);
 
 		$resultsURL = $c->getCollectionPath();
-		
+
 		if ($this->resultsURL != '') {
 			$resultsURL = $this->resultsURL;
 		} else if ($this->postTo_cID != '') {

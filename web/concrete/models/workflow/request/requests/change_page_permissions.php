@@ -7,16 +7,16 @@ defined('C5_EXECUTE') or die("Access Denied.");
  * @license    http://www.concrete5.org/license/     MIT License
  *
  */
- 
+
 class ChangePagePermissionsPageWorkflowRequest extends PageWorkflowRequest {
-	
+
 	protected $wrStatusNum = 30;
 
 	public function __construct() {
 		$pk = PermissionKey::getByHandle('edit_page_permissions');
 		parent::__construct($pk);
 	}
-	
+
 	public function setPagePermissionSet(PermissionSet $set) {
 		$this->permissionSet = $set;
 	}
@@ -34,23 +34,23 @@ class ChangePagePermissionsPageWorkflowRequest extends PageWorkflowRequest {
 		$d->setShortStatus(t("Permission Changes"));
 		return $d;
 	}
-	
+
 	public function getWorkflowRequestStyleClass() {
 		return 'info';
 	}
-	
+
 	public function getWorkflowRequestApproveButtonClass() {
 		return 'success';
 	}
-	
+
 	public function getWorkflowRequestApproveButtonInnerButtonRightHTML() {
 		return '<i class="icon-white icon-thumbs-up"></i>';
-	}		
-	
+	}
+
 	public function getWorkflowRequestApproveButtonText() {
 		return t('Change Permissions');
 	}
-	
+
 	public function getWorkflowRequestAdditionalActions(WorkflowProgress $wp) {
 		$buttons = array();
 		$w = $wp->getWorkflowObject();
@@ -74,7 +74,7 @@ class ChangePagePermissionsPageWorkflowRequest extends PageWorkflowRequest {
 		$permissions = PermissionKey::getList('page');
 		$ps = $this->getPagePermissionSet();
 		$assignments = $ps->getPermissionAssignments();
-		
+
 		foreach($permissions as $pk) {
 			$paID = $assignments[$pk->getPermissionKeyID()];
 			$pk->setPermissionObject($c);
@@ -84,13 +84,13 @@ class ChangePagePermissionsPageWorkflowRequest extends PageWorkflowRequest {
 				$pa = PermissionAccess::getByID($paID, $pk);
 				if (is_object($pa)) {
 					$pt->assignPermissionAccess($pa);
-				}			
-			}			
+				}
+			}
 		}
 		$wpr = new WorkflowProgressResponse();
 		$wpr->setWorkflowProgressResponseURL(BASE_URL . DIR_REL . '/' . DISPATCHER_FILENAME . '?cID=' . $c->getCollectionID());
 		return $wpr;
 	}
 
-	
+
 }

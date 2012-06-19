@@ -11,14 +11,14 @@ class ProcessEmail extends Job {
 	public function getJobName() {
 		return t("Process Email Posts");
 	}
-	
+
 	public function getJobDescription() {
 		return t("Polls an email account and grabs private messages/postings that are sent there..");
 	}
-	
+
 	public function run() {
 		Loader::library('mail/importer');
-		
+
 		$list = MailImporter::getEnabledList();
 		foreach($list as $mi) {
 			// for each one, we connect and retrieve any mail messages we haven't seen
@@ -37,7 +37,7 @@ class ProcessEmail extends Job {
 					$mh->sendMail();
 				}
 			}
-		}		
+		}
 	}
 }
 

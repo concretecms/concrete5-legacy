@@ -1,6 +1,6 @@
 <? defined('C5_EXECUTE') or die("Access Denied."); ?>
 <div class="ccm-ui">
-	<? 
+	<?
 	global $c;
 	global $a;
 
@@ -14,8 +14,8 @@ if (!$b->overrideAreaPermissions()) { ?>
 	<br/>
 	<a href="javascript:void(0)" class="btn small" onclick="ccm_setBlockPermissionsToOverride()"><?=t('Override Permissions')?></a>
 	</div>
-	
-<? } else { 
+
+<? } else {
 	$enablePermissions = true;
 	?>
 
@@ -37,7 +37,7 @@ if (!$b->overrideAreaPermissions()) { ?>
 
 <?
 $permissions = PermissionKey::getList('block');
-foreach($permissions as $pk) { 
+foreach($permissions as $pk) {
 	$pk->setPermissionObject($b);
 
 ?>
@@ -76,7 +76,7 @@ ccm_permissionLaunchDialog = function(link) {
 		modal: false,
 		width: 500,
 		height: 380
-	});		
+	});
 }
 
 $(function() {
@@ -84,31 +84,31 @@ $(function() {
 		beforeSubmit: function() {
 			jQuery.fn.dialog.showLoader();
 		},
-		
+
 		success: function(r) {
 			jQuery.fn.dialog.hideLoader();
 			jQuery.fn.dialog.closeTop();
-		}		
+		}
 	});
 });
 
 ccm_revertToAreaPermissions = function() {
 	jQuery.fn.dialog.showLoader();
-	$.get('<?=$pk->getPermissionAssignmentObject()->getPermissionKeyToolsURL("revert_to_area_permissions")?>&bID=<?=$b->getBlockID()?>&cvID=<?=$c->getVersionID()?>&arHandle=<?=urlencode($b->getAreaHandle())?>&cID=<?=$c->getCollectionID()?>', function() { 
+	$.get('<?=$pk->getPermissionAssignmentObject()->getPermissionKeyToolsURL("revert_to_area_permissions")?>&bID=<?=$b->getBlockID()?>&cvID=<?=$c->getVersionID()?>&arHandle=<?=urlencode($b->getAreaHandle())?>&cID=<?=$c->getCollectionID()?>', function() {
 		ccm_refreshBlockPermissions();
 	});
 }
 
 ccm_setBlockPermissionsToOverride = function() {
 	jQuery.fn.dialog.showLoader();
-	$.get('<?=$pk->getPermissionAssignmentObject()->getPermissionKeyToolsURL("override_area_permissions")?>&bID=<?=$b->getBlockID()?>&cvID=<?=$c->getVersionID()?>&arHandle=<?=urlencode($b->getAreaHandle())?>&cID=<?=$c->getCollectionID()?>', function() { 
+	$.get('<?=$pk->getPermissionAssignmentObject()->getPermissionKeyToolsURL("override_area_permissions")?>&bID=<?=$b->getBlockID()?>&cvID=<?=$c->getVersionID()?>&arHandle=<?=urlencode($b->getAreaHandle())?>&cID=<?=$c->getCollectionID()?>', function() {
 		ccm_refreshBlockPermissions();
 	});
 }
 
 ccm_refreshBlockPermissions = function() {
 	jQuery.fn.dialog.showLoader();
-	$.get('<?=REL_DIR_FILES_TOOLS_REQUIRED?>/edit_block_popup?btask=groups&bID=<?=$b->getBlockID()?>&cvID=<?=$c->getVersionID()?>&arHandle=<?=urlencode($b->getAreaHandle())?>&cID=<?=$c->getCollectionID()?>', function(r) { 
+	$.get('<?=REL_DIR_FILES_TOOLS_REQUIRED?>/edit_block_popup?btask=groups&bID=<?=$b->getBlockID()?>&cvID=<?=$c->getVersionID()?>&arHandle=<?=urlencode($b->getAreaHandle())?>&cID=<?=$c->getCollectionID()?>', function(r) {
 		jQuery.fn.dialog.replaceTop(r);
 		jQuery.fn.dialog.hideLoader();
 	});

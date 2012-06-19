@@ -8,10 +8,10 @@ class DashboardSystemBasicsSiteNameController extends DashboardBaseController {
 	}
 
 	public function sitename_saved() {
-		$this->set('message', t("Your site's name has been saved."));	
+		$this->set('message', t("Your site's name has been saved."));
 		$this->view();
 	}
-	
+
 	public function update_sitename() {
 		if ($this->token->validate("update_sitename")) {
 			if ($this->isPost()) {

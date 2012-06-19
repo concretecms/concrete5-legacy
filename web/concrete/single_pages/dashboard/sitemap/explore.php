@@ -11,7 +11,7 @@ $(function() {
 
 <?=Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Sitemap'), t('Sitemap flat view lets you page through particular long lists of pages.'), 'span14 offset1');?>
 
-<? if ($dh->canRead()) { ?>	
+<? if ($dh->canRead()) { ?>
 	<div id="ccm-sitemap-message"></div>
 
 	<div id="tree" class="ccm-sitemap-explore">
@@ -22,5 +22,5 @@ $(function() {
 <? } else { ?>
 	<p><?=t('You do not have access to the dashboard sitemap.')?></p>
 <? } ?>
-	
+
 <?=Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper();

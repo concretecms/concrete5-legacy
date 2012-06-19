@@ -9,32 +9,32 @@ foreach($categories as $cat) { ?>
 	<small><?=$cat->getCollectionDescription()?></small>
 	</h3>
 	</div>
-	
+
 	<?
 	$show = array();
 	$subcats = $cat->getCollectionChildrenArray(true);
 	foreach($subcats as $catID) {
 		$subcat = Page::getByID($catID, 'ACTIVE');
 		$catp = new Permissions($subcat);
-		if ($catp->canRead() && $subcat->getAttribute('exclude_nav') != 1) { 
+		if ($catp->canRead() && $subcat->getAttribute('exclude_nav') != 1) {
 			$show[] = $subcat;
 		}
 	}
-	
+
 	if (count($show) > 0) { ?>
-	
+
 	<div class="clearfix">
-	
+
 	<? foreach($show as $subcat) { ?>
-	
+
 	<div class="span4">
 		<a href="<?=Loader::helper('navigation')->getLinkToCollection($cat)?>"><?=$subcat->getCollectionName()?></a>
 	</div>
-	
+
 	<? } ?>
-	
+
 	</div>
-	
+
 	<? } ?>
 
 <? } ?>

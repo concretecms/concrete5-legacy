@@ -1,14 +1,14 @@
-<? defined('C5_EXECUTE') or die("Access Denied."); ?> 
+<? defined('C5_EXECUTE') or die("Access Denied."); ?>
 <style type="text/css">
 table#googleMapBlockSetup th {font-weight: bold; text-style: normal; padding-right: 8px; white-space: nowrap; vertical-align:top ; padding-bottom:8px}
 table#googleMapBlockSetup td{ font-size:12px; vertical-align:top; padding-bottom:8px;}
-</style> 
+</style>
 
-<table id="googleMapBlockSetup" width="100%"> 
+<table id="googleMapBlockSetup" width="100%">
 	<tr>
 		<th><?=t('Map Title')?>: <div class="note">(<?=t('Optional')?>)</div></th>
 		<td><input id="ccm_googlemap_block_title" name="title" value="<?=$mapObj->title?>" maxlength="255" type="text" style="width:80%"></td>
-	</tr>	
+	</tr>
 	<tr>
 		<th><?=t('Location')?>:</th>
 		<td>
@@ -22,5 +22,5 @@ table#googleMapBlockSetup td{ font-size:12px; vertical-align:top; padding-bottom
 		<input id="ccm_googlemap_block_zoom" name="zoom" value="<?=$mapObj->zoom?>" maxlength="255" type="text" style="width:80%">
 		<div class="ccm-note"><?=t('Enter a number from 0 to 21, with 21 being the most zoomed in.')?> </div>
 		</td>
-	</tr>			
+	</tr>
 </table>

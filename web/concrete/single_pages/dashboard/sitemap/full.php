@@ -36,7 +36,7 @@ $listHTML = $sh->outputRequestHTML($instanceID, 'full', false, $nodes);
 			<div class="input">
 			<ul class="inputs-list">
 				<li><input type="checkbox" id="ccm-show-all-pages-cb" <? if ($_SESSION['dsbSitemapShowSystem'] == 1) { ?> checked <? } ?> /></li>
-			</ul>		
+			</ul>
 			</div>
 		</div>
 		</form>
@@ -44,21 +44,21 @@ $listHTML = $sh->outputRequestHTML($instanceID, 'full', false, $nodes);
 </div>
 <div class="ccm-pane-body ccm-pane-body-footer">
 	<? if ($sh->canRead()) { ?>
-	
+
 		<div id="ccm-sitemap-message"></div>
-	
-		
+
+
 		<div id="tree" sitemap-instance-id="<?=$instance_id?>">
 			<ul id="tree-root0" tree-root-node-id="0" sitemap-mode="full" sitemap-instance-id="<?=$instanceID?>">
 			<?=$listHTML?>
 			</ul>
 		</div>
-		
-	
+
+
 	<? } else { ?>
-	
+
 		<p><?=t("You do not have access to the sitemap.");?></p>
-	
+
 	<? } ?>
 </div>
 <?=Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper()?>

@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 	defined('C5_EXECUTE') or die("Access Denied.");
 	class DateNavBlockController extends BlockController {
@@ -9,23 +9,23 @@
 		protected $btExportPageColumns = array('cParentID');
 		protected $btExportPageTypeColumns = array('ctID');
 		protected $btCacheBlockRecord = true;
-		
-		/** 
+
+		/**
 		 * Used for localization. If we want to localize the name/description we have to include this
 		 */
 		public function getBlockTypeDescription() {
 			return t("A collapsible date based navigation tree");
 		}
-		
+
 		public function getBlockTypeName() {
 			return t("Date Navigation");
 		}
-		
+
 		public function getJavaScriptStrings() {
-			return array( 
+			return array(
 			);
 		}
-		
+
 		function getPages($query = null) {
 			Loader::model('page_list');
 			$db = Loader::db();
@@ -47,14 +47,14 @@
 
 			$pl = new PageList();
 			$pl->setNameSpace('b' . $this->bID);
-			
+
 			$cArray = array();
 
 			//$pl->sortByPublicDate();
-			$pl->sortByPublicDateDescending(); 
+			$pl->sortByPublicDateDescending();
 
 			$num = (int) $row['num'];
-			
+
 			if ($num > 0) {
 				$pl->setItemsPerPage($num);
 			}
@@ -64,7 +64,7 @@
 				$this->cID = $c->getCollectionID();
 			}
 			$cParentID = ($row['cThis']) ? $this->cID : $row['cParentID'];
-			
+
 			if ($this->displayFeaturedOnly == 1) {
 				Loader::model('attribute/categories/collection');
 				$cak = CollectionAttributeKey::getByHandle('is_featured');
@@ -72,13 +72,13 @@
 					$pl->filterByIsFeatured(1);
 				}
 			}
-			
-			$pl->filter('cvName', '', '!=');			
-		
+
+			$pl->filter('cvName', '', '!=');
+
 			if ($row['ctID']) {
 				$pl->filterByCollectionTypeID($row['ctID']);
 			}
-			
+
 			$pl->filterByAttribute('exclude_nav',false);
 
 			if ($row['cParentID'] != 0) {
@@ -93,22 +93,22 @@
 			$this->set('pl', $pl);
 			return $pages;
 		}
-		
+
 		public function edit() {
 			$c = Page::getCurrentPage();
-			if ($c->getCollectionID() != $this->cParentID && (!$this->cThis) && ($this->cParentID != 0)) { 
+			if ($c->getCollectionID() != $this->cParentID && (!$this->cThis) && ($this->cParentID != 0)) {
 				$isOtherPage = true;
 				$this->set('isOtherPage', true);
 			}
 		}
-		
+
 		public function view() {
 			$cArray = $this->getPages();
 			$nh = Loader::helper('navigation');
 			$this->set('nh', $nh);
 			$this->set('cArray', $cArray);
 		}
-		
+
 		function save($args) {
 			// If we've gotten to the process() function for this class, we assume that we're in
 			// the clear, as far as permissions are concerned (since we check permissions at several
@@ -120,7 +120,7 @@
 			if (is_object($c)) {
 				$this->cID = $c->getCollectionID();
 			}
-			
+
 			$args['num'] = ($args['num'] > 0) ? $args['num'] : 0;
 			$args['cThis'] = ($args['cParentID'] == $this->cID) ? '1' : '0';
 			$args['cParentID'] = ($args['cParentID'] == 'OTHER') ? $args['cParentIDValue'] : $args['cParentID'];
@@ -129,10 +129,10 @@
 			$args['displayFeaturedOnly'] = ($args['displayFeaturedOnly']) ? '1' : '0';
 			$args['truncateChars'] = intval($args['truncateChars']);
 			$args['truncateTitleChars'] = intval($args['truncateTitleChars']);
-			$args['showDescriptions'] = ($args['showDescriptions']) ? '1' : '0';		
+			$args['showDescriptions'] = ($args['showDescriptions']) ? '1' : '0';
 
-			parent::save($args);		
-		} 
+			parent::save($args);
+		}
 	}
 
 ?>

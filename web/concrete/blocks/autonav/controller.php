@@ -27,10 +27,10 @@
 		protected $isActive = false;
 		protected $_c;
 		public $hasChildren = false;
-		
+
 		/**
-		 * Instantiates an Autonav Block Item. 
-		 * @param array $itemInfo 
+		 * Instantiates an Autonav Block Item.
+		 * @param array $itemInfo
 		 * @param int $level
 		 */
 		function AutonavBlockItem($itemInfo, $level = 1) {
@@ -45,7 +45,7 @@
 
 			return $this;
 		}
-		
+
 		/**
 		 * Returns the number of children below this current nav item
 		 * @return int
@@ -53,9 +53,9 @@
 		function hasChildren() {
 			return $this->hasChildren;
 		}
-		
+
 		/**
-		 * Determines whether this nav item is the current page the user is on. 
+		 * Determines whether this nav item is the current page the user is on.
 		 * @param Page $page The page object for the current page
 		 * @return bool
 		 */
@@ -74,7 +74,7 @@
 			return $this->cvDescription;
 		}
 
-		/** 
+		/**
 		 * Returns a target for the nav item
 		 */
 		public function getTarget() {
@@ -83,16 +83,16 @@
 					return '_blank';
 				}
 			}
-			
+
 			$_c = $this->getCollectionObject();
 			if (is_object($_c)) {
 				return $_c->getAttribute('nav_target');
 			}
-			
+
 			return '';
 		}
-		
-		/** 
+
+		/**
 		 * Gets a URL that will take the user to this particular page. Checks against URL_REWRITING, the page's path, etc..
 		 * @return string $url
 		 */
@@ -112,7 +112,7 @@
 			}
 			return $link;
 		}
-		
+
 		/**
 		 * Gets the name of the page or link.
 		 * @return string
@@ -120,7 +120,7 @@
 		function getName() {
 			return $this->cvName;
 		}
-		
+
 		/**
 		 * Gets the pageID for the navigation item.
 		 * @return int
@@ -128,8 +128,8 @@
 		function getCollectionID() {
 			return $this->cID;
 		}
-		
-		
+
+
 		/**
 		 * Gets the current level at the nav tree that we're at.
 		 * @return int
@@ -137,8 +137,8 @@
 		function getLevel() {
 			return $this->level;
 		}
-		
-		/** 
+
+		/**
 		 * Sets the collection Object of the navigation item to the passed object
 		 * @param Page $obj
 		 * @return void
@@ -146,7 +146,7 @@
 		function setCollectionObject(&$obj) {
 			$this->_c = $obj;
 		}
-		
+
 		/**
 		 * Gets the collection Object of the navigation item
 		 * @return Page
@@ -155,7 +155,7 @@
 			return $this->_c;
 		}
 	}
-	
+
 	/**
 	 * The controller for the autonav block, which makes navigation lists and menus from C5 pages.
 	 *
@@ -167,7 +167,7 @@
 	 * @license    http://www.concrete5.org/license/     MIT License
 	 *
 	 */
-	 
+
 	class AutonavBlockController extends BlockController {
 
 		protected $btTable = 'btNavigation';
@@ -179,13 +179,13 @@
 		protected $btCacheBlockOutputForRegisteredUsers = false;
 		protected $btCacheBlockOutputLifetime = 300;
 		protected $btWrapperClass = 'ccm-ui';
-		
+
 		protected $btExportPageColumns = array('displayPagesCID');
-		
+
 		public function getBlockTypeDescription() {
 			return t("Creates navigation trees and sitemaps.");
 		}
-		
+
 		public function getBlockTypeName() {
 			return t("Auto-Nav");
 		}
@@ -232,10 +232,10 @@
 			   $this->cID = $c->getCollectionID();
 			   $this->cParentID = $c->getCollectionParentID();
 			}
-			
+
 			parent::__construct($obj);
 		}
-		
+
 		function save($args) {
 			$args['displayPagesIncludeSelf'] = $args['displayPagesIncludeSelf'] ? 1 : 0;
 			$args['displayPagesCID'] = $args['displayPagesCID'] ? $args['displayPagesCID'] : 0;
@@ -243,7 +243,7 @@
 			$args['displayUnavailablePages'] = $args['displayUnavailablePages'] ? 1 : 0;
 			parent::save($args);
 		}
-		
+
 		function getContent() {
 			/* our templates expect a variable not an object */
 			$con = array();
@@ -252,9 +252,9 @@
 			}
 			return $con;
 		}
-		
+
 		public function getChildPages($c) {
-		
+
 			// a quickie
 			$db = Loader::db();
 			$r = $db->query("select cID from Pages where cParentID = ? order by cDisplayOrder asc", array($c->getCollectionID()));
@@ -264,7 +264,7 @@
 			}
 			return $pages;
 		}
-		
+
 		function generateNav() {
 			$db = Loader::db();
 			// now we proceed, with information obtained either from the database, or passed manually from
@@ -333,11 +333,11 @@
 					$cParentID = 1;
 					break;
 			}
-			
+
 			if ($cParentID != null) {
-				
+
 				/*
-				
+
 				$displayHeadPage = false;
 
 				if ($this->displayPagesIncludeSelf) {
@@ -357,18 +357,18 @@
 						}
 					}
 				}
-				
+
 				if ($displayHeadPage) {
 					$level++;
 				}
 				*/
-				
+
 				if ($this->displaySubPages == 'relevant' || $this->displaySubPages == 'relevant_breadcrumb') {
 					$this->populateParentIDArray($this->cID);
 				}
-				
+
 				$this->getNavigationArray($cParentID, $orderBy, $level);
-				
+
 				// if we're at the top level we add home to the beginning
 				if ($cParentID == 1) {
 					if ($this->displayUnapproved) {
@@ -381,32 +381,32 @@
 					$niRow['cID'] = HOME_CID;
 					$niRow['cvDescription'] = $tc1->getCollectionDescription();
 					$niRow['cPath'] = $tc1->getCollectionPath();
-					
+
 					$ni = new AutonavBlockItem($niRow, 0);
 					$ni->setCollectionObject($tc1);
-					
+
 					array_unshift($this->navArray, $ni);
 				}
-				
+
 				/*
-				
-				if ($displayHeadPage) {				
+
+				if ($displayHeadPage) {
 					$niRow = array();
 					$niRow['cvName'] = $tc1->getCollectionName();
 					$niRow['cID'] = $row['cID'];
 					$niRow['cvDescription'] = $tc1->getCollectionDescription();
 					$niRow['cPath'] = $tc1->getCollectionPath();
-					
+
 					$ni = new AutonavBlockItem($niRow, 0);
 					$level++;
 					$ni->setCollectionObject($tc1);
-					
+
 					array_unshift($this->navArray, $ni);
 				}
 				*/
-				
+
 			}
-			
+
 			return $this->navArray;
 		}
 
@@ -425,29 +425,29 @@
 				// things under
 				return $this->cID;
 			}
-			
+
 			if (isset($idArray[$level])) {
 				return $idArray[$level];
 			} else {
 				return null;
 			}
 		}
-		
+
 		protected function displayPage($tc) {
-		
+
 			if ($tc->isSystemPage() && (!$this->displaySystemPages)) {
 				if ($tc->getCollectionPath() == '/members' && Config::get('ENABLE_USER_PROFILES')) {
 					return true;
 				}
-				
+
 				return false;
 			}
-			
+
 			$tcv = $tc->getVersionObject();
-			if ((!is_object($tcv)) || (!$tcv->isApproved() && !$this->displayUnapproved)) { 
+			if ((!is_object($tcv)) || (!$tcv->isApproved() && !$this->displayUnapproved)) {
 				return false;
 			}
-			
+
 			if ($this->displayUnavailablePages == false) {
 				$tcp = new Permissions($tc);
 				if (!$tcp->canRead() && ($tc->getCollectionPointerExternalLink() == null)) {
@@ -460,13 +460,13 @@
 
 		function getNavigationArray($cParentID, $orderBy, $currentLevel) {
 			// increment all items in the nav array with a greater $currentLevel
-			
+
 			foreach($this->navArray as $ni) {
 				if ($ni->getLevel() + 1 < $currentLevel) {
 					$ni->hasChildren = true;
 				}
 			}
-			
+
 			$db = Loader::db();
 			$navSort = $this->navSort;
 			$sorted_array = $this->sorted_array;
@@ -482,24 +482,24 @@
 						if ($this->haveRetrievedSelf) {
 							// since we've already retrieved self, and we're going through again, we set plus 1
 							$this->haveRetrievedSelfPlus1 = true;
-						} else 
+						} else
 						*/
-						
+
 						if ($this->haveRetrievedSelf && $cParentID == $this->cID) {
 							$this->haveRetrievedSelfPlus1 = true;
 						} else if ($row['cID'] == $this->cID) {
 							$this->haveRetrievedSelf = true;
 						}
-						
+
 						$displayPage = true;
 						if ($this->displayUnapproved) {
 							$tc = Page::getByID($row['cID'], "RECENT");
 						} else {
 							$tc = Page::getByID($row['cID'], "ACTIVE");
 						}
-						
+
 						$displayPage = $this->displayPage($tc);
-						
+
 						if ($displayPage) {
 							$niRow = array();
 							$niRow['cvName'] = $tc->getCollectionName();
@@ -560,16 +560,16 @@
 					}
 
 					$sortit=0;
-					if($this->orderBy == "alpha_desc") { 
+					if($this->orderBy == "alpha_desc") {
 						$navObjectNames = array_map('strtolower',$navObjectNames);
-						arsort($navObjectNames);						
-						$sortit=1; 						
+						arsort($navObjectNames);
+						$sortit=1;
 					}
-					
-					if($this->orderBy == "alpha_asc") { 
+
+					if($this->orderBy == "alpha_asc") {
 						$navObjectNames = array_map('strtolower',$navObjectNames);
-						asort($navObjectNames); 
-						$sortit=1; 
+						asort($navObjectNames);
+						$sortit=1;
 					}
 
 					if($sortit) {
@@ -650,8 +650,8 @@
 			}
 
 		}
-		
-		/** 
+
+		/**
 		 * heh. probably should've gone the simpler route and named this getGrandparentID()
 		 */
 		function getParentParentID() {

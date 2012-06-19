@@ -7,16 +7,16 @@ defined('C5_EXECUTE') or die("Access Denied.");
  * @license    http://www.concrete5.org/license/     MIT License
  *
  */
- 
+
 class ChangePagePermissionsInheritancePageWorkflowRequest extends PageWorkflowRequest {
-	
+
 	protected $wrStatusNum = 30;
 
 	public function __construct() {
 		$pk = PermissionKey::getByHandle('edit_page_permissions');
 		parent::__construct($pk);
 	}
-	
+
 	public function setPagePermissionsInheritance($inheritance) {
 		$this->inheritance = $inheritance;
 	}
@@ -34,23 +34,23 @@ class ChangePagePermissionsInheritancePageWorkflowRequest extends PageWorkflowRe
 		$d->setShortStatus(t("Permission Inheritance Changes"));
 		return $d;
 	}
-	
+
 	public function getWorkflowRequestStyleClass() {
 		return 'info';
 	}
-	
+
 	public function getWorkflowRequestApproveButtonClass() {
 		return 'success';
 	}
-	
+
 	public function getWorkflowRequestApproveButtonInnerButtonRightHTML() {
 		return '<i class="icon-white icon-thumbs-up"></i>';
-	}		
-	
+	}
+
 	public function getWorkflowRequestApproveButtonText() {
 		return t('Change Inheritance');
 	}
-	
+
 	public function approve(WorkflowProgress $wp) {
 		$c = Page::getByID($this->getRequestedPageID());
 		switch($this->inheritance) {
@@ -63,11 +63,11 @@ class ChangePagePermissionsInheritancePageWorkflowRequest extends PageWorkflowRe
 			default:
 				$c->setPermissionsToManualOverride();
 				break;
-		}			
+		}
 		$wpr = new WorkflowProgressResponse();
 		$wpr->setWorkflowProgressResponseURL(BASE_URL . DIR_REL . '/' . DISPATCHER_FILENAME . '?cID=' . $c->getCollectionID());
 		return $wpr;
 	}
 
-	
+
 }

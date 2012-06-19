@@ -7,7 +7,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
  * Thanks very much to the guide posted by eZ Systems:
  * http://talks.php.net/show/php-best-practices/26
  */
- 
+
  if (get_magic_quotes_gpc()) {
 	$in = array(&$_GET, &$_POST, &$_COOKIE);
 	while (list($k,$v) = each($in)) {
@@ -21,4 +21,3 @@ defined('C5_EXECUTE') or die("Access Denied.");
 	}
 	unset($in);
 }
- 

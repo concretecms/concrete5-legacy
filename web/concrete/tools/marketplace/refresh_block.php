@@ -34,9 +34,9 @@ ccm_marketplaceRefreshInstalledBlockTypes = function() {
 
 	<table class="ccm-block-type-table">
 
-	<? foreach($marketplaceBlockTypes as $bt) { 
+	<? foreach($marketplaceBlockTypes as $bt) {
 		$btIcon = $bt->getRemoteListIconURL();
-		if ($bt->purchaseRequired()) { 
+		if ($bt->purchaseRequired()) {
 			$btButton = t("Purchase");
 		} else {
 			$btButton = t("Download");
@@ -45,7 +45,7 @@ ccm_marketplaceRefreshInstalledBlockTypes = function() {
 		$btDesc = $bt->getDescription();
 
 
-		?>	
+		?>
 		<tr class="ccm-block-type-row">
 			<td<?=!empty($btDesc)?' valign="top"':''?>><img src="<?=$btIcon?>" /></td>
 			<td><div style="width: 7px">&nbsp;</td>

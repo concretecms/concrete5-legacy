@@ -8,5 +8,5 @@ if ((!$c->isAdminArea()) && ($c->getCollectionPath() != '/login')) {
 		$v->render('/maintenance_mode/');
 		exit;
 	}
-	
+
 }

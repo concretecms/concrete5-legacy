@@ -8,7 +8,7 @@ $previewMode = false;
 $fp = FilePermissions::getGlobal();
 if (!$fp->canAccessFileManager()) {
 	die(t("Access Denied."));
-}  
+}
 
 $attribs = FileAttributeKey::getUserAddedList();
 
@@ -23,7 +23,7 @@ if (is_array($_REQUEST['fID'])) {
 		$fp = new Permissions($f);
 		if ($fp->canViewFile()) {
 			$files[] = $f;
-			$extensions[] = strtolower($f->getExtension()); 
+			$extensions[] = strtolower($f->getExtension());
 		}
 	}
 } else {
@@ -31,9 +31,9 @@ if (is_array($_REQUEST['fID'])) {
 	$fp = new Permissions($f);
 	if ($fp->canViewFile()) {
 		$files[] = $f;
-		$extensions[] = strtolower($f->getExtension()); 
+		$extensions[] = strtolower($f->getExtension());
 	}
-} 
+}
 
 //the attributes interface needs a file version
 $fv = $f->getVersionToModify();
@@ -48,21 +48,21 @@ foreach($files as $f){
 		} else {
 		$defaultPropertyVals['title']='{CCM:MULTIPLE:VALUES}';  $defaultPropertyVals['titleValue']='';
 		}
-		
-	$description=$fv->getDescription(); 
+
+	$description=$fv->getDescription();
 	if(!strlen($defaultPropertyVals['description']) || $defaultPropertyVals['description']==$description) {
 		 $defaultPropertyVals['description']=$description; $defaultPropertyVals['descriptionValue']=$description;
 	} else {
 		 $defaultPropertyVals['description']='{CCM:MULTIPLE:VALUES}';  $defaultPropertyVals['descriptionValue']='';
 	}
-	
-	$tags=$fv->getTags(); 
+
+	$tags=$fv->getTags();
 	if(!strlen($defaultPropertyVals['tags']) || $defaultPropertyVals['tags']==$tags) {
 		 $defaultPropertyVals['tags']=$tags;  $defaultPropertyVals['tagsValue']=$tags;
 	} else {
 		$defaultPropertyVals['tags']='{CCM:MULTIPLE:VALUES}';  $defaultPropertyVals['tagsValue']='';
 	}
-	
+
 	foreach($attribs as $ak){
 		$akID=$ak->getAttributeKeyID();
 		$vo = $fv->getAttributeValueObject($ak);
@@ -78,14 +78,14 @@ foreach($files as $f){
 	}
 }
 
-if ($_POST['task'] == 'update_core' && $fp->canEditFileProperties() && (!$previewMode)) { 
- 
+if ($_POST['task'] == 'update_core' && $fp->canEditFileProperties() && (!$previewMode)) {
+
 	switch($_POST['attributeField']) {
 		case 'fvTitle':
 			$text = $_POST['fvTitle'];
-			foreach($files as $f){ 
+			foreach($files as $f){
 				$fv=$f->getVersionToModify();
-				$fv->updateTitle($text); 
+				$fv->updateTitle($text);
 			}
 			print $text;
 			break;
@@ -105,16 +105,16 @@ if ($_POST['task'] == 'update_core' && $fp->canEditFileProperties() && (!$previe
 			}
 			print $text;
 			break;
-	} 
-	
+	}
+
 	exit;
 }
 
 if ($_POST['task'] == 'update_extended_attribute' && $fp->canEditFileProperties() && (!$previewMode)) {
 	$fv = $f->getVersionToModify();
 	$fakID = $_REQUEST['fakID'];
-	$value = ''; 
-	
+	$value = '';
+
 	$ak = FileAttributeKey::get($fakID);
 	foreach($files as $f){
 		$fv=$f->getVersionToModify();
@@ -123,16 +123,16 @@ if ($_POST['task'] == 'update_extended_attribute' && $fp->canEditFileProperties(
 	$fv->populateAttributes();
 	$val = $fv->getAttributeValueObject($ak);
 	print $val->getValue('display');
-	
+
 	exit;
-} 
+}
 
 if ($_POST['task'] == 'clear_extended_attribute' && $fp->canEditFileProperties() && (!$previewMode)) {
 
 	$fv = $f->getVersionToModify();
 	$fakID = $_REQUEST['fakID'];
-	$value = ''; 
-	
+	$value = '';
+
 	$ak = FileAttributeKey::get($fakID);
 	foreach($files as $f){
 		$fv=$f->getVersionToModify();
@@ -150,25 +150,25 @@ function printCorePropertyRow($title, $field, $value, $formText) {
 	global $previewMode, $f, $fp, $files, $form;
 	if ($value == '') {
 		$text = '<div class="ccm-attribute-field-none">' . t('None') . '</div>';
-	} else if ($value == '{CCM:MULTIPLE:VALUES}') { 
+	} else if ($value == '{CCM:MULTIPLE:VALUES}') {
 		$text = '<div class="ccm-attribute-field-none">' . t('Multiple Values') . '</div>';
-	} else { 
+	} else {
 		$text = htmlentities( $value, ENT_QUOTES, APP_CHARSET);
 	}
 
 	if ($fp->canEditFileProperties() && (!$previewMode)) {
-	
+
 	$hiddenFIDfields='';
 	foreach($files as $f) {
 		$hiddenFIDfields.=' '.$form->hidden('fID[]' , $f->getFileID()).' ';
 	}
-	
+
 	$html = '
 	<tr class="ccm-attribute-editable-field">
 		<td><strong><a href="javascript:void(0)">' . $title . '</a></strong></td>
 		<td width="100%" class="ccm-attribute-editable-field-central"><div class="ccm-attribute-editable-field-text">' . $text . '</div>
 		<form method="post" action="' . REL_DIR_FILES_TOOLS_REQUIRED . '/files/bulk_properties">
-			<input type="hidden" name="attributeField" value="' . $field . '" /> 
+			<input type="hidden" name="attributeField" value="' . $field . '" />
 			'.$hiddenFIDfields.'
 			<input type="hidden" name="task" value="update_core" />
 			<div class="ccm-attribute-editable-field-form ccm-attribute-editable-field-type-text">
@@ -180,38 +180,38 @@ function printCorePropertyRow($title, $field, $value, $formText) {
 		<img src="' . ASSETS_URL_IMAGES . '/throbber_white_16.gif" width="16" height="16" class="ccm-attribute-editable-field-loading" />
 		</td>
 	</tr>';
-	
+
 	} else {
 		$html = '
 		<tr>
 			<td><strong>' . $title . '</strong></td>
 			<td width="100%" colspan="2">' . $text . '</td>
-		</tr>';	
+		</tr>';
 	}
-	
+
 	print $html;
 }
 
 function printFileAttributeRow($ak, $fv, $value) {
-	global $previewMode, $f, $fp, $files, $form; 
+	global $previewMode, $f, $fp, $files, $form;
 	$vo = $fv->getAttributeValueObject($ak);
-	
+
 	if ($value == '') {
 		$text = '<div class="ccm-attribute-field-none">' . t('None') . '</div>';
-	} else if ($value == '{CCM:MULTIPLE:VALUES}') { 
+	} else if ($value == '{CCM:MULTIPLE:VALUES}') {
 		$text = '<div class="ccm-attribute-field-none">' . t('Multiple Values') . '</div>';
 		$vo = '';
-	} else { 
+	} else {
 		$text = $value;
 	}
 
-	if ($ak->isAttributeKeyEditable() && $fp->canEditFileProperties() && (!$previewMode)) { 
+	if ($ak->isAttributeKeyEditable() && $fp->canEditFileProperties() && (!$previewMode)) {
 	$type = $ak->getAttributeType();
 	$hiddenFIDfields='';
 	foreach($files as $f) {
 		$hiddenFIDfields.=' '.$form->hidden('fID[]' , $f->getFileID()).' ';
-	}	
-	
+	}
+
 	$html = '
 	<tr class="ccm-attribute-editable-field">
 		<td><strong><a href="javascript:void(0)">' . $ak->getAttributeKeyName() . '</a></strong></td>
@@ -230,14 +230,14 @@ function printFileAttributeRow($ak, $fv, $value) {
 		<img src="' . ASSETS_URL_IMAGES . '/throbber_white_16.gif" width="16" height="16" class="ccm-attribute-editable-field-loading" />
 		</td>
 	</tr>';
-	
+
 	} else {
 
 	$html = '
 	<tr>
 		<td><strong>' . $ak->getAttributeKeyName() . '</strong></td>
 		<td width="100%" colspan="2">' . $text . '</td>
-	</tr>';	
+	</tr>';
 	}
 	print $html;
 }
@@ -289,7 +289,7 @@ table.ccm-grid th {width: 70px}
 
 <div id="ccm-file-properties">
 <div id="ccm-file-manager-add-complete-basic-tab">
-<table border="0" cellspacing="0" cellpadding="0" class="ccm-grid">  
+<table border="0" cellspacing="0" cellpadding="0" class="ccm-grid">
 <? if (count($files) == 1) { ?>
 <tr>
 	<td><strong><?=t('ID')?></strong></td>
@@ -333,9 +333,9 @@ printCorePropertyRow(t('Tags'), 'fvTags', $defaultPropertyVals['tags'], $form->t
 
 <div id="ccm-file-manager-add-complete-attributes-tab" style="display: none">
 
-<table border="0" cellspacing="0" cellpadding="0" class="ccm-grid" width="100%">  
+<table border="0" cellspacing="0" cellpadding="0" class="ccm-grid" width="100%">
 <?
-foreach($attribs as $at) { 
+foreach($attribs as $at) {
 	printFileAttributeRow($at, $fv, $defaultPropertyVals['ak' . $at->getAttributeKeyID()]);
 } ?>
 </table>
@@ -345,15 +345,15 @@ foreach($attribs as $at) {
 
 <? if ($_REQUEST['uploaded']) { ?>
 
-	<div id="ccm-file-manager-add-complete-sets-tab" style="display: none">	
+	<div id="ccm-file-manager-add-complete-sets-tab" style="display: none">
 		<div class="ccm-files-add-to-sets-wrapper"><? Loader::element('files/add_to_sets', array('disableForm' => FALSE, 'disableTitle' => true)) ?></div>
 	</div>
 
 <? } ?>
 
 <script type="text/javascript">
-$(function() { 
-	ccm_activateEditablePropertiesGrid();  
+$(function() {
+	ccm_activateEditablePropertiesGrid();
 });
 </script>
 

@@ -39,14 +39,14 @@ $form = Loader::helper('form');
 	<label>
 	<?=$form->checkbox('gUserExpirationIsEnabled', 1, false)?>
 	<span><?=t('Automatically remove users from this group')?></span></label>
-	
+
 	<div style="padding-left: 15px; padding-top: 10px; padding-bottom: 10px">
 		<?=$form->select("gUserExpirationMethod", array(
 		'SET_TIME' => t('at a specific date and time'),
 			'INTERVAL' => t('once a certain amount of time has passed')
-		
-	), array('disabled' => true));?>	
-	</div>	
+
+	), array('disabled' => true));?>
+	</div>
 
 	</li>
 </ul>
@@ -90,7 +90,7 @@ $form = Loader::helper('form');
 	'DEACTIVATE' => t('Deactivate the user account'),
 	'REMOVE_DEACTIVATE' => t('Remove the user from the group and deactivate the account')
 
-));?>	
+));?>
 </div>
 </div>
 </div>
@@ -100,7 +100,7 @@ $form = Loader::helper('form');
 <input type="hidden" name="add" value="1" /><input type="submit" name="submit" value="<?=t('Add')?>" class="btn ccm-button-right primary" />
 </div>
 
-</form>	
+</form>
 <?=Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper(false);?>
 
 <script type="text/javascript">
@@ -114,14 +114,14 @@ ccm_checkGroupExpirationOptions = function() {
 				$("#gUserExpirationSetTimeOptions").show();
 				$("#gUserExpirationIntervalOptions").hide();
 				break;
-			case 'INTERVAL': 
+			case 'INTERVAL':
 				$("#gUserExpirationSetTimeOptions").hide();
 				$("#gUserExpirationIntervalOptions").show();
-				break;				
+				break;
 		}
 		$("#gUserExpirationAction").show();
 	} else {
-		sel.attr('disabled', true);	
+		sel.attr('disabled', true);
 		$("#gUserExpirationSetTimeOptions").hide();
 		$("#gUserExpirationIntervalOptions").hide();
 		$("#gUserExpirationAction").hide();

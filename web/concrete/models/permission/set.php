@@ -4,15 +4,15 @@ class PermissionSet {
 
 	protected $permissions;
 	protected $pkCategoryHandle;
-	
+
 	public function addPermissionAssignment($pkID, $paID) {
 		$this->permissions[$pkID] = $paID;
-	}	
-	
+	}
+
 	public function getPermissionAssignments() {
 		return $this->permissions;
 	}
-	
+
 	public function setPermissionKeyCategory($pkCategoryHandle) {
 		$this->pkCategoryHandle = $pkCategoryHandle;
 	}
@@ -24,7 +24,7 @@ class PermissionSet {
 	public function saveToSession() {
 		$_SESSION['savedPermissionSet'] = serialize($this);
 	}
-	
+
 	public static function getSavedPermissionSetFromSession() {
 		$obj = unserialize($_SESSION['savedPermissionSet']);
 		return $obj;

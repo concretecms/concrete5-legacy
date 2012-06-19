@@ -5,13 +5,13 @@ Loader::controller('/dashboard/base');
 
 class DashboardSystemBasicsMultilingualController extends DashboardBaseController {
 
-	public $helpers = array('form'); 
-	
+	public $helpers = array('form');
+
 	public function view() {
 		Loader::library('3rdparty/Zend/Locale');
 		Loader::library('3rdparty/Zend/Locale/Data');
 		$languages = Localization::getAvailableInterfaceLanguages();
-		if (count($languages) > 0) { 
+		if (count($languages) > 0) {
 			array_unshift($languages, 'en_US');
 		}
 		$locales = array();
@@ -25,7 +25,7 @@ class DashboardSystemBasicsMultilingualController extends DashboardBaseControlle
 		$this->set('interfacelocales', $locales);
 		$this->set('languages', $languages);
 	}
-	
+
 	public function on_start() {
 		$this->token = Loader::helper('validation/token');
 	}
@@ -36,15 +36,15 @@ class DashboardSystemBasicsMultilingualController extends DashboardBaseControlle
 	}
 	public function save_interface_language() {
 		if (Loader::helper('validation/token')->validate('save_interface_language')) {
-			
+
 			Config::save('SITE_LOCALE', $this->post('SITE_LOCALE'));
 			Config::save('LANGUAGE_CHOOSE_ON_LOGIN', $this->post('LANGUAGE_CHOOSE_ON_LOGIN'));
 			$this->redirect('/dashboard/system/basics/multilingual', 'interface_settings_saved');
-			
+
 		} else {
 			$this->error->add(Loader::helper('validation/token')->getErrorMessage());
 		}
 		$this->view();
 	}
-	
+
 }

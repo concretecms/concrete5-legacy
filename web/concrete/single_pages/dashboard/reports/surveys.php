@@ -1,5 +1,5 @@
 <?php
-defined('C5_EXECUTE') or die("Access Denied."); 
+defined('C5_EXECUTE') or die("Access Denied.");
 
 // Helpers
 $ih = Loader::helper('concrete/interface');
@@ -8,13 +8,13 @@ $ih = Loader::helper('concrete/interface');
 if ($this->controller->getTask() == 'viewDetail') { ?>
 
     <?=Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Results for &#34;%s&#34;', $current_survey), false, false, false);?>
-    
+
 	<div class="ccm-pane-body">
-    
+
     	<div class="row">
-    
+
           <div class="span10">
-      
+
             <table class="zebra-striped">
               <thead>
                 <tr>
@@ -25,7 +25,7 @@ if ($this->controller->getTask() == 'viewDetail') { ?>
                 </tr>
               </thead>
               <tbody>
-                <? 
+                <?
                 foreach($survey_details as $detail) { ?>
                 <tr>
                     <td><?=$detail['option'] ?></td>
@@ -36,32 +36,32 @@ if ($this->controller->getTask() == 'viewDetail') { ?>
               <? } ?>
               </tbody>
             </table>
-        
+
           </div>
-          
+
           <div class="span5" style="margin-left:30px;">
-      
+
             <div style="text-align:center;">
               <?= $pie_chart ?>
-              <?= $chart_options ?>              
+              <?= $chart_options ?>
             </div>
-        
+
           </div>
-        
+
         </div>
-        
+
 	</div>
-    
+
     <div class="ccm-pane-footer">
         <? print $ih->button(t('Back to List'), $this->action('view'), 'left'); ?>
     </div>
-    
+
     <?=Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper(false)?>
 
 <? } else { ?>
 
 	<?=Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Surveys'), false, false);?>
-	
+
 	<? if (count($surveys) == 0) { ?>
 	<?= "<p>".t('You have not created any surveys.')."</p>" ?>
 	<? } else { ?>
@@ -87,9 +87,9 @@ if ($this->controller->getTask() == 'viewDetail') { ?>
 			} ?>
             </tbody>
 		</table>
-		
+
 		<? $surveyList->displayPagingV2(); ?>
-    
+
     <?=Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper()?>
 
 <? } ?>

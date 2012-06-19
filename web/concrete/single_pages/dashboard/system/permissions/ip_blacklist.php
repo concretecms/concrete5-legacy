@@ -5,32 +5,32 @@ $h = Loader::helper('concrete/dashboard');?>
 	<?php echo $this->controller->token->output('update_ipblacklist')?>
 	<?=$h->getDashboardPaneHeaderWrapper(t('IP Address Blacklist'), false, 'span16', false);?>
 	<div class="ccm-pane-body">
-			
+
 			<h3><?php echo t('Smart IP Banning')?></h3>
 			<div class="ccm-inline-form-and-text">
 				<?php echo $form->checkbox('ip_ban_lock_ip_enable', 1, $ip_ban_enable_lock_ip_after)?> <?php echo t('Lock IP after')?>
-				
+
 				<?php echo $form->text('ip_ban_lock_ip_attempts', $ip_ban_lock_ip_after_attempts, array('style'=>'width:30px'))?>
-				<?php echo t('failed login attempts');?>		
-				<?php echo t('in');?>		
-				<?php echo $form->text('ip_ban_lock_ip_time', $ip_ban_lock_ip_after_time, array('style'=>'width:30px'))?>				
-				<?php echo t('seconds');?>				
-			</div>	
+				<?php echo t('failed login attempts');?>
+				<?php echo t('in');?>
+				<?php echo $form->text('ip_ban_lock_ip_time', $ip_ban_lock_ip_after_time, array('style'=>'width:30px'))?>
+				<?php echo t('seconds');?>
+			</div>
 			<div class="ccm-inline-form-and-text">
-				<?php echo $form->radio('ip_ban_lock_ip_how_long_type', $ip_ban_lock_ip_how_long_type_timed, $ip_ban_lock_ip_how_long_type)?> <?php echo t('Ban IP For')?>	
-				<?php echo $form->text('ip_ban_lock_ip_how_long_min', $ip_ban_lock_ip_how_long_min, array('style'=>'width:30px'))?>				
+				<?php echo $form->radio('ip_ban_lock_ip_how_long_type', $ip_ban_lock_ip_how_long_type_timed, $ip_ban_lock_ip_how_long_type)?> <?php echo t('Ban IP For')?>
+				<?php echo $form->text('ip_ban_lock_ip_how_long_min', $ip_ban_lock_ip_how_long_min, array('style'=>'width:30px'))?>
 				<?php echo t('minutes');?>
-				<?php echo $form->radio('ip_ban_lock_ip_how_long_type', $ip_ban_lock_ip_how_long_type_forever, $ip_ban_lock_ip_how_long_type)?> <?php echo t('Forever')?>					
+				<?php echo $form->radio('ip_ban_lock_ip_how_long_type', $ip_ban_lock_ip_how_long_type_forever, $ip_ban_lock_ip_how_long_type)?> <?php echo t('Forever')?>
 			</div>
 			<h4><?php echo t('Automatically Banned IP Addresses')?></h4>
-			<table id="ip-blacklist" class="ccm-results-list" width="100%" cellspacing="1" cellpadding="0" border="0">	
+			<table id="ip-blacklist" class="ccm-results-list" width="100%" cellspacing="1" cellpadding="0" border="0">
 				<thead>
 				<tr>
 					<th><?php echo $form->checkbox('ip_ban_select_all',1,false)?> <?php echo t('IP')?></th>
 					<th><?php echo t('Reason For Ban')?></th>
 					<th><?php echo t('Expires In')?></th>
-					<th> 
-						<select name="ip_ban_change_to" id="ip_ban_change_to">				
+					<th>
+						<select name="ip_ban_change_to" id="ip_ban_change_to">
 							<option value="<?php echo $ip_ban_change_makeperm?>"><?php echo t('Make Ban Permanent')?></option>
 							<option value="<?php echo $ip_ban_change_remove?>"><?php echo t('Remove Ban')?></option>
 						</select>
@@ -48,25 +48,25 @@ $h = Loader::helper('concrete/dashboard');?>
 						<tr>
 							<td><label><?php echo $form->checkbox('ip_ban_changes[]',$user_banned_ip->getUniqueID(),false)?> <?php echo $user_banned_ip->getIPRangeForDisplay()?></label></td>
 							<td><?php echo $user_banned_ip->getReason()?></td>
-							<td><?php echo ($this->controller->formatTimestampAsMinutesSeconds($user_banned_ip->expires))?></td>			
+							<td><?php echo ($this->controller->formatTimestampAsMinutesSeconds($user_banned_ip->expires))?></td>
 							<td>&nbsp;</td>
-						</tr>		
+						</tr>
 					<?php  } ?>
 				<?php  } ?>
 				</tbody>
-			</table>	
+			</table>
 			<h3><?php echo t('Permanent IP Ban')?></h3>
 			<p class="notes">
-			<?php echo t('Enter IP addresses, one per line, in the form below to manually ban an IP address. To indicate a range, use a wildcard character (e.g. 192.168.15.* will block 192.168.15.1, 192.168.15.2, etc...)')?>			
-			</p>					
+			<?php echo t('Enter IP addresses, one per line, in the form below to manually ban an IP address. To indicate a range, use a wildcard character (e.g. 192.168.15.* will block 192.168.15.1, 192.168.15.2, etc...)')?>
+			</p>
 			<textarea id="ip_ban_manual" name="ip_ban_manual" rows="10" style="width: 350px; margin-bottom: 10px;"><?php echo $user_banned_manual_ips?></textarea>
 	</div>
 	<div class="ccm-pane-footer">
 
-		<?php 	
+		<?php
 		print $interface->button_js(t('Save'), 'saveIpBlacklist()', 'right', 'primary');
 		?>
-	
+
 	</div>
 	<?php print $h->getDashboardPaneFooterWrapper(false); ?>
 </form>
@@ -74,13 +74,13 @@ $h = Loader::helper('concrete/dashboard');?>
 <script type="text/javascript">
 
 var saveIpBlacklist = function(){
-	$("form#ipblacklist-form").get(0).submit();	
+	$("form#ipblacklist-form").get(0).submit();
 }
 
 //jQuery block for non-submit form logic
 $(document).ready(function(){
 	var sParentSelector;
-	sParentSelector = 'form#ipblacklist-form';	
+	sParentSelector = 'form#ipblacklist-form';
 	//delegate for any clicks to this form
 	$(sParentSelector).bind('click', function(e){
 		//clicks the parent IP checkbox
@@ -90,21 +90,21 @@ $(document).ready(function(){
 		else if( $(e.target).is('input#submit-ipblacklist') ) {
 			saveIpBlacklist();
 		}
-	});	
-	
+	});
+
 	$(sParentSelector).bind('change', function(e){
-		if ($(e.target).is('select')) {			
+		if ($(e.target).is('select')) {
 			//$('input[name=submit-ipblacklist]').attr('value',$(':selected',e.target).text());
 		}
 	});
-	
+
 	function allIPs(t){
 		if(t.checked){
 			$('form#ipblacklist-form table input').attr('checked',true);
 		}
 		else{
 			$('form#ipblacklist-form table input').attr('checked',false);
-		}	
+		}
 	}
 });
 </script>

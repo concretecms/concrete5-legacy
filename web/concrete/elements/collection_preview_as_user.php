@@ -11,14 +11,14 @@ $us = Loader::helper('form/user_selector'); ?>
 <form id="ccm-collection-preview-as-user-form" class="form-horizontal" method="get" action="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/pages/preview_as_user" target="ccm-collection-preview-as-user-frame">
 	<input type="hidden" name="cID" value="<?=$c->getCollectionID()?>" />
 	<div class="control-group">
-	
+
 	<label class="control-label"><?=t('Preview As')?></label>
 	<div class="controls">
 		<label class="radio inline"><input type="radio" value="guest" name="ccm-collection-preview-as" checked="checked" /> <?=t('Guest')?></label>
 		<label class="radio inline"><input type="radio" value="registered" name="ccm-collection-preview-as" /> <?=t('Registered User')?>
 
 		</label>
-		
+
 		&nbsp;&nbsp;
 		<?=$us->quickSelect('customUser', $u->getUserName(), array('class' => 'span3', 'disabled' => 'disabled'))?>
 
@@ -31,7 +31,7 @@ $us = Loader::helper('form/user_selector'); ?>
 		<?=$date->datetime('onDate')?>
 		<input type="submit" value="<?=t('Go')?>" class="btn" />
 	</div>
-	</div>		
+	</div>
 
 </form>
 </div>
@@ -39,7 +39,7 @@ $us = Loader::helper('form/user_selector'); ?>
 <?
 $assignments = $cp->getAllTimedAssignmentsForPage();
 if (count($assignments) > 0) { ?>
-	<a href="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/edit_collection_popup.php?cID=<?=$c->getCollectionID()?>&ctask=view_timed_permission_list" dialog-width="500" dialog-height="300" dialog-title="<?=t('View Timed Permission Assignments')?>" class="dialog-launch" onclick="" id="ccm-list-view-customize-top"><span class="ccm-menu-icon ccm-icon-clock"></span><? 
+	<a href="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/edit_collection_popup.php?cID=<?=$c->getCollectionID()?>&ctask=view_timed_permission_list" dialog-width="500" dialog-height="300" dialog-title="<?=t('View Timed Permission Assignments')?>" class="dialog-launch" onclick="" id="ccm-list-view-customize-top"><span class="ccm-menu-icon ccm-icon-clock"></span><?
 		if (count($assignments) == 1) { ?><?=t('1 Timed Permission Found')?><? } else { ?><?=t('%s Timed Permissions Found', count($assignments))?><? } ?></a>
 <? } ?>
 </div>
@@ -52,13 +52,13 @@ if (count($assignments) > 0) { ?>
 <script type="text/javascript">
 $(function() {
 	$('input[name=ccm-collection-preview-as]').change(function() {
-		if ($(this).val() == 'registered') { 
+		if ($(this).val() == 'registered') {
 			$('input[name=customUser]').prop('disabled', false);
-		} else { 
+		} else {
 			$('input[name=customUser]').prop('disabled', true);
 		}
 	});
-	
+
 	var h = $('#ccm-collection-preview-as-user-form').closest('.ui-dialog-content').height();
 	h = h - 120;
 	$('#ccm-collection-preview-as-user-frame').css('height', h + 'px');

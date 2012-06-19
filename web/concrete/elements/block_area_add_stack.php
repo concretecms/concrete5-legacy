@@ -1,4 +1,4 @@
-<? 
+<?
 defined('C5_EXECUTE') or die("Access Denied.");
 Loader::model('stack/list');
 $sl = new StackList();
@@ -56,8 +56,8 @@ ccmStackSearchResultsSelect = function(which, e) {
 				$(prevObj[0]).addClass('ccm-item-selected');
 			}
 		}
-		
-	}	
+
+	}
 
 	var currObj = $("li.ccm-item-selected");
 	// handle scrolling
@@ -79,7 +79,7 @@ ccmStackSearchResultsSelect = function(which, e) {
 
 
 	return true;
-	
+
 }
 
 ccmStackSearchDoMapKeys = function(e) {
@@ -105,8 +105,8 @@ ccmStackSearchResetKeys = function() {
 ccmStackAddToArea = function(stackID, arHandle) {
 	ccmStackSearchResetKeys();
 	jQuery.fn.dialog.showLoader();
-	$.get('<?=DIR_REL?>/<?=DISPATCHER_FILENAME?>?atask=add_stack&stID=' + stackID + '&cID=<?=$c->getCollectionID()?>&arHandle=' + encodeURIComponent(arHandle) + '&<?=$token?>', 
-		function(r) { ccm_parseBlockResponse(r, false, 'add'); 
+	$.get('<?=DIR_REL?>/<?=DISPATCHER_FILENAME?>?atask=add_stack&stID=' + stackID + '&cID=<?=$c->getCollectionID()?>&arHandle=' + encodeURIComponent(arHandle) + '&<?=$token?>',
+		function(r) { ccm_parseBlockResponse(r, false, 'add');
 	});
 }
 
@@ -128,24 +128,24 @@ $(function() {
 		<div class="ccm-block-type-search">
 		<?=$form->text('ccmStackSearch', array('tabindex' => 1, 'autocomplete' => 'off', 'style' => 'width: 168px'))?>
 		</div>
-		
+
 		</form>
-		
+
 	</div>
-	
+
 	<ul id="ccm-stack-list" class="aicon-select-list aicon-select-list-groups">
-	<? if (count($stacks) > 0) { 
-		foreach($stacks as $s) { 
+	<? if (count($stacks) > 0) {
+		foreach($stacks as $s) {
 			$as = Area::get($s, STACKS_AREA_NAME);
 			$asp = new Permissions($as);
-			if ($asp->canRead() && $ap->canAddStackToArea($s)) { 
-			?>	
+			if ($asp->canRead() && $ap->canAddStackToArea($s)) {
+			?>
 			<li class="ccm-stack-available">
 				<a onclick="ccmStackAddToArea(<?=$s->getCollectionID()?>, '<?=Loader::helper('text')->entities($a->getAreaHandle())?>')" href="javascript:void(0)"><?=$s->getCollectionName()?></a>
 			</li>
-			
+
 			<? } ?>
-			
+
 		<? }
 	} else { ?>
 		<br/>

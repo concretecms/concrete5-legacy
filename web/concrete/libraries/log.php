@@ -21,11 +21,11 @@ defined('C5_EXECUTE') or die("Access Denied.");
  *
  */
 class LogEntry extends Object {
-	
+
 	public function getType() {return $this->logType;}
 	public function getText() {return $this->logText;}
 	public function getID() {return $this->logID;}
-	
+
 	public function getTimestamp($type = 'system') {
 		if(ENABLE_USER_TIMEZONES && $type == 'user') {
 			$dh = Loader::helper('date');
@@ -36,7 +36,7 @@ class LogEntry extends Object {
 		return $timestamp;
 	}
 
-	/** 
+	/**
 	 * Returns a log entry by ID
 	 */
 	public static function getByID($logID) {
@@ -49,8 +49,8 @@ class LogEntry extends Object {
 			return $obj;
 		}
 	}
-	
-	
+
+
 }
 
 
@@ -63,7 +63,7 @@ class LogEntry extends Object {
  * @license    http://www.concrete5.org/license/     MIT License
  *
  */
- 
+
 class Log {
 
 	private $log;
@@ -72,7 +72,7 @@ class Log {
 	private $session = false;
 	private $sessionText = null;
 	private $isInternal = false;
-	
+
 	public function __construct($log = null, $session = true, $internal = false) {
 		$th = Loader::helper('text');
 		if ($log == null) {
@@ -83,7 +83,7 @@ class Log {
 		$this->session = $session;
 		$this->isInternal = $internal;
 	}
-	
+
 	public function write($message) {
 		$this->sessionText .= $message . "\n";
 		if (!$this->session) {
@@ -98,8 +98,8 @@ class Log {
 		$l = new Log($namespace, false);
 		$l->write($message);
 	}
-	
-	/** 
+
+	/**
 	 * Removes all "custom" log entries - these are entries that an app owner has written and don't have a builtin C5 type
 	 */
 	public function clearCustom() {
@@ -107,7 +107,7 @@ class Log {
 		$db->Execute("delete from Logs where logIsInternal = 0");
 	}
 
-	/** 
+	/**
 	 * Removes log entries by type- these are entries that an app owner has written and don't have a builtin C5 type
 	 * @param string $type Is a lowercase string that uses underscores instead of spaces, e.g. sent_emails
 	 */
@@ -115,14 +115,14 @@ class Log {
 		$db = Loader::db();
 		$db->Execute("delete from Logs where logType = ?", array($type));
 	}
-	
+
 	public function clearInternal() {
 		$db = Loader::db();
 		$db->Execute("delete from Logs where logIsInternal = 1");
 	}
 
-	
-	/** 
+
+	/**
 	 * Removes all log entries
 	 */
 	public function clearAll() {
@@ -130,23 +130,23 @@ class Log {
 		$db->Execute("delete from Logs");
 	}
 
-	
+
 	public function close() {
 		$v = array($this->log, htmlentities($this->sessionText, ENT_COMPAT, APP_CHARSET), $this->isInternal);
 		$db = Loader::db();
 		$db->Execute("insert into Logs (logType, logText, logIsInternal) values (?, ?, ?)", $v);
 		$this->sessionText = '';
 	}
-	
-	/** 
+
+	/**
 	 * Renames a log file and moves it to the log archive.
 	 */
 	public function archive() {
 
 	}
-	
-	/** 
-	 * Returns the total number of entries matching this type 
+
+	/**
+	 * Returns the total number of entries matching this type
 	 */
 	public static function getTotal($keywords, $type) {
 		$db = Loader::db();
@@ -161,8 +161,8 @@ class Log {
 		}
 		return $r;
 	}
-	
-	/** 
+
+	/**
 	 * Returns a list of log entries
 	 */
 	public static function getList($keywords, $type, $limit) {
@@ -176,15 +176,15 @@ class Log {
 		} else {
 			$r = $db->Execute('select logID from Logs where 1=1 ' . $kw . ' order by timestamp desc limit ' . $limit);
 		}
-		
+
 		$entries = array();
 		while ($row = $r->FetchRow()) {
 			$entries[] = LogEntry::getByID($row['logID']);
 		}
 		return $entries;
 	}
-	
-	/** 
+
+	/**
 	 * Returns an array of distinct log types
 	 */
 	public static function getTypeList() {
@@ -195,10 +195,10 @@ class Log {
 		}
 		return $lt;
 	}
-	
+
 	public function getName() { return $this->name;}
-	
-	/** 
+
+	/**
 	 * Returns all the log files in the directory
 	 */
 	public static function getLogs() {

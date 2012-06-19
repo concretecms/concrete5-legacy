@@ -3,7 +3,7 @@
 table#rssDisplayerSetup th {font-weight: bold; text-style: normal; padding-right: 8px; white-space: nowrap}
 table#rssDisplayerSetup td{ font-size:12px }
 
-</style> 
+</style>
 
 <?
 

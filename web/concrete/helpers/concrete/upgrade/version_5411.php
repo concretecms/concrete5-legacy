@@ -31,10 +31,10 @@ class ConcreteUpgradeVersion5411Helper {
 				$tip->addAccess($g3);
 			}
 		}
-		
+
 		// ensure we have a proper ocID
-		$db->Execute("alter table Files modify column ocID int unsigned not null default 0");	
+		$db->Execute("alter table Files modify column ocID int unsigned not null default 0");
 	}
 
-	
+
 }

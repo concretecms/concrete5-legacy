@@ -5,34 +5,34 @@ if (is_object($wp)) {
 	$w = $wp->getWorkflowObject();
 	if ($w->canApproveWorkflowProgressObject($wp)) {
 		$req = $wp->getWorkflowRequestObject();
-		if (is_object($req)) { 
+		if (is_object($req)) {
 		$c = Page::getByID($req->getRequestedPageID(), 'RECENT');
 		?>
 
 <div class="ccm-ui">
 <table class="ccm-permission-grid table zebra-striped">
 
-<? 
+<?
 $ps = $req->getPagePermissionSet();
-foreach($ps->getPermissionAssignments() as $pkID => $paID) { 
+foreach($ps->getPermissionAssignments() as $pkID => $paID) {
 	$pk = PermissionKey::getByID($pkID);
 	$pk->setPermissionObject($c);
 ?>
 <tr>
 	<td class="ccm-permission-grid-name"><strong><?=$pk->getPermissionKeyName()?></td>
 	<td>
-	<? $pa = PermissionAccess::getByID($paID, $pk); 
+	<? $pa = PermissionAccess::getByID($paID, $pk);
 	Loader::element('permission/labels', array('pa' => $pa, 'pk' => $pk))?>
 	</td>
 </tr>
 <? } ?>
 </table>
 </div>
-		
-		
-		
+
+
+
 		<?
-			
+
 		}
 	}
 }

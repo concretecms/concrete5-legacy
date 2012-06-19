@@ -9,17 +9,17 @@ if (is_object($f) && $fp->canWrite()) {
 		$width = $f->getAttribute('width');
 		$height = $f->getAttribute('height');
 		$ext = $f->getExtension();
-		
+
 		$viewPortW = $_POST["viewPortW"];
 		$viewPortH = $_POST["viewPortH"];
 		$pWidth = $_POST["imageW"];
 		$pHeight =  $_POST["imageH"];
-		
+
 		$image = $imp->startImageProcess($f);
-		if ($image) { 
+		if ($image) {
 			$width = imagesx($image);
 			$height = imagesy($image);
-			
+
 			// Resample
 			$image_p = imagecreatetruecolor($pWidth, $pHeight);
 			$imp->setTransparency($image,$image_p,$ext);
@@ -34,13 +34,13 @@ if (is_object($f) && $fp->canWrite()) {
 			if($_POST["imageRotate"]){
 				$angle = 360 - $_POST["imageRotate"];
 				$image_p = imagerotate($image_p,$angle,0);
-				
+
 				$pWidth = imagesx($image_p);
 				$pHeight = imagesy($image_p);
-			
+
 				$diffW = abs($pWidth - $widthR) / 2;
 				$diffH = abs($pHeight - $heightR) / 2;
-					
+
 				$_POST["imageX"] = ($pWidth > $widthR ? $_POST["imageX"] - $diffW : $_POST["imageX"] + $diffW);
 				$_POST["imageY"] = ($pHeight > $heightR ? $_POST["imageY"] - $diffH : $_POST["imageY"] + $diffH);
 			}
@@ -64,16 +64,16 @@ if (is_object($f) && $fp->canWrite()) {
 
 			imagecopy($viewport, $image_p, $dst_x, $dst_y, $src_x, $src_y, $pWidth, $pHeight);
 			imagedestroy($image_p);
-			
-			
+
+
 			$selector = imagecreatetruecolor($_POST["selectorW"],$_POST["selectorH"]);
 			$imp->setTransparency($viewport,$selector,$ext);
 			imagecopy($selector, $viewport, 0, 0, $selectorX, $selectorY,$_POST["viewPortW"],$_POST["viewPortH"]);
-			
+
 			$file = Loader::helper('file')->getTemporaryDirectory() . '/' .time() . "." . $ext;
 			$imp->parseImage($ext,$selector,$file);
 			imagedestroy($viewport);
-			
+
 			Loader::library('file/importer');
 			$fi = new FileImporter();
 			$resp = $fi->import($file, $f->getFileName(), $f);

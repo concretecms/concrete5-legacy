@@ -24,9 +24,8 @@ class ConcreteUpgradeVersion5331Helper {
 		$db = Loader::db();
 		Package::installDB(dirname(__FILE__) . '/db/version_5331.xml');
 	}
-	
 
-		
+
+
 }
-		
-	
+

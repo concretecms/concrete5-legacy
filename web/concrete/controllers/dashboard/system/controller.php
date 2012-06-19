@@ -3,8 +3,8 @@
 defined('C5_EXECUTE') or die("Access Denied.");
 class DashboardSystemController extends Controller {
 
-	public $helpers = array('form'); 
-	
+	public $helpers = array('form');
+
 	public function view() {
 		$categories = array();
 		$c = Page::getCurrentPage();
@@ -13,7 +13,7 @@ class DashboardSystemController extends Controller {
 			$nc = Page::getByID($cID, 'ACTIVE');
 			$ncp = new Permissions($nc);
 			if ($ncp->canRead()) {
-				$categories[] = $nc;	
+				$categories[] = $nc;
 			}
 		}
 		$this->set('categories', $categories);

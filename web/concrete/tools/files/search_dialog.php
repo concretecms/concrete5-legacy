@@ -22,7 +22,7 @@ $searchRequest = $cnt->get('searchRequest');
 $columns = $cnt->get('columns');
 
 $alType = 'false';
-if (isset($_REQUEST['disable_choose']) && $_REQUEST['disable_choose'] == 1) { 
+if (isset($_REQUEST['disable_choose']) && $_REQUEST['disable_choose'] == 1) {
 	$alType = 'BROWSE';
 }
 
@@ -36,7 +36,7 @@ $v->outputHeaderItems();
 
 ?>
 
-<? if (!isset($_REQUEST['refreshDialog'])) { ?> 
+<? if (!isset($_REQUEST['refreshDialog'])) { ?>
 	<div id="ccm-<?=$searchInstance?>-overlay-wrapper">
 <? } ?>
 <div id="ccm-<?=$searchInstance?>-search-overlay" class="ccm-ui">
@@ -51,7 +51,7 @@ $v->outputHeaderItems();
 
 </div>
 
-<? if (!isset($_REQUEST['refreshDialog'])) { ?> 
+<? if (!isset($_REQUEST['refreshDialog'])) { ?>
 	</div>
 <? } ?>
 <?

@@ -7,8 +7,8 @@ defined('C5_EXECUTE') or die("Access Denied.");
  * @license    http://www.concrete5.org/license/     MIT License
  *
  */
-class PageWorkflowProgress extends WorkflowProgress {  
-	
+class PageWorkflowProgress extends WorkflowProgress {
+
 	protected $cID;
 
 	public static function add(Workflow $wf, PageWorkflowRequest $wr) {
@@ -18,19 +18,19 @@ class PageWorkflowProgress extends WorkflowProgress {
 		$wp->cID = $wr->getRequestedPageID();
 		return $wp;
 	}
-	
+
 	public function loadDetails() {
 		$db = Loader::db();
 		$row = $db->GetRow('select cID from PageWorkflowProgress where wpID = ?', array($this->wpID));
-		$this->setPropertiesFromArray($row);		
+		$this->setPropertiesFromArray($row);
 	}
-	
+
 	public function delete() {
 		parent::delete();
 		$db = Loader::db();
 		$db->Execute('delete from PageWorkflowProgress where wpID = ?', array($this->wpID));
 	}
-	
+
 	public static function getList(Page $c, $filters = array('wpIsCompleted' => 0), $sortBy = 'wpDateAdded asc') {
 		$db = Loader::db();
 		$filter = '';
@@ -59,14 +59,14 @@ class PageWorkflowProgress extends WorkflowProgress {
 		$list->sortBy('wpDateLastAction', 'desc');
 		return $list;
 	}
-	
-	
+
+
 }
 
 class PageWorkflowProgressList extends PageList {
-	
+
 	protected $autoSortColumns = array('wpDateLastAction', 'cvName', 'wpCurrentStatus');
-	
+
 	public function __construct() {
 		$this->includeInactivePages();
 		$this->includeSystemPages();
@@ -83,7 +83,7 @@ class PageWorkflowProgressList extends PageList {
 		foreach($_pages as $row) {
 			$c = Page::getByID($row['cID']);
 			$cp = new Permissions($c);
-			if ($cp->canViewPageVersions()) { 
+			if ($cp->canViewPageVersions()) {
 				$c->loadVersionObject('RECENT');
 			} else {
 				$c->loadVersionObject('ACTIVE');
@@ -105,8 +105,8 @@ class PageWorkflowProgressPage {
 		$this->page = $p;
 		$this->wp = $wp;
 	}
-	
+
 	public function getPageObject() {return $this->page;}
 	public function getWorkflowProgressObject() {return $this->wp;}
-	
+
 }

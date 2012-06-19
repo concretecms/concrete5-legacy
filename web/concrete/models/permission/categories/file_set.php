@@ -3,16 +3,16 @@ defined('C5_EXECUTE') or die("Access Denied.");
 class FileSetPermissionKey extends PermissionKey {
 
 	protected $permissionObjectToCheck;
-	
+
 
 
 }
 
 class FileSetPermissionAssignment extends PermissionAssignment {
-	
+
 	public function setPermissionObject(FileSet $fs) {
 		$this->permissionObject = $fs;
-		
+
 		if ($fs->overrideGlobalPermissions()) {
 			$this->permissionObjectToCheck = $fs;
 		} else {
@@ -33,17 +33,17 @@ class FileSetPermissionAssignment extends PermissionAssignment {
 		$db = Loader::db();
 		$db->Execute('update FileSetPermissionAssignments set paID = 0 where pkID = ? and fsID = ?', array($this->pk->getPermissionKeyID(), $this->permissionObject->getFileSetID()));
 	}
-	
+
 	public function assignPermissionAccess(PermissionAccess $pa) {
 		$db = Loader::db();
 		$db->Replace('FileSetPermissionAssignments', array('fsID' => $this->getPermissionObject()->getFileSetID(), 'paID' => $pa->getPermissionAccessID(), 'pkID' => $this->pk->getPermissionKeyID()), array('fsID', 'pkID'), true);
 		$pa->markAsInUse();
 	}
-	
+
 	public function getPermissionKeyToolsURL($task = false) {
 		return parent::getPermissionKeyToolsURL($task) . '&fsID=' . $this->getPermissionObject()->getFileSetID();
 	}
-	
+
 }
 
 class FileSetPermissionAccess extends PermissionAccess {

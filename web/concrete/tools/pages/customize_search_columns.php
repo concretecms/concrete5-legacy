@@ -17,15 +17,15 @@ $fldca = new PageSearchAvailableColumnSet();
 
 $searchInstance = Loader::helper('text')->entities($_REQUEST['searchInstance']);
 if ($_POST['task'] == 'update_columns') {
-	
+
 	$fdc = new PageSearchColumnSet();
 	foreach($_POST['column'] as $key) {
 		$fdc->addColumn($fldca->getColumnByKey($key));
-	}	
+	}
 	$sortCol = $fldca->getColumnByKey($_POST['fSearchDefaultSort']);
 	$fdc->setDefaultSortColumn($sortCol, $_POST['fSearchDefaultSortDirection']);
 	$u->saveConfig('PAGE_LIST_DEFAULT_COLUMNS', serialize($fdc));
-	
+
 	$pageList = new PageList();
 	$pageList->resetSearchRequest();
 	exit;
@@ -40,22 +40,22 @@ $list = CollectionAttributeKey::getList();
 <?=$form->hidden('task', 'update_columns')?>
 
 	<h3><?=t('Choose Headers')?></h3>
-	
+
 	<div class="clearfix">
 	<label><?=t('Standard Properties')?></label>
 	<div class="input">
 	<ul class="inputs-list">
-	
+
 	<?
 	$columns = $fldca->getColumns();
-	foreach($columns as $col) { 
+	foreach($columns as $col) {
 
 		?>
 
 		<li><label><?=$form->checkbox($col->getColumnKey(), 1, $fldc->contains($col))?> <span><?=$col->getColumnName()?></span></label></li>
-	
+
 	<? } ?>
-	
+
 	</ul>
 	</div>
 	</div>
@@ -64,44 +64,44 @@ $list = CollectionAttributeKey::getList();
 	<label><?=t('Additional Attributes')?></label>
 	<div class="input">
 	<ul class="inputs-list">
-	
+
 	<? foreach($list as $ak) { ?>
 
 		<li><label><?=$form->checkbox('ak_' . $ak->getAttributeKeyHandle(), 1, $fldc->contains($ak))?> <span><?=$ak->getAttributeKeyDisplayHandle()?></span></label></li>
-	
+
 	<? } ?>
-	
+
 	</ul>
 	</div>
 	</div>
-	
+
 	<h3><?=t('Column Order')?></h3>
-	
+
 	<p><?=t('Click and drag to change column order.')?></p>
-	
+
 	<ul class="ccm-search-sortable-column-wrapper" id="ccm-<?=$searchInstance?>-sortable-column-wrapper">
 	<? foreach($fldc->getColumns() as $col) { ?>
-		<li id="field_<?=$col->getColumnKey()?>"><input type="hidden" name="column[]" value="<?=$col->getColumnKey()?>" /><?=$col->getColumnName()?></li>	
-	<? } ?>	
+		<li id="field_<?=$col->getColumnKey()?>"><input type="hidden" name="column[]" value="<?=$col->getColumnKey()?>" /><?=$col->getColumnName()?></li>
+	<? } ?>
 	</ul>
-	
+
 	<br/>
-	
+
 	<h3><?=t('Sort By')?></h3>
-	
+
 	<div class="ccm-sortable-column-sort-controls">
-	
+
 	<? $ds = $fldc->getDefaultSortColumn(); ?>
-	
+
 	<select <? if (count($fldc->getSortableColumns()) == 0) { ?>disabled="true"<? } ?> id="ccm-<?=$searchInstance?>-sortable-column-default" name="fSearchDefaultSort">
 	<? foreach($fldc->getSortableColumns() as $col) { ?>
 		<option id="opt_<?=$col->getColumnKey()?>" value="<?=$col->getColumnKey()?>" <? if ($col->getColumnKey() == $ds->getColumnKey()) { ?> selected="true" <? } ?>><?=$col->getColumnName()?></option>
-	<? } ?>	
+	<? } ?>
 	</select>
 	<select <? if (count($fldc->getSortableColumns()) == 0) { ?>disabled="true"<? } ?> id="ccm-<?=$searchInstance?>-sortable-column-default-direction" name="fSearchDefaultSortDirection">
 		<option value="asc" <? if ($ds->getColumnDefaultSortDirection() == 'asc') { ?> selected="true" <? } ?>><?=t('Ascending')?></option>
-		<option value="desc" <? if ($ds->getColumnDefaultSortDirection() == 'desc') { ?> selected="true" <? } ?>><?=t('Descending')?></option>	
-	</select>	
+		<option value="desc" <? if ($ds->getColumnDefaultSortDirection() == 'desc') { ?> selected="true" <? } ?>><?=t('Descending')?></option>
+	</select>
 	</div>
 
 	<div class="dialog-buttons">

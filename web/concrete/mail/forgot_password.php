@@ -6,7 +6,7 @@ $body = t("
 
 Dear %s,
 
-You have requested a new password for the site %s 
+You have requested a new password for the site %s
 
 Your username is: %s
 

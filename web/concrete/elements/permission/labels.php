@@ -16,13 +16,13 @@ if (is_object($pa)) {
 $str = '';
 
 if (count($assignments) > 0) {
-	for ($i = 0; $i < count($assignments); $i++) { 
+	for ($i = 0; $i < count($assignments); $i++) {
 		$class = '';
 		$as = $assignments[$i];
 		$entity = $as->getAccessEntityObject();
 		$pd = $as->getPermissionDurationObject();
 		$pdTitle = '';
-		
+
 		if ($as->getAccessType() == PermissionKey::ACCESS_TYPE_EXCLUDE) {
 			if (is_object($pd)) {
 				$class = 'label-warning';
@@ -30,7 +30,7 @@ if (count($assignments) > 0) {
 			} else {
 				$class = 'label-important';
 			}
-		} else { 
+		} else {
 			if (is_object($pd)) {
 				$class = 'label-info';
 				$pdTitle = 'title="' . $pd->getTextRepresentation() . '"';
@@ -54,7 +54,7 @@ if (count($assignments) > 0) {
 $(function() {
 	$('.ccm-permission-access-line span[title]').tooltip();
 	$('.ccm-permission-grid-cell .ccm-permission-access-line').draggable({
-		helper: 'clone'	
+		helper: 'clone'
 	});
 	$('.ccm-permission-grid-cell').droppable({
 		accept: '.ccm-permission-access-line',
@@ -64,13 +64,13 @@ $(function() {
 			var pkID = $(this).attr('id').substring(25);
 
 			$(ui.draggable).clone().appendTo($('#ccm-permission-grid-cell-' + pkID).html(''));
-			$('#ccm-permission-grid-name-' + pkID + ' a').attr('data-paID', paID);	
-			$('#ccm-permission-grid-cell-' + pkID + ' input[type=hidden]').attr('name', 'pkID[' + pkID + ']');	
+			$('#ccm-permission-grid-name-' + pkID + ' a').attr('data-paID', paID);
+			$('#ccm-permission-grid-cell-' + pkID + ' input[type=hidden]').attr('name', 'pkID[' + pkID + ']');
 			$('#ccm-permission-grid-cell-' + pkID + ' div.ccm-permission-access-line').draggable({
 				helper: 'clone'
-			});			
+			});
 		}
-		
+
 	});
 });
 </script>

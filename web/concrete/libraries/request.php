@@ -34,12 +34,12 @@ class Request {
 	private $hasCustomRequestUser;
 	private $customRequestUser;
 	private $customRequestDateTime;
-	
-	// parses the current request and returns an 
+
+	// parses the current request and returns an
 	// object with tasks, tools, etc... defined in them
 	// for use in the dispatcher
 	// Thanks to Code Igniter for some of this code (in terms of getenv(), etc...)
-	
+
 	private static function parsePathFromRequest($var) {
 		$path = (isset($_SERVER[$var])) ? $_SERVER[$var] : @getenv($var);
 		if (!$path) {
@@ -53,7 +53,7 @@ class Request {
 			case 'PATH_INFO':
 				// DIR_REL not in path; do nothing.
 				break;
-			
+
 			case 'REQUEST_URI':
 				$path = str_replace($_SERVER['QUERY_STRING'], '', $path);
 				$path = trim($path, '?');
@@ -63,7 +63,7 @@ class Request {
 					$dr = trim(DIR_REL, '/');
 					$path = trim($path, '/');
 					if (strpos($path, $dr) === 0) {
-						$path = substr($path, strlen($dr));	
+						$path = substr($path, strlen($dr));
 					}
 				}
 				break;
@@ -71,23 +71,23 @@ class Request {
 
 		$path = trim($path, '/');
 		if (stripos($path, DISPATCHER_FILENAME) === 0) {
-			$path = substr($path, strlen(DISPATCHER_FILENAME));	
+			$path = substr($path, strlen(DISPATCHER_FILENAME));
 		}
 
 		$path = trim($path, '/');
-		
+
 		if (defined('ENABLE_CMS_FOR_PATH') && ENABLE_CMS_FOR_PATH != '') {
 			$path = ENABLE_CMS_FOR_PATH . '/' . $path;
 		}
 		return $path;
 	}
-	
+
 	public function __construct($path) {
 		$this->requestPath = $path;
 		$this->parse();
 	}
-	
-	/** 
+
+	/**
 	 * Gets a request object for the current request. Parses PATH_INFO as necessary.
 	 * @return Request
 	 */
@@ -117,29 +117,29 @@ class Request {
 		}
 		return $req;
 	}
-	
+
 	public function setCustomRequestUser($ui) {
 		$this->hasCustomRequestUser = true;
 		$this->customRequestUser = $ui;
 	}
-	
+
 	public function getCustomRequestUser() {
 		return $this->customRequestUser;
 	}
-	
+
 	public function hasCustomRequestUser() {
 		return $this->hasCustomRequestUser;
 	}
-	
+
 	public function getCustomRequestDateTime() {
 		return $this->customRequestDateTime;
 	}
-	
+
 	public function setCustomRequestDateTime($date) {
 		$this->customRequestDateTime = $date;
 	}
-	
-	/** 
+
+	/**
 	 * our new MVC way of doing things. Parses the collection path using like to find
 	 * where the path stops and the parameters start. Enables us to use urls without a
 	 * task/param separator in them
@@ -160,7 +160,7 @@ class Request {
 				}
 				$path = substr($path, 0, strrpos($path, '/'));
 			}
-			
+
 			/*
 			// Get the longest path (viz most specific match) that is contained
 			// within the request path
@@ -168,18 +168,18 @@ class Request {
 			$r = $db->Execute("select cID,cPath from PagePaths where ? LIKE CONCAT(replace(cPath, '_','\_'),'%') ORDER BY LENGTH(cPath) DESC LIMIT 0,1", array($this->getRequestCollectionPath()));
 			$r = $r->FetchRow();
 			*/
-			if ($cID && $cPath) { 
+			if ($cID && $cPath) {
 				$r['cID'] = $cID;
 				$r['cPath'] = $cPath;
 				Cache::set('request_path_page', $origPath, $r);
-			}			
-		}	
-		
-		if (is_array($r)) { 
+			}
+		}
+
+		if (is_array($r)) {
 			$req = Request::get();
 			$cPath = $r['cPath'];
 			$cID = $r['cID'];
-			$req->setCollectionPath($cPath);			
+			$req->setCollectionPath($cPath);
 			$c = Page::getByID($cID, false);
 		} else {
 			$c = new Page();
@@ -187,11 +187,11 @@ class Request {
 		}
 		return $c;
 	}
-	
+
 	private function parse() {
-		
+
 		$path = $this->requestPath;
-		
+
 		if (isset($_REQUEST['cID']) && intval($_REQUEST['cID']) > 0) {
 			$this->cID = $_REQUEST['cID'];
 		} else {
@@ -204,13 +204,13 @@ class Request {
 				$this->params = $matches[2];
 				return;
 			}
-	
+
 			// home page w/just task
 			if (preg_match("/^\-\/(.[^\/]*)/i", $path, $matches)) {
 				$this->task = $matches[1];
 				return;
 			}
-	
+
 			// path + task + params
 			if (preg_match("/^(.*)\/\-\/(.[^\/]*)\/(.*)/i", $path, $matches)) {
 				$this->cPath = $matches[1];
@@ -218,7 +218,7 @@ class Request {
 				$this->params = $matches[3];
 				return;
 			}
-			
+
 			// path + task
 			if (preg_match("/^(.*)\/\-\/(.[^\/]*)/i", $path, $matches)) {
 				$this->cPath = $matches[1];
@@ -226,7 +226,7 @@ class Request {
 				return;
 			}
 		}
-		
+
 		// tools
 
 		$exploded = explode('/', $path);
@@ -263,7 +263,7 @@ class Request {
 				$this->includeType = 'CONCRETE_TOOL';
 				return;
 			}
-			
+
 			if($exploded[1] == 'packages') {
 				$this->pkgHandle = $exploded[2];
 				unset($exploded[0]);
@@ -278,7 +278,7 @@ class Request {
 				$this->includeType = 'PACKAGE_TOOL';
 				return;
 			}
-			
+
 			if($exploded[1] == 'required') {
 				unset($exploded[0]);
 				unset($exploded[1]);
@@ -291,7 +291,7 @@ class Request {
 				$this->includeType = 'CONCRETE_TOOL';
 				return;
 			}
-			
+
 			unset($exploded[0]);
 			$imploded = implode('/', $exploded);
 			if(substr($imploded, -4) == '.php') {
@@ -302,23 +302,23 @@ class Request {
 			$this->includeType = 'TOOL';
 			return;
 		}
-		
+
 		// just path
 		if ($path != '') {
 			$this->cPath = $path;
 			return;
-		}		
+		}
 	}
-	
-	/** 
+
+	/**
 	 * Gets the path of the current request
 	 */
 	public function getRequestPath() {
 		return $this->requestPath;
 	}
 
-	/** 
-	 * Gets the current collection path as contained in the current request 
+	/**
+	 * Gets the current collection path as contained in the current request
 	 */
 	public function getRequestCollectionPath() {
 		// I think the regexps take care of the trimming for us but just to be sure..
@@ -329,15 +329,15 @@ class Request {
 		return '';
 	}
 
-	/** 
-	 * Gets page ID of the current request 
+	/**
+	 * Gets page ID of the current request
 	 * @return int
 	 */
 	public function getRequestCollectionID() {
 		return $this->cID;
 	}
-	
-	/** 
+
+	/**
 	 * Gets the current MVC task of the request
 	 * @return string
 	 */
@@ -345,50 +345,50 @@ class Request {
 		return $this->task;
 	}
 
-	/** 
+	/**
 	 * Gets the array of parameters for this current MVC task
 	 */
 	public function getRequestTaskParameters() {
 		return $this->params;
 	}
-	
-	/** 
+
+	/**
 	 * Returns whether this request wants to include a file (typically a tool)
 	 * @return bool
 	 */
 	public function isIncludeRequest() {
 		return $this->includeType != null;
 	}
-	
-	/** 
+
+	/**
 	 * Gets the include type of the current request
 	 */
 	public function getIncludeType() {
 		return $this->includeType;
 	}
 
-	/** 
+	/**
 	 * If the current request wants to include a file, this returns the filename it wants to include
 	 */
 	public function getFilename() {
 		return $this->filename;
 	}
-	
-	/** 
+
+	/**
 	 * Gets the block requested by the current request
 	 */
 	public function getBlock() {
 		return $this->btHandle;
 	}
-	
-	/** 
+
+	/**
 	 * Auxiliary data is anything that the request specifies that doesn't really fit inside the request object, but gets passed along anyway
 	 */
 	public function getAuxiliaryData() {
 		return $this->auxData;
 	}
-	
-	/** 
+
+	/**
 	 * Gets the package requested by the current request
 	 */
 	public function getPackageHandle() {
@@ -403,15 +403,15 @@ class Request {
 	public function setRequestTask($task) {
 		$this->task = $task;
 	}
-	
+
 	public function setCurrentPage($page) {
 		$this->currentPage = $page;
 	}
-	
+
 	public function getCurrentPage() {
 		return $this->currentPage;
 	}
-	
+
 	/**
 	 * Sets the controller params, used when the Page object identifies
 	 * the actual path.
@@ -420,7 +420,7 @@ class Request {
 	public function setRequestTaskParameters($params) {
 		$this->params = $params;
 	}
-	
+
 	/**
 	 * Sets the request path, used when the Page object identifies
 	 * the actual path.

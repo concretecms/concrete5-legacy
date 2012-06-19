@@ -6,7 +6,7 @@
 <?
 $permissions = PermissionKey::getList('file_set');
 
-foreach($permissions as $pk) { 
+foreach($permissions as $pk) {
 	$pk->setPermissionObject($fs);
 	?>
 	<tr>
@@ -32,6 +32,6 @@ foreach($permissions as $pk) {
 			modal: false,
 			width: 500,
 			height: 380
-		});		
+		});
 	}
 	</script>

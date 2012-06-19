@@ -9,7 +9,7 @@
 	}
 
 	switch ($_POST['action']) {
-		case 'star':			
+		case 'star':
 			$file_set->AddFileToSet($_POST['file-id']);
 			break;
 		case 'unstar':

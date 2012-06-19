@@ -6,7 +6,7 @@ Loader::model('attribute/categories/file');
 * @package Files
 *
 */
-class FileList extends DatabaseItemList { 
+class FileList extends DatabaseItemList {
 
 	protected $attributeFilters = array();
 	protected $autoSortColumns = array('fvFilename', 'fvAuthorName','fvTitle', 'fDateAdded', 'fvDateAdded', 'fvSize');
@@ -14,7 +14,7 @@ class FileList extends DatabaseItemList {
 	protected $attributeClass = 'FileAttributeKey';
 	protected $permissionLevel = 'search_file_set';
 	protected $filteredFileSetIDs = array();
-	
+
 	/* magic method for filtering by attributes. */
 	public function __call($nm, $a) {
 		if (substr($nm, 0, 8) == 'filterBy') {
@@ -25,10 +25,10 @@ class FileList extends DatabaseItemList {
 			} else {
 				$this->filterByAttribute($attrib, $a[0]);
 			}
-		}			
+		}
 	}
 
-	/** 
+	/**
 	 * Filters by file extension
 	 * @param mixed $extension
 	 */
@@ -36,15 +36,15 @@ class FileList extends DatabaseItemList {
 		$this->filter('fv.fvExtension', $ext, '=');
 	}
 
-	/** 
+	/**
 	 * Filters by type of file
 	 * @param mixed $type
 	 */
 	public function filterByType($type) {
 		$this->filter('fv.fvType', $type, '=');
 	}
-	
-	/** 
+
+	/**
 	 * Filters by "keywords" (which searches everything including filenames, title, tags, users who uploaded the file, tags)
 	 */
 	public function filterByKeywords($keywords) {
@@ -54,12 +54,12 @@ class FileList extends DatabaseItemList {
 		$keys = FileAttributeKey::getSearchableIndexedList();
 		$attribsStr = '';
 		foreach ($keys as $ak) {
-			$cnt = $ak->getController();			
+			$cnt = $ak->getController();
 			$attribsStr.=' OR ' . $cnt->searchKeywords($keywords);
 		}
 		$this->filter(false, '(fvFilename like ' . $qkeywords . ' or fvDescription like ' . $qkeywords . ' or fvTitle like ' . $qkeywords . ' or fvTags like ' . $qkeywords . ' or u.uName = ' . $keywordsExact . $attribsStr . ')');
 	}
-	
+
 
 	public function filterBySet($fs) {
 		if ($fs != false) {
@@ -109,13 +109,13 @@ class FileList extends DatabaseItemList {
 			exec(DIR_FILES_BIN_ZIP . ' -j \'' . addslashes($filename) . '\' ' . $filestring);
 		}
 	}
-	
-	protected function setupFileSetFilters() {	
+
+	protected function setupFileSetFilters() {
 		$fsIDs = array_unique($this->filteredFileSetIDs);
 		$fsIDs = array_filter($fsIDs,'is_numeric');
-		
+
 		$db = Loader::db();
-		
+
 		$i = 0;
 		if(is_array($fsIDs) && count($fsIDs)) {
 			foreach($fsIDs as $fsID) {
@@ -129,28 +129,28 @@ class FileList extends DatabaseItemList {
 			}
 		}
 	}
-	
-	
-	/** 
+
+
+	/**
 	 * Filters the file list by file size (in kilobytes)
 	 */
 	public function filterBySize($from, $to) {
 		$this->filter('fv.fvSize', $from * 1024, '>=');
 		$this->filter('fv.fvSize', $to * 1024, '<=');
 	}
-	
-	/** 
+
+	/**
 	 * Filters by public date
 	 * @param string $date
 	 */
 	public function filterByDateAdded($date, $comparison = '=') {
 		$this->filter('f.fDateAdded', $date, $comparison);
 	}
-	
+
 	public function filterByOriginalPageID($ocID) {
 		$this->filter('f.ocID', $ocID);
 	}
-	
+
 	/**
 	 * filters a FileList by the uID of the approving User
 	 * @param int $uID
@@ -158,9 +158,9 @@ class FileList extends DatabaseItemList {
 	 * @since 5.4.1.1+
 	 */
 	public function filterByApproverUID($uID) {
-		$this->filter('fv.fvApproverUID', $uID);	
+		$this->filter('fv.fvApproverUID', $uID);
 	}
-	
+
 	/**
 	 * filters a FileList by the uID of the owning User
 	 * @param int $uID
@@ -168,25 +168,25 @@ class FileList extends DatabaseItemList {
 	 * @since 5.4.1.1+
 	*/
 	public function filterByAuthorUID($uID) {
-		$this->filter('fv.fvAuthorUID', $uID);	
+		$this->filter('fv.fvAuthorUID', $uID);
 	}
-	
+
 	public function setPermissionLevel($plevel) {
 		$this->permissionLevel = $plevel;
 	}
-	
-	/** 
+
+	/**
 	 * Filters by tag
 	 * @param string $tag
 	 */
-	public function filterByTag($tag='') { 
-		$db=Loader::db();  
+	public function filterByTag($tag='') {
+		$db=Loader::db();
 		$this->filter(false, "( fv.fvTags like ".$db->qstr("%\n".$tag."\n%")."  )");
-	}	
-	
+	}
+
 	protected function setBaseQuery() {
 		$this->setQuery('SELECT DISTINCT f.fID, u.uName as fvAuthorName
-		FROM Files f INNER JOIN FileVersions fv ON f.fID = fv.fID 
+		FROM Files f INNER JOIN FileVersions fv ON f.fID = fv.fID
 		LEFT JOIN Users u on u.uID = fv.fvAuthorUID
 		');
 	}
@@ -207,15 +207,15 @@ class FileList extends DatabaseItemList {
 		$viewableSets = array(-1);
 		$nonviewableSets = array(-1);
 		$myviewableSets = array(-1);
-		
-		if (count($fsIDs) > 0) { 
+
+		if (count($fsIDs) > 0) {
 			$pk = PermissionKey::getByHandle($this->permissionLevel);
 			foreach($fsIDs as $fsID) {
 				$fs = FileSet::getByID($fsID);
 				$pk->setPermissionObject($fs);
 				$list = $pk->getAccessListItems(PermissionKey::ACCESS_TYPE_ALL, $accessEntities);
 				$list = PermissionDuration::filterByActive($list);
-				if (count($list) > 0) { 
+				if (count($list) > 0) {
 					foreach($list as $l) {
 						if ($l->getAccessType() == PermissionKey::ACCESS_TYPE_INCLUDE) {
 							$viewableSets[] = $fs->getFileSetID();
@@ -236,8 +236,8 @@ class FileList extends DatabaseItemList {
 
 
 		// this excludes all file that are found in sets that I can't find
-		$this->filter(false, '((select count(fID) from FileSetFiles where FileSetFiles.fID = f.fID and fsID in (' . implode(',', $nonviewableSets) . ')) = 0)');		
-		
+		$this->filter(false, '((select count(fID) from FileSetFiles where FileSetFiles.fID = f.fID and fsID in (' . implode(',', $nonviewableSets) . ')) = 0)');
+
 		// deal with "mine"
 		$fs = FileSet::getGlobal();
 		$fk = PermissionKey::getByHandle('search_file_set');
@@ -249,7 +249,7 @@ class FileList extends DatabaseItemList {
 			if ($l->getAccessType() == FileSetPermissionKey::ACCESS_TYPE_MINE) {
 				$valid = FileSetPermissionKey::ACCESS_TYPE_MINE;
 			}*/
-			
+
 			if ($l->getAccessType() == PermissionKey::ACCESS_TYPE_INCLUDE) {
 				$valid = PermissionKey::ACCESS_TYPE_INCLUDE;
 			}
@@ -257,14 +257,14 @@ class FileList extends DatabaseItemList {
 				$valid = PermissionKey::ACCESS_TYPE_EXCLUDE;
 			}
 		}
-		
+
 		$uID = ($u->isRegistered()) ? $u->getUserID() : 0;
 		// This excludes all files found in sets where I may only read mine, and I did not upload the file
-		$this->filter(false, '(f.uID = ' . $uID . ' or (select count(fID) from FileSetFiles where FileSetFiles.fID = f.fID and fsID in (' . implode(',',$myviewableSets) . ')) = 0)');		
+		$this->filter(false, '(f.uID = ' . $uID . ' or (select count(fID) from FileSetFiles where FileSetFiles.fID = f.fID and fsID in (' . implode(',',$myviewableSets) . ')) = 0)');
 		/*
 		if ($valid == FileSetPermissionKey::ACCESS_TYPE_MINE) {
 			// this means that we're only allowed to read files we've uploaded (unless, of course, those files are in previously covered sets)
-			$this->filter(false, '(f.uID = ' . $uID . ' or (select count(fID) from FileSetFiles where FileSetFiles.fID = f.fID and fsID in (' . implode(',',$viewableSets) . ')) > 0)');		
+			$this->filter(false, '(f.uID = ' . $uID . ' or (select count(fID) from FileSetFiles where FileSetFiles.fID = f.fID and fsID in (' . implode(',',$viewableSets) . ')) > 0)');
 		}
 		*/
 		// now we filter out files we directly don't have access to
@@ -272,7 +272,7 @@ class FileList extends DatabaseItemList {
 		// So I have to do this query OUTSIDE of MySQL and give it to mysql
 		$db = Loader::db();
 		$vpvPKID = $db->GetOne('select pkID from PermissionKeys where pkHandle = \'view_file\'');
-		if ($this->permissionLevel == 'search_file_set') { 
+		if ($this->permissionLevel == 'search_file_set') {
 			$vpPKID = $db->GetOne('select pkID from PermissionKeys where pkHandle = \'view_file_in_file_manager\'');
 		} else {
 			$vpPKID = $vpvPKID;
@@ -284,23 +284,23 @@ class FileList extends DatabaseItemList {
 			foreach($pdIDs as $pdID) {
 				$pd = PermissionDuration::getByID($pdID);
 				if ($pd->isActive()) {
-					$activePDIDs[] = $pd->getPermissionDurationID();	
+					$activePDIDs[] = $pd->getPermissionDurationID();
 				}
 			}
 		}
 		$activePDIDs[] = 0;
-		
+
 		// exclude files where its overridden but I don't have the ability to read
 		$this->filter(false, "(f.fOverrideSetPermissions = 0 or (select count(fID) from FilePermissionAssignments fpa inner join PermissionAccessList fpal on fpa.paID = fpal.paID where fpa.fID = f.fID and fpal.accessType = " . PermissionKey::ACCESS_TYPE_INCLUDE . " and fpal.pdID in (" . implode(',', $activePDIDs) . ") and fpal.peID in (" . implode(',', $peIDs) . ") and (fpa.pkID = " . $vpPKID . ")) > 0)");
 
-		
+
 		// exclude detail files where read is excluded
 		$this->filter(false, "f.fID not in (select ff.fID from Files ff inner join FilePermissionAssignments fpaExclude on ff.fID = fpaExclude.fID inner join PermissionAccessList palExclude on fpaExclude.paID = palExclude.paID where fOverrideSetPermissions = 1 and palExclude.accessType = " . PermissionKey::ACCESS_TYPE_EXCLUDE . " and palExclude.pdID in (" . implode(',', $activePDIDs) . ")
-			and palExclude.peID in (" . implode(',', $peIDs) . ") and fpaExclude.pkID in (" . $vpPKID . "," . $vpvPKID . "))");		
+			and palExclude.peID in (" . implode(',', $peIDs) . ") and fpaExclude.pkID in (" . $vpPKID . "," . $vpvPKID . "))");
 	}
-	
-	
-	/** 
+
+
+	/**
 	 * Returns an array of file objects based on current settings
 	 */
 	public function get($itemsToGet = 0, $offset = 0) {
@@ -309,19 +309,19 @@ class FileList extends DatabaseItemList {
 		$this->createQuery();
 		$r = parent::get($itemsToGet, $offset);
 		foreach($r as $row) {
-			$f = File::getByID($row['fID']);			
+			$f = File::getByID($row['fID']);
 			$files[] = $f;
 		}
 		return $files;
 	}
-	
+
 	public function getTotal(){
 		$files = array();
 		Loader::model('file');
 		$this->createQuery();
 		return parent::getTotal();
 	}
-	
+
 	//this was added because calling both getTotal() and get() was duplicating some of the query components
 	protected function createQuery(){
 		if(!$this->queryCreated){
@@ -333,16 +333,16 @@ class FileList extends DatabaseItemList {
 			$this->queryCreated=1;
 		}
 	}
-	
+
 	//$key can be handle or fak id
 	public function sortByAttributeKey($key,$order='asc') {
 		$this->sortBy($key, $order); // this is handled natively now
 	}
-	
+
 	public function sortByFileSetDisplayOrder() {
 		$this->sortByMultiple('fsDisplayOrder asc', 'fID asc');
 	}
-	
+
 	public static function getExtensionList() {
 		$db = Loader::db();
 		$col = $db->GetCol('select distinct(trim(fvExtension)) as extension from FileVersions where fvIsApproved = 1 and fvExtension <> ""');
@@ -358,8 +358,8 @@ class FileList extends DatabaseItemList {
 }
 
 class FileManagerDefaultColumnSet extends DatabaseItemListColumnSet {
-	protected $attributeClass = 'FileAttributeKey';	
-	
+	protected $attributeClass = 'FileAttributeKey';
+
 	public static function getFileDateAdded($f) {
 		return date(DATE_APP_DASHBOARD_SEARCH_RESULTS_FILES, strtotime($f->getDateAdded()));
 	}
@@ -368,7 +368,7 @@ class FileManagerDefaultColumnSet extends DatabaseItemListColumnSet {
 		$fv = $f->getVersion();
 		return date(DATE_APP_DASHBOARD_SEARCH_RESULTS_FILES, strtotime($fv->getDateAdded()));
 	}
-	
+
 	public function __construct() {
 		$this->addColumn(new DatabaseItemListColumn('fvType', t('Type'), 'getType', false));
 		$this->addColumn(new DatabaseItemListColumn('fvTitle', t('Title'), 'getTitle'));

@@ -503,7 +503,7 @@ class Zend_Validate_Hostname extends Zend_Validate_Abstract
 
         $this->_setValue($value);
         // Check input against IP address schema
-        
+
         if (preg_match('/^[0-9a-f:.]*$/i', $value) &&
             $this->_options['ip']->setTranslator($this->getTranslator())->isValid($value)) {
             if (!($this->_options['allow'] & self::ALLOW_IP)) {
@@ -515,12 +515,12 @@ class Zend_Validate_Hostname extends Zend_Validate_Abstract
         }
 
         // RFC3986 3.2.2 states:
-        // 
+        //
         //     The rightmost domain label of a fully qualified domain name
-        //     in DNS may be followed by a single "." and should be if it is 
+        //     in DNS may be followed by a single "." and should be if it is
         //     necessary to distinguish between the complete domain name and
         //     some local domain.
-        //     
+        //
         // Strip trailing '.' since it is not necessary to validate a non-IP
         // hostname.
         //
@@ -528,7 +528,7 @@ class Zend_Validate_Hostname extends Zend_Validate_Abstract
         if (substr($value, -1) === '.') {
             $value = substr($value, 0, strlen($value)-1);
         }
-        
+
         // Check input against DNS hostname schema
         $domainParts = explode('.', $value);
         if ((count($domainParts) > 1) && (strlen($value) >= 4) && (strlen($value) <= 254)) {

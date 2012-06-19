@@ -8,7 +8,7 @@ class DefaultAttributeTypeController extends AttributeTypeController  {
 	public function getValue() {
 		$db = Loader::db();
 		$value = $db->GetOne("select value from atDefault where avID = ?", array($this->getAttributeValueID()));
-		return $value;	
+		return $value;
 	}
 
 	public function form() {
@@ -23,27 +23,27 @@ class DefaultAttributeTypeController extends AttributeTypeController  {
 		$list->filterByAttribute($this->attributeKey->getAttributeKeyHandle(), '%' . $this->request('value') . '%', 'like');
 		return $list;
 	}
-	
+
 	public function getDisplaySanitizedValue() {
 		return Loader::helper('text')->entities($this->getValue());
 	}
-	
+
 	public function search() {
 		$f = Loader::helper('form');
 		print $f->text($this->field('value'), $this->request('value'));
 	}
-	
+
 	// run when we call setAttribute(), instead of saving through the UI
 	public function saveValue($value) {
 		$db = Loader::db();
 		$db->Replace('atDefault', array('avID' => $this->getAttributeValueID(), 'value' => $value), 'avID', true);
 	}
-	
+
 	public function saveForm($data) {
 		$db = Loader::db();
 		$this->saveValue($data['value']);
 	}
-	
+
 	public function deleteKey() {
 		$db = Loader::db();
 		$arr = $this->attributeKey->getAttributeValueIDList();
@@ -60,5 +60,5 @@ class DefaultAttributeTypeController extends AttributeTypeController  {
 		$db = Loader::db();
 		$db->Execute('delete from atDefault where avID = ?', array($this->getAttributeValueID()));
 	}
-	
+
 }

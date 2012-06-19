@@ -20,14 +20,14 @@ class DashboardPagesThemesCustomizeController extends Controller {
 		$subnav = array(
 			array(View::url('/dashboard/pages/themes/'), '&lt; ' . t('Return to Themes'))
 		);
-		$this->set('subnav', $subnav);		
+		$this->set('subnav', $subnav);
 		if ($state == 'saved') {
 			$this->set('message', t('Theme styles updated.'));
 		} else if ($state == 'reset') {
 			$this->set('message', t('This theme has been reset.'));
 		}
 	}
-	
+
 	public function save() {
 		$vt = Loader::helper('validation/token');
 		if ($vt->validate()) {
@@ -45,7 +45,7 @@ class DashboardPagesThemesCustomizeController extends Controller {
 			}
 		}
 	}
-	
+
 	public function reset() {
 		$vt = Loader::helper('validation/token');
 		if ($vt->validate()) {
@@ -57,7 +57,7 @@ class DashboardPagesThemesCustomizeController extends Controller {
 			}
 		}
 	}
-	
+
 
 
 

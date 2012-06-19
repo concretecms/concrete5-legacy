@@ -13,11 +13,11 @@
  * @license    http://www.concrete5.org/license/     MIT License
  */
 defined('C5_EXECUTE') or die("Access Denied.");
-class UrlHelper { 
+class UrlHelper {
 
 	public function setVariable($variable, $value = false, $url = false) {
 		// either it's key/value as variables, or it's an associative array of key/values
-		
+
 		if ($url == false) {
 			$url = $_SERVER['REQUEST_URI'];
 		} elseif(!strstr($url,'?')) {
@@ -30,7 +30,7 @@ class UrlHelper {
 		} else {
 			$vars = $variable;
 		}
-		
+
 		foreach($vars as $variable => $value) {
 			$url = preg_replace('/(.*)(\?|&)' . $variable . '=[^&]+?(&)(.*)/i', '$1$2$4', $url . '&');
 			$url = substr($url, 0, -1);
@@ -40,15 +40,15 @@ class UrlHelper {
 				$url = $url . '&' . $variable . '=' . $value;
 			}
 		}
-		
+
 		// THIS DOES NOT WORK. SOMEONE WILL NEED TO FIX THIS PROPERLY IF THE W3C FOLKS WANT IT TO WORK
 		//$url = str_replace('&', '&amp;', $url);
 		return $url;
 	}
-	
+
 	public function unsetVariable($variable, $url = false) {
 		// either it's key/value as variables, or it's an associative array of key/values
-		
+
 		if ($url == false) {
 			$url = $_SERVER['REQUEST_URI'];
 		} elseif(!strstr($url,'?')) {
@@ -61,17 +61,17 @@ class UrlHelper {
 		} else {
 			$vars = $variable;
 		}
-		
+
 		foreach($vars as $variable) {
-		  $url = preg_replace('/(.*)(\?|&)' . $variable . '=[^&]+?(&)(.*)/i', '$1$2$4', $url . '&'); 
-		  $url = substr($url, 0, -1); 
+		  $url = preg_replace('/(.*)(\?|&)' . $variable . '=[^&]+?(&)(.*)/i', '$1$2$4', $url . '&');
+		  $url = substr($url, 0, -1);
 		}
-		
-		
+
+
 		// THIS DOES NOT WORK. SOMEONE WILL NEED TO FIX THIS PROPERLY IF THE W3C FOLKS WANT IT TO WORK
 		//$url = str_replace('&', '&amp;', $url);
 		return $url;
-	}	
+	}
 	public function buildQuery($url, $params) {
 		return $url . '?' . http_build_query($params, '', '&');
 	}
@@ -87,5 +87,5 @@ class UrlHelper {
 		return $url;
 	}
 
-	
+
 }

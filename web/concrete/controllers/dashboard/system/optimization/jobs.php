@@ -2,13 +2,13 @@
 
 class DashboardSystemOptimizationJobsController extends DashboardBaseController {
 	function view() {
-		Loader::model("job"); 
+		Loader::model("job");
 		Job::installByHandle('index_search');
-		$this->set('availableJobs', Job::getAvailableList(0)); 
-		$this->set('jobList', Job::getList()); 
+		$this->set('availableJobs', Job::getAvailableList(0));
+		$this->set('jobList', Job::getList());
 		$this->set('auth', Job::generateAuth());
 	}
-	
+
 	function install($handle = null) {
 		if ($handle) {
 			Loader::model("job");
@@ -19,7 +19,7 @@ class DashboardSystemOptimizationJobsController extends DashboardBaseController 
 		}
 		$this->view();
 	}
-	
+
 	function uninstall($job_id = null) {
 		if ($job_id) {
 			Loader::model("job");
@@ -39,10 +39,10 @@ class DashboardSystemOptimizationJobsController extends DashboardBaseController 
 		}
 		$this->view();
 	}
-	
+
 	public function reset_running_jobs() {
 		Loader::model('job');
-		if (Loader::helper('validation/token')->validate('reset_running_jobs')) { 
+		if (Loader::helper('validation/token')->validate('reset_running_jobs')) {
 			Job::resetRunningJobs();
 			$this->redirect('/dashboard/system/optimization/jobs', 'reset_complete');
 		}
@@ -51,5 +51,5 @@ class DashboardSystemOptimizationJobsController extends DashboardBaseController 
 		$this->set('message', t('All running jobs have been reset.'));
 		$this->view();
 	}
-	
+
 }

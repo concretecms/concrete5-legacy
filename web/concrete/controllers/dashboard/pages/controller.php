@@ -6,7 +6,7 @@ class DashboardPagesController extends Controller {
 		$this->redirect('/dashboard/pages/themes');
 	}
 
-	
+
 }
 
 ?>

@@ -20,7 +20,7 @@ if (isset($au->theme) && isset($au->file)) {
 			$stat = filemtime($pt->getThemeDirectory() . '/' . $au->file);
 
 			$style = Cache::get(str_replace('-','_', $au->theme), $au->file, $stat);
-			
+
 			if ($style == '') {
 				$style = $pt->parseStyleSheet($au->file);
 				Cache::set(str_replace('-','_', $au->theme), $au->file, $style, CACHE_LIFETIME);
@@ -29,9 +29,9 @@ if (isset($au->theme) && isset($au->file)) {
 			header("Date: ". date("D, j M Y G:i:s", $stat) ." GMT");
 			header("Expires: ". gmdate("D, j M Y H:i:s", time() + DAY) ." GMT");
 			header("Cache-Control: max-age=86400, must-revalidate"); // HTTP/1.1
-			header("Pragma: cache_asset");        // HTTP/1.0	
+			header("Pragma: cache_asset");        // HTTP/1.0
 
-			echo $style; 
+			echo $style;
 		}
 	}
 }

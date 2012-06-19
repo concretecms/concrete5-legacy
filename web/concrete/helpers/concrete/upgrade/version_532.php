@@ -28,17 +28,17 @@ class ConcreteUpgradeVersion532Helper {
 			die("3000 records imported. Please re-run the upgrade script until this message goes away.");
 		}
 	}
-	
+
 	public function prepare($cnt) {
 		// Handle new attribute stuff
 		$db = Loader::db();
-		
+
 		$dict = NewDataDictionary($db->db, DB_TYPE);
 		$tables = $db->MetaTables();
-		if (!in_array('_UserAttributeKeys', $tables) && in_array('UserAttributeKeys', $tables)) { 		
+		if (!in_array('_UserAttributeKeys', $tables) && in_array('UserAttributeKeys', $tables)) {
 			$dict->ExecuteSQLArray($dict->RenameTableSQL('UserAttributeKeys', '_UserAttributeKeys'));
 		}
-		if(!in_array('_CollectionAttributeKeys',$tables) && in_array('CollectionAttributeKeys', $tables)) { 
+		if(!in_array('_CollectionAttributeKeys',$tables) && in_array('CollectionAttributeKeys', $tables)) {
 			$dict->ExecuteSQLArray($dict->RenameTableSQL('CollectionAttributeKeys', '_CollectionAttributeKeys'));
 		}
 		if(!in_array('_FileAttributeKeys',$tables) && in_array('FileAttributeKeys', $tables)) {
@@ -50,7 +50,7 @@ class ConcreteUpgradeVersion532Helper {
 		if(!in_array('_UserAttributeValues', $tables) && in_array('UserAttributeValues', $tables)) {
 			$dict->ExecuteSQLArray($dict->RenameTableSQL('UserAttributeValues', '_UserAttributeValues'));
 		}
-		if(!in_array('_FileAttributeValues', $tables) && in_array('FileAttributeValues', $tables)) {			
+		if(!in_array('_FileAttributeValues', $tables) && in_array('FileAttributeValues', $tables)) {
 			$dict->ExecuteSQLArray($dict->RenameTableSQL('FileAttributeValues', '_FileAttributeValues'));
 		}
 		if(!in_array('_PageSearchIndexAttributes', $tables) && in_array('PageSearchIndexAttributes', $tables)) {
@@ -65,7 +65,7 @@ class ConcreteUpgradeVersion532Helper {
 				$db->Execute($q[0]);
 			}
 		}
-		
+
 		if(in_array('_FileAttributeValues', $tables)) {
 			$columns = $db->MetaColumns('_FileAttributeValues');
 			if (in_array('_FileAttributeValues', $tables) && !isset($columns['ISIMPORTED'])) {
@@ -73,7 +73,7 @@ class ConcreteUpgradeVersion532Helper {
 				$db->Execute($q[0]);
 			}
 		}
-		
+
 		if(in_array('_CollectionAttributeValues', $tables)) {
 			$columns = $db->MetaColumns('_CollectionAttributeValues');
 			if (in_array('_CollectionAttributeValues', $tables) && !isset($columns['ISIMPORTED'])) {
@@ -81,15 +81,15 @@ class ConcreteUpgradeVersion532Helper {
 				$db->Execute($q[0]);
 			}
 		}
-		
+
 		//$cnt->upgrade_db = false; // schema refresh allways
-		
+
 		$cnt->refresh_schema();// refresh the db schema to match 5.3.3 - moved here so it's not called with each upgrade, just the 5.3.3
 	}
-	
+
 	public function run() {
 		$db = Loader::db();
-		
+
 		Cache::disableLocalCache();
 		Loader::model('attribute/categories/collection');
 		Loader::model('attribute/categories/file');
@@ -98,33 +98,33 @@ class ConcreteUpgradeVersion532Helper {
 		$fileErrors = array();
 		$userErrors = array();
 		//add the new collection attribute keys
-		$this->installCoreAttributeItems();	
-		
+		$this->installCoreAttributeItems();
+
 		$dict = NewDataDictionary($db->db, DB_TYPE);
 		$tables = $db->MetaTables();
-		
+
 		if (in_array('_CollectionAttributeKeys', $tables)) {
 			$collectionErrors = $this->upgradeCollectionAttributes();
-		}		
+		}
 		if (in_array('_FileAttributeKeys', $tables)) {
 			$fileErrors = $this->upgradeFileAttributes();
-		}			
+		}
 		if (in_array('_UserAttributeKeys', $tables)) {
 			$userErrors = $this->upgradeUserAttributes();
-		} 
+		}
 
 		$cak=CollectionAttributeKey::getByHandle('exclude_sitemapxml');
 		if (!is_object($cak)) {
 			$cak = CollectionAttributeKey::add('exclude_sitemapxml', t('Exclude From sitemap.xml'), true, null, 'BOOLEAN');
 		}
-		
+
 		//change the page/tab name of the dashboard users registration page
 		$dashboardRegistrationPage=Page::getByPath('/dashboard/users/registration');
-		if( intval($dashboardRegistrationPage->cID) ) 
+		if( intval($dashboardRegistrationPage->cID) )
 			$dashboardRegistrationPage->update(array('cName'=>t('Login & Registration')));
 		Config::save('LOGIN_ADMIN_TO_DASHBOARD', 1);
-	
-		//profile friends page install	
+
+		//profile friends page install
 		Loader::model('single_page');
 		$friendsPage=Page::getByPath('/profile/friends');
 		if( !intval($friendsPage->cID)) {
@@ -140,7 +140,7 @@ class ConcreteUpgradeVersion532Helper {
 		if( !intval($messagesPage->cID)) {
 			SinglePage::add('/profile/messages');
 		}
-		
+
 		$ppme = UserAttributeKey::getByHandle('profile_private_messages_enabled');
 		if (!is_object($ppme)) {
 			UserAttributeKey::add('BOOLEAN', array('akHandle' => 'profile_private_messages_enabled', 'akName' => t('I would like to receive private messages.'), 'akIsSearchable' => true));
@@ -149,13 +149,13 @@ class ConcreteUpgradeVersion532Helper {
 		if (!is_object($ppmne)) {
 			UserAttributeKey::add('BOOLEAN', array('akHandle' => 'profile_private_messages_notification_enabled', 'akName' => t('Send me email notifications when I receive a private message.'), 'akIsSearchable' => true));
 		}
-		
+
 		$em = Page::getByPath('/dashboard/settings');
 		if (!$em->isError()) {
 			$em = SinglePage::getByID($em->getCollectionID());
 			$em->refresh();
 		}
-		
+
 		$em1=Page::getByPath('/dashboard/settings/mail');
 		if ($em1->isError()) {
 			$em1 = SinglePage::add('/dashboard/settings/mail');
@@ -167,10 +167,10 @@ class ConcreteUpgradeVersion532Helper {
 		if (!$databaseReports->isError()) {
 			$databaseReports->delete();
 		}
-		if (in_array('adodb_logsql', $tables)) {			
-			@$db->query('DROP TABLE adodb_logsql');	
+		if (in_array('adodb_logsql', $tables)) {
+			@$db->query('DROP TABLE adodb_logsql');
 		}
-		
+
 		Loader::library('mail/importer');
 		$mi = MailImporter::getByHandle("private_message");
 		if (!is_object($mi)) {
@@ -178,23 +178,23 @@ class ConcreteUpgradeVersion532Helper {
 		}
 
 		Loader::model("job");
-		Job::installByHandle('process_email');		
+		Job::installByHandle('process_email');
 
 		Cache::enableLocalCache();
-	
+
 		return array_merge($collectionErrors, $fileErrors, $userErrors);
 	}
-	
+
 	protected function installCoreAttributeItems() {
 		$cakc = AttributeKeyCategory::getByHandle('collection');
 		if (is_object($cakc)) {
 			return false;
 		}
-		
+
 		$cakc = AttributeKeyCategory::add('collection');
 		$uakc = AttributeKeyCategory::add('user');
 		$fakc = AttributeKeyCategory::add('file');
-		
+
 		$tt = AttributeType::add('text', t('Text'));
 		$textareat = AttributeType::add('textarea', t('Text Area'));
 		$boolt = AttributeType::add('boolean', t('Checkbox'));
@@ -204,7 +204,7 @@ class ConcreteUpgradeVersion532Helper {
 		$rt = AttributeType::add('rating', t('Rating'));
 		$st = AttributeType::add('select', t('Select'));
 		$addresst = AttributeType::add('address', t('Address'));
-		
+
 		// assign collection attributes
 		$cakc->associateAttributeKeyType($tt);
 		$cakc->associateAttributeKeyType($textareat);
@@ -214,7 +214,7 @@ class ConcreteUpgradeVersion532Helper {
 		$cakc->associateAttributeKeyType($nt);
 		$cakc->associateAttributeKeyType($rt);
 		$cakc->associateAttributeKeyType($st);
-		
+
 		// assign user attributes
 		$uakc->associateAttributeKeyType($tt);
 		$uakc->associateAttributeKeyType($textareat);
@@ -223,7 +223,7 @@ class ConcreteUpgradeVersion532Helper {
 		$uakc->associateAttributeKeyType($nt);
 		$uakc->associateAttributeKeyType($st);
 		$uakc->associateAttributeKeyType($addresst);
-		
+
 		// assign file attributes
 		$fakc->associateAttributeKeyType($tt);
 		$fakc->associateAttributeKeyType($textareat);
@@ -233,7 +233,7 @@ class ConcreteUpgradeVersion532Helper {
 		$fakc->associateAttributeKeyType($rt);
 		$fakc->associateAttributeKeyType($st);
 	}
-	
+
 	protected function upgradeCollectionAttributes() {
 		$messages = array();
 		$db = Loader::db();
@@ -243,9 +243,9 @@ class ConcreteUpgradeVersion532Helper {
 			$existingAKID = $db->GetOne('select akID from AttributeKeys where akHandle = ?', array($cleanHandle) );
 			if ($existingAKID < 1) {
 				$args = array(
-					'akHandle' => $cleanHandle, 
+					'akHandle' => $cleanHandle,
 					'akIsSearchable' => $row['akSearchable'],
-					'akName' => $row['akName']			
+					'akName' => $row['akName']
 				);
 				$sttype = $row['akType'];
 				switch($row['akType']) {
@@ -262,7 +262,7 @@ class ConcreteUpgradeVersion532Helper {
 						}
 						break;
 				}
-				
+
 				$type = AttributeType::getByHandle(strtolower($sttype));
 				$ak = CollectionAttributeKey::add($type, $args);
 				if ($sttype == 'SELECT') {
@@ -276,7 +276,7 @@ class ConcreteUpgradeVersion532Helper {
 			} else {
 				$ak = CollectionAttributeKey::getByID($existingAKID);
 			}
-			
+
 			$r2 = $db->Execute('select * from _CollectionAttributeValues where akID = ? and isImported = 0', $row['akID']);
 			while ($row2 = $r2->FetchRow()) {
 				try {
@@ -292,7 +292,7 @@ class ConcreteUpgradeVersion532Helper {
 						}
 					} else {
 						$nc->setAttribute($ak, $value);
-					}				
+					}
 					unset($nc);
 					$db->Execute('update _CollectionAttributeValues set isImported = 1 where akID = ? and cvID = ? and cID = ?', array($row['akID'], $row2['cvID'], $row2['cID']));
 					$this->incrementImported();
@@ -301,17 +301,17 @@ class ConcreteUpgradeVersion532Helper {
 				 	continue;
 				}
 			}
-			
+
 			unset($ak);
 			unset($row2);
 			$r2->Close();
 			unset($r2);
 		}
-		
+
 		unset($row);
 		$r->Close();
 		unset($r);
-	
+
 		return $messages;
 	}
 
@@ -328,7 +328,7 @@ class ConcreteUpgradeVersion532Helper {
 					'akIsSearchable' => $row['akSearchable'],
 					'akIsAutoCreated' => $row['akIsImporterAttribute'],
 					'akIsEditable' => $row['akIsEditable'],
-					'akName' => $row['akName']			
+					'akName' => $row['akName']
 				);
 				$sttype = $row['akType'];
 				switch($row['akType']) {
@@ -347,7 +347,7 @@ class ConcreteUpgradeVersion532Helper {
 						}
 						break;
 				}
-				
+
 				$type = AttributeType::getByHandle(strtolower($sttype));
 				$ak = FileAttributeKey::add($type, $args);
 				if ($sttype == 'SELECT') {
@@ -361,14 +361,14 @@ class ConcreteUpgradeVersion532Helper {
 			} else {
 				$ak = FileAttributeKey::getByID($existingAKID);
 			}
-			
+
 			$r2 = $db->Execute('select * from _FileAttributeValues where fakID = ? and isImported = 0', $row['fakID']);
 			while ($row2 = $r2->FetchRow()) {
 				$f = File::getByID($row2['fID']);
 				$fv = $f->getVersion($row2['fvID']);
 				$value = $row2['value'];
 				if ($row['akType'] == 'SELECT' || $row['akType'] == 'SELECT_MULTIPLE' || $row['akType'] == 'SELECT_ADD') {
-					$value = explode("\n", $value);					
+					$value = explode("\n", $value);
 				}
 				$fv->setAttribute($ak, $value);
 				unset($f);
@@ -377,13 +377,13 @@ class ConcreteUpgradeVersion532Helper {
 				$db->Execute('update _FileAttributeValues set isImported = 1 where fakID = ? and fvID = ? and fID = ?', array($row['fakID'], $row2['fvID'], $row2['fID']));
 				$this->incrementImported();
 			}
-			
+
 			unset($ak);
 			unset($row2);
 			$r2->Close();
 			unset($r2);
 		}
-		
+
 		unset($row);
 		$r->Close();
 		unset($r);
@@ -398,9 +398,9 @@ class ConcreteUpgradeVersion532Helper {
 			$cleanHandle = preg_replace("/[^A-Za-z0-9\_]/",'',$row['ukHandle']); // remove spaces, chars that'll mess up our index tables
 			$existingAKID = $db->GetOne('select akID from AttributeKeys where akHandle = ?',  array($cleanHandle) );
 			if ($existingAKID < 1) {
-				if(!$row['ukHandle']) continue; 
+				if(!$row['ukHandle']) continue;
 				$args = array(
-					'akHandle' => $cleanHandle, 
+					'akHandle' => $cleanHandle,
 					'akIsSearchable' => 1,
 					'akIsEditable' => 1,
 					'akName' => $row['ukName'],
@@ -429,7 +429,7 @@ class ConcreteUpgradeVersion532Helper {
 			} else {
 				$ak = UserAttributeKey::getByID($existingAKID);
 			}
-			
+
 			$r2 = $db->Execute('select * from _UserAttributeValues where ukID = ? and isImported = 0', $row['ukID']);
 			while ($row2 = $r2->FetchRow()) {
 				$ui = UserInfo::getByID($row2['uID']);
@@ -438,24 +438,23 @@ class ConcreteUpgradeVersion532Helper {
 					$ui->setAttribute($ak, $value);
 				}
 				unset($ui);
-				
+
 				$db->Execute('update _UserAttributeValues set isImported = 1 where ukID = ? and uID = ?', array($row['ukID'], $row2['uID']));
 				$this->incrementImported();
 
 			}
-			
+
 			unset($ak);
 			unset($row2);
 			$r2->Close();
 			unset($r2);
 		}
-		
+
 		unset($row);
 		$r->Close();
 		unset($r);
 		return $messages;
 	}
-		
+
 }
-		
-	
+

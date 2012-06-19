@@ -6,9 +6,9 @@
 	<div class="rssSummaryListTitle" style="margin-bottom:8px"><?=$title?></div>
 <? } ?>
 
-<? 
+<?
 $rssObj=$controller;
-$textHelper = Loader::helper("text"); 
+$textHelper = Loader::helper("text");
 
 if (!$dateFormat) {
 	$dateFormat = t('F jS');
@@ -18,11 +18,11 @@ if( strlen($errorMsg)>0 ){
 	echo $errorMsg;
 }else{
 
-	foreach($posts as $itemNumber=>$item) { 
-	
+	foreach($posts as $itemNumber=>$item) {
+
 		if( intval($itemNumber) >= intval($rssObj->itemsToDisplay) ) break;
 		?>
-		
+
 		<div class="rssItem">
 		<h3><?= $item->get_title(); ?></h3>
 		<h5><?= $item->get_date($dateFormat); ?></h5>
@@ -36,8 +36,8 @@ if( strlen($errorMsg)>0 ){
 			<p><a href="<?= $item->get_permalink(); ?>"><?=t('Read More')?></a></p>
 			</div>
 		</div>
-	
-<?  }  
+
+<?  }
 }
 ?>
 </div>

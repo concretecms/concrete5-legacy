@@ -7,18 +7,18 @@ $this->inc('elements/header.php'); ?>
 			<?
 			$as = new Area('Sidebar');
 			$as->display($c);
-			?>		
+			?>
 		</div>
-		
-		<div id="body">	
+
+		<div id="body">
 			<?
 			$a = new Area('Main');
 			$a->display($c);
-			
+
 			?>
 		</div>
-		
-		<div class="spacer">&nbsp;</div>		
+
+		<div class="spacer">&nbsp;</div>
 	</div>
 
 <? $this->inc('elements/footer.php'); ?>

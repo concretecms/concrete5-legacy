@@ -6,7 +6,7 @@
 	<h3><?=$remoteItem->getName()?></h3>
 	<p><?=$remoteItem->getDescription()?></p>
 	</div>
-	
+
 	<a href="javascript:void(0)" onclick="ccm_getMarketplaceItemDetails(<?=$remoteItem->getMarketplaceItemID()?>)" href="<?=$remoteItem->getRemoteURL()?>" class="btn"><?=t('Learn More')?></a>
 <? } else { ?>
 	<p><?=t("Cannot retrieve data from the concrete5 marketplace.")?></p>

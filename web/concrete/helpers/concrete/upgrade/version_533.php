@@ -28,7 +28,7 @@ class ConcreteUpgradeVersion533Helper {
 		if (!is_object($cak)) {
 			$boolt = AttributeType::getByHandle('boolean');
 			$cab4b = CollectionAttributeKey::add($boolt, array('akHandle' => 'exclude_page_list', 'akName' => t('Exclude From Page List'), 'akIsSearchable' => true));
-			
+
 			Loader::model('page_list');
 			$pl = new PageList();
 			$pl->filterByExcludeNav(1);
@@ -38,12 +38,11 @@ class ConcreteUpgradeVersion533Helper {
 				$c->reindex();
 			}
 		}
-		
+
 		Cache::enableLocalCache();
 	}
-	
 
-		
+
+
 }
-		
-	
+

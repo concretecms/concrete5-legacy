@@ -3,7 +3,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 ini_set('memory_limit', -1);
 
 $tp = new TaskPermission();
-if (!$tp->canAccessUserSearch()) { 
+if (!$tp->canAccessUserSearch()) {
 	die(t("You have no access to users."));
 }
 
@@ -19,7 +19,7 @@ header("Content-Type: application/vnd.ms-excel");
 header("Cache-control: private");
 header("Pragma: public");
 $date = date('Ymd');
-header("Content-Disposition: inline; filename=user_report_{$date}.xls"); 
+header("Content-Disposition: inline; filename=user_report_{$date}.xls");
 header("Content-Title: User Report - Run on {$date}");
 
 echo("<table><tr>");
@@ -32,7 +32,7 @@ foreach($attribs as $ak) {
 	echo("<td><b>" . $ak->getKeyName() . "</b></td>");
 }
 echo("</tr>");
-foreach($users as $ui) { 
+foreach($users as $ui) {
 	echo("<tr>");
 	echo("<td>{$ui->getUserName()}</td>");
 	echo("<td>{$ui->getUserEmail()}</td>");

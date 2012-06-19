@@ -10,7 +10,7 @@
 			</fieldset>
 			<fieldset>
 			<legend><?=t('Alternate Storage Directory')?></legend>
-			
+
 			<label for="fslName"><strong><?=t('Location Name')?></strong></label>
 			<?=$form->text('fslName', $fslName, array('style' => 'width:530px'))?>
 			<br/><br/>
@@ -19,10 +19,10 @@
 			</fieldset>
 	</div>
 	<div class="ccm-pane-footer">
-			<?php		
+			<?php
 				$b1 = $concrete_interface->submit(t('Save'), 'file-storage', 'right', 'primary');
 				print $b1;
-			?>		
+			?>
 	</div>
 	</form>
 

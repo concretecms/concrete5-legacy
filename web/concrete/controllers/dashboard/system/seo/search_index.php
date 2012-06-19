@@ -11,7 +11,7 @@ class DashboardSystemSeoSearchIndexController extends DashboardBaseController{
 		if ($this->isPost()) {
 			if($this->token->validate('update_search_index')) {
 				$areas = $this->post('arHandle');
-				
+
 				if (!is_array($areas)) {
 					$areas = array();
 				}
@@ -21,7 +21,7 @@ class DashboardSystemSeoSearchIndexController extends DashboardBaseController{
 			} else {
 				$this->set('error', array($this->token->getErrorMessage()));
 			}
-			
+
 		}
 		$areas = Area::getHandleList();
 		$selectedAreas = array();

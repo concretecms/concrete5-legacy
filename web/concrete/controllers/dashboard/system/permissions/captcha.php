@@ -4,7 +4,7 @@ Loader::model("system/captcha/library");
 Loader::model("system/captcha/controller");
 
 class DashboardSystemPermissionsCaptchaController extends DashboardBaseController {
-	
+
 	public function view() {
 		$list = SystemCaptchaLibrary::getList();
 		$captchas = array();
@@ -15,12 +15,12 @@ class DashboardSystemPermissionsCaptchaController extends DashboardBaseControlle
 		$this->set('activeCaptcha', $scl);
 		$this->set('captchas', $captchas);
 	}
-	
+
 	public function captcha_saved() {
 		$this->set('message', t('Captcha settings saved.'));
 		$this->view();
 	}
-	
+
 	public function update_captcha() {
 		if (Loader::helper("validation/token")->validate('update_captcha')) {
 			$scl = SystemCaptchaLibrary::getByHandle($this->post('activeCaptcha'));

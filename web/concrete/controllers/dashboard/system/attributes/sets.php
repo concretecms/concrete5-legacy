@@ -1,13 +1,13 @@
 <?php defined('C5_EXECUTE') or die('Access Denied');
 
 class DashboardSystemAttributesSetsController extends DashboardBaseController {
-	
+
 	public $category;
-	
+
 	public function view() {
 		$this->set('categories', AttributeKeyCategory::getList());
 	}
-	
+
 	public function category($categoryID = false, $mode = false) {
 		$this->addFooterItem('<script type="text/javascript">
 		$("div.ccm-attribute-sortable-set-list").sortable({
@@ -18,7 +18,7 @@ class DashboardSystemAttributesSetsController extends DashboardBaseController {
 				var ualist = $(this).sortable(\'serialize\');
 				ualist += \'&categoryID='.$categoryID.'\';
 				$.post(\''.REL_DIR_FILES_TOOLS_REQUIRED.'/dashboard/attribute_set_order_update\', ualist, function(r) {
-	
+
 				});
 			}
 		});
@@ -49,8 +49,8 @@ class DashboardSystemAttributesSetsController extends DashboardBaseController {
 
 	public function add_set() {
 		$this->category($this->post('categoryID'));
-		if ($this->token->validate('add_set')) { 
-			if (!trim($this->post('asHandle'))) { 
+		if ($this->token->validate('add_set')) {
+			if (!trim($this->post('asHandle'))) {
 				$this->error->add(t("Specify a handle for your attribute set."));
 			} else {
 				$as = AttributeSet::getByHandle($this->post('asHandle'));
@@ -58,31 +58,31 @@ class DashboardSystemAttributesSetsController extends DashboardBaseController {
 					$this->error->add(t('That handle is in use.'));
 				}
 			}
-			if (!trim($this->post('asName'))) { 
+			if (!trim($this->post('asName'))) {
 				$this->error->add(t("Specify a name for your attribute set."));
 			}
 			if (!$this->error->has()) {
 				if (!$this->category->allowAttributeSets()) {
 					$this->category->setAllowAttributeSets(AttributeKeyCategory::ASET_ALLOW_SINGLE);
 				}
-				
+
 				$this->category->addSet($this->post('asHandle'), $this->post('asName'), false, 0);
 				$this->redirect('dashboard/system/attributes/sets', 'category', $this->category->getAttributeKeyCategoryID(), 'set_added');
 			}
-			
+
 		} else {
 			$this->error->add($this->token->getErrorMessage());
 		}
 	}
-	
+
 	public function update_set() {
 		$this->edit($this->post('asID'));
-		if ($this->token->validate('update_set')) { 
+		if ($this->token->validate('update_set')) {
 			$as = AttributeSet::getByID($this->post('asID'));
 			if (!is_object($as)) {
 				$this->error->add(t('Invalid attribute set.'));
 			} else {
-				if (!trim($this->post('asHandle')) && (!$as->isAttributeSetLocked())) { 
+				if (!trim($this->post('asHandle')) && (!$as->isAttributeSetLocked())) {
 					$this->error->add(t("Specify a handle for your attribute set."));
 				} else {
 					$asx = AttributeSet::getByHandle($this->post('asHandle'));
@@ -90,11 +90,11 @@ class DashboardSystemAttributesSetsController extends DashboardBaseController {
 						$this->error->add(t('That handle is in use.'));
 					}
 				}
-				if (!trim($this->post('asName'))) { 
+				if (!trim($this->post('asName'))) {
 					$this->error->add(t("Specify a name for your attribute set."));
 				}
 			}
-			
+
 			if (!$this->error->has()) {
 				if (!$as->isAttributeSetLocked()) {
 					$as->updateAttributeSetHandle($this->post('asHandle'));
@@ -102,14 +102,14 @@ class DashboardSystemAttributesSetsController extends DashboardBaseController {
 				$as->updateAttributeSetName($this->post('asName'));
 				$this->redirect('dashboard/system/attributes/sets', 'category', $as->getAttributeSetKeyCategoryID(), 'set_updated');
 			}
-			
+
 		} else {
 			$this->error->add($this->token->getErrorMessage());
 		}
 	}
-	
+
 	public function update_set_attributes() {
-		if ($this->token->validate('update_set_attributes')) { 
+		if ($this->token->validate('update_set_attributes')) {
 			$as = AttributeSet::getByID($this->post('asID'));
 			if (!is_object($as)) {
 				$this->error->add(t('Invalid attribute set.'));
@@ -119,29 +119,29 @@ class DashboardSystemAttributesSetsController extends DashboardBaseController {
 				// go through and add all the attributes that aren't in another set
 				$as->clearAttributeKeys();
 				$cat = AttributeKeyCategory::getByID($as->getAttributeSetKeyCategoryID());
-				$unassigned = $cat->getUnassignedAttributeKeys();			
+				$unassigned = $cat->getUnassignedAttributeKeys();
 				if (is_array($this->post('akID'))) {
-					foreach($unassigned as $ak) { 
+					foreach($unassigned as $ak) {
 						if (in_array($ak->getAttributeKeyID(), $this->post('akID'))) {
 							$as->addKey($ak);
 						}
 					}
 				}
 				$this->redirect('dashboard/system/attributes/sets', 'category', $cat->getAttributeKeyCategoryID(), 'set_updated');
-			}	
-			
+			}
+
 		} else {
 			$this->error->add($this->token->getErrorMessage());
 		}
 		$this->edit($this->post('asID'));
 	}
-	
+
 	public function delete_set() {
-		if ($this->token->validate('delete_set')) { 
+		if ($this->token->validate('delete_set')) {
 			$as = AttributeSet::getByID($this->post('asID'));
 			if (!is_object($as)) {
 				$this->error->add(t('Invalid attribute set.'));
-			} else if ($as->isAttributeSetLocked()) { 
+			} else if ($as->isAttributeSetLocked()) {
 				$this->error->add(t('This attribute set is locked. That means it was added by a package and cannot be manually removed.'));
 				$this->edit($as->getAttributeSetID());
 			}
@@ -149,15 +149,15 @@ class DashboardSystemAttributesSetsController extends DashboardBaseController {
 				$categoryID = $as->getAttributeSetKeyCategoryID();
 				$as->delete();
 				$this->redirect('dashboard/system/attributes/sets', 'category', $categoryID, 'set_deleted');
-			}			
+			}
 		} else {
 			$this->error->add($this->token->getErrorMessage());
 		}
 		$this->view();
 	}
-	
 
-	
+
+
 	public function edit($asID = false) {
 		$as = AttributeSet::getByID($asID);
 		if (is_object($as)) {
@@ -166,5 +166,5 @@ class DashboardSystemAttributesSetsController extends DashboardBaseController {
 			$this->redirect('/dashboard/system/attributes/sets');
 		}
 	}
-	
+
 }

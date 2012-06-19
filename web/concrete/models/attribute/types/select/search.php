@@ -11,7 +11,7 @@ if ($akSelectAllowMultipleValues) { ?>
 	<select name="<?=$this->field('atSelectOptionID')?>[]">
 		<option value=""><?=t('** All')?></option>
 	<? foreach($options as $opt) { ?>
-		<option value="<?=$opt->getSelectAttributeOptionID()?>" <? if (in_array($opt->getSelectAttributeOptionID(), $selectedOptions)) { ?> selected <? } ?>><?=$opt->getSelectAttributeOptionValue()?></option>	
+		<option value="<?=$opt->getSelectAttributeOptionID()?>" <? if (in_array($opt->getSelectAttributeOptionID(), $selectedOptions)) { ?> selected <? } ?>><?=$opt->getSelectAttributeOptionValue()?></option>
 	<? } ?>
 	</select>
 

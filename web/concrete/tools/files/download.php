@@ -17,7 +17,7 @@ $ci = Loader::helper('file');
 if (isset($_REQUEST['fID']) && is_array($_REQUEST['fID'])) {
 
 	// zipem up
-	
+
 	$filename = $fh->getTemporaryDirectory() . '/' . $vh->getString() . '.zip';
 	$files = '';
 	$filenames = array();
@@ -33,10 +33,10 @@ if (isset($_REQUEST['fID']) && is_array($_REQUEST['fID'])) {
 		}
 	}
 	exec(DIR_FILES_BIN_ZIP . ' -j \'' . addslashes($filename) . '\' ' . $files);
-	$ci->forceDownload($filename);	
+	$ci->forceDownload($filename);
 
 } else {
-	
+
 	$f = File::getByID($_REQUEST['fID']);
 	$fp = new Permissions($f);
 	if ($fp->canViewFile()) {

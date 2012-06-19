@@ -7,10 +7,10 @@ defined('C5_EXECUTE') or die("Access Denied.");
  * @license    http://www.concrete5.org/license/     MIT License
  *
  */
-class WorkflowProgressResponse extends Object {  
-	
+class WorkflowProgressResponse extends Object {
+
 	protected $wprURL = '';
-	
+
 	public function setWorkflowProgressResponseURL($wprURL) {
 		$this->wprURL = $wprURL;
 	}

@@ -1,12 +1,12 @@
 <? defined('C5_EXECUTE') or die("Access Denied."); ?>
 
-<? 
-if ($_REQUEST['paID'] && $_REQUEST['paID'] > 0) { 
+<?
+if ($_REQUEST['paID'] && $_REQUEST['paID'] > 0) {
 	$pa = PermissionAccess::getByID($_REQUEST['paID'], $permissionKey);
 	if ($pa->isPermissionAccessInUse()) {
 		$pa = $pa->duplicate();
 	}
-} else { 
+} else {
 	$pa = PermissionAccess::create($permissionKey);
 }
 
@@ -36,7 +36,7 @@ $tabs = array();
 	?>
 	<?=Loader::helper('concrete/interface')->tabs($tabs);?>
 <? } ?>
-	
+
 <? if ($permissionKey->getPermissionKeyDescription()) { ?>
 <div class="dialog-help">
 <?=$permissionKey->getPermissionKeyDescription()?>
@@ -72,7 +72,7 @@ Loader::element('permission/access/list', array('pkCategoryHandle' => $pkCategor
 		$workflowIDs[] = $swf->getWorkflowID();
 	}
 	?>
-		
+
 	<div id="ccm-tab-content-workflow" class="ccm-tab-content">
 			<h3><?=t('Attach a workflow to this permission?')?></h3>
 			<div class="clearfix">
@@ -99,25 +99,25 @@ Loader::element('permission/access/list', array('pkCategoryHandle' => $pkCategor
 <script type="text/javascript">
 
 $(function() {
-	
+
 	ccm_addAccessEntity = function(peID, pdID, accessType) {
 		jQuery.fn.dialog.closeTop();
 		jQuery.fn.dialog.showLoader();
-	
+
 		if (ccm_permissionDialogURL.indexOf('?') > 0) {
 			var qs = '&';
 		} else {
 			var qs = '?';
 		}
-	
-		$.get('<?=$permissionKey->getPermissionAssignmentObject()->getPermissionKeyToolsURL("add_access_entity")?>&paID=<?=$pa->getPermissionAccessID()?>&pdID=' + pdID + '&accessType=' + accessType + '&peID=' + peID, function(r) { 
-			$.get(ccm_permissionDialogURL + qs + 'paID=<?=$pa->getPermissionAccessID()?>&message=entity_added&pkID=<?=$permissionKey->getPermissionKeyID()?>', function(r) { 
+
+		$.get('<?=$permissionKey->getPermissionAssignmentObject()->getPermissionKeyToolsURL("add_access_entity")?>&paID=<?=$pa->getPermissionAccessID()?>&pdID=' + pdID + '&accessType=' + accessType + '&peID=' + peID, function(r) {
+			$.get(ccm_permissionDialogURL + qs + 'paID=<?=$pa->getPermissionAccessID()?>&message=entity_added&pkID=<?=$permissionKey->getPermissionKeyID()?>', function(r) {
 				jQuery.fn.dialog.replaceTop(r);
 				jQuery.fn.dialog.hideLoader();
 			});
 		});
 	}
-	
+
 	ccm_deleteAccessEntityAssignment = function(peID) {
 		jQuery.fn.dialog.showLoader();
 
@@ -126,9 +126,9 @@ $(function() {
 		} else {
 			var qs = '?';
 		}
-		
-		$.get('<?=$permissionKey->getPermissionAssignmentObject()->getPermissionKeyToolsURL("remove_access_entity")?>&paID=<?=$pa->getPermissionAccessID()?>&peID=' + peID, function() { 
-			$.get(ccm_permissionDialogURL + qs + 'paID=<?=$pa->getPermissionAccessID()?>&message=entity_removed&pkID=<?=$permissionKey->getPermissionKeyID()?>', function(r) { 
+
+		$.get('<?=$permissionKey->getPermissionAssignmentObject()->getPermissionKeyToolsURL("remove_access_entity")?>&paID=<?=$pa->getPermissionAccessID()?>&peID=' + peID, function() {
+			$.get(ccm_permissionDialogURL + qs + 'paID=<?=$pa->getPermissionAccessID()?>&message=entity_removed&pkID=<?=$permissionKey->getPermissionKeyID()?>', function(r) {
 				jQuery.fn.dialog.replaceTop(r);
 				jQuery.fn.dialog.hideLoader();
 			});
@@ -143,14 +143,14 @@ $(function() {
 			// now we reload the permission key to use the new permission assignment
 			$('#ccm-permission-grid-cell-<?=$permissionKey->getPermissionKeyID()?>').load(
 				'<?=$permissionKey->getPermissionAssignmentObject()->getPermissionKeyToolsURL("display_access_cell")?>&paID=<?=$pa->getPermissionAccessID()?>', function() {
-					$('#ccm-permission-grid-name-<?=$permissionKey->getPermissionKeyID()?> a').attr('data-paID', '<?=$pa->getPermissionAccessID()?>');		
+					$('#ccm-permission-grid-name-<?=$permissionKey->getPermissionKeyID()?> a').attr('data-paID', '<?=$pa->getPermissionAccessID()?>');
 				}
 			);
 		});
 		return false;
 	}
-	
-	
+
+
 	<? if (isset($_REQUEST['message']) && $_REQUEST['message'] == 'custom_options_saved') { ?>
 		$('a[data-tab=custom-options]').click();
 	<? } ?>

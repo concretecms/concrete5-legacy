@@ -17,13 +17,13 @@ $th = Loader::helper('text');
 		$target = empty($target) ? '_self' : $target;
 		$description = $page->getCollectionDescription();
 		$description = $controller->truncateSummaries ? $th->shorten($description, $controller->truncateChars) : $description;
-		$description = $th->entities($description);	
-		
+		$description = $th->entities($description);
+
 		//Other useful page data...
 		//$date = date('F j, Y', strtotime($page->getCollectionDatePublic()));
 		//$last_edited_by = $page->getVersionObject()->getVersionAuthorUserName();
 		//$original_author = Page::getByID($page->getCollectionID(), 1)->getVersionObject()->getVersionAuthorUserName();
-		
+
 		/* CUSTOM ATTRIBUTE EXAMPLES:
 		 * $example_value = $page->getAttribute('example_attribute_handle');
 		 *
@@ -44,7 +44,7 @@ $th = Loader::helper('text');
 		 * 2) Output the image tag below like this:
 		 * 	    <img src="<?php echo $img_src ?>" width="<?php echo $img_width ?>" height="<?php echo $img_height ?>" alt="" />
 		 */
-		
+
 		/* End data preparation. */
 
 		/* The HTML from here through "endforeach" is repeated for every item in the list... */ ?>
@@ -54,9 +54,9 @@ $th = Loader::helper('text');
 		<div class="ccm-page-list-description">
 			<?php echo $description ?>
 		</div>
-		
+
 	<?php endforeach; ?>
- 
+
 
 	<?php if ($showRss): ?>
 		<div class="ccm-page-list-rss-icon">
@@ -64,7 +64,7 @@ $th = Loader::helper('text');
 		</div>
 		<link href="<?php echo BASE_URL.$rssUrl ?>" rel="alternate" type="application/rss+xml" title="<?php echo $rssTitle; ?>" />
 	<?php endif; ?>
- 
+
 </div><!-- end .ccm-page-list -->
 
 

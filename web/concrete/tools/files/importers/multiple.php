@@ -51,7 +51,7 @@ if ($errorCode > -1 && $error == '') {
 if (strlen($error) > 0) {
 	$info = array('message'=>$error, 'error' => true);
 } else {
-	$id = $resp->getFileID();			
+	$id = $resp->getFileID();
 	$info['message'] = t('Upload Complete.');
 	$info['error'] = false;
 	$info['id']		 = $resp->getFileID();

@@ -4,7 +4,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 class AddressAttributeTypeController extends AttributeTypeController  {
 
 	public $helpers = array('form');
-	
+
 	public function searchKeywords($keywords) {
 		$db = Loader::db();
 		$qkeywords = $db->quote('%' . $keywords . '%');
@@ -17,7 +17,7 @@ class AddressAttributeTypeController extends AttributeTypeController  {
 		$str .= 'ak_' . $this->attributeKey->getAttributeKeyHandle() . '_country like '.$qkeywords.' )';
 		return $str;
 	}
-	
+
 	public function searchForm($list) {
 		$address1 = $this->request('address1');
 		$address2 = $this->request('address2');
@@ -54,7 +54,7 @@ class AddressAttributeTypeController extends AttributeTypeController  {
 		'country' => 'C 255 NULL',
 		'postal_code' => 'C 255 NULL'
 	);
-	
+
 	public function search() {
 		$this->load();
 		print $this->form();
@@ -68,9 +68,9 @@ class AddressAttributeTypeController extends AttributeTypeController  {
 	}
 
 	public function validateForm($data) {
-		return ($data['address1'] != '' && $data['city'] != '' && $data['state_province'] != '' && $data['country'] != '' && $data['postal_code'] != '');	
-	}	
-	
+		return ($data['address1'] != '' && $data['city'] != '' && $data['state_province'] != '' && $data['country'] != '' && $data['postal_code'] != '');
+	}
+
 	public function getSearchIndexValue() {
 		$v = $this->getValue();
 		$args = array();
@@ -82,7 +82,7 @@ class AddressAttributeTypeController extends AttributeTypeController  {
 		$args['postal_code'] = $v->getPostalCode();
 		return $args;
 	}
-	
+
 	public function deleteKey() {
 		$db = Loader::db();
 		$arr = $this->attributeKey->getAttributeValueIDList();
@@ -94,7 +94,7 @@ class AddressAttributeTypeController extends AttributeTypeController  {
 		$db = Loader::db();
 		$db->Execute('delete from atAddress where avID = ?', array($this->getAttributeValueID()));
 	}
-	
+
 	public function saveValue($data) {
 		$db = Loader::db();
 		if ($data instanceof AddressAttributeTypeValue) {
@@ -114,16 +114,16 @@ class AddressAttributeTypeController extends AttributeTypeController  {
 	}
 
 	public function getValue() {
-		$val = AddressAttributeTypeValue::getByID($this->getAttributeValueID());		
+		$val = AddressAttributeTypeValue::getByID($this->getAttributeValueID());
 		return $val;
 	}
-	
+
 	public function getDisplayValue() {
 		$v = Loader::helper('text')->entities($this->getValue());
 		$ret = nl2br($v);
 		return $ret;
 	}
-	
+
 	public function action_load_provinces_js() {
 		$h = Loader::helper('lists/states_provinces');
 		print "var ccm_attributeTypeAddressStatesTextList = '\\\n";
@@ -135,10 +135,10 @@ class AddressAttributeTypeController extends AttributeTypeController  {
 		}
 		print "'";
 	}
-	
+
 	public function validateKey($data) {
 		$e = parent::validateKey($data);
-		
+
 		// additional validation for select type
 		$akCustomCountries = $data['akCustomCountries'];
 		$akHasCustomCountries = $data['akHasCustomCountries'];
@@ -149,20 +149,20 @@ class AddressAttributeTypeController extends AttributeTypeController  {
 		if (!is_array($data['akCustomCountries'])) {
 			$akCustomCountries = array();
 		}
-		
+
 		if ($akHasCustomCountries && (count($akCustomCountries) == 0)) {
 			$e->add(t('You must specify at least one country.'));
 		} else if ($akHasCustomCountries && $data['akDefaultCountry'] != '' && (!in_array($data['akDefaultCountry'], $akCustomCountries))) {
 			$e->add(t('The default country must be in the list of custom countries.'));
 		}
-		
+
 		return $e;
 	}
 
 	public function duplicateKey($newAK) {
 		$this->load();
 		$db = Loader::db();
-		$db->Execute('insert into atAddressSettings (akID, akHasCustomCountries, akDefaultCountry) values (?, ?, ?)', array($newAK->getAttributeKeyID(), $this->akHasCustomCountries, $this->akDefaultCountry));	
+		$db->Execute('insert into atAddressSettings (akID, akHasCustomCountries, akDefaultCountry) values (?, ?, ?)', array($newAK->getAttributeKeyID(), $this->akHasCustomCountries, $this->akDefaultCountry));
 		if ($this->akHasCustomCountries) {
 			foreach($this->akCustomCountries as $country) {
 				$db->Execute('insert into atAddressCustomCountries (akID, country) values (?, ?)', array($newAK->getAttributeKeyID(), $country));
@@ -178,7 +178,7 @@ class AddressAttributeTypeController extends AttributeTypeController  {
 		if ($this->akHasCustomCountries) {
 			$countries = $type->addChild('countries');
 			foreach($this->akCustomCountries as $country) {
-				$countries->addChild('country', $country);			
+				$countries->addChild('country', $country);
 			}
 		}
 		return $akey;
@@ -206,7 +206,7 @@ class AddressAttributeTypeController extends AttributeTypeController  {
 			return $data;
 		}
 	}
-	
+
 	public function importKey($akey) {
 		if (isset($akey->type)) {
 			$data['akHasCustomCountries'] = $akey->type['custom-countries'];
@@ -222,7 +222,7 @@ class AddressAttributeTypeController extends AttributeTypeController  {
 
 	public function saveKey($data) {
 		$e = Loader::helper('validation/error');
-		
+
 		$ak = $this->getAttributeKey();
 		$db = Loader::db();
 
@@ -230,17 +230,17 @@ class AddressAttributeTypeController extends AttributeTypeController  {
 		$akHasCustomCountries = $data['akHasCustomCountries'];
 		if ($data['akHasCustomCountries'] != 1) {
 			$akHasCustomCountries = 0;
-		}		
+		}
 		if (!is_array($data['akCustomCountries'])) {
 			$akCustomCountries = array();
-		}		
+		}
 		if (!$e->has()) {
 			$db->Replace('atAddressSettings', array(
-				'akID' => $ak->getAttributeKeyID(), 
+				'akID' => $ak->getAttributeKeyID(),
 				'akHasCustomCountries' => $akHasCustomCountries,
-				'akDefaultCountry' => $data['akDefaultCountry']			
+				'akDefaultCountry' => $data['akDefaultCountry']
 			), array('akID'), true);
-	
+
 			$db->Execute('delete from atAddressCustomCountries where akID = ?', array($ak->getAttributeKeyID()));
 			if (count($akCustomCountries)) {
 				foreach($akCustomCountries as $cnt) {
@@ -251,17 +251,17 @@ class AddressAttributeTypeController extends AttributeTypeController  {
 			return $e;
 		}
 	}
-	
+
 	protected function load() {
 		$ak = $this->getAttributeKey();
 		if (!is_object($ak)) {
 			return false;
 		}
-		
+
 		$db = Loader::db();
 		$row = $db->GetRow('select akHasCustomCountries, akDefaultCountry from atAddressSettings where akID = ?', $ak->getAttributeKeyID());
 		$countries = array();
-		if ($row['akHasCustomCountries'] == 1) { 
+		if ($row['akHasCustomCountries'] == 1) {
 			$countries = $db->GetCol('select country from atAddressCustomCountries where akID = ?', $ak->getAttributeKeyID());
 		}
 		$this->akHasCustomCountries = $row['akHasCustomCountries'];
@@ -275,7 +275,7 @@ class AddressAttributeTypeController extends AttributeTypeController  {
 	public function type_form() {
 		$this->load();
 	}
-	
+
 	public function form() {
 		$this->load();
 		if (is_object($this->attributeValue)) {
@@ -295,7 +295,7 @@ class AddressAttributeTypeController extends AttributeTypeController  {
 }
 
 class AddressAttributeTypeValue extends Object {
-	
+
 	public static function getByID($avID) {
 		$db = Loader::db();
 		$value = $db->GetRow("select avID, address1, address2, city, state_province, postal_code, country from atAddress where avID = ?", array($avID));
@@ -305,12 +305,12 @@ class AddressAttributeTypeValue extends Object {
 			return $aa;
 		}
 	}
-	
+
 	public function __construct() {
 		$h = Loader::helper('lists/countries');
-		$this->countryFull = $h->getCountryName($this->country);		
-	}	
-	
+		$this->countryFull = $h->getCountryName($this->country);
+	}
+
 	public function getAddress1() {return $this->address1;}
 	public function getAddress2() {return $this->address2;}
 	public function getCity() {return $this->city;}
@@ -319,7 +319,7 @@ class AddressAttributeTypeValue extends Object {
 	public function getPostalCode() {return $this->postal_code;}
 	public function getFullCountry() {
 		$h = Loader::helper('lists/countries');
-		return $h->getCountryName($this->country);		
+		return $h->getCountryName($this->country);
 	}
 	public function getFullStateProvince() {
 		$h = Loader::helper('lists/states_provinces');
@@ -330,7 +330,7 @@ class AddressAttributeTypeValue extends Object {
 			return $val;
 		}
 	}
-	
+
 	public function __toString() {
 		$ret = '';
 		if ($this->address1) {
@@ -357,6 +357,6 @@ class AddressAttributeTypeValue extends Object {
 		if ($this->country) {
 			$ret .= $this->getFullCountry();
 		}
-		return $ret;		
+		return $ret;
 	}
 }

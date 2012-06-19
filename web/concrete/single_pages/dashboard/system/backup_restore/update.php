@@ -14,10 +14,10 @@ if ($downloadableUpgradeAvailable) { ?>
 		<br/>
 		<h2><?=t('Available Update')?></h2>
 		<form method="post" action="<?=$this->action('download_update')?>" id="ccm-download-update-form">
-		
+
 			<?=Loader::helper('validation/token')->output('download_update')?>
 			<?=Loader::helper('concrete/interface')->submit(t('Download'), 'ccm-download-update-form', 'right', 'primary')?>
-		
+
 			<h3><?=t('Version: %s', $update->version)?>. <?=t('Release Date: %s', date(t('F d, Y'), strtotime($update->date)))?></h3>
 			<hr/>
 			<div id="ccm-release-notes">
@@ -25,7 +25,7 @@ if ($downloadableUpgradeAvailable) { ?>
 			</div>
 			<hr/>
 			<span class="notes"><?=t('Note: Downloading an update will NOT automatically install it.')?></span>
-		
+
 		</form>
 	<?=$h->getDashboardPaneFooterWrapper();?>
 <? } else if (count($updates)) { ?>
@@ -73,7 +73,7 @@ if ($downloadableUpgradeAvailable) { ?>
 		<div class="clearfix">
 		</div>
 		<br/>
-		
+
 		<p><?=t('No updates available.')?></p>
 
 	<?=$h->getDashboardPaneFooterWrapper();?>

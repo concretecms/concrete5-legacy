@@ -4,9 +4,9 @@ defined('C5_EXECUTE') or die("Access Denied.");
 Loader::model('attribute/categories/file');
 
 class DashboardFilesAttributesController extends Controller {
-	
+
 	public $helpers = array('form');
-	
+
 	public function __construct() {
 		parent::__construct();
 		$otypes = AttributeType::getList('file');
@@ -16,43 +16,43 @@ class DashboardFilesAttributesController extends Controller {
 		}
 		$this->set('types', $types);
 	}
-	
+
 	public function delete($akID, $token = null){
 		try {
-			$ak = FileAttributeKey::getByID($akID); 
-				
+			$ak = FileAttributeKey::getByID($akID);
+
 			if(!($ak instanceof FileAttributeKey)) {
 				throw new Exception(t('Invalid attribute ID.'));
 			}
-	
+
 			$valt = Loader::helper('validation/token');
 			if (!$valt->validate('delete_attribute', $token)) {
 				throw new Exception($valt->getErrorMessage());
 			}
-			
+
 			$ak->delete();
-			
+
 			$this->redirect("/dashboard/files/attributes", 'attribute_deleted');
 		} catch (Exception $e) {
 			$this->set('error', $e);
 		}
 	}
-	
+
 	public function select_type() {
 		$atID = $this->request('atID');
 		$at = AttributeType::getByID($atID);
 		$this->set('type', $at);
 	}
-	
+
 	public function view() {
 		$attribs = FileAttributeKey::getList();
 		$this->set('attribs', $attribs);
 	}
-	
+
 	public function on_start() {
 		$this->set('category', AttributeKeyCategory::getByHandle('file'));
 	}
-	
+
 	public function add() {
 		$this->select_type();
 		$type = $this->get('type');
@@ -70,7 +70,7 @@ class DashboardFilesAttributesController extends Controller {
 	public function attribute_deleted() {
 		$this->set('message', t('File Attribute Deleted.'));
 	}
-	
+
 	public function attribute_created() {
 		$this->set('message', t('File Attribute Created.'));
 	}
@@ -78,7 +78,7 @@ class DashboardFilesAttributesController extends Controller {
 	public function attribute_updated() {
 		$this->set('message', t('File Attribute Updated.'));
 	}
-	
+
 	public function edit($akID = 0) {
 		if ($this->post('akID')) {
 			$akID = $this->post('akID');
@@ -87,7 +87,7 @@ class DashboardFilesAttributesController extends Controller {
 		$type = $key->getAttributeType();
 		$this->set('key', $key);
 		$this->set('type', $type);
-		
+
 		if ($this->isPost()) {
 			$cnt = $type->getController();
 			$cnt->setAttributeKey($key);
@@ -101,5 +101,5 @@ class DashboardFilesAttributesController extends Controller {
 			}
 		}
 	}
-	
+
 }

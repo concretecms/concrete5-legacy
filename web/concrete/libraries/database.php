@@ -22,7 +22,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
  */
 class Database {
 
-	/** 
+	/**
 	 * Get's a Schema Object for a particular database object
 	 */
 	public static function getADOSChema() {
@@ -30,24 +30,24 @@ class Database {
 		return new adoSchema($db);
 	}
 
-	/** 
+	/**
 	 * Set's debug to true or false. True will display errors
 	 * @param bool $_debug
-	 */ 
+	 */
 	public function setDebug($_debug) {
 		$db = Loader::db();
 		$db->debug = $_debug;
 	}
-	
+
 	public function getDebug() {
 		$db = Loader::db();
 		return $db->debug;
 	}
 
-	/** 
+	/**
 	 * Sets logging to true or false.
 	 * @param bool $log
-	 */ 
+	 */
 	public function setLogging($log) {
 		$db = Loader::db();
 		$db->LogSQL($log);
@@ -56,13 +56,13 @@ class Database {
 	}
 
 	public static function ensureEncoding() {
-		if (!defined('DB_CHARSET') || DB_CHARSET == '') { 
+		if (!defined('DB_CHARSET') || DB_CHARSET == '') {
 			return false;
 		}
 
 		$db = Loader::db();
 		$q = "ALTER DATABASE `{$db->database}` character set " . DB_CHARSET;
-		if (!defined('DB_COLLATE') || DB_COLLATE != '') { 
+		if (!defined('DB_COLLATE') || DB_COLLATE != '') {
 			$q .= " COLLATE " . DB_COLLATE;
 		}
 		$db->Execute($q);

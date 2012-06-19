@@ -16,18 +16,18 @@ foreach($assignments as $ppc) {
 	<?=t('Permission on ')?><?
 		if ($pk instanceof AreaPermissionKey) {  ?>
 			<strong><?=$pk->getPermissionObject()->getAreaHandle() ?></strong>.
-		<? } else if ($pk instanceof BlockPermissionKey) { 
+		<? } else if ($pk instanceof BlockPermissionKey) {
 			$bt = BlockType::getByID($pk->getPermissionObject()->getBlockTypeID());
 			$obj = $pk->getPermissionObject();
 			if ($obj->getBlockName() != '') { ?>
 
 			<?=t('the %s block named <strong>%s</strong> in <strong>%s</strong> Area. ', $bt->getBlockTypeName(), $obj->getBlockName(), $pk->getPermissionObject()->getAreaHandle())?>
-			
+
 			<? } else { ?>
-			
+
 			<?=t('<strong>%s Block</strong> in <strong>%s</strong> Area. ', $bt->getBlockTypeName(), $pk->getPermissionObject()->getAreaHandle())?>
-			
-			<? } ?>		
+
+			<? } ?>
 		<? } else { ?>
 			<strong><?=t('Entire Page')?></strong>.
 		<? } ?>
@@ -35,7 +35,7 @@ foreach($assignments as $ppc) {
 		$pd = $ppc->getDurationObject();
 		?>
 		<div>
-		<? 
+		<?
 		$assignee = t('Nobody');
 		$pae = $ppc->getAccessEntityObject();
 		if (is_object($pae)) {

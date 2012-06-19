@@ -21,23 +21,23 @@ defined('C5_EXECUTE') or die("Access Denied.");
  *
  */
 	class View extends Object {
-	
+
 		private $viewPath;
-		
+
 		/**
 		 * controller used by this particular view
 		 * @access public
 	     * @var object
 		*/
 		public $controller;
-		
-		
-		/** 
+
+
+		/**
 		 * An array of items that get loaded into a page's header
 		 */
 		private $headerItems = array();
 
-		/** 
+		/**
 		 * An array of items that get loaded into just before body close
 		 */
 		private $footerItems = array();
@@ -47,17 +47,17 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		 * @access private
 	     * @var array
 		*/
-		private $themePaths = array();	
-	
+		private $themePaths = array();
+
 		private $areLinksDisabled = false;
-		
+
 		/**
 		 * editing mode is enabled or not
 		 * @access private
 	     * @var boolean
-		*/	
+		*/
 		private $isEditingEnabled = true;
-		
+
 		// getInstance() grabs one instance of the view w/the singleton pattern
 		public function getInstance() {
 			static $instance;
@@ -66,11 +66,11 @@ defined('C5_EXECUTE') or die("Access Denied.");
 				$instance = new $v;
 			}
 			return $instance;
-		}		
-		
-		
+		}
+
+
 		/**
-		 * This grabs the theme for a particular path, if one exists in the themePaths array 
+		 * This grabs the theme for a particular path, if one exists in the themePaths array
 		 * @access private
 	     * @param string $path
 		 * @return string $theme
@@ -87,8 +87,8 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			}
 			return $theme;
 		}
-		
-		/** 
+
+		/**
 		 * Returns a stylesheet found in a themes directory - but FIRST passes it through the tools CSS handler
 		 * in order to make certain style attributes found inside editable
 		 * @param string $stylesheet
@@ -101,7 +101,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			}
 		}
 
-		/** 
+		/**
 		 * Function responsible for adding header items within the context of a view.
 		 * @access private
 		 */
@@ -109,20 +109,20 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		public function addHeaderItem($item, $namespace = 'VIEW') {
 			$this->headerItems[$namespace][] = $item;
 		}
-		
-		/** 
+
+		/**
 		 * Function responsible for adding footer items within the context of a view.
 		 * @access private
 		 */
 		public function addFooterItem($item, $namespace = 'VIEW') {
 			$this->footerItems[$namespace][] = $item;
 		}
-		
+
 		public function getHeaderItems() {
 			$a1 = (is_array($this->headerItems['CORE'])) ? $this->headerItems['CORE'] : array();
 			$a2 = (is_array($this->headerItems['VIEW'])) ? $this->headerItems['VIEW'] : array();
 			$a3 = (is_array($this->headerItems['CONTROLLER'])) ? $this->headerItems['CONTROLLER'] : array();
-			
+
 			$items = array_merge($a1, $a2, $a3);
 			if (version_compare(PHP_VERSION, '5.2.9', '<')) {
 				$items = array_unique($items);
@@ -132,13 +132,13 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			}
 			return $items;
 		}
-		
+
 		public function getFooterItems() {
 			$a1 = (is_array($this->footerItems['CORE'])) ? $this->footerItems['CORE'] : array();
 			$a2 = (is_array($this->footerItems['VIEW'])) ? $this->footerItems['VIEW'] : array();
 			$a3 = (is_array($this->footerItems['CONTROLLER'])) ? $this->footerItems['CONTROLLER'] : array();
 			$a4 = (is_array($this->footerItems['SCRIPT'])) ? $this->footerItems['SCRIPT'] : array();
-			
+
 			$items = array_merge($a1, $a2, $a3, $a4);
 			if (version_compare(PHP_VERSION, '5.2.9', '<')) {
 				$items = array_unique($items);
@@ -146,7 +146,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 				// stupid PHP
 				$items = array_unique($items, SORT_STRING);
 			}
-			
+
 			// also strip out anything that was in the header
 			$headerItems = $this->getHeaderItems();
 			$retitems = array();
@@ -157,36 +157,36 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			}
 			return $retitems;
 		}
-		
-		/** 
+
+		/**
 		 * Function responsible for outputting header items
 		 * @access private
 		 */
 		public function outputHeaderItems() {
-			
+
 			$items = $this->getHeaderItems();
-			
+
 			// Loop through all items
 			// If it is a header output object, place each item in a separate array for its container directory
 			// Otherwise, put it in the outputPost array
-			
+
 			$outputPost = array();
 			$output = array();
-			
+
 			foreach($items as $hi) {
 				print $hi; // caled on two seperate lines because of pre php 5.2 __toString issues
 				print "\n";
-			}			
-			
+			}
+
 		}
-		
-		/** 
+
+		/**
 		 * Function responsible for outputting footer items
 		 * @access private
 		 */
 		public function outputFooterItems() {
 			$items = $this->getFooterItems();
-			
+
 			foreach($items as $hi) {
 				print $hi; // caled on two seperate lines because of pre php 5.2 __toString issues
 				print "\n";
@@ -196,64 +196,64 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		public function field($fieldName) {
 			return $this->controller->field($fieldName);
 		}
-		
-		
-		/** 
+
+
+		/**
 		 * @access private
 		 */
 		public function enablePreview() {
 			$this->isPreview = true;
 		}
-		
-		/** 
+
+		/**
 		 * @access private
 		 */
 		public function isPreview() {
 			return $this->isPreview;
 		}
-		
-		/** 
+
+		/**
 		 * @access private
 		 */
 		public function disableLinks() {
 			$this->areLinksDisabled = true;
 		}
-		
-		/** 
+
+		/**
 		 * @access private
 		 */
 		public function enableLinks() {
 			$this->areLinksDisabled = false;
 		}
-		
-		/** 
+
+		/**
 		 * @access private
 		 */
 		public function areLinksDisabled() {
 			return $this->areLinksDisabled;
 		}
-		
-		/** 
+
+		/**
 		 * Returns the path used to access this view
 		 * @return string $viewPath
 		 */
 		private function getViewPath() {
 			return $this->viewPath;
 		}
-		
-		/** 
+
+		/**
 		 * Returns the handle of the currently active theme
 		 */
 		public function getThemeHandle() { return $this->ptHandle;}
-		
+
 		/**
-		 * gets the theme include file for this particular view		
+		 * gets the theme include file for this particular view
 		 * @access public
 		 * @return string $theme
 		*/
 		public function getTheme() { return $this->theme;}
-	
-	
+
+
 		/**
 		 * gets the relative theme path for use in templates
 		 * @access public
@@ -275,8 +275,8 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		 * @return string $themeDir
 		*/
 		public function getThemeDirectory() {return $this->themeDir;}
-		
-	
+
+
 		/**
 		 * used by the theme_paths and site_theme_paths files in config/ to hard coded certain paths to various themes
 		 * @access public
@@ -295,7 +295,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			}
 			$this->themePaths[$path] = $theme;
 		}
-		
+
 		/**
 		 * Returns the value of the item in the POST array.
 		 * @access public
@@ -306,7 +306,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			return $this->controller->post($key);
 		}
 
-		
+
 		/**
 		 * gets the collection object for the current view
 		 * @access public
@@ -315,7 +315,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		public function getCollectionObject() {
 			return $this->c;
 		}
-		
+
 		/**
 		 * sets the collection object for the current view
 		 * @access public
@@ -345,17 +345,17 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			include($this->themeDir . '/' . $file);
 		}
 
-	
+
 		/**
 		 * editing is enabled true | false
 		 * @access private
 		 * @return boolean
-		*/		
+		*/
 		public function editingEnabled() {
 			return $this->isEditingEnabled;
 		}
-		
-	
+
+
 		/**
 		 * set's editing to disabled
 		 * @access private
@@ -374,10 +374,10 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		public function enableEditing() {
 			$this->isEditingEnabled = true;
 		}
-		
-	
-	
-	
+
+
+
+
 		/**
 		 * This is rarely used. We want to render another view
 		 * but keep the current controller. Views should probably not
@@ -397,7 +397,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		 * @access public
 		 * @param string $url
 		 * @return boolean | void
-		*/	
+		*/
 		public function section($url) {
 			$cPath = Page::getCurrentPage()->getCollectionPath();
 			if (!empty($cPath)) {
@@ -407,38 +407,38 @@ defined('C5_EXECUTE') or die("Access Denied.");
 				}
 			}
 		}
-		
-		
+
+
 		/**
-		 * url is a utility function that is used inside a view to setup urls w/tasks and parameters		
+		 * url is a utility function that is used inside a view to setup urls w/tasks and parameters
 		 * @access public
 		 * @param string $action
 		 * @param string $task
 		 * @return string $url
-		*/	
+		*/
 		public function url($action, $task = null) {
 			$dispatcher = '';
 			if ((!URL_REWRITING_ALL) || !defined('URL_REWRITING_ALL')) {
 				$dispatcher = '/' . DISPATCHER_FILENAME;
 			}
-			
+
 			$action = trim($action, '/');
 			if ($action == '') {
 				return DIR_REL . '/';
 			}
-			
+
 			// if a query string appears in this variable, then we just pass it through as is
 			if (strpos($action, '?') > -1) {
 				return DIR_REL . $dispatcher. '/' . $action;
 			} else {
 				$_action = DIR_REL . $dispatcher. '/' . $action . '/';
 			}
-			
+
 			if ($task != null) {
 				if (ENABLE_LEGACY_CONTROLLER_URLS) {
 					$_action .= '-/' . $task;
 				} else {
-					$_action .= $task;			
+					$_action .= $task;
 				}
 				$args = func_get_args();
 				if (count($args) > 2) {
@@ -446,17 +446,17 @@ defined('C5_EXECUTE') or die("Access Denied.");
 						$_action .= '/' . $args[$i];
 					}
 				}
-				
+
 				if (strpos($_action, '?') === false) {
 					$_action .= '/';
 				}
 			}
-			
+
 			return $_action;
 		}
-		
+
 		/**
-		 * A shortcut to posting back to the current page with a task and optional parameters. Only works in the context of 
+		 * A shortcut to posting back to the current page with a task and optional parameters. Only works in the context of
 		 * @param string $action
 		 * @param string $task
 		 * @return string $url
@@ -475,36 +475,36 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		 * @param string $title
 		 * @param string $error
 		 * @return void
-		*/	
+		*/
 		public function renderError($title, $error, $errorObj = null) {
 			$innerContent = $error;
-			$titleContent = $title; 
+			$titleContent = $title;
 			if (!isset($this) || (!$this)) {
 				$v = new View();
 				$v->setThemeForView(DIRNAME_THEMES_CORE, FILENAME_THEMES_ERROR . '.php', true);
-				include($v->getTheme());	
+				include($v->getTheme());
 				exit;
 			}
 			if (!isset($this->theme) || (!$this->theme) || (!file_exists($this->theme))) {
 				$this->setThemeForView(DIRNAME_THEMES_CORE, FILENAME_THEMES_ERROR . '.php', true);
-				include($this->theme);	
-				exit;			
+				include($this->theme);
+				exit;
 			} else {
-				Loader::element('error_fatal', array('innerContent' => $innerContent, 
+				Loader::element('error_fatal', array('innerContent' => $innerContent,
 					'titleContent' => $titleContent));
 			}
 		}
-		
-		/** 
-		 * @private 
+
+		/**
+		 * @private
 		 */
 		public static function defaultExceptionHandler($e) {
 			if (Config::get('SITE_DEBUG_LEVEL') == DEBUG_DISPLAY_ERRORS) {
-				View::renderError(t('An unexpected error occurred.'), $e->getMessage(), $e);		
+				View::renderError(t('An unexpected error occurred.'), $e->getMessage(), $e);
 			} else {
 				View::renderError(t('An unexpected error occurred.'), t('An error occurred while processing this request.'), $e);
 			}
-			
+
 			// log if setup to do so
 			if (ENABLE_LOG_ERRORS) {
 				$l = new Log(LOG_TYPE_EXCEPTIONS, true, true);
@@ -519,24 +519,24 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		 * @access public
 		 * @param string $theme
 		 * @return void
-		*/	
+		*/
 		public function setTheme($theme) {
 			$this->themeOverride = $theme;
 		}
-		
+
 		/**
 		 * set theme takes either a text-based theme ("concrete" or "dashboard" or something)
 		 * or a PageTheme object and sets information in the view about that theme. This is called internally
 		 * and is always passed the correct item based on context
-		 * 
+		 *
 		 * @access public
 		 * @param PageTheme object $pl
 		 * @param string $filename
 		 * @param boolean $wrapTemplateInTheme
 		 * @return void
-		*/	
+		*/
 		private function setThemeForView($pl, $filename, $wrapTemplateInTheme = false) {
-			// wrapTemplateInTheme gets set to true if we're passing the filename of a single page or page type file through 
+			// wrapTemplateInTheme gets set to true if we're passing the filename of a single page or page type file through
 			$pkgID = 0;
 			if ($pl instanceof PageTheme) {
 				$this->ptHandle = $pl->getThemeHandle();
@@ -603,7 +603,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 					$themeDir = DIR_FILES_THEMES_CORE_ADMIN;
 				}
 			}
-			
+
 			$this->theme = $theme;
 			$this->themePath = $themePath;
 			$this->themeDir = $themeDir;
@@ -619,25 +619,25 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		 * @param string $view
 		 * @param array $args
 		 * @return void
-		*/	
-		public function render($view, $args = null) { 
-			
-			try {			
+		*/
+		public function render($view, $args = null) {
+
+			try {
 				if (is_array($args)) {
 					extract($args);
 				}
-	
+
 				// strip off a slash if there is one at the end
 				if (is_string($view)) {
 					if (substr($view, strlen($view) - 1) == '/') {
 						$view = substr($view, 0, strlen($view) - 1);
 					}
 				}
-				
+
 				$wrapTemplateInTheme = false;
 
 				Events::fire('on_start', $this);
-				
+
 				// Extract controller information from the view, and put it in the current context
 				if (!isset($this->controller)) {
 					$this->controller = Loader::controller($view);
@@ -647,11 +647,11 @@ defined('C5_EXECUTE') or die("Access Denied.");
 				if ($this->controller->getRenderOverride() != '') {
 				   $view = $this->controller->getRenderOverride();
 				}
-				
+
 				// Determine which inner item to load, load it, and stick it in $innerContent
 				$content = false;
-								
-				ob_start();			
+
+				ob_start();
 				if ($view instanceof Page) {
 
 					$_pageBlocks = $view->getBlocks();
@@ -667,17 +667,17 @@ defined('C5_EXECUTE') or die("Access Denied.");
 							print($pageContent);
 							Events::fire('on_render_complete', $this);
 							if (ob_get_level() == OB_INITIAL_LEVEL) {
-		
+
 								require(DIR_BASE_CORE . '/startup/shutdown.php');
 								exit;
 							}
 							return;
 						}
 					}
-					
+
 					foreach($_pageBlocks as $b1) {
 						$b1p = new Permissions($b1);
-						if ($b1p->canRead()) { 
+						if ($b1p->canRead()) {
 							$btc = $b1->getInstance();
 							// now we inject any custom template CSS and JavaScript into the header
 							if('Controller' != get_class($btc)){
@@ -686,10 +686,10 @@ defined('C5_EXECUTE') or die("Access Denied.");
 							$btc->runTask('on_page_view', array($view));
 						}
 					}
-					
+
 					// do we have any custom menu plugins?
 					$cp = new Permissions($view);
-					if ($cp->canViewToolbar()) { 
+					if ($cp->canViewToolbar()) {
 						$ih = Loader::helper('concrete/interface/menu');
 						$_interfaceItems = $ih->getPageHeaderMenuItems();
 						foreach($_interfaceItems as $_im) {
@@ -703,21 +703,21 @@ defined('C5_EXECUTE') or die("Access Denied.");
 					unset($_interfaceItems);
 					unset($_im);
 					unset($_controller);
-					
-					
+
+
 					// now, we output all the custom style records for the design tab in blocks/areas on the page
 					$c = $this->getCollectionObject();
-					$view->outputCustomStyleHeaderItems(); 	
-					
+					$view->outputCustomStyleHeaderItems();
+
 					$viewPath = $view->getCollectionPath();
 					$this->viewPath = $viewPath;
-					
+
 					$cFilename = $view->getCollectionFilename();
 					$ctHandle = $view->getCollectionTypeHandle();
 					$editMode = $view->isEditMode();
 					$c = $view;
 					$this->c = $c;
-					
+
 					// $view is a page. It can either be a SinglePage or just a Page, but we're not sure at this point, unfortunately
 					if ($view->getCollectionTypeID() == 0 && $cFilename) {
 						$wrapTemplateInTheme = true;
@@ -734,9 +734,9 @@ defined('C5_EXECUTE') or die("Access Denied.");
 						} else if (file_exists(DIR_FILES_CONTENT_REQUIRED . "{$cFilename}")) {
 							$content = DIR_FILES_CONTENT_REQUIRED. "{$cFilename}";
 						}
-						
+
 						$themeFilename = $c->getCollectionHandle() . '.php';
-						
+
 					} else {
 						if (file_exists(DIR_BASE . '/' . DIRNAME_PAGE_TYPES . '/' . $ctHandle . '.php')) {
 							$content = DIR_BASE . '/' . DIRNAME_PAGE_TYPES . '/' . $ctHandle . '.php';
@@ -755,16 +755,16 @@ defined('C5_EXECUTE') or die("Access Denied.");
 								$wrapTemplateInTheme = true;
 							}
 						}
-						
+
 						$themeFilename = $ctHandle . '.php';
 					}
-					
-					
+
+
 				} else if (is_string($view)) {
-					
-					// if we're passing a view but our render override is not null, that means that we're passing 
+
+					// if we're passing a view but our render override is not null, that means that we're passing
 					// a new view from within a controller. If that's the case, then we DON'T override the viewPath, we want to keep it
-					
+
 					// In order to enable editable 404 pages, other editable pages that we render without actually visiting
 					if (defined('DB_DATABASE') && $view == '/page_not_found') {
 						$pp = Page::getByPath($view);
@@ -772,14 +772,14 @@ defined('C5_EXECUTE') or die("Access Denied.");
 							$this->c = $pp;
 						}
 					}
-					
+
 					$viewPath = $view;
 					if ($this->controller->getRenderOverride() != '' && $this->getCollectionObject() != null) {
 						// we are INSIDE a collection renderring a view. Which means we want to keep the viewPath that of the collection
 						$this->viewPath = $this->getCollectionObject()->getCollectionPath();
 					}
-					
-					// we're just passing something like "/login" or whatever. This will typically just be 
+
+					// we're just passing something like "/login" or whatever. This will typically just be
 					// internal Concrete stuff, but we also prepare for potentially having something in DIR_FILES_CONTENT (ie: the webroot)
 					if (file_exists(DIR_FILES_CONTENT . "/{$view}/" . FILENAME_COLLECTION_VIEW)) {
 						$content = DIR_FILES_CONTENT . "/{$view}/" . FILENAME_COLLECTION_VIEW;
@@ -801,8 +801,8 @@ defined('C5_EXECUTE') or die("Access Denied.");
 					$wrapTemplateInTheme = true;
 					$themeFilename = $view . '.php';
 				}
-				
-				
+
+
 				if (is_object($this->c)) {
 					$c = $this->c;
 					if (defined('DB_DATABASE') && $view == '/page_not_found') {
@@ -811,7 +811,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 						$req->setCurrentPage($c);
 					}
 				}
-				
+
 				// Determine which outer item/theme to load
 				// obtain theme information for this collection
 				if (isset($this->themeOverride)) {
@@ -824,11 +824,11 @@ defined('C5_EXECUTE') or die("Access Denied.");
 					$theme = $tmpTheme;
 				} else {
 					$theme = FILENAME_COLLECTION_DEFAULT_THEME;
-				}		
-				
+				}
+
 				$this->setThemeForView($theme, $themeFilename, $wrapTemplateInTheme);
 
-	
+
 				// finally, we include the theme (which was set by setTheme and will automatically include innerContent)
 				// disconnect from our db and exit
 
@@ -841,58 +841,58 @@ defined('C5_EXECUTE') or die("Access Denied.");
 				}
 
 				$innerContent = ob_get_contents();
-				
+
 				if (ob_get_level() > OB_INITIAL_LEVEL) {
 					ob_end_clean();
 				}
-				
+
 				Events::fire('on_before_render', $this);
-				
+
 				if (defined('APP_CHARSET')) {
 					header("Content-Type: text/html; charset=" . APP_CHARSET);
 				}
-				
+
 				if (file_exists($this->theme)) {
-					
+
 					ob_start();
 					include($this->theme);
 					$pageContent = ob_get_contents();
 					ob_end_clean();
-					
+
 					$ret = Events::fire('on_page_output', $pageContent);
 					if($ret != '') {
 						print $ret;
 					} else {
 						print $pageContent;
 					}
-					
+
 					if ($view instanceof Page) {
 						if ($view->supportsPageCache($_pageBlocks, $this->controller)) {
 							$view->addToPageCache($pageContent);
 						}
 					}
-					
+
 				} else {
 					throw new Exception(t('File %s not found. All themes need default.php and view.php files in them. Consult concrete5 documentation on how to create these files.', $this->theme));
 				}
-				
+
 				Events::fire('on_render_complete', $this);
-				
+
 				if (ob_get_level() == OB_INITIAL_LEVEL) {
-	
+
 					require(DIR_BASE_CORE . '/startup/shutdown.php');
 					exit;
-					
+
 				}
-				
+
 			} catch(ADODB_Exception $e) {
 				// if it's a database exception we go here.
 				if (Config::get('SITE_DEBUG_LEVEL') == DEBUG_DISPLAY_ERRORS) {
-					$this->renderError(t('An unexpected error occurred.'), $e->getMessage(), $e);		
+					$this->renderError(t('An unexpected error occurred.'), $e->getMessage(), $e);
 				} else {
 					$this->renderError(t('An unexpected error occurred.'), t('A database error occurred while processing this request.'), $e);
 				}
-				
+
 				// log if setup to do so
 				if (ENABLE_LOG_ERRORS) {
 					$l = new Log(LOG_TYPE_EXCEPTIONS, true, true);
@@ -912,5 +912,5 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			}
 
 		}
-		
+
 	}

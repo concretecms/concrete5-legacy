@@ -114,7 +114,7 @@ if (!$canViewPane) {
 			$u->loadCollectionEdit($c);
 		}
 	}
-	
+
 	if (($c->isEditMode() || (in_array($_GET['ctask'], array('add', 'edit_external', 'delete_external')))) && $toolSection) {
 		$args = array(
 			'c' => $c,

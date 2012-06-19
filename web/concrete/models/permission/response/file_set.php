@@ -1,14 +1,14 @@
 <?
 defined('C5_EXECUTE') or die("Access Denied.");
 class FileSetPermissionResponse extends PermissionResponse {
-	
+
 	public function canSearchFiles() { return $this->validate('search_file_set'); }
 	public function canRead() { return $this->validate('view_file_set_file'); }
 	public function canWrite() { return $this->validate('edit_file_set_file'); }
 	public function canAddFiles() { return $this->validate('add_file');}
 	public function canAccessFileManager() {return $this->validate('search_file_set'); }
-	
-	/** 
+
+	/**
 	 * Returns all file extensions this user can add
 	 */
 	public function getAllowedFileExtensions() {
@@ -17,7 +17,7 @@ class FileSetPermissionResponse extends PermissionResponse {
 		$r = $pk->getAllowedFileExtensions();
 		return $r;
 	}
-	
+
 	public function canAddFileType($ext) {
 		$pk = $this->category->getPermissionKeyByHandle('add_file');
 		$pk->setPermissionObject($this->object);

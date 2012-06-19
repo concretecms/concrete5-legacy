@@ -1,6 +1,6 @@
 <?
 defined('C5_EXECUTE') or die("Access Denied.");
-if ($action == null) { 
+if ($action == null) {
 	// we can pass an action from the block, but in most instances we won't, we'll use the default
 	$action = $bt->getBlockAddAction($a);
 	global $c;
@@ -11,14 +11,14 @@ if ($action == null) {
 <script type="text/javascript">
 
 <? $ci = Loader::helper("concrete/urls"); ?>
-<? $url = $ci->getBlockTypeJavaScriptURL($bt); 
+<? $url = $ci->getBlockTypeJavaScriptURL($bt);
 if ($url != '') { ?>
 	ccm_addHeaderItem("<?=$url?>", 'JAVASCRIPT');
-<? } 
+<? }
 
 $identifier = strtoupper('BLOCK_CONTROLLER_' . $btHandle);
 if (is_array($headerItems[$identifier])) {
-	foreach($headerItems[$identifier] as $item) { 
+	foreach($headerItems[$identifier] as $item) {
 		if ($item instanceof CSSOutputObject) {
 			$type = 'CSS';
 		} else {
@@ -45,7 +45,7 @@ $(function() {
 $hih = Loader::helper("concrete/interface/help");
 $blockTypes = $hih->getBlockTypes();
 $cont = $bt->getController();
-	
+
 if (isset($blockTypes[$bt->getBlockTypeHandle()])) {
 	$help = $blockTypes[$bt->getBlockTypeHandle()];
 } else {
@@ -54,8 +54,8 @@ if (isset($blockTypes[$bt->getBlockTypeHandle()])) {
 	}
 }
 if (isset($help)) { ?>
-	<div class="dialog-help" id="ccm-menu-help-content"><? 
-		if (is_array($help)) { 
+	<div class="dialog-help" id="ccm-menu-help-content"><?
+		if (is_array($help)) {
 			print $help[0] . '<br><br><a href="' . $help[1] . '" class="btn small" target="_blank">' . t('Learn More') . '</a></div>';
 		} else {
 			print $help;

@@ -17,9 +17,9 @@
  */
  	defined('C5_EXECUTE') or die("Access Denied.");
 	class ValidationErrorHelper {
-	
+
 		protected $error = array();
-		
+
 		/**
 		 * this method is called by the Loader::helper to clean up the instance of this object
 		 * resets the class scope variables
@@ -28,31 +28,31 @@
 		public function reset() {
 			$this->error = array();
 		}
-		
-		/** 
+
+		/**
 		 * Adds an error object or exception to the internal error array
 		 * @param Exception | string $e
 		 * @return void
 		 */
 		public function add($e) {
 			if ($e instanceof ValidationErrorHelper) {
-				$this->error = array_merge($e->getList(), $this->error);			
+				$this->error = array_merge($e->getList(), $this->error);
 			} else if (is_object($e) && ($e instanceof Exception)) {
 				$this->error[] = $e->getMessage();
 			} else {
 				$this->error[] = $e;
 			}
 		}
-		
-		/** 
+
+		/**
 		 * Returns a list of errors in the error helper
 		 * @return array
 		 */
 		public function getList() {
 			return $this->error;
 		}
-		
-		/** 
+
+		/**
 		 * Returns whether or not this error helper has more than one error registered within it.
 		 * @return bool
 		 */
@@ -60,7 +60,7 @@
 			return (count($this->error) > 0);
 		}
 
-		/** 
+		/**
 		 * Outputs the HTML of an error list, with the correct style attributes/classes. This is a convenience method.
 		 */
 		public function output() {
@@ -73,5 +73,5 @@
 			}
 		}
 	}
-	
+
 ?>

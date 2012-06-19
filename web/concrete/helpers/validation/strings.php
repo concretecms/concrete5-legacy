@@ -10,9 +10,9 @@
  * @license    http://www.concrete5.org/license/     MIT License
  */
 
-class ValidationStringsHelper {	
+class ValidationStringsHelper {
 
-	
+
 	/**
 	 * Validates an email address
 	 * @param string $address
@@ -30,7 +30,7 @@ class ValidationStringsHelper {
 			return false;
 		}
 	}
-	
+
 	/**
 	 * Returns true on whether the passed field is completely alpha-numeric
 	 * @param string $field
@@ -43,7 +43,7 @@ class ValidationStringsHelper {
 			return !preg_match('/[^A-Za-z0-9]/', $field);
 		}
 	}
-	
+
 	/**
 	 * Returns false if the string is empty (including trim())
 	 * @param string $field
@@ -51,9 +51,9 @@ class ValidationStringsHelper {
 	 */
 	public function notempty($field) {
 		return ((is_array($field) && count($field) > 0) || (is_string($field) && trim($field) != ''));
-	}	
-	
-	/** 
+	}
+
+	/**
 	 * Returns true on whether the passed string is larger or equal to the passed length
 	 * @param string $str
 	 * @param int $length
@@ -62,8 +62,8 @@ class ValidationStringsHelper {
 	public function min($str, $num) {
 		return strlen(trim($str)) >= $num;
 	}
-	
-	/** 
+
+	/**
 	 * Returns true on whether the passed is smaller or equal to the passed length
 	 * @param string $str
 	 * @param int $length
@@ -72,7 +72,7 @@ class ValidationStringsHelper {
 	public function max($str, $num) {
 		return strlen(trim($str)) <= $num;
 	}
-	
+
 	/**
 	 * Returns 0 if there are no numbers in the string, or returns the number of numbers in the string
 	 * @param string $str
@@ -81,7 +81,7 @@ class ValidationStringsHelper {
 	public function containsNumber($str) {
 		return strlen(trim(preg_replace('/([^0-9]*)/', '', $str)));
 	}
-	
+
 	/**
 	 * Returns 0 if there are no upper case letters in the string, or returns the number of upper case letters in the string
 	 * @param string $str
@@ -104,11 +104,11 @@ class ValidationStringsHelper {
 	 * Returns 0 if there are no symbols in the string, or returns the number of symbols in the string
 	 * @param string $str
 	 * @return int
-	 */	
+	 */
 	public function containsSymbol($str) {
 		return strlen(trim(preg_replace('/([a-zA-Z0-9]*)/', '', $str))); //we replace a-z and numbers and see if there is anything left.
 	}
-	
+
 	/**
 	 * Returns true if the string contains another string
 	 * @param string $str
@@ -122,7 +122,7 @@ class ValidationStringsHelper {
 		} else {
 			$arr = $cont;
 		}
-		
+
 		foreach($arr as $char) {
 			if(strstr($str, $char)) {
 				return true;

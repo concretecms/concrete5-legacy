@@ -20,15 +20,15 @@ $(function() {
 
 	<div class="block-message info alert-message"><p><?=t('Password changed.  Please login to continue. ') ?></p></div>
 
-<? } ?> 
+<? } ?>
 
 <? if($changePasswordForm){ ?>
 
 	<p><?=t('Enter your new password below.') ?></p>
 
-	<div class="ccm-form">	
+	<div class="ccm-form">
 
-	<form method="post" action="<?=$this->url( '/login', 'change_password', $uHash )?>"> 
+	<form method="post" action="<?=$this->url( '/login', 'change_password', $uHash )?>">
 
 		<div class="clearfix">
 		<label for="uPassword"><?=t('New Password')?></label>
@@ -47,7 +47,7 @@ $(function() {
 		<?=$form->submit('submit', t('Sign In') . ' &gt;')?>
 		</div>
 	</form>
-	
+
 	</div>
 
 <? }elseif($validated) { ?>
@@ -73,7 +73,7 @@ $(function() {
 			<p><?=t('To complete the signup process, you must provide a valid email address.')?></p>
 			<label for="uEmail"><?=t('Email Address')?></label><br/>
 			<?=$form->text('uEmail')?>
-				
+
 			<div class="ccm-button">
 			<?=$form->submit('submit', t('Sign In') . ' &gt;')?>
 			</div>
@@ -81,9 +81,9 @@ $(function() {
 
 	<? break;
 	case OpenIDAuth::E_REGISTRATION_EMAIL_EXISTS:
-	
+
 	$ui = UserInfo::getByID($_SESSION['uOpenIDExistingUser']);
-	
+
 	?>
 
 		<form method="post" action="<?=$this->url('/login', 'do_login')?>">
@@ -91,7 +91,7 @@ $(function() {
 			<label for="uEmail"><?=t('Email Address')?></label><br/>
 			<div><strong><?=$ui->getUserEmail()?></strong></div>
 			<br/>
-			
+
 			<div>
 			<label for="uName"><? if (USER_REGISTRATION_WITH_EMAIL_ADDRESS == true) { ?>
 				<?=t('Email Address')?>
@@ -122,22 +122,22 @@ $(function() {
 <div class="ccm-form">
 
 	<p><?=t('You must provide the following information before you may login.')?></p>
-	
+
 <form method="post" action="<?=$this->url('/login', 'do_login')?>">
-	<? 
+	<?
 	$attribs = UserAttributeKey::getRegistrationList();
 	$af = Loader::helper('form/attribute');
-	
+
 	$i = 0;
-	foreach($unfilledAttributes as $ak) { 
-		if ($i > 0) { 
+	foreach($unfilledAttributes as $ak) {
+		if ($i > 0) {
 			print '<br/><br/>';
 		}
-		print $af->display($ak, $ak->isAttributeKeyRequiredOnRegister());	
+		print $af->display($ak, $ak->isAttributeKeyRequiredOnRegister());
 		$i++;
 	}
 	?>
-	
+
 	<?=$form->hidden('uName', Loader::helper('text')->entities($_POST['uName']))?>
 	<?=$form->hidden('uPassword', Loader::helper('text')->entities($_POST['uPassword']))?>
 	<?=$form->hidden('uOpenID', $uOpenID)?>
@@ -147,9 +147,9 @@ $(function() {
 		<?=$form->submit('submit', t('Sign In'))?>
 		<?=$form->hidden('rcID', $rcID); ?>
 	</div>
-	
+
 </form>
-</div>	
+</div>
 
 <? } else { ?>
 
@@ -159,11 +159,11 @@ $(function() {
 <div class="span8 columns">
 
 <fieldset>
-	
+
 	<legend><?=t('User Account')?></legend>
 
 	<div class="clearfix">
-	
+
 	<label for="uName"><? if (USER_REGISTRATION_WITH_EMAIL_ADDRESS == true) { ?>
 		<?=t('Email Address')?>
 	<? } else { ?>
@@ -172,16 +172,16 @@ $(function() {
 	<div class="input">
 		<input type="text" name="uName" id="uName" <?= (isset($uName)?'value="'.$uName.'"':'');?> class="ccm-input-text">
 	</div>
-	
+
 	</div>
 	<div class="clearfix">
 
 	<label for="uPassword"><?=t('Password')?></label>
-	
+
 	<div class="input">
 		<input type="password" name="uPassword" id="uPassword" class="ccm-input-text" />
 	</div>
-	
+
 	</div>
 </fieldset>
 
@@ -212,7 +212,7 @@ $(function() {
 			<div class="input"><?=$form->select('USER_LOCALE', $locales)?></div>
 		</div>
 	<? } ?>
-	
+
 	<div class="clearfix">
 		<label for="uMaintainLogin"><?=t('Remember Me')?></label>
 		<div class="input">
@@ -223,7 +223,7 @@ $(function() {
 	</div>
 	<? $rcID = isset($_REQUEST['rcID']) ? Loader::helper('text')->entities($_REQUEST['rcID']) : $rcID; ?>
 	<input type="hidden" name="rcID" value="<?=$rcID?>" />
-	
+
 	</fieldset>
 </div>
 <div class="span16 columns">
@@ -242,18 +242,18 @@ $(function() {
 
 <form method="post" action="<?=$this->url('/login', 'forgot_password')?>">
 <input type="hidden" name="rcID" value="<?=$rcID?>" />
-	
+
 	<div class="clearfix">
 		<label for="uEmail"><?=t('Email Address')?></label>
 		<div class="input">
 			<input type="text" name="uEmail" value="" class="ccm-input-text" >
 		</div>
 	</div>
-	
+
 	<div class="actions">
 		<?=$form->submit('submit', t('Reset and Email Password') . ' &gt;')?>
 	</div>
-	
+
 </form>
 
 

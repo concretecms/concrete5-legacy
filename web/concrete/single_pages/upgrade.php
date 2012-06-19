@@ -36,7 +36,7 @@
 	<div class="well" style="text-align: left">
 	    <a href="<?=DIR_REL?>/" class="btn"><?=t('Back to Home')?></a>
   	</div>
-	
+
 	<?php if(!isset($hide_force) || !$hide_force) { ?>
         <p>
         <?=t('<a href="%s">Click here</a> if you would like to re-run this script.', DIR_REL . '/' . DISPATCHER_FILENAME . '/tools/required/upgrade?force=1')?>

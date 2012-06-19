@@ -9,25 +9,25 @@
 	} else {
 		error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT);
 	}
-	
-	## Startup check ##	
+
+	## Startup check ##
 	require(dirname(__FILE__) . '/config/base_pre.php');
 
-	## Startup check ##	
+	## Startup check ##
 	require(dirname(__FILE__) . '/startup/config_check.php');
-	
+
 	## Check to see if, based on a config variable, we need to point to an alternate core ##
 	require(dirname(__FILE__) . '/startup/updated_core_check.php');
-	
+
 	## Load the base config file ##
 	require(dirname(__FILE__) . '/config/base.php');
 
 	## First we ensure that dispatcher is not being called directly
 	require(dirname(__FILE__) . '/startup/file_access_check.php');
 
-	## Called Class Fix for 5.2 ##	
+	## Called Class Fix for 5.2 ##
 	require(dirname(__FILE__) . '/startup/get_called_class_check.php');
-	
+
 	## Load the database ##
 	Loader::database();
 
@@ -37,12 +37,12 @@
 	require_once(DIR_BASE_CORE . '/' . DIRNAME_LIBRARIES . '/view.php');
 	require_once(DIR_BASE_CORE . '/' . DIRNAME_LIBRARIES . '/localization.php');
 	require_once(DIR_BASE_CORE . '/' . DIRNAME_MODELS . '/config.php');
-	
+
 	## Startup cache ##
 	Cache::startup();
 
-	## User level config ##	
-	if (!$config_check_failed) { 
+	## User level config ##
+	if (!$config_check_failed) {
 		require(dirname(__FILE__) . '/config/app.php');
 	}
 
@@ -50,14 +50,14 @@
 	require(dirname(__FILE__) . '/startup/autoload.php');
 
 	set_exception_handler(array('View', 'defaultExceptionHandler'));
-	
+
 	## Set default permissions for new files and directories ##
 	require(dirname(__FILE__) . '/startup/file_permission_config.php');
-	
+
 	## Setup timzone support
 	require(dirname(__FILE__) . '/startup/timezone.php'); // must be included before any date related functions are called (php 5.3 +)
 
-	## Startup check, install ##	
+	## Startup check, install ##
 	require(dirname(__FILE__) . '/startup/magic_quotes_gpc_check.php');
 
 	## Default routes for various content items ##
@@ -66,22 +66,22 @@
 	## Load session handlers
 	require(dirname(__FILE__) . '/startup/session.php');
 
-	## Startup check ##	
+	## Startup check ##
 	require(dirname(__FILE__) . '/startup/encoding_check.php');
 
-	# Startup check, install ##	
+	# Startup check, install ##
 	require(dirname(__FILE__) . '/startup/config_check_complete.php');
 
-	## Localization ##	
+	## Localization ##
 	require(dirname(__FILE__) . '/config/localization.php');
 
 	## File types ##
 	## Note: these have to come after config/localization.php ##
 	require(dirname(__FILE__) . '/config/file_types.php');
-	
-	## Check host for redirection ##	
+
+	## Check host for redirection ##
 	require(dirname(__FILE__) . '/startup/url_check.php');
-	
+
 	## Set debug-related and logging activities
 	require(dirname(__FILE__) . '/startup/debug_logging.php');
 
@@ -89,7 +89,7 @@
 	if (file_exists(DIR_BASE . '/config/site_post.php')) {
 		require(DIR_BASE . '/config/site_post.php');
 	}
-	
+
 	## Site-level config POST user/app config - managed by c5, do NOT add your own stuff here ##
 	if (file_exists(DIR_BASE . '/config/site_post_restricted.php')) {
 		require(DIR_BASE . '/config/site_post_restricted.php');
@@ -121,27 +121,27 @@
 	// Now we check to see if we're including CSS, Javascript, etc...
 	// Include Tools. Format: index.php?task=include_frontend&fType=TOOL&filename=test.php
 	require(dirname(__FILE__) . '/startup/tools.php');
-	
+
 	## Check online, user-related startup routines
 	require(dirname(__FILE__) . '/startup/user.php');
 
 	if (C5_ENVIRONMENT_ONLY == false) {
-	
+
 		// figure out where we need to go
 		$req = Request::get();
 		if ($req->getRequestCollectionPath() != '') {
 			if (ENABLE_LEGACY_CONTROLLER_URLS) {
-				$c = Page::getByPath($req->getRequestCollectionPath(), false);		
+				$c = Page::getByPath($req->getRequestCollectionPath(), false);
 			} else {
 				$c = $req->getRequestedPage();
 			}
 		} else {
 			$c = Page::getByID($req->getRequestCollectionID(), false);
 		}
-	
+
 		$req = Request::get();
 		$req->setCurrentPage($c);
-		
+
 		if ($c->isError()) {
 			// if we've gotten an error getting information about this particular collection
 			// than we load up the Content class, and get prepared to fire away
@@ -152,23 +152,23 @@
 					break;
 			}
 		}
-		
+
 		## Check maintenance mode
 		require(dirname(__FILE__) . '/startup/maintenance_mode_check.php');
-		
+
 		## Check to see whether this is an external alias or a header 301 redirect. If so we go there.
 		include(dirname(__FILE__) . '/startup/external_link.php');
-		
+
 		## Get a permissions object for this particular collection.
 		$cp = new Permissions($c);
-	
+
 		## Now that we have a collections and permissions object, we check to make sure
 		## everything is okay with collections and permissions
-	
+
 		if ($cp->isError()) {
 			// if we've gotten an error getting information about this particular collection
 			// than we load up the Content class, and get prepared to fire away
-			
+
 			switch($cp->getError()) {
 				case COLLECTION_FORBIDDEN:
 					$v = View::getInstance();
@@ -183,23 +183,23 @@
 			$v->render('/page_not_found');
 		}
 
-	
+
 		## If there's no error, then we build the collection, but first we load it with the appropriate
 		## version. We pass the function the collection object, as well as the collection permissions
 		## object, which the function will use to determine what version we get to see
-	
+
 		if ($cp->canEditPageContents() || $cp->canEditPageProperties() || $cp->canViewPageVersions()) {
 			$cvID = ($_REQUEST['cvID']) ? $_REQUEST['cvID'] : "RECENT";
 		} else {
 			$cvID = "ACTIVE";
 		}
-	
+
 		if ($_REQUEST['ccm-disable-controls'] == true || intval($cvID) > 0) {
 			$v = View::getInstance();
 			$v->disableEditing();
 			$v->disableLinks();
 		}
-		
+
 		$vp = $c->loadVersionObject($cvID);
 		// returns the $vp object, which we then check
 		if ($vp->isError()) {
@@ -217,7 +217,7 @@
 					break;
 			}
 		}
-		
+
 		## Any custom site-related process
 		if (file_exists(DIR_BASE . '/config/site_process.php')) {
 			require(DIR_BASE . '/config/site_process.php');
@@ -232,12 +232,12 @@
 		if (STATISTICS_TRACK_PAGE_VIEWS == 1) {
 			$u->recordView($c);
 		}
-		
+
 		## Fire the on_page_view Event
 		Events::fire('on_page_view', $c, $u);
-		
+
 		## now we display (provided we've gotten this far)
-	
+
 		$v = View::getInstance();
 		$v->render($c);
 	}

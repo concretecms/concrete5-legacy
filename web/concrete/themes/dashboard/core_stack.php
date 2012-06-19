@@ -4,10 +4,10 @@ $this->inc('elements/header.php'); ?>
 
 <?=Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper($c->getCollectionName())?>
 
-<? 
+<?
 
 $a = new Area(STACKS_AREA_NAME);
-$a->display($c); 
+$a->display($c);
 ?>
 
 <?=Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper()?>

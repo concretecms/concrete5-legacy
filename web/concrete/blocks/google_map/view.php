@@ -9,8 +9,8 @@ if ($c->isEditMode()) { ?>
 	<style type="text/css">
 	.googleMapCanvas{ width:100%; border:0px none; height: 400px;}
 	</style>
-	<script type="text/javascript"> 
-	function googleMapInit<?=$bID?>() { 
+	<script type="text/javascript">
+	function googleMapInit<?=$bID?>() {
 		try{
 			var latlng = new google.maps.LatLng(<?=$latitude?>, <?=$longitude?>);
 		    var mapOptions = {
@@ -22,17 +22,17 @@ if ($c->isEditMode()) { ?>
 			};
 		    var map = new google.maps.Map(document.getElementById('googleMapCanvas<?=$bID?>'), mapOptions);
 		    var marker = new google.maps.Marker({
-		        position: latlng, 
+		        position: latlng,
 		        map: map
 		    });
-		}catch(e){alert(e.message)} 
+		}catch(e){alert(e.message)}
 	}
 	</script>
-	
+
 	<? if( strlen($title)>0){ ?><h3><?=$title?></h3><? } ?>
 	<div id="googleMapCanvas<?=$bID?>" class="googleMapCanvas"></div>
 	<script type="text/javascript">$(function() {
 		googleMapInit<?=$bID?>();
 	});</script>
-	
+
 <? } ?>

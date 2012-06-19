@@ -19,51 +19,51 @@ defined('C5_EXECUTE') or die("Access Denied.");
  *
  */
 	class OpenIDAuth  {
-		
+
 		private $store;
 		private $consumer;
 		private $returnTo;
 		private $errorMsg;
 		public $redirect;
-		
+
 		private $response;
-		
+
 		const E_INVALID_OPENID = 1;
 		const E_CONNECTION_ERROR = 2;
 		const E_CANCEL = 3;
 		const E_FAILURE = 4;
-		const E_REGISTRATION_EMAIL_INCOMPLETE = 5;	
+		const E_REGISTRATION_EMAIL_INCOMPLETE = 5;
 		const E_REGISTRATION_EMAIL_EXISTS = 6;
-	
-		/** 
+
+		/**
 		 * Successful authentication. New user created in system. uID is the message
 		 */
 		const S_USER_CREATED = 10;
 		const S_USER_AUTHENTICATED = 11;
-		
+
 		public function getResponse() {
 			return $this->response;
 		}
-		
-		/** 
+
+		/**
 		 * Returns TRUE if open ID login is enabled for this site
 		 */
 		public static function isEnabled() {
 			return ENABLE_OPENID_AUTHENTICATION;
 		}
-		
+
 		public function __construct() {
 			Loader::library('3rdparty/Auth/OpenID/Consumer');
 			Loader::library('3rdparty/Auth/OpenID/FileStore');
 			Loader::library('3rdparty/Auth/OpenID/SReg');
 			Loader::library('3rdparty/Auth/OpenID/PAPE');
-			
+
 			$this->store = new Auth_OpenID_FileStore(DIR_FILES_CACHE . '/openid.store');
-			$this->consumer = new Auth_OpenID_Consumer($this->store);			
-			
+			$this->consumer = new Auth_OpenID_Consumer($this->store);
+
 			$this->response = new stdClass;
 		}
-		
+
 		public function reinstatePreviousRequest() {
 			$preq = unserialize($_SESSION['uOpenIDPreviousPostArray']);
 			if (is_array($preq)) {
@@ -73,15 +73,15 @@ defined('C5_EXECUTE') or die("Access Denied.");
 				}
 			}
 		}
-		
+
 		public function getReturnURL() {
 			return $this->returnTo;
 		}
-		
+
 		public function setReturnURL($url) {
 			$this->returnTo = $url;
 		}
-		
+
 		public function complete() {
 			$response = $this->consumer->complete($this->returnTo);
 			if ($response->status == Auth_OpenID_CANCEL) {
@@ -95,7 +95,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			}
 
 		}
-		
+
     	public function request($identifier) {
     		$_SESSION['uOpenIDPreviousPostArray'] = serialize($_POST);
     		$response = $this->consumer->begin($identifier);
@@ -107,12 +107,12 @@ defined('C5_EXECUTE') or die("Access Denied.");
 				} else {
 					$id = $identifier;
 				}
-				
-				// now we have an identifier. If we ALREADY have this openid in our system, we don't setup our request 
+
+				// now we have an identifier. If we ALREADY have this openid in our system, we don't setup our request
 				// to ask for the meta fields
-				
+
 				$ui = UserInfo::getByOpenID($id);
-				
+
 				if (!is_object($ui)) {
 					$regRequest = Auth_OpenID_SRegRequest::build(
 						// Required
@@ -120,14 +120,14 @@ defined('C5_EXECUTE') or die("Access Denied.");
 						// Optional
 						array('fullname', 'email')
 					);
-	
+
 					if ($regRequest) {
 						$response->addExtension($regRequest);
 					}
 				}
-				
+
 				$this->redirect = $response->redirectURL(BASE_URL . DIR_REL, $this->getReturnURL());
-		
+
 				// If the redirect URL can't be built, display an error
 				// message.
 				if (Auth_OpenID::isFailure($this->redirect)) {
@@ -137,11 +137,11 @@ defined('C5_EXECUTE') or die("Access Denied.");
 					// Send redirect.
 					header("Location: ".$this->redirect);
 					exit;
-				}        
-			}		
+				}
+			}
     	}
-		
-		/** 
+
+		/**
 		 * Creates a uID suitable for storing in the uName column
 		 * doesn't need to map directly because we're always quering the uOpenID column when signing in as open ID
 		 */
@@ -150,35 +150,35 @@ defined('C5_EXECUTE') or die("Access Denied.");
     		$uOpenID = trim($uOpenID);
     		$uOpenID = trim($uOpenID, '/');
     		$uOpenID = strtolower($uOpenID);
-    		
+
     		// now we check to see if the user already exists with this name. HIGHLY unlikely
 			$v = Loader::helper('validation/identifier');
 			$uOpenIDRet = $v->generateFromBase($uOpenID, 'Users', 'uName');
 			return $uOpenIDRet;
 		}
-		
+
     	public function registerUser($openID, $email) {
     		$v = Loader::helper('validation/identifier');
     		$pass = $v->getString(10);
-    		
+
     		$data['uName'] = $this->createUserID($openID);
     		$data['uPassword'] = $pass;
     		$data['uEmail'] = $email;
     		$data['uIsValidated'] = 1;
     		$ui = UserInfo::add($data);
-    		
+
     		if (is_object($ui)) {
 				$this->linkUser($openID, $ui);
 				return $ui;
-    		}    		
+    		}
     	}
-    	
+
     	public function linkUser($openID, $ui) {
 			$db = Loader::db();
 			$db->Execute('insert into UserOpenIDs (uOpenID, uID) values (?, ?)', array($openID, $ui->getUserID()));
     	}
-    	
-    	/** 
+
+    	/**
     	 * Translates the response from the open id library to our internal tools, taking care of checking whether the user
     	 * account needs to be created, etc...
     	 */
@@ -187,9 +187,9 @@ defined('C5_EXECUTE') or die("Access Denied.");
         	$sreg_resp = Auth_OpenID_SRegResponse::fromSuccessResponse($response);
        		$sreg = $sreg_resp->contents();
        		$val = Loader::helper('validation/strings');
-       		
+
        		$ui = UserInfo::getByOpenID($openid);
-			
+
 			// There are a number of cases here.
 			// Case 1: There is NO user on the site here that matches this open ID.
 			if (!is_object($ui)) {
@@ -202,10 +202,10 @@ defined('C5_EXECUTE') or die("Access Denied.");
 						$this->response->user = $ui->getUserID();
 						$this->response->openid = $openid;
 					} else {
-						// best possible case, really: we are a new user with an email address that is not mapped to 
+						// best possible case, really: we are a new user with an email address that is not mapped to
 						// an existing account. We register the new account here, and pass back information to the calling page
 						// saying that we've done so
-						$ui = $this->registerUser($openid, $sreg['email']);	
+						$ui = $this->registerUser($openid, $sreg['email']);
 						$this->response->code = OpenIDAuth::S_USER_CREATED;
 						$this->response->message = $ui->getUserID();
 					}
@@ -219,5 +219,5 @@ defined('C5_EXECUTE') or die("Access Denied.");
 				$this->response->message = $ui->getUserID();
 				$this->response->openid = $openid;
 			}
-		}		
+		}
 	}

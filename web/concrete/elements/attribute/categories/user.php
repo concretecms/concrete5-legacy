@@ -51,7 +51,7 @@ $(function() {
 			$('input[name=uakProfileEditRequired]').attr('disabled', false);
 		} else {
 			$('input[name=uakProfileEditRequired]').attr('checked', false);
-			$('input[name=uakProfileEditRequired]').attr('disabled', true);		
+			$('input[name=uakProfileEditRequired]').attr('disabled', true);
 		}
 	});
 
@@ -60,24 +60,24 @@ $(function() {
 			$('input[name=uakRegisterEditRequired]').attr('disabled', false);
 		} else {
 			$('input[name=uakRegisterEditRequired]').attr('checked', false);
-			$('input[name=uakRegisterEditRequired]').attr('disabled', true);		
+			$('input[name=uakRegisterEditRequired]').attr('disabled', true);
 		}
 	});
-	
+
 
 	if ($('input[name=uakProfileEdit]').prop('checked')) {
 		$('input[name=uakProfileEditRequired]').attr('disabled', false);
 	} else {
 		$('input[name=uakProfileEditRequired]').attr('checked', false);
-		$('input[name=uakProfileEditRequired]').attr('disabled', true);		
-	}	
+		$('input[name=uakProfileEditRequired]').attr('disabled', true);
+	}
 
 	if ($('input[name=uakRegisterEdit]').prop('checked')) {
 		$('input[name=uakRegisterEditRequired]').attr('disabled', false);
 	} else {
 		$('input[name=uakRegisterEditRequired]').attr('checked', false);
-		$('input[name=uakRegisterEditRequired]').attr('disabled', true);		
-	}	
+		$('input[name=uakRegisterEditRequired]').attr('disabled', true);
+	}
 
 });
 </script>

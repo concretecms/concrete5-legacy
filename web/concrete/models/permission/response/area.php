@@ -1,7 +1,7 @@
 <?
 defined('C5_EXECUTE') or die("Access Denied.");
 class AreaPermissionResponse extends PermissionResponse {
-	
+
 	// legacy support
 	public function canRead() { return $this->validate('view_area'); }
 	public function canWrite() { return $this->validate('edit_area_contents'); }
@@ -16,25 +16,25 @@ class AreaPermissionResponse extends PermissionResponse {
 		return $pk->validate($bt);
 	}
 
-	
+
 	// convenience function
 	public function canViewAreaControls() {
 		$u = new User();
 		if ($u->isSuperUser()) {
 			return true;
 		}
-		
+
 		if (
 		$this->canEditAreaContents() ||
-		$this->canEditAreaPermissions() || 
+		$this->canEditAreaPermissions() ||
 		$this->canAddBlockToArea() ||
 		$this->canAddStackToArea() ||
 		$this->canAddLayoutToArea()) {
 			return true;
-		} else { 
+		} else {
 			return false;
 		}
 	}
 
-	
+
 }

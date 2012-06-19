@@ -8,7 +8,7 @@
  */
 
 /**
- * Functions to help with using HTML. Does not include form elements - those have their own helper. 
+ * Functions to help with using HTML. Does not include form elements - those have their own helper.
  * @package Helpers
  * @category Concrete
  * @author Andrew Embler <andrew@concrete5.org>
@@ -18,7 +18,7 @@
 
 defined('C5_EXECUTE') or die("Access Denied.");
 class HtmlHelper {
-	
+
 	protected $legacyJavascript = array(
 		'ccm.dialog.js' => 'ccm.app.js',
 		'jquery.metadata.js' => 'ccm.app.js',
@@ -40,9 +40,9 @@ class HtmlHelper {
 		'ccm.calendar.css' => 'ccm.app.css'
 	);
 
-	/** 
-	 * Includes a CSS file. This function looks in several places. 
-	 * First, if the item is either a path or a URL it just returns the link to that item (as XHTML-formatted style tag.) 
+	/**
+	 * Includes a CSS file. This function looks in several places.
+	 * First, if the item is either a path or a URL it just returns the link to that item (as XHTML-formatted style tag.)
 	 * Then it checks the currently active theme, then if a package is specified it checks there. Otherwise if nothing is found it
 	 * fires off a request to the relative directory CSS directory. If nothing is there, then it checks to the assets directories
 	 * @param $file
@@ -57,7 +57,7 @@ class HtmlHelper {
 			$css->compress = false;
 			$css->file = $file;
 		}
-		
+
 		$v = View::getInstance();
 		// checking the theme directory for it. It's just in the root.
 		if ($v->getThemeDirectory() != '' && file_exists($v->getThemeDirectory() . '/' . $file)) {
@@ -71,7 +71,7 @@ class HtmlHelper {
 				$css->file = ASSETS_URL . '/' . DIRNAME_PACKAGES . '/' . $pkgHandle . '/' . DIRNAME_CSS . '/' . $file;
 			}
 		}
-			
+
 		if ($css->file == '') {
 			if (isset($this->legacyCSS[$file])) {
 				$file = $this->legacyCSS[$file];
@@ -80,7 +80,7 @@ class HtmlHelper {
 		}
 
 		$css->file .= (strpos($css->file, '?') > -1) ? '&amp;' : '?';
-		$css->file .= 'v=' . md5(APP_VERSION . PASSWORD_SALT);		
+		$css->file .= 'v=' . md5(APP_VERSION . PASSWORD_SALT);
 		// for the javascript addHeaderItem we need to have a full href available
 		$css->href = $css->file;
 		if (substr($css->file, 0, 4) != 'http') {
@@ -88,10 +88,10 @@ class HtmlHelper {
 		}
 		return $css;
 	}
-	
-	/** 
-	 * Includes a JavaScript file. This function looks in several places. 
-	 * First, if the item is either a path or a URL it just returns the link to that item (as XHTML-formatted script tag.) 
+
+	/**
+	 * Includes a JavaScript file. This function looks in several places.
+	 * First, if the item is either a path or a URL it just returns the link to that item (as XHTML-formatted script tag.)
 	 * If a package is specified it checks there. Otherwise if nothing is found it
 	 * fires off a request to the relative directory JavaScript directory.
 	 * @param $file
@@ -100,7 +100,7 @@ class HtmlHelper {
 	public function javascript($file, $pkgHandle = null) {
 
 		$js = new JavaScriptOutputObject();
-		
+
 		if (substr($file, 0, 1) == '/' || substr($file, 0, 4) == 'http' || strpos($file, DISPATCHER_FILENAME) > -1) {
 			$js->compress = false;
 			$js->file = $file;
@@ -115,7 +115,7 @@ class HtmlHelper {
 				$js->file = ASSETS_URL . '/' . DIRNAME_PACKAGES . '/' . $pkgHandle . '/' . DIRNAME_JAVASCRIPT . '/'. $file;
 			}
 		}
-			
+
 		if ($js->file == '') {
 			if (isset($this->legacyJavascript[$file])) {
 				$file = $this->legacyJavascript[$file];
@@ -125,14 +125,14 @@ class HtmlHelper {
 
 		$js->file .= (strpos($js->file, '?') > -1) ? '&amp;' : '?';
 		$js->file .= 'v=' . md5(APP_VERSION . PASSWORD_SALT);
-		
+
 		// for the javascript addHeaderItem we need to have a full href available
 		$js->href = $js->file;
 		return $js;
 	}
-	
-	
-	/** 
+
+
+	/**
 	 * Includes a JavaScript inline script.
 	 * @param string $script
 	 * @return string $str
@@ -142,9 +142,9 @@ class HtmlHelper {
     		$js->script = $script;
 		return $js;
 	}
-	
-	
-	/** 
+
+
+	/**
 	 * Includes an image file when given a src, width and height. Optional attribs array specifies style, other properties.
 	 * First checks the PATH off the root of the site
 	 * Then checks the PATH off the images directory at the root of the site.
@@ -157,18 +157,18 @@ class HtmlHelper {
 	public function image($src, $width = false, $height = false, $attribs = null) {
 		$image = parse_url($src);
 		$attribsStr = '';
-		
+
 		if (is_array($width) && $height == false) {
 			$attribs = $width;
 			$width = false;
 		}
-		
+
 		if (is_array($attribs)) {
 			foreach($attribs as $key => $at) {
 				$attribsStr .= " {$key}=\"{$at}\" ";
 			}
 		}
-		
+
 		if ($width == false && $height == false && (!isset($image['scheme']))) {
 			// if our file is not local we DON'T do getimagesize() on it. too slow
 			$v = View::getInstance();
@@ -193,19 +193,19 @@ class HtmlHelper {
 				$src = ASSETS_URL_IMAGES . '/' . $src;
 			}
 		}
-		
+
 		if ($width > 0) {
 			$str = '<img src="' . $src . '" width="' . $width . '" border="0" height="' . $height . '" ' . $attribsStr . ' />';
 		} else {
 			$str = '<img src="' . $src . '" border="0" ' . $attribsStr . ' />';
 		}
 		return $str;
-	}	
-	
-	
+	}
+
+
 }
 
-/** 
+/**
  * @access private
  */
 class HeaderOutputObject {
@@ -217,14 +217,14 @@ class HeaderOutputObject {
 
 }
 
-/** 
+/**
  * @access private
  */
 class JavaScriptOutputObject extends HeaderOutputObject {
 	public function __toString() {
 		return '<script type="text/javascript" src="' . $this->file . '"></script>';
 	}
-	
+
 }
 
 /**
@@ -235,10 +235,10 @@ class InlineScriptOutputObject extends HeaderOutputObject {
   public function __toString() {
     return '<script type="text/javascript">/*<![CDATA[*/'. $this->script .'/*]]>*/</script>';
   }
-  
+
 }
 
-/** 
+/**
  * @access private
  */
 class CSSOutputObject extends HeaderOutputObject {
@@ -246,5 +246,5 @@ class CSSOutputObject extends HeaderOutputObject {
 	public function __toString() {
 		return '<link rel="stylesheet" type="text/css" href="' . $this->file . '" />';
 	}
-	
+
 }

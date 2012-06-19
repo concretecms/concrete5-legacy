@@ -21,8 +21,8 @@
 defined('C5_EXECUTE') or die("Access Denied.");
 class FormColorHelper {
 
-	
-	/** 
+
+	/**
 	 * Creates form fields and JavaScript includes to add a color picker widget.
 	 * <code>
 	 *     $dh->datetime('yourStartDate', '2008-07-12 3:00:00');
@@ -32,7 +32,7 @@ class FormColorHelper {
 	 * @param string $value
 	 * @param bool $includeJavaScript
 	 */
-	
+
 	public function output($fieldFormName, $fieldLabel, $value = null, $includeJavaScript = true) {
 		$html = '';
 		$form = Loader::helper('form');
@@ -41,30 +41,30 @@ class FormColorHelper {
 		$html .= $form->hidden($fieldFormName, $value);
 		$html .= $form->label($fieldFormName, $fieldLabel);
 
-		if ($includeJavaScript) { 
+		if ($includeJavaScript) {
 			$html .= "<script type=\"text/javascript\">
 				$(function() {
 					var f" .$fieldFormName. "Div =$('div#f" .$fieldFormName. "');
-					var c" .$fieldFormName. " = f" .$fieldFormName. "Div.attr('hex-color'); 
+					var c" .$fieldFormName. " = f" .$fieldFormName. "Div.attr('hex-color');
 					f" .$fieldFormName. "Div.ColorPicker({
-						color: c" .$fieldFormName. ",  
-						onSubmit: function(hsb, hex, rgb, cal) { 
-							$('input[name=" . $fieldFormName . "]').val('#' + hex);				
-							$('div#f" . $fieldFormName. "').css('backgroundColor', '#' + hex); 
+						color: c" .$fieldFormName. ",
+						onSubmit: function(hsb, hex, rgb, cal) {
+							$('input[name=" . $fieldFormName . "]').val('#' + hex);
+							$('div#f" . $fieldFormName. "').css('backgroundColor', '#' + hex);
 							cal.hide();
-						},  
-						onNone: function(cal) {  
-							$('input[name=" . $fieldFormName . "]').val('');		
-							$('div#f" . $fieldFormName. "').css('backgroundColor',''); 
+						},
+						onNone: function(cal) {
+							$('input[name=" . $fieldFormName . "]').val('');
+							$('div#f" . $fieldFormName. "').css('backgroundColor','');
 						}
 					});
-				
+
 				});
 				</script>";
 		}
-		return $html;		
-		
+		return $html;
+
 	}
-	
-	
+
+
 }

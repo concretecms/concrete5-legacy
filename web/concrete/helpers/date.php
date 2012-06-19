@@ -23,7 +23,7 @@ Loader::library('datetime_compat');
 
 class DateHelper {
 
-	/** 
+	/**
 	 * Gets the date time for the local time zone/area if user timezones are enabled, if not returns system datetime
 	 * @param string $systemDateTime
 	 * @param string $format
@@ -33,12 +33,12 @@ class DateHelper {
 		if(!isset($mask) || !strlen($mask)) {
 			$mask = 'Y-m-d H:i:s';
 		}
-		
+
 		$req = Request::get();
 		if ($req->hasCustomRequestUser()) {
 			return date($mask, strtotime($req->getCustomRequestDateTime()));
 		}
-		
+
 		if(!isset($systemDateTime) || !strlen($systemDateTime)) {
 			return NULL; // if passed a null value, pass it back
 		} elseif(strlen($systemDateTime)) {
@@ -46,7 +46,7 @@ class DateHelper {
 		} else {
 			$datetime = new DateTime();
 		}
-		
+
 		if(defined('ENABLE_USER_TIMEZONES') && ENABLE_USER_TIMEZONES) {
 			$u = new User();
 			if($u && $u->isRegistered()) {
@@ -60,7 +60,7 @@ class DateHelper {
 		return $datetime->format($mask);
 	}
 
-	/** 
+	/**
 	 * Converts a user entered datetime to the system datetime
 	 * @param string $userDateTime
 	 * @param string $systemDateTime
@@ -75,30 +75,30 @@ class DateHelper {
 		if ($req->hasCustomRequestUser()) {
 			return date($mask, strtotime($req->getCustomRequestDateTime()));
 		}
-		
+
 		if(!isset($userDateTime) || !strlen($userDateTime)) {
 			return NULL; // if passed a null value, pass it back
 		} elseif(strlen($userDateTime)) {
 			$datetime = new DateTime($userDateTime);
-			
+
 			if (defined('APP_TIMEZONE')) {
 				$tz = new DateTimeZone(APP_TIMEZONE_SERVER);
-				$datetime = new DateTime($userDateTime,$tz); // create the in the user's timezone 				
+				$datetime = new DateTime($userDateTime,$tz); // create the in the user's timezone
 				$stz = new DateTimeZone(date_default_timezone_get()); // grab the default timezone
 				$datetime->setTimeZone($stz); // convert the datetime object to the current timezone
 			}
-			
+
 			if(defined('ENABLE_USER_TIMEZONES') && ENABLE_USER_TIMEZONES) {
 				$u = new User();
 				if($u && $u->isRegistered()) {
 					$utz = $u->getUserTimezone();
-					if($utz) {			
+					if($utz) {
 						$tz = new DateTimeZone($utz);
-						$datetime = new DateTime($userDateTime,$tz); // create the in the user's timezone 
-						
+						$datetime = new DateTime($userDateTime,$tz); // create the in the user's timezone
+
 						$stz = new DateTimeZone(date_default_timezone_get()); // grab the default timezone
 						$datetime->setTimeZone($stz); // convert the datetime object to the current timezone
-					} 
+					}
 				}
 			}
 		} else {
@@ -116,14 +116,14 @@ class DateHelper {
 		return array_combine(DateTimeZone::listIdentifiers(),DateTimeZone::listIdentifiers());
 	}
 
-	
+
 	public function timeSince($posttime,$precise=0){
 		$timeRemaining=0;
 		$diff=date("U")-$posttime;
 		$days=intval($diff/(24*60*60));
 		$hoursInSecs=$diff-($days*(24*60*60));
 		$hours=intval($hoursInSecs/(60*60));
-		if ($hours<=0) $hours=$hours+24;           
+		if ($hours<=0) $hours=$hours+24;
 		if ($posttime>date("U")) return date(DATE_APP_GENERIC_MDY,$posttime);
 		else{
 			if ($diff>86400){

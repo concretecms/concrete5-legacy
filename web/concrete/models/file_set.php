@@ -2,20 +2,20 @@
 
 
 	class FileSetList extends DatabaseItemList {
-	
-		public $sets = array();	
+
+		public $sets = array();
 		protected $itemsPerPage = 10;
-		
+
 		public function filterByKeywords($kw) {
 			$db = Loader::db();
 			$this->filter(false, "(FileSets.fsName like " . $db->qstr('%' . $kw . '%') . ")");
 		}
-		
+
 		function __construct() {
 			$this->setQuery("select FileSets.fsID from FileSets");
 			$this->sortBy('fsName', 'asc');
 		}
-		
+
 		public function filterByType($fsType) {
 			switch($fsType) {
 				case FileSet::TYPE_PRIVATE:
@@ -25,7 +25,7 @@
 			}
 			$this->filter('FileSets.fsType', $fsType);
 		}
-		
+
 		public function get($itemsToGet = 0, $offset = 0) {
 			$r = parent::get($itemsToGet, $offset);
 			foreach($r as $row) {
@@ -38,28 +38,28 @@
 		}
 
 	}
-	
+
 	class FileSet extends Model {
 		const TYPE_PRIVATE 	= 0;
 		const TYPE_PUBLIC 	= 1;
 		const TYPE_STARRED 	= 2;
 		const TYPE_SAVED_SEARCH = 3;
 		protected $fileSetFiles;
-	
-		/** 
+
+		/**
 		 * Returns an object mapping to the global file set, fsID = 0.
 		 * This is really only used for permissions mapping
 		 */
-		 
+
 		public function getGlobal() {
 			$fs = new FileSet;
 			$fs->fsID = 0;
 			return $fs;
 		}
-		
+
 		public function getFileSetUserID() {return $this->uID;}
 		public function getFileSetType() {return $this->fsType;}
-		
+
 		public function getSavedSearches() {
 			$db = Loader::db();
 			$sets = array();
@@ -76,7 +76,7 @@
 		public function getPermissionObjectIdentifier() {
 			return $this->getFileSetID();
 		}
-		
+
 		public function getMySets($u = false) {
 			if ($u == false) {
 				$u = new User();
@@ -94,19 +94,19 @@
 			}
 			return $sets;
 		}
-		
+
 		public function updateFileSetDisplayOrder($files) {
 			$db = Loader::db();
 			$db->Execute('update FileSetFiles set fsDisplayOrder = 0 where fsID = ?', $this->getFileSetID());
 			$i = 0;
-			if (is_array($files)) { 
+			if (is_array($files)) {
 				foreach($files as $fID) {
 					$db->Execute('update FileSetFiles set fsDisplayOrder = ? where fsID = ? and fID = ?', array($i, $this->getFileSetID(), $fID));
 					$i++;
 				}
 			}
 		}
-		
+
 		/**
 		 * Get a file set object by a file set's id
 		 * @param int $fsID
@@ -126,7 +126,7 @@
 				return $fs;
 			}
 		}
-		
+
 		/**
 		 * Get a file set object by a file name
 		 * @param string $fsName
@@ -140,8 +140,8 @@
 				$fs->Set($row);
 				return $fs;
 			}
-		}			
-		
+		}
+
 		public function getFileSetID() {
 			if ($this->fsID) {
 				return $this->fsID;
@@ -149,9 +149,9 @@
 			return 0;
 		}
 		public function overrideGlobalPermissions() {return $this->fsOverrideGlobalPermissions;}
-		
-		public function getFileSetName() {return $this->fsName;}	
-		
+
+		public function getFileSetName() {return $this->fsName;}
+
 		/**
 		 * Creats a new fileset if set doesn't exists
 		 *
@@ -160,20 +160,20 @@
 		 * @param string $fs_name
 		 * @param int $fs_type
 		 * @param int $fs_uid
-		 * @return Mixed 
+		 * @return Mixed
 		 *
-		 * Dev Note: This will create duplicate sets with the same name if a set exists owned by another user!!! 
-		 */		
+		 * Dev Note: This will create duplicate sets with the same name if a set exists owned by another user!!!
+		 */
 		public static function createAndGetSet($fs_name, $fs_type, $fs_uid=false) {
 			if (!$fs_uid) {
 				$u = new User();
 				$fs_uid = $u->uID;
 			}
-			
+
 			$file_set = new FileSet();
 			$criteria = array($fs_name,$fs_type,$fs_uid);
 			$matched_sets = $file_set->Find('fsName=? AND fsType=? and uID=?',$criteria);
-			
+
 			if (1 === count($matched_sets) ) {
 				return $matched_sets[0];
 			}
@@ -182,7 +182,7 @@
 			}
 			else{
 				//AS: Adodb Active record is complaining a ?/value array mismatch unless
-				//we explicatly set the primary key ID field to null					
+				//we explicatly set the primary key ID field to null
 				$file_set->fsID		= null;
 				$file_set->fsName 	= $fs_name;
 				$file_set->fsOverrideGlobalPermissions = 0;
@@ -190,26 +190,26 @@
 				$file_set->uID		= $fs_uid;
 				$file_set->save();
 				return $file_set;
-			}			
+			}
 		}
-		
+
 		/**
 		* Adds the file to the set
 		* @param type $fID  //accepts an ID or a File object
 		* @return object
-		*/		
+		*/
 		public function addFileToSet($f_id) {
 			if (is_object($f_id)) {
 				$f_id = $f_id->getFileID();
-			}			
+			}
 			$file_set_file = FileSetFile::createAndGetFile($f_id,$this->fsID);
 			return $file_set_file;
 		}
-		
+
 		public function getSavedSearchRequest() {
 			return $this->fsSearchRequest;
 		}
-		
+
 		public function getSavedSearchColumns() {
 			return $this->fsResultColumns;
 		}
@@ -218,8 +218,8 @@
 				$f_id = $f_id->fID;
 			}
 			$db = Loader::db();
-			$db->Execute('DELETE FROM FileSetFiles 
-			WHERE fID = ? 
+			$db->Execute('DELETE FROM FileSetFiles
+			WHERE fID = ?
 			AND   fsID = ?', array($f_id, $this->getFileSetID()));
 		}
 
@@ -228,34 +228,34 @@
 		*
 		* Can obsolete this when we get version of ADOdB with one/many support
 		* @return type $var_name
-		*/		
-		private function populateFiles(){			
+		*/
+		private function populateFiles(){
 			$utility 			= new FileSetFile();
 			$this->fileSetFiles = $utility->Find('fsID=?',array($this->fsID));
 		}
-		
+
 		public function hasFileID($f_id){
 			if (!is_array($this->fileSetFiles)) {
 				$this->populateFiles();
-			}			
+			}
 			foreach ($this->fileSetFiles as $file) {
 				if($file->fID == $f_id){
 					return true;
 				}
 			}
 		}
-		
+
 		public function delete() {
 			parent::delete();
 			$db = Loader::db();
 			$db->Execute('delete from FileSetSavedSearches where fsID = ?', array($this->fsID));
 		}
-		
+
 		public function resetPermissions() {
 			$db = Loader::db();
 			$db->Execute('delete from FileSetPermissionAssignments where fsID = ?', array($this->fsID));
 		}
-		
+
 		public function acquireBaseFileSetPermissions() {
 			$this->resetPermissions();
 
@@ -268,26 +268,26 @@
 				$q = "insert into FileSetPermissionAssignments (fsID, paID, pkID) values (?, ?, ?)";
 				$db->query($q, $v);
 			}
-	
+
 		}
-		
+
 		public function assignPermissions($userOrGroup, $permissions = array(), $accessType = FileSetPermissionKey::ACCESS_TYPE_INCLUDE) {
 			$db = Loader::db();
-			if ($this->fsID > 0) { 
+			if ($this->fsID > 0) {
 				$db->Execute("update FileSets set fsOverrideGlobalPermissions = 1 where fsID = ?", array($this->fsID));
 			}
-			
-			if (is_array($userOrGroup)) { 
+
+			if (is_array($userOrGroup)) {
 				$pe = GroupCombinationPermissionAccessEntity::getOrCreate($userOrGroup);
 				// group combination
-			} else if ($userOrGroup instanceof User || $userOrGroup instanceof UserInfo) { 
+			} else if ($userOrGroup instanceof User || $userOrGroup instanceof UserInfo) {
 				$pe = UserPermissionAccessEntity::getOrCreate($userOrGroup);
-			} else { 
+			} else {
 				// group;
 				$pe = GroupPermissionAccessEntity::getOrCreate($userOrGroup);
 			}
-			
-			foreach($permissions as $pkHandle) { 
+
+			foreach($permissions as $pkHandle) {
 				$pk = PagePermissionKey::getByHandle($pkHandle);
 				$pk->setPermissionObject($this);
 				$pa = $pk->getPermissionAccessObject();
@@ -301,9 +301,9 @@
 		}
 
 
-			
-			
-		/** 
+
+
+		/**
 		 * legacy
 		 */
 		/*
@@ -317,45 +317,45 @@
 			} else {
 				$gID = $obj->getGroupID();
 			}
-			
+
 			if ($canSearch == FilePermissions::PTYPE_NONE) {
 				$canWrite = FilePermissions::PTYPE_NONE;
 				$canAdd = FilePermissions::PTYPE_NONE;
 				$canAdmin = FilePermissions::PTYPE_NONE;
 			}
-				
+
 			$db->Replace('FileSetPermissions', array(
 				'fsID' => $fsID,
-				'uID' => $uID, 
+				'uID' => $uID,
 				'gID' => $gID,
 				'canRead' => $canRead,
 				'canSearch' => $canSearch,
 				'canWrite' => $canWrite,
 				'canAdmin' => $canAdmin,
 				'canAdd' => $canAdd
-			), 
+			),
 			array('fsID', 'gID', 'uID'), true);
-			
+
 			$db->Execute("delete from FilePermissionFileTypes where fsID = ? and gID = ? and uID = ?", array($fsID, $uID, $gID));
-	
+
 			if ($canAdd == FilePermissions::PTYPE_CUSTOM && is_array($extensions)) {
 				foreach($extensions as $e) {
 					$db->Execute('insert into FilePermissionFileTypes (fsID, gID, uID, extension) values (?, ?, ?, ?)', array($fsID, $gID, $uID, $e));
 				}
 			}
-		}		
-	
+		}
+
 		*/
-	
+
 	}
-	
+
 	class FileSetFile extends Model {
-		public static function createAndGetFile($f_id, $fs_id){	
+		public static function createAndGetFile($f_id, $fs_id){
 			$file_set_file = new FileSetFile();
-			$criteria = array($f_id,$fs_id);		
-			
+			$criteria = array($f_id,$fs_id);
+
 			$matched_sets = $file_set_file->Find('fID=? AND fsID=?',$criteria);
-			
+
 			if (1 === count($matched_sets) ) {
 				return $matched_sets[0];
 			}
@@ -368,18 +368,18 @@
 				$db = Loader::db();
 				$fsDisplayOrder = $db->GetOne('select count(fID) from FileSetFiles where fsID = ?', $fs_id);
 				$file_set_file->fsfID = null;
-				$file_set_file->fID =  $f_id;			
+				$file_set_file->fID =  $f_id;
 				$file_set_file->fsID = $fs_id;
 				$file_set_file->timestamp = null;
 				$file_set_file->fsDisplayOrder = $fsDisplayOrder;
 				$file_set_file->Save();
 				return $file_set_file;
-			}			
+			}
 		}
 	}
-	
+
 	class FileSetSavedSearch extends FileSet {
-		
+
 		public static function add($name, $searchRequest, $searchColumnsObject) {
 			$fs = parent::createAndGetSet($name, FileSet::TYPE_SAVED_SEARCH);
 			$db = Loader::db();
@@ -387,7 +387,6 @@
 			$db->Execute('insert into FileSetSavedSearches (fsID, fsSearchRequest, fsResultColumns) values (?, ?, ?)', $v);
 			return $fs;
 		}
-	
+
 	}
-	
-	
+

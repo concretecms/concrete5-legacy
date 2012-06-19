@@ -1,9 +1,9 @@
-<? defined('C5_EXECUTE') or die("Access Denied."); ?> 
+<? defined('C5_EXECUTE') or die("Access Denied."); ?>
 <style type="text/css">
 table#videoBlockSetup th {font-weight: bold; text-style: normal; padding-right: 8px; white-space: nowrap; vertical-align:top ; padding-bottom:8px}
 table#videoBlockSetup td{ font-size:12px; vertical-align:top; padding-bottom:8px;}
 table#videoBlockSetup .note{ font-size:10px; color:#999999; font-weight:normal }
-</style> 
+</style>
 
 <?
 if (!$bObj->vWidth) {
@@ -15,11 +15,11 @@ if (!$bObj->vHeight) {
 
 ?>
 
-<table id="videoBlockSetup" style="width:100%"> 
+<table id="videoBlockSetup" style="width:100%">
 	<tr>
 		<th><?=t('Title')?></th>
 		<td><input type="text" style="width: 230px" name="title" value="<?=$bObj->title?>"/></td>
-	</tr>	
+	</tr>
 	<tr>
 		<th><?=t('YouTube URL')?></th>
 		<td>
@@ -44,5 +44,5 @@ if (!$bObj->vHeight) {
 			<input type="radio" name="vPlayer" value="1" <?=($bObj->vPlayer)?'checked':''?> /> <?=t('iFrame - Works in more devices')?> <br/>
 			<input type="radio" name="vPlayer" value="0" <?=(!$bObj->vPlayer)?'checked':''?> /> <?=t('Flash Embed - Legacy method')?>
 		</td>
-	</tr>	
+	</tr>
 </table>

@@ -1,6 +1,6 @@
 <?
 
-function getAttributeOptionHTML($v){ 
+function getAttributeOptionHTML($v){
 	if ($v == 'TEMPLATE') {
 		$akSelectValueID = 'TEMPLATE_CLEAN';
 		$akSelectValue = 'TEMPLATE';
@@ -17,14 +17,14 @@ function getAttributeOptionHTML($v){
 			<div class="rightCol">
 				<input class="btn" type="button" onClick="ccmAttributesHelper.editValue('<?=addslashes($akSelectValueID)?>')" value="<?=t('Edit')?>" />
 				<input class="btn" type="button" onClick="ccmAttributesHelper.deleteValue('<?=addslashes($akSelectValueID)?>')" value="<?=t('Delete')?>" />
-			</div>			
+			</div>
 			<span onClick="ccmAttributesHelper.editValue('<?=addslashes($akSelectValueID)?>')" id="akSelectValueStatic_<?=$akSelectValueID?>" class="leftCol"><?=$akSelectValue ?></span>
 		</div>
 		<div id="akSelectValueEdit_<?=$akSelectValueID?>" style="display:none">
 			<div class="rightCol">
 				<input class="btn" type="button" onClick="ccmAttributesHelper.editValue('<?=addslashes($akSelectValueID)?>')" value="<?=t('Cancel')?>" />
 				<input class="btn" type="button" onClick="ccmAttributesHelper.changeValue('<?=addslashes($akSelectValueID)?>')" value="<?=t('Save')?>" />
-			</div>		
+			</div>
 			<span class="leftCol">
 				<input name="akSelectValueOriginal_<?=$akSelectValueID?>" type="hidden" value="<?=$akSelectValue?>" />
 				<? if (is_object($v) && $v->getSelectAttributeOptionTemporaryID() == false) { ?>
@@ -32,10 +32,10 @@ function getAttributeOptionHTML($v){
 				<? } else { ?>
 					<input id="akSelectValueNewOption_<?=$akSelectValueID?>" name="akSelectValueNewOption_<?=$akSelectValueID?>" type="hidden" value="<?=$akSelectValueID?>" />
 				<? } ?>
-				<input id="akSelectValueField_<?=$akSelectValueID?>" name="akSelectValue_<?=$akSelectValueID?>" type="text" value="<?=$akSelectValue?>" size="20" 
+				<input id="akSelectValueField_<?=$akSelectValueID?>" name="akSelectValue_<?=$akSelectValueID?>" type="text" value="<?=$akSelectValue?>" size="20"
 				  onkeypress="ccmAttributesHelper.addEnterClick(event,function(){ccmAttributesHelper.changeValue('<?=addslashes($akSelectValueID)?>')})" />
-			</span>		
-		</div>	
+			</span>
+		</div>
 		<div class="ccm-spacer">&nbsp;</div>
 <? } ?>
 
@@ -63,7 +63,7 @@ function getAttributeOptionHTML($v){
 <div class="clearfix">
 <label for="akSelectOptionDisplayOrder"><?=t("Option Order")?></label>
 <div class="input">
-	<? 
+	<?
 	$displayOrderOptions = array(
 		'display_asc' => t('Display Order'),
 		'alpha_asc' => t('Alphabetical'),
@@ -82,7 +82,7 @@ function getAttributeOptionHTML($v){
 	<div id="attributeValuesWrap">
 	<?
 	Loader::helper('text');
-	foreach($akSelectValues as $v) { 
+	foreach($akSelectValues as $v) {
 		if ($v->getSelectAttributeOptionTemporaryID() != false) {
 			$akSelectValueID = $v->getSelectAttributeOptionTemporaryID();
 		} else {
@@ -94,17 +94,17 @@ function getAttributeOptionHTML($v){
 		</div>
 	<? } ?>
 	</div>
-	
+
 	<div id="akSelectValueWrapTemplate" class="akSelectValueWrap" style="display:none">
 		<?=getAttributeOptionHTML('TEMPLATE') ?>
 	</div>
-	
-	<div id="addAttributeValueWrap"> 
-		<input id="akSelectValueFieldNew" name="akSelectValueNew" type="text" value="<?=$defaultNewOptionNm ?>" size="40" class="faint" 
-		onfocus="ccmAttributesHelper.clrInitTxt(this,'<?=$defaultNewOptionNm ?>','faint',0)" 
+
+	<div id="addAttributeValueWrap">
+		<input id="akSelectValueFieldNew" name="akSelectValueNew" type="text" value="<?=$defaultNewOptionNm ?>" size="40" class="faint"
+		onfocus="ccmAttributesHelper.clrInitTxt(this,'<?=$defaultNewOptionNm ?>','faint',0)"
 		onblur="ccmAttributesHelper.clrInitTxt(this,'<?=$defaultNewOptionNm ?>','faint',1)"
 		onkeypress="ccmAttributesHelper.addEnterClick(event,function(){ccmAttributesHelper.saveNewOption()})"
-		 /> 
+		 />
 		<input class="btn" type="button" onClick="ccmAttributesHelper.saveNewOption(); $('#ccm-attribute-key-form').unbind()" value="<?=t('Add') ?>" />
 	</div>
 	</div>

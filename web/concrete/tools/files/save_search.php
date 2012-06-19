@@ -17,7 +17,7 @@ if ($_POST['task'] == 'save_search') {
 	$fileList = $cnt->getRequestedSearchResults();
 	$req = $fileList->getSearchRequest();
 	$colset = FileManagerColumnSet::getCurrent();
-	
+
 	if ($req['ccm_order_by'] != '' && $req['ccm_order_dir'] != '') {
 		$colset->setDefaultSortColumn($colset->getColumnByKey($req['ccm_order_by']), $req['ccm_order_dir']);
 	}
@@ -34,7 +34,7 @@ if ($_POST['task'] == 'save_search') {
 
 <form id="ccm-<?=$searchInstance?>-save-search-form" method="post" action="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/files/save_search" onsubmit="return ccm_alSaveSearch(this)">
 <?=$form->hidden('task', 'save_search')?>
-<?=$form->hidden('searchInstance', $searchInstance); ?>	
+<?=$form->hidden('searchInstance', $searchInstance); ?>
 <? $ih = Loader::helper('concrete/interface')?>
 <p><?=t('Enter a name for this saved search file set.')?></p>
 <?=$form->text('fsName', array('style' => 'width: 200px'))?>
@@ -44,24 +44,24 @@ if ($_POST['task'] == 'save_search') {
 </form>
 
 </div>
-	
+
 <script type="text/javascript">
 ccm_alSaveSearch = function(form) {
 	if ($("input[name=fsName]").val() == '') {
 		alert('<?=t("You must enter a valid name")?>');
 	} else {
 		jQuery.fn.dialog.showLoader();
-		$(form).ajaxSubmit(function(r) { 
-			jQuery.fn.dialog.hideLoader(); 
+		$(form).ajaxSubmit(function(r) {
+			jQuery.fn.dialog.hideLoader();
 			jQuery.fn.dialog.closeTop();
 			if (ccm_alLaunchType['<?=$searchInstance?>'] == 'DASHBOARD') {
-				window.location.href = "<?=View::url('/dashboard/files/search')?>?fssID=" + r;			
+				window.location.href = "<?=View::url('/dashboard/files/search')?>?fssID=" + r;
 			} else {
 				var url = $("div#ccm-<?=$searchInstance?>-overlay-wrapper input[name=dialogAction]").val() + "&refreshDialog=1&fssID=" + r;
 				$.get(url, function(resp) {
 					jQuery.fn.dialog.hideLoader();
 					$("div#ccm-<?=$searchInstance?>-overlay-wrapper").html(resp);
-				});		
+				});
 			}
 		});
 	}

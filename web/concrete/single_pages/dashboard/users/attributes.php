@@ -20,12 +20,12 @@
 
 	<? if (isset($type)) { ?>
 		<form method="post" action="<?=$this->action('add')?>" id="ccm-attribute-key-form">
-	
+
 		<? Loader::element("attribute/type_form_required", array('category' => $category, 'type' => $type)); ?>
-	
-		</form>	
+
+		</form>
 	<? } ?>
-	
+
 	<?=Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper(false);?>
 
 
@@ -45,17 +45,17 @@
 	<div class="clearfix">
 	<?=$form->label('atID', t('Add Attribute'))?>
 	<div class="input">
-	
+
 	<?=$form->select('atID', $types)?>
 	<?=$form->submit('submit', t('Add'))?>
-	
+
 	</div>
 	</div>
-	
+
 	</form>
 
 	</div>
-	
+
 	<?=Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper(false);?>
 
 <? } ?>

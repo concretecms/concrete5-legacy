@@ -23,38 +23,38 @@ class ConcreteUpgradeVersion530Helper {
 	//run before the db.xml changes take place
 	public function prepare() {
 		$db = Loader::db();
-		//remove autoincrement column from 
+		//remove autoincrement column from
 		$columns = $db->MetaColumns('UserValidationHashes');
 		if ($columns['uvhID'] == false) {
 			try{
-				$db->query('ALTER TABLE UserValidationHashes CHANGE uID uID INT(11) UNSIGNED NOT NULL '); 
-				$db->query('ALTER TABLE UserValidationHashes DROP PRIMARY KEY'); 
+				$db->query('ALTER TABLE UserValidationHashes CHANGE uID uID INT(11) UNSIGNED NOT NULL ');
+				$db->query('ALTER TABLE UserValidationHashes DROP PRIMARY KEY');
 			}catch(Exception $e){ }
 			try{
-				$db->query('ALTER TABLE UserValidationHashes ADD uvhID INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY '); 			
-			}catch(Exception $e){ } 
+				$db->query('ALTER TABLE UserValidationHashes ADD uvhID INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY ');
+			}catch(Exception $e){ }
 
 		}
 	}
-	
+
 	public function run() {
 		$db = Loader::db();
 		Loader::model('collection_attributes');
 		Loader::model('single_page');
 		Loader::model('file_version');
-		
+
 		// Add in stuff that may have gotten missed before
 		$p = Page::getByPath('/profile');
 		if ($p->isError()) {
 			$d1 = SinglePage::add('/profile');
 			$d2 = SinglePage::add('/profile/edit');
-			$d3 = SinglePage::add('/profile/avatar');				
+			$d3 = SinglePage::add('/profile/avatar');
 		}
 		$p2 = Page::getByPath('/dashboard/users/registration');
 		if ($p2->isError()) {
 			$d4 = SinglePage::add('/dashboard/users/registration');
 		}
-		
+
 		// Move any global blocks to new scrapbook page.
 		$sc = Page::getByPath("/dashboard/scrapbook/global");
 		$scn = Page::getByPath('/dashboard/scrapbook');
@@ -65,7 +65,7 @@ class ConcreteUpgradeVersion530Helper {
 				// we create the new shared scrapbook 1
 				$a = Area::getOrCreate($scn, t('Shared Scrapbook 1'));
 				foreach($blocks as $_b) {
-					// we move them into the area on the new page. 
+					// we move them into the area on the new page.
 					$_b->move($scn, $a);
 					$_b->refreshCacheAll();
 				}
@@ -84,15 +84,14 @@ class ConcreteUpgradeVersion530Helper {
 		if (!is_object($cak)) {
 			CollectionAttributeKey::add('exclude_search_index', t('Exclude From Search Index'), true, null, 'BOOLEAN');
 		}
-		
-		//convert file tags to new format, cleaned up with leading and trailing line breaks  
+
+		//convert file tags to new format, cleaned up with leading and trailing line breaks
 		$fileVersionsData=$db->GetAll('SELECT fID, fvID, fvTags FROM FileVersions');
 		foreach($fileVersionsData as $fvData){
 			$vals=array( FileVersion::cleanTags($fvData['fvTags']) , $fvData['fID'] , $fvData['fvID'] );
 			$db->query('UPDATE FileVersions SET fvTags=? WHERE fID=? AND fvID=?',  $vals );
 		}
 	}
-	
+
 }
-		
-	
+

@@ -27,43 +27,43 @@ class FormHelper {
 		$this->radioIndex = 1;
 		$this->selectIndex = 1;
 	}
-	
+
 	public function __construct() {
 		$this->th = Loader::helper("text");
 	}
 
-	/** 
+	/**
 	 * Returns an action suitable for including in a form action property.
 	 * @param string $action
 	 * @param string $task
-	 */ 
+	 */
 	public function action($action, $task = null) {
 		return View::url($action, $task);
 	}
 
-	/** 
+	/**
 	 * Creates a submit button
 	 * @param string $name
 	 * @param string value
 	 * @param array $fields Additional fields appended at the end of the submit button
 	 * return string $html
-	 */	 
+	 */
 	public function submit($name, $value, $fields = array(), $additionalClasses='') {
 		return '<input type="submit"' . $this->parseMiscFields('btn ccm-input-submit ' . $additionalClasses, $fields) . ' id="' . $name . '" name="' . $name . '" value="' . $value . '" />';
 	}
 
-	/** 
+	/**
 	 * Creates a button
 	 * @param string $name
 	 * @param string value
 	 * @param array $fields Additional fields appended at the end of the submit button
 	 * return string $html
-	 */	 
+	 */
 	public function button($name, $value, $fields = array(), $additionalClasses='') {
 		return '<input type="button"' . $this->parseMiscFields('btn ccm-input-button ' . $additionalClasses, $fields) . ' id="' . $name . '" name="' . $name . '" value="' . $value . '" />';
 	}
 
-	/** 
+	/**
 	 * Creates a label tag
 	 * @param string $field
 	 * @param string $name
@@ -74,7 +74,7 @@ class FormHelper {
 		return $str;
 	}
 
-	/** 
+	/**
 	 * Creates a file input element
 	 * @param string $key
 	 */
@@ -84,7 +84,7 @@ class FormHelper {
 	}
 
 	/**
-	 * Creates a hidden form field. 
+	 * Creates a hidden form field.
 	 * @param string $key
 	 * @param string $value
 	 */
@@ -129,7 +129,7 @@ class FormHelper {
 		return '<input type="checkbox" '. $this->parseMiscFields('ccm-input-checkbox', $miscFields) . ' name="' . $key . '" id="' . $id . '" value="' . $value . '" ' . $checked . ' />';
 	}
 
-	/** 
+	/**
 	 * Creates a textarea field. Second argument is either the value of the field (and if it's blank we check post) or a misc. array of fields
 	 * @param string $key
 	 * @return string $html
@@ -187,7 +187,7 @@ class FormHelper {
 		$arr = ($type == 'post') ? $_POST : $_GET;
 		if (strpos($key, '[') !== false) {
 			// we've got something like 'akID[34]['value'] here, which we need to get data from
-			
+
 			/* @var $ah ArrayHelper */
 			$ah = Loader::helper('array');
 			$key = str_replace(']', '', $key);
@@ -267,7 +267,7 @@ class FormHelper {
 	public function email($key, $valueOrArray = false, $miscFields = array()) {
 		return $this->inputType($key, 'email', $valueOrArray, $miscFields);
 	}
-	
+
 	/**
 	 * Renders a telephone input field.
 	 * @param string $key Input element's name and id
@@ -323,7 +323,7 @@ class FormHelper {
 		if (is_array($valueOrArray)) {
 			$miscFields = $valueOrArray;
 		} else {
-			$miscFields['ccm-passed-value'] = $valueOrArray;	
+			$miscFields['ccm-passed-value'] = $valueOrArray;
 		}
 
 		$str = '<select name="' . $key . '" id="' . $id . '" ' . $this->parseMiscFields('ccm-input-select', $miscFields) . '>';
@@ -393,7 +393,7 @@ class FormHelper {
 		if ($defaultClass) {
 			$attributes['class'] = trim((isset($attributes['class']) ? $attributes['class'] : '') . ' ' . $defaultClass);
 		}
-		
+
 		foreach ((array) $attributes as $k => $v) {
 			$attr .= " $k=\"$v\"";
 		}

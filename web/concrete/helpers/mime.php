@@ -90,24 +90,24 @@ class MimeHelper {
 			'video/x-m4v'                   => 'm4v',
 			'video/x-msvideo'               => 'avi'
 		);
-		
+
 	public function mimeFromExtension($extension) {
 		$mime = array_search($extension, MimeHelper::$mime_types_and_extensions);
 		return $mime;
-		
+
 	}
-	
-	/** 
-	 * Converts a known mime-type into it's common file extension. 
+
+	/**
+	 * Converts a known mime-type into it's common file extension.
 	 * @todo: Maybe add more mime-types?
 	 * @param string $mimeType
 	 * @return string $extension or bolean false
 	 */
-	public function mimeToExtension($mimeType) {		
-		if (array_key_exists($mimeType, MimeHelper::$mime_types_and_extensions)) 
+	public function mimeToExtension($mimeType) {
+		if (array_key_exists($mimeType, MimeHelper::$mime_types_and_extensions))
 			return MimeHelper::$mime_types_and_extensions[$mimeType];
 		return false;
 	}
-	
+
 }
 ?>

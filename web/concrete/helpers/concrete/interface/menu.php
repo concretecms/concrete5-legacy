@@ -4,9 +4,9 @@ defined('C5_EXECUTE') or die("Access Denied.");
 class ConcreteInterfaceMenuHelper {
 
 	protected $pageHeaderMenuItems = array();
-	
-	/** 
-	 * Adds a menu item to the header menu area 
+
+	/**
+	 * Adds a menu item to the header menu area
 	 * <code>
 	 * 	$bh->addMenuItem($menuItemID, $menuItemName, $positionInMenu, $linkAttributes, $pkgHandle = false);
 	 * </code>
@@ -15,8 +15,8 @@ class ConcreteInterfaceMenuHelper {
 		$obj = new ConcreteInterfaceHelperMenuItem($menuItemID, $menuItemName, $positionInMenu, $linkAttributes, $pkgHandle);
 		$this->pageHeaderMenuItems[] = $obj;
 	}
-	
-	/** 
+
+	/**
 	 * Returns current menu items
 	 */
 	public function getPageHeaderMenuItems($position = false) {
@@ -44,16 +44,16 @@ class ConcreteInterfaceHelperMenuItem {
 		$this->linkAttributes = $linkAttributes;
 		$this->pkgHandle = $pkgHandle;
 	}
-	
+
 	protected $controller;
-	
+
 	public function getHandle() {return $this->handle;}
 	public function getName() {return $this->name;}
 	public function setName($name) {$this->name = $name;}
 	public function getPosition() {return $this->position;}
 	public function getLinkAttributes() {return $this->linkAttributes;}
 	public function getPackageObject() {return $this->pkgHandle;}
-	
+
 	public function getController() {
 		if (isset($this->controller)) {
 			return $this->controller;
@@ -81,28 +81,28 @@ class ConcreteInterfaceHelperMenuItem {
 			return $this->controller;
 		}
 	}
-	
+
 	public function getMenuItemFilePath($_file) {
 		$f = $this->mapMenuItemFilePath($_file);
 		if (is_object($f)) {
 			return $f->file;
 		}
 	}
-	
+
 	public function getMenuItemFileURL($_file) {
 		$f = $this->mapMenuItemFilePath($_file);
 		if (is_object($f)) {
 			return $f->url;
 		}
 	}
-	
+
 	protected function mapMenuItemFilePath($_file) {
 		$handle = $this->handle;
 		if (file_exists(DIR_FILES_ELEMENTS . '/' . DIRNAME_ELEMENTS_HEADER_MENU . '/' . $handle . '/' . $_file)) {
 			$file = DIR_FILES_ELEMENTS . '/' . DIRNAME_ELEMENTS_HEADER_MENU . '/' . $handle . '/' . $_file;
 			$url = BASE_URL . DIR_REL . '/' . DIRNAME_ELEMENTS . '/' . DIRNAME_ELEMENTS_HEADER_MENU . '/' . $handle . '/' . $_file;
 		}
-		
+
 		if ($this->pkgHandle) {
 			if (!isset($file)) {
 				$pkgHandle = $this->pkgHandle;
@@ -113,14 +113,14 @@ class ConcreteInterfaceHelperMenuItem {
 				}
 			}
 		}
-		
+
 		if (!isset($file)) {
 			if (file_exists(DIR_FILES_ELEMENTS_CORE . '/' . DIRNAME_ELEMENTS_HEADER_MENU . '/' .  $handle . '/' . $_file)) {
 				$file = DIR_FILES_ELEMENTS_CORE . '/' . DIRNAME_ELEMENTS_HEADER_MENU . '/' .  $handle . '/' . $_file;
 				$url = ASSETS_URL . '/' . DIRNAME_ELEMENTS . '/' . DIRNAME_ELEMENTS_HEADER_MENU . '/' . $handle . '/' . $_file;
 			}
 		}
-		
+
 		if (isset($file)) {
 			$obj = new stdClass;
 			$obj->file = $file;
@@ -133,10 +133,10 @@ class ConcreteInterfaceHelperMenuItem {
 }
 
 class ConcreteInterfaceMenuItemController extends Controller {
-	
+
 	protected $menuItem;
 	protected $headerItemsToCheck = array(
-		'CSS' => 'view.css', 
+		'CSS' => 'view.css',
 		'JAVASCRIPT' => 'view.js'
 	);
 
@@ -163,11 +163,11 @@ class ConcreteInterfaceMenuItemController extends Controller {
 			}
 		}
 	}
-	
+
 	public function displayItem() {
 		return true;
 	}
-	
+
 	public function getMenuLinkHTML() {
 		$attribs = '';
 		if (is_array($this->menuItem->getLinkAttributes())) {

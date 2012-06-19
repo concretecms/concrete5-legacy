@@ -19,9 +19,9 @@
 
 defined('C5_EXECUTE') or die("Access Denied.");
 class ContentImporter {
-	
+
 	protected static $mcBlockIDs = array();
-	
+
 	public function importContentFile($file) {
 		$sx = simplexml_load_file($file);
 		$this->importSinglePageStructure($sx);
@@ -50,13 +50,13 @@ class ContentImporter {
 		$this->importConfigValues($sx);
 		$this->importSystemCaptchaLibraries($sx);
 	}
-	
+
 	protected static function getPackageObject($pkgHandle) {
 		$pkg = false;
 		if ($pkgHandle) {
 			$pkg = Package::getByHandle($pkgHandle);
 		}
-		return $pkg;		
+		return $pkg;
 	}
 
 	protected function importStacksStructure(SimpleXMLElement $sx) {
@@ -82,14 +82,14 @@ class ContentImporter {
 			}
 		}
 	}
-	
+
 	protected function importSinglePageStructure(SimpleXMLElement $sx) {
 		Loader::model('single_page');
 		if (isset($sx->singlepages)) {
 			foreach($sx->singlepages->page as $p) {
 				$pkg = ContentImporter::getPackageObject($p['package']);
 				$spl = SinglePage::add($p['path'], $pkg);
-				if (is_object($spl)) { 
+				if (is_object($spl)) {
 					if (isset($p['root']) && $p['root'] == true) {
 						$spl->moveToRoot();
 					}
@@ -112,7 +112,7 @@ class ContentImporter {
 				if (isset($px->attributes)) {
 					foreach($px->attributes->children() as $attr) {
 						$ak = CollectionAttributeKey::getByHandle($attr['handle']);
-						if (is_object($ak)) { 
+						if (is_object($ak)) {
 							$page->setAttribute((string) $attr['handle'], $ak->getController()->importValue($attr));
 						}
 					}
@@ -132,7 +132,7 @@ class ContentImporter {
 			return ($numA < $numB) ? -1 : 1;
 		}
 	}
-	
+
 	protected function importPageContent(SimpleXMLElement $sx) {
 		if (isset($sx->pages)) {
 			foreach($sx->pages->page as $px) {
@@ -147,7 +147,7 @@ class ContentImporter {
 				if (isset($px->attributes)) {
 					foreach($px->attributes->children() as $attr) {
 						$ak = CollectionAttributeKey::getByHandle($attr['handle']);
-						if (is_object($ak)) { 
+						if (is_object($ak)) {
 							$page->setAttribute((string) $attr['handle'], $ak->getController()->importValue($attr));
 						}
 					}
@@ -156,7 +156,7 @@ class ContentImporter {
 			}
 		}
 	}
-	
+
 	protected function importPageStructure(SimpleXMLElement $sx) {
 		if (isset($sx->pages)) {
 			$nodes = array();
@@ -164,7 +164,7 @@ class ContentImporter {
 				$nodes[] = $p;
 			}
 			usort($nodes, array('ContentImporter', 'setupPageNodeOrder'));
-			
+
 			$home = Page::getByID(HOME_CID, 'RECENT');
 
 			foreach($nodes as $px) {
@@ -202,7 +202,7 @@ class ContentImporter {
 			}
 		}
 	}
-	
+
 	protected function importPageAreas(Page $page, SimpleXMLElement $px) {
 		foreach($px->area as $ax) {
 			if (isset($ax->block)) {
@@ -213,7 +213,7 @@ class ContentImporter {
 						$btc = $bt->getController();
 						$btc->import($page, (string) $ax['name'], $bx);
 					} else if ($bx['mc-block-id'] != '') {
-					
+
 						// we find that block in the master collection block pool and alias it out
 						$bID = array_search((string) $bx['mc-block-id'], self::$mcBlockIDs);
 						if ($bID) {
@@ -230,19 +230,19 @@ class ContentImporter {
 	public static function addMasterCollectionBlockID($b, $id) {
 		self::$mcBlockIDs[$b->getBlockID()] = $id;
 	}
-	
+
 	public static function getMasterCollectionTemporaryBlockID($b) {
 		if (isset(self::$mcBlockIDs[$b->getBlockID()])) {
 			return self::$mcBlockIDs[$b->getBlockID()];
 		}
 	}
-	
+
 	protected function importPageTypesBase(SimpleXMLElement $sx) {
 		if (isset($sx->pagetypes)) {
 			foreach($sx->pagetypes->pagetype as $ct) {
 				$pkg = ContentImporter::getPackageObject($ct['package']);
 				$ctt = CollectionType::getByHandle($ct['handle']);
-				if (!is_object($ctt)) { 
+				if (!is_object($ctt)) {
 					$ctr = CollectionType::add(array(
 						'ctHandle' => $ct['handle'],
 						'ctName' => $ct['name'],
@@ -278,7 +278,7 @@ class ContentImporter {
 				if (is_object($pkg)) {
 					BlockType::installBlockTypeFromPackage($bt['handle'], $pkg);
 				} else {
-					BlockType::installBlockType($bt['handle']);				
+					BlockType::installBlockType($bt['handle']);
 				}
 			}
 		}
@@ -334,7 +334,7 @@ class ContentImporter {
 			}
 		}
 	}
-	
+
 	protected function importPackages(SimpleXMLElement $sx) {
 		if (isset($sx->packages)) {
 			foreach($sx->packages->package as $p) {
@@ -343,7 +343,7 @@ class ContentImporter {
 			}
 		}
 	}
-	
+
 	protected function importThemes(SimpleXMLElement $sx) {
 		if (isset($sx->themes)) {
 			foreach($sx->themes->theme as $th) {
@@ -377,7 +377,7 @@ class ContentImporter {
 				if (is_object($pkg)) {
 					Job::installByPackage($jx['handle'], $pkg);
 				} else {
-					Job::installByHandle($jx['handle']);				
+					Job::installByHandle($jx['handle']);
 				}
 			}
 		}
@@ -445,11 +445,11 @@ class ContentImporter {
 					Loader::model('permission/categories/' . $pkc->getPermissionKeyCategoryHandle(), $pkg->getPackageHandle());
 				} else {
 					Loader::model('permission/categories/' . $pkc->getPermissionKeyCategoryHandle());
-				}		
+				}
 				$txt = Loader::helper('text');
 				$className = $txt->camelcase($pkc->getPermissionKeyCategoryHandle());
 				$c1 = $className . 'PermissionKey';
-				$pkx = call_user_func(array($c1, 'import'), $pk);	
+				$pkx = call_user_func(array($c1, 'import'), $pk);
 				if (isset($pk->access)) {
 					foreach($pk->access->children() as $ch) {
 						if ($ch->getName() == 'group') {
@@ -465,7 +465,7 @@ class ContentImporter {
 						}
 					}
 				}
-			
+
 			}
 		}
 	}
@@ -478,7 +478,7 @@ class ContentImporter {
 			}
 		}
 	}
-	
+
 	protected function importAttributes(SimpleXMLElement $sx) {
 		if (isset($sx->attributekeys)) {
 			foreach($sx->attributekeys->attributekey as $ak) {
@@ -489,11 +489,11 @@ class ContentImporter {
 					Loader::model('attribute/categories/' . $akc->getAttributeKeyCategoryHandle(), $pkg->getPackageHandle());
 				} else {
 					Loader::model('attribute/categories/' . $akc->getAttributeKeyCategoryHandle());
-				}		
+				}
 				$txt = Loader::helper('text');
 				$className = $txt->camelcase($akc->getAttributeKeyCategoryHandle());
 				$c1 = $className . 'AttributeKey';
-				$ak = call_user_func(array($c1, 'import'), $ak);				
+				$ak = call_user_func(array($c1, 'import'), $ak);
 			}
 		}
 	}
@@ -506,7 +506,7 @@ class ContentImporter {
 				$set = $akc->addSet((string) $as['handle'], (string) $as['name'], $pkg, $as['locked']);
 				foreach($as->children() as $ask) {
 					$ak = $akc->getAttributeKeyByHandle((string) $ask['handle']);
-					if (is_object($ak)) { 	
+					if (is_object($ak)) {
 						$set->addKey($ak);
 					}
 				}
@@ -537,6 +537,6 @@ class ContentImporter {
 		} else {
 			return $value;
 		}
-	}	
+	}
 
 }

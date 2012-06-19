@@ -11,27 +11,27 @@
 		<div class="clearfix">
 		<?=$form->label('activeLibrary', t('Active Library'))?>
 		<div class="input">
-		<? 
+		<?
 		$activeHandle = '';
 		if (is_object($activeLibrary)) {
 			$activeHandle = $activeLibrary->getSystemAntispamLibraryHandle();
 		}
 		?>
-		
+
 		<?=$form->select('activeLibrary', $libraries, $activeHandle, array('class' => 'span4'))?>
 		</div>
 		</div>
-		
+
 		<? if (is_object($activeLibrary)) {
 			if ($activeLibrary->hasOptionsForm()) {
-				if ($activeLibrary->getPackageID() > 0) { 
+				if ($activeLibrary->getPackageID() > 0) {
 					Loader::packageElement('system/antispam/' . $activeLibrary->getSystemAntispamLibraryHandle() . '/form', $activeLibrary->getPackageHandle());
 				} else {
 					Loader::element('system/antispam/' . $activeLibrary->getSystemAntispamLibraryHandle() . '/form');
 				}
-				
+
 				?>
-				
+
 				<div class="clearfix">
 				<?=$form->label('ANTISPAM_LOG_SPAM', t('Log settings'))?>
 				<div class="input">
@@ -51,8 +51,8 @@
 				</div>
 
 				</div>
-				
-				
+
+
 				<?
 			}
 		} ?>
@@ -67,7 +67,7 @@
 	<div class="ccm-pane-footer">
 		<?=Loader::helper('concrete/interface')->submit(t('Save Additional Settings'), 'submit', 'right', 'primary')?>
 	</div>
-<? } ?>	
+<? } ?>
 </form>
 
 <script type="text/javascript">

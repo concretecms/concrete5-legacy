@@ -7,8 +7,8 @@ defined('C5_EXECUTE') or die("Access Denied.");
  * @license    http://www.concrete5.org/license/     MIT License
  *
  */
-class WorkflowProgressAction extends Object {  
-	
+class WorkflowProgressAction extends Object {
+
 	protected $wrActionStyleClass = '';
 	protected $wrActionStyleInnerButtonLeft = '';
 	protected $wrActionStyleInnerButtonRight = '';
@@ -16,7 +16,7 @@ class WorkflowProgressAction extends Object {
 	protected $wrActionOnClick = '';
 	protected $wrActionURL = '';
 	protected $wrActionExtraButtonParameters = array();
-	
+
 	public function setWorkflowProgressActionStyleClass($class) {
 		$this->wrActionStyleClass = $class;
 	}
@@ -28,10 +28,10 @@ class WorkflowProgressAction extends Object {
 	}
 	public function setWorkflowProgressActionLabel($label) {
 		$this->wrActionLabel = $label;
-	}	
+	}
 	public function setWorkflowProgressActionTask($wrActionTask) {
 		$this->wrActionTask = $wrActionTask;
-	}	
+	}
 	public function setWorkflowProgressActionURL($wrActionURL) {
 		$this->wrActionURL = $wrActionURL;
 	}
@@ -39,11 +39,11 @@ class WorkflowProgressAction extends Object {
 	public function addWorkflowProgressActionButtonParameter($key, $value) {
 		$this->wrActionExtraButtonParameters[$key] = $value;
 	}
-	
+
 	public function getWorkflowProgressActionExtraButtonParameters() {
 		return $this->wrActionExtraButtonParameters;
 	}
-	
+
 	public function getWorkflowProgressActionStyleClass() {
 		return $this->wrActionStyleClass;
 	}
@@ -61,23 +61,23 @@ class WorkflowProgressAction extends Object {
 	}
 	public function getWorkflowProgressActionURL() {
 		return $this->wrActionURL;
-	}	
+	}
 }
 
 class WorkflowProgressCancelAction extends WorkflowProgressAction {
-	
+
 	public function __construct() {
 		$this->setWorkflowProgressActionLabel(t('Cancel'));
 		$this->setWorkflowProgressActionTask('cancel');
 	}
-	
+
 }
 
 class WorkflowProgressApprovalAction extends WorkflowProgressAction {
-	
+
 	public function __construct() {
 		$this->setWorkflowProgressActionLabel(t('Approve'));
 		$this->setWorkflowProgressActionTask('approve');
 	}
-	
+
 }

@@ -29,16 +29,16 @@ if ($_REQUEST['approveImmediately'] == 1) {
 <input type="hidden" name="approveImmediately" value="<?=$approveImmediately?>" />
 <input type="hidden" name="rel" value="<?=$_REQUEST['rel']?>" />
 
-	<script type="text/javascript"> 
-		
+	<script type="text/javascript">
+
 		function ccm_triggerSelectUser(uID, uName) {
 			$('#ccm-uID').val(uID);
 			$('#ccm-uName').html(uName);
 		}
-		
-		
+
+
 		var ccm_activePropertiesTab = "ccm-properties-standard";
-		
+
 		$("#ccm-properties-tabs a").click(function() {
 			$("li.active").removeClass('active');
 			$("#" + ccm_activePropertiesTab + "-tab").hide();
@@ -46,7 +46,7 @@ if ($_REQUEST['approveImmediately'] == 1) {
 			$(this).parent().addClass("active");
 			$("#" + ccm_activePropertiesTab + "-tab").show();
 		});
-		
+
 		$(function() {
 			$("#ccmMetadataForm").ajaxForm({
 				type: 'POST',
@@ -70,11 +70,11 @@ if ($_REQUEST['approveImmediately'] == 1) {
 			});
 		});
 	</script>
-	
+
 
 	<div id="ccm-required-meta">
-	
-	
+
+
 	<? if (!$c->isMasterCollection()) { ?>
 	<ul class="nav-tabs nav" id="ccm-properties-tabs">
 		<li class="active"><a href="javascript:void(0)" id="ccm-properties-standard"><?=t('Standard Properties')?></a></li>
@@ -84,7 +84,7 @@ if ($_REQUEST['approveImmediately'] == 1) {
 	<? } ?>
 
 	<div id="ccm-properties-standard-tab" <? if ($c->isMasterCollection()) { ?>style="display: none" <? } ?>>
-	
+
 	<? if ($asl->allowEditName()) { ?>
 	<div class="clearfix">
 		<label for="cName"><?=t('Name')?></label>
@@ -100,18 +100,18 @@ if ($_REQUEST['approveImmediately'] == 1) {
 		<div class="input"><? print $dt->datetime('cDatePublic', $c->getCollectionDatePublic(null, 'user')); ?></div>
 	</div>
 	<? } ?>
-	
+
 	<? if ($asl->allowEditUserID()) { ?>
 	<div class="clearfix">
 	<label><?=t('Owner')?></label>
 	<div class="input">
-		<? 
+		<?
 		print $uh->selectUser('uID', $c->getCollectionUserID());
 		?>
 	</div>
 	</div>
 	<? } ?>
-	
+
 
 	<? if ($asl->allowEditDescription()) { ?>
 	<div class="clearfix">
@@ -119,12 +119,12 @@ if ($_REQUEST['approveImmediately'] == 1) {
 	<div class="input"><textarea id="cDescription" name="cDescription" class="ccm-input-text" style="width: 495px; height: 50px"><?=$c->getCollectionDescription()?></textarea></div>
 	</div>
 	<? } ?>
-	
+
 	</div>
-	
+
 	<? if ($asl->allowEditPaths()) { ?>
 	<div id="ccm-page-paths-tab" style="display: none">
-		
+
 		<div class="clearfix">
 		<label for="cHandle"><?= t('Canonical URL')?></label>
 		<div class="input">
@@ -138,7 +138,7 @@ if ($_REQUEST['approveImmediately'] == 1) {
 			<span class="help-block"><?=t('This page must always be available from at least one URL. That URL is listed above.')?></span>
 		</div>
 		</div>
-		
+
 		<?php if (!$c->isGeneratedCollection()) { ?>
 		<div class="clearfix" id="ccm-more-page-paths">
 			<label><?= t('More URLs') ?></label>
@@ -161,20 +161,20 @@ if ($_REQUEST['approveImmediately'] == 1) {
 			</div>
 		</div>
 		<?php } ?>
-	
+
 	</div>
-	
+
 	<style type="text/css">
 	#ccm-more-page-paths div.input {margin-bottom: 10px;}
 	</style>
 	<? } ?>
-	
-	
+
+
 	<div id="ccm-properties-custom-tab" <? if (!$c->isMasterCollection()) { ?>style="display: none" <? } ?>>
 		<? Loader::element('collection_metadata_fields', array('c'=>$c, 'assignment' => $asl) ); ?>
 	</div>
 
-	
+
 	<input type="hidden" name="update_metadata" value="1" />
 	<input type="hidden" name="processCollection" value="1">
 	<div class="ccm-spacer">&nbsp;</div>

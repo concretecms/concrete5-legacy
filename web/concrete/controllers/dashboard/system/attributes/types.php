@@ -1,7 +1,7 @@
 <?php defined('C5_EXECUTE') or die('Access Denied');
 
 class DashboardSystemAttributesTypesController extends DashboardBaseController {
-	
+
 	public function add_attribute_type() {
 		$pat = PendingAttributeType::getByHandle($this->post('atHandle'));
 		if (is_object($pat)) {
@@ -38,5 +38,5 @@ class DashboardSystemAttributesTypesController extends DashboardBaseController {
 			}
 		}
 	}
-	
+
 }

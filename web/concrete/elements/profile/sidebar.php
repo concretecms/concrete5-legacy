@@ -6,8 +6,8 @@
 	</div>
 	<div style="margin-top:16px; padding-bottom:4px; margin-bottom:0px; font-weight:bold"><?=t('Member Since')?></div>
 	<?=date(DATE_APP_GENERIC_MDY_FULL, strtotime($profile->getUserDateAdded('user')))?>
-	
-	<? 
+
+	<?
 	$u = new User();
 	if ($u->isRegistered() && $u->getUserID() != $profile->getUserID()) { ?>
 	<div style="margin-top:16px;">
@@ -21,18 +21,18 @@
 				<?=t('Remove from My Friends') ?>
 			</a>
 		<? } ?>
-		
+
 		</div>
 		<? if ($profile->getUserProfilePrivateMessagesEnabled() == 1) { ?>
-			<a href="<?=$this->url('/profile/messages', 'write', $profile->getUserID())?>"><?=t('Send Private Message')?></a>	
+			<a href="<?=$this->url('/profile/messages', 'write', $profile->getUserID())?>"><?=t('Send Private Message')?></a>
 		<? } ?>
-		
+
 	</div>
 	<? } ?>
 
-	
+
 	<div>
-	<? 
+	<?
 	if($u->getUserID() == $profile->getUserID()) {
 		$nc = Page::getByPath('/profile');
 		$bt = BlockType::getByHandle('autonav');
@@ -55,7 +55,7 @@
 		print '&nbsp;&nbsp;';
 		print $form->submit('submit', t('Search'));
 		?>
-		
+
 		</form>
 
 </div>

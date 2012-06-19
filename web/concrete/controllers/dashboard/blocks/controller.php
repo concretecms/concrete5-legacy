@@ -6,5 +6,5 @@ class DashboardBlocksController extends Controller {
 		$this->redirect('/dashboard/blocks/stacks');
 	}
 
-	
+
 }

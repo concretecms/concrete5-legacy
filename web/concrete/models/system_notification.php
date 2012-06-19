@@ -10,7 +10,7 @@ class SystemNotification extends Object {
 	const SN_TYPE_ADDON_UPDATE = 20;
 	const SN_TYPE_ADDON_UPDATE_CRITICAL = 85;
 	const SN_TYPE_ADDON_MESSAGE = 22;
-	
+
 	public function getSystemNotificationURL() {return $this->snURL;}
 	public function getSystemNotificationAlternateURL() {return $this->snURL2;}
 	public function getSystemNotificationTitle() {return $this->snTitle;}
@@ -27,7 +27,7 @@ class SystemNotification extends Object {
 		$date = Loader::helper('date')->getLocalDateTime();
 		$db->Execute('insert into SystemNotifications (snTypeID, snTitle, snDescription, snBody, snURL, snURL2, snDateTime, snIsNew) values (?, ?, ?, ?, ?, ?, ?, ?)', array(
 			$typeID, $title, $description, $body, $url, $url2, $date, 1
-		));	
+		));
 	}
 
 
@@ -39,14 +39,14 @@ class SystemNotification extends Object {
 			$db->Execute('insert into SystemNotifications (snTypeID, snTitle, snDescription, snBody, snURL, snDateTime, snIsNew) values (?, ?, ?, ?, ?, ?, ?)', array(
 				$type, $post->get_title(), $post->get_description(), $post->get_content(), $post->get_permalink(), $post->get_date('Y-m-d H:i:s'), 1
 			));
-		}	
+		}
 	}
-	
+
 	public function markSystemNotificationAsRead() {
 		$db = Loader::db();
 		$db->Execute('update SystemNotifications set snIsNew = 0 where snID = ?', $this->snID);
 	}
-	
+
 	public static function getByID($snID) {
 		$db = Loader::db();
 		$row = $db->GetRow('select * from SystemNotifications where snID = ?', array($snID));
@@ -60,12 +60,12 @@ class SystemNotification extends Object {
 }
 
 class SystemNotificationList extends DatabaseItemList {
-	
+
 	public function filterByType($type) {
 		$db = Loader::db();
 		$this->filter('sn.snTypeID', $type);
 	}
-	
+
 	function __construct() {
 		$this->setQuery("select sn.snID from SystemNotifications sn");
 		$this->sortBy('snDateTime', 'desc');
@@ -82,5 +82,5 @@ class SystemNotificationList extends DatabaseItemList {
 		}
 		return $posts;
 	}
-	
+
 }

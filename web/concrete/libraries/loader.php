@@ -17,12 +17,12 @@
  * @copyright  Copyright (c) 2003-2008 Concrete5. (http://www.concrete5.org)
  * @license    http://www.concrete5.org/license/     MIT License
  */
- 
+
  class Loader {
-		
+
 		static $autoloadClasses = array();
-		
-		/** 
+
+		/**
 		 * Loads a library file, either from the site's files or from Concrete's
 		 */
 		public function library($lib, $pkgHandle = null) {
@@ -30,7 +30,7 @@
 			require_once($env->getPath(DIRNAME_LIBRARIES . '/' . $lib . '.php', $pkgHandle));
 		}
 
-		/** 
+		/**
 		 * Loads a model from either an application, the site, or the core Concrete directory
 		 */
 		public function model($mod, $pkgHandle = null) {
@@ -40,7 +40,7 @@
 				require_once($env->getPath(DIRNAME_MODELS . '/' . $mod . '.php', $pkgHandle));
 			}
 		}
-		
+
 		protected function legacyModel($model) {
 			switch($model) {
 				case 'collection_attributes':
@@ -60,15 +60,15 @@
 					break;
 			}
 		}
-		
-		/** 
+
+		/**
 		 * @access private
 		 */
 		public function packageElement($file, $pkgHandle, $args = null) {
 			Loader::element($file, $args, $pkgHandle);
 		}
 
-		/** 
+		/**
 		 * Loads an element from C5 or the site
 		 */
 		public function element($file, $args = null, $pkgHandle= null) {
@@ -90,12 +90,12 @@
 			$env = Environment::get();
 			require_once($env->getPath(DIRNAME_TOOLS . '/' . $file . '.php', $pkgHandle));
 		}
-		
-		/** 
+
+		/**
 		 * Registers a component with concrete5's autoloader.
 		 */
 		public static function registerAutoload($classes) {
-			foreach($classes as $class => $data) {	
+			foreach($classes as $class => $data) {
 				if (strpos($class, ',') > -1) {
 					$subclasses = explode(',', $class);
 					foreach($subclasses as $subclass) {
@@ -104,10 +104,10 @@
 				} else {
 					Loader::$autoloadClasses[$class] = $data;
 				}
-			}				
+			}
 		}
-		
-		/** 
+
+		/**
 		 * @private
 		 */
 		public static function autoload($class) {
@@ -134,9 +134,9 @@
 				}
 			}
 		}
-		
-		/** 
-		 * Loads a block's controller/class into memory. 
+
+		/**
+		 * Loads a block's controller/class into memory.
 		 * <code>
 		 * <?php Loader::block('autonav'); ?>
 		 * </code>
@@ -151,21 +151,21 @@
 				// this is last because it's kind of a performance drain to run all the time
 				// but that will be less of a problem when we cache the block types request
 				$bt = BlockType::getByHandle($bl);
-				if (is_object($bt)) { 
+				if (is_object($bt)) {
 					$pkg = $bt->getPackageHandle();
-					
+
 					if (file_exists(DIR_PACKAGES . '/' . $pkg . '/' . DIRNAME_BLOCKS . '/' . $bl . '/' . FILENAME_BLOCK_CONTROLLER)) {
-						require_once(DIR_PACKAGES . '/' . $pkg . '/' . DIRNAME_BLOCKS . '/' . $bl . '/' . FILENAME_BLOCK_CONTROLLER);		
+						require_once(DIR_PACKAGES . '/' . $pkg . '/' . DIRNAME_BLOCKS . '/' . $bl . '/' . FILENAME_BLOCK_CONTROLLER);
 					} else if (file_exists(DIR_PACKAGES_CORE . '/' . $pkg . '/' . DIRNAME_BLOCKS . '/' . $bl . '/' . FILENAME_BLOCK_CONTROLLER)) {
 						require_once(DIR_PACKAGES_CORE . '/' . $pkg . '/' . DIRNAME_BLOCKS . '/' . $bl . '/' . FILENAME_BLOCK_CONTROLLER);
 					}
 				}
 			}
 		}
-		
-		/** 
+
+		/**
 		 * Loads the various files for the database abstraction layer. We would bundle these in with the db() method below but
-		 * these need to be loaded before the models which need to be loaded before db() 
+		 * these need to be loaded before the models which need to be loaded before db()
 		 */
 		public function database() {
 			require_once(DIR_BASE_CORE . '/libraries/3rdparty/adodb/adodb.inc.php');
@@ -174,8 +174,8 @@
 			require_once(DIR_BASE_CORE . '/libraries/3rdparty/adodb/adodb-xmlschema03.inc.php');
 			require_once(DIR_BASE_CORE . '/libraries/database.php');
 		}
-		
-		/** 
+
+		/**
 		 * Returns the database object, or loads it if not yet created
 		 * <code>
 		 * <?php
@@ -186,7 +186,7 @@
 		public function db($server = null, $username = null, $password = null, $database = null, $create = false, $autoconnect = true) {
 			static $_dba;
 			if ((!isset($_dba) || $create) && ($autoconnect)) {
-				if ($server == null && defined('DB_SERVER')) {	
+				if ($server == null && defined('DB_SERVER')) {
 					$dsn = DB_TYPE . '://' . DB_USERNAME . ':' . rawurlencode(DB_PASSWORD) . '@' . rawurlencode(DB_SERVER) . '/' . DB_DATABASE;
 				} else if ($server) {
 					$dsn = DB_TYPE . '://' . $username . ':' . rawurlencode($password) . '@' . rawurlencode($server) . '/' . $database;
@@ -203,7 +203,7 @@
 							}
 							$_dba->Execute($names);
 						}
-						
+
 						ADOdb_Active_Record::SetDatabaseAdapter($_dba);
 					} else if (defined('DB_SERVER')) {
 						$v = View::getInstance();
@@ -213,18 +213,18 @@
 					return false;
 				}
 			}
-			
+
 			return $_dba;
 		}
-		
-		/** 
+
+		/**
 		 * Loads a helper file. If the same helper file is contained in both the core concrete directory and the site's directory, it will load the site's first, which could then extend the core.
 		 */
 		public function helper($file, $pkgHandle = false) {
-		
+
 			static $instances = array();
-			$class = false;		
-			
+			$class = false;
+
 			if ($pkgHandle != false) {
 				$class = Object::camelcase($pkgHandle . '_' . $file) . "Helper";
 				$dir = (is_dir(DIR_PACKAGES . '/' . $pkgHandle)) ? DIR_PACKAGES : DIR_PACKAGES_CORE;
@@ -241,9 +241,9 @@
 					$class = Object::camelcase($file) . "Helper";
 				}
 			} else {
-				$class = Object::camelcase($file) . "Helper";					
+				$class = Object::camelcase($file) . "Helper";
 			}
-			
+
 			if (array_key_exists($class, $instances)) {
             	$instance = $instances[$class];
             } else {
@@ -265,14 +265,14 @@
 	            $instances[$class] = new $class();
     	        $instance = $instances[$class];
 			}
-			
+
 			if(method_exists($instance,'reset')) {
 				$instance->reset();
 			}
-			
+
 			return $instance;
 		}
-		
+
 		/**
 		 * @access private
 		 */
@@ -288,7 +288,7 @@
 				}
 			}
 		}
-		
+
 		/**
 		 * @access private
 		 */
@@ -304,13 +304,13 @@
 				}
 			}
 		}
-		
 
-		/** 
+
+		/**
 		 * Gets the path to a particular page type controller
 		 */
 		public function pageTypeControllerPath($ctHandle) {
-			
+
 			Loader::model('collection_types');
 			$ct = CollectionType::getByHandle($ctHandle);
 			if (!is_object($ct)) {
@@ -329,16 +329,16 @@
 			} else if (file_exists(DIR_FILES_CONTROLLERS_REQUIRED . "/" . DIRNAME_PAGE_TYPES . "/{$ctHandle}.php")) {
 				$path = DIR_FILES_CONTROLLERS_REQUIRED . "/" . DIRNAME_PAGE_TYPES . "/{$ctHandle}.php";
 			}
-			
+
 			return $path;
 		}
-		/** 
+		/**
 		 * Loads a controller for either a page or view
 		 */
 		public function controller($item) {
-			
+
 			$include = false;
-			
+
 			if (is_string($item)) {
 				$db = Loader::db();
 				if (is_object($db)) {
@@ -356,10 +356,10 @@
 					$path = $item;
 				}
 			}
-			
+
 			if ($item instanceof Page) {
 				$c = $item;
-				if ($c->getCollectionTypeID() > 0) {					
+				if ($c->getCollectionTypeID() > 0) {
 					$ctHandle = $c->getCollectionTypeHandle();
 					$path = Loader::pageTypeControllerPath($ctHandle, $item->getPackageHandle());
 					if ($path != false) {
@@ -386,18 +386,18 @@
 					require_once(DIR_PACKAGES . '/' . $item->getPackageHandle() . '/' . DIRNAME_BLOCKS . '/' . $item->getBlockTypeHandle() . '/' . FILENAME_BLOCK_CONTROLLER);
 				} else if ($item->getPackageID() > 0 && file_exists(DIR_PACKAGES_CORE . '/' . $item->getPackageHandle() . '/' . DIRNAME_BLOCKS . '/' . $item->getBlockTypeHandle() . '/' . FILENAME_BLOCK_CONTROLLER)) {
 					require_once(DIR_PACKAGES_CORE . '/' . $item->getPackageHandle() . '/' . DIRNAME_BLOCKS . '/' . $item->getBlockTypeHandle() . '/' . FILENAME_BLOCK_CONTROLLER);
-				} 
+				}
 				$class = Object::camelcase($item->getBlockTypeHandle()) . 'BlockController';
 				if (class_exists($class) && $item instanceof BlockType) {
 					$controller = new $class($item);
 				}
-				
+
 				if ($item instanceof Block) {
 					$c = $item->getBlockCollectionObject();
 				}
-				
+
 			}
-			
+
 			$controllerFile = $path . '.php';
 
 			if ($path != '') {
@@ -425,7 +425,7 @@
 						$include = true;
 					}
 				}
-				
+
 				if (!$include) {
 					if (file_exists(DIR_FILES_CONTROLLERS_REQUIRED . $controllerFile)) {
 						require_once(DIR_FILES_CONTROLLERS_REQUIRED . $controllerFile);
@@ -435,12 +435,12 @@
 						$include = true;
 					}
 				}
-					
+
 				if ($include) {
 					$class = Object::camelcase($path) . 'Controller';
 				}
 			}
-			
+
 			if (!isset($controller)) {
 				if ($class && class_exists($class)) {
 					// now we get just the filename for this guy, so we can extrapolate
@@ -450,11 +450,11 @@
 					$controller = new Controller($item);
 				}
 			}
-			
+
 			if (isset($c) && is_object($c)) {
 				$controller->setCollectionObject($c);
 			}
-			
+
 			return $controller;
 		}
 

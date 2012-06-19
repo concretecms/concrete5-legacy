@@ -4,7 +4,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 
 /**
  * Contains the config class.
- * @package Utilities 
+ * @package Utilities
  * @author Andrew Embler <andrew@concrete5.org>
  * @category Concrete
  * @copyright  Copyright (c) 2003-2008 Concrete5. (http://www.concrete5.org)
@@ -24,7 +24,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
  */
 
 class ConfigValue extends Object {
-	
+
 	public $value;
 	public $timestamp; // datetime value was set
 	public $key;
@@ -33,12 +33,12 @@ class ConfigValue extends Object {
 class Config extends Object {
 	private $pkg = false;
 	private static $store;
-	
+
 	public static function setStore(ConfigStore $store)
 	{
 		self::$store = $store;
 	}
-	
+
 	/**
 	 * @return ConfigStore
 	 */
@@ -49,7 +49,7 @@ class Config extends Object {
 		}
 		return self::$store;
 	}
-	
+
 	public function setPackageObject($pkg) {
 		$this->pkg = $pkg;
 	}
@@ -64,7 +64,7 @@ class Config extends Object {
 		if (isset($this) && is_object($this->pkg)) {
 			$pkgID = $this->pkg->getPackageID();
 		}
-		
+
 		$cv = self::getStore()->get($cfKey, $pkgID);
 
 		if (!$getFullObject) {
@@ -89,8 +89,8 @@ class Config extends Object {
 			$list[] = $pkg->config($key, true);
 		}
 		return $list;
-	}	
-	
+	}
+
 	// Misleading old functionname
 	public function getOrDefine($key, $defaultValue) {
 		return self::getAndDefine($key, $defaultValue);
@@ -148,13 +148,13 @@ class Config extends Object {
 			}
 		}
 	}
-	
+
 }
 
 /**
  * Config Store that handles the saving and retrieval of ConfigValues
- * 
- * @package Utilities 
+ *
+ * @package Utilities
  * @author Christiaan Baartse <anotherhero@gmail.com>
  * @category Concrete
  */
@@ -163,16 +163,16 @@ class ConfigStore {
 	 * @var Database
 	 */
 	private $db;
-	
+
 	/**
 	 * @var array
 	 */
 	private $rows;
-	
+
 	public function __construct() {
 		$this->load();
 	}
-	
+
 	private function load() {
 		if (defined('ENABLE_CACHE') && (!ENABLE_CACHE)) {
 			// if cache has been explicitly disabled, we re-enable it anyway.
@@ -201,7 +201,7 @@ class ConfigStore {
 			Cache::disableCache();
 		}
 	}
-	
+
 	private function rowToConfigValue($row)
 	{
 		$cv = new ConfigValue();
@@ -210,9 +210,9 @@ class ConfigStore {
 		$cv->timestamp = isset($row['timestamp']) ? $row['timestamp'] : '';
 		return $cv;
 	}
-	
+
 	/**
-	 * Get a config item 
+	 * Get a config item
 	 * @param string $cfKey
 	 * @param int $pkgID optional
 	 * @return ConfigValue|void
@@ -229,7 +229,7 @@ class ConfigStore {
 		}
 		return null;
 	}
-	
+
 	public function getListByPackage($pkgID) {
 		$list = array();
 		foreach ($this->rows as $row) {
@@ -239,7 +239,7 @@ class ConfigStore {
 		}
 		return $list;
 	}
-	
+
 	public function set($cfKey, $cfValue, $pkgID = 0) {
 		$timestamp = date('Y-m-d H:i:s');
 		if ($pkgID < 1) {
@@ -256,7 +256,7 @@ class ConfigStore {
 		if (!$db) {
 			return;
 		}
-		
+
 		$db->query(
 			"replace into Config (cfKey, timestamp, cfValue, pkgID) values (?, ?, ?, ?)",
 			array($cfKey, $timestamp, $cfValue, $pkgID)
@@ -271,7 +271,7 @@ class ConfigStore {
 			Cache::disableCache();
 		}
 	}
-	
+
 	public function delete($cfKey, $pkgID = null) {
 		$db = Loader::db();
 		if ($pkgID > 0) {
@@ -301,5 +301,5 @@ class ConfigStore {
 			Cache::disableCache();
 		}
 	}
-	
+
 }

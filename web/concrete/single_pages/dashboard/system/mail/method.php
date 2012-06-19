@@ -5,7 +5,7 @@ $enabledVals = array('0' => t('No'), '1' => t('Yes'));
 $secureVals = array('' => t('None'), 'SSL' => 'SSL', 'TLS' => 'TLS');
 $form = Loader::helper('form');
 ?>
-	
+
 
 	<?php echo Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('SMTP Method'), false, 'span12 offset2', false)?>
 	<div class="ccm-pane-body">
@@ -42,7 +42,7 @@ $form = Loader::helper('form');
 					<?=$form->text('MAIL_SEND_METHOD_SMTP_PASSWORD', Config::get('MAIL_SEND_METHOD_SMTP_PASSWORD'))?>
 				</div>
 			</div>
-			
+
 			<div class="clearfix">
 				<?=$form->label('MAIL_SEND_METHOD_SMTP_ENCRYPTION',t('Encryption'));?>
 				<div class="input">
@@ -54,24 +54,24 @@ $form = Loader::helper('form');
 				<div class="input">
 					<?=$form->text('MAIL_SEND_METHOD_SMTP_PORT', Config::get('MAIL_SEND_METHOD_SMTP_PORT'))?>
 				</div>
-			</div>	
-	</fieldset>	
+			</div>
+	</fieldset>
 	</div>
 	<div class="ccm-pane-footer">
 		<?=$ih->submit(t('Save'), 'mail-settings-form','right','primary')?>
 	</div>
 	</form>
-	
+
 	</div>
 	<?php echo Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper(false);?>
-	
+
 		<script type="text/javascript">
 	ccm_checkMailSettings = function() {
 		obj = $("input[name=MAIL_SEND_METHOD]:checked");
 		if (obj.val() == 'SMTP') {
-			$("#ccm-settings-mail-smtp").show();	
+			$("#ccm-settings-mail-smtp").show();
 		} else {
-			$("#ccm-settings-mail-smtp").hide();	
+			$("#ccm-settings-mail-smtp").hide();
 		}
 	}
 
@@ -79,7 +79,7 @@ $form = Loader::helper('form');
 		$("input[name=MAIL_SEND_METHOD]").click(function() {
 			ccm_checkMailSettings();
 		});
-		ccm_checkMailSettings();	
+		ccm_checkMailSettings();
 	});
 
 	</script>

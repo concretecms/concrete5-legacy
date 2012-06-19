@@ -9,5 +9,5 @@ class DashboardBlocksStacksListController extends Controller {
 		$this->redirect('/');
 		exit;
 	}
-		
+
 }

@@ -26,7 +26,7 @@ class SinglePage extends Page {
 		}
 		return $singlePages;
 	}
-		
+
  	public static function sanitizePath($path) {
 		//takes a damn cpath and returns no first slash, and no more than 1 intermediate slash in
 		// the middle at any point
@@ -40,12 +40,12 @@ class SinglePage extends Page {
 		}
 		return $node;
 	}
-	
+
 	public static function getPathToNode($node, $pkg) {
 		$node = SinglePage::sanitizePath($node);
 		// checks to see whether a passed $node is a static content node
 		// (static content nodes exist within the views directory)
-		
+
 		// first, we look to see if the exact path exists (plus .php)
 		$pathToFile = null;
 		if (is_object($pkg)) {
@@ -54,7 +54,7 @@ class SinglePage extends Page {
 			} else {
 				$dirp = DIR_PACKAGES_CORE . '/' . $pkg->getPackageHandle();
 			}
-			
+
 			$file1 = $dirp . '/' . DIRNAME_PAGES . '/' . $node . '/' . FILENAME_COLLECTION_VIEW;
 			$file2 = $dirp . '/' . DIRNAME_PAGES . '/' . $node . '.php';
 		} else {
@@ -73,23 +73,23 @@ class SinglePage extends Page {
 		} else if (isset($file4) && file_exists($file4)) {
 			$pathToFile = "/{$node}.php";
 		}
-		
+
 		if (!$pathToFile) {
 			$pathToFile = false;
 		}
-				
+
 		return $pathToFile;
 
 	}
-	
+
 	public function refresh() {
 		// takes a generated collection and refreshes it - updates its path, it's cDateModified
 		// it's name, it's permissions
-		
+
 		if (!$this->isGeneratedCollection()) {
 			return false;
 		}
-		
+
 		$pkg = Package::getByID($this->getPackageID());
 		$currentPath = $this->getCollectionPath();
 		$pathToFile = SinglePage::getPathToNode($currentPath, $pkg);
@@ -100,8 +100,8 @@ class SinglePage extends Page {
 		$data = array();
 		$data['cName'] = $txt->unhandle($this->getCollectionHandle());
 		$data['cFilename'] = $pathToFile;
-		
-		$this->update($data);	
+
+		$this->update($data);
 		if ($pxml) {
 			$this->assignPermissionSet($pxml); // pass it an array
 		}
@@ -113,45 +113,45 @@ class SinglePage extends Page {
 		$c->populatePage($cID, $where, $version);
 		return $c;
 	}
-	
-	/* 
+
+	/*
 	 * Adds a new single page at the given path, optionally specify a Package
 	 * @param string $cPath
 	 * @param Package $pkg
 	 * @return Page
 	 */
 	public function add($cPath, $pkg = null) {
-		// if we get to this point, we create a special collection 
+		// if we get to this point, we create a special collection
 		// without a specific type. This collection has a special cFilename that
 		// points to the passed node
 		$db = Loader::db();
 		$txt = Loader::helper('text');
 		Loader::helper('concrete/interface')->clearInterfaceItemsCache();
-		
+
 		// trim off a leading / if there is one
 		$cPath = trim($cPath, '/');
-		
-		// now we grab the parent collection, if there is a static one. 
-		
+
+		// now we grab the parent collection, if there is a static one.
+
 		$pages = explode('/', $cPath);
-		
+
 		// instantiate the home collection so we have someplace to add these to
 		$parent = Page::getByID(1);
-		
+
 		// now we iterate through the pages  to ensure that they exist in the system before adding the new guy
-		
+
 		$pathPrefix = '';
-		
+
 		for ($i = 0; $i < count($pages); $i++) {
 			$currentPath = $pathPrefix . $pages[$i];
-			
+
 			$pathToFile = SinglePage::getPathToNode($currentPath, $pkg);
 
 			// check to see if a page at this point in the tree exists
 			$c = Page::getByPath("/" . $currentPath);
 			if ($c->isError() && $c->getError() == COLLECTION_NOT_FOUND) {
 				// create the page at that point in the tree
-			
+
 				$data = array();
 				$data['handle'] = $pages[$i];
 				$data['name'] = $txt->unhandle($data['handle']);
@@ -160,27 +160,27 @@ class SinglePage extends Page {
 				if ($pkg != null) {
 					$data['pkgID'] = $pkg->getPackageID();
 				}
-				
-				$newC = $parent->addStatic($data);	
+
+				$newC = $parent->addStatic($data);
 				$parent = $newC;
-				
+
 				$pxml = SinglePage::obtainPermissionsXML($currentPath, $pkg);
-				
+
 				if ($pxml) {
 					$newC->assignPermissionSet($pxml); // pass it an array
-				}					
-				
+				}
+
 			} else {
 				$parent = $c;
-			}				
-			
+			}
+
 			$pathPrefix = $currentPath . '/';
 		}
-		
+
 		return $newC;
-		
+
 	}
-	
+
 	private static function checkPermissionsXML($doc, $node) {
 		$dom = simplexml_load_file($doc);
 		$n = $dom->xpath('//node[@handle=\'' . $node . '\']');
@@ -189,18 +189,18 @@ class SinglePage extends Page {
 		}
 		return null;
 	}
-	
+
 	public static function obtainPermissionsXML($node, $pkg = null) {
 		// this function reads a file in, and grabs all the various filesystem permissions xml that applies to that file
 		// and returns it in a DOM object
-		
+
 		$node = SinglePage::sanitizePath($node);
-		
-		
+
+
 		// first, we operate on this if it's not in a package
-		
+
 		if (!is_object($pkg)) {
-			
+
 			if (is_dir(DIR_FILES_CONTROLLERS . '/' . $node) || is_dir(DIR_FILES_CONTROLLERS_REQUIRED . '/' . $node)) {
 				if (is_dir(DIR_FILES_CONTROLLERS . '/' . $node)) {
 					$pathToPerms = DIR_FILES_CONTROLLERS . '/' . $node;
@@ -208,7 +208,7 @@ class SinglePage extends Page {
 						$xmlweb = $pathToPerms . '/' . FILENAME_COLLECTION_ACCESS;
 					}
 				}
-				
+
 				if (is_dir(DIR_FILES_CONTROLLERS_REQUIRED . '/' . $node)) {
 					$pathToPerms = DIR_FILES_CONTROLLERS_REQUIRED . '/' . $node;
 					if (file_exists($pathToPerms . '/' . FILENAME_COLLECTION_ACCESS)) {
@@ -222,18 +222,18 @@ class SinglePage extends Page {
 					} else if (file_exists(DIR_FILES_CONTROLLERS_REQUIRED . '/' . FILENAME_COLLECTION_ACCESS)) {
 						$xmlcore = DIR_FILES_CONTROLLERS_REQUIRED . '/' . FILENAME_COLLECTION_ACCESS;
 					}
-				}			
+				}
 			}
-				
-			
+
+
 			if (isset($xmlweb)) {
 				$perms = SinglePage::checkPermissionsXML($xmlweb, $node);
 				if ($perms != null) {
 					return $perms;
 				}
-			} 
+			}
 
-			
+
 			if (isset($xmlcore)) {
 				$perms = SinglePage::checkPermissionsXML($xmlcore, $node);
 				if ($perms != null) {
@@ -242,9 +242,9 @@ class SinglePage extends Page {
 			}
 
 		} else {
-		
+
 			if (is_dir(DIR_PACKAGES . '/' . $pkg->getPackageHandle())) {
-				$dirp = DIR_PACKAGES;			
+				$dirp = DIR_PACKAGES;
 			} else {
 				$dirp = DIR_PACKAGES_CORE;
 			}
@@ -257,11 +257,11 @@ class SinglePage extends Page {
 				$pathNode = '/' . substr($node, 0, strrpos($node, '/'));
 				$pathToPerms = $dirp . '/' . $pkg->getPackageHandle() . '/' . DIRNAME_CONTROLLERS . $pathNode;
 			}
-			
+
 			if (file_exists($pathToPerms . '/' . FILENAME_COLLECTION_ACCESS)) {
 				$xml = $pathToPerms . '/' . FILENAME_COLLECTION_ACCESS;
 			}
-			
+
 			if (isset($xml)) {
 				$perms = SinglePage::checkPermissionsXML($xml, $node);
 				if ($perms != null) {
@@ -272,8 +272,8 @@ class SinglePage extends Page {
 
 		return false;
 	}
-	
-	// returns all pages in the site that are "single" 
+
+	// returns all pages in the site that are "single"
 	public static function getList() {
 		$db = Loader::db();
 		$r = $db->query("select Pages.cID from Pages inner join Collections on Pages.cID = Collections.cID where cFilename is not null order by cDateModified desc");
@@ -286,5 +286,5 @@ class SinglePage extends Page {
 		return $pages;
 	}
 
-	
+
 }

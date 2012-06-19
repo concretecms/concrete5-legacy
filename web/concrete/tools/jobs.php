@@ -28,7 +28,7 @@ if (!Job::authenticateRequest($_REQUEST['auth'])) {
 		$debug['jDateLastRun'] = '';
 		die($json->encode($debug));
 	}
-} 
+}
 
 //Uncomment to turn debugging on
 //$_REQUEST['debug']=1;
@@ -40,44 +40,44 @@ if(!$_REQUEST['debug']) ob_start();
 //run by job handle (aka file name) or run by job id
 if( strlen($_REQUEST['jHandle'])>0 || intval($_REQUEST['jID'])>0 ){
 
-	if($_REQUEST['jHandle']) 
+	if($_REQUEST['jHandle'])
 		$jobObj=Job::getByHandle($_REQUEST['jHandle']);
-	else 
+	else
 		$jobObj=Job::getByID( intval($_REQUEST['jID']) );
-		
-	if(!$jobObj){ 
+
+	if(!$jobObj){
 		$jsonErrorCode=1;
 		$jsonMessage=t('Error: Job not found');
-	}else{ 
-	
+	}else{
+
 		//Change Job Status
 		if( $_REQUEST['jStatus'] ){
 			$jobObj->setJobStatus( $_REQUEST['jStatus'] );
 		//Run Job
 		}else{
-			$jsonMessage = $jobObj->executeJob(); 	
+			$jsonMessage = $jobObj->executeJob();
 		}
-		
+
 		//set json vars
-		$jsonJHandle = $jobObj->jHandle;	
-		$jsonJDateLastRun = $jobObj->jDateLastRun;		
-		$jsonJID=$jobObj->jID;			
-		if( $jobObj->isError() ) 
-			$jsonErrorCode = $jobObj->getError();		
-	} 
+		$jsonJHandle = $jobObj->jHandle;
+		$jsonJDateLastRun = $jobObj->jDateLastRun;
+		$jsonJID=$jobObj->jID;
+		if( $jobObj->isError() )
+			$jsonErrorCode = $jobObj->getError();
+	}
 	$runTime=date(DATE_APP_GENERIC_MDYT, strtotime($jsonJDateLastRun));
 //run all jobs - default
-}else{ 
+}else{
 	Job::runAllJobs();
-	if(!$_REQUEST['debug']) 
+	if(!$_REQUEST['debug'])
 		$outputDisabled=1;
 	$jsonMessage=t('All Jobs Run Successfully');
 	$runTime=date(DATE_APP_GENERIC_MDYT);
-	$jsonJHandle =t('All Jobs');	
+	$jsonJHandle =t('All Jobs');
 }
 
 //all print/echo statements are suppressed, unless the debug variable is set
-if(!$_REQUEST['debug']){ 
+if(!$_REQUEST['debug']){
 	ob_end_clean();
 }
 

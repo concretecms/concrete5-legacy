@@ -1,4 +1,4 @@
-<? defined('C5_EXECUTE') or die("Access Denied."); ?> 
+<? defined('C5_EXECUTE') or die("Access Denied."); ?>
 <? $c = Page::getCurrentPage(); ?>
 <ul id="ccm-pagelist-tabs" class="ccm-dialog-tabs">
 	<li class="ccm-nav-active"><a id="ccm-pagelist-tab-add" href="javascript:void(0);"><?=($bID>0)? t('Edit') : t('Add') ?></a></li>
@@ -14,7 +14,7 @@
 	  <?=t('pages of type')?>
 	  <?
 			$ctArray = CollectionType::getList();
-	
+
 			if (is_array($ctArray)) { ?>
 	  <select name="ctID" id="selectCTID">
 		<option value="0">** <?php echo t('All')?> **</option>
@@ -25,9 +25,9 @@
 		<? } ?>
 	  </select>
 	  <? } ?>
-	  
+
 	  <h2><?=t('Filter')?></h2>
-	  
+
 	  <?
 	  Loader::model('attribute/categories/collection');
 	  $cadf = CollectionAttributeKey::getByHandle('is_featured');
@@ -41,7 +41,7 @@
 		<input type="checkbox" name="displayAliases" value="1" <? if ($displayAliases == 1) { ?> checked <? } ?> />
 		<?=t('Display page aliases.')?>
 		<br/>
-		
+
 	</div>
 	<div class="ccm-block-field-group">
 		<h2><?=t('Pagination')?></h2>
@@ -55,17 +55,17 @@
 	  <div>
 			<input type="radio" name="cParentID" id="cEverywhereField" value="0" <? if ($cParentID == 0) { ?> checked<? } ?> />
 			<?=t('everywhere')?>
-			
-			&nbsp;&nbsp; 
+
+			&nbsp;&nbsp;
 			<input type="radio" name="cParentID" id="cThisPageField" value="<?=$c->getCollectionID()?>" <? if ($cParentID == $c->getCollectionID() || $cThis) { ?> checked<? } ?>>
 			<?=t('beneath this page')?>
-			
+
 			&nbsp;&nbsp;
 			<input type="radio" name="cParentID" id="cOtherField" value="OTHER" <? if ($isOtherPage) { ?> checked<? } ?>>
 			<?=t('beneath another page')?> </div>
-			
+
 			<div class="ccm-page-list-page-other" <? if (!$isOtherPage) { ?> style="display: none" <? } ?>>
-			
+
 			<? $form = Loader::helper('form/page_selector');
 			if ($isOtherPage) {
 				print $form->selectPage('cParentIDValue', $cParentID);
@@ -73,9 +73,9 @@
 				print $form->selectPage('cParentIDValue');
 			}
 			?>
-			
+
 			</div>
-			
+
 			<div class="ccm-page-list-all-descendents" style="margin: 5px 0 0 0px;<?php echo (!$isOtherPage && !$cThis) ? ' display: none;' : ''; ?>">
 				<input type="checkbox" name="includeAllDescendents" id="includeAllDescendents" value="1" <?php echo $includeAllDescendents ? 'checked="checked"' : '' ?> />
 				<label for="includeAllDescendents"><?php echo t('Include all child pages') ?></label>
@@ -92,12 +92,12 @@
 		<option value="alpha_desc" <? if ($orderBy == 'alpha_desc') { ?> selected <? } ?>><?=t('in reverse alphabetical order')?></option>
 	  </select>
 	</div>
-	
+
 	<div class="ccm-block-field-group">
 	  <h2><?=t('Provide RSS Feed')?></h2>
-	   <input id="ccm-pagelist-rssSelectorOn" type="radio" name="rss" class="rssSelector" value="1" <?=($rss?"checked=\"checked\"":"")?>/> <?=t('Yes')?>   
+	   <input id="ccm-pagelist-rssSelectorOn" type="radio" name="rss" class="rssSelector" value="1" <?=($rss?"checked=\"checked\"":"")?>/> <?=t('Yes')?>
 	   &nbsp;&nbsp;
-	   <input type="radio" name="rss" class="rssSelector" value="0" <?=($rss?"":"checked=\"checked\"")?>/> <?=t('No')?>   
+	   <input type="radio" name="rss" class="rssSelector" value="0" <?=($rss?"":"checked=\"checked\"")?>/> <?=t('No')?>
 	   <br /><br />
 	   <div id="ccm-pagelist-rssDetails" <?=($rss?"":"style=\"display:none;\"")?>>
 		   <strong><?=t('RSS Feed Title')?></strong><br />
@@ -106,21 +106,21 @@
 		   <textarea name="rssDescription" style="width:250px" ><?=$rssDescription?></textarea>
 	   </div>
 	</div>
-	
+
 	<style type="text/css">
 	#ccm-pagelist-truncateTxt.faintText{ color:#999; }
 	<? if(truncateChars==0 && !$truncateSummaries) $truncateChars=128; ?>
 	</style>
 	<div class="ccm-block-field-group">
-	   <h2><?=t('Truncate Summaries')?></h2>	  
-	   <input id="ccm-pagelist-truncateSummariesOn" name="truncateSummaries" type="checkbox" value="1" <?=($truncateSummaries?"checked=\"checked\"":"")?> /> 
+	   <h2><?=t('Truncate Summaries')?></h2>
+	   <input id="ccm-pagelist-truncateSummariesOn" name="truncateSummaries" type="checkbox" value="1" <?=($truncateSummaries?"checked=\"checked\"":"")?> />
 	   <span id="ccm-pagelist-truncateTxt" <?=($truncateSummaries?"":"class=\"faintText\"")?>>
-	   		<?=t('Truncate descriptions after')?> 
-			<input id="ccm-pagelist-truncateChars" <?=($truncateSummaries?"":"disabled=\"disabled\"")?> type="text" name="truncateChars" size="3" value="<?=intval($truncateChars)?>" /> 
+	   		<?=t('Truncate descriptions after')?>
+			<input id="ccm-pagelist-truncateChars" <?=($truncateSummaries?"":"disabled=\"disabled\"")?> type="text" name="truncateChars" size="3" value="<?=intval($truncateChars)?>" />
 			<?=t('characters')?>
 	   </span>
 	</div>
-	
+
 </div>
 
 <div id="ccm-pagelistPane-preview" style="display:none" class="ccm-preview-pane ccm-pagelistPane">

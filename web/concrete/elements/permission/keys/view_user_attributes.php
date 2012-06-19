@@ -15,7 +15,7 @@ $attribs = UserAttributeKey::getList();
 <h3><?=t('Who can view what?')?></h3>
 
 <? foreach($included as $assignment) {
-	$entity = $assignment->getAccessEntityObject(); 
+	$entity = $assignment->getAccessEntityObject();
 ?>
 
 
@@ -41,7 +41,7 @@ $attribs = UserAttributeKey::getList();
 <h3><?=t('Who can\'t view what?')?></h3>
 
 <? foreach($excluded as $assignment) {
-	$entity = $assignment->getAccessEntityObject(); 
+	$entity = $assignment->getAccessEntityObject();
 ?>
 
 

@@ -18,14 +18,14 @@ if ($cp->canApprovePageVersions()) {
 	}
 }
 
-Loader::element('pane_header', array('c'=>$c)); 
+Loader::element('pane_header', array('c'=>$c));
 ?>
 <div class="ccm-pane-controls">
     <div id="ccm-edit-collection">
         <form method="post" id="ccm-check-in" action="<?=DIR_REL?>/<?=DISPATCHER_FILENAME?>?cID=<?=$c->getCollectionID()?>&ctask=check-in">
         	<? $valt = Loader::helper('validation/token'); $valt->output(); ?>
             <h1><?=t('Exit Edit Mode')?></h1>
-            
+
             <div class="ccm-form-area">
                 <div class="ccm-field">
                     <h2><?=t('Version Comments')?></h2>
@@ -40,11 +40,11 @@ Loader::element('pane_header', array('c'=>$c));
                     	<a href="javascript:void(0)" id="ccm-check-in-discard" class="ccm-button-left"><span><?=t('Discard My Edits')?></span></a>
                     <? } ?>
                 </div>
-                <input type="hidden" name="approve" value="PREVIEW" id="ccm-approve-field" />        
+                <input type="hidden" name="approve" value="PREVIEW" id="ccm-approve-field" />
 	        	<div class="ccm-spacer">&nbsp;</div>
-            </div>        
+            </div>
         </form>
-       
+
         <script type="text/javascript">
         $(function() {
             setTimeout("$('#ccm-check-in-comments').focus();",300);
@@ -52,12 +52,12 @@ Loader::element('pane_header', array('c'=>$c));
                 $("#ccm-approve-field").val('PREVIEW');
                 $("#ccm-check-in").submit();
             });
-        
+
             $("#ccm-check-in-discard").click(function() {
                 $("#ccm-approve-field").val('DISCARD');
                 $("#ccm-check-in").submit();
             });
-        
+
             $("#ccm-check-in-publish").click(function() {
                 $("#ccm-approve-field").val('APPROVE');
                 $("#ccm-check-in").submit();

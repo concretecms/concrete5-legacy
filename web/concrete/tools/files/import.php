@@ -76,14 +76,14 @@ $umf = str_ireplace(array('M', 'K', 'G'), array(' MB', 'KB', ' GB'), $umf);
 <script type="text/javascript">
 
 var swfu;
-$(function() { 
+$(function() {
 
 	$("#ccm-file-manager-multiple-remote").submit(function() {
-		$(this).attr('target', ccm_alProcessorTarget);		
+		$(this).attr('target', ccm_alProcessorTarget);
 	});
 
 	$("#ccm-file-manager-multiple-incoming").submit(function() {
-		$(this).attr('target', ccm_alProcessorTarget);		
+		$(this).attr('target', ccm_alProcessorTarget);
 	});
 
 	swfu = new SWFUpload({
@@ -112,7 +112,7 @@ $(function() {
 		button_text_left_padding: 18,
 		button_text_style: ".uploadButtonText {background-color: #eee; font-family: Helvetica Neue, Helvetica, Arial}",
 		button_placeholder_id: "ccm-file-add-multiple-spanButtonPlaceHolder",
-		
+
 		// The event handler functions are defined in handlers.js
 		// wrapped function with apply are so c5 can do anything special it needs to
 		// some functions needed to be overridden completly
@@ -122,26 +122,26 @@ $(function() {
 		file_queue_error_handler : fileQueueError,
 		file_dialog_complete_handler : function(numFilesSelected, numFilesQueued){
 			try {
-				if (numFilesSelected > 0) {					
+				if (numFilesSelected > 0) {
 					document.getElementById(this.customSettings.cancelButtonId).disabled = false;
-				}								
+				}
 				//this.startUpload();
 			} catch (ex)  {
 				this.debug(ex);
-			}		
+			}
 		},
 		upload_start_handler : uploadStart,
 		upload_progress_handler : function(file, bytesLoaded, bytesTotal){
 			try {
 				var percent = Math.ceil((bytesLoaded / bytesTotal) * 100);
-		
+
 				var progress = new FileProgress(file, this.customSettings.progressTarget);
 				progress.setProgress(percent);
-				
+
 				progress.setStatus("<?php echo t('Uploading...')?> ("+percent+"%)");
 			} catch (ex) {
 				this.debug(ex);
-			}		
+			}
 		},
 		upload_error_handler : uploadError,
 		upload_success_handler : function(file, serverData){
@@ -158,25 +158,25 @@ $(function() {
 					if(!this.highlight){this.highlight = [];}
 					this.highlight.push(serverData['id']);
 					if(ccm_uploadedFiles && serverData['id']!='undefined') ccm_uploadedFiles.push(serverData['id']);
-				}   
+				}
 			} catch (ex) {
 				this.debug(ex);
-			}		
+			}
 		},
-		upload_complete_handler : uploadComplete, 
+		upload_complete_handler : uploadComplete,
 		queue_complete_handler : function(file){
 			// queueComplete() from swfupload.handlers.js
 			if (ccm_uploadedFiles.length > 0) {
 				queueComplete();
 				jQuery.fn.dialog.closeTop();
-				setTimeout(function() { 
-					ccm_filesUploadedDialog('<?=$searchInstance?>'); 
+				setTimeout(function() {
+					ccm_filesUploadedDialog('<?=$searchInstance?>');
 				}, 100);
 			}
 		}
 	});
 
-	
+
 });
 </script>
 
@@ -186,15 +186,15 @@ $(function() {
 
 <form id="form1" action="<?=DISPATCHER_FILENAME?>" method="post" enctype="multipart/form-data">
 
-	
+
 		<table border="0" width="100%" cellspacing="0" cellpadding="0" id="ccm-file-add-multiple-list" class="table table-striped">
 		<tr>
 			<th colspan="2"><?=t('Upload Queue');?></th>
 		</tr>
 		</table>
-		
+
 		<div class="ccm-spacer">&nbsp;</div><br/>
-		
+
 		<!--
 		<div>
 
@@ -203,38 +203,38 @@ $(function() {
 		<div style="width: 100px; float: right; text-align: right"></div>
 
 		<div id="ccm-file-add-multiple-results">0 <?=t('Files Uploaded');?></div>
-		
+
 		<div class="ccm-spacer">&nbsp;</div>
-		
+
 		</div>
-		
+
 		</div>
 		<br style="clear:left;"/> //-->
 		<div class="dialog-buttons">
 			<?
-			
+
 			print $h->button_js(t('Start Uploads'), 'swfu.startUpload()', 'right', 'primary');
 			print $h->button_js(t('Cancel'), 'swfu.cancelQueue()', 'left', null,array('id'=>'ccm-file-add-multiple-btnCancel', 'disabled' => 1));
-			
+
 			?>
 		</div>
-		
+
 		<? // don't ask why we have to this. it's because we're swapping out buttons with the tabs. Ugh. ?>
 		<div style="display: none" id="dialog-buttons-multiple">
 			<?
-			
+
 			print $h->button_js(t('Start Uploads'), 'swfu.startUpload()', 'right', 'primary');
 			print $h->button_js(t('Cancel'), 'swfu.cancelQueue()', 'left', null,array('id'=>'ccm-file-add-multiple-btnCancel', 'disabled' => 1));
-			
+
 			?>
 		</div>
-		
+
 		<div style="display: none" id="dialog-buttons-incoming">
 			<?
 				print $form->submit('submit', t('Import Files'), array('onclick' => "jQuery.fn.dialog.showLoader();$('#ccm-file-manager-multiple-incoming').submit()", 'class' => 'primary ccm-button-right'));
 			?>
 		</div>
-		
+
 		<div id="dialog-buttons-remote" style="display: none">
 			<?
 				print $form->submit('submit', t('Import Files'), array('onclick' => "jQuery.fn.dialog.showLoader();$('#ccm-file-manager-multiple-remote').submit()", 'class' => 'primary ccm-button-right'));
@@ -252,7 +252,7 @@ $(function() {
 	$valt = Loader::helper('validation/token');
 	$fh = Loader::helper('validation/file');
 	Loader::library('file/types');
-	
+
 	$incoming_contents = $ch->getIncomingDirectoryContents();
 ?>
 <div id="ccm-file-add-incoming-tab" style="display: none">
@@ -268,7 +268,7 @@ $(function() {
 				<th width="45%" valign="middle" class="theader"><?=t('Filename')?></td>
 				<th width="25%" valign="middle" class="center theader"><?=t('Size')?></td>
 			</tr>
-		<?php foreach($incoming_contents as $filenum=>$file_array) { 
+		<?php foreach($incoming_contents as $filenum=>$file_array) {
 				$ft = FileTypeList::getType($file_array['name']);
 		?>
 			<tr>
@@ -285,8 +285,8 @@ $(function() {
 		</table>
 		<input type="checkbox" name="removeFilesAfterPost" value="1" />
 		<?=t('Remove files from incoming/ directory.')?>
-		
-		
+
+
 	<?=$valt->output('import_incoming');?>
 
 </form>

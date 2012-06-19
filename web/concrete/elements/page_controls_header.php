@@ -6,7 +6,7 @@ $html = Loader::helper('html');
 $dh = Loader::helper('concrete/dashboard');
 
 if (isset($cp)) {
-	if ($cp->canViewToolbar()) { 
+	if ($cp->canViewToolbar()) {
 
 ?>
 
@@ -25,8 +25,8 @@ if (!$dh->inDashboard()) {
 	$this->addHeaderItem($html->css('ccm.app.css'));
 	$this->addHeaderItem($html->css('jquery.ui.css'));
 	$this->addFooterItem('<div id="ccm-page-controls-wrapper"><div id="ccm-toolbar"></div></div>');
-	
-	$this->addFooterItem('<script type="text/javascript" src="' . REL_DIR_FILES_TOOLS_REQUIRED . '/i18n_js"></script>'); 
+
+	$this->addFooterItem('<script type="text/javascript" src="' . REL_DIR_FILES_TOOLS_REQUIRED . '/i18n_js"></script>');
 	$this->addHeaderItem($html->javascript('jquery.js'));
 	$this->addFooterItem($html->javascript('jquery.ui.js'));
 	$this->addFooterItem($html->javascript('jquery.form.js'));
@@ -53,8 +53,8 @@ $btask = '';
 if (Loader::helper('validation/strings')->alphanum($_REQUEST['btask'])) {
 	$btask = $_REQUEST['btask'];
 }
-$this->addFooterItem('<script type="text/javascript" src="' . REL_DIR_FILES_TOOLS_REQUIRED . '/page_controls_menu_js?cID=' . $cID . '&amp;cvID=' . $cvID . '&amp;btask=' . $btask . '&amp;ts=' . time() . '"></script>'); 
+$this->addFooterItem('<script type="text/javascript" src="' . REL_DIR_FILES_TOOLS_REQUIRED . '/page_controls_menu_js?cID=' . $cID . '&amp;cvID=' . $cvID . '&amp;btask=' . $btask . '&amp;ts=' . time() . '"></script>');
 
 	}
-	
+
 }

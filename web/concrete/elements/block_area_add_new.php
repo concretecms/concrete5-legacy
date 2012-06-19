@@ -1,4 +1,4 @@
-<? 
+<?
 defined('C5_EXECUTE') or die("Access Denied.");
 $btl = new BlockTypeList();
 $blockTypes = $btl->getBlockTypeList();
@@ -55,7 +55,7 @@ $("#ccm-area-tabs a").click(function() {
 	$(this).parent().addClass("active");
 	$("#" + ccm_areaActiveTab + "-tab").show();
 	if (ccm_areaActiveTab == 'ccm-add-marketplace') {
-		ccm_updateMarketplaceTab();	
+		ccm_updateMarketplaceTab();
 	}
 });
 
@@ -108,8 +108,8 @@ ccmBlockTypeSearchResultsSelect = function(which, e) {
 				$(prevObj[0]).addClass('ccm-block-type-selected');
 			}
 		}
-		
-	}	
+
+	}
 
 	var currObj = $("li.ccm-block-type-selected");
 	// handle scrolling
@@ -131,7 +131,7 @@ ccmBlockTypeSearchResultsSelect = function(which, e) {
 
 
 	return true;
-	
+
 }
 
 ccmBlockTypeDoMapKeys = function(e) {
@@ -189,19 +189,19 @@ $(function() {
 		<?=$form->text('ccmBlockTypeSearch', array('tabindex' => 1, 'autocomplete' => 'off', 'style' => 'width: 168px'))?>
 		<a href="javascript:void(0)" id="ccm-block-type-clear-search" onclick="ccmBlockTypeSearchClear()"><img width="16" height="16" src="<?=ASSETS_URL_IMAGES?>/icons/remove.png" border="0" style="vertical-align: middle" /></a>
 		</div>
-		
+
 		</form>
-		
+
 	</div>
-	
+
 	<ul id="ccm-block-type-list">
-	<? if (count($blockTypes) > 0) { 
-		foreach($blockTypes as $bt) { 
+	<? if (count($blockTypes) > 0) {
+		foreach($blockTypes as $bt) {
 			if (!$ap->canAddBlock($bt)) {
 				continue;
 			}
 			$btIcon = $ci->getBlockTypeIconURL($bt);
-			?>	
+			?>
 			<li class="ccm-block-type ccm-block-type-available">
 				<? if (!$bt->hasAddTemplate()) { ?>
 					<a style="background-image: url(<?=$btIcon?>)" href="javascript:void(0)" onclick="ccmBlockTypeResetKeys(); jQuery.fn.dialog.showLoader(); $.get('<?=$bt->getBlockAddAction($a)?>&processBlock=1&add=1', function(r) { ccm_parseBlockResponse(r, false, 'add'); })" class="ccm-block-type-inner"><?=$bt->getBlockTypeName()?></a>
@@ -211,12 +211,12 @@ $(function() {
 				<div class="ccm-block-type-description"  id="ccm-bt-help<?=$bt->getBlockTypeID()?>"><?=$bt->getBlockTypeDescription()?></div>
 			</li>
 			<?
-			
-			/* ?>	
+
+			/* ?>
 			<div class="ccm-block-type-grid-entry">
 				<a class="dialog-launch ccm-block-type-inner" dialog-modal="false" dialog-width="<?=$bt->getBlockTypeInterfaceWidth()?>" dialog-height="<?=$bt->getBlockTypeInterfaceHeight()?>" style="background-image: url(<?=$btIcon?>)" dialog-title="<?=t('Add')?> <?=$bt->getBlockTypeName()?>" href="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/add_block_popup.php?cID=<?=$c->getCollectionID()?>&btID=<?=$bt->getBlockTypeID()?>&arHandle=<?=$a->getAreaHandle()?>"><?=$bt->getBlockTypeName()?></a>
 			</div> <? */ ?>
-			
+
 		<? }
 	} else { ?>
 		<p><?=t('No block types can be added to this area.')?></p>
@@ -224,9 +224,9 @@ $(function() {
 	</ul>
 </div>
 
-<? if(ENABLE_MARKETPLACE_SUPPORT){ 
+<? if(ENABLE_MARKETPLACE_SUPPORT){
 	$tp = new TaskPermission();
-	if ($tp->canInstallPackages()) { 
+	if ($tp->canInstallPackages()) {
 	?>
 	<div class="ccm-ui">
 
@@ -237,6 +237,6 @@ $(function() {
     </div>
 
 	</div>
-<? } 
+<? }
 
-}?>	
+}?>

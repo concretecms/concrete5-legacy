@@ -1,4 +1,4 @@
-<? defined('C5_EXECUTE') or die("Access Denied."); ?> 
+<? defined('C5_EXECUTE') or die("Access Denied."); ?>
 <?
 
 $s1 = FileSet::getMySets();
@@ -17,18 +17,18 @@ if (count($s1) > 0) { ?>
 		<div class="ccm-file-sets-search-wrapper-input">
 			<?=$form->text('fsSearchName', $searchRequest['fsSearchName'], array('autocomplete' => 'off'))?>
 		</div>
-		
+
 		</td>
 	</tr>
 	</table>
 	</div>
-	
-		
+
+
 	<div class="ccm-file-search-advanced-sets-results">
 	<ul id="ccm-file-search-advanced-sets-list">
-	<? foreach($s1 as $fs) { 
+	<? foreach($s1 as $fs) {
 		$pfs = new Permissions($fs);
-		
+
 		?>
 		<li class="ccm-<?=$searchInstance?>-search-advanced-sets-cb">
 		<div class="ccm-file-search-advanced-set-controls">
@@ -43,12 +43,12 @@ if (count($s1) > 0) { ?>
 	</div>
 
 	<div style="padding-left: 6px; padding-top: 6px" class="ccm-note"><?=$form->checkbox('fsIDNone', '1', $searchRequest['fsIDNone'] == 1, array('instance' => $searchInstance))?> <?=$form->label('fsIDNone', t('Display files in no sets.'))?></div>
-	
+
 </div>
 
 	<script type="text/javascript">
 	$(function() {
 		$('a.ccm-file-set-delete-window').dialog();
-	});	
+	});
 	</script>
 <? } ?>

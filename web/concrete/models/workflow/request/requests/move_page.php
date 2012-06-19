@@ -7,25 +7,25 @@ defined('C5_EXECUTE') or die("Access Denied.");
  * @license    http://www.concrete5.org/license/     MIT License
  *
  */
- 
+
 class MovePagePageWorkflowRequest extends PageWorkflowRequest {
-	
+
 	protected $targetCID;
 	protected $wrStatusNum = 50;
-	
+
 	public function __construct() {
 		$pk = PermissionKey::getByHandle('move_or_copy_page');
 		parent::__construct($pk);
 	}
-	
+
 	public function setRequestedTargetPage($c) {
 		$this->targetCID = $c->getCollectionID();
 	}
-	
+
 	public function getRequestedTargetPageID() {
 		return $this->targetCID;
-	}	
-	
+	}
+
 	public function setSaveOldPagePath($r) {
 		$this->saveOldPagePath = $r;
 	}
@@ -52,8 +52,8 @@ class MovePagePageWorkflowRequest extends PageWorkflowRequest {
 
 	public function getWorkflowRequestApproveButtonInnerButtonRightHTML() {
 		return '<i class="icon-white icon-share-alt"></i>';
-	}	
-	
+	}
+
 	public function getWorkflowRequestApproveButtonText() {
 		return t('Approve Move');
 	}
@@ -61,7 +61,7 @@ class MovePagePageWorkflowRequest extends PageWorkflowRequest {
 	public function approve(WorkflowProgress $wp) {
 		$c = Page::getByID($this->getRequestedPageID());
 		$dc = Page::getByID($this->targetCID);
-		if (is_object($c) && is_object($dc) && (!$c->isError()) && (!$dc->isError())) { 
+		if (is_object($c) && is_object($dc) && (!$c->isError()) && (!$dc->isError())) {
 			if ($c->canMoveCopyTo($dc)) {
 				if ($this->saveOldPagePath) {
 					$nc2 = $c->move($dc, true);

@@ -10,7 +10,7 @@ if ($_REQUEST['mode'] == 'users') {
 }
 
 $tp = new TaskPermission();
-if (!$tp->canAccessUserSearch() && !$tp->canAccessGroupSearch()) { 
+if (!$tp->canAccessUserSearch() && !$tp->canAccessGroupSearch()) {
 	die(t("Access Denied."));
 }
 
@@ -52,7 +52,7 @@ $("#ccm-ug-tabs a").click(function() {
 
 <div id="ccm-select-user-tab" style="display: none; clear: both">
 
-<? 
+<?
 $mode = 'choose_multiple';
 include(DIR_FILES_TOOLS_REQUIRED . '/users/search_dialog.php'); ?>
 

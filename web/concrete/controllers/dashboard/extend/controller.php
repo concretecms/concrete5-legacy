@@ -6,5 +6,5 @@ class DashboardExtendController extends Controller {
 		$this->redirect('/dashboard/extend/install');
 	}
 
-	
+
 }

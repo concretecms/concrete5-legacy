@@ -5,11 +5,11 @@ Loader::library('mail/importer');
 
 class DashboardSystemMailMethodController extends Controller {
 	protected $sendUndefinedTasksToView = false;
-	
+
 	public function settings_updated() {
 		$this->set("message", t('Global mail settings saved.'));
 	}
-	
+
 	public function save_settings() {
 		Config::save('MAIL_SEND_METHOD', $this->post('MAIL_SEND_METHOD'));
 		if ($this->post('MAIL_SEND_METHOD')== 'SMTP') {
@@ -28,7 +28,7 @@ class DashboardSystemMailMethodController extends Controller {
 		$this->redirect("/dashboard/system/mail/method", "settings_updated");
 	}
 
-		
+
 }
 
 ?>

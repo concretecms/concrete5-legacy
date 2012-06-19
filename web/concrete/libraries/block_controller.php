@@ -22,11 +22,11 @@ defined('C5_EXECUTE') or die("Access Denied.");
  */
 
 	class BlockController extends Controller {
-		
+
 		protected $record; // blockrecord
 		protected $helpers = array('form');
 		protected static $sets;
-		
+
 		protected $btDescription = "";
 		protected $btName = "";
 		protected $btHandle = "";
@@ -43,23 +43,23 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		protected $btCacheBlockOutputLifetime = CACHE_LIFETIME;
 		protected $btCacheBlockOutputOnPost = false;
 		protected $btCacheBlockOutputForRegisteredUsers = false;
-		
+
 		protected $btExportPageColumns = array();
 		protected $btExportFileColumns = array();
 		protected $btExportPageTypeColumns = array();
-		
+
 		protected $btWrapperClass = '';
-		
+
 		public $headerItems = array();
-		
-		
+
+
 
 		protected $identifier;
-		
+
 		public function getIdentifier() {
 			return $this->identifier;
 		}
-		
+
 		/**
 		 * Sets a value used by a particular block. These variables will automatically be present in the corresponding views used by the block.
 		 * @param string $key
@@ -67,23 +67,23 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		 * @return void
 		 */
 		public function set($key, $value) {
-			BlockController::$sets[$this->identifier][$key] = $value;		
+			BlockController::$sets[$this->identifier][$key] = $value;
 		}
-		
+
 		public function get($key, $defaultValue = null) {
 			if (isset(BlockController::$sets[$this->identifier][$key])) {
 				return BlockController::$sets[$this->identifier][$key];
 			}
-			
+
 			return parent::get($key, $defaultValue);
 		}
 
 		public function getBlockTypeWrapperClass() {return $this->btWrapperClass;}
-		/** 
+		/**
 		 * @access private
 		 */
 		public function getSets() {
-			return BlockController::$sets[$this->identifier];		
+			return BlockController::$sets[$this->identifier];
 		}
 
 		/**
@@ -109,7 +109,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			$ret = Package::installDB($path . '/' . $this->dbFile);
 			return $ret;
 		}
-		
+
 		/**
 		 * Renders a view in the block's folder.
 		 * <code>
@@ -130,15 +130,15 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			}
 			$this->renderOverride = $view;
 		}
-		
+
 		public function validate($args) {
 			return true;
 		}
-		
+
 		public function getBlockControllerData() {
 			return $this->record;
 		}
-		
+
 		/**
 		 * Run when a block is added or edited. Automatically saves block data against the block's database table. If a block needs to do more than this (save to multiple tables, upload files, etc... it should override this.
 		 * @param array $args
@@ -156,7 +156,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 				$this->record->Replace();
 			}
 		}
-		
+
 		/**
 		 *
 		 * Gets the permissions object for this controller's block
@@ -166,7 +166,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			$bp = new Permissions(Block::getByID($this->bID));
 			return $bp;
 		}
-		
+
 		/**
 		 * Automatically run when a block is duplicated. This most likely happens when a block is edited: a block is first duplicated, and then presented to the user to make changes.
 		 * @param int $newBlockID
@@ -180,15 +180,15 @@ defined('C5_EXECUTE') or die("Access Denied.");
 				return $newInstance;
 			}
 		}
-		
+
 		public function __wakeup() {
 			$this->__construct();
 		}
-		
+
 		public function getBlockTypeDatabaseTable() {
 			return $this->btTable;
 		}
-		
+
 		public function export(SimpleXMLElement $blockNode) {
 
 			$tables[] = $this->getBlockTypeDatabaseTable();
@@ -196,7 +196,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 				$tables = $this->btExportTables;
 			}
 			$db = Loader::db();
-		
+
 			foreach($tables as $tbl) {
 				if (!$tbl) {
 					continue;
@@ -236,7 +236,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 								$args[$node->getName()] = ContentImporter::getValue((string) $node);
 							}
 						}
-					} 
+					}
 				}
 			}
 			return $args;
@@ -257,35 +257,35 @@ defined('C5_EXECUTE') or die("Access Denied.");
 								}
 								$aar->Save();
 							}
-						}								
+						}
 					}
 				}
 			}
 		}
-		
+
 		public function import($page, $arHandle, SimpleXMLElement $blockNode) {
 			$args = array();
 			$db = Loader::db();
 			// handle the adodb stuff
 			$args = $this->getImportData($blockNode);
-			
+
 			$bt = BlockType::getByHandle($this->btHandle);
 			$b = $page->addBlock($bt, $arHandle, $args);
 			$b->updateBlockInformation(array('bName' => $blockNode['name'], 'bFilename' => $blockNode['custom-template']));
-			
+
 			if ($page->isMasterCollection() && $blockNode['mc-block-id'] != '') {
-				ContentImporter::addMasterCollectionBlockID($b, (string) $blockNode['mc-block-id']);		
-			}					
-			
+				ContentImporter::addMasterCollectionBlockID($b, (string) $blockNode['mc-block-id']);
+			}
+
 			// now we insert stuff that isn't part of the btTable
 			// we have to do this this way because we need a bID
 			$this->importAdditionalData($b, $blockNode);
 		}
-		
+
 		public function cacheBlockRecord() {
 			return $this->btCacheBlockRecord;
 		}
-		
+
 		public function cacheBlockOutput() {
 			return $this->btCacheBlockOutput;
 		}
@@ -301,11 +301,11 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		public function getBlockTypeCacheOutputLifetime() {
 			return $this->btCacheBlockOutputLifetime;
 		}
-		
+
 		public function getCollectionObject() {
 			if ($this->bActionCID > 0) {
 				return Page::getByID($this->bActionCID);
-			} 
+			}
 			return Page::getCurrentPage();
 		}
 
@@ -322,11 +322,11 @@ defined('C5_EXECUTE') or die("Access Denied.");
 					return $p[$field];
 				}
 				return $p;
-			}			
+			}
 			return parent::post($field,$defaultValue);
 		}
 
-		
+
 		/**
 		 * Automatically run when a block is deleted. This removes the special data from the block's specific database table. If a block needs to do more than this this method should be overridden.
 		 * @return $void
@@ -339,7 +339,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			}
 		}
 
-		/** 
+		/**
 		 * Loads the BlockRecord class based on its attribute names
 		 * @return void
 		 */
@@ -351,7 +351,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 				}
 			}
 		}
-		
+
 		/**
 		 * Instantiates the block controller.
 		 * @param BlockType $obj|Block $obj
@@ -363,8 +363,8 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			} else if ($obj instanceof Block) {
 				$b = $obj;
 				$this->identifier = 'BLOCK_' . $obj->getBlockID();
-			
-				// we either have a blockID passed, or nothing passed, if we're adding a block type				
+
+				// we either have a blockID passed, or nothing passed, if we're adding a block type
 				$this->bID = $b->getBlockID();
 				if ($this->btTable) {
 					$this->record = new BlockRecord($this->btTable);
@@ -378,11 +378,11 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			parent::__construct();
 			$this->set('controller', $this);
 		}
-		
+
 		public function outputAutoHeaderItems() {
 			$b = $this->getBlockObject();
 			$bvt = new BlockViewTemplate($b);
-			
+
 			$headers = $bvt->getTemplateHeaderItems();
 			if (count($headers) > 0) {
 				foreach($headers as $h) {
@@ -390,13 +390,13 @@ defined('C5_EXECUTE') or die("Access Denied.");
 				}
 			}
 		}
-		
+
 		public function addHeaderItem($file) {
 			$namespace = 'BLOCK_CONTROLLER_' . strtoupper($this->btHandle);
 			$this->headerItems[$namespace][] = $file;
 			parent::addHeaderItem($file);
 		}
-		
+
 		public function setupAndRun($method) {
 			if ($method) {
 				$this->task = $method;
@@ -410,13 +410,13 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			if ($method) {
 				$this->runTask($method, array());
 			}
-			
+
 			if (method_exists($this, 'on_before_render')) {
 				$this->on_before_render($method);
 			}
 		}
 
-		
+
 		/**
 		 * Gets the generic Block object attached to this controller's instance
 		 * @return Block $b
@@ -432,7 +432,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		public function uninstall() {
 			// currently blocks cannot be uninstalled
 		}
-		
+
 		/**
 		 * Returns the name of the block type
 		 * @return string $btName
@@ -440,7 +440,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		public function getBlockTypeName() {
 			return t($this->btName);
 		}
-		
+
 		/**
 		 * Returns the width of the block type's interface when presented in page.
 		 * @return int
@@ -448,7 +448,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		public function getInterfaceWidth() {
 			return $this->btInterfaceWidth;
 		}
-		
+
 		/**
 		 * Returns the height of the block type's interface when presented in page.
 		 * @return int
@@ -456,7 +456,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		public function getInterfaceHeight() {
 			return $this->btInterfaceHeight;
 		}
-		
+
 		/**
 		 * Returns the description of the block type
 		 * @return string
@@ -464,28 +464,28 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		public function getBlockTypeDescription() {
 			return t($this->btDescription);
 		}
-		
-		/** 
+
+		/**
 		 * Returns HTML that will be shown when a user wants help for a given block type
 		 */
 		public function getBlockTypeHelp() {
 			return $this->btHelpContent;
 		}
-		
+
 		/**
 		 * @access private
 		 */
 		public function isActiveWhenAdded() {
 			return $this->btActiveWhenAdded;
 		}
-		
+
 		/**
 		 * @access private
 		 */
 		public function isCopiedWhenPropagated() {
 			return $this->btCopyWhenPropagate;
 		}
-		
+
 		/**
 		 * Returns whether this block type is included in all versions. Default is false - block types are typically versioned but sometimes it makes sense not to do so.
 		 * @return bool
@@ -493,7 +493,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		public function includeAll() {
 			return $this->btIncludeAll;
 		}
-		
+
 		/**
 		 * Returns whether this block type is internal to Concrete. If it's internal it's not displayed in the front end interface. Examples include the LibraryFile block.
 		 * @return bool
@@ -501,13 +501,13 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		public function isBlockTypeInternal() {
 			return $this->btIsInternal;
 		}
-		
-		/** 
+
+		/**
 		 * Returns a key/value array of strings that is used to translate items when used in javascript
 		 */
 		public function getJavaScriptStrings() {
 			return array();
 		}
-		
+
 	}
-	
+

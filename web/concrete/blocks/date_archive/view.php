@@ -6,18 +6,18 @@
 	$firstPost = new DateTime($firstPost->format('m/01/Y'));
 	$first = date_diff($startDt,$firstPost);
 	$first = $first->m;
-	
+
 	if($first > $numMonths) {
 		$first = $numMonths;
-	}	
-	
+	}
+
 	$startDt->modify('-'.$first.' months');
 	$workingDt = $startDt;
 	$year = $workingDt->format('Y');
 	?>
 	<h4><?php echo $year;?></h4>
 	<ul>
-		<?php 
+		<?php
 		$i=0;
 		while(true) {
 			if($workingDt->format('Y') > $year) {

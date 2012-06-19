@@ -17,9 +17,9 @@
  */
 
 defined('C5_EXECUTE') or die("Access Denied.");
-class TextHelper { 
-	
-	/** 
+class TextHelper {
+
+	/**
 	 * Takes text and returns it in the "lowercase-and-dashed-with-no-punctuation" format
 	 * @param string $handle
 	 * @param bool $leaveSlashes
@@ -37,14 +37,14 @@ class TextHelper {
 			"ø"=>"oe",
 			"å"=>"aa",
 			"é"=>"e",
-			"è"=>"e"	
+			"è"=>"e"
 		);
 		$handle = str_replace(array_keys($multi), array_values($multi), $handle);
 
 		$searchNormal = array("/[&]/", "/[\s]+/", "/[^0-9A-Za-z-_.]/", "/-+/");
 		$searchSlashes = array("/[&]/", "/[\s]+/", "/[^0-9A-Za-z-_.\/]/", "/-+/");
 		$replace = array("and", "-", "", "-");
-		
+
 		$search = $searchNormal;
 		if ($leaveSlashes) {
 			$search = $searchSlashes;
@@ -61,14 +61,14 @@ class TextHelper {
 		return $handle;
 	}
 
-	/** 
+	/**
 	 * Strips tags and optionally reduces string to specified length.
 	 * @param string $string
 	 * @param int $maxlength
 	 * @param string $allowed
 	 * @return string
 	 */
-	function sanitize($string, $maxlength = 0, $allowed = '') {	
+	function sanitize($string, $maxlength = 0, $allowed = '') {
             $text = trim(strip_tags($string, $allowed));
 		if ($maxlength > 0) {
 			if (function_exists('mb_substr')) {
@@ -99,17 +99,17 @@ class TextHelper {
 	 * @return string
 	 */
 	public function entities($v){
-		return htmlentities( $v, ENT_COMPAT, APP_CHARSET); 
+		return htmlentities( $v, ENT_COMPAT, APP_CHARSET);
 	}
-	
-	/** 
+
+	/**
 	 * A concrete5 specific version of htmlspecialchars(). Double encoding is OFF, and the character set is set to your site's.
 	 */
 	public function specialchars($v) {
 		return htmlspecialchars($v, ENT_COMPAT, APP_CHARSET, false);
 	}
-	 
-	 
+
+
 	/**
 	 * An alias for shorten()
 	 * @param string $textStr
@@ -120,29 +120,29 @@ class TextHelper {
 	public function shorten($textStr, $numChars = 255, $tail = '…') {
 		return $this->shortText($textStr, $numChars, $tail);
 	}
-	
-	/** 
+
+	/**
 	 * Like sanitize, but requiring a certain number characters, and assuming a tail
 	 * @param string $textStr
 	 * @param int $numChars
 	 * @param string $tail
 	 * @return string $textStr
-	 */	
+	 */
 	function shortText($textStr, $numChars=255, $tail='…') {
 		if (intval($numChars)==0) $numChars=255;
 		$textStr=strip_tags($textStr);
 		if (function_exists('mb_substr') && function_exists('mb_strlen')) {
-			if (mb_strlen($textStr, APP_CHARSET) > $numChars) { 
+			if (mb_strlen($textStr, APP_CHARSET) > $numChars) {
 				$textStr = mb_substr($textStr, 0, $numChars, APP_CHARSET) . $tail;
 			}
 		} else {
-			if (strlen($textStr) > $numChars) { 
+			if (strlen($textStr) > $numChars) {
 				$textStr = substr($textStr, 0, $numChars) . $tail;
 			}
 		}
-		return $textStr;			
+		return $textStr;
 	}
-        
+
         /**
         * Shortens and sanitizes a string but only cuts at word boundaries
 	* @param string $textStr
@@ -153,19 +153,19 @@ class TextHelper {
 		if (intval($numChars)==0) $numChars=255;
 		$textStr=strip_tags($textStr);
 		if (function_exists('mb_substr')) {
-			if (mb_strlen($textStr, APP_CHARSET) > $numChars) { 
+			if (mb_strlen($textStr, APP_CHARSET) > $numChars) {
 				$textStr=preg_replace('/\s+?(\S+)?$/', '', mb_substr($textStr, 0, $numChars + 1, APP_CHARSET)) . $tail;
 			}
 		} else {
-			if (strlen($textStr) > $numChars) { 
+			if (strlen($textStr) > $numChars) {
 				$textStr = preg_replace('/\s+?(\S+)?$/', '', substr($textStr, 0, $numChars + 1)) . $tail;
 			}
 		}
-		return $textStr;		
+		return $textStr;
 	}
 
-	
-	
+
+
 	/**
 	 * Takes a string and turns it into the CamelCase or StudlyCaps version
 	 * @param string $string
@@ -174,8 +174,8 @@ class TextHelper {
 	public function camelcase($string) {
 		return Object::camelcase($string);
 	}
-	
-	/** 
+
+	/**
 	 * Scans passed text and automatically hyperlinks any URL inside it
 	 * @param string $input
 	 * @param int $newWindow
@@ -186,22 +186,22 @@ class TextHelper {
 		$output = preg_replace("/(http:\/\/|https:\/\/|(www\.))(([^\s<]{4,80})[^\s<]*)/", '<a href="http://$2$3" '.$target.' rel="nofollow">http://$2$4</a>', $input);
 		return ($output);
 	}
-	
-	/** 
+
+	/**
 	 * automatically add hyperlinks to any twitter style @usernames in a string
 	 * @param string $input
 	 * @param int $newWindow
 	 * @param int $withSearch
 	 * @return string $output
-	 */	
+	 */
 	public function twitterAutolink($input,$newWindow=0,$withSearch=0) {
 		$target=($newWindow)?' target="_blank" ':'';
     	$output = preg_replace('/([\.|\,|\:|\¡|\¿|\>|\{|\(]?)@{1}(\w*)([\.|\,|\:|\!|\?|\>|\}|\)]?)\s/i', "$1<a href=\"http://twitter.com/$2\" ".$target." class=\"twitter-username\">@$2</a>$3 ", $input);
-		if($withSearch) 
-			$output = preg_replace('/([\.|\,|\:|\¡|\¿|\>|\{|\(]?)#{1}(\w*)([\.|\,|\:|\!|\?|\>|\}|\)]?)\s/i', "$1<a href=\"http://search.twitter.com/search?q=%23$2\" ".$target." class=\"twitter-search\">#$2</a>$3 ", $input);		
+		if($withSearch)
+			$output = preg_replace('/([\.|\,|\:|\¡|\¿|\>|\{|\(]?)#{1}(\w*)([\.|\,|\:|\!|\?|\>|\}|\)]?)\s/i', "$1<a href=\"http://search.twitter.com/search?q=%23$2\" ".$target." class=\"twitter-search\">#$2</a>$3 ", $input);
     	return $output;
-	}  
-	
+	}
+
 	/**
 	 * Runs a number of text functions, including autolink, nl2br, strip_tags. Assumes that you want simple
 	 * text comments but with a few niceties.
@@ -214,8 +214,8 @@ class TextHelper {
 		$output = nl2br($output);
 		return $output;
 	}
-	
-	/** 
+
+	/**
 	 * A wrapper for PHP's fnmatch() function, which some installations don't have.
 	 * @param string $pattern
 	 * @param string $string
@@ -228,9 +228,9 @@ class TextHelper {
 			return fnmatch($pattern, $string);
 		}
 	}
-	
-	
-	/** 
+
+
+	/**
 	 * Takes a CamelCase string and turns it into camel_case
 	 * @param string $string
 	 * @return string
@@ -250,7 +250,7 @@ class TextHelper {
 		}
 		return implode('_', $a);
 	}
-	
+
 	/**
 	 * Takes a handle-based string like "blah_blah" or "blah-blah" or "blah/blah" and turns it into "Blah Blah"
 	 * @param string $string
@@ -261,13 +261,13 @@ class TextHelper {
 		return $r1;
 	}
 
-	/** 
+	/**
 	 * Takes a string and turns it into a handle.
 	 */
 	public function handle($handle, $leaveSlashes=false) {
 		return $this->sanitizeFileSystem($handle, $leaveSlashes=false);
 	}
-	
+
 	/**
 	 * shortens a string without breaking words
 	 * @param string $textStr
@@ -278,8 +278,8 @@ class TextHelper {
 	public function wordSafeShortText($textStr, $numChars=255, $tail='...') {
 		if (intval($numChars)==0) $numChars=255;
 		$textStr = trim(strip_tags($textStr));
-		
-		if (strlen($textStr) > $numChars) { 
+
+		if (strlen($textStr) > $numChars) {
 			$words = explode(" ",$textStr);
 			$length = 0;
 			$trimmed = "";
@@ -301,49 +301,49 @@ class TextHelper {
 		return $textStr;
 	}
 
-	
+
 	/**
 	 * Strips out non-alpha-numeric characters
 	 * @param string $val
 	 * @return string
 	 */
-	public function filterNonAlphaNum($val){ 
+	public function filterNonAlphaNum($val){
 		return preg_replace('/[^[:alnum:]]/', '', $val);
 	}
-	
-	/** 
+
+	/**
 	 * Highlights a string within a string with the class ccm-hightlight-search
 	 * @param string $value
 	 * @param string $searchString
 	 * @return string
 	 */
-	 
+
 	public function highlightSearch($value, $searchString) {
 		return str_ireplace($searchString, '<em class="ccm-highlight-search">' . $searchString . '</em>', $value);
 	}
-	
-	/** 
+
+	/**
 	 * Formats a passed XML string nicely
 	 * @param string $xml
 	 */
-	public function formatXML($xml) {  
-	
+	public function formatXML($xml) {
+
 		// add marker linefeeds to aid the pretty-tokeniser (adds a linefeed between all tag-end boundaries)
 		$xml = preg_replace('/(>)(<)(\/*)/', "$1\n$2$3", $xml);
-		
+
 		// now indent the tags
 		$token      = strtok($xml, "\n");
 		$result     = ''; // holds formatted version as it is built
 		$pad        = 0; // initial indent
 		$matches    = array(); // returns from preg_matches()
-		
+
 		// scan each line and adjust indent based on opening/closing tags
-		while ($token !== false) : 
-		
+		while ($token !== false) :
+
 		// test for the various tag states
-		
+
 		// 1. open and closing tags on same line - no change
-		if (preg_match('/.+<\/\w[^>]*>$/', $token, $matches)) : 
+		if (preg_match('/.+<\/\w[^>]*>$/', $token, $matches)) :
 		  $indent=0;
 		// 2. closing tag - outdent now
 		elseif (preg_match('/^<\/\w/', $token, $matches)) :
@@ -353,16 +353,16 @@ class TextHelper {
 		  $indent=4;
 		// 4. no indentation needed
 		else :
-		  $indent = 0; 
+		  $indent = 0;
 		endif;
-		
+
 		// pad the line with the required number of leading spaces
 		$line    = str_pad($token, strlen($token)+$pad, ' ', STR_PAD_LEFT);
 		$result .= $line . "\n"; // add to the cumulative result, with linefeed
 		$token   = strtok("\n"); // get the next token
-		$pad    += $indent; // update the pad size for subsequent lines    
-		endwhile; 
-		
+		$pad    += $indent; // update the pad size for subsequent lines
+		endwhile;
+
 		return $result;
 	}
 

@@ -4,9 +4,9 @@ if ($_GET['_ccm_dashboard_external']) {
 	return;
 }
 ?>
-	
+
 	</div>
-	
+
 </div>
 </div>
 

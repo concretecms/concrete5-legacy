@@ -63,13 +63,13 @@ if ($errorCode > -1 && $error == '') {
 	<? } else { ?>
 		highlight = new Array();
 		highlight.push(<?=$resp->getFileID()?>);
-		
+
 		<? if (is_object($fr)) { ?>
 			window.parent.jQuery.fn.dialog.closeTop();
 		<? } ?>
-		
+
 		window.parent.ccm_uploadedFiles.push(<?=intval($resp->getFileID())?>);
-		setTimeout(function() { 
+		setTimeout(function() {
 			window.parent.ccm_filesUploadedDialog('<?=$searchInstance?>');
 			window.parent.ccm_alResetSingle();
 		}, 100);

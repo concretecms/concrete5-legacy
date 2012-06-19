@@ -13,11 +13,11 @@ class DashboardPagesSingleController extends DashboardBaseController {
 			if($this->token->validate('add_single_page')) {
 				$pathToNode = SinglePage::getPathToNode($this->post('pageURL'), false);
 				$path = SinglePage::sanitizePath($this->post('pageURL'));
-		
+
 				if (strlen($pathToNode) > 0) {
 					// now we check to see if this is already added
 					$pc = Page::getByPath('/' . $path, 'RECENT');
-					
+
 					if ($pc->getError() == COLLECTION_NOT_FOUND) {
 						SinglePage::add($this->post('pageURL'));
 						$this->redirect('/dashboard/pages/single', t('Page Successfully Added.'));
@@ -31,7 +31,7 @@ class DashboardPagesSingleController extends DashboardBaseController {
 			$this->redirect('/dashboard/pages/single', $this->token->getErrorMessage(), 1);
 		}
 	}
-	
+
 	public function refresh($cID = 0, $token) {
 		if(intval($cID) > 0) {
 			if($this->token->validate('refresh', $token)) {

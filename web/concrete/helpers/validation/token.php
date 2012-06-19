@@ -17,18 +17,18 @@ defined('C5_EXECUTE') or die("Access Denied.");
  * @copyright  Copyright (c) 2003-2008 Concrete5. (http://www.concrete5.org)
  * @license    http://www.concrete5.org/license/     MIT License
  */
- 
+
 class ValidationTokenHelper {
 
 	const VALID_HASH_TIME_THRESHOLD = 86400; // 24 hours (in seconds)
-	
-	/** 
+
+	/**
 	 * For localization we can't just store this as a constant, unfortunately
 	 */
 	public function getErrorMessage() {
 		return t("Invalid form token. Please reload this form and submit again.");
 	}
-	
+
 	/**
 	 * Generates a unique token for a given action. This is a token in the form of
 	 * time:hash, where hash is md5(time:userID:action:salt)
@@ -48,8 +48,8 @@ class ValidationTokenHelper {
 		$hash = $time . ':' . md5($time . ':' . $uID . ':' . $action . ':' . PASSWORD_SALT);
 		return $hash;
 	}
-	
-	/** 
+
+	/**
 	 * prints out a generated token as a hidden form field
 	 */
 	public function output($action = '', $return = false) {
@@ -61,18 +61,18 @@ class ValidationTokenHelper {
 			return $token;
 		}
 	}
-	
-	/** 
+
+	/**
 	 * returns a generated token as a query string variable
 	 */
 	public function getParameter($action = '') {
 		$hash = $this->generate($action);
 		return 'ccm_token=' . $hash;
 	}
-	
-	
-	
-	/** 
+
+
+
+	/**
 	 * Validates against a given action. Basically, we check the passed hash to see if
 	 * a. the hash is valid. That means it computes in the time:action:PASSWORD_SALT format
 	 * b. the time included next to the hash is within the threshold.
@@ -89,7 +89,7 @@ class ValidationTokenHelper {
 			$hash = $parts[1];
 			$compHash = $this->generate($action, $time);
 			$now = time();
-			
+
 			if (substr($compHash, strpos($compHash, ':') + 1) == $hash) {
 				$diff = $now - $time;
 				//hash is only valid if $diff is less than VALID_HASH_TIME_RECORD
@@ -98,7 +98,7 @@ class ValidationTokenHelper {
 		}
 	 	return false;
 	 }
-	 
-	
+
+
 
 }

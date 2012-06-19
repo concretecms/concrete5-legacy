@@ -5,7 +5,7 @@
 <head>
 
 <? Loader::element('header_required'); ?>
-	
+
 <!-- Site Header Content //-->
 <link rel="stylesheet" media="screen" type="text/css" href="<?=$this->getStyleSheet('main.css')?>" />
 <link rel="stylesheet" media="screen" type="text/css" href="<?=$this->getStyleSheet('typography.css')?>" />
@@ -16,22 +16,22 @@
 <div id="page">
 	<div id="headerSpacer"></div>
 	<div id="header">
-		
+
 		<? if ($c->isEditMode()) { ?>
 		<div style="min-height: 80px">
 		<? } ?>
-		
+
 		<div id="headerNav">
 			<?
 			$a = new Area('Header Nav');
 			$a->display($c);
 			?>
 		</div>
-		
+
 		<h1 id="logo"><!--
-			--><a href="<?php  echo DIR_REL?>/"><?  
-				$block = Block::getByName('My_Site_Name');  
-				if( $block && $block->bID ) $block->display();   
+			--><a href="<?php  echo DIR_REL?>/"><?
+				$block = Block::getByName('My_Site_Name');
+				if( $block && $block->bID ) $block->display();
 				else echo SITE;
 			?></a><!--
 		--></h1>
@@ -46,18 +46,18 @@
 		<? if ($c->isEditMode()) { ?>
 		</div>
 		<? } ?>
-		
+
 		<div id="header-area">
 			<div class="divider"></div>
 			<div id="header-area-inside">
-			<?			
+			<?
 			$ah = new Area('Header');
-			$ah->display($c);			
-			?>	
-			</div>	
-			
+			$ah->display($c);
+			?>
+			</div>
+
 			<? if ($ah->getTotalBlocksInArea() > 0) { ?>
 				<div class="divider"></div>
 			<? } ?>
 		</div>
-	</div>			
+	</div>

@@ -9,7 +9,7 @@ $sk = PermissionKey::getByHandle('access_user_search');
 $ek = PermissionKey::getByHandle('edit_user_properties');
 
 $tp = new TaskPermission();
-if (!$tp->canEditUserProperties()) { 
+if (!$tp->canEditUserProperties()) {
 	die(t("Access Denied."));
 }
 
@@ -22,34 +22,34 @@ if (is_array($_REQUEST['uID'])) {
 }
 
 foreach($users as $ui) {
-	if (!$sk->validate($ui)) { 
+	if (!$sk->validate($ui)) {
 		die(t("Access Denied."));
 	}
 }
 
 if ($_POST['task'] == 'update_extended_attribute') {
 	$fakID = $_REQUEST['fakID'];
-	$value = ''; 
-	
+	$value = '';
+
 	$ak = UserAttributeKey::get($fakID);
 	foreach($users as $ui) {
-		if ($ek->validate($ak)) { 
+		if ($ek->validate($ak)) {
 			$ak->saveAttributeForm($ui);
 		}
 	}
 	$val = $ui->getAttributeValueObject($ak);
-	print $val->getValue('display');	
+	print $val->getValue('display');
 	exit;
-} 
+}
 
 if ($_POST['task'] == 'clear_extended_attribute') {
 
 	$fakID = $_REQUEST['fakID'];
-	$value = ''; 
-	
+	$value = '';
+
 	$ak = UserAttributeKey::get($fakID);
 	foreach($users as $ui) {
-		if ($ek->validate($ak)) { 
+		if ($ek->validate($ak)) {
 			$ui->clearAttribute($ak);
 		}
 	}
@@ -60,7 +60,7 @@ if ($_POST['task'] == 'clear_extended_attribute') {
 
 function printAttributeRow($ak, $ek) {
 	global $users, $form;
-	
+
 	$value = '';
 	for ($i = 0; $i < count($users); $i++) {
 		$lastValue = $value;
@@ -75,20 +75,20 @@ function printAttributeRow($ak, $ek) {
 				}
 			}
 		}
-	}	
-	
+	}
+
 	if ($value == '') {
 		$text = '<div class="ccm-attribute-field-none">' . t('None') . '</div>';
 	} else {
 		$text = $value;
 	}
-	if ($ak->isAttributeKeyEditable() && $ek->validate($ak)) { 
+	if ($ak->isAttributeKeyEditable() && $ek->validate($ak)) {
 	$type = $ak->getAttributeType();
 	$hiddenFIDfields='';
 	foreach($users as $ui) {
 		$hiddenfields.=' '.$form->hidden('uID[]' , $ui->getUserID()).' ';
-	}	
-	
+	}
+
 	$html = '
 	<tr class="ccm-attribute-editable-field">
 		<td width="250" style="vertical-align: middle"><strong><a href="javascript:void(0)">' . $ak->getAttributeKeyName() . '</a></strong></td>
@@ -107,14 +107,14 @@ function printAttributeRow($ak, $ek) {
 		<img src="' . ASSETS_URL_IMAGES . '/throbber_white_16.gif" width="16" height="16" class="ccm-attribute-editable-field-loading" />
 		</td>
 	</tr>';
-	
+
 	} else {
 
 	$html = '
 	<tr>
 		<td width="250"><strong>' . $ak->getAttributeKeyName() . '</strong></td>
 		<td style="vertical-align: middle" class="ccm-attribute-editable-field-central" colspan="2">' . $text . '</td>
-	</tr>';	
+	</tr>';
 	}
 	print $html;
 }
@@ -144,13 +144,13 @@ foreach($attribs as $at) {
 </tbody>
 </table>
 
-<br/>  
+<br/>
 
 </div>
 
 <script type="text/javascript">
-$(function() { 
-	ccm_activateEditablePropertiesGrid();  
+$(function() {
+	ccm_activateEditablePropertiesGrid();
 });
 </script>
 

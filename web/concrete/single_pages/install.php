@@ -1,4 +1,4 @@
-<? defined('C5_EXECUTE') or die("Access Denied."); ?> 
+<? defined('C5_EXECUTE') or die("Access Denied."); ?>
 
 <script type="text/javascript" src="<?=ASSETS_URL_JAVASCRIPT?>/bootstrap.tooltip.js"></script>
 <script type="text/javascript">
@@ -9,7 +9,7 @@ $(function() {
 });
 </script>
 
-<? 
+<?
 
 $introMsg = t('To install concrete5, please fill out the form below.');
 
@@ -17,7 +17,7 @@ if (isset($successMessage)) { ?>
 
 <script type="text/javascript">
 $(function() {
-	
+
 <? for ($i = 1; $i <= count($installRoutines); $i++) {
 	$routine = $installRoutines[$i-1]; ?>
 
@@ -50,7 +50,7 @@ $(function() {
 			}
 		});
 	}
-	
+
 <? } ?>
 
 	ccm_installRoutine1();
@@ -132,7 +132,7 @@ $(function() {
 <div class="span7 offset1">
 
 	<input type="hidden" name="locale" value="<?=$locale?>" />
-	
+
 	<fieldset>
 		<legend><?=t('Site Information')?></legend>
 		<div class="control-group">
@@ -141,9 +141,9 @@ $(function() {
 			<?=$form->text('SITE', array('class' => 'xlarge'))?>
 		</div>
 		</div>
-			
+
 	</fieldset>
-	
+
 	<fieldset>
 		<legend><?=t('Administrator Information')?></legend>
 		<div class="clearfix">
@@ -164,7 +164,7 @@ $(function() {
 			<?=$form->password('uPasswordConfirm', array('class' => 'xlarge'))?>
 		</div>
 		</div>
-		
+
 	</fieldset>
 
 </div>
@@ -209,16 +209,16 @@ $(function() {
 
 <h3><?=t('Sample Content')?></h3>
 
-		
+
 		<?
 		$uh = Loader::helper('concrete/urls');
 		?>
-		
+
 		<table class="table table-striped" id="sample-content-selector">
 		<tbody>
-		<? 
+		<?
 		$availableSampleContent = StartingPointPackage::getAvailableList();
-		foreach($availableSampleContent as $spl) { 
+		foreach($availableSampleContent as $spl) {
 			$pkgHandle = $spl->getPackageHandle();
 		?>
 
@@ -227,9 +227,9 @@ $(function() {
 			<td class="sample-content-thumbnail"><img src="<?=$uh->getPackageIconURL($spl)?>" width="97" height="97" alt="<?=$spl->getPackageName()?>" /></td>
 			<td class="sample-content-description" width="100%"><h4><?=$spl->getPackageName()?></h4><p><?=$spl->getPackageDescription()?></td>
 		</tr>
-		
+
 		<? } ?>
-		
+
 		</tbody>
 		</table>
 		<br/>
@@ -237,7 +237,7 @@ $(function() {
 			<div class="alert-message block-message info"><?=t('concrete5 veterans can choose "Empty Site," but otherwise we recommend starting with some sample content.')?></div>
 		<? } ?>
 
-	
+
 </div>
 </div>
 
@@ -278,7 +278,7 @@ $(function() {
 	});
 	$.getJSON('<?=$this->url("/install", "test_url", "20", "20")?>', function(json) {
 		// test url takes two numbers and adds them together. Basically we just need to make sure that
-		// our url() syntax works - we do this by sending a test url call to the server when we're certain 
+		// our url() syntax works - we do this by sending a test url call to the server when we're certain
 		// of what the output will be
 		if (json.response == 40) {
 			$("#ccm-test-request-loading").attr('src', '<?=ASSETS_URL_IMAGES?>/icons/success.png');
@@ -293,7 +293,7 @@ $(function() {
 			$("#install-errors").show();
 		}
 	});
-	
+
 });
 </script>
 
@@ -421,7 +421,7 @@ $(function() {
 	<input type="hidden" name="locale" value="<?=$locale?>" />
 	<a class="btn" href="javascript:void(0)" onclick="$(this).parent().submit()"><i class="icon-refresh"></i> <?=t('Run Tests')?></a>
 	</form>
-	</div>	
+	</div>
 </div>
 
 <div class="block-message alert-message info">
@@ -448,14 +448,14 @@ $(function() {
 <form method="post" action="<?=$this->url('/install', 'select_language')?>">
 <fieldset>
 	<div class="clearfix">
-	
+
 	<label for="locale"><?=t('Language')?></label>
 	<div class="input">
 		<?=$form->select('locale', $locales, 'en_US'); ?>
 	</div>
-	
+
 	</div>
-	
+
 	<div class="actions">
 	<?=$form->submit('submit', t('Choose Language'))?>
 	</div>

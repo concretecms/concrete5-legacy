@@ -54,11 +54,11 @@ class ConcreteUpgradeVersion542Helper {
 			$d5 = SinglePage::add('/dashboard/pages/types/composer');
 		}
 	}
-	
+
 	public function prepare() {
 		// we install the updated schema just for tables that matter
 		Package::installDB(dirname(__FILE__) . '/db/version_542.xml');
 	}
 
-	
+
 }

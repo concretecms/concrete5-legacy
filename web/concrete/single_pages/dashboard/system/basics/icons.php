@@ -27,7 +27,7 @@
 			<a href="javascript:void(0)" class="btn danger" onclick="removeFavIcon()"><?=t('Remove')?></a>
 		</div>
 		</div>
-		
+
 		<script>
 		function removeFavIcon(){
 			document.getElementById('remove-existing-favicon').value=1;
@@ -35,9 +35,9 @@
 		}
 		</script>
 	<? }else{ ?>
-	
 
-	
+
+
 		<div class="clearfix">
 			<label for="favicon_upload"><?=t('Upload File')?></label>
 			<div class="input">
@@ -53,7 +53,7 @@
 				<?
 				print $interface->submit(t('Upload'), 'favicon-form', 'left');
 				?>
-			
+
 			</div>
 		</div>
 
@@ -61,9 +61,9 @@
 	</fieldset>
 
 	</form>
-	
-		
-	
+
+
+
 	<br/><br/>
 
 	<form method="post" id="iphone-form" action="<?=$this->action('update_iphone_thumbnail')?>" enctype="multipart/form-data" >
@@ -72,8 +72,8 @@
 
 	<fieldset>
 		<legend><?=t('iPhone Thumbnail')?></legend>
-	
-	
+
+
 	<?
 	$favIconFID=intval(Config::get('IPHONE_HOME_SCREEN_THUMBNAIL_FID'));
 	if($favIconFID){
@@ -91,14 +91,14 @@
 			<a href="javascript:void(0)" class="btn danger" onclick="removeIphoneThumbnail()"><?=t('Remove')?></a>
 		</div>
 		</div>
-		
+
 		<script>
 		function removeIphoneThumbnail(){
 			document.getElementById('remove-existing-iphone-thumbnail').value=1;
 			$('#iphone-form').get(0).submit();
 		}
 		</script>
-		
+
 	<? } else { ?>
 
 		<div class="clearfix">
@@ -116,13 +116,13 @@
 				<?
 				print $interface->submit(t('Upload'), 'favicon-form', 'left');
 				?>
-			
+
 			</div>
 		</div>
 	<? } ?>
-		
+
 	</fieldset>
-	
+
 	</form>
 
 

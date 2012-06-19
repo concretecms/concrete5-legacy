@@ -21,8 +21,8 @@
 defined('C5_EXECUTE') or die("Access Denied.");
 class FormRatingHelper {
 
-	
-	/** 
+
+	/**
 	 * Creates form fields and JavaScript rating includes for a particular item
 	 * <code>
 	 *     $dh->datetime('yourStartDate', '2008-07-12 3:00:00');
@@ -32,7 +32,7 @@ class FormRatingHelper {
 	 * @param bool $includeActivation
 	 * @param bool $calendarAutoStart
 	 */
-	 
+
 	// This is the combined view that shows an aggregate value, and lets you pick
 	/*
 	public function rating($prefix, $value = null) {
@@ -67,21 +67,21 @@ class FormRatingHelper {
 				$('.ccm-rating-display').hide();
 				$('.ccm-rating-active').show();
 			}, function() {
-			
+
 			});
 		});
 		</script>
 EOS;
-			
+
 		return $html;
 	}
-	
+
 	*/
-	
+
 	public function rating($prefix, $value = null, $includeJS = true) {
 		$rt = Loader::helper('rating');
 		return $rt->output($prefix, $value, true, $includeJS);
 	}
-	
-	
+
+
 }

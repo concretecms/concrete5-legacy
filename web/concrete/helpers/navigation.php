@@ -15,17 +15,17 @@
  * @copyright  Copyright (c) 2003-2008 Concrete5. (http://www.concrete5.org)
  * @license    http://www.concrete5.org/license/     MIT License
  */
- 
+
 defined('C5_EXECUTE') or die("Access Denied.");
 class NavigationHelper {
 
-	/** 
+	/**
 	 * Returns a link to a page
 	 * @param Page $cObj
 	 * @return string $link
 	 */
 	public function getLinkToCollection(&$cObj, $appendBaseURL = false, $ignoreUrlRewriting = false) {
-		// basically returns a link to a collection, based on whether or we have 
+		// basically returns a link to a collection, based on whether or we have
 		// mod_rewrite enabled, and the collection has a path
 		$dispatcher = '';
 		if (!defined('URL_REWRITING_ALL') || URL_REWRITING_ALL == false) {
@@ -43,14 +43,14 @@ class NavigationHelper {
 				$link = DIR_REL . '/';
 			}
 		}
-		
+
 		if ($appendBaseURL) {
 			$link = BASE_URL . $link;
 		}
 		return $link;
 	}
-	
-	/** 
+
+	/**
 	 * Returns an array of collections as a breadcrumb to the current page
 	 * @param Page $c
 	 * @return array $cArray
@@ -75,7 +75,7 @@ class NavigationHelper {
 
 		return $cArray;
 	}
-	
+
 	/**
 	 * Returns the URL of a collection so that it can be clicked on
 	 * @param Page $cObj

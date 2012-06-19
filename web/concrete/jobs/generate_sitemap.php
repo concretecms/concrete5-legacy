@@ -11,15 +11,15 @@ class GenerateSitemap extends Job {
 	public function getJobName() {
 		return t('Generate Sitemap File');
 	}
-	
+
 	public function getJobDescription() {
 		return t("Generate the sitemap.xml file that search engines use to crawl your site.");
 	}
-	
+
 	function run() {
-	
+
 		$ni = Loader::helper('navigation');
-		
+
 		$xmlFile = DIR_BASE.'/sitemap.xml';
 		$xmlHead = "<" . "?" . "xml version=\"1.0\" encoding=\"" . APP_CHARSET . "\"?>\n"
 				  ."<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">\n";
@@ -27,7 +27,7 @@ class GenerateSitemap extends Job {
 		$c = Page::getByID(1, "ACTIVE");
 		$changefreq = $c->getAttribute('sitemap_changefreq');
 		$priority = $c->getAttribute("sitemap_priority");
-		
+
 		if ($changefreq == '') {
 			$changefreq = 'weekly';
 		}
@@ -41,25 +41,25 @@ class GenerateSitemap extends Job {
 		$home .= "  <priority>" . $priority . "</priority>\n";
 		$home .= "</url>\n";
 		$xmlFoot = "</urlset>\n";
-		
+
 		if (!file_exists($xmlFile)) @touch($xmlFile);
-		
+
 		if (is_writable($xmlFile)) {
 			if (!$handle = fopen($xmlFile, 'w')) {
 				 throw new Exception(t("Cannot open file %s", $xmlFile));
 			}
-			
+
 			fwrite($handle, $xmlHead);
 			fwrite($handle, $home);
 			fflush($handle);
-			
+
 			$db = Loader::db();
 			$collection_attributes = Loader::model('collection_attributes');
 			$r = $db->query("select cID from Pages where cID > 1 order by cID asc");
 			$g = Group::getByID(GUEST_GROUP_ID);
 			$nh = Loader::helper('navigation');
 			$dh = Loader::helper('concrete/dashboard');
-			
+
 			while ($row = $r->fetchRow()) {
 				$c = Page::getByID($row['cID'], 'ACTIVE');
 				if ($dh->inDashboard($c)) {
@@ -69,49 +69,49 @@ class GenerateSitemap extends Job {
 				if ($c->isSystemPage()) {
 					continue;
 				}
-				
+
 				if($c->getAttribute("exclude_sitemapxml")) {
 					continue;
 				}
-				
+
 				if($c->isExternalLink()) {
 					continue;
-				} 
-				
-				if ($g->canRead()) {			
-	
+				}
+
+				if ($g->canRead()) {
+
 					$name = ($c->getCollectionName()) ? $c->getCollectionName() : '(No name)';
 					$cPath = $ni->getCollectionURL($c);
 					$changefreq = $c->getAttribute('sitemap_changefreq');
 					$priority = $c->getAttribute("sitemap_priority");
-					
+
 					if ($changefreq == '') {
 						$changefreq = 'weekly';
 					}
 					if ($priority == '') {
 						$priority = '0.' . round(rand(1, 5));
 					}
-					
-					$node = "";		
+
+					$node = "";
 					$node .= "<url>\n";
 					$node .= "<loc>" . $cPath . "</loc>\n";
 					$node .= "  <lastmod>". substr($c->getCollectionDateLastModified(), 0, 10)."</lastmod>\n";
 					$node .= "  <changefreq>".$changefreq."</changefreq>\n";
 					$node .= "  <priority>".$priority."</priority>\n";
 					$node .= "</url>\n";
-					
+
 					fwrite($handle, $node);
 					fflush($handle);
-				
+
 				}
 			}
-		
+
 			fwrite($handle, $xmlFoot);
 			fflush($handle);
 			fclose($handle);
-			
+
 			return t("Sitemap XML File Saved.");
-			
+
 		} else {
 			throw new Exception(t("The file %s is not writable", $xmlFile));
 		}

@@ -45,18 +45,18 @@ class Pile extends Object {
 			return Pile::get($pID);
 		}
 	}
-	
+
 	function getOrCreate($name) {
 		$db = Loader::db();
 		$u = new User();
 		$v = array($name, $u->getUserID());
 		$q = "select pID from Piles where name = ? and uID = ?";
 		$pID = $db->getOne($q, $v);
-		
+
 		if ($pID > 0) {
 			return Pile::get($pID);
 		}
-		
+
 		$v = array($u->getUserID(), 0, $name, 'READY');
 		$q = "insert into Piles (uID, isDefault, name, state) values (?, ?, ?, ?)";
 		$r = $db->query($q, $v);
@@ -67,7 +67,7 @@ class Pile extends Object {
 	}
 
 	function createDefaultPile() {
-		
+
 		$db = Loader::db();
 		// for the sake of data integrity, we're going to ensure that a general pile does not exist
 		$u = new User();
@@ -90,7 +90,7 @@ class Pile extends Object {
 			}
 		}
 	}
-	
+
 	function inPile($obj) {
 		$db = Loader::db();
 		$v = array();
@@ -106,7 +106,7 @@ class Pile extends Object {
 		$v[] = $this->getPileID();
 		$q = "select pcID from PileContents where itemType = ? and itemID = ? and pID = ?";
 		$pcID = $db->getOne($q, $v);
-		
+
 		return ($pcID > 0);
 	}
 
@@ -131,7 +131,7 @@ class Pile extends Object {
 
 	function getMyPiles() {
 		$db = Loader::db();
-		
+
 		$u = new User();
 		if ($u->isRegistered()) {
 			$v = array($u->getUserID());
@@ -151,7 +151,7 @@ class Pile extends Object {
 
 	function isMyPile() {
 		$u = new User();
-		
+
 		if ($u->isRegistered()) {
 			return $this->getUserID() == $u->getUserID();
 		}
@@ -184,7 +184,7 @@ class Pile extends Object {
 		switch($display) {
 			case 'display_order_date':
 				$order = 'displayOrder asc, timestamp desc';
-				break;		
+				break;
 			case 'date_desc':
 				$order = 'timestamp desc';
 				break;
@@ -192,7 +192,7 @@ class Pile extends Object {
 				$order = 'displayOrder asc';
 				break;
 		}
-		
+
 		$v = array($this->pID);
 		$q = "select pcID from PileContents where pID = ? order by {$order}";
 		$r = $db->query($q, $v);
@@ -201,7 +201,7 @@ class Pile extends Object {
 		}
 		return $pc;
 	}
-	
+
 	function add(&$obj, $quantity = 1) {
 		$db = Loader::db();
 		$existingPCID = $this->getPileContentID($obj);
@@ -231,7 +231,7 @@ class Pile extends Object {
 			return $existingPCID;
 		}
 	}
-	
+
 	function remove(&$obj, $quantity = 1) {
 		$db = Loader::db();
 		switch(strtolower(get_class($obj))) {
@@ -245,7 +245,7 @@ class Pile extends Object {
 				$v = array($this->pID, $obj->getItemID(), $obj->getItemType());
 				break;
 		}
-		
+
 		$q = "select quantity from PileContents where pID = ? and itemID = ? and itemType = ?";
 		$exQuantity = $db->getOne($q, $v);
 		if ($exQuantity > $quantity) {

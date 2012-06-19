@@ -1,4 +1,4 @@
-<? defined('C5_EXECUTE') or die("Access Denied."); ?> 
+<? defined('C5_EXECUTE') or die("Access Denied."); ?>
 
 <div id="ccm-user-search-results">
 
@@ -6,7 +6,7 @@
 
 <div class="ccm-pane-body">
 
-<? } 
+<? }
 
 $ek = PermissionKey::getByHandle('edit_user_properties');
 $ik = PermissionKey::getByHandle('activate_user');
@@ -19,7 +19,7 @@ if (!$mode) {
 	if (!$searchType) {
 		$searchType = $_REQUEST['searchType'];
 	}
-	
+
 	$soargs = array();
 	$soargs['searchType'] = $searchType;
 	$soargs['mode'] = $mode;
@@ -60,8 +60,8 @@ if (!$mode) {
 	$txt = Loader::helper('text');
 	$keywords = $_REQUEST['keywords'];
 	$bu = REL_DIR_FILES_TOOLS_REQUIRED . '/users/search_results';
-	
-	if (count($users) > 0) { ?>	
+
+	if (count($users) > 0) { ?>
 		<table border="0" cellspacing="0" cellpadding="0" id="ccm-user-list" class="ccm-results-list">
 		<tr>
 			<th width="1"><input id="ccm-user-list-cb-all" type="checkbox" /></th>
@@ -75,21 +75,21 @@ if (!$mode) {
 
 		</tr>
 	<?
-		foreach($users as $ui) { 
+		foreach($users as $ui) {
 			$action = View::url('/dashboard/users/search?uID=' . $ui->getUserID());
-			
+
 			if ($mode == 'choose_one' || $mode == 'choose_multiple') {
 				$action = 'javascript:void(0); ccm_triggerSelectUser(' . $ui->getUserID() . ',\'' . $txt->entities($ui->getUserName()) . '\',\'' . $txt->entities($ui->getUserEmail()) . '\'); jQuery.fn.dialog.closeTop();';
 			}
-			
+
 			if (!isset($striped) || $striped == 'ccm-list-record-alt') {
 				$striped = '';
-			} else if ($striped == '') { 
+			} else if ($striped == '') {
 				$striped = 'ccm-list-record-alt';
 			}
 
 			?>
-		
+
 			<tr class="ccm-list-record <?=$striped?>">
 			<td class="ccm-user-list-cb" style="vertical-align: middle !important"><input type="checkbox" value="<?=$ui->getUserID()?>" user-email="<?=$ui->getUserEmail()?>" user-name="<?=$ui->getUserName()?>" /></td>
 			<? foreach($columns->getColumns() as $col) { ?>
@@ -105,16 +105,16 @@ if (!$mode) {
 		}
 
 	?>
-	
+
 	</table>
-	
-	
+
+
 
 	<? } else { ?>
-		
+
 		<div id="ccm-list-none"><?=t('No users found.')?></div>
-		
-	
+
+
 	<? }  ?>
 
 </div>
@@ -143,7 +143,7 @@ if (!$mode) {
 </div>
 
 <script type="text/javascript">
-$(function() { 
-	ccm_setupUserSearch('<?=$searchInstance?>'); 
+$(function() {
+	ccm_setupUserSearch('<?=$searchInstance?>');
 });
 </script>

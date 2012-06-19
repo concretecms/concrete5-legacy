@@ -1,5 +1,5 @@
 
-<? 
+<?
 //Used on both page and file attributes
 $c = Page::getCurrentPage();
 
@@ -24,7 +24,7 @@ if (is_object($category) && $category->allowAttributeSets()) {
 	</select>
 	</div>
 	</div>
-	
+
 	<? } ?>
 	<a href="<?=$this->url('/dashboard/system/attributes/sets', 'category', $category->getAttributeKeyCategoryID())?>" id="ccm-list-view-customize-top"><span class="ccm-menu-icon ccm-icon-properties"></span><?=t('Manage Sets')?></a>
 </div>
@@ -39,89 +39,89 @@ if (count($attribs) > 0) { ?>
 	$ih = Loader::helper('concrete/interface');
 	$valt = Loader::helper('validation/token');
 
-	
+
 	if (count($sets) > 0 && ($_REQUEST['asGroupAttributes'] !== '0')) { ?>
-	
-	
+
+
 		<?
-	
+
 		foreach($sets as $as) { ?>
-	
-		
+
+
 		<h3><?=$as->getAttributeSetName()?></h3>
-	
+
 		<?
-		
+
 		$setattribs = $as->getAttributeKeys();
 		if (count($setattribs) == 0) { ?>
-		
+
 			<p><?=t('No attributes defined.')?></p>
-		
+
 		<? } else { ?>
-			
-			<div class="ccm-attribute-sortable-set-list" attribute-set-id="<?=$as->getAttributeSetID()?>" id="asID_<?=$as->getAttributeSetID()?>">			
-			
+
+			<div class="ccm-attribute-sortable-set-list" attribute-set-id="<?=$as->getAttributeSetID()?>" id="asID_<?=$as->getAttributeSetID()?>">
+
 			<?
-			
+
 			foreach($setattribs as $ak) { ?>
-			
+
 			<div class="ccm-attribute" id="akID_<?=$as->getAttributeSetID()?>_<?=$ak->getAttributeKeyID()?>">
 				<img class="ccm-attribute-icon" src="<?=$ak->getAttributeKeyIconSRC()?>" width="16" height="16" /><a href="<?=$this->url($editURL, 'edit', $ak->getAttributeKeyID())?>"><?=$ak->getAttributeKeyName()?></a>
 			</div>
-	
+
 
 			<? } ?>
-			
+
 			</div>
-			
+
 			<? } ?>
-			
-			
-		<? } 
-		
+
+
+		<? }
+
 		$unsetattribs = $category->getUnassignedAttributeKeys();
 		if (count($unsetattribs) > 0) { ?>
-		
+
 			<h3><?=t('Other')?></h3>
-		
+
 			<?
 			foreach($unsetattribs as $ak) { ?>
-	
+
 			<div class="ccm-attribute" id="akID_<?=$as->getAttributeSetID()?>_<?=$ak->getAttributeKeyID()?>">
 				<img class="ccm-attribute-icon" src="<?=$ak->getAttributeKeyIconSRC()?>" width="16" height="16" /><a href="<?=$this->url($editURL, 'edit', $ak->getAttributeKeyID())?>"><?=$ak->getAttributeKeyName()?></a>
 			</div>
-	
+
 
 			<? } ?>
-		
+
 		<?
-		
+
 		}
-	
+
 	} else { ?>
-		
+
 		<div class="ccm-attributes-list">
-		
+
 		<?
 		foreach($attribs as $ak) { ?>
 		<div class="ccm-attribute" id="akID_<?=$ak->getAttributeKeyID()?>">
 			<img class="ccm-attribute-icon" src="<?=$ak->getAttributeKeyIconSRC()?>" width="16" height="16" /><a href="<?=$this->url($editURL, 'edit', $ak->getAttributeKeyID())?>"><?=$ak->getAttributeKeyName()?></a>
 		</div>
-		
+
 		<? } ?>
-	
+
 		</div>
-	
+
 	<? } ?>
-	
+
 <? } else { ?>
-	
+
 	<p>
 		<?
 	 echo t('No attributes defined.');
 		?>
 	</p>
-	
+
 <? } ?>
 
 </div>

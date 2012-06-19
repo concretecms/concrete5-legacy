@@ -11,7 +11,7 @@ class PermissionKeyCategory extends Object {
 			return $pkc;
 		}
 	}
-	
+
 	public static function getByHandle($pkCategoryHandle) {
 		$db = Loader::db();
 		$row = $db->GetRow('select pkCategoryID, pkCategoryHandle, pkgID from PermissionKeyCategories where pkCategoryHandle = ?', array($pkCategoryHandle));
@@ -21,7 +21,7 @@ class PermissionKeyCategory extends Object {
 			return $pkc;
 		}
 	}
-	
+
 	public function handleExists($pkHandle) {
 		$db = Loader::db();
 		$r = $db->GetOne("select count(pkID) from PermissionKeys where pkHandle = ?", array($pkHandle));
@@ -29,15 +29,15 @@ class PermissionKeyCategory extends Object {
 	}
 
 	public static function exportList($xml) {
-		$attribs = self::getList();		
+		$attribs = self::getList();
 		$axml = $xml->addChild('permissioncategories');
 		foreach($attribs as $pkc) {
 			$acat = $axml->addChild('category');
 			$acat->addAttribute('handle', $pkc->getPermissionKeyCategoryHandle());
 			$acat->addAttribute('package', $pkc->getPackageHandle());
-		}		
+		}
 	}
-	
+
 	public static function getListByPackage($pkg) {
 		$db = Loader::db();
 		$list = array();
@@ -47,14 +47,14 @@ class PermissionKeyCategory extends Object {
 		}
 		$r->Close();
 		return $list;
-	}	
+	}
 
 	public function getPermissionKeyByHandle($pkHandle) {
 		if ($this->pkgID > 0) {
 			Loader::model('permission/categories/' . $this->pkCategoryHandle, $this->getPackageHandle());
 		} else {
 			Loader::model('permission/categories/' . $this->pkCategoryHandle);
-		}		
+		}
 		$txt = Loader::helper('text');
 		$className = $txt->camelcase($this->pkCategoryHandle);
 		$c1 = $className . 'PermissionKey';
@@ -67,14 +67,14 @@ class PermissionKeyCategory extends Object {
 			Loader::model('permission/categories/' . $this->pkCategoryHandle, $this->getPackageHandle());
 		} else {
 			Loader::model('permission/categories/' . $this->pkCategoryHandle);
-		}		
+		}
 		$txt = Loader::helper('text');
 		$className = $txt->camelcase($this->pkCategoryHandle);
 		$c1 = $className . 'PermissionKey';
 		$ak = call_user_func(array($c1, 'getByID'), $pkID);
 		return $ak;
 	}
-	
+
 	public function getToolsURL($task = false) {
 		if (!$task) {
 			$task = 'save_permission';
@@ -101,12 +101,12 @@ class PermissionKeyCategory extends Object {
 		$db = Loader::db();
 		$db->Execute('insert into PermissionAccessEntityTypeCategories (petID, pkCategoryID) values (?, ?)', array($pt->getAccessEntityTypeID(), $this->pkCategoryID));
 	}
-	
+
 	public function clearAccessEntityTypeCategories() {
 		$db = Loader::db();
 		$db->Execute('delete from PermissionAccessEntityTypeCategories where pkCategoryID = ?', $this->pkCategoryID);
 	}
-	
+
 	public static function getList() {
 		$db = Loader::db();
 		$cats = array();
@@ -116,7 +116,7 @@ class PermissionKeyCategory extends Object {
 		}
 		return $cats;
 	}
-	
+
 	public static function add($pkCategoryHandle, $pkg = false) {
 		$db = Loader::db();
 		if (is_object($pkg)) {
@@ -124,10 +124,10 @@ class PermissionKeyCategory extends Object {
 		}
 		$db->Execute('insert into PermissionKeyCategories (pkCategoryHandle, pkgID) values (?, ?)', array($pkCategoryHandle, $pkgID));
 		$id = $db->Insert_ID();
-		
+
 		return PermissionKeyCategory::getByID($id);
 	}
-	
+
 
 
 }

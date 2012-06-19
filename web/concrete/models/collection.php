@@ -13,7 +13,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
  */
 
 /**
- * A generic object that holds blocks and maps them to areas. 
+ * A generic object that holds blocks and maps them to areas.
  * @package Pages
  * @author Andrew Embler <andrew@concrete5.org>
  * @category Concrete
@@ -21,9 +21,9 @@ defined('C5_EXECUTE') or die("Access Denied.");
  * @license    http://www.concrete5.org/license/     MIT License
  *
  */
- 
+
 	class Collection extends Object {
-		
+
 		public $cID;
 		protected $attributes = array();
 		/* version specific stuff */
@@ -31,10 +31,10 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		function loadVersionObject($cvID = "ACTIVE") {
 			$cvID = CollectionVersion::getNumericalVersionID($this->getCollectionID(), $cvID);
 			$this->vObj = CollectionVersion::get($this, $cvID);
-			$vp = new Permissions($this->vObj);			
+			$vp = new Permissions($this->vObj);
 			return $vp;
 		}
-		
+
 		function getVersionToModify() {
 			// first, we check to see if the version we're modifying has the same
 			// author uID associated with it as we currently have, and if it's inactive
@@ -83,7 +83,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 					}
 				}
 			}
-			
+
 			// duplicate any area styles
 			$q = "select csrID, arHandle from CollectionVersionAreaStyles where cID = '$cID' and cvID = '$cvID'";
 			$r = $db->query($q);
@@ -95,7 +95,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 					$row['csrID']
 				));
 			}
-			
+
 			// duplicate any area layout joins
 			$q = "select * from CollectionVersionAreaLayouts where cID = '$cID' and cvID = '$cvID'";
 			$r = $db->query($q);
@@ -108,22 +108,22 @@ defined('C5_EXECUTE') or die("Access Denied.");
 					$row['areaNameNumber'],
 					$row['position']
 				));
-			}			
+			}
 
 			// now that we've duplicated all the blocks for the collection, we return the new
 			// collection
 
 			return $nc;
 		}
-		
+
 		/* attribute stuff */
-		
+
 		public function getAttribute($akHandle) {
 			if (is_object($this->vObj)) {
 				return $this->vObj->getAttribute($akHandle);
 			}
 		}
-		
+
 		public function getCollectionAttributeValue($ak) {
 			if (is_object($this->vObj)) {
 				if (is_object($ak)) {
@@ -149,49 +149,49 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			}
 			$this->reindex();
 		}
-		
+
 		public static function reindexPendingPages() {
 			$num = 0;
 			$db = Loader::db();
 			$r = $db->Execute("select cID from PageSearchIndex where cRequiresReindex = 1");
-			while ($row = $r->FetchRow()) { 
+			while ($row = $r->FetchRow()) {
 				$pc = Page::getByID($row['cID']);
 				$pc->reindex($this, true);
 				$num++;
 			}
 			Config::save('DO_PAGE_REINDEX_CHECK', false);
-			return $num;		
+			return $num;
 		}
-				
+
 		public function reindex($index = false, $actuallyDoReindex = true) {
 			if ($this->isAlias()) {
 				return false;
 			}
-			if ($actuallyDoReindex || ENABLE_PROGRESSIVE_PAGE_REINDEX == false) { 
+			if ($actuallyDoReindex || ENABLE_PROGRESSIVE_PAGE_REINDEX == false) {
 				$db = Loader::db();
-				
+
 				Loader::model('attribute/categories/collection');
 				$attribs = CollectionAttributeKey::getAttributes($this->getCollectionID(), $this->getVersionID(), 'getSearchIndexValue');
-		
+
 				$db->Execute('delete from CollectionSearchIndexAttributes where cID = ?', array($this->getCollectionID()));
 				$searchableAttributes = array('cID' => $this->getCollectionID());
 				$rs = $db->Execute('select * from CollectionSearchIndexAttributes where cID = -1');
 				AttributeKey::reindex('CollectionSearchIndexAttributes', $searchableAttributes, $attribs, $rs);
-				
+
 				if ($index == false) {
 					Loader::library('database_indexed_search');
 					$index = new IndexedSearch();
 				}
-				
+
 				$index->reindexPage($this);
 				$db->Replace('PageSearchIndex', array('cID' => $this->getCollectionID(), 'cRequiresReindex' => 0), array('cID'), false);
-			} else { 			
+			} else {
 				$db = Loader::db();
 				Config::save('DO_PAGE_REINDEX_CHECK', true);
 				$db->Replace('PageSearchIndex', array('cID' => $this->getCollectionID(), 'cRequiresReindex' => 1), array('cID'), false);
 			}
 		}
-		
+
 		public function getAttributeValueObject($ak, $createIfNotFound = false) {
 			$db = Loader::db();
 			$av = false;
@@ -204,23 +204,23 @@ defined('C5_EXECUTE') or die("Access Denied.");
 					$av->setAttributeKey($ak);
 				}
 			}
-			
+
 			if ($createIfNotFound) {
 				$cnt = 0;
-			
+
 				// Is this avID in use ?
 				if (is_object($av)) {
 					$cnt = $db->GetOne("select count(avID) from CollectionAttributeValues where avID = ?", $av->getAttributeValueID());
 				}
-				
+
 				if ((!is_object($av)) || ($cnt > 1)) {
 					$av = $ak->addAttributeValue();
 				}
 			}
-			
+
 			return $av;
 		}
-		
+
 		public function setAttribute($ak, $value) {
 			Loader::model('attribute/categories/collection');
 			if (!is_object($ak)) {
@@ -241,7 +241,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			$this->refreshCache();
 			$this->reindex();
 		}
-		
+
 		// get's an array of collection attribute objects that are attached to this collection. Does not get values
 		public function getSetCollectionAttributes() {
 			$db = Loader::db();
@@ -258,7 +258,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		}
 
 		/* area stuff */
-		
+
 		function getArea($arHandle) {
 			return Area::get($c, $arHandle);
 		}
@@ -292,11 +292,11 @@ defined('C5_EXECUTE') or die("Access Denied.");
 
 
 		/* basic CRUD */
-		
+
 		function getCollectionID() {
 			return $this->cID;
 		}
-		
+
 		function getCollectionDateLastModified($mask = null, $type="system") {
 			if(ENABLE_USER_TIMEZONES && $type == 'user') {
 				$dh = Loader::helper('date');
@@ -326,7 +326,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			} else {
 				$cDateAdded = $this->cDateAdded;
 			}
-			
+
 			if ($mask == null) {
 				return $cDateAdded;
 			} else {
@@ -338,7 +338,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			// shortcut
 			return $this->vObj->cvID;
 		}
-		
+
 	public function __destruct() {
 		unset($this->vObj);
 	}
@@ -374,13 +374,13 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			}
 		}
 	}
-	
-	/** 
+
+	/**
 	 * Retrieves all custom style rules that should be inserted into the header on a page, whether they are defined in areas
 	 * or blocks
 	 */
-	public function outputCustomStyleHeaderItems($return = false) {	
-		
+	public function outputCustomStyleHeaderItems($return = false) {
+
 		$db = Loader::db();
 		$csrs = array();
 		$txt = Loader::helper('text');
@@ -405,7 +405,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 				$csrs[] = $obj;
 			}
 		}
-		
+
 		// grab all the header block style rules for items in global areas on this page
 		$rs = $db->GetCol('select arHandle from Areas where arIsGlobal = 1 and cID = ?', array($this->getCollectionID()));
 		if (count($rs) > 0) {
@@ -432,21 +432,21 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			}
 		}
 		//get the header style rules
-		$styleHeader = ''; 
-		foreach($csrs as $st) { 
-			if ($st->getCustomStyleRuleCSSID(true)) { 
-				$styleHeader .= '#'.$st->getCustomStyleRuleCSSID(1).' {'. $st->getCustomStyleRuleText(). "} \r\n";  
+		$styleHeader = '';
+		foreach($csrs as $st) {
+			if ($st->getCustomStyleRuleCSSID(true)) {
+				$styleHeader .= '#'.$st->getCustomStyleRuleCSSID(1).' {'. $st->getCustomStyleRuleText(). "} \r\n";
 			}
-		} 		
-		  
+		}
+
 		$r3 = $db->GetAll('select l.layoutID, l.spacing, arHandle, areaNameNumber from CollectionVersionAreaLayouts cval LEFT JOIN Layouts AS l ON  cval.layoutID=l.layoutID WHERE cval.cID = ? and cval.cvID = ?', array($this->getCollectionID(), $this->getVersionID()));
-		foreach($r3 as $data){  
-			if(!intval($data['spacing'])) continue; 
+		foreach($r3 as $data){
+			if(!intval($data['spacing'])) continue;
 			$layoutIDVal = strtolower('ccm-layout-'.TextHelper::camelcase($data['arHandle']).'-'.$data['layoutID'] . '-'. $data['areaNameNumber']);
 			$layoutStyleRules='#' . $layoutIDVal . ' .ccm-layout-col-spacing { margin:0px '.ceil(floatval($data['spacing'])/2).'px }';
-			$styleHeader .= $layoutStyleRules . " \r\n";  
-		}  
-		
+			$styleHeader .= $layoutStyleRules . " \r\n";
+		}
+
 		if(strlen(trim($styleHeader))) {
 			if ($return == true) {
 				return $styleHeader;
@@ -455,17 +455,17 @@ defined('C5_EXECUTE') or die("Access Denied.");
 				$v->addHeaderItem("<style type=\"text/css\"> \r\n".$styleHeader.'</style>', 'VIEW');
 			}
 		}
-	} 
+	}
 
 	public function getAreaCustomStyleRule($area) {
 		$db = Loader::db();
-		
+
 		$csrID = $this->vObj->customAreaStyles[$area->getAreaHandle()];
-		
+
 		if ($csrID > 0) {
 			$txt = Loader::helper('text');
 			Loader::model('custom_style');
-			$arHandle = $txt->filterNonAlphaNum($area->getAreaHandle());			
+			$arHandle = $txt->filterNonAlphaNum($area->getAreaHandle());
 			$csr = CustomStyleRule::getByID($csrID);
 			if (is_object($csr)) {
 				$csr->setCustomStyleNameSpace('areaStyle' . $arHandle);
@@ -483,76 +483,76 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		));
 		$this->refreshCache();
 	}
-	
+
 	public function setAreaCustomStyle($area, $csr) {
 		$db = Loader::db();
-		$db->Replace('CollectionVersionAreaStyles', 
+		$db->Replace('CollectionVersionAreaStyles',
 			array('cID' => $this->getCollectionID(), 'cvID' => $this->getVersionID(), 'arHandle' => $area->getAreaHandle(), 'csrID' => $csr->getCustomStyleRuleID()),
 			array('cID', 'cvID', 'arHandle'), true
 		);
 		$this->refreshCache();
 	}
-	
-	
-	public function addAreaLayout($area, $layout, $addToPosition='bottom' ) {  
+
+
+	public function addAreaLayout($area, $layout, $addToPosition='bottom' ) {
 		$db = Loader::db();
-		
-		//get max layout name number, for fixed autonaming of layouts 
+
+		//get max layout name number, for fixed autonaming of layouts
 		$vals = array( intval($this->cID), $this->getVersionID(), $area->getAreaHandle() );
 		$sql = 'SELECT MAX(areaNameNumber) FROM CollectionVersionAreaLayouts WHERE cID=? AND cvID=? AND arHandle=?';
-		$nextNumber = intval($db->getOne($sql,$vals))+1;  
-		
-		if($addToPosition=='top'){  
-			$position=-1; 
-		}else{ 
-		
-			//does the main area already have blocks in it? 
-			//$areaBlocks = $area->getAreaBlocksArray($this); 
+		$nextNumber = intval($db->getOne($sql,$vals))+1;
+
+		if($addToPosition=='top'){
+			$position=-1;
+		}else{
+
+			//does the main area already have blocks in it?
+			//$areaBlocks = $area->getAreaBlocksArray($this);
 			$areaBlocks = $this->getBlocks( $area->getAreaHandle() );
-			
-			//then copy those blocks from that area into a newly created 1x1 layout, so it can be above out new layout 
-			if( count($areaBlocks) ){  
-			
+
+			//then copy those blocks from that area into a newly created 1x1 layout, so it can be above out new layout
+			if( count($areaBlocks) ){
+
 				//creat new 1x1 layout to hold existing parent area blocks
-				//Loader::model('layout'); 
-				$placeHolderLayout = new Layout( array('rows'=>1,'columns'=>1) );  
-				$placeHolderLayout->save( $this );  
+				//Loader::model('layout');
+				$placeHolderLayout = new Layout( array('rows'=>1,'columns'=>1) );
+				$placeHolderLayout->save( $this );
 				$vals = array( $this->getCollectionID(), $this->getVersionID(), $area->getAreaHandle(), $placeHolderLayout->getLayoutID(), $nextNumber, 10000 );
 				$sql = 'INSERT INTO CollectionVersionAreaLayouts ( cID, cvID, arHandle, layoutID, areaNameNumber, position ) values (?, ?, ?, ?, ?, ?)';
-				$db->query($sql,$vals);	 
-				
+				$db->query($sql,$vals);
+
 				//add parent area blocks to this new layout
 				$placeHolderLayout->setAreaObj($area);
-				$placeHolderLayout->setAreaNameNumber($nextNumber);   
+				$placeHolderLayout->setAreaNameNumber($nextNumber);
 				$placeHolderLayoutAreaHandle = $placeHolderLayout->getCellAreaHandle(1);
-				//foreach($areaBlocks as $b){ 
-					//$newBlock=$b->duplicate($this); 
-					//$newBlock->move($this, $placeHolderLayoutArea); 
-					//$newBlock->refreshCacheAll(); 
+				//foreach($areaBlocks as $b){
+					//$newBlock=$b->duplicate($this);
+					//$newBlock->move($this, $placeHolderLayoutArea);
+					//$newBlock->refreshCacheAll();
 					//$b->delete();
-					//$b->move($this, $placeHolderLayoutArea); 
-					//$b->refreshCacheAll(); 
-					
-				//} 
+					//$b->move($this, $placeHolderLayoutArea);
+					//$b->refreshCacheAll();
+
+				//}
 				$v = array( $placeHolderLayoutAreaHandle, $this->getCollectionID(), $this->getVersionID(), $area->getAreaHandle() );
-				$db->Execute('update CollectionVersionBlocks set arHandle=? WHERE cID=? AND cvID=? AND arHandle=?', $v);				
-				
-				$nextNumber++; 
+				$db->Execute('update CollectionVersionBlocks set arHandle=? WHERE cID=? AND cvID=? AND arHandle=?', $v);
+
+				$nextNumber++;
 			}
-			
-			$position=10001; 
+
+			$position=10001;
 		}
-		
-		
+
+
 		$vals = array( $this->getCollectionID(), $this->getVersionID(), $area->getAreaHandle(), $layout->getLayoutID(), $nextNumber, $position );
 		$sql = 'INSERT INTO CollectionVersionAreaLayouts ( cID, cvID, arHandle, layoutID, areaNameNumber, position ) values (?, ?, ?, ?, ?, ?)';
-		$db->query($sql,$vals);	
-		
+		$db->query($sql,$vals);
+
 		$layout->setAreaNameNumber($nextNumber);
-		
+
 		$this->refreshCache();
 	}
-	
+
 	public function relateVersionEdits($oc) {
 		$db = Loader::db();
 		$v = array(
@@ -568,43 +568,43 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			$db->Execute('insert into CollectionVersionRelatedEdits (cID, cvID, cRelationID, cvRelationID) values (?, ?, ?, ?)', $v);
 		}
 	}
-	
-	public function updateAreaLayoutId( $cvalID=0, $newLayoutId=0){ 
+
+	public function updateAreaLayoutId( $cvalID=0, $newLayoutId=0){
 		$db = Loader::db();
 		//$vals = array( $newLayoutId, $oldLayoutId, $this->getCollectionID(), $this->getVersionID(), $area->getAreaHandle() );
-		//$sql = 'UPDATE CollectionVersionAreaLayouts SET layoutID=? WHERE layoutID=? AND cID=? AND  cvID=? AND arHandle=?'; 
-		$vals = array( $newLayoutId, $cvalID ); 
-		$sql = 'UPDATE CollectionVersionAreaLayouts SET layoutID=? WHERE cvalID=?'; 
-		$db->query($sql,$vals);	 
-		
-		$this->refreshCache();		
-	}	
-	
-	
+		//$sql = 'UPDATE CollectionVersionAreaLayouts SET layoutID=? WHERE layoutID=? AND cID=? AND  cvID=? AND arHandle=?';
+		$vals = array( $newLayoutId, $cvalID );
+		$sql = 'UPDATE CollectionVersionAreaLayouts SET layoutID=? WHERE cvalID=?';
+		$db->query($sql,$vals);
+
+		$this->refreshCache();
+	}
+
+
 	public function deleteAreaLayout($area, $layout, $deleteBlocks=0){
 		$db = Loader::db();
 		$vals = array( $this->getCollectionID(), $this->getVersionID(), $area->getAreaHandle(), $layout->getLayoutID() );
-		$db->Execute('delete from CollectionVersionAreaLayouts WHERE cID = ? AND cvID = ? AND arHandle = ? AND layoutID = ? LIMIT 1', $vals ); 
-		
+		$db->Execute('delete from CollectionVersionAreaLayouts WHERE cID = ? AND cvID = ? AND arHandle = ? AND layoutID = ? LIMIT 1', $vals );
+
 		//also delete this layouts blocks
 		$layout->setAreaObj($area);
-		//we'll try to grab more areas than necessary, just incase the layout size had been reduced at some point. 
-		$maxCell = $layout->getMaxCellNumber()+20; 
-		for( $i=1; $i<=$maxCell; $i++ ){ 
-			if($deleteBlocks) $layout->deleteCellsBlocks($this,$i);  
-			else $layout->moveCellsBlocksToParent($this,$i);  
+		//we'll try to grab more areas than necessary, just incase the layout size had been reduced at some point.
+		$maxCell = $layout->getMaxCellNumber()+20;
+		for( $i=1; $i<=$maxCell; $i++ ){
+			if($deleteBlocks) $layout->deleteCellsBlocks($this,$i);
+			else $layout->moveCellsBlocksToParent($this,$i);
 		}
-		
-		Layout::cleanupOrphans();	 
-			 
+
+		Layout::cleanupOrphans();
+
 		$this->refreshCache();
-	} 
+	}
 
 	function getCollectionTypeID() {
 		return false;
 	}
-	
-	
+
+
 	public function rescanDisplayOrder($areaName) {
 		// this collection function fixes the display order properties for all the blocks within the collection/area. We select all the items
 		// order by display order, and fix the sequence
@@ -625,40 +625,40 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			$r->free();
 		}
 	}
-	
+
 
 		/* new cleaned up API below */
 
 		/**
 		 * @param int $cID
-		 * @param mixed $version 'RECENT'|'ACTIVE'|version id  
+		 * @param mixed $version 'RECENT'|'ACTIVE'|version id
 		 * @return Collection
 		 */
 		public static function getByID($cID, $version = 'RECENT') {
-			$db = Loader::db(); 
+			$db = Loader::db();
 			$q = "select Collections.cDateAdded, Collections.cDateModified, Collections.cID from Collections where cID = ?";
 			$row = $db->getRow($q, array($cID));
-			
+
 			$c = new Collection;
 			$c->setPropertiesFromArray($row);
-			
+
 			if ($version != false) {
 				// we don't do this on the front page
 				$c->loadVersionObject($version);
-			}			
+			}
 
 			return $c;
-		}	
-		
-		/* This function is slightly misnamed: it should be getOrCreateByHandle($handle) but I wanted to keep it brief 
+		}
+
+		/* This function is slightly misnamed: it should be getOrCreateByHandle($handle) but I wanted to keep it brief
 		 * @param string $handle
 		 * @return Collection
 		 */
 		public static function getByHandle($handle) {
 			$db = Loader::db();
-			
-			// first we ensure that this does NOT appear in the Pages table. This is not a page. It is more basic than that 
-			
+
+			// first we ensure that this does NOT appear in the Pages table. This is not a page. It is more basic than that
+
 			$r = $db->query("select Collections.cID, Pages.cID as pcID from Collections left join Pages on Collections.cID = Pages.cID where Collections.cHandle = ?", array($handle));
 			if ($r->numRows() == 0) {
 
@@ -669,20 +669,20 @@ defined('C5_EXECUTE') or die("Access Denied.");
 
 			} else {
 				$row = $r->fetchRow();
-				if ($row['cID'] > 0 && $row['pcID'] == null) {			
+				if ($row['cID'] > 0 && $row['pcID'] == null) {
 
 					// there is a collection, but it is not a page. so we grab it
 					$cObj = Collection::getByID($row['cID']);
-					
+
 				}
 			}
-			
+
 			if (isset($cObj)) {
 				return $cObj;
 			}
-			
+
 		}
-		
+
 		public function refreshCache() {
 			$vo = $this->getVersionObject();
 			Cache::delete('page', $this->getCollectionID());
@@ -699,7 +699,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 				Cache::delete('area', $this->getCollectionID() . ':' . $arHandle);
 			}
 		}
-		
+
 		public function getGlobalBlocks() {
 			$db = Loader::db();
 			$v = array( Stack::ST_TYPE_GLOBAL_AREA );
@@ -719,17 +719,17 @@ defined('C5_EXECUTE') or die("Access Denied.");
 					}
 				}
 			}
-			
+
 			return $blocks;
 		}
-		
+
 		public function getBlocks($arHandle = false) {
-			
+
 			$v = array($this->getCollectionID(), $this->getVersionID());
 			$blocks = array();
 
-			$blockIDs = Cache::get('collection_blocks', $this->getCollectionID() . ':' . $this->getVersionID());		
-			
+			$blockIDs = Cache::get('collection_blocks', $this->getCollectionID() . ':' . $this->getVersionID());
+
 			if (!is_array($blockIDs)) {
 				$db = Loader::db();
 				$q = "select Blocks.bID, CollectionVersionBlocks.arHandle from CollectionVersionBlocks inner join Blocks on (CollectionVersionBlocks.bID = Blocks.bID) inner join BlockTypes on (Blocks.btID = BlockTypes.btID) where CollectionVersionBlocks.cID = ? and (CollectionVersionBlocks.cvID = ? or CollectionVersionBlocks.cbIncludeAll=1) order by CollectionVersionBlocks.cbDisplayOrder asc";
@@ -742,12 +742,12 @@ defined('C5_EXECUTE') or die("Access Denied.");
 				}
 				Cache::set('collection_blocks', $this->getCollectionID() . ':' . $this->getVersionID(), $blockIDs);
 			}
-			
+
 			if ($arHandle != false) {
 				$blockIDsTmp = $blockIDs[strtolower($arHandle)];
 				$blockIDs = $blockIDsTmp;
 			} else {
-			
+
 				$blockIDsTmp = $blockIDs;
 				$blockIDs = array();
 				foreach($blockIDsTmp as $arHandle => $row) {
@@ -757,8 +757,8 @@ defined('C5_EXECUTE') or die("Access Denied.");
 						}
 					}
 				}
-			}		
-			
+			}
+
 			$blocks = array();
 			if (is_array($blockIDs)) {
 				foreach($blockIDs as $row) {
@@ -770,22 +770,22 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			}
 			return $blocks;
 		}
-		
+
 		public function addBlock($bt, $a, $data) {
 			$db = Loader::db();
-			
+
 			// first we add the block to the system
 			$nb = $bt->add($data, $this, $a);
-			
+
 			// now that we have a block, we add it to the collectionversions table
-			
+
 			$arHandle = (is_object($a)) ? $a->getAreaHandle() : $a;
 			$cID = $this->getCollectionID();
 			$vObj = $this->getVersionObject();
-	
+
 			if ($bt->includeAll()) {
 				// normally, display order is dependant on a per area, per version basis. However, since this block
-				// is not aliased across versions, then we want to get display order simply based on area, NOT based 
+				// is not aliased across versions, then we want to get display order simply based on area, NOT based
 				// on area + version
 				$newBlockDisplayOrder = $this->getCollectionAreaDisplayOrder($arHandle, true); // second argument is "ignoreVersions"
 			} else {
@@ -798,16 +798,16 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			$res = $db->Execute($q, $v);
 
 			Cache::delete('collection_blocks', $cID . ':' . $vObj->getVersionID());
-			
+
 			return Block::getByID($nb->getBlockID(), $this, $a);
 		}
-		
+
 		public function add($data) {
 			$db = Loader::db();
 			$dh = Loader::helper('date');
-			$cDate = $dh->getSystemDateTime(); 
+			$cDate = $dh->getSystemDateTime();
 			$cDatePublic = ($data['cDatePublic']) ? $data['cDatePublic'] : $cDate;
-			
+
 			if (isset($data['cID'])) {
 				$res = $db->query("insert into Collections (cID, cHandle, cDateAdded, cDateModified) values (?, ?, ?, ?)", array($data['cID'], $data['handle'], $cDate, $cDate));
 				$newCID = $data['cID'];
@@ -815,7 +815,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 				$res = $db->query("insert into Collections (cHandle, cDateAdded, cDateModified) values (?, ?, ?)", array($data['handle'], $cDate, $cDate));
 				$newCID = $db->Insert_ID();
 			}
-			
+
 			$cvIsApproved = (isset($data['cvIsApproved']) && $data['cvIsApproved'] == 0) ? 0 : 1;
 			$cvIsNew = 1;
 			if ($cvIsApproved) {
@@ -840,11 +840,11 @@ defined('C5_EXECUTE') or die("Access Denied.");
 				$r2 = $db->prepare($q2);
 				$res2 = $db->execute($r2, $v2);
 			}
-			
+
 			$nc = Collection::getByID($newCID);
 			return $nc;
 		}
-		
+
 		public function markModified() {
 			// marks this collection as newly modified
 			$db = Loader::db();
@@ -856,21 +856,21 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			$r = $db->prepare($q);
 			$res = $db->execute($r, $v);
 		}
-		
+
 		public function delete() {
 			if ($this->cID > 0) {
 				$db = Loader::db();
-	
+
 				// First we delete all versions
 				$vl = new VersionList($this);
 				$vlArray = $vl->getVersionListArray();
-		
+
 				foreach($vlArray as $v) {
 					$v->delete();
 				}
-		
+
 				$cID = $this->getCollectionID();
-		
+
 				$q = "delete from CollectionAttributeValues where cID = {$cID}";
 				$db->query($q);
 
@@ -882,25 +882,25 @@ defined('C5_EXECUTE') or die("Access Denied.");
 
 			}
 		}
-		
+
 		public function duplicate() {
 			$db = Loader::db();
 			$dh = Loader::helper('date');
 			$cDate = $dh->getSystemDateTime();
-			
+
 			$v = array($cDate, $cDate, $this->cHandle);
 			$r = $db->query("insert into Collections (cDateAdded, cDateModified, cHandle) values (?, ?, ?)", $v);
 			$newCID = $db->Insert_ID();
-			
+
 			if ($r) {
 
 				// first, we get the creation date of the active version in this collection
 				//$q = "select cvDateCreated from CollectionVersions where cvIsApproved = 1 and cID = {$this->cID}";
 				//$dcOriginal = $db->getOne($q);
 				// now we create the query that will grab the versions we're going to copy
-				
+
 				$qv = "select * from CollectionVersions where cID = '{$this->cID}' order by cvDateCreated asc";
-	
+
 				// now we grab all of the current versions
 				$rv = $db->query($qv);
 				$cvList = array();
@@ -912,31 +912,31 @@ defined('C5_EXECUTE') or die("Access Denied.");
 					$qv = "insert into CollectionVersions (cID, cvID, ctID, cvName, cvHandle, cvDescription, cvDatePublic, cvDateCreated, cvComments, cvAuthorUID, cvIsApproved, ptID) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 					$db->query($qv, $vv);
 				}
-				
-				// duplicate layout records 
+
+				// duplicate layout records
 				$ql = "select * from CollectionVersionAreaLayouts where cID = '{$this->cID}' order by cvalID asc";
 				$rl = $db->query($ql);
-				while ($row = $rl->fetchRow()) { 
+				while ($row = $rl->fetchRow()) {
 					$vl = array( $newCID, $row['cvID'], $row['arHandle'], $row['layoutID'], $row['position'], $row['areaNameNumber'] );
 					$ql = "insert into CollectionVersionAreaLayouts (cID, cvID, arHandle, layoutID, position, areaNameNumber) values ( ?, ?, ?, ?, ?, ?)";
 					$db->query($ql, $vl);
-				}				
+				}
 
 				$ql = "select * from CollectionVersionBlockStyles where cID = '{$this->cID}'";
 				$rl = $db->query($ql);
-				while ($row = $rl->fetchRow()) { 
+				while ($row = $rl->fetchRow()) {
 					$vl = array( $newCID, $row['cvID'], $row['bID'], $row['arHandle'], $row['csrID'] );
 					$ql = "insert into CollectionVersionBlockStyles (cID, cvID, bID, arHandle, csrID) values (?, ?, ?, ?, ?)";
 					$db->query($ql, $vl);
 				}
 				$ql = "select * from CollectionVersionAreaStyles where cID = '{$this->cID}'";
 				$rl = $db->query($ql);
-				while ($row = $rl->fetchRow()) { 
+				while ($row = $rl->fetchRow()) {
 					$vl = array( $newCID, $row['cvID'], $row['arHandle'], $row['csrID'] );
 					$ql = "insert into CollectionVersionAreaStyles (cID, cvID, arHandle, csrID) values (?, ?, ?, ?)";
 					$db->query($ql, $vl);
 				}
-	
+
 				// now we grab all the blocks we're going to need
 				$cvList = implode(',',$cvList);
 				$q = "select bID, cvID, arHandle, cbDisplayOrder, cbOverrideAreaPermissions, cbIncludeAll from CollectionVersionBlocks where cID = '{$this->cID}' and cvID in ({$cvList})";
@@ -949,27 +949,27 @@ defined('C5_EXECUTE') or die("Access Denied.");
 						$q2 = "select peID, pdID, accessType, pkID from BlockPermissionAssignments where cID = '{$this->cID}' and bID = '{$row['bID']}' and cvID = '{$row['cvID']}'";
 						$r2 = $db->query($q2);
 						while ($row2 = $r2->fetchRow()) {
-							$db->Replace('BlockPermissionAssignments', 
+							$db->Replace('BlockPermissionAssignments',
 								array('cID' => $newCID, 'cvID' => $row['cvID'], 'bID' => $row['bID'], 'peID' => $row2['peID'], 'pdID' => $row2['pdID'], 'accessType' => $row2['accessType'], 'pkID' => $row2['pkID']),
 								array('cID', 'cvID', 'bID', 'peID', 'pkID'), true);
 						}
 					}
 				}
-	
+
 				// duplicate any attributes belonging to the collection
-				
+
 				$v = array($this->getCollectionID());
 				$q = "select akID, cvID, avID from CollectionAttributeValues where cID = ?";
 				$r = $db->query($q, $v);
 				while ($row = $r->fetchRow()) {
 					$v2 = array($row['akID'], $row['cvID'], $row['avID'], $newCID);
 					$db->query("insert into CollectionAttributeValues (akID, cvID, avID, cID) values (?, ?, ?, ?)", $v2);
-				}			
+				}
 				return Collection::getByID($newCID);
 			}
-			
+
 		}
-		
+
 
 	}
 

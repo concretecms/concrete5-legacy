@@ -6,7 +6,7 @@ class DashboardFilesController extends Controller {
 		$this->redirect('/dashboard/files/search');
 	}
 
-	
+
 }
 
 ?>

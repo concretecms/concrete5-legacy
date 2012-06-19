@@ -19,7 +19,7 @@ $searchInstance = Loader::helper('text')->entities($_REQUEST['searchInstance']);
 
 <?
 
-Loader::element('files/upload_single', array('searchInstance' => $searchInstance, 'mode' => 'replace', 'fID' => $f->getFileID())); 
+Loader::element('files/upload_single', array('searchInstance' => $searchInstance, 'mode' => 'replace', 'fID' => $f->getFileID()));
 
 ?>
 
@@ -65,13 +65,13 @@ if (count($contents) > 0) { ?>
 </div>
 
 <script type="text/javascript">
-$(function() { 
+$(function() {
 	ccm_alSetupSingleUploadForm();
 	$("#ccm-file-manager-replace-incoming").submit(function() {
-		$(this).attr('target', ccm_alProcessorTarget);		
+		$(this).attr('target', ccm_alProcessorTarget);
 	});
 	$("#ccm-file-manager-replace-remote").submit(function() {
-		$(this).attr('target', ccm_alProcessorTarget);		
+		$(this).attr('target', ccm_alProcessorTarget);
 	});
 
 });

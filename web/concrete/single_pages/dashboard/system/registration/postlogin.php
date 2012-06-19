@@ -3,10 +3,10 @@
 <?php
 $h = Loader::helper('concrete/interface');
 ?>
-    <form method="post" id="login-redirect-form" action="<?php echo $this->url('/dashboard/system/registration/postlogin', 'update_login_redirect')?>">  
+    <form method="post" id="login-redirect-form" action="<?php echo $this->url('/dashboard/system/registration/postlogin', 'update_login_redirect')?>">
     	<?php echo $this->controller->token->output('update_login_redirect')?>
-    <div class="ccm-pane-body"> 
-    	
+    <div class="ccm-pane-body">
+
     	<div class="clearfix">
             <label id="optionsCheckboxes"><strong><?php echo t('Redirect users to:')?></strong></label>
             <div class="input">
@@ -29,27 +29,27 @@ $h = Loader::helper('concrete/interface');
 			        <span><?php echo t('Custom page')?></span>
 			      </label>
 			      	<div id="login_redirect_custom_cid_wrap" style="display:<?php echo ( $site_login_redirect=='CUSTOM' )?'block':'none'?>">
-					<?php  
-					$formPageSelector = Loader::helper('form/page_selector'); 
-					echo $formPageSelector->selectPage('LOGIN_REDIRECT_CID', $login_redirect_cid ); 
-					?> 
+					<?php
+					$formPageSelector = Loader::helper('form/page_selector');
+					echo $formPageSelector->selectPage('LOGIN_REDIRECT_CID', $login_redirect_cid );
+					?>
 					</div>
-					
-					<script>			
-					$(function(){ 
-						$("#login_redirect_custom_cid_wrap .dialog-launch").dialog(); 
-					
-						$("input[name='LOGIN_REDIRECT']").each(function(i,el){ 
+
+					<script>
+					$(function(){
+						$("#login_redirect_custom_cid_wrap .dialog-launch").dialog();
+
+						$("input[name='LOGIN_REDIRECT']").each(function(i,el){
 							el.onchange=function(){isLoginRedirectCustom();}
-						})	 	
-					});	
+						})
+					});
 					function isLoginRedirectCustom(){
 						if($("input[name='LOGIN_REDIRECT']:checked").val()=='CUSTOM'){
 							$('#login_redirect_custom_cid_wrap').css('display','block');
 						}else{
 							$('#login_redirect_custom_cid_wrap').css('display','none');
 						}
-					}			
+					}
 					</script>
 			    </li>
 			    <li>
@@ -67,6 +67,6 @@ $h = Loader::helper('concrete/interface');
 print $h->submit(t('Save'), 'login-redirect-form', 'right', 'primary');
 ?>
 </div>
-</form> 	
+</form>
 
 <?=Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper(false);?>

@@ -19,7 +19,7 @@ $jh = Loader::helper('json');
 	display: block;
 }
 
-.running .run-all, 
+.running .run-all,
 .running .run-task {
 	display: none;
 }
@@ -42,7 +42,7 @@ jQuery(function($) {
 
 	function runTaskForRow(row, jobId, cb) {
 		row.addClass('running');
-		$.ajax({ 
+		$.ajax({
 			url: CCM_TOOLS_PATH + '/jobs?auth=<?=$auth?>&jID=' + jobId,
 			dataType: 'json',
 			cache: false,
@@ -113,7 +113,7 @@ jQuery(function($) {
 <? $jobrunning = false; ?>
 <?foreach ($jobList as $job):?>
 <tr <? if ($job['jStatus'] == 'RUNNING') {
-	
+
 	$jobrunning = true;?>class="running" <? } ?>>
 	<td><a class="run-task" title="<?=t('Run')?>" href="<?=BASE_URL.$this->url('/tools/required/jobs?auth='.$auth.'&jobId='.$job['jID'])?>" data-jobId="<?=$job['jID']?>"></a><span class="run-indicator"></span></td>
 	<td><?=$job['jID']?></td>
@@ -123,7 +123,7 @@ jQuery(function($) {
 	if ($job['jStatus'] == 'RUNNING') {
 		$runtime = date(DATE_APP_GENERIC_TS, strtotime($job['jDateLastRun']));
 		echo ("<strong>");
-		echo t("Currently Running (Since %s)", $runtime);					
+		echo t("Currently Running (Since %s)", $runtime);
 		echo ("</strong>");
 	} else if($job['jDateLastRun'] == '' || substr($job['jDateLastRun'], 0, 4) == '0000') {
 		echo t('Never');
@@ -146,21 +146,21 @@ jQuery(function($) {
 <h2><?=t('Jobs Available for Installation')?></h2>
 <table class="zebra-striped">
 <thead>
-	<tr> 
+	<tr>
 		<th><?=t('Name')?></th>
-		<th><?=t('Description')?></th> 
+		<th><?=t('Description')?></th>
 		<th></th>
 	</tr>
 </thead>
 <tbody>
 	<?foreach($availableJobs as $availableJobName => $job):?>
-	<tr> 
+	<tr>
 		<td><?=$job->getJobName() ?></td>
-		<td><?=$job->getJobDescription() ?></td> 
+		<td><?=$job->getJobDescription() ?></td>
 		<td><?if(!$job->invalid):?>
 			<?=$ih->button(t('Install'), $this->action('install', $job->jHandle))?>
 		<?endif?></td>
-	</tr>	
+	</tr>
 	<?endforeach?>
 </tbody>
 </table>

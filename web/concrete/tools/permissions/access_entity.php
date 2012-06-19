@@ -3,7 +3,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 $form = Loader::helper("form");
 $tp = new TaskPermission();
 $dt = Loader::helper('form/date_time');
-if (!$tp->canAccessUserSearch() && !$tp->canAccessGroupSearch()) { 
+if (!$tp->canAccessUserSearch() && !$tp->canAccessGroupSearch()) {
 	die(t("Access Denied."));
 }
 
@@ -19,17 +19,17 @@ if ($_REQUEST['pdID']) {
 	$pd = false;
 }
 
-if ($_POST['task'] == 'save_permissions') { 
+if ($_POST['task'] == 'save_permissions') {
 	$js = Loader::helper('json');
 	$r = new stdClass;
-	
+
 	if (is_object($pae)) {
 		$pd = PermissionDuration::translateFromRequest();
 	} else {
 		$r->error = true;
 		$r->message = t('You must choose who this permission is for.');
 	}
-	
+
 	if (!$r->error) {
 		$r->peID = $pae->getAccessEntityID();
 		if (is_object($pd)) {
@@ -38,7 +38,7 @@ if ($_POST['task'] == 'save_permissions') {
 			$r->pdID = 0;
 		}
 	}
-	
+
 	print $js->encode($r);
 	exit;
 }
@@ -66,7 +66,7 @@ if ($_POST['task'] == 'save_permissions') {
 	<span class="caret"></span>
 		</a>
 	<ul class="dropdown-menu">
-	<? 
+	<?
 	$category = PermissionKeyCategory::getByHandle($_REQUEST['pkCategoryHandle']);
 	$entitytypes = PermissionAccessEntityType::getList($category);
 	foreach($entitytypes as $type) { ?>
@@ -77,14 +77,14 @@ if ($_POST['task'] == 'save_permissions') {
 <br/><br/>
 
 <? foreach($entitytypes as $type) { ?>
-	
+
 <? if ($type->getPackageID() > 0) { ?>
 	<? Loader::packageElement('permission/access/entity/types/' . $type->getAccessEntityTypeHandle(), $type->getPackageHandle(), array('type' => $type)); ?>
 <? } else { ?>
 	<? Loader::element('permission/access/entity/types/' . $type->getAccessEntityTypeHandle(), array('type' => $type)); ?>
 <? } ?>
 
-	
+
 <? } ?>
 
 <? } ?>
@@ -121,7 +121,7 @@ if ($_POST['task'] == 'save_permissions') {
 			if (r.error) {
 				ccmAlert.notice('<?=t("Error")?>', r.message);
 			} else {
-				if (typeof(ccm_addAccessEntity) == 'function') { 
+				if (typeof(ccm_addAccessEntity) == 'function') {
 					ccm_addAccessEntity(r.peID, r.pdID, '<?=$_REQUEST["accessType"]?>');
 				} else {
 					alert(r.peID);
@@ -130,7 +130,7 @@ if ($_POST['task'] == 'save_permissions') {
 			}
 		}
 	});
-	
+
 </script>
 
 

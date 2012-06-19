@@ -1,5 +1,5 @@
 <?php defined('C5_EXECUTE') or die("Access Denied.");
-	
+
 class TagsBlockController extends BlockController {
 
 	protected $btTable = 'btTags';
@@ -7,47 +7,47 @@ class TagsBlockController extends BlockController {
 	protected $btInterfaceHeight = "260";
 
 	protected $btExportPageColumns = array('targetCID');
-	
+
 	protected $btCacheBlockRecord = true;
 	protected $btCacheBlockOutput = true;
 	protected $btCacheBlockOutputOnPost = false;
 	protected $btCacheBlockOutputForRegisteredUsers = false;
 	protected $btWrapperClass = 'ccm-ui';
-	
+
 	public $attributeHandle = 'tags';
 	public $displayMode = 'page';
 	public $cloudCount = 10;
-	public $helpers =  array('navigation');	
-	
-	/** 
+	public $helpers =  array('navigation');
+
+	/**
 	 * Used for localization. If we want to localize the name/description we have to include this
 	*/
 	public function getBlockTypeDescription() {
 		return t("List pages based on type, area.");
 	}
-	
+
 	public function getBlockTypeName() {
 		return t("Tags");
 	}
-	
-	public function add() { 
+
+	public function add() {
 		$ak = $this->loadAttribute();
 		$this->set('ak',$ak);
-		
+
 		$this->set('displayMode','page');
 	}
-	
+
 	protected function loadAttribute() {
 		Loader::model('attribute/categories/collection');
 		$ak = CollectionAttributeKey::getByHandle($this->attributeHandle);
 		return $ak;
 	}
-	
-	public function edit() { 
+
+	public function edit() {
 		$ak = $this->loadAttribute();
 		$this->set('ak',$ak);
 	}
-	
+
 	public function view() {
 		$ak = $this->loadAttribute();
 		if($this->displayMode == "cloud") {
@@ -59,7 +59,7 @@ class TagsBlockController extends BlockController {
 			if($this->cloudCount > 0 && $items instanceof SelectAttributeTypeOptionList && $items->count()) {
 				$i = 1;
 				foreach($items as $item) {
-					$options->add($item); 
+					$options->add($item);
 					if($i >=$this->cloudCount) { break;}
 					$i++;
 				}
@@ -72,12 +72,12 @@ class TagsBlockController extends BlockController {
 			$controller = $ak->getController();
 			$options = $c->getAttribute($ak->getAttributeKeyHandle());
 		}
-		
+
 		if($this->targetCID > 0) {
 			$target = Page::getByID($this->targetCID);
 			$this->set('target',$target);
-		}		
-		
+		}
+
 		// grab selected tag, if we're linking to a page with a tag block on it.
 		if(is_array($_REQUEST['akID'])) {
 			$res = $_REQUEST['akID'][$ak->getAttributeKeyID()]['atSelectOptionID'][0];
@@ -90,7 +90,7 @@ class TagsBlockController extends BlockController {
 		$this->set('akc',$controller);
 		$this->set('ak',$ak);
 	}
-	
+
 	public function save($args) {
 		$ak = $this->loadAttribute();
 		if ($_REQUEST['cID']) {
@@ -102,5 +102,5 @@ class TagsBlockController extends BlockController {
 		$args['cloudCount'] = (is_numeric($args['cloudCount'])?$args['cloudCount']:0);
 		$args['targetCID'] = (is_numeric($args['targetCID'])?$args['targetCID']:0);
 		parent::save($args);
-	}	
+	}
 }

@@ -4,7 +4,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 class DateTimeAttributeTypeController extends AttributeTypeController  {
 
 	public $helpers = array('form');
-	
+
 	protected $searchIndexFieldDefinition = 'T NULL';
 
 	public function saveKey($data) {
@@ -14,16 +14,16 @@ class DateTimeAttributeTypeController extends AttributeTypeController  {
 		}
 		$this->setDisplayMode($akDateDisplayMode);
 	}
-	
+
 	public function setDisplayMode($akDateDisplayMode) {
 		$db = Loader::db();
 		$ak = $this->getAttributeKey();
 		$db->Replace('atDateTimeSettings', array(
-			'akID' => $ak->getAttributeKeyID(), 
+			'akID' => $ak->getAttributeKeyID(),
 			'akDateDisplayMode' => $akDateDisplayMode
 		), array('akID'), true);
 	}
-	
+
 	public function type_form() {
 		$this->load();
 	}
@@ -43,7 +43,7 @@ class DateTimeAttributeTypeController extends AttributeTypeController  {
 		$r .= date(DATE_APP_DATE_ATTRIBUTE_TYPE_MDY, strtotime($v));
 		return $r;
 	}
-	
+
 	public function searchForm($list) {
 		$dateFrom = $this->request('from');
 		$dateTo = $this->request('to');
@@ -57,7 +57,7 @@ class DateTimeAttributeTypeController extends AttributeTypeController  {
 		}
 		return $list;
 	}
-	
+
 	public function form() {
 		$this->load();
 		$dt = Loader::helper('form/date_time');
@@ -112,14 +112,14 @@ class DateTimeAttributeTypeController extends AttributeTypeController  {
 		$html .= $dt->date($this->field('to'), $this->request('to'), false);
 		print $html;
 	}
-	
+
 	public function saveValue($value) {
 		if ($value != '') {
 			$value = date('Y-m-d H:i:s', strtotime($value));
 		} else {
 			$value = null;
 		}
-		
+
 		$db = Loader::db();
 		$db->Replace('atDateTime', array('avID' => $this->getAttributeValueID(), 'value' => $value), 'avID', true);
 	}
@@ -127,9 +127,9 @@ class DateTimeAttributeTypeController extends AttributeTypeController  {
 	public function duplicateKey($newAK) {
 		$this->load();
 		$db = Loader::db();
-		$db->Execute('insert into atDateTimeSettings (akID, akDateDisplayMode) values (?, ?)', array($newAK->getAttributeKeyID(), $this->akDateDisplayMode));	
+		$db->Execute('insert into atDateTimeSettings (akID, akDateDisplayMode) values (?, ?)', array($newAK->getAttributeKeyID(), $this->akDateDisplayMode));
 	}
-	
+
 	public function saveForm($data) {
 		$this->load();
 		$dt = Loader::helper('form/date_time');
@@ -144,20 +144,20 @@ class DateTimeAttributeTypeController extends AttributeTypeController  {
 				break;
 		}
 	}
-	
+
 	protected function load() {
 		$ak = $this->getAttributeKey();
 		if (!is_object($ak)) {
 			return false;
 		}
-		
+
 		$db = Loader::db();
 		$row = $db->GetRow('select akDateDisplayMode from atDateTimeSettings where akID = ?', $ak->getAttributeKeyID());
 		$this->akDateDisplayMode = $row['akDateDisplayMode'];
 
 		$this->set('akDateDisplayMode', $this->akDateDisplayMode);
 	}
-	
+
 	public function deleteKey() {
 		$db = Loader::db();
 		$arr = $this->attributeKey->getAttributeValueIDList();

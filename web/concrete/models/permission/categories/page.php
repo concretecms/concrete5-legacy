@@ -9,7 +9,7 @@ class PagePermissionKey extends PermissionKey {
 	public function getMultiplePageArray() {
 		return $this->multiplePageArray;
 	}
-	
+
 
 }
 
@@ -19,16 +19,16 @@ class PagePermissionAssignment extends PermissionAssignment {
 		$db = Loader::db();
 		$paID = $db->GetOne('select paID from PagePermissionAssignments where cID = ? and pkID = ?', array($this->getPermissionObject()->getPermissionsCollectionID(), $this->pk->getPermissionKeyID()));
 		$pae = PermissionAccess::getByID($paID, $this->pk);
-		
+
 		$c = $this->getPermissionObject();
 		$workflows = PageWorkflowProgress::getList($c);
-		
+
 		$accessObjects = array();
 		if (count($workflows) > 0) {
 			foreach($workflows as $wff) {
 				$wf = $wff->getWorkflowObject();
 				$pkx = clone $this->pk;
-				$pax = $wf->getPermissionAccessObject($pkx, $wff);	
+				$pax = $wf->getPermissionAccessObject($pkx, $wff);
 				if (is_object($pax)) {
 					$accessObjects[] = $pax;
 				}
@@ -53,7 +53,7 @@ class PagePermissionAssignment extends PermissionAssignment {
 		$db->Replace('PagePermissionAssignments', array('cID' => $this->getPermissionObject()->getPermissionsCollectionID(), 'paID' => $pa->getPermissionAccessID(), 'pkID' => $this->pk->getPermissionKeyID()), array('cID', 'pkID'), true);
 		$pa->markAsInUse();
 	}
-		
+
 	public function getPermissionKeyToolsURL($task = false) {
 		$pageArray = $this->pk->getMultiplePageArray();
 		if (is_array($pageArray) && count($pageArray) > 0) {
@@ -66,8 +66,8 @@ class PagePermissionAssignment extends PermissionAssignment {
 			return parent::getPermissionKeyToolsURL($task) . '&cID=' . $this->getPermissionObject()->getCollectionID();
 		}
 	}
-	
-	
+
+
 }
 
 class PagePermissionAccess extends PermissionAccess {

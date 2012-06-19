@@ -5,37 +5,37 @@ class UserPermissionAccessEntity extends PermissionAccessEntity {
 
 	protected $user;
 	public function getUserObject() {return $this->user;}
-	
+
 	public function getAccessEntityUsers() {
 		return array($this->getUserObject());
 	}
 	public function getAccessEntityTypeLinkHTML() {
 		$html = '<a href="' . REL_DIR_FILES_TOOLS_REQUIRED . '/users/search_dialog?mode=choose_multiple" dialog-modal="false" dialog-width="90%" dialog-title="' . t('Add User') . '" class="dialog-launch" dialog-height="70%"">' . t('User') . '</a>';
-		return $html;		
+		return $html;
 	}
 
 	public static function getAccessEntitiesForUser($user) {
 		$entities = array();
 		$db = Loader::db();
-		if ($user->isRegistered()) { 
+		if ($user->isRegistered()) {
 			// we find the peID for the current user, if one exists. This means that the user has special permissions set just for them.
 			$peID = $db->GetOne('select peID from PermissionAccessEntityUsers where uID = ?', array($user->getUserID()));
 			if ($peID > 0) {
 				$entity = PermissionAccessEntity::getByID($peID);
-				if (is_object($entity)) { 
+				if (is_object($entity)) {
 					$entities[] = $entity;
 				}
 			}
 		}
-		return $entities;		
+		return $entities;
 	}
-	
+
 	public static function getOrCreate(UserInfo $ui) {
 		$db = Loader::db();
 		$petID = $db->GetOne('select petID from PermissionAccessEntityTypes where petHandle = \'user\'');
-		$peID = $db->GetOne('select pae.peID from PermissionAccessEntities pae inner join PermissionAccessEntityUsers paeg on pae.peID = paeg.peID where petID = ? and paeg.uID = ?', 
+		$peID = $db->GetOne('select pae.peID from PermissionAccessEntities pae inner join PermissionAccessEntityUsers paeg on pae.peID = paeg.peID where petID = ? and paeg.uID = ?',
 			array($petID, $ui->getUserID()));
-		if (!$peID) { 
+		if (!$peID) {
 			$db->Execute("insert into PermissionAccessEntities (petID) values(?)", array($petID));
 			$peID = $db->Insert_ID();
 			$db->Execute('insert into PermissionAccessEntityUsers (peID, uID) values (?, ?)', array($peID, $ui->getUserID()));

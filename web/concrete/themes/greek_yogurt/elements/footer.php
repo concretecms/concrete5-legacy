@@ -1,15 +1,15 @@
 <?php  defined('C5_EXECUTE') or die("Access Denied."); ?>
 <div class="clear"></div>
-	
+
 	<div id="footer">
-	
+
 		<div id="footer-inner">
-		
+
 			<p class="footer-sign-in">
-			<?php 
+			<?php
 			$u = new User();
 			if ($u->isRegistered()) { ?>
-				<?php  
+				<?php
 				if (Config::get("ENABLE_USER_PROFILES")) {
 					$userName = '<a href="' . $this->url('/profile') . '">' . $u->getUserName() . '</a>';
 				} else {
@@ -21,13 +21,13 @@
 				<span class="sign-in"><a href="<?php echo $this->url('/login')?>"><?php echo t('Sign In to Edit this Site')?></a></span>
 			<?php  } ?>
 			</p>
-			
+
 			<div class="clear"></div>
 			<p class="footer-copyright">&copy;<?php echo date('Y')?> <?php echo SITE?>.</p>
 			<p class="footer-tag-line"><?=t('Built with <a href="http://www.concrete5.org/" alt="Free Content Management System" target="_blank">concrete5 - an open source CMS')?></a></p>
-	
+
 		</div>
-	
+
 	</div>
 
 <!-- end main container -->

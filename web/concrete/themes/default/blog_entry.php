@@ -6,16 +6,16 @@ $this->inc('elements/header.php'); ?>
 			<?
 			$as = new Area('Sidebar');
 			$as->display($c);
-			?>		
+			?>
 		</div>
-		
+
 		<div id="body">
 			<div class="pageSection">
 				<?php $ai = new Area('Blog Post Header'); $ai->display($c); ?>
 			</div>
 			<div class="pageSection">
 				<h1><?php echo $c->getCollectionName(); ?></h1>
-				<p class="meta"><?php echo t('Posted by')?> <?php echo $c->getVersionObject()->getVersionAuthorUserName(); ?> on <?php echo $c->getCollectionDatePublic('F j, Y'); ?></p>		
+				<p class="meta"><?php echo t('Posted by')?> <?php echo $c->getVersionObject()->getVersionAuthorUserName(); ?> on <?php echo $c->getCollectionDatePublic('F j, Y'); ?></p>
 			</div>
 			<div class="pageSection">
 				<?php $as = new Area('Main'); $as->display($c); ?>
@@ -27,8 +27,8 @@ $this->inc('elements/header.php'); ?>
 				<?php $ai = new Area('Blog Post Footer'); $ai->display($c); ?>
 			</div>
 		</div>
-		
-		<div class="spacer">&nbsp;</div>		
+
+		<div class="spacer">&nbsp;</div>
 	</div>
 
 <?php $this->inc('elements/footer.php'); ?>
