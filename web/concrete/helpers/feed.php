@@ -22,7 +22,7 @@ class FeedHelper {
 	public function __construct() {
 		Loader::library("3rdparty/simplepie");
 	}
-	
+
 	/**
 	 * Loads a newsfeed object.
 	 * @param string $feed
@@ -32,6 +32,6 @@ class FeedHelper {
 		$feed = new SimplePie($feed, DIR_FILES_CACHE);
 		return $feed;
 	}
-	
-	
+
+
 }

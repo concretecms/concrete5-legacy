@@ -19,12 +19,12 @@
 
 defined('C5_EXECUTE') or die("Access Denied.");
 class ConcreteUpgradeVersion500b2Helper {
-	
+
 	public function notes() {
-		$arr = array();		
+		$arr = array();
 		return $arr;
 	}
-	
+
 	public function run() {
 		Loader::model("job");
 		Loader::model('single_page');
@@ -39,7 +39,6 @@ class ConcreteUpgradeVersion500b2Helper {
 		}
 
 	}
-	
+
 }
-		
-	
+

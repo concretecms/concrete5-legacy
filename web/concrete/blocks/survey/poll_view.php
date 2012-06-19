@@ -10,13 +10,13 @@ foreach($aBlocks as $bls){
 	$pollBlocks[]=$bls;
 }
 */
-if (count($aBlocks) > 0)  { 
+if (count($aBlocks) > 0)  {
 ?>
 <div id="post-poll">
 	<div class="aux">
 	<?
 		$a2->display($c,$aBlocks);
-	?>	
+	?>
 	</div>
 </div>
 <? } ?>

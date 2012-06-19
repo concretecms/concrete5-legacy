@@ -6,13 +6,13 @@ class DashboardPagesThemesController extends Controller {
 	protected $helpers = array('html');
 
 	public function view() {
-		
+
 		$tArray = array();
 		$tArray2 = array();
-		
+
 		$tArray = PageTheme::getList();
 		$tArray2 = PageTheme::getAvailableThemes();
-		
+
 		$this->set('tArray', $tArray);
 		$this->set('tArray2', $tArray2);
 		$siteThemeID = 0;
@@ -20,16 +20,16 @@ class DashboardPagesThemesController extends Controller {
 		if (is_object($obj)) {
 			$siteThemeID = $obj->getThemeID();
 		}
-		
+
 		$this->set('siteThemeID', $siteThemeID);
-		$this->set('activate', View::url('/dashboard/pages/themes', 'activate'));		
-		$this->set('install', View::url('/dashboard/pages/themes', 'install'));		
+		$this->set('activate', View::url('/dashboard/pages/themes', 'activate'));
+		$this->set('install', View::url('/dashboard/pages/themes', 'install'));
 	}
 
 	public function on_start() {
 		$this->set('disableThirdLevelNav', true);
 	}
-	
+
 	public function remove($ptID, $token = '') {
 		$v = Loader::helper('validation/error');
 		try {
@@ -46,7 +46,7 @@ class DashboardPagesThemesController extends Controller {
 				throw new Exception('You may not uninstall a packaged theme.');
 			}
 			*/
-			
+
 			$localUninstall = true;
 			if ($pl->getPackageID() > 0) {
 				// then we check to see if this is the only theme in that package. If so, we uninstall the package too
@@ -56,7 +56,7 @@ class DashboardPagesThemesController extends Controller {
 					$_pl = $items[0];
 					if ($_pl instanceof PageTheme && $_pl->getThemeID() == $ptID) {
 						$pkg->uninstall();
-						$localUninstall = false;						
+						$localUninstall = false;
 					}
 				}
 			}
@@ -70,12 +70,12 @@ class DashboardPagesThemesController extends Controller {
 		}
 		$this->view();
 	}
-	
+
 	public function activate($ptID) {
 		$valt = Loader::helper('validation/token');
-		$this->set('activate_confirm', View::url('/dashboard/pages/themes', 'activate_confirm', $ptID, $valt->generate('activate')));	
+		$this->set('activate_confirm', View::url('/dashboard/pages/themes', 'activate_confirm', $ptID, $valt->generate('activate')));
 	}
-	
+
 	public function marketplace() {
 		$this->redirect('/dashboard/install/browse', 'themes');
 	}
@@ -85,13 +85,13 @@ class DashboardPagesThemesController extends Controller {
 		if ($ptHandle == null) {
 			$this->redirect('/dashboard/pages/themes');
 		}
-		
+
 		$v = Loader::helper('validation/error');
 		try {
 			if (is_object($th)) {
 				$t = PageTheme::add($ptHandle);
 				$this->redirect('/dashboard/pages/themes/inspect', $t->getThemeID(), 1);
-				
+
 			} else {
 				throw new Exception('Invalid Theme');
 			}
@@ -104,14 +104,14 @@ class DashboardPagesThemesController extends Controller {
 					$v->add($e->getMessage());
 					break;
 			}
-			
+
 			$this->set('error', $v);
 		}
 		$this->view();
 	}
-	
+
 	// this can be run from /layouts/add/ or /layouts/edit/ or /layouts/ - anything really
-	
+
 	public function activate_confirm($ptID, $token) {
 		$l = PageTheme::getByID($ptID);
 		$val = Loader::helper('validation/error');
@@ -128,7 +128,7 @@ class DashboardPagesThemesController extends Controller {
 		}
 		$this->view();
 	}
-	
+
 
 }
 

@@ -1,11 +1,11 @@
 <?php defined('C5_EXECUTE') or die("Access Denied."); ?>
 <div id="ccm-styleEditPane-background" class="ccm-styleEditPane" style="display:none">
 	<div>
-		<h3><?php echo t('Background')?></h3> 
+		<h3><?php echo t('Background')?></h3>
 		<table border="0" cellspacing="0" cellpadding="0" class="ccm-style-property-table">
 			<tr>
 				<td><?=$fh->output( 'background_color', '', $cssData['background_color']) ?></td>
-				<? 
+				<?
 				$bf = false;
 				if ($cssData['background_image'] > 0) {
 					$bf = File::getByID($cssData['background_image']);
@@ -25,5 +25,5 @@
 			</tr>
 		</table>
 		<div class="ccm-spacer"></div>
-	</div>	
+	</div>
 </div>

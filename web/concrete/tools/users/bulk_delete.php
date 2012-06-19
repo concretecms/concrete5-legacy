@@ -11,7 +11,7 @@ $tp = new TaskPermission();
 $u = new User();
 $sk = PermissionKey::getByHandle('access_user_search');
 $tp = new TaskPermission();
-if (!$tp->canDeleteUser()) { 
+if (!$tp->canDeleteUser()) {
 	die(t("Access Denied."));
 }
 
@@ -23,8 +23,8 @@ $excluded_user_ids[] = USER_SUPER_ID; // can't delete the super user (admin)
 
 if (is_array($_REQUEST['uID'])) {
 	foreach($_REQUEST['uID'] as $uID) {
-		$ui = UserInfo::getByID($uID);		
-		if(!$sk->validate($ui) || (in_array($ui->getUserID(),$excluded_user_ids))) { 
+		$ui = UserInfo::getByID($uID);
+		if(!$sk->validate($ui) || (in_array($ui->getUserID(),$excluded_user_ids))) {
 			$excluded = true;
 		} else {
 			$users[] = $ui;
@@ -40,7 +40,7 @@ if ($_POST['task'] == 'delete') {
 	}
 	echo Loader::helper('json')->encode(array('error'=>false));
 	exit;
-} 
+}
 
 if (!isset($_REQUEST['reload'])) { ?>
 	<div id="ccm-user-bulk-delete-wrapper">
@@ -63,7 +63,7 @@ if (!isset($_REQUEST['reload'])) { ?>
 		</form>
 	</div>
 	<div class="dialog-buttons">
-		<?=$ih->button_js(t('Cancel'), 'jQuery.fn.dialog.closeTop()', 'left', 'btn')?>	
+		<?=$ih->button_js(t('Cancel'), 'jQuery.fn.dialog.closeTop()', 'left', 'btn')?>
 		<?=$ih->button_js(t('Delete'), 'ccm_userBulkActivate()', 'right', 'btn error')?>
 	</div>
 <?
@@ -72,7 +72,7 @@ if (!isset($_REQUEST['reload'])) { ?>
 <? } ?>
 
 <script type="text/javascript">
-ccm_userBulkActivate = function() { 
+ccm_userBulkActivate = function() {
 	jQuery.fn.dialog.showLoader();
 	$("#ccm-user-bulk-delete").ajaxSubmit(function(resp) {
 		jQuery.fn.dialog.closeTop();
@@ -83,6 +83,6 @@ ccm_userBulkActivate = function() {
 		       ccm_parseAdvancedSearchResponse(r, '<?=$searchInstance?>');
 		});
 	});
-	
+
 };
 </script>

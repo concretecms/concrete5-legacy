@@ -1,5 +1,5 @@
 <? defined('C5_EXECUTE') or die("Access Denied."); ?>
-<? 
+<?
 if ($_GET['_ccm_dashboard_external']) {
 	return;
 }
@@ -37,7 +37,7 @@ $v->addFooterItem($html->javascript('jquery.backstretch.js'));
 $v->addFooterItem($html->javascript('jquery.ui.js'));
 $v->addFooterItem($html->javascript('jquery.form.js'));
 $v->addFooterItem($html->javascript('jquery.rating.js'));
-$v->addFooterItem('<script type="text/javascript" src="' . REL_DIR_FILES_TOOLS_REQUIRED . '/i18n_js"></script>'); 
+$v->addFooterItem('<script type="text/javascript" src="' . REL_DIR_FILES_TOOLS_REQUIRED . '/i18n_js"></script>');
 $v->addFooterItem($html->javascript('ccm.app.js'));
 $v->addFooterItem(Loader::helper('html')->javascript('tiny_mce/tiny_mce.js'));
 
@@ -54,7 +54,7 @@ $valt = Loader::helper('validation/token');
 $disp = '<script type="text/javascript">'."\n";
 $disp .=  "var CCM_SECURITY_TOKEN = '" . $valt->generate() . "';"."\n";
 $disp .= "</script>"."\n";
-//require(DIR_FILES_ELEMENTS_CORE . '/header_required.php'); 
+//require(DIR_FILES_ELEMENTS_CORE . '/header_required.php');
 $v->addHeaderItem($disp);
 Loader::element('header_required');
 $backgroundImage = Loader::helper('concrete/dashboard')->getDashboardBackgroundImage();
@@ -74,7 +74,7 @@ $backgroundImage = Loader::helper('concrete/dashboard')->getDashboardBackgroundI
 </head>
 <body>
 
-<? if (!$_SESSION['dashboardHasSeenImage']) { 
+<? if (!$_SESSION['dashboardHasSeenImage']) {
 	$_SESSION['dashboardHasSeenImage'] = true;
 } ?>
 
@@ -116,7 +116,7 @@ print $dh->getDashboardAndSearchMenus();
 
 
 	<? if (isset($error)) { ?>
-		<? 
+		<?
 		if ($error instanceof Exception) {
 			$_error[] = $error->getMessage();
 		} else if ($error instanceof ValidationErrorHelper) {
@@ -127,21 +127,21 @@ print $dh->getDashboardAndSearchMenus();
 		} else {
 			$_error = $error;
 		}
-		
+
 		if (count($_error) > 0) {
 			?>
 			<div class="ccm-ui"  id="ccm-dashboard-result-message">
 				<?php Loader::element('system_errors', array('format' => 'block', 'error' => $_error)); ?>
 			</div>
-		<? 
+		<?
 		}
 	}
-	
+
 	if (isset($message)) { ?>
 		<div class="ccm-ui" id="ccm-dashboard-result-message">
 			<div class="alert alert-info"><button type="button" class="close" data-dismiss="alert">×</button><?=Loader::helper('text')->entities($message)?></div>
 		</div>
-	<? 
+	<?
 	} else if (isset($success)) { ?>
 		<div class="ccm-ui" id="ccm-dashboard-result-message">
 			<div class="alert alert-success"><button type="button" class="close" data-dismiss="alert">×</button><?=Loader::helper('text')->entities($success)?></div>

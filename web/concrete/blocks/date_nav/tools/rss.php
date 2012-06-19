@@ -1,17 +1,17 @@
-<?php 
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 
 //Permissions Check
 if($_GET['bID']) {
 	$c = Page::getByID($_GET['cID']);
 	$a = Area::get($c, $_GET['arHandle']);
-		
+
 	//edit survey mode
 	$b = Block::getByID($_GET['bID'],$c, $a);
-	
+
 	$controller = new PageListBlockController($b);
 	$rssUrl = $controller->getRssUrl($b);
-	
+
 	$bp = new Permissions($b);
 	if( $bp->canViewBlock() && $controller->rss) {
 
@@ -26,15 +26,15 @@ if($_GET['bID']) {
 		  <channel>
 			<title><?php echo $controller->rssTitle?></title>
 			<link><?php echo BASE_URL.DIR_REL.htmlspecialchars($rssUrl)?></link>
-			<description><?php echo $controller->rssDescription?></description> 
-<?php 
+			<description><?php echo $controller->rssDescription?></description>
+<?php
 		for ($i = 0; $i < count($cArray); $i++ ) {
-			$cobj = $cArray[$i]; 
+			$cobj = $cArray[$i];
 			$title = $cobj->getCollectionName(); ?>
 			<item>
 			  <title><?php echo htmlspecialchars($title);?></title>
 			  <link>
-				<?php echo  BASE_URL.DIR_REL.$nh->getLinkToCollection($cobj) ?>		  
+				<?php echo  BASE_URL.DIR_REL.$nh->getLinkToCollection($cobj) ?>
 			  </link>
 			  <description><?php echo htmlspecialchars(strip_tags($cobj->getCollectionDescription()))."....";?></description>
 			  <?php  /* <pubDate><?php echo $cobj->getCollectionDatePublic()?></pubDate>
@@ -44,13 +44,13 @@ if($_GET['bID']) {
 		<?php  } ?>
      		 </channel>
 		</rss>
-		
-<?php 	} else {  	
+
+<?php 	} else {
 		$v = View::getInstance();
 		$v->renderError(t('Permission Denied'),t('You don\'t have permission to access this RSS feed'));
 		exit;
 	}
-			
+
 } else {
 	echo t('You don\'t have permission to access this RSS feed');
 }

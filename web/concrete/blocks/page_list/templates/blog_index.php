@@ -2,7 +2,7 @@
 defined('C5_EXECUTE') or die("Access Denied.");
 ?>
 <div id="blog-index">
-	<?php 
+	<?php
 	$isFirst = true; //So first item in list can have a different css class (e.g. no top border)
 	$excerptBlocks = ($controller->truncateSummaries ? 1 : null); //1 is the number of blocks to include in the excerpt
 	$truncateChars = ($controller->truncateSummaries ? $controller->truncateChars : 0);
@@ -12,7 +12,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		$author = $cobj->getVersionObject()->getVersionAuthorUserName();
 		$link = $nh->getLinkToCollection($cobj);
 		$firstClass = $isFirst ? 'first-entry' : '';
-		
+
 		$entryController = Loader::controller($cobj);
 		if(method_exists($entryController,'getCommentCountString')) {
 			$comments = $entryController->getCommentCountString('%s '.t('Comment'), '%s '.t('Comments'));
@@ -59,7 +59,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		</div>
 		<link href="<?php echo BASE_URL.$rssUrl; ?>" rel="alternate" type="application/rss+xml" title="<?php echo $rssTitle; ?>" />
 	<?php endif; ?>
-	
+
 
 	<?php if ($paginate && $num > 0 && is_object($pl)): ?>
 		<div id="pagination">

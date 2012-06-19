@@ -22,7 +22,7 @@ print $ui->getUserName();
 </div>
 <br/>
 
-<? 
+<?
 $d = $bc->getDimensions();
 if ($d) { ?>
 
@@ -31,9 +31,9 @@ if ($d) { ?>
 <br/>
 <? } ?>
 
-<h2><?=t('Date Added:')?></h2> 
+<h2><?=t('Date Added:')?></h2>
 <div><?=date('F d, Y', strtotime($b->getBlockDateAdded()))?></div>
 <br/>
 
-<h2><?=t('Date Modified:')?></h2> 
+<h2><?=t('Date Modified:')?></h2>
 <div><?=date('F d, Y', strtotime($b->getBlockDateLastModified()))?></div>

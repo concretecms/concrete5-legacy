@@ -44,7 +44,7 @@ if(!function_exists('get_called_class')) {
 						return get_class($bt[$l]['object']);
 					default: return $bt[$l]['class'];
 				}
-	
+
 			default: throw new Exception ("Unknown backtrace method type");
 		}
 	}

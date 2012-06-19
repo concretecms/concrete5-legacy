@@ -11,7 +11,7 @@ class AttributeSet extends Object {
 			return $akc;
 		}
 	}
-	
+
 	public static function getByHandle($asHandle) {
 		$db = Loader::db();
 		$row = $db->GetRow('select asID, asHandle, pkgID, asName, akCategoryID, asIsLocked from AttributeSets where asHandle = ?', array($asHandle));
@@ -31,8 +31,8 @@ class AttributeSet extends Object {
 		}
 		$r->Close();
 		return $list;
-	}	
-	
+	}
+
 	public function getAttributeSetID() {return $this->asID;}
 	public function getAttributeSetHandle() {return $this->asHandle;}
 	public function getAttributeSetName() {return $this->asName;}
@@ -40,7 +40,7 @@ class AttributeSet extends Object {
 	public function getPackageHandle() {return PackageList::getHandle($this->pkgID);}
 	public function getAttributeSetKeyCategoryID() {return $this->akCategoryID;}
 	public function isAttributeSetLocked() {return $this->asIsLocked;}
-	
+
 	public function updateAttributeSetName($asName) {
 		$this->asName = $asName;
 		$db = Loader::db();
@@ -52,7 +52,7 @@ class AttributeSet extends Object {
 		$db = Loader::db();
 		$db->Execute("update AttributeSets set asHandle = ? where asID = ?", array($asHandle, $this->asID));
 	}
-	
+
 	public function addKey($ak) {
 		$db = Loader::db();
 		$no = $db->GetOne("select count(akID) from AttributeSetKeys where akID = ? and asID = ?", array($ak->getAttributeKeyID(), $this->getAttributeSetID()));
@@ -62,12 +62,12 @@ class AttributeSet extends Object {
 			$db->Execute('insert into AttributeSetKeys (asID, akID, displayOrder) values (?, ?, ?)', array($this->getAttributeSetID(), $ak->getAttributeKeyID(), $do));
 		}
 	}
-	
+
 	public function clearAttributeKeys() {
 		$db = Loader::db();
 		$db->Execute('delete from AttributeSetKeys where asID = ?', array($this->asID));
 	}
-	
+
 	public function export($axml) {
 		$category = AttributeKeyCategory::getByID($this->getAttributeSetKeyCategoryID())->getAttributeKeyCategoryHandle();
 		$akey = $axml->addChild('attributeset');
@@ -107,16 +107,16 @@ class AttributeSet extends Object {
 				$keys[] = $ak;
 			}
 		}
-		return $keys;		
+		return $keys;
 	}
-	
+
 	public function contains($ak) {
 		$db = Loader::db();
 		$r = $db->GetOne('select count(akID) from AttributeSetKeys where asID = ? and akID = ?', array($this->getAttributeSetID(), $ak->getAttributeKeyID()));
 		return $r > 0;
-	}	
-	
-	/** 
+	}
+
+	/**
 	 * Removes an attribute set and sets all keys within to have a set ID of 0.
 	 */
 	public function delete() {
@@ -124,13 +124,13 @@ class AttributeSet extends Object {
 		$db->Execute('delete from AttributeSets where asID = ?', array($this->getAttributeSetID()));
 		$db->Execute('delete from AttributeSetKeys where asID = ?', array($this->getAttributeSetID()));
 	}
-	
+
 	public function deleteKey($ak) {
 		$db = Loader::db();
 		$db->Execute('delete from AttributeSetKeys where asID = ? and akID = ?', array($this->getAttributeSetID(), $ak->getAttributeKeyID()));
 		$this->rescanDisplayOrder();
 	}
-	
+
 	protected function rescanDisplayOrder() {
 		$db = Loader::db();
 		$do = 1;
@@ -150,5 +150,5 @@ class AttributeSet extends Object {
 	}
 
 
-		
+
 }

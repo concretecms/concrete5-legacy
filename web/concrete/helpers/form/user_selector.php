@@ -21,16 +21,16 @@
 defined('C5_EXECUTE') or die("Access Denied.");
 class FormUserSelectorHelper {
 
-	
-	/** 
+
+	/**
 	 * Creates form fields and JavaScript user chooser for choosing a user. For use with inclusion in blocks and addons.
 	 * <code>
 	 *     $dh->selectUser('userID', '1'); // prints out the admin user and makes it changeable.
 	 * </code>
 	 * @param int $uID
 	 */
-	
-	
+
+
 	public function selectUser($fieldName, $uID = false, $javascriptFunc = 'ccm_triggerSelectUser') {
 		$selectedUID = 0;
 		if (isset($_REQUEST[$fieldName])) {
@@ -48,14 +48,14 @@ class FormUserSelectorHelper {
 		$html .= '</strong></div>';
 		$html .= '<a class="ccm-sitemap-select-item" id="ccm-user-selector-' . $fieldName . '" onclick="ccmActiveUserField=this" dialog-append-buttons="true" dialog-width="90%" dialog-height="70%" dialog-modal="false" dialog-title="' . t('Choose User') . '" href="' . REL_DIR_FILES_TOOLS_REQUIRED . '/users/search_dialog?mode=choose_one">' . t('Select User') . '</a>';
 		$html .= '<input type="hidden" name="' . $fieldName . '" value="' . $selectedUID . '">';
-		$html .= '</div>'; 
+		$html .= '</div>';
 		$html .= '<script type="text/javascript">';
 		$html .= '$(function() { $("#ccm-user-selector-' . $fieldName . '").dialog(); });';
 		$html .= 'if (typeof(ccmActiveUserField) == "undefined") {';
-		$html .= 'var ccmActiveUserField;';		
+		$html .= 'var ccmActiveUserField;';
 		$html .= '}';
 		$html .= '
-		$(function() { 
+		$(function() {
 		ccm_triggerSelectUser = function(uID, uName, uEmail) { ';
 		if($javascriptFunc=='' || $javascriptFunc=='ccm_triggerSelectUser'){
 			$html .= '
@@ -70,7 +70,7 @@ class FormUserSelectorHelper {
 		$html .= "}}); \r\n </script>";
 		return $html;
 	}
-	
+
 	public function quickSelect($key, $val = false, $args = array()) {
 		$form = Loader::helper('form');
 		$valt = Loader::helper('validation/token');
@@ -88,9 +88,9 @@ class FormUserSelectorHelper {
 		$html .= '<span class="ccm-quick-user-selector">'.$form->text($key,$val, $args).'</span>';
 		return $html;
 	}
-	
+
 	public function selectMultipleUsers($fieldName) {
-		
+
 		$html = '';
 		$html .= '<table id="ccmUserSelect' . $fieldName . '" class="ccm-results-list" cellspacing="0" cellpadding="0" border="0">';
 		$html .= '<tr>';
@@ -105,7 +105,7 @@ class FormUserSelectorHelper {
 			$html .= '<td><input type="hidden" name="' . $fieldName . '[]" value="' . $ui->getUserID() . '" />' . $ui->getUserName() . '</td>';
 			$html .= '<td>' . $ui->getUserEmail() . '</td>';
 			$html .= '<td><a href="javascript:void(0)" class="ccm-user-list-clear"><img src="' . ASSETS_URL_IMAGES . '/icons/close.png" width="16" height="16" class="ccm-user-list-clear-button" /></a>';
-			$html .= '</tr>';		
+			$html .= '</tr>';
 		}*/
 		$html .= '<tr class="ccm-user-selected-item-none"><td colspan="3">' . t('No users selected.') . '</td></tr>';
 		$html .= '</tbody></table><script type="text/javascript">
@@ -133,10 +133,10 @@ class FormUserSelectorHelper {
 				});
 			}
 		});
-		
-		</script>';	
+
+		</script>';
 		return $html;
 	}
-	
-	
+
+
 }

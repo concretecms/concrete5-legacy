@@ -1,6 +1,6 @@
 <?
 defined('C5_EXECUTE') or die("Access Denied.");
-	
+
 /**
  * An object corresponding to a particular view of a block. These are those of the "add" state, the block's "edit" state, or the block's "view" state.
  *
@@ -12,11 +12,11 @@ defined('C5_EXECUTE') or die("Access Denied.");
  *
  */
 	class BlockView extends View {
-	
+
 		protected $block;
 		private $area;
 		private $blockObj;
-		
+
 		/**
 		 * Includes a file from the core elements directory. Used by the CMS.
 		 * @access private
@@ -24,7 +24,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		public function renderElement($element, $args = array()) {
 			Loader::element($element, $args);
 		}
-		
+
 		/**
 		 * Creates a URL that can be posted or navigated to that, when done so, will automatically run the corresponding method inside the block's controller.
 		 * <code>
@@ -41,7 +41,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 				}
 			} catch(Exception $e) {}
 		}
-		
+
 		/**
 		 * includes file from the current block directory. Similar to php's include()
 		 * @access public
@@ -57,15 +57,15 @@ defined('C5_EXECUTE') or die("Access Denied.");
 
 			include($base . '/' . $file);
 		}
-		
-		
+
+
 		/**
 		 * Returns the path to the current block's directory
 		 * @access public
 		 * @return string
 		*/
 		public function getBlockPath($filename = null) {
-			$obj = $this->blockObj;			
+			$obj = $this->blockObj;
 			if (file_exists(DIR_FILES_BLOCK_TYPES . '/' . $obj->getBlockTypeHandle() . '/' . $filename)) {
 				$base = DIR_FILES_BLOCK_TYPES . '/' . $obj->getBlockTypeHandle();
 			} else if ($obj->getPackageID() > 0) {
@@ -77,11 +77,11 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			} else {
 				$base = DIR_FILES_BLOCK_TYPES_CORE . '/' . $obj->getBlockTypeHandle();
 			}
-			
+
 			return $base;
 		}
-		
-		/** 
+
+		/**
 		 * Returns a relative path to the current block's directory. If a filename is specified it will be appended and searched for as well.
 		 * @return string
 		 */
@@ -99,35 +99,35 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			} else {
 				$base = ASSETS_URL . '/' . DIRNAME_BLOCKS . '/' . $obj->getBlockTypeHandle();
 			}
-			
+
 			return $base;
 		}
-		
-		/** 
+
+		/**
 		 * @access private
 		 */
 		public function setAreaObject($a) {
 			$this->area = $a;
 		}
-		
+
 		public function getThemePath() {
 			$v = View::getInstance();
 			return $v->getThemePath();
 		}
-		
-		/** 
+
+		/**
 		 * Returns the template used in the block view
 		 */
 		public function getTemplate() {
 			return $this->template;
 		}
-		
-		
+
+
 		public function setBlockObject($obj) {
 			$this->blockObj = $obj;
 		}
-		
-		/** 
+
+		/**
 		 * Renders a particular view for a block or a block type
 		 * @param Block | BlockType $obj
 		 * @param string $view
@@ -139,7 +139,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			}
 			$this->blockObj = $obj;
 			$customAreaTemplates = array();
-			
+
 			if ($obj instanceof BlockType) {
 				$bt = $obj;
 				$base = $obj->getBlockTypePath();
@@ -157,10 +157,10 @@ defined('C5_EXECUTE') or die("Access Denied.");
 					}
 				}
 
-			}				
-			
+			}
+
 			$btHandle = $obj->getBlockTypeHandle();
-			
+
 			if (!isset($this->controller)) {
 				if ($obj instanceof Block) {
 					$this->controller = $obj->getInstance();
@@ -173,13 +173,13 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			} else {
 				$_action = 'view';
 			}
-			
+
 			$u = new User();
-			
+
 			$outputContent = false;
 			$useCache = false;
 			$page = Page::getCurrentPage();
-			
+
 			if ($view == 'view') {
 				if ($this->controller->cacheBlockOutput() && ($obj instanceof Block) && (!$obj->isBlockInStack())) {
 					if ((!$u->isRegistered() || ($this->controller->cacheBlockOutputForRegisteredUsers())) &&
@@ -204,44 +204,44 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			extract($this->controller->getHelperObjects());
 			$headerItems = $this->controller->headerItems;
 			extract($args);
-			
-			if ($this->controller->getRenderOverride() != '') { 
+
+			if ($this->controller->getRenderOverride() != '') {
 				$_filename = $this->controller->getRenderOverride() . '.php';
-			} 
-			
+			}
+
 			if ($view == 'scrapbook') {
 				$template = $this->getBlockPath(FILENAME_BLOCK_VIEW_SCRAPBOOK) . '/' . FILENAME_BLOCK_VIEW_SCRAPBOOK;
 				if (!file_exists($template)) {
 					$view = 'view';
 				}
 			}
-			
+
 			if (!in_array($view, array('composer','view', 'add', 'edit', 'scrapbook'))) {
 				// then we're trying to render a custom view file, which we'll pass to the bottom functions as $_filename
 				$_filename = $view . '.php';
 				$view = 'view';
 			}
-			
+
 			switch($view) {
 				case 'scrapbook':
 					$header = DIR_FILES_ELEMENTS_CORE . '/block_header_view.php';
-					$footer = DIR_FILES_ELEMENTS_CORE . '/block_footer_view.php';										
+					$footer = DIR_FILES_ELEMENTS_CORE . '/block_footer_view.php';
 					break;
 				case 'composer':
-				case 'view':				
+				case 'view':
 					if (!$outputContent) {
 						if (!isset($_filename)) {
 							$_filename = FILENAME_BLOCK_VIEW;
-						}					
+						}
 						$bvt = new BlockViewTemplate($obj);
 						if ($bFilename) {
 							$bvt->setBlockCustomTemplate($bFilename); // this is PROBABLY already set by the method above, but in the case that it's passed by area we have to set it here
 						} else if ($_filename != FILENAME_BLOCK_VIEW) {
-							$bvt->setBlockCustomRender($_filename); 
+							$bvt->setBlockCustomRender($_filename);
 						}
 						$template = $bvt->getTemplate();
 					}
-					
+
 					if ($view == 'composer') {
 						$displayEditLink = true;
 						$header = DIR_FILES_ELEMENTS_CORE . '/block_header_composer.php';
@@ -254,7 +254,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 								$displayEditLink = false;
 							}
 						}
-						
+
 						if ($displayEditLink) {
 							$cmpbase = $this->getBlockPath(FILENAME_BLOCK_COMPOSER);
 							if (file_exists($cmpbase . '/' . FILENAME_BLOCK_COMPOSER)) {
@@ -262,10 +262,10 @@ defined('C5_EXECUTE') or die("Access Denied.");
 								$displayEditLink = false;
 							}
 						}
-						
+
 					} else {
 						$header = DIR_FILES_ELEMENTS_CORE . '/block_header_view.php';
-						$footer = DIR_FILES_ELEMENTS_CORE . '/block_footer_view.php';										
+						$footer = DIR_FILES_ELEMENTS_CORE . '/block_footer_view.php';
 					}
 					break;
 				case 'add':
@@ -282,26 +282,26 @@ defined('C5_EXECUTE') or die("Access Denied.");
 					$header = DIR_FILES_ELEMENTS_CORE . '/block_header_edit.php';
 					$footer = DIR_FILES_ELEMENTS_CORE . '/block_footer_edit.php';
 					break;
-			} 		
-			
+			}
+
 			if (!isset($template)) {
 				$base = $this->getBlockPath($_filename);
 				$template = $base . '/' . $_filename;
 			}
-						
+
 			if (isset($header)) {
 				include($header);
 			}
 			if ($outputContent) {
-				print $outputContent;			
+				print $outputContent;
 			} else if ($template) {
-				
+
 				ob_start();
 				include($template);
 				$outputContent = ob_get_contents();
-				ob_end_clean();					
+				ob_end_clean();
 				print $outputContent;
-				
+
 				if ($useCache) {
 					$cID = 0;
 					if (is_object($this->area)) {
@@ -319,8 +319,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			$this->template = $template;
 			$this->header = $header;
 			$this->footer = $footer;
-			
-			
+
+
 		}
 	}
-	

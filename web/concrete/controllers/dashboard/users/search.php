@@ -15,15 +15,15 @@ class DashboardUsersSearchController extends Controller {
 		$this->addHeaderItem('<script type="text/javascript">$(function() { ccm_setupAdvancedSearch(\'user\'); });</script>');
 		$userList = $this->getRequestedSearchResults();
 		$users = $userList->getPage();
-				
-		$this->set('userList', $userList);		
-		$this->set('users', $users);		
-		$this->set('pagination', $userList->getPagination());	
-		
+
+		$this->set('userList', $userList);
+		$this->set('users', $users);
+		$this->set('pagination', $userList->getPagination());
+
 		if($_POST['edit'])	{
 			$this->validate_user();
 		}
-		
+
 		if ($_REQUEST['deactivated']) {
 			$this->set('message', t('User deactivated.'));
 		}
@@ -38,28 +38,28 @@ class DashboardUsersSearchController extends Controller {
 		}
 
 	}
-	
-	
-	
+
+
+
 	public function validate_user() {
 		$pke = PermissionKey::getByHandle('edit_user_properties');
 		if (!$pke->validate()) {
 			return false;
 		}
-		
+
 		$assignment = $pke->getMyAssignment();
-		
-		
+
+
 		$vals = Loader::helper('validation/strings');
 		$valt = Loader::helper('validation/token');
 		$valc = Loader::helper('concrete/validation');
 
-		$uo = UserInfo::getByID(intval($_GET['uID']));			
-		
+		$uo = UserInfo::getByID(intval($_GET['uID']));
+
 		$username = trim($_POST['uName']);
 		$username = preg_replace("/\s+/", " ", $username);
-		
-		if ($assignment->allowEditPassword()) { 
+
+		if ($assignment->allowEditPassword()) {
 
 			$password = $_POST['uPassword'];
 			$passwordConfirm = $_POST['uPasswordConfirm'];
@@ -69,9 +69,9 @@ class DashboardUsersSearchController extends Controller {
 					$this->error->add( t('A password must be between %s and %s characters',USER_PASSWORD_MINIMUM,USER_PASSWORD_MAXIMUM));
 				}
 			}
-		}		
-		
-		if ($assignment->allowEditEmail()) { 
+		}
+
+		if ($assignment->allowEditEmail()) {
 			if (!$vals->email($_POST['uEmail'])) {
 				$this->error->add(t('Invalid email address provided.'));
 			} else if (!$valc->isUniqueEmail($_POST['uEmail']) && $uo->getUserEmail() != $_POST['uEmail']) {
@@ -79,17 +79,17 @@ class DashboardUsersSearchController extends Controller {
 			}
 		}
 
-		if ($assignment->allowEditUserName()) { 
-			$_POST['uName'] = $username;		
+		if ($assignment->allowEditUserName()) {
+			$_POST['uName'] = $username;
 			if (USER_REGISTRATION_WITH_EMAIL_ADDRESS == false) {
 				if (strlen($username) < USER_USERNAME_MINIMUM) {
 					$this->error->add(t('A username must be at least %s characters long.',USER_USERNAME_MINIMUM));
 				}
-	
+
 				if (strlen($username) > USER_USERNAME_MAXIMUM) {
 					$this->error->add(t('A username cannot be more than %s characters long.',USER_USERNAME_MAXIMUM));
 				}
-	
+
 				/*
 				if (strlen($username) >= USER_USERNAME_MINIMUM && !$vals->alphanum($username,USER_USERNAME_ALLOW_SPACES)) {
 					if(USER_USERNAME_ALLOW_SPACES) {
@@ -97,10 +97,10 @@ class DashboardUsersSearchController extends Controller {
 					} else {
 						$e->add(t('A username may only contain letters or numbers.'));
 					}
-					
+
 				}
 				*/
-				
+
 				if (strlen($username) >= USER_USERNAME_MINIMUM && !$valc->username($username)) {
 					if(USER_USERNAME_ALLOW_SPACES) {
 						$this->error->add(t('A username may only contain letters, numbers and spaces.'));
@@ -110,56 +110,56 @@ class DashboardUsersSearchController extends Controller {
 				}
 				if (!$valc->isUniqueUsername($username) && $uo->getUserName() != $username) {
 					$this->error->add(t("The username '%s' already exists. Please choose another",$username));
-				}		
+				}
 			}
 		}
 
-		if ($assignment->allowEditPassword()) { 
+		if ($assignment->allowEditPassword()) {
 			if (strlen($password) >= USER_PASSWORD_MINIMUM && !$valc->password($password)) {
 				$this->error->add(t('A password may not contain ", \', >, <, or any spaces.'));
 			}
-			
+
 			if ($password) {
 				if ($password != $passwordConfirm) {
 					$this->error->add(t('The two passwords provided do not match.'));
 				}
 			}
 		}
-		
+
 		if (!$valt->validate('update_account_' . intval($_GET['uID']) )) {
 			$this->error->add($valt->getErrorMessage());
 		}
-	
+
 		if (!$this->error->has()) {
 			// do the registration
 			$data = array();
-			if ($assignment->allowEditUserName()) { 
+			if ($assignment->allowEditUserName()) {
 				$data['uName'] = $_POST['uName'];
 			}
-			if ($assignment->allowEditEmail()) { 
+			if ($assignment->allowEditEmail()) {
 				$data['uEmail'] = $_POST['uEmail'];
 			}
-			if ($assignment->allowEditPassword()) { 
+			if ($assignment->allowEditPassword()) {
 				$data['uPassword'] = $_POST['uPassword'];
 				$data['uPasswordConfirm'] = $_POST['uPasswordConfirm'];
 			}
-			if ($assignment->allowEditTimezone()) { 
+			if ($assignment->allowEditTimezone()) {
 				$data['uTimezone'] = $_POST['uTimezone'];
 			}
-			if ($assignment->allowEditDefaultLanguage()) { 
+			if ($assignment->allowEditDefaultLanguage()) {
 				$data['uDefaultLanguage'] = $_POST['uDefaultLanguage'];
 			}
 			$process = $uo->update($data);
-			
+
 			//$db = Loader::db();
 			if ($process) {
 				if ($assignment->allowEditAvatar()) {
-					$av = Loader::helper('concrete/avatar'); 
+					$av = Loader::helper('concrete/avatar');
 					if ( is_uploaded_file($_FILES['uAvatar']['tmp_name']) ) {
 						$uHasAvatar = $av->updateUserAvatar($_FILES['uAvatar']['tmp_name'], $uo->getUserID());
 					}
 				}
-				
+
 				$gak = PermissionKey::getByHandle('assign_user_groups');
 				$gIDs = array();
 				if (is_array($_POST['gID'])) {
@@ -187,43 +187,43 @@ class DashboardUsersSearchController extends Controller {
 			}
 		}else{
 			$this->set('error',$this->error);
-		}		
+		}
 
 	}
-	
+
 	public function getRequestedSearchResults() {
 		$userList = new UserList();
 		$userList->sortBy('uDateAdded', 'desc');
 		$userList->showInactiveUsers = true;
 		$userList->showInvalidatedUsers = true;
-		
+
 		$columns = UserSearchColumnSet::getCurrent();
 		$this->set('columns', $columns);
 
 		if ($_GET['keywords'] != '') {
 			$userList->filterByKeywords($_GET['keywords']);
-		}	
-		
+		}
+
 		if ($_REQUEST['numResults']) {
 			$userList->setItemsPerPage($_REQUEST['numResults']);
 		}
-		
+
 		$pk = PermissionKey::getByHandle('access_user_search');
 		$asl = $pk->getMyAssignment();
 
 		$p = new Permissions();
 
 		$filterGIDs = array();
-		if ($asl->getGroupsAllowedPermission() == 'C') { 
+		if ($asl->getGroupsAllowedPermission() == 'C') {
 			$userList->filter('u.uID', USER_SUPER_ID, '<>');
-			$userList->addToQuery("left join UserGroups ugRequired on ugRequired.uID = u.uID ");	
+			$userList->addToQuery("left join UserGroups ugRequired on ugRequired.uID = u.uID ");
 			if (in_array(REGISTERED_GROUP_ID, $asl->getGroupsAllowedArray())) {
 				$userList->filter(false, '(ugRequired.gID in (' . implode(',', $asl->getGroupsAllowedArray()) . ') or ugRequired.gID is null)');
 			} else {
-				$userList->filter('ugRequired.gID', $asl->getGroupsAllowedArray(), 'in');		
+				$userList->filter('ugRequired.gID', $asl->getGroupsAllowedArray(), 'in');
 			}
 		}
-		
+
 		if (isset($_REQUEST['gID']) && is_array($_REQUEST['gID'])) {
 			foreach($_REQUEST['gID'] as $gID) {
 				$g = Group::getByID($gID);
@@ -234,7 +234,7 @@ class DashboardUsersSearchController extends Controller {
 				}
 			}
 		}
-		
+
 		foreach($filterGIDs as $gID) {
 			$userList->filterByGroupID($gID);
 		}
@@ -261,7 +261,7 @@ class DashboardUsersSearchController extends Controller {
 							if ($dateTo != '') {
 								$dateTo = date('Y-m-d', strtotime($dateTo));
 								$dateTo .= ' 23:59:59';
-								
+
 								$userList->filterByDateAdded($dateTo, '<=');
 							}
 							break;
@@ -280,92 +280,92 @@ class DashboardUsersSearchController extends Controller {
 		}
 		return $userList;
 	}
-	
+
 		public function sign_in_as_user($uID, $token = null) {
 		try {
 			$u = new User();
-			
+
 			$tp = new TaskPermission();
-			if (!$tp->canSudo()) { 
+			if (!$tp->canSudo()) {
 				throw new Exception(t('You do not have permission to perform this action.'));
 			}
-			
-			$ui = UserInfo::getByID($uID); 
+
+			$ui = UserInfo::getByID($uID);
 			if(!($ui instanceof UserInfo)) {
 				throw new Exception(t('Invalid user ID.'));
 			}
 
 			$pk = PermissionKey::getByHandle('access_user_search');
-			if ($pk->validate($ui)) { 
-		
+			if ($pk->validate($ui)) {
+
 				$valt = Loader::helper('validation/token');
 				if (!$valt->validate('sudo', $token)) {
 					throw new Exception($valt->getErrorMessage());
 				}
-				
+
 				User::loginByUserID($uID);
 				$this->redirect('/');
-			
+
 			}
-			
+
 		} catch(Exception $e) {
 			$this->set('error', $e);
 			$this->view();
 		}
 	}
-	
+
 	public function edit_attribute() {
 		$uo = UserInfo::getByID($_POST['uID']);
 		$u = new User();
 		if ($uo->getUserID() == USER_SUPER_ID && (!$u->isSuperUser())) {
 			throw new Exception(t('Only the super user may edit this account.'));
 		}
-		
+
 		$assignment = PermissionKey::getByHandle('edit_user_properties')->getMyAssignment();
 		$akID = $_REQUEST['uakID'];
 		if (!in_array($akID, $assignment->getAttributesAllowedArray())) {
 			throw new Exception(t('You do not have permission to modify this attribute.'));
 		}
-		
+
 		$ak = UserAttributeKey::get($akID);
 
-		if ($_POST['task'] == 'update_extended_attribute') { 
+		if ($_POST['task'] == 'update_extended_attribute') {
 			$ak->saveAttributeForm($uo);
 			$val = $uo->getAttributeValueObject($ak);
 			print $val->getValue('displaySanitized','display');
 			exit;
 		}
-		
+
 		if ($_POST['task'] == 'clear_extended_attribute') {
-			$uo->clearAttribute($ak);			
+			$uo->clearAttribute($ak);
 			$val = $uo->getAttributeValueObject($ak);
 			print '<div class="ccm-attribute-field-none">' . t('None') . '</div>';
 			exit;
 		}
 	}
-	
+
 	public function delete($delUserId, $token = null){
 		$u=new User();
 		try {
 
-			$delUI=UserInfo::getByID($delUserId); 
-			
+			$delUI=UserInfo::getByID($delUserId);
+
 			if(!($delUI instanceof UserInfo)) {
 				throw new Exception(t('Invalid user ID.'));
 			}
 
-			if (!PermissionKey::getByHandle('access_user_search')->validate($delUI)) { 
+			if (!PermissionKey::getByHandle('access_user_search')->validate($delUI)) {
 				throw new Exception(t('Access Denied.'));
 			}
-		
+
 			$tp = new TaskPermission();
-			if (!$tp->canDeleteUser()) { 
+			if (!$tp->canDeleteUser()) {
 				throw new Exception(t('You do not have permission to perform this action.'));
 			}
 
 			if ($delUserId == USER_SUPER_ID) {
 				throw new Exception(t('You may not remove the super user account.'));
-			}			
+			}
 
 			if($delUserId==$u->getUserID()) {
 				throw new Exception(t('You cannot delete your own user account.'));
@@ -376,13 +376,13 @@ class DashboardUsersSearchController extends Controller {
 			if (!$valt->validate('delete_account', $token)) {
 				throw new Exception($valt->getErrorMessage());
 			}
-			
-			$delUI->delete(); 
+
+			$delUI->delete();
 			$resultMsg=t('User deleted successfully.');
-			
+
 			$_REQUEST=array();
 			$_GET=array();
-			$_POST=array();		
+			$_POST=array();
 			$this->set('message', $resultMsg);
 		} catch (Exception $e) {
 			$this->set('error', $e);

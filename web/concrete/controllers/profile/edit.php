@@ -5,7 +5,7 @@ Loader::model('attribute/categories/collection');
 class ProfileEditController extends Controller {
 
 	public $helpers = array('html', 'form', 'date');
-	
+
 	public function __construct() {
 		$html = Loader::helper('html');
 		parent::__construct();
@@ -18,7 +18,7 @@ class ProfileEditController extends Controller {
 		$this->set('ui', UserInfo::getByID($u->getUserID()));
 		$this->set('av', Loader::helper('concrete/avatar'));
 	}
-	
+
 	public function on_start() {
 		$this->addHeaderItem(Loader::helper('html')->css('ccm.profile.css'));
 	}
@@ -26,8 +26,8 @@ class ProfileEditController extends Controller {
 	public function save_complete() {
 		$this->set('message', t('Profile Information Saved.'));
 	}
-	
-	public function save() { 
+
+	public function save() {
 		$ui = $this->get('ui');
 
 		$uh = Loader::helper('concrete/user');
@@ -35,13 +35,13 @@ class ProfileEditController extends Controller {
 		$vsh = Loader::helper('validation/strings');
 		$cvh = Loader::helper('concrete/validation');
 		$e = Loader::helper('validation/error');
-	
+
 		$data = $this->post();
-		
-		/* 
+
+		/*
 		 * Validation
 		*/
-		
+
 		// validate the user's email
 		$email = $this->post('uEmail');
 		if (!$vsh->email($email)) {
@@ -54,15 +54,15 @@ class ProfileEditController extends Controller {
 		if(strlen($data['uPasswordNew'])) {
 			$passwordNew = $data['uPasswordNew'];
 			$passwordNewConfirm = $data['uPasswordNewConfirm'];
-			
+
 			if ((strlen($passwordNew) < USER_PASSWORD_MINIMUM) || (strlen($passwordNew) > USER_PASSWORD_MAXIMUM)) {
 				$e->add(t('A password must be between %s and %s characters', USER_PASSWORD_MINIMUM, USER_PASSWORD_MAXIMUM));
-			}		
-			
+			}
+
 			if (strlen($passwordNew) >= USER_PASSWORD_MINIMUM && !$cvh->password($passwordNew)) {
 				$e->add(t('A password may not contain ", \', >, <, or any spaces.'));
 			}
-			
+
 			if ($passwordNew) {
 				if ($passwordNew != $passwordNewConfirm) {
 					$e->add(t('The two passwords provided do not match.'));
@@ -70,8 +70,8 @@ class ProfileEditController extends Controller {
 			}
 			$data['uPasswordConfirm'] = $passwordNew;
 			$data['uPassword'] = $passwordNew;
-		}		
-		
+		}
+
 		$aks = UserAttributeKey::getEditableInProfileList();
 
 		foreach($aks as $uak) {
@@ -85,16 +85,16 @@ class ProfileEditController extends Controller {
 			}
 		}
 
-		if (!$e->has()) {		
-			$data['uEmail'] = $email;		
+		if (!$e->has()) {
+			$data['uEmail'] = $email;
 			if(ENABLE_USER_TIMEZONES) {
 				$data['uTimezone'] = $this->post('uTimezone');
 			}
-			
+
 			$ui->update($data);
-			
+
 			foreach($aks as $uak) {
-				$uak->saveAttributeForm($ui);				
+				$uak->saveAttributeForm($ui);
 			}
 			$this->redirect("/profile/edit", "save_complete");
 		} else {

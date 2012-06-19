@@ -3,7 +3,7 @@
 defined('C5_EXECUTE') or die("Access Denied.");
 
 class Marketplace {
-	
+
 	const E_INVALID_BASE_URL = 20;
 	const E_MARKETPLACE_SUPPORT_MANUALLY_DISABLED = 21;
 	const E_UNRECOGNIZED_SITE_TOKEN = 22;
@@ -12,7 +12,7 @@ class Marketplace {
 
 	protected $isConnected = false;
 	protected $connectionError = false;
-	
+
 	public static function getInstance() {
 		static $instance;
 		if (!isset($instance)) {
@@ -21,7 +21,7 @@ class Marketplace {
 		}
 		return $instance;
 	}
-	
+
 	public function __construct() {
 		if (defined('ENABLE_MARKETPLACE_SUPPORT') && ENABLE_MARKETPLACE_SUPPORT == false) {
 			$this->connectionError = Marketplace::E_MARKETPLACE_SUPPORT_MANUALLY_DISABLED;
@@ -41,41 +41,41 @@ class Marketplace {
 			} else if ($vn->integer($r)) {
 				$this->isConnected = false;
 				$this->connectionError = $r;
-				
+
 				if ($this->connectionError == Marketplace::E_DELETED_SITE_TOKEN) {
 					Config::clear('MARKETPLACE_SITE_TOKEN');
-					Config::clear('MARKETPLACE_SITE_URL_TOKEN');					
+					Config::clear('MARKETPLACE_SITE_URL_TOKEN');
 				}
 			} else {
 				$this->isConnected = false;
 				$this->connectionError = self::E_GENERAL_CONNECTION_ERROR;
 			}
-		}		
+		}
 	}
-	
+
 	public function isConnected() {
 		return $this->isConnected;
 	}
-	
+
 	public function hasConnectionError() {
 		return $this->connectionError != false;
 	}
-	
+
 	public function getConnectionError() {
 		return $this->connectionError;
 	}
-	
+
 	public function generateSiteToken() {
 		$fh = Loader::helper('file');
 		$token = $fh->getContents(MARKETPLACE_URL_CONNECT_TOKEN_NEW);
-		return $token;	
+		return $token;
 	}
 
 	public function getSiteToken() {
 		$token = Config::get('MARKETPLACE_SITE_TOKEN');
 		return $token;
 	}
-	
+
 	public function getSitePageURL() {
 		$token = Config::get('MARKETPLACE_SITE_URL_TOKEN');
 		return MARKETPLACE_BASE_URL_SITE_PAGE . '/' . $token;
@@ -102,10 +102,10 @@ class Marketplace {
 		} else {
 			return Package::E_PACKAGE_SAVE;
 		}
-		
+
 		return $file;
 	}
-	
+
 	public function getMarketplaceFrame($width = '100%', $height = '300', $completeURL = false, $connectMethod = 'view') {
 		// if $mpID is passed, we are going to either
 		// a. go to its purchase page
@@ -123,11 +123,11 @@ class Marketplace {
 					if ($this->connectionError == E_DELETED_SITE_TOKEN) {
 						$connectMethod = 'view';
 						$csToken = Marketplace::generateSiteToken();
-					} else { 
+					} else {
 						$csToken = $this->getSiteToken();
 					}
 				} else {
-					// new connection 
+					// new connection
 					$csToken = Marketplace::generateSiteToken();
 				}
 				$url = MARKETPLACE_URL_CONNECT . '/-/' . $connectMethod;
@@ -140,19 +140,19 @@ class Marketplace {
 				return '<div class="ccm-error">' . t('Unable to generate a marketplace token. Please ensure that allow_url_fopen is turned on, or that cURL is enabled on your server. If these are both true, It\'s possible your site\'s IP address may be blacklisted for some reason on our server. Please ask your webhost what your site\'s outgoing cURL request IP address is, and email it to us at <a href="mailto:help@concrete5.org">help@concrete5.org</a>.') . '</div>';
 			} else {
 				$time = time();
-				$ifr = '<script type="text/javascript">$(function() { $.receiveMessage(function(e) { 
+				$ifr = '<script type="text/javascript">$(function() { $.receiveMessage(function(e) {
 					jQuery.fn.dialog.hideLoader();
 
 					if (e.data == "loading") {
 						jQuery.fn.dialog.showLoader();
-					} else { 
+					} else {
 						var eh = e.data;
 						eh = parseInt(eh) + 20;
-						$("#ccm-marketplace-frame-' . $time . '").attr("height", eh); 
+						$("#ccm-marketplace-frame-' . $time . '").attr("height", eh);
 					}
-					
-					}, \'' . CONCRETE5_ORG_URL . '\');	
-				});	
+
+					}, \'' . CONCRETE5_ORG_URL . '\');
+				});
 				</script>';
 				$ifr .= '<iframe class="ccm-marketplace-frame-connect" id="ccm-marketplace-frame-' . $time . '" frameborder="0" width="' . $width . '" height="' . $height . '" src="' . $url . '"></iframe>';
 				return $ifr;
@@ -176,19 +176,19 @@ class Marketplace {
 				$url = $url . '/' . $mp->getProductBlockID() . '?ts=' . time() . '&csiBaseURL=' . $csiBaseURL . '&csiURL=' . $csiURL . '&csToken=' . $csToken;
 			}
 			$time = time();
-			$ifr = '<script type="text/javascript">$(function() { $.receiveMessage(function(e) { 
+			$ifr = '<script type="text/javascript">$(function() { $.receiveMessage(function(e) {
 				jQuery.fn.dialog.hideLoader();
 
 				if (e.data == "loading") {
 					jQuery.fn.dialog.showLoader();
-				} else { 
+				} else {
 					var eh = e.data;
 					eh = parseInt(eh) + 20;
-					$("#ccm-marketplace-frame-' . $time . '").attr("height", eh); 
+					$("#ccm-marketplace-frame-' . $time . '").attr("height", eh);
 				}
-				
-				}, \'' . CONCRETE5_ORG_URL_SECURE . '\');	
-			});	
+
+				}, \'' . CONCRETE5_ORG_URL_SECURE . '\');
+			});
 			</script>';
 			$ifr .= '<iframe class="ccm-marketplace-frame" id="ccm-marketplace-frame-' . $time . '" class="ccm-marketplace-frame" frameborder="0" width="' . $width . '" height="' . $height . '" src="' . $url . '"></iframe>';
 			return $ifr;
@@ -196,9 +196,9 @@ class Marketplace {
 			return '<div class="ccm-error">' . t('You do not have permission to connect this site to the marketplace.') . '</div>';
 		}
 	}
-	
-	
-	/** 
+
+
+	/**
 	 * Runs through all packages on the marketplace, sees if they're installed here, and updates the available version number for them
 	 */
 	public static function checkPackageUpdates() {
@@ -218,18 +218,18 @@ class Marketplace {
 
 	public function getAvailableMarketplaceItems($filterInstalled=true) {
 		Loader::model('marketplace_remote_item');
-		
-		$fh = Loader::helper('file'); 
+
+		$fh = Loader::helper('file');
 		if (!$fh) return array();
 
-		// Retrieve the URL contents 
+		// Retrieve the URL contents
 		$csToken = Config::get('MARKETPLACE_SITE_TOKEN');
 		$csiURL = urlencode(BASE_URL . DIR_REL);
 		$url = MARKETPLACE_PURCHASES_LIST_WS."?csToken={$csToken}&csiURL=" . $csiURL . "&csiVersion=" . APP_VERSION;
 		$json = $fh->getContents($url);
 
 		$addons=array();
-		
+
 		$objects = @Loader::helper('json')->decode($json);
 		if (is_array($objects)) {
 			try {
@@ -242,7 +242,7 @@ class Marketplace {
 					}
 				}
 			} catch (Exception $e) {}
-	
+
 			if ($filterInstalled && is_array($addons)) {
 				Loader::model('package');
 				$handles = Package::getInstalledHandles();
@@ -257,7 +257,7 @@ class Marketplace {
 				}
 			}
 		}
-		
+
 		return $addons;
 	}
 

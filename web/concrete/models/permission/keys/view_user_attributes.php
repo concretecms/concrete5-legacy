@@ -10,7 +10,7 @@ class ViewUserAttributesUserPermissionKey extends UserPermissionKey  {
 			$list = $this->getAccessListItems(UserPermissionKey::ACCESS_TYPE_ALL, $accessEntities);
 			$list = PermissionDuration::filterByActive($list);
 		}
-		
+
 		$db = Loader::db();
 		$allakIDs = $db->GetCol('select akID from UserAttributeKeys');
 		$akIDs = array();
@@ -21,7 +21,7 @@ class ViewUserAttributesUserPermissionKey extends UserPermissionKey  {
 			if ($l->getAttributesAllowedPermission() == 'C') {
 				if ($l->getAccessType() == PermissionKey::ACCESS_TYPE_EXCLUDE) {
 					$akIDs = array_values(array_diff($akIDs, $l->getAttributesAllowedArray()));
-				} else { 
+				} else {
 					$akIDs = array_unique(array_merge($akIDs, $l->getAttributesAllowedArray()));
 				}
 			}
@@ -29,11 +29,11 @@ class ViewUserAttributesUserPermissionKey extends UserPermissionKey  {
 				$akIDs = $allakIDs;
 			}
 		}
-		
+
 		return $akIDs;
 	}
-	
-	
+
+
 	public function getMyAssignment() {
 		$u = new User();
 		$asl = new ViewUserAttributesUserPermissionAssignment();
@@ -46,7 +46,7 @@ class ViewUserAttributesUserPermissionKey extends UserPermissionKey  {
 		if (!is_object($pae)) {
 			return $asl;
 		}
-		
+
 		$accessEntities = $u->getUserAccessEntityObjects();
 		$accessEntities = $pae->validateAndFilterAccessEntities($accessEntities);
 		$list = $this->getAccessListItems(UserPermissionKey::ACCESS_TYPE_ALL, $accessEntities);
@@ -64,12 +64,12 @@ class ViewUserAttributesUserPermissionKey extends UserPermissionKey  {
 			if ($l->getAttributesAllowedPermission() == 'A') {
 				$asl->setAttributesAllowedPermission('A');
 			}
-		}	
-		
+		}
+
 		$asl->setAttributesAllowedArray($this->getAllowedAttributeKeyIDs($list));
 		return $asl;
 	}
-	
+
 	public function validate($obj = false) {
 		$u = new User();
 		if ($u->isSuperUser()) {
@@ -87,9 +87,9 @@ class ViewUserAttributesUserPermissionKey extends UserPermissionKey  {
 		} else {
 			return count($types) > 0;
 		}
-	}	
+	}
 
-	
+
 }
 
 class ViewUserAttributesUserPermissionAccess extends UserPermissionAccess {
@@ -99,32 +99,32 @@ class ViewUserAttributesUserPermissionAccess extends UserPermissionAccess {
 		$db = Loader::db();
 		$db->Execute('delete from UserPermissionViewAttributeAccessList where paID = ?', array($this->getPermissionAccessID()));
 		$db->Execute('delete from UserPermissionViewAttributeAccessListCustom where paID = ?', array($this->getPermissionAccessID()));
-		if (is_array($args['viewAttributesIncluded'])) { 
+		if (is_array($args['viewAttributesIncluded'])) {
 			foreach($args['viewAttributesIncluded'] as $peID => $permission) {
 				$v = array($this->getPermissionAccessID(), $peID, $permission);
 				$db->Execute('insert into UserPermissionViewAttributeAccessList (paID, peID, permission) values (?, ?, ?)', $v);
 			}
 		}
-		
-		if (is_array($args['viewAttributesExcluded'])) { 
+
+		if (is_array($args['viewAttributesExcluded'])) {
 			foreach($args['viewAttributesExcluded'] as $peID => $permission) {
 				$v = array($this->getPermissionAccessID(), $peID, $permission);
 				$db->Execute('insert into UserPermissionViewAttributeAccessList (paID, peID, permission) values (?, ?, ?)', $v);
 			}
 		}
 
-		if (is_array($args['akIDInclude'])) { 
+		if (is_array($args['akIDInclude'])) {
 			foreach($args['akIDInclude'] as $peID => $akIDs) {
-				foreach($akIDs as $akID) { 
+				foreach($akIDs as $akID) {
 					$v = array($this->getPermissionAccessID(), $peID, $akID);
 					$db->Execute('insert into UserPermissionViewAttributeAccessListCustom (paID, peID, akID) values (?, ?, ?)', $v);
 				}
 			}
 		}
 
-		if (is_array($args['akIDExclude'])) { 
+		if (is_array($args['akIDExclude'])) {
 			foreach($args['akIDExclude'] as $peID => $akIDs) {
-				foreach($akIDs as $akID) { 
+				foreach($akIDs as $akID) {
 					$v = array($this->getPermissionAccessID(), $peID, $akID);
 					$db->Execute('insert into UserPermissionViewAttributeAccessListCustom (paID, peID, akID) values (?, ?, ?)', $v);
 				}
@@ -155,7 +155,7 @@ class ViewUserAttributesUserPermissionAccess extends UserPermissionAccess {
 			$pe = $l->getAccessEntityObject();
 			if ($this->permissionObjectToCheck instanceof Page && $l->getAccessType() == PermissionKey::ACCESS_TYPE_INCLUDE) {
 				$permission = 'A';
-			} else { 
+			} else {
 				$permission = $db->GetOne('select permission from UserPermissionViewAttributeAccessList where paID = ? and peID = ?', array($l->getPermissionAccessID(), $pe->getAccessEntityID()));
 				if ($permission != 'N' && $permission != 'C') {
 					$permission = 'A';
@@ -163,7 +163,7 @@ class ViewUserAttributesUserPermissionAccess extends UserPermissionAccess {
 
 			}
 			$l->setAttributesAllowedPermission($permission);
-			if ($permission == 'C') { 
+			if ($permission == 'C') {
 				$akIDs = $db->GetCol('select akID from UserPermissionViewAttributeAccessListCustom where paID = ? and peID = ?', array($l->getPermissionAccessID(), $pe->getAccessEntityID()));
 				$l->setAttributesAllowedArray($akIDs);
 			}
@@ -174,7 +174,7 @@ class ViewUserAttributesUserPermissionAccess extends UserPermissionAccess {
 }
 
 class ViewUserAttributesUserPermissionAccessListItem extends UserPermissionAccessListItem {
-	
+
 	protected $customAttributeArray = array();
 	protected $attributesAllowedPermission = 'N';
 
@@ -190,6 +190,6 @@ class ViewUserAttributesUserPermissionAccessListItem extends UserPermissionAcces
 	public function getAttributesAllowedArray() {
 		return $this->customAttributeArray;
 	}
-	
-	
+
+
 }

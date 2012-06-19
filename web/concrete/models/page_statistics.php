@@ -23,9 +23,9 @@ defined('C5_EXECUTE') or die("Access Denied.");
  */
 
 class PageStatistics {
-	
+
 	/**
-	 * Gets total page views across the entire site. 
+	 * Gets total page views across the entire site.
 	 * @param date $date
 	 * @return int
 	 */
@@ -64,7 +64,7 @@ class PageStatistics {
 		$db = Loader::db();
 		return $db->GetOne("select count(cvID) from CollectionVersions");
 	}
-	
+
 	/**
 	 * Returns the datetime of the last edit to the site. Used in the dashboard
 	 * @return datetime
@@ -79,7 +79,7 @@ class PageStatistics {
 			return $cDateModified;
 		}
 	}
-	
+
 	/**
 	 * Gets the total number of pages currently in edit mode
 	 * @return int
@@ -88,9 +88,9 @@ class PageStatistics {
 		$db = Loader::db();
 		return $db->GetOne("select count(cID) from Pages where cIsCheckedOut = 1");
 	}
-	
-	
-	/** 
+
+
+	/**
 	 * For a particular page ID, grabs all the pages of this page, and increments the cTotalChildren number for them
 	 */
 	public static function incrementParents($cID) {
@@ -106,7 +106,7 @@ class PageStatistics {
 
 	}
 
-	/** 
+	/**
 	 * For a particular page ID, grabs all the pages of this page, and decrements the cTotalChildren number for them
 	 */
 	public static function decrementParents($cID) {
@@ -114,19 +114,19 @@ class PageStatistics {
 		$cParentID = $db->GetOne("select cParentID from Pages where cID = ?", array($cID));
 
 		$q = "update Pages set cChildren = cChildren - 1 where cID = ?";
-		
+
 		$cpc = Page::getByID($cParentID);
 		$cpc->refreshCache();
-		
+
 		$r = $db->query($q, array($cParentID));
 
 	}
-	
-	/** 
-	 * Returns the total number of pages created for a given date 
+
+	/**
+	 * Returns the total number of pages created for a given date
 	 */
 	public static function getTotalPagesCreated($date) {
-		$db = Loader::db();	
+		$db = Loader::db();
 		$num = $db->GetOne('select count(Pages.cID) from Pages inner join Collections on Pages.cID = Collections.cID where cDateAdded >= ? and cDateAdded <= ? and cIsSystemPage = 0 and cIsTemplate = 0', array($date . ' 00:00:00', $date . ' 23:59:59'));
 		return $num;
 	}

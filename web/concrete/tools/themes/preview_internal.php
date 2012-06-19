@@ -18,8 +18,8 @@ $c = Page::getByID($previewCID, 'RECENT'); //,"ACTIVE"
 $cp = new Permissions($c);
 if(!$cp->canEditPageTheme()) throw new Exception(t('Access Denied'));
 
-$v = View::getInstance(); 
-if ($themeID > 0) { 
+$v = View::getInstance();
+if ($themeID > 0) {
 	$th = PageTheme::getByID($themeID);
 	if(!file_exists($th->getThemeDirectory()))
 		throw new Exception(t('Theme not found in %s', $th->getThemeDirectory()));
@@ -28,6 +28,6 @@ if ($themeID > 0) {
 $v->disableEditing();
 $v->disableLinks();
 $v->enablePreview();
-$v->render($c); 
+$v->render($c);
 
 ?>

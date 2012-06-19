@@ -19,7 +19,7 @@ class DashboardSystemSeoTrackingCodesController extends DashboardBaseController 
 			}
 		}
 	}
-	
+
 	public function saved() {
 		$this->set('message', t('Tracking code settings updated successfully.'));
 		$this->view();

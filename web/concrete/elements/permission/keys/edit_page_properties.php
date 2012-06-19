@@ -12,7 +12,7 @@
 <h3><?=t('Who can edit what?')?></h3>
 
 <? foreach($included as $assignment) {
-	$entity = $assignment->getAccessEntityObject(); 
+	$entity = $assignment->getAccessEntityObject();
 ?>
 
 
@@ -47,7 +47,7 @@
 <h3><?=t('Who can\'t edit what?')?></h3>
 
 <? foreach($excluded as $assignment) {
-	$entity = $assignment->getAccessEntityObject(); 
+	$entity = $assignment->getAccessEntityObject();
 ?>
 
 

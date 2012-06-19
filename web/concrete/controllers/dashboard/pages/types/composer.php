@@ -3,14 +3,14 @@ defined('C5_EXECUTE') or die("Access Denied.");
 class DashboardPagesTypesComposerController extends Controller {
 
 	protected $ct = false;
-	
+
 	protected function verify($ctID = false) {
 		$cap = Loader::helper('concrete/dashboard');
 		$ct = false;
 		if ($ctID > 0) {
 			$ct = CollectionType::getByID($ctID);
 		}
-		
+
 		if ($cap->canAccessComposer() && is_object($ct)) {
 			$this->set('ct', $ct);
 			$this->ct = $ct;
@@ -18,7 +18,7 @@ class DashboardPagesTypesComposerController extends Controller {
 			$this->redirect("/dashboard/pages/types");
 		}
 	}
-	
+
 	public function save_content_items($ctID = false) {
 		$this->verify($ctID);
 		$items = array();
@@ -34,15 +34,15 @@ class DashboardPagesTypesComposerController extends Controller {
 		$this->ct->saveComposerContentItemOrder($items);
 		exit;
 	}
-	
-	public function view($ctID = false, $action = false) { 
+
+	public function view($ctID = false, $action = false) {
 		$this->verify($ctID);
 		$this->set('contentitems', $this->ct->getComposerContentItems());
 		if ($action == 'updated') {
 			$this->set('message', t('Composer settings updated.'));
 		}
-	}	
-	
+	}
+
 	public function save() {
 		$this->verify($this->post('ctID'));
 		if ($this->post('ctIncludeInComposer')) {
@@ -56,7 +56,7 @@ class DashboardPagesTypesComposerController extends Controller {
 					$this->ct->saveComposerPublishTargetPageType($ct);
 					break;
 				default:
-					$this->ct->saveComposerPublishTargetAll();					
+					$this->ct->saveComposerPublishTargetAll();
 					break;
 			}
 			$this->ct->saveComposerAttributeKeys($this->post('composerAKID'));
@@ -67,10 +67,10 @@ class DashboardPagesTypesComposerController extends Controller {
 			$this->redirect("/dashboard/pages/types", "clear_composer");
 		}
 	}
-	
+
 	public function on_start() {
 		$this->set('disableThirdLevelNav', true);
 	}
-	
+
 
 }

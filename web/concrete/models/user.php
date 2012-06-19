@@ -18,8 +18,8 @@
  *
  */
 
-	class User extends Object { 
-	
+	class User extends Object {
+
 		public $uID = '';
 		public $uName = '';
 		public $uGroups = array();
@@ -28,7 +28,7 @@
 		protected $uDefaultLanguage = null;
 		// an associative array of all access entity objects that are associated with this user.
 		protected $accessEntities = array();
-		
+
 		/**
 		 * @param int $uID
 		 * @param boolean $login
@@ -59,7 +59,7 @@
 					$_SESSION['uLastOnline'] = $row['uLastOnline'];
 					$_SESSION['uTimezone'] = $row['uTimezone'];
 					$_SESSION['uDefaultLanguage'] = $row['uDefaultLanguage'];
-					if ($cacheItemsOnLogin) { 
+					if ($cacheItemsOnLogin) {
 						Loader::helper('concrete/interface')->cacheInterfaceItems();
 					}
 					$nu->recordLogin();
@@ -67,13 +67,13 @@
 			}
 			return $nu;
 		}
-		
+
 		protected static function regenerateSession() {
 			unset($_SESSION['dashboardMenus']);
 			unset($_SESSION['accessEntities']);
 			session_regenerate_id(true);
 		}
-		
+
 		/**
 		 * @param int $uID
 		 * @return User
@@ -81,11 +81,11 @@
 		public function loginByUserID($uID) {
 			return User::getByUserID($uID, true);
 		}
-		
+
 		public static function isLoggedIn() {
 			return $_SESSION['uID'] > 0 && $_SESSION['uName'] != '';
 		}
-		
+
 		public function checkLogin() {
 			if ($_SESSION['uID'] > 0) {
 				$db = Loader::db();
@@ -107,14 +107,14 @@
 				}
 			}
 		}
-		
+
 		public function __construct() {
 			$args = func_get_args();
-			
+
 			if (isset($args[1])) {
 				// first, we check to see if the username and password match the admin username and password
 				// $username = uName normally, but if not it's email address
-				
+
 				$username = $args[0];
 				$password = $args[1];
 				if (!$args[2]) {
@@ -130,7 +130,7 @@
 				$db = Loader::db();
 				$r = $db->query($q, $v);
 				if ($r) {
-					$row = $r->fetchRow(); 
+					$row = $r->fetchRow();
 					if ($row['uID'] && $row['uIsValidated'] === '0' && defined('USER_VALIDATE_EMAIL_REQUIRED') && USER_VALIDATE_EMAIL_REQUIRED == TRUE) {
 						$this->loadError(USER_NON_VALIDATED);
 					} else if ($row['uID'] && $row['uIsActive']) {
@@ -204,58 +204,58 @@
 					$_SESSION['uGroups'] = $this->uGroups;
 				}
 			}
-			
+
 			return $this;
 		}
-		
+
 		function recordLogin() {
 			$db = Loader::db();
 			$uLastLogin = $db->getOne("select uLastLogin from Users where uID = ?", array($this->uID));
-			
+
 			$db->query("update Users set uLastLogin = ?, uPreviousLogin = ?, uNumLogins = uNumLogins + 1 where uID = ?", array(time(), $uLastLogin, $this->uID));
 		}
-		
+
 		function recordView($c) {
 			$db = Loader::db();
 			$uID = ($this->uID > 0) ? $this->uID : 0;
 			$cID = $c->getCollectionID();
 			$v = array($cID, $uID);
 			$db->query("insert into PageStatistics (cID, uID, date) values (?, ?, NOW())", $v);
-			
+
 		}
-		
+
 		public function encryptPassword($uPassword, $salt = PASSWORD_SALT) {
 			return md5($uPassword . ':' . $salt);
 		}
-		
+
 		function isActive() {
 			return $this->uIsActive;
 		}
-		
+
 		function isSuperUser() {
 			return $this->superUser;
 		}
-		
+
 		function getLastOnline() {
 			return $this->uLastOnline;
 		}
-		
+
 		function getUserName() {
 			return $this->uName;
 		}
-		
+
 		function isRegistered() {
 			return $this->getUserID() > 0;
 		}
-		
+
 		function getUserID() {
 			return $this->uID;
 		}
-		
+
 		function getUserTimezone() {
 			return $this->uTimezone;
 		}
-		
+
 		function logout() {
 			// First, we check to see if we have any collection in edit mode
 			$this->unloadCollectionEdit();
@@ -266,7 +266,7 @@
 				setcookie("ccmUserHash", "", 315532800, DIR_REL . '/');
 			}
 		}
-		
+
 		function checkUserForeverCookie() {
 			if ($_COOKIE['ccmUserHash']) {
 				$hashVal = explode(':', $_COOKIE['ccmUserHash']);
@@ -277,18 +277,18 @@
 				}
 			}
 		}
-		
+
 		function setUserForeverCookie() {
 			$hashVal = md5(PASSWORD_SALT . $this->getUserID());
 			setcookie("ccmUserHash", $this->getUserID() . ':' . $hashVal, time() + 1209600, DIR_REL . '/');
 		}
-		
+
 		function getUserGroups() {
 			$ugtmp = array();
 			// we have to do this because we don't have a localized version of the guest and registered group names
 			// when we called _getUserGroups() below. So we have to push out the defining of the guest and registered
 			// names til runtime
-			
+
 			foreach($this->uGroups as $key => $value) {
 				$ugtmp[$key] = $value;
 				if ($key == GUEST_GROUP_ID) {
@@ -300,9 +300,9 @@
 			}
 			return $ugtmp;
 		}
-		
-		/** 
-		 * Sets a default language for a user record 
+
+		/**
+		 * Sets a default language for a user record
 		 */
 		public function setUserDefaultLanguage($lang) {
 			$db = Loader::db();
@@ -310,14 +310,14 @@
 			$_SESSION['uDefaultLanguage'] = $lang;
 			$db->Execute('update Users set uDefaultLanguage = ? where uID = ?', array($lang, $this->getUserID()));
 		}
-		
-		/** 
+
+		/**
 		 * Gets the default language for the logged-in user
 		 */
 		public function getUserDefaultLanguage() {
 			return $this->uDefaultLanguage;
 		}
-		
+
 		function refreshUserGroups() {
 			unset($_SESSION['uGroups']);
 			unset($_SESSION['accessEntities']);
@@ -325,7 +325,7 @@
 			$_SESSION['uGroups'] = $ug;
 			$this->uGroups = $ug;
 		}
-		
+
 		public function getUserAccessEntityObjects() {
 			$req = Request::get();
 			if ($req->hasCustomRequestUser()) {
@@ -333,7 +333,7 @@
 				// and we don't save them in session.
 				return PermissionAccessEntity::getForUser($this);
 			}
-			
+
 			if (isset($_SESSION['accessEntities'])) {
 				$entities = $_SESSION['accessEntities'];
 			} else {
@@ -342,7 +342,7 @@
 			}
 			return $entities;
 		}
-		
+
 		function _getUserGroups($disableLogin = false) {
 			$req = Request::get();
 			if ((!empty($_SESSION['uGroups'])) && (!$disableLogin) && (!$req->hasCustomRequestUser())) {
@@ -358,7 +358,7 @@
 					$r = $db->query($q);
 					if ($r) {
 						while ($row = $r->fetchRow()) {
-							$expire = false;					
+							$expire = false;
 							if ($row['gUserExpirationIsEnabled']) {
 								switch($row['gUserExpirationMethod']) {
 									case 'SET_TIME':
@@ -371,9 +371,9 @@
 											$expire = true;
 										}
 										break;
-								}	
+								}
 							}
-							
+
 							if ($expire) {
 								if ($row['gUserExpirationAction'] == 'REMOVE' || $row['gUserExpirationAction'] == 'REMOVE_DEACTIVATE') {
 									$db->Execute('delete from UserGroups where uID = ? and gID = ?', array($uID, $row['gID']));
@@ -384,24 +384,24 @@
 							} else {
 								$ug[$row['gID']] = $row['gName'];
 							}
-							
+
 						}
 						$r->free();
 					}
 				}
-				
-				// now we populate also with guest information, since presumably logged-in users 
+
+				// now we populate also with guest information, since presumably logged-in users
 				// see the same stuff as guest
 				$ug[GUEST_GROUP_ID] = GUEST_GROUP_ID;
 			}
-			
+
 			return $ug;
 		}
-		
+
 		function enterGroup($g, $joinType = "") {
 			// takes a group object, and, if the user is not already in the group, it puts them into it
 			$dt = Loader::helper('date');
-			
+
 			if (is_object($g)) {
 				$gID = $g->getGroupID();
 				$db = Loader::db();
@@ -415,7 +415,7 @@
 				Events::fire('on_user_enter_group', $this, $g);
 			}
 		}
-		
+
 		public function updateGroupMemberType($g, $joinType) {
 			if ($g instanceof Group) {
 				$db = Loader::db();
@@ -423,25 +423,25 @@
 				$db->Execute('update UserGroups set type = ?, ugEntered = ? where uID = ? and gID = ?', array($joinType, $dt->getSystemDateTime(), $this->uID, $g->getGroupID()));
 			}
 		}
-		
+
 		function exitGroup($g) {
 			// takes a group object, and, if the user is in the group, they exit the group
 			if (is_object($g)) {
 				$gID = $g->getGroupID();
 				$db = Loader::db();
-				
+
 				$ret = Events::fire('on_user_exit_group', $this, $g);
 				$q = "delete from UserGroups where uID = '{$this->uID}' and gID = '{$gID}'";
-				$r = $db->query($q);	
-			}		
+				$r = $db->query($q);
+			}
 		}
-		
+
 		function getGroupMemberType($g) {
 			$db = Loader::db();
 			$r = $db->GetOne("select type from UserGroups where uID = ? and gID = ?", array($this->getUserID(), $g->getGroupID()));
 			return $r;
 		}
-		
+
 		function inGroup($g, $joinType = null) {
 			$db = Loader::db();
 			if (isset($joinType) && is_object($g)) {
@@ -451,17 +451,17 @@
 				$v = array($this->uID, $g->getGroupID());
 				$cnt = $db->GetOne("select gID from UserGroups where uID = ? and gID = ?", $v);
 			}
-			
+
 			return $cnt > 0;
 		}
-		
+
 		function loadMasterCollectionEdit($mcID, $ocID) {
 			// basically, this function loads the master collection ID you're working on into session
 			// so you can work on it without the system failing because you're editing a template
 			$_SESSION['mcEditID'] = $mcID;
 			$_SESSION['ocID'] = $ocID;
 		}
-		
+
 		function loadCollectionEdit(&$c) {
 			$c->refreshCache();
 
@@ -469,12 +469,12 @@
 			if ($c->isCheckedOut()) {
 				return false;
 			}
-			
+
 			$db = Loader::db();
 			$cID = $c->getCollectionID();
 			// first, we check to see if we have a collection in edit mode. If we do, we relinquish it
 			$this->unloadCollectionEdit(false);
-			
+
 			$q = "select cIsCheckedOut, cCheckedOutDatetime from Pages where cID = '{$cID}'";
 			$r = $db->query($q);
 			if ($r) {
@@ -486,20 +486,20 @@
 					$datetime = $dh->getSystemDateTime();
 					$q2 = "update Pages set cIsCheckedOut = 1, cCheckedOutUID = '{$uID}', cCheckedOutDatetime = '{$datetime}', cCheckedOutDatetimeLastEdit = '{$datetime}' where cID = '{$cID}'";
 					$r2 = $db->query($q2);
-					
+
 					$c->cIsCheckedOut = 1;
 					$c->cCheckedOutUID = $uID;
 					$c->cCheckedOutDatetime = $datetime;
 					$c->cCheckedOutDatetimeLastEdit = $datetime;
 				}
 			}
-			
+
 		}
-			
-		function unloadCollectionEdit($removeCache = true) {		
+
+		function unloadCollectionEdit($removeCache = true) {
 			// first we remove the cached versions of all of these pages
 			$db = Loader::db();
-			if ($this->getUserID() > 0) { 
+			if ($this->getUserID() > 0) {
 				$col = $db->GetCol("select cID from Pages where cCheckedOutUID = " . $this->getUserID());
 				foreach($col as $cID) {
 					$p = Page::getByID($cID);
@@ -507,12 +507,12 @@
 						$p->refreshCache();
 					}
 				}
-				
+
 				$q = "update Pages set cIsCheckedOut = 0, cCheckedOutUID = null, cCheckedOutDatetime = null, cCheckedOutDatetimeLastEdit = null where cCheckedOutUID = " . $this->getUserID();
 				$r = $db->query($q);
 			}
 		}
-		
+
 		public function config($cfKey) {
 			if ($this->isRegistered()) {
 				$db = Loader::db();
@@ -520,27 +520,27 @@
 				return $val;
 			}
 		}
-		
+
 		public function saveConfig($cfKey, $cfValue) {
 			$db = Loader::db();
 			$db->Replace('Config', array('cfKey' => $cfKey, 'cfValue' => $cfValue, 'uID' => $this->getUserID()), array('cfKey', 'uID'), true);
 		}
-		
+
 		function refreshCollectionEdit(&$c) {
 			if ($this->isLoggedIn() && $c->getCollectionCheckedOutUserID() == $this->getUserID()) {
 				$db = Loader::db();
 				$cID = $c->getCollectionID();
-				
+
 				$dh = Loader::helper('date');
 				$datetime = $dh->getSystemDateTime();
-					
+
 				$q = "update Pages set cCheckedOutDatetimeLastEdit = '{$datetime}' where cID = '{$cID}'";
 				$r = $db->query($q);
-					
+
 				$c->cCheckedOutDatetimeLastEdit = $datetime;
 			}
 		}
-		
+
 		function forceCollectionCheckInAll() {
 			// This function forces checkin to take place
 			$db = Loader::db();
@@ -548,5 +548,5 @@
 			$r = $db->query($q);
 			return $r;
 		}
-				
+
 	}

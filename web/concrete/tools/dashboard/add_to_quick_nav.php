@@ -7,7 +7,7 @@ $canAdd = false;
 
 if ($ih->integer($_REQUEST['cID'])) {
 	$c = Page::getByID($_REQUEST['cID']);
-	if (is_object($c) && (!$c->isError())) { 
+	if (is_object($c) && (!$c->isError())) {
 		$cp = new Permissions($c);
 		if ($dh->inDashboard($c)) {
 			if ($cp->canViewPage()) {

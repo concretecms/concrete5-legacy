@@ -6,7 +6,7 @@ class Stack extends Page {
 
 	const ST_TYPE_USER_ADDED = 0;
 	const ST_TYPE_GLOBAL_AREA = 20;
-	
+
 	public function getStackName() {return $this->stName;}
 	public function getStackType() {return $this->stType;}
 	public function getStackTypeExportText() {
@@ -14,12 +14,12 @@ class Stack extends Page {
 			case self::ST_TYPE_GLOBAL_AREA:
 				return 'global_area';
 				break;
-			default: 
+			default:
 				return false;
 				break;
 		}
 	}
-	
+
 	public static function mapImportTextToType($type) {
 		switch($type) {
 			case 'global_area':
@@ -28,15 +28,15 @@ class Stack extends Page {
 			default:
 				return self::ST_TYPE_USER_ADDED;
 				break;
-		}		
+		}
 	}
-	
+
 	protected static function isValidStack($stack) {
 		$parent = Page::getByPath(STACKS_PAGE_PATH);
 		if ($stack->getCollectionParentID() != $parent->getCollectionID()) {
 			return false;
 		}
-		
+
 		return true;
 	}
 
@@ -51,21 +51,21 @@ class Stack extends Page {
 			$data['name'] = t('No Name');
 		}
 		$pagetype = CollectionType::getByHandle(STACKS_PAGE_TYPE);
-		$page = $parent->add($pagetype, $data);	
+		$page = $parent->add($pagetype, $data);
 
 		// we have to do this because we need the area to exist before we try and add something to it.
 		$a = Area::getOrCreate($page, STACKS_AREA_NAME);
-		
+
 		// finally we add the row to the stacks table
 		$db = Loader::db();
 		$stackCID = $page->getCollectionID();
 		$v = array($stackName, $stackCID, $type);
 		$db->Execute('insert into Stacks (stName, cID, stType) values (?, ?, ?)', $v);
-		
+
 		//Return the new stack
 		return self::getByID($stackCID);
 	}
-	
+
 	public static function getByName($stackName, $cvID = 'RECENT') {
 		$db = Loader::db();
 		$cID = $db->GetOne('select cID from Stacks where stName = ?', array($stackName));
@@ -73,7 +73,7 @@ class Stack extends Page {
 			return self::getByID($cID, $cvID);
 		}
 	}
-	
+
 	public function delete() {
 		if ($this->getStackType() == self::ST_TYPE_GLOBAL_AREA) {
 			GlobalArea::deleteByName($this->getStackName());
@@ -88,15 +88,15 @@ class Stack extends Page {
 		$ax = Area::get($this, STACKS_AREA_NAME);
 		$ax->display($this);
 	}
-	
+
 	public static function getOrCreateGlobalArea($stackName) {
 		$stack = self::getByName($stackName);
-		if (!$stack) {		
+		if (!$stack) {
 			$stack = self::addStack($stackName, self::ST_TYPE_GLOBAL_AREA);
 		}
 		return $stack;
 	}
-	
+
 	public static function getByID($cID, $cvID = 'RECENT') {
 		$db = Loader::db();
 		$c = parent::getByID($cID, $cvID, 'Stack');
@@ -118,7 +118,7 @@ class Stack extends Page {
 		if ($this->getStackTypeExportText()) {
 			$p->addAttribute('type', $this->getStackTypeExportText());
 		}
-		
+
 		$db = Loader::db();
 		$r = $db->Execute('select arHandle from Areas where cID = ?', array($this->getCollectionID()));
 		while ($row = $r->FetchRow()) {

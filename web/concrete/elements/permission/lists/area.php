@@ -1,22 +1,22 @@
 <? defined('C5_EXECUTE') or die("Access Denied."); ?>
 <div class="ccm-ui">
-	<? 
+	<?
 $enablePermissions = false;
 if ($a->getAreaCollectionInheritID() != $c->getCollectionID() && $a->getAreaCollectionInheritID() > 0) {
-		$pc = $c->getPermissionsCollectionObject(); 
+		$pc = $c->getPermissionsCollectionObject();
 		$areac = Page::getByID($a->getAreaCollectionInheritID());
 		?>
-		
+
 
 		<div class="block-message alert-message notice">
 		<p>
 		<?=t("The following area permissions are inherited from an area set on ")?>
-		<a href="<?=DIR_REL?>/<?=DISPATCHER_FILENAME?>?cID=<?=$areac->getCollectionID()?>"><?=$areac->getCollectionName()?></a>. 
+		<a href="<?=DIR_REL?>/<?=DISPATCHER_FILENAME?>?cID=<?=$areac->getCollectionID()?>"><?=$areac->getCollectionName()?></a>.
 		</p>
 		<br/>
 		<a href="javascript:void(0)" class="btn small" onclick="ccm_setAreaPermissionsToOverride()"><?=t('Override Permissions')?></a>
 		</div>
-		
+
 <? 	} else if (!$a->overrideCollectionPermissions()) { ?>
 
 	<div class="block-message alert-message notice">
@@ -26,8 +26,8 @@ if ($a->getAreaCollectionInheritID() != $c->getCollectionID() && $a->getAreaColl
 	<br/>
 	<a href="javascript:void(0)" class="btn small" onclick="ccm_setAreaPermissionsToOverride()"><?=t('Override Permissions')?></a>
 	</div>
-	
-<? } else { 
+
+<? } else {
 	$enablePermissions = true;
 	?>
 
@@ -48,7 +48,7 @@ if ($a->getAreaCollectionInheritID() != $c->getCollectionID() && $a->getAreaColl
 
 <?
 $permissions = PermissionKey::getList('area');
-foreach($permissions as $pk) { 
+foreach($permissions as $pk) {
 	$pk->setPermissionObject($a);
 
 ?>
@@ -89,7 +89,7 @@ ccm_permissionLaunchDialog = function(link) {
 		modal: false,
 		width: 500,
 		height: 380
-	});		
+	});
 }
 
 $(function() {
@@ -97,31 +97,31 @@ $(function() {
 		beforeSubmit: function() {
 			jQuery.fn.dialog.showLoader();
 		},
-		
+
 		success: function(r) {
 			jQuery.fn.dialog.hideLoader();
 			jQuery.fn.dialog.closeTop();
-		}		
+		}
 	});
 });
 
 ccm_revertToPagePermissions = function() {
 	jQuery.fn.dialog.showLoader();
-	$.get('<?=$pk->getPermissionAssignmentObject()->getPermissionKeyToolsURL("revert_to_page_permissions")?>&arHandle=<?=urlencode($a->getAreaHandle())?>&cID=<?=$c->getCollectionID()?>', function() { 
+	$.get('<?=$pk->getPermissionAssignmentObject()->getPermissionKeyToolsURL("revert_to_page_permissions")?>&arHandle=<?=urlencode($a->getAreaHandle())?>&cID=<?=$c->getCollectionID()?>', function() {
 		ccm_refreshAreaPermissions();
 	});
 }
 
 ccm_setAreaPermissionsToOverride = function() {
 	jQuery.fn.dialog.showLoader();
-	$.get('<?=$pk->getPermissionAssignmentObject()->getPermissionKeyToolsURL("override_page_permissions")?>&arHandle=<?=urlencode($a->getAreaHandle())?>&cID=<?=$c->getCollectionID()?>', function() { 
+	$.get('<?=$pk->getPermissionAssignmentObject()->getPermissionKeyToolsURL("override_page_permissions")?>&arHandle=<?=urlencode($a->getAreaHandle())?>&cID=<?=$c->getCollectionID()?>', function() {
 		ccm_refreshAreaPermissions();
 	});
 }
 
 ccm_refreshAreaPermissions = function() {
 	jQuery.fn.dialog.showLoader();
-	$.get('<?=REL_DIR_FILES_TOOLS_REQUIRED?>/edit_area_popup?atask=groups&arHandle=<?=urlencode($a->getAreaHandle())?>&cID=<?=$c->getCollectionID()?>', function(r) { 
+	$.get('<?=REL_DIR_FILES_TOOLS_REQUIRED?>/edit_area_popup?atask=groups&arHandle=<?=urlencode($a->getAreaHandle())?>&cID=<?=$c->getCollectionID()?>', function(r) {
 		jQuery.fn.dialog.replaceTop(r);
 		jQuery.fn.dialog.hideLoader();
 	});

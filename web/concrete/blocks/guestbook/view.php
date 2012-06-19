@@ -10,13 +10,13 @@ if (!$dateFormat) {
 	$dateFormat = t('M jS, Y');
 }
 $posts = $controller->getEntries();
-$bp = $controller->getPermissionObject(); 
+$bp = $controller->getPermissionObject();
 foreach($posts as $p) { ?>
 	<? if($p['approved'] || $bp->canWrite()) { ?>
     <div class="guestBook-entry<?php if ($c->getVersionObject()->getVersionAuthorUserName() == $u->getUserName()) {?> authorPost <?php }?>">
-    	<? if($bp->canWrite()) { ?> 
+    	<? if($bp->canWrite()) { ?>
 				<div class="guestBook-manage-links">
-                	<a href="<?=$this->action('loadEntry')."&entryID=".$p['entryID'];?>#guestBookForm"><?=t('Edit')?></a> | 
+                	<a href="<?=$this->action('loadEntry')."&entryID=".$p['entryID'];?>#guestBookForm"><?=t('Edit')?></a> |
 					<a href="<?=$this->action('removeEntry')."&entryID=".$p['entryID'];?>" onclick="return confirm('<?=t("Are you sure you would like to remove this comment?")?>');"><?=t('Remove')?></a> |
                 	<? if($p['approved']) { ?>
  	                   	<a href="<?=$this->action('unApproveEntry')."&entryID=".$p['entryID'];?>"><?=t('Un-Approve')?></a>
@@ -36,7 +36,7 @@ foreach($posts as $p) { ?>
 						}
 					}else echo $p['user_name'];
 					?>
-				</span> 
+				</span>
 				<?=t('on')?>
 				<span class="contentDate">
 					<?=date($dateFormat,strtotime($p['entryDate']));?>
@@ -51,10 +51,10 @@ foreach($posts as $p) { ?>
 	<?=$response?>
 <? } ?>
 <? if($controller->displayGuestBookForm) { ?>
-	<?	
+	<?
 	if( $controller->authenticationRequired && !$u->isLoggedIn() ){ ?>
 		<div><?=t('You must be logged in to leave a reply.')?> <a href="<?=View::url("/login","forward",$c->getCollectionID())?>"><?=t('Login')?> &raquo;</a></div>
-	<? }else{ ?>	
+	<? }else{ ?>
 		<a name="guestBookForm-<?=$controller->bID?>"></a>
 
 		<div id="guestBook-formBlock-<?=$controller->bID?>" class="guestBook-formBlock">
@@ -64,27 +64,27 @@ foreach($posts as $p) { ?>
 			<? if(isset($Entry->entryID)) { ?>
 				<input type="hidden" name="entryID" value="<?=$Entry->entryID?>" />
 			<? } ?>
-			
+
 			<? if(!$controller->authenticationRequired){ ?>
 				<label for="name"><?=t('Name')?>:</label><?=(isset($errors['name'])?"<span class=\"error\">".$errors['name']."</span>":"")?><br />
 				<input type="text" name="name" value="<?=$Entry->user_name ?>" /> <br />
 				<label for="email"><?=t('Email')?>:</label><?=(isset($errors['email'])?"<span class=\"error\">".$errors['email']."</span>":"")?><br />
 				<input type="email" name="email" value="<?=$Entry->user_email ?>" /> <span class="note">(<?=t('Your email will not be publicly displayed.')?>)</span> <br />
 			<? } ?>
-			
+
 			<?=(isset($errors['commentText'])?"<br /><span class=\"error\">".$errors['commentText']."</span>":"")?>
 			<textarea name="commentText"><?=$Entry->commentText ?></textarea><br />
 			<?
 			if($controller->displayCaptcha) {
-						   
-				
-				$captcha = Loader::helper('validation/captcha');				
+
+
+				$captcha = Loader::helper('validation/captcha');
    				$captcha->label();
    				$captcha->showInput();
 				$captcha->display();
 
 				echo isset($errors['captcha'])?'<span class="error">' . $errors['captcha'] . '</span>':'';
-				
+
 			}
 			?>
 			<br/><br/>

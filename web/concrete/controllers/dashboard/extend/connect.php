@@ -3,17 +3,17 @@
 defined('C5_EXECUTE') or die("Access Denied.");
 class DashboardExtendConnectController extends Controller {
 
-	public $helpers = array('form'); 
+	public $helpers = array('form');
 
 	public function on_start() {
 		Loader::library('marketplace');
 		$this->addFooterItem(Loader::helper('html')->javascript('jquery.postmessage.js'));
 	}
-	
+
 	public function view($startStep = 'view') {
 		$this->set('startStep', $startStep);
 	}
-	
+
 	public function connect_complete() {
 		$tp = new TaskPermission();
 		if ($tp->canInstallPackages()) {
@@ -29,7 +29,7 @@ class DashboardExtendConnectController extends Controller {
 			$this->set('error', array(t('You do not have permission to connect this site to the marketplace.')));
 		}
 	}
-	
+
 	public function community_connect_success() {
 		$this->set('message', t('Your site is now connected to the concrete5 community.'));
 	}

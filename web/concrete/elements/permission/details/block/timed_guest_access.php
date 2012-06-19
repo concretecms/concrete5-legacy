@@ -5,8 +5,8 @@ $arHandle = $b->getAreaHandle();
 $pk = PermissionKey::getByHandle('view_block');
 $pk->setPermissionObject($b);
 $list = $pk->getAccessListItems();
-foreach($list as $pa) { 
-	$pae = $pa->getAccessEntityObject(); 
+foreach($list as $pa) {
+	$pae = $pa->getAccessEntityObject();
 	if ($pae->getAccessEntityTypeHandle() == 'group') {
 		if ($pae->getGroupObject()->getGroupID() == GUEST_GROUP_ID) {
 			$pd = $pa->getPermissionDurationObject();

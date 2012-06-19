@@ -7,16 +7,16 @@ defined('C5_EXECUTE') or die("Access Denied.");
  * @license    http://www.concrete5.org/license/     MIT License
  *
  */
- 
+
 class ChangeSubpageDefaultsInheritancePageWorkflowRequest extends PageWorkflowRequest {
-	
+
 	protected $wrStatusNum = 30;
 
 	public function __construct() {
 		$pk = PermissionKey::getByHandle('edit_page_permissions');
 		parent::__construct($pk);
 	}
-	
+
 	public function setPagePermissionsInheritance($inheritance) {
 		$this->inheritance = $inheritance;
 	}
@@ -38,23 +38,23 @@ class ChangeSubpageDefaultsInheritancePageWorkflowRequest extends PageWorkflowRe
 		$d->setShortStatus(t("Sub-Page Inheritance Changes"));
 		return $d;
 	}
-	
+
 	public function getWorkflowRequestStyleClass() {
 		return 'info';
 	}
-	
+
 	public function getWorkflowRequestApproveButtonClass() {
 		return 'success';
 	}
-	
+
 	public function getWorkflowRequestApproveButtonInnerButtonRightHTML() {
 		return '<i class="icon-white icon-thumbs-up"></i>';
-	}		
-	
+	}
+
 	public function getWorkflowRequestApproveButtonText() {
 		return t('Change Inheritance');
 	}
-	
+
 	public function approve(WorkflowProgress $wp) {
 		$c = Page::getByID($this->getRequestedPageID());
 		$c->setOverrideTemplatePermissions($this->inheritance);
@@ -63,5 +63,5 @@ class ChangeSubpageDefaultsInheritancePageWorkflowRequest extends PageWorkflowRe
 		return $wpr;
 	}
 
-	
+
 }

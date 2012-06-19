@@ -1,5 +1,5 @@
 <?php defined('C5_EXECUTE') or die("Access Denied.");
-	
+
 class DateArchiveBlockController extends BlockController {
 
 	protected $btTable = 'btDateArchive';
@@ -7,32 +7,32 @@ class DateArchiveBlockController extends BlockController {
 	protected $btInterfaceHeight = "350";
 
 	protected $btExportPageColumns = array('targetCID');
-	
+
 	protected $btCacheBlockOutput = true;
 	protected $btCacheBlockOutputOnPost = false;
 	protected $btCacheBlockOutputForRegisteredUsers = false;
-		
-	public $helpers =  array('navigation');	
-	
-	/** 
+
+	public $helpers =  array('navigation');
+
+	/**
 	 * Used for localization. If we want to localize the name/description we have to include this
 	*/
 	public function getBlockTypeDescription() {
 		return t("Displays month archive for pages");
 	}
-	
+
 	public function getBlockTypeName() {
 		return t("Blog Date Archive");
 	}
-	
+
 	public function view() {
 		if($this->targetCID > 0) {
 			$target = Page::getByID($this->targetCID);
 			$this->set('target',$target);
-		}		
-		
-		$query = "SELECT MIN(cv.cvDatePublic) as firstPost 
-			FROM CollectionVersions cv 
+		}
+
+		$query = "SELECT MIN(cv.cvDatePublic) as firstPost
+			FROM CollectionVersions cv
 			INNER JOIN PageTypes pt ON cv.ctID = pt.ctID
 			WHERE pt.ctHandle IN ('blog_entry') and cvIsApproved = 1";
 		$db = Loader::db();
@@ -43,10 +43,10 @@ class DateArchiveBlockController extends BlockController {
 			$this->set('firstPost',$firstPost);
 		}
 	}
-	
+
 	public function save($args) {
 		parent::save($args);
-	}	
+	}
 }
 
 if(!function_exists('date_diff')) {
@@ -58,7 +58,7 @@ if(!function_exists('date_diff')) {
         public $i;
         public $s;
         public $invert;
-       
+
         public function format($format) {
             $format = str_replace('%R%y', ($this->invert ? '-' : '+') . $this->y, $format);
             $format = str_replace('%R%m', ($this->invert ? '-' : '+') . $this->m, $format);
@@ -66,14 +66,14 @@ if(!function_exists('date_diff')) {
             $format = str_replace('%R%h', ($this->invert ? '-' : '+') . $this->h, $format);
             $format = str_replace('%R%i', ($this->invert ? '-' : '+') . $this->i, $format);
             $format = str_replace('%R%s', ($this->invert ? '-' : '+') . $this->s, $format);
-           
+
             $format = str_replace('%y', $this->y, $format);
             $format = str_replace('%m', $this->m, $format);
             $format = str_replace('%d', $this->d, $format);
             $format = str_replace('%h', $this->h, $format);
             $format = str_replace('%i', $this->i, $format);
             $format = str_replace('%s', $this->s, $format);
-           
+
             return $format;
         }
     }
@@ -86,7 +86,7 @@ if(!function_exists('date_diff')) {
             $date2 = $tmp;
             $diff->invert = true;
         }
-       
+
         $diff->y = ((int) $date2->format('Y')) - ((int) $date1->format('Y'));
         $diff->m = ((int) $date2->format('n')) - ((int) $date1->format('n'));
         if($diff->m < 0) {
@@ -113,7 +113,7 @@ if(!function_exists('date_diff')) {
             $diff->i -= 1;
             $diff->s = $diff->s + 60;
         }
-       
+
         return $diff;
     }
 }

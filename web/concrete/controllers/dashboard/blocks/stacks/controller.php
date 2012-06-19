@@ -4,7 +4,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 Loader::controller('/dashboard/base');
 class DashboardBlocksStacksController extends DashboardBaseController {
 
-	
+
 	public function on_start() {
 		parent::on_start();
 		Loader::model('stack/list');
@@ -16,8 +16,8 @@ class DashboardBlocksStacksController extends DashboardBaseController {
 		$stm->filterByUserAdded();
 		$this->set('useradded', $stm->get());
 
-	}		
-	
+	}
+
 	public function add_stack() {
 		if (Loader::helper('validation/token')->validate('add_stack')) {
 			if (Loader::helper('validation/strings')->notempty($this->post('stackName')))  {
@@ -30,7 +30,7 @@ class DashboardBlocksStacksController extends DashboardBaseController {
 			$this->error->add(Loader::helper('validation/token')->getErrorMessage());
 		}
 	}
-	
+
 	public function stack_added() {
 		$this->set('message', t('Stack added successfully'));
 	}
@@ -38,7 +38,7 @@ class DashboardBlocksStacksController extends DashboardBaseController {
 	public function stack_deleted() {
 		$this->set('message', t('Stack deleted successfully'));
 	}
-	
+
 	public function delete($cID = false, $token = false) {
 		if (Loader::helper('validation/token')->validate('delete', $token)) {
 			$s = Stack::getByID($cID);
@@ -57,7 +57,7 @@ class DashboardBlocksStacksController extends DashboardBaseController {
 			$this->error->add(Loader::helper('validation/token')->getErrorMessage());
 		}
 	}
-	
+
 	public function view_details($cID) {
 		$s = Stack::getByID($cID);
 		if (is_object($s)) {
@@ -79,5 +79,5 @@ class DashboardBlocksStacksController extends DashboardBaseController {
 			throw new Exception(t('Invalid stack'));
 		}
 	}
-	
+
 }

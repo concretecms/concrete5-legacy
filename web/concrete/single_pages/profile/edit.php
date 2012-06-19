@@ -1,7 +1,7 @@
 <?php  defined('C5_EXECUTE') or die("Access Denied."); ?>
 <div id="ccm-profile-wrapper">
-    <?php  Loader::element('profile/sidebar', array('profile'=> $ui)); ?>    
-    <div id="ccm-profile-body">	
+    <?php  Loader::element('profile/sidebar', array('profile'=> $ui)); ?>
+    <div id="ccm-profile-body">
 
 		<?php  if (isset($error) && $error->has()) {
             $error->output();
@@ -13,13 +13,13 @@
             });
             </script>
         <?php  } ?>
-        
-        
+
+
         <h1 class="profilin"><?php echo t('Edit Profile')?></h1>
         <div class="ccm-form">
             <form method="post" action="<?php echo $this->action('save')?>" id="profile-edit-form" enctype="multipart/form-data">
-            <?php  $attribs = UserAttributeKey::getEditableInProfileList(); 
-            if(is_array($attribs) && count($attribs)) { 
+            <?php  $attribs = UserAttributeKey::getEditableInProfileList();
+            if(is_array($attribs) && count($attribs)) {
             ?>
                 <fieldset>
                 <div class="ccm-profile-attribute">
@@ -29,13 +29,13 @@
                 <?php  if(ENABLE_USER_TIMEZONES) { ?>
                     <div class="ccm-profile-attribute">
                         <?php echo  $form->label('uTimezone', t('Time Zone'))?> <span class="ccm-required">*</span><br/>
-                        <?php echo  $form->select('uTimezone', 
-							$date->getTimezones(), 
+                        <?php echo  $form->select('uTimezone',
+							$date->getTimezones(),
 							($ui->getUserTimezone()?$ui->getUserTimezone():date_default_timezone_get())
 					); ?>
                     </div>
- 				<?php  } ?>               
-                <?php 
+ 				<?php  } ?>
+                <?php
                 $af = Loader::helper('form/attribute');
                 $af->setAttributeObject($ui);
                 foreach($attribs as $ak) {
@@ -51,19 +51,19 @@
                 <div>
                     <?php echo $form->label('uPasswordNew', t('New Password'))?>
                     <?php echo $form->password('uPasswordNew')?>
-                </div>	
+                </div>
                 <div>
                     <?php echo $form->label('uPasswordNewConfirm', t('Confirm New Password'))?>
                     <?php echo $form->password('uPasswordNewConfirm')?>
-                </div>   
+                </div>
             </fieldset>
             <div class="spacer" style="margin-top:20px">&nbsp;</div>
             <?php echo $form->submit('save', t('Save'))?>
             </form>
             <div class="spacer">&nbsp;</div>
         </div>
-        
+
     </div>
-	
+
 	<div class="ccm-spacer"></div>
 </div>

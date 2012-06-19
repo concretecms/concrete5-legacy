@@ -28,8 +28,8 @@ class CollectionAttributeKey extends AttributeKey {
 
 	protected $searchIndexFieldDefinition = 'cID I(11) UNSIGNED NOTNULL DEFAULT 0 PRIMARY';
 
-	/** 
-	 * Returns an attribute value list of attributes and values (duh) which a collection version can store 
+	/**
+	 * Returns an attribute value list of attributes and values (duh) which a collection version can store
 	 * against its object.
 	 * @return AttributeValueList
 	 */
@@ -48,14 +48,14 @@ class CollectionAttributeKey extends AttributeKey {
 	}
 
 	public static function getColumnHeaderList() {
-		return parent::getList('collection', array('akIsColumnHeader' => 1));	
+		return parent::getList('collection', array('akIsColumnHeader' => 1));
 	}
 	public static function getSearchableIndexedList() {
-		return parent::getList('collection', array('akIsSearchableIndexed' => 1));	
+		return parent::getList('collection', array('akIsSearchableIndexed' => 1));
 	}
 
 	public static function getSearchableList() {
-		return parent::getList('collection', array('akIsSearchable' => 1));	
+		return parent::getList('collection', array('akIsSearchable' => 1));
 	}
 
 	public function getAttributeValue($avID, $method = 'getValue') {
@@ -68,7 +68,7 @@ class CollectionAttributeKey extends AttributeKey {
 			return $value;
 		}
 	}
-	
+
 	public static function getByID($akID) {
 		$cak = Cache::get('collection_attribute_key', $akID);
 		if (is_object($cak)) {
@@ -79,33 +79,33 @@ class CollectionAttributeKey extends AttributeKey {
 		$ak->load($akID);
 		if ($ak->getAttributeKeyID() > 0) {
 			Cache::set('collection_attribute_key', $akID, $ak);
-			return $ak;	
+			return $ak;
 		}
 	}
 
 	public static function getByHandle($akHandle) {
 		$db = Loader::db();
-		$q = "SELECT ak.akID 
+		$q = "SELECT ak.akID
 			FROM AttributeKeys ak
-			INNER JOIN AttributeKeyCategories akc ON ak.akCategoryID = akc.akCategoryID 
+			INNER JOIN AttributeKeyCategories akc ON ak.akCategoryID = akc.akCategoryID
 			WHERE ak.akHandle = ?
 			AND akc.akCategoryHandle = 'collection'";
 		$akID = $db->GetOne($q, array($akHandle));
 		$ak = CollectionAttributeKey::getByID($akID);
-		return $ak;	
+		return $ak;
 	}
-	
+
 	public static function getList() {
-		return parent::getList('collection');	
+		return parent::getList('collection');
 	}
-	
-	/** 
-	 * @access private 
+
+	/**
+	 * @access private
 	 */
 	public function get($akID) {
 		return CollectionAttributeKey::getByID($akID);
 	}
-	
+
 	protected function saveAttribute($nvc, $value = false) {
 		// We check a cID/cvID/akID combo, and if that particular combination has an attribute value ID that
 		// is NOT in use anywhere else on the same cID, cvID, akID combo, we use it (so we reuse IDs)
@@ -115,14 +115,14 @@ class CollectionAttributeKey extends AttributeKey {
 		$db = Loader::db();
 		$v = array($nvc->getCollectionID(), $nvc->getVersionID(), $this->getAttributeKeyID(), $av->getAttributeValueID());
 		$db->Replace('CollectionAttributeValues', array(
-			'cID' => $nvc->getCollectionID(), 
-			'cvID' => $nvc->getVersionID(), 
-			'akID' => $this->getAttributeKeyID(), 
+			'cID' => $nvc->getCollectionID(),
+			'cvID' => $nvc->getVersionID(),
+			'akID' => $this->getAttributeKeyID(),
 			'avID' => $av->getAttributeValueID()
 		), array('cID', 'cvID', 'akID'));
 		unset($av);
 	}
-	
+
 	public function add($at, $args, $pkg = false) {
 
 		// legacy check
@@ -133,11 +133,11 @@ class CollectionAttributeKey extends AttributeKey {
 			$args = array('akHandle' => $fargs[0], 'akName' => $fargs[1], 'akIsSearchable' => $fargs[2]);
 		}
 
-	
+
 		$ak = parent::add('collection', $at, $args, $pkg);
 		return $ak;
 	}
-	
+
 	public function delete() {
 		parent::delete();
 		$db = Loader::db();
@@ -156,7 +156,7 @@ class CollectionAttributeValue extends AttributeValue {
 	public function setCollection($cObj) {
 		$this->c = $cObj;
 	}
-	
+
 	public static function getByID($avID) {
 		$cav = new CollectionAttributeValue();
 		$cav->load($avID);
@@ -173,17 +173,17 @@ class CollectionAttributeValue extends AttributeValue {
 	public function delete() {
 		$db = Loader::db();
 		$db->Execute('delete from CollectionAttributeValues where cID = ? and cvID = ? and akID = ? and avID = ?', array(
-			$this->c->getCollectionID(), 
+			$this->c->getCollectionID(),
 			$this->c->getVersionID(),
 			$this->attributeKey->getAttributeKeyID(),
 			$this->getAttributeValueID()
 		));
-		
+
 		// Before we run delete() on the parent object, we make sure that attribute value isn't being referenced in the table anywhere else
 		$num = $db->GetOne('select count(avID) from CollectionAttributeValues where avID = ?', array($this->getAttributeValueID()));
 		if ($num < 1) {
 			parent::delete();
 		}
-		
+
 	}
 }

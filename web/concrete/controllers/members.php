@@ -1,19 +1,19 @@
 <?php
-defined('C5_EXECUTE') or die("Access Denied."); 
+defined('C5_EXECUTE') or die("Access Denied.");
 
-Loader::model('user_list');  
+Loader::model('user_list');
 
 class MembersController extends Controller {
 
 	public function view() {
-		$userList = new UserList(); 
-		$userList->sortBy('uName', 'asc'); 
+		$userList = new UserList();
+		$userList->sortBy('uName', 'asc');
 		$keywords = $this->get('keywords');
 		if ($keywords != '') {
 			$userList->filterByKeywords($keywords);
 		}
 		$users = $userList->getPage();
-		$this->set('userList', $userList);						
+		$this->set('userList', $userList);
 		$this->set('users', $users);
 		$this->set('attribs', UserAttributeKey::getMemberListList());
 		$this->set('keywords', htmlentities($keywords, ENT_COMPAT, APP_CHARSET));
@@ -21,5 +21,5 @@ class MembersController extends Controller {
 	}
 
 }
-	
+
 ?>

@@ -11,16 +11,16 @@ abstract class WorkflowPermissionKey extends PermissionKey {
 		$usersExcluded = array();
 		foreach($included as $inc) {
 			$pae = $inc->getAccessEntityObject();
-			$users = array_merge($users, $pae->getAccessEntityUsers());	
+			$users = array_merge($users, $pae->getAccessEntityUsers());
 		}
 		$users = array_unique($users);
 
 		foreach($excluded as $inc) {
 			$pae = $inc->getAccessEntityObject();
-			$usersExcluded = array_merge($usersExcluded, $pae->getAccessEntityUsers());	
+			$usersExcluded = array_merge($usersExcluded, $pae->getAccessEntityUsers());
 		}
 		$users = array_diff($users, $usersExcluded);
-		return $users;	
+		return $users;
 	}
 
 

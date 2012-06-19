@@ -1,19 +1,19 @@
 <?
 	defined('C5_EXECUTE') or die("Access Denied.");
-	
+
 	class CoreStackDisplayBlockController extends BlockController {
 
 		protected $btCacheBlockRecord = true;
 		protected $btTable = 'btCoreStackDisplay';
-		protected $btIsInternal = true;		
+		protected $btIsInternal = true;
 		public function getBlockTypeDescription() {
 			return t("Proxy block for stacks added through the UI.");
 		}
-		
+
 		public function getBlockTypeName() {
 			return t("Stack Display (Core)");
 		}
-		
+
 		public function getOriginalBlockID() {
 			return $this->bOriginalID;
 		}
@@ -22,17 +22,17 @@
 			$args = array();
 			$content = (string) $blockNode->stack;
 			$stack = Stack::getByName($content);
-			$args['stID'] = $stack->getCollectionID();			
-			return $args;		
+			$args['stID'] = $stack->getCollectionID();
+			return $args;
 		}
-		
-		public function export(SimpleXMLElement $blockNode) {			
+
+		public function export(SimpleXMLElement $blockNode) {
 			$stack = Stack::getByID($this->stID);
 			if (is_object($stack)) {
 				$blockNode->addChild('stack', '<![CDATA[' . $stack->getCollectionName() . ']]>');
 			}
 		}
-		
+
 		public function on_page_view() {
 			$stack = Stack::getByID($this->stID);
 			$p = new Permissions($stack);
@@ -47,15 +47,15 @@
 						}
 						$csr = $b->getBlockCustomStyleRule();
 						if (is_object($csr)) {
-							$styleHeader = '#'.$csr->getCustomStyleRuleCSSID(1).' {'. $csr->getCustomStyleRuleText(). "} \r\n";  
+							$styleHeader = '#'.$csr->getCustomStyleRuleCSSID(1).' {'. $csr->getCustomStyleRuleText(). "} \r\n";
 							$btc->addHeaderItem("<style type=\"text/css\"> \r\n".$styleHeader.'</style>', 'VIEW');
 						}
 						$btc->runTask('on_page_view', array($view));
 					}
-				}			
+				}
 			}
 		}
 
-		
-		
+
+
 	}

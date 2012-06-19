@@ -9,20 +9,20 @@ if (!$sh->canRead()) {
 
 if ($_POST['task'] == 'delete_pages') {
 	$json['error'] = false;
-	
+
 	if (is_array($_POST['cID'])) {
 		foreach($_POST['cID'] as $cID) {
 			$c = Page::getByID($cID);
 			$cp = new Permissions($c);
 			$children = $c->getNumChildren();
 			if ($children == 0 || $cp->canDeletePage()) {
-				if ($cp->canApprovePageVersions()) { 
+				if ($cp->canApprovePageVersions()) {
 					if (ENABLE_TRASH_CAN) {
 						$c->moveToTrash();
 					} else {
 						$c->delete();
 					}
-				} else { 
+				} else {
 					$pkr = new DeletePagePageWorkflowRequest();
 					$pkr->setRequestedPage($c);
 					$pkr->trigger();
@@ -50,7 +50,7 @@ if (is_array($_REQUEST['cID'])) {
 }
 
 $pcnt = 0;
-foreach($pages as $c) { 
+foreach($pages as $c) {
 	$cp = new Permissions($c);
 	if ($cp->canDeletePage()) {
 		$pcnt++;
@@ -77,14 +77,14 @@ $searchInstance = Loader::helper('text')->entities($_REQUEST['searchInstance']);
 		<th><?=t('Date Added')?></th>
 		<th><?=t('Author')?></th>
 	</tr>
-	
-	<? foreach($pages as $c) { 
+
+	<? foreach($pages as $c) {
 		$cp = new Permissions($c);
 		$c->loadVersionObject();
 		if ($cp->canDeletePage()) { ?>
-		
-		<?=$form->hidden('cID[]', $c->getCollectionID())?>		
-		
+
+		<?=$form->hidden('cID[]', $c->getCollectionID())?>
+
 		<tr>
 			<td class="ccm-page-list-name"><?=$c->getCollectionName()?></td>
 			<td><?=$c->getCollectionTypeName()?></td>
@@ -95,20 +95,20 @@ $searchInstance = Loader::helper('text')->entities($_REQUEST['searchInstance']);
 					print $ui->getUserName();
 				}
 			}?></td>
-		
+
 		</tr>
-		
+
 		<? }  ?>
 	</table>
 	</form>
 	<div class="dialog-buttons">
 	<? $ih = Loader::helper('concrete/interface')?>
-	<?=$ih->button_js(t('Cancel'), 'jQuery.fn.dialog.closeTop()', 'left', 'btn')?>	
+	<?=$ih->button_js(t('Cancel'), 'jQuery.fn.dialog.closeTop()', 'left', 'btn')?>
 	<?=$ih->button_js(t('Delete'), 'ccm_sitemapDeletePages(\'' . $searchInstance . '\')', 'right', 'btn error')?>
-	</div>		
-		
+	</div>
+
 	<?
-	
+
 }
 ?>
 </div>

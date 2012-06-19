@@ -12,7 +12,7 @@ if (!$tp->canInstallPackages()) { ?>
 	<div class="ccm-pane-body-inner">
 		<? Loader::element('dashboard/marketplace_connect_failed')?>
 	</div>
-<? } else {	
+<? } else {
 
 
 $cnt = Loader::controller('/dashboard/extend/add-ons');
@@ -30,7 +30,7 @@ $bu = REL_DIR_FILES_TOOLS_REQUIRED . '/marketplace/add-ons';
 	</div>
 	<div class="ccm-pane-body" style="margin-left: -10px; margin-right: -10px">
 		<?=Loader::element('marketplace/results', array('type' => 'addons', 'items' => $items));?>
-	</div>	
+	</div>
 	<div class="ccm-pane-dialog-pagination"><?=$list->displayPagingV2($bu)?></div>
 
 	<script type="text/javascript">

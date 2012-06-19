@@ -1,7 +1,7 @@
 <? defined('C5_EXECUTE') or die("Access Denied."); ?>
 <div id="ccm-profile-wrapper">
-   <? Loader::element('profile/sidebar', array('profile'=> $profile)); ?>    
-    <div id="ccm-profile-body">	
+   <? Loader::element('profile/sidebar', array('profile'=> $profile)); ?>
+    <div id="ccm-profile-body">
         <h1><?=t('My Friends') ?></h1>
         <?
 		$friendsData = UsersFriends::getUsersFriendsData( $profile->getUserID() );
@@ -9,8 +9,8 @@
 			<div style="padding:16px 0px;">
 				<?=t('No results found.')?>
 			</div>
-		<? 
-		}else foreach($friendsData as $friendsData){ 
+		<?
+		}else foreach($friendsData as $friendsData){
 			$friendUID=$friendsData['friendUID'];
 			$friendUI = UserInfo::getById( $friendUID );
 			if (!is_object($friendUI)) { ?>
@@ -23,8 +23,8 @@
 					<?=t('Unknown User')?>
 				</div>
 				<div class="ccm-spacer"></div>
-			</div>			
-			
+			</div>
+
 			<? } else { ?>
 			<div class="ccm-users-friend" style="margin-bottom:16px;">
 				<div style="float:left; width:100px;">
@@ -37,10 +37,10 @@
 					</div>
 				</div>
 				<div class="ccm-spacer"></div>
-			</div>			
+			</div>
 			<? } ?>
-		<? } ?>	
+		<? } ?>
     </div>
-	
+
 	<div class="ccm-spacer"></div>
 </div>

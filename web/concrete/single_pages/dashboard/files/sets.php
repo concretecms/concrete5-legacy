@@ -9,7 +9,7 @@
 		<?=$validation_token->output('file_sets_edit');?>
 
 	<div class="ccm-pane-body">
-	
+
 	<div class="clearfix">
 	<ul class="tabs">
 		<li class="active"><a href="javascript:void(0)" onclick="$('.tabs').find('li.active').removeClass('active');$(this).parent().addClass('active');$('.ccm-tab').hide();$('#ccm-tab-details').show()" ><?=t('Details')?></a></li>
@@ -24,11 +24,11 @@
 
 		$delConfirmJS = t('Are you sure you want to permanently remove this file set?');
 		?>
-		
+
 		<script type="text/javascript">
 		deleteFileSet = function() {
-			if (confirm('<?=$delConfirmJS?>')) { 
-				location.href = "<?=$this->url('/dashboard/files/sets', 'delete', $fs->getFileSetID(), Loader::helper('validation/token')->generate('delete_file_set'))?>";				
+			if (confirm('<?=$delConfirmJS?>')) {
+				location.href = "<?=$this->url('/dashboard/files/sets', 'delete', $fs->getFileSetID(), Loader::helper('validation/token')->generate('delete_file_set'))?>";
 			}
 		}
 		</script>
@@ -36,17 +36,17 @@
 		<div class="clearfix">
 		<?=$form->label('file_set_name', t('Name'))?>
 		<div class="input">
-			<?=$form->text('file_set_name',$fs->fsName, array('class' => 'span5'));?>	
+			<?=$form->text('file_set_name',$fs->fsName, array('class' => 'span5'));?>
 		</div>
 		</div>
 
-		<? if (PERMISSIONS_MODEL != 'simple') { 
-		
+		<? if (PERMISSIONS_MODEL != 'simple') {
+
 		$fsp = new Permissions($fs);
 		if ($fsp->canEditFileSetPermissions()) {
 
 		?>
-		
+
 		<div class="clearfix">
 		<?=$form->label('fsOverrideGlobalPermissions', t('Custom Permissions'))?>
 		<div class="input">
@@ -55,24 +55,24 @@
 		</ul>
 		</div>
 		</div>
-		
-		
+
+
 
 		<div id="ccm-file-set-permissions-wrapper" <? if (!$fs->overrideGlobalPermissions()) { ?> style="display: none" <? } ?>>
 
 		<? Loader::element('permission/lists/file_set', array("fs" => $fs)); ?>
-		
+
 		</div>
-		<? } 
-		
+		<? }
+
 		}
 		?>
-		
+
 
 		<?php
 			echo $form->hidden('fsID',$fs->getFileSetID());
 		?>
-		
+
 		</div>
 
 	<div style="display: none" class="ccm-tab" id="ccm-tab-files">
@@ -83,27 +83,27 @@
 		$fl->sortByFileSetDisplayOrder();
 		$files = $fl->get();
 		if (count($files) > 0) { ?>
-		
-		
+
+
 		<p><?=t('Click and drag to reorder the files in this set. New files added to this set will automatically be appended to the end.')?></p>
 		<div class="ccm-spacer">&nbsp;</div>
-		
+
 		<ul class="ccm-file-set-file-list">
-		
+
 		<?
 
 		foreach($files as $f) { ?>
-			
+
 		<li id="fID_<?=$f->getFileID()?>">
 			<div>
-				<?=$f->getThumbnail(1)?>				
+				<?=$f->getThumbnail(1)?>
 				<span style="word-wrap: break-word"><?=$f->getTitle()?></span>
 			</div>
 		</li>
-			
+
 		<? } ?>
 
-			
+
 		</ul>
 		<? } else { ?>
 			<p><?=t('There are no files in this set.')?></p>
@@ -120,26 +120,26 @@
 	<?=Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper(false)?>
 
 	</form>
-	
-	
+
+
 	<script type="text/javascript">
-	
+
 	ccm_saveFileSetDisplayOrder = function() {
 		var fslist = $('.ccm-file-set-file-list').sortable('serialize');
 		$('input[name=fsDisplayOrder]').val(fslist);
 		return true;
 	}
-	
+
 	$(function() {
 		$(".ccm-file-set-file-list").sortable({
 			cursor: 'move',
 			opacity: 0.5
 		});
-		
+
 	});
-	
+
 	</script>
-	
+
 	<style type="text/css">
 	.ccm-file-set-file-list:hover {cursor: move}
 	</style>
@@ -150,7 +150,7 @@
 	<?=Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('File Sets'), false, 'span12 offset2', false)?>
 	<div class="ccm-pane-options">
 	<div class="ccm-pane-options-permanent-search">
-		
+
 		<form id="ccm-file-set-search" method="get" action="<?=$this->url('/dashboard/files/sets')?>">
 
 		<div class="span5">
@@ -169,7 +169,7 @@
 		</select>
 		</div>
 		</div>
-				
+
 		<input type="submit" class="btn" value="<?=t('Search')?>" />
 		<input type="hidden" name="group_submit_search" value="1" />
 		</form>
@@ -181,29 +181,29 @@
 		<a href="<?=View::url('/dashboard/files/add_set')?>" style="float: right;z-index:999;position:relative;top:-5px" class="btn primary"><?=t("Add File Set")?></a>
 
 		<?=$fsl->displaySummary()?>
-	
+
 		<? if (count($fileSets) > 0) { ?>
-			
+
 			<style type="text/css">
 				div.ccm-paging-top {padding-bottom:10px;}
 			</style>
-		
+
 		<? foreach ($fileSets as $fs) { ?>
-		
+
 			<div class="ccm-group">
 				<a class="ccm-group-inner" href="<?=$this->url('/dashboard/files/sets/', 'view_detail', $fs->getFileSetID())?>" style="background-image: url(<?=ASSETS_URL_IMAGES?>/icons/group.png)"><?=$fs->getFileSetName()?></a>
 			</div>
-		
-		
+
+
 		<? }
-		
-		
+
+
 		} else { ?>
-		
+
 			<p><?=t('No file sets found.')?></p>
-		
+
 		<? } ?>
-	
+
 	</div>
 	<? if ($fsl->requiresPaging()) { ?>
 		<div class="ccm-pane-footer">
@@ -211,25 +211,25 @@
 		</div>
 	<? } ?>
 	<?=Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper($fsl->requiresPaging())?>
-	
+
 	<script type="text/javascript">
-		var editFileSet = function(fsID){	
+		var editFileSet = function(fsID){
 			//set id
-			$('#fsID').attr('value',fsID);		
+			$('#fsID').attr('value',fsID);
 			$('#file-sets-edit-or-delete-action').attr('value','edit-form');
 			//submit form
-			$("#file-sets-edit-or-delete").get(0).submit();		
+			$("#file-sets-edit-or-delete").get(0).submit();
 		}
-		
+
 		var deleteFileSet = function(fsID){
 			//set id
-			$('#fsID').attr('value',fsID);		
-			$('#file-sets-edit-or-delete-action').attr('value','delete');		
+			$('#fsID').attr('value',fsID);
+			$('#file-sets-edit-or-delete-action').attr('value','delete');
 			if(confirm("<?=t('Are you sure you want to delete this file set?')?>")){
 				$("#file-sets-edit-or-delete").get(0).submit();
 			}
 		}
-		
-		
+
+
 	</script>
-<?php } ?>	
+<?php } ?>

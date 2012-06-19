@@ -22,7 +22,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
  *
  */
 class FileTypeList {
-	
+
 	public function getInstance() {
 		static $instance;
 		if (!isset($instance)) {
@@ -31,10 +31,10 @@ class FileTypeList {
 		}
 		return $instance;
 	}
-	
+
 	private $types = array();
 	private $importerAttributes = array();
-	
+
 	public function define($extension, $name, $type, $customImporter = false, $inlineFileViewer = false, $editor = false, $pkgHandle = false) {
 		$ext = explode(',', $extension);
 		foreach($ext as $e) {
@@ -49,27 +49,27 @@ class FileTypeList {
 			$this->types[$e] = $ft;
 		}
 	}
-	
+
 	public function defineImporterAttribute($akHandle, $akName, $akType, $akIsEditable) {
 		$obj = new stdClass;
 		$obj->akHandle = $akHandle;
 		$obj->akName = $akName;
 		$obj->akType = $akType;
-		$obj->akIsEditable = $akIsEditable;		
+		$obj->akIsEditable = $akIsEditable;
 		$this->importerAttributes[$akHandle] = $obj;
 	}
-	
+
 	public function getImporterAttribute($akHandle) {
 		$ftl = FileTypeList::getInstance();
 		return $ftl->importerAttributes[$akHandle];
 	}
-		
-	/** 
+
+	/**
 	 * Can take an extension or a filename
 	 * Returns any registered information we have for the particular file type, based on its registration
 	 */
 	public static function getType($ext) {
-		$ftl = FileTypeList::getInstance();	
+		$ftl = FileTypeList::getInstance();
 		if (strpos($ext, '.') !== false) {
 			// filename
 			$h = Loader::helper('file');
@@ -83,8 +83,8 @@ class FileTypeList {
 			return $ft;
 		}
 	}
-	
-		
+
+
 }
 
 class FileType {
@@ -97,22 +97,22 @@ class FileType {
 	const T_DOCUMENT = 5;
 	const T_APPLICATION = 6;
 	const T_UNKNOWN = 99;
-	
+
 	public $pkgHandle = false;
-	
+
 	public function __construct() {
 		$this->type = FileType::T_UNKNOWN;
 		$this->name = $this->mapGenericTypeText($this->type);
 	}
-	
+
 	public function getPackageHandle() {return $this->pkgHandle;}
 	public function getName() {return $this->name;}
 	public function getExtension() {return $this->extension;}
 	public function getCustomImporter() {return $this->customImporter;}
 	public function getGenericType() {return $this->type;}
-	public function getView() {return $this->view;}	
+	public function getView() {return $this->view;}
 	public function getEditor() { return $this->editor;}
-	
+
 	private function mapGenericTypeText($type) {
 		switch($type) {
 			case FileType::T_IMAGE:
@@ -139,15 +139,15 @@ class FileType {
 
 		}
 	}
-	
+
 	public function getGenericTypeText($type) {
 		if ($type > 0) {
 			return FileType::mapGenericTypeText($type);
 		} else if (!empty($this->type)) {
-			return FileType::mapGenericTypeText($this->type);		
+			return FileType::mapGenericTypeText($this->type);
 		}
 	}
-	
+
 	public function getCustomInspector() {
 		$script = 'file/types/' . $this->getCustomImporter();
 		if ($this->pkgHandle != false) {
@@ -159,8 +159,8 @@ class FileType {
 		$cl = new $class;
 		return $cl;
 	}
-	
-	/** 
+
+	/**
 	 * Returns a thumbnail for this type of file
 	 */
 	public function getThumbnail($level, $fullImageTag = true) {
@@ -177,7 +177,7 @@ class FileType {
 			return $url;
 		}
 	}
-	
-		
+
+
 
 }

@@ -8,29 +8,29 @@ class DashboardSystemBasicsIconsController extends DashboardBaseController {
 	}
 
 	public function favicon_saved() {
-		$this->set('message', t("Icons updated successfully."));	
+		$this->set('message', t("Icons updated successfully."));
 		$this->view();
 	}
 
 	public function favicon_removed() {
-		$this->set('message', t("Icon removed successfully."));	
+		$this->set('message', t("Icon removed successfully."));
 		$this->view();
 	}
 
 	public function iphone_icon_saved() {
-		$this->set('message', t("iPhone icon updated successfully."));	
+		$this->set('message', t("iPhone icon updated successfully."));
 		$this->view();
 	}
 
 	public function iphone_icon_removed() {
-		$this->set('message', t("iPhone icon removed successfully."));	
+		$this->set('message', t("iPhone icon removed successfully."));
 		$this->view();
 	}
 
 	function update_iphone_thumbnail(){
 		Loader::library('file/importer');
-		if ($this->token->validate("update_iphone_thumbnail")) { 
-		
+		if ($this->token->validate("update_iphone_thumbnail")) {
+
 			if(intval($this->post('remove_icon'))==1){
 				Config::save('IPHONE_HOME_SCREEN_THUMBNAIL_FID',0);
 					$this->redirect('/dashboard/system/basics/icons/', 'iphone_icon_removed');
@@ -45,26 +45,26 @@ class DashboardSystemBasicsIconsController extends DashboardBaseController {
 						case FileImporter::E_FILE_INVALID:
 							$this->error->add(t('Invalid file.'));
 							break;
-						
+
 					}
 				} else {
-				
+
 					Config::save('IPHONE_HOME_SCREEN_THUMBNAIL_FID', $resp->getFileID());
-					$filepath=$resp->getPath();  
+					$filepath=$resp->getPath();
 					$this->redirect('/dashboard/system/basics/icons/', 'iphone_icon_saved');
 
 				}
-			}		
-			
+			}
+
 		}else{
 			$this->set('error', array($this->token->getErrorMessage()));
 		}
 	}
-	
+
 	function update_favicon(){
 		Loader::library('file/importer');
-		if ($this->token->validate("update_favicon")) { 
-		
+		if ($this->token->validate("update_favicon")) {
+
 			if(intval($this->post('remove_favicon'))==1){
 				Config::save('FAVICON_FID',0);
 					$this->redirect('/dashboard/system/basics/icons/', 'favicon_removed');
@@ -79,18 +79,18 @@ class DashboardSystemBasicsIconsController extends DashboardBaseController {
 						case FileImporter::E_FILE_INVALID:
 							$this->error->add(t('Invalid file.'));
 							break;
-						
+
 					}
 				} else {
-				
+
 					Config::save('FAVICON_FID', $resp->getFileID());
-					$filepath=$resp->getPath();  
+					$filepath=$resp->getPath();
 					//@copy($filepath, DIR_BASE.'/favicon.ico');
 					$this->redirect('/dashboard/system/basics/icons/', 'favicon_saved');
 
 				}
-			}		
-			
+			}
+
 		}else{
 			$this->set('error', array($this->token->getErrorMessage()));
 		}

@@ -1,4 +1,4 @@
-<? defined('C5_EXECUTE') or die("Access Denied."); ?> 
+<? defined('C5_EXECUTE') or die("Access Denied."); ?>
 <?
 Loader::model('file_set');
 
@@ -41,20 +41,20 @@ foreach($t1 as $value) {
 ?>
 
 <? $form = Loader::helper('form'); ?>
-	
+
 	<div id="ccm-<?=$searchInstance?>-search-field-base-elements" style="display: none">
-	
+
 		<span class="ccm-search-option" search-field="size">
 		<?=$form->text('size_from', array('style' => 'width: 30px'))?>
 		<?=t('to')?>
 		<?=$form->text('size_to', array('style' => 'width: 30px'))?>
 		KB
 		</span>
-	
+
 		<span class="ccm-search-option"  search-field="type">
 		<?=$form->select('type', $types)?>
 		</span>
-	
+
 		<span class="ccm-search-option"  search-field="extension">
 		<?=$form->select('extension', $extensions)?>
 		</span>
@@ -72,11 +72,11 @@ foreach($t1 as $value) {
 		?>
 		</div>
 		</span>
-		
-		<? foreach($searchFieldAttributes as $sfa) { 
+
+		<? foreach($searchFieldAttributes as $sfa) {
 			$sfa->render('search'); ?>
 		<? } ?>
-		
+
 	</div>
 
 	<form method="get" id="ccm-<?=$searchInstance?>-advanced-search" action="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/files/search_results">
@@ -88,25 +88,25 @@ foreach($t1 as $value) {
 
 	<input type="hidden" name="submit_search" value="1" />
 	<?
-		print $form->hidden('fType'); 
-		print $form->hidden('fExtension'); 
-		print $form->hidden('searchType', $searchType); 
-		print $form->hidden('ccm_order_dir', $searchRequest['ccm_order_dir']); 
-		print $form->hidden('ccm_order_by', $searchRequest['ccm_order_by']); 
-		print $form->hidden('fileSelector', $fileSelector); 
-	?>	
+		print $form->hidden('fType');
+		print $form->hidden('fExtension');
+		print $form->hidden('searchType', $searchType);
+		print $form->hidden('ccm_order_dir', $searchRequest['ccm_order_dir']);
+		print $form->hidden('ccm_order_by', $searchRequest['ccm_order_by']);
+		print $form->hidden('fileSelector', $fileSelector);
+	?>
 	<input type="hidden" name="searchInstance" value="<?=$searchInstance?>" />
 	<div class="ccm-pane-options-permanent-search">
 
 	<?
 		$s2 = FileSet::getSavedSearches();
-		if (count($s2) > 0) { 
+		if (count($s2) > 0) {
 			if ($_REQUEST['fssID'] < 1) {
 				$savedSearches = array('' => t('** Select a saved search.'));
 			} else {
 				$savedSearches = array('' => t('** None (Exit Saved Search)'));
 			}
-			
+
 			foreach($s2 as $fss) {
 				$savedSearches[$fss->getFileSetID()] = $fss->getFileSetName();
 			}
@@ -120,7 +120,7 @@ foreach($t1 as $value) {
 				<? } ?>
 			</div>
 			</div>
-			
+
 		<? } ?>
 
 		<div class="span4">
@@ -129,7 +129,7 @@ foreach($t1 as $value) {
 			<?=$form->text('fKeywords', $searchRequest['fKeywords'], array('style'=> 'width: 130px')); ?>
 		</div>
 		</div>
-		
+
 		<div id="ccm-<?=$searchInstance?>-sets-search-wrapper">
 		<?
 		$s1 = FileSet::getMySets();
@@ -150,7 +150,7 @@ foreach($t1 as $value) {
 		</div>
 		<? } ?>
 		</div>
-		
+
 		<div class="span5">
 		<?=$form->label('numResults', t('# Per Page'))?>
 		<div class="input">
@@ -168,9 +168,9 @@ foreach($t1 as $value) {
 
 		</div>
 
-		
+
 	</div>
-	
+
 	<a href="javascript:void(0)" onclick="ccm_paneToggleOptions(this)" class="ccm-icon-option-<? if (is_array($searchRequest['selectedSearchField']) && count($searchRequest['selectedSearchField']) > 1) { ?>open<? } else { ?>closed<? } ?>"><?=t('Advanced Search')?></a>
 	<div class="clearfix ccm-pane-options-content" <? if (is_array($searchRequest['selectedSearchField']) && count($searchRequest['selectedSearchField']) > 1) { ?>style="display: block" <? } ?>>
 		<br/>
@@ -186,19 +186,19 @@ foreach($t1 as $value) {
 			<td width="100%">
 			<input type="hidden" value="" class="ccm-<?=$searchInstance?>-selected-field" name="selectedSearchField[]" />
 			<div class="ccm-selected-field-content">
-				<?=t('Select Search Field.')?>				
+				<?=t('Select Search Field.')?>
 			</div></td>
 			<? if ($_REQUEST['fssID'] < 1) { ?><td><a href="javascript:void(0)" class="ccm-search-remove-option"><img src="<?=ASSETS_URL_IMAGES?>/icons/remove_minus.png" width="16" height="16" /></a></td><? } ?>
 		</tr>
-		<? 
+		<?
 		$i = 1;
-		if (is_array($searchRequest['selectedSearchField'])) { 
-			foreach($searchRequest['selectedSearchField'] as $req) { 
+		if (is_array($searchRequest['selectedSearchField'])) {
+			foreach($searchRequest['selectedSearchField'] as $req) {
 				if ($req == '') {
 					continue;
 				}
 				?>
-				
+
 				<tr class="ccm-search-field ccm-search-request-field-set" ccm-search-type="<?=$req?>" id="ccm-<?=$searchInstance?>-search-field-set<?=$i?>">
 				<td><?=$form->select('searchField' . $i, $searchFields, $req); ?></td>
 				<td width="100%"><input type="hidden" value="<?=$req?>" class="ccm-<?=$searchInstance?>-selected-field" name="selectedSearchField[]" />
@@ -211,19 +211,19 @@ foreach($t1 as $value) {
 						KB
 						</span>
 					<? } ?>
-				
+
 					<? if ($req == 'type') { ?>
 						<span class="ccm-search-option"  search-field="type">
 						<?=$form->select('type', $types, $searchRequest['type'])?>
 						</span>
 					<? } ?>
-					
+
 					<? if ($req == 'extension') { ?>
 						<span class="ccm-search-option"  search-field="extension">
 						<?=$form->select('extension', $extensions, $searchRequest['extension'])?>
 						</span>
 					<? } ?>
-					
+
 					<? if ($req == 'date_added') { ?>
 						<span class="ccm-search-option ccm-search-option-type-date_time"  search-field="date_added">
 						<?=$form->text('date_from', $searchRequest['date_from'], array('style' => 'width: 86px'))?>
@@ -241,23 +241,23 @@ foreach($t1 as $value) {
 					</div>
 					</span>
 					<? } ?>
-					
-					<? foreach($searchFieldAttributes as $sfa) { 
+
+					<? foreach($searchFieldAttributes as $sfa) {
 						if ($sfa->getAttributeKeyID() == $req) {
 							$at = $sfa->getAttributeType();
 							$at->controller->setRequestArray($searchRequest);
 							$at->render('search', $sfa);
 						}
 					} ?>
-					
+
 					</div>
 					</td>
 					<? if ($_REQUEST['fssID'] < 1) { ?><td><a href="javascript:void(0)" class="ccm-search-remove-option"><img src="<?=ASSETS_URL_IMAGES?>/icons/remove_minus.png" width="16" height="16" /></a></td><? } ?>
 					</tr>
-				<? 
+				<?
 					$i++;
-				} 
-				
+				}
+
 				} ?>
 		</table>
 
@@ -269,17 +269,17 @@ foreach($t1 as $value) {
 		<? } ?>
 
 	</div>
-</form>	
+</form>
 
 <script type="text/javascript">$(function() {
 	$('a#ccm-<?=$searchInstance?>-launch-save-search').dialog();
 	$('a.ccm-file-set-delete-saved-search').dialog();
-	
+
 	<? if ($_REQUEST['fssID'] > 0) { ?>
 	$('#ccm-<?=$searchInstance?>-advanced-search input, #ccm-<?=$searchInstance?>-advanced-search select, #ccm-<?=$searchInstance?>-advanced-search textarea').attr('disabled',true);
 	$('#ccm-<?=$searchInstance?>-advanced-search select[name=fssID]').attr('disabled', false);
 	<? } ?>
-	
-	$(".chosen-select").chosen();	
+
+	$(".chosen-select").chosen();
 
 });</script>

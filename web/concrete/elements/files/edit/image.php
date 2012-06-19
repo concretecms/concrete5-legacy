@@ -29,7 +29,7 @@ if (!$fp->canEditFileContents()) {
 		<a href="javascript:void(0)" id="ccm-file-manager-rotate-btn" class="btn" style="position: absolute; top: -10px; right: -50px">&crarr;</a>
 		<div id="ccm-file-manager-rotate"></div>
 	</div>
-	
+
 </div>
 
 </form>
@@ -43,8 +43,8 @@ if (!$fp->canEditFileContents()) {
 	<div class="PostContent">
 		  <div class="boxes">
 			  <div id="crop_container"></div>
-			  <div class="cleared"></div> 
-		  </div>  
+			  <div class="cleared"></div>
+		  </div>
 	</div>
 
 </div>
@@ -53,7 +53,7 @@ if (!$fp->canEditFileContents()) {
 
 
     <script type="text/javascript">
-    
+
     $(document).ready(function(){
        var iw = <?=$f->getAttribute('width')?>;
        var ih = <?=$f->getAttribute('height')?>;
@@ -64,7 +64,7 @@ if (!$fp->canEditFileContents()) {
 	   } else {
 	   	w = w - 20;
 	   }
-	   
+
 	   if (ih > (h + 100)) {
 	   	h = ih;
 	   } else {
@@ -83,7 +83,7 @@ if (!$fp->canEditFileContents()) {
             rotationElement: '#ccm-file-manager-rotate',
             zoomElement: '#ccm-file-manager-zoom-slider'
             },
-            selector:{        
+            selector:{
               centered:true,
               borderColor:'blue',
               <? if ($_REQUEST['maxWidth']) { ?>
@@ -123,12 +123,12 @@ if (!$fp->canEditFileContents()) {
         }
         if ($_REQUEST['minHeight'] > $selectorStartHeight) {
         	$selectorStartHeight = $_REQUEST['minHeight'];
-        }        
+        }
         ?>
-        
+
         ssw = <?=$selectorStartWidth?>;
         ssh = <?=$selectorStartHeight?>;
-        
+
        if (w < ssw) {
        	ssw = w;
        	}
@@ -136,7 +136,7 @@ if (!$fp->canEditFileContents()) {
        		ssh = h;
        	}
        cropzoom.setSelector(0,0, ssw , ssh,true);
-       
+
        $('#ccm-file-manager-rotate-btn').click(function() {
         var slideVal = $('#rotationSlider').slider('value');
 		var newVal;
@@ -151,8 +151,8 @@ if (!$fp->canEditFileContents()) {
 		}
        	$('#rotationSlider').slider('value', newVal);
        });
-       
-       $('#ccm-file-manager-edit-save').click(function(){ 
+
+       $('#ccm-file-manager-edit-save').click(function(){
        		jQuery.fn.dialog.showLoader();
             cropzoom.send('<?=REL_DIR_FILES_TOOLS_REQUIRED?>/files/image/process','POST',{
             	'fID': <?=$f->getFileID()?>,
@@ -162,9 +162,9 @@ if (!$fp->canEditFileContents()) {
 				highlight.push(<?=$f->getFileID()?>);
 				jQuery.fn.dialog.closeTop();
 				ccm_alRefresh(highlight, '<?=Loader::helper('text')->entities($_REQUEST['searchInstance'])?>');
-            });            
+            });
         });
-       
+
        $('#ccm-file-manager-edit-restore').click(function(){
             cropzoom.restore();
         })

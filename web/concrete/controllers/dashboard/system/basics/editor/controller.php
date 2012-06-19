@@ -4,12 +4,12 @@ Loader::controller('/dashboard/base');
 
 class DashboardSystemBasicsEditorController extends DashboardBaseController {
 
-	public $helpers = array('form'); 
+	public $helpers = array('form');
 
 	public function access_task_permissions() {
-		$this->addHeaderItem(Loader::helper('html')->javascript('ccm.dashboard.permissions.js'));	
+		$this->addHeaderItem(Loader::helper('html')->javascript('ccm.dashboard.permissions.js'));
 	}
-	
+
 	protected function getRewriteRules() {
 		$rewriteRules = "<IfModule mod_rewrite.c>\n";
 		$rewriteRules .= "RewriteEngine On\n";
@@ -23,33 +23,33 @@ class DashboardSystemBasicsEditorController extends DashboardBaseController {
 	}
 
 	public function view($updated = false, $aux = false) {
-		$u = new User();	
-		
+		$u = new User();
+
 		$txtEditorMode = Config::get('CONTENTS_TXT_EDITOR_MODE');
-		$this->set( 'txtEditorMode', $txtEditorMode ); 
+		$this->set( 'txtEditorMode', $txtEditorMode );
 		$this->set('rewriteRules', $this->getRewriteRules());
 		$textEditorWidth = Config::get('CONTENTS_TXT_EDITOR_WIDTH');
 		$this->set( 'textEditorWidth', $textEditorWidth );
 		$textEditorHeight = Config::get('CONTENTS_TXT_EDITOR_HEIGHT');
-		$this->set( 'textEditorHeight', $textEditorHeight );		
-				
+		$this->set( 'textEditorHeight', $textEditorHeight );
+
 		$txtEditorCstmCode=Config::get('CONTENTS_TXT_EDITOR_CUSTOM_CODE');
 		if( !strlen($txtEditorCstmCode) || $txtEditorMode!='CUSTOM' )
 			$txtEditorCstmCode=$this->get_txt_editor_default();
 		$this->set('txtEditorCstmCode', $txtEditorCstmCode );
-		
+
 		if ($updated) {
 			switch($updated) {
 				case "txt_editor_config_saved":
 					$this->set('message', t('Content text editor settings saved.'));
-					break;		
+					break;
 			}
 		}
-	
+
 	}
-	
+
 	function txt_editor_config(){
-		if (!$this->token->validate("txt_editor_config")) { 
+		if (!$this->token->validate("txt_editor_config")) {
 			$this->error->add($this->token->getErrorMessage());
 		}
 
@@ -61,29 +61,29 @@ class DashboardSystemBasicsEditorController extends DashboardBaseController {
 		if( $textEditorHeight<100 ) {
 			$this->error->add(t('The editor must be at least 100 pixels tall.'));
 		}
-		
-		if (!$this->error->has()) { 
+
+		if (!$this->error->has()) {
  			Config::save('CONTENTS_TXT_EDITOR_MODE', $this->post('CONTENTS_TXT_EDITOR_MODE') );
 			Config::save( 'CONTENTS_TXT_EDITOR_WIDTH', $textEditorWidth );
-			Config::save( 'CONTENTS_TXT_EDITOR_HEIGHT', $textEditorHeight );	
-			
+			Config::save( 'CONTENTS_TXT_EDITOR_HEIGHT', $textEditorHeight );
+
 			$db = Loader::db();
 			$values=array( $textEditorWidth, $textEditorHeight );
 			$db->query( 'UPDATE BlockTypes SET btInterfaceWidth=?, btInterfaceHeight=? where btHandle = "content"', $values );
-			
+
 			if($this->post('CONTENTS_TXT_EDITOR_MODE')=='CUSTOM')
 				Config::save('CONTENTS_TXT_EDITOR_CUSTOM_CODE', $this->post('CONTENTS_TXT_EDITOR_CUSTOM_CODE') );
- 			$this->redirect('/dashboard/system/basics/editor', 'txt_editor_config_saved'); 
+ 			$this->redirect('/dashboard/system/basics/editor', 'txt_editor_config_saved');
 		}
 	}
-	
-	function get_txt_editor_default(){ 
+
+	function get_txt_editor_default(){
 		ob_start();
 		?>
-theme : "concrete", 
+theme : "concrete",
 plugins: "inlinepopups,spellchecker,safari,advlink",
 editor_selector : "ccm-advanced-editor",
-spellchecker_languages : "+English=en",	
+spellchecker_languages : "+English=en",
 theme_concrete_buttons1 : "bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,hr,|,styleselect,formatselect,fontsizeselect",
 theme_concrete_buttons2 : "bullist,numlist,|,outdent,indent,|,undo,redo,|,link,unlink,anchor,image,cleanup,help,code,forecolor",
 theme_concrete_blockformats : "p,address,pre,h1,h2,h3,div,blockquote,cite",
@@ -102,12 +102,12 @@ theme_advanced_buttons1 : "cut,copy,paste,pastetext,pasteword,|,undo,redo,|,styl
 theme_advanced_buttons2 : "bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,bullist,numlist,|,outdent,indent,blockquote,|,link,unlink,anchor,|,forecolor,backcolor,|,image,charmap,emotions",
 theme_advanced_fonts : "Andale Mono=andale mono,times;Arial=arial,helvetica,sans-serif;Arial Black=arial black,avant garde;Book Antiqua=book antiqua,palatino;Comic Sans MS=comic sans ms,sans-serif;Courier New=courier new,courier;Georgia=georgia,palatino;Helvetica=helvetica;Impact=impact,chicago;Symbol=symbol;Tahoma=tahoma,arial,helvetica,sans-serif;Terminal=terminal,monaco;Times New Roman=times new roman,times;Trebuchet MS=trebuchet ms,geneva;Verdana=verdana,geneva;Webdings=webdings;Wingdings=wingdings,zapf dingbats",
 // etc.
-*/		
-		<?php   
+*/
+		<?php
 		$js=ob_get_contents();
 		ob_end_clean();
 		return $js;
 	}
-	
-	
+
+
 }

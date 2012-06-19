@@ -2,13 +2,13 @@
 
 defined('C5_EXECUTE') or die("Access Denied.");
 class DashboardReportsLogsController extends Controller {
-	
+
 	public $helpers = array('form', 'html');
-	
+
 	public function clear($token = '', $type = false) {
 		$valt = Loader::helper('validation/token');
 		if ($valt->validate('', $token)) {
-			if (!$type) { 
+			if (!$type) {
 				Log::clearAll();
 			} else {
 				Log::clearByType($type);
@@ -18,12 +18,12 @@ class DashboardReportsLogsController extends Controller {
 			$this->redirect('/dashboard/reports/logs');
 		}
 	}
-	
+
 	public function view($page = 0) {
 		$this->set('title', t('Logs'));
 		$pageBase = View::url('/dashboard/reports/logs', 'view');
 		$paginator = Loader::helper('pagination');
-		
+
 		$total = Log::getTotal($_REQUEST['keywords'], $_REQUEST['logType']);
 		$paginator->init(intval($page), $total, $pageBase . '/%pageNum%/?keywords=' . $_REQUEST['keywords'] . '&logType=' . $_REQUEST['logType'], 10);
 		$limit=$paginator->getLIMIT();
@@ -46,9 +46,9 @@ class DashboardReportsLogsController extends Controller {
 		$this->set('entries', $entries);
 		$this->set('paginator', $paginator);
 		$this->set('logTypes', $logTypes);
-			
+
 
 	}
-	
+
 }
 ?>

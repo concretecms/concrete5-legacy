@@ -10,7 +10,7 @@ if (is_object($a)) {
 		$cx = Stack::getByName($_REQUEST['arHandle']);
 	}
 
-	$b = Block::getByID($_REQUEST['bID'], $cx, $ax); 
+	$b = Block::getByID($_REQUEST['bID'], $cx, $ax);
 	$p = new Permissions($b);
 	// we're updating the groups for a particular block
 	if ($p->canEditBlockPermissions()) {
@@ -29,15 +29,15 @@ if (is_object($a)) {
 			$pd = PermissionDuration::getByID($_REQUEST['pdID']);
 			$pa->addListItem($pe, $pd, $_REQUEST['accessType']);
 		}
-		
+
 		if ($_REQUEST['task'] == 'revert_to_area_permissions' && Loader::helper("validation/token")->validate('revert_to_area_permissions')) {
-			$b->revertToAreaPermissions();		
+			$b->revertToAreaPermissions();
 		}
 
 		if ($_REQUEST['task'] == 'override_area_permissions' && Loader::helper("validation/token")->validate('override_area_permissions')) {
-			$b->doOverrideAreaPermissions();		
+			$b->doOverrideAreaPermissions();
 		}
-	
+
 		if ($_REQUEST['task'] == 'remove_access_entity' && Loader::helper("validation/token")->validate('remove_access_entity')) {
 			$pk = BlockPermissionKey::getByID($_REQUEST['pkID']);
 			$pk->setPermissionObject($b);
@@ -45,7 +45,7 @@ if (is_object($a)) {
 			$pe = PermissionAccessEntity::getByID($_REQUEST['peID']);
 			$pa->removeListItem($pe);
 		}
-	
+
 		if ($_REQUEST['task'] == 'save_permission' && Loader::helper("validation/token")->validate('save_permission')) {
 			$pk = BlockPermissionKey::getByID($_REQUEST['pkID']);
 			$pk->setPermissionObject($b);
@@ -71,13 +71,13 @@ if (is_object($a)) {
 					$pa = PermissionAccess::getByID($paID, $pk);
 					if (is_object($pa)) {
 						$pt->assignPermissionAccess($pa);
-					}			
+					}
 				}
 			}
 		}
 
 	}
-	if ($p->canScheduleGuestAccess()) { 
+	if ($p->canScheduleGuestAccess()) {
 		if ($_REQUEST['task'] == 'set_timed_guest_access' && Loader::helper("validation/token")->validate('set_timed_guest_access')) {
 			if (!$b->overrideAreaPermissions()) {
 				$b->doOverrideAreaPermissions();

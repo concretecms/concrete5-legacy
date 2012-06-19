@@ -9,7 +9,7 @@ if ($cp->canPreviewPageAsUser() && PERMISSIONS_MODEL == 'advanced') {
 	$v->disableEditing();
 	$v->disableLinks();
 	$req = Request::get();
-	$req->setCustomRequestUser(false);				
+	$req->setCustomRequestUser(false);
 	if (isset($_REQUEST['customUser'])) {
 		$ui = UserInfo::getByUserName($_REQUEST['customUser']);
 		if (is_object($ui)) {
@@ -21,8 +21,8 @@ if ($cp->canPreviewPageAsUser() && PERMISSIONS_MODEL == 'advanced') {
 	$req->setCustomRequestDateTime($date);
 	$req = Request::get();
 	$cp = new Permissions($c);
-	if ($cp->canRead()) { 
-		$v->render($c); 
+	if ($cp->canRead()) {
+		$v->render($c);
 	} else {
 		print t('Unable to view page.');
 	}

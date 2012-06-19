@@ -6,7 +6,7 @@
 <?
 $permissions = PermissionKey::getList('basic_workflow');
 
-foreach($permissions as $pk) { 
+foreach($permissions as $pk) {
 	$pk->setPermissionObject($workflow);
 	?>
 	<tr>
@@ -34,8 +34,8 @@ foreach($permissions as $pk) {
 			modal: false,
 			width: 500,
 			height: 380
-		});		
+		});
 	}
 	</script>
-	
+
 <? } ?>

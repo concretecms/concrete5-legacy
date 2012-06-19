@@ -2,7 +2,7 @@
 
 <div class="clearfix">
 
-<? 
+<?
 
 $enablePermissions = false;
 if (!$f->overrideFileSetPermissions()) { ?>
@@ -14,8 +14,8 @@ if (!$f->overrideFileSetPermissions()) { ?>
 	<br/>
 	<a href="javascript:void(0)" class="btn small" onclick="ccm_setFilePermissionsToOverride()"><?=t('Override Permissions')?></a>
 	</div>
-	
-<? } else { 
+
+<? } else {
 	$enablePermissions = true;
 	?>
 
@@ -37,7 +37,7 @@ if (!$f->overrideFileSetPermissions()) { ?>
 <table class="ccm-permission-grid">
 <?
 $permissions = PermissionKey::getList('file');
-foreach($permissions as $pk) { 
+foreach($permissions as $pk) {
 	$pk->setPermissionObject($f);
 	?>
 	<tr>
@@ -75,7 +75,7 @@ ccm_permissionLaunchDialog = function(link) {
 		modal: false,
 		width: 500,
 		height: 380
-	});		
+	});
 }
 
 $(function() {
@@ -83,31 +83,31 @@ $(function() {
 		beforeSubmit: function() {
 			jQuery.fn.dialog.showLoader();
 		},
-		
+
 		success: function(r) {
 			jQuery.fn.dialog.hideLoader();
 			jQuery.fn.dialog.closeTop();
-		}		
+		}
 	});
 });
 
 ccm_revertToGlobalFilePermissions = function() {
 	jQuery.fn.dialog.showLoader();
-	$.get('<?=$pk->getPermissionAssignmentObject()->getPermissionKeyToolsURL("revert_to_global_file_permissions")?>&fID=<?=$f->getFileID()?>', function() { 
+	$.get('<?=$pk->getPermissionAssignmentObject()->getPermissionKeyToolsURL("revert_to_global_file_permissions")?>&fID=<?=$f->getFileID()?>', function() {
 		ccm_refreshFilePermissions();
 	});
 }
 
 ccm_setFilePermissionsToOverride = function() {
 	jQuery.fn.dialog.showLoader();
-	$.get('<?=$pk->getPermissionAssignmentObject()->getPermissionKeyToolsURL("override_global_file_permissions")?>&fID=<?=$f->getFileID()?>', function() { 
+	$.get('<?=$pk->getPermissionAssignmentObject()->getPermissionKeyToolsURL("override_global_file_permissions")?>&fID=<?=$f->getFileID()?>', function() {
 		ccm_refreshFilePermissions();
 	});
 }
 
 ccm_refreshFilePermissions = function() {
 	jQuery.fn.dialog.showLoader();
-	$.get('<?=REL_DIR_FILES_TOOLS_REQUIRED?>/files/permissions?fID=<?=$f->getFileID()?>', function(r) { 
+	$.get('<?=REL_DIR_FILES_TOOLS_REQUIRED?>/files/permissions?fID=<?=$f->getFileID()?>', function(r) {
 		jQuery.fn.dialog.replaceTop(r);
 		ccm_filePermissionsSetupButtons();
 		jQuery.fn.dialog.hideLoader();

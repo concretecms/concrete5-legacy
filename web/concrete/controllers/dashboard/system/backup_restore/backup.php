@@ -1,21 +1,21 @@
-<?php 
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 Loader::library('backup');
-class DashboardSystemBackupRestoreBackupController extends DashboardBaseController { 	 
+class DashboardSystemBackupRestoreBackupController extends DashboardBaseController {
 
    public function on_start() {
       $this->addHeaderItem(Loader::helper('html')->javascript('jquery.cookie.js'));
 	 parent::on_start();
-   } 
+   }
 
 
 	public function run_backup() {
 	  $encrypt = $this->post('useEncryption');
 	  $tp = new TaskPermission();
-  	  if ($tp->canBackup()) {		
+  	  if ($tp->canBackup()) {
           $encrypt = (bool) $encrypt;
           try {
-	          $backup = Backup::execute($encrypt);   
+	          $backup = Backup::execute($encrypt);
  			} catch(Exception $e) {
  				$this->set('error', $e);
  			}
@@ -25,7 +25,7 @@ class DashboardSystemBackupRestoreBackupController extends DashboardBaseControll
 
 	public function view() {
 		$tp = new TaskPermission();
-		if ($tp->canBackup()) {		
+		if ($tp->canBackup()) {
 			$fh = Loader::helper('file');
 			$arr_bckups = @$fh->getDirectoryContents(DIR_FILES_BACKUPS);
 			$arr_backupfileinfo = Array();
@@ -36,16 +36,16 @@ class DashboardSystemBackupRestoreBackupController extends DashboardBaseControll
 			 }
 			 $this->set('backups',$arr_backupfileinfo);
 			}
-		
+
 		}
 	}
-	
+
 	public function download($file) {
 		$tp = new TaskPermission();
 		  if (!$tp->canBackup()) {
 			return false;
 		}
-		
+
 		if (file_exists(DIR_FILES_BACKUPS . '/'. $file)) {
 			chmod(DIR_FILES_BACKUPS . '/'. $file, 0666);
 			if (file_exists(DIR_FILES_BACKUPS . '/' . $file)) {
@@ -59,7 +59,7 @@ class DashboardSystemBackupRestoreBackupController extends DashboardBaseControll
 			$this->view();
 		}
 	}
-	
+
 	public function delete_backup() {
 		$tp = new TaskPermission();
 		  if (!$tp->canBackup()) {
@@ -85,8 +85,8 @@ class DashboardSystemBackupRestoreBackupController extends DashboardBaseControll
 
 		$file = basename(realpath(DIR_FILES_BACKUPS . '/' . $this->post('backup_file')));
 		$fh = Loader::helper('file');
-		
-		$db = Loader::db(); 
+
+		$db = Loader::db();
 		if (!file_exists(DIR_FILES_BACKUPS . '/'. $file)) {
 			throw new Exception(t('Invalid backup file specified.'));
 		}
@@ -99,27 +99,27 @@ class DashboardSystemBackupRestoreBackupController extends DashboardBaseControll
 			return false;
 		}
 		$crypt = Loader::helper('encryption');
-		if ( !preg_match('/INSERT/m',$str_restSql) && !preg_match('/CREATE/m',$str_restSql) ) {	
+		if ( !preg_match('/INSERT/m',$str_restSql) && !preg_match('/CREATE/m',$str_restSql) ) {
 			$str_restSql = $crypt->decrypt($str_restSql);
 		}
 		$arr_sqlStmts = explode("\n\n",$str_restSql);
 
 		foreach ($arr_sqlStmts as $str_stmt) {
-			if (trim($str_stmt) != "") { 
+			if (trim($str_stmt) != "") {
 				$res_restoration = $db->execute($str_stmt);
-				if (!$res_restoration) { 
+				if (!$res_restoration) {
 					$this->set("error",array("There was an error trying to restore the database. In query $str_stmt"));
 					return;
 				}
-			}		
+			}
 		}
-		
+
 		$this->set("message","Restoration Sucessful");
-	
-		//reset perms for security! 
+
+		//reset perms for security!
 		chmod(DIR_FILES_BACKUPS . '/'. $file, 000);
 		Cache::flush();
 		$this->view();
 	}
-	  
+
 }

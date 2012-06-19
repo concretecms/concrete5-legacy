@@ -35,8 +35,8 @@ $form = Loader::helper('form');
 				</li>
 			</ul>
 		</div>
-	</div>	
-	
+	</div>
+
 </div>
 <div class="ccm-pane-footer">
 <?

@@ -5,5 +5,5 @@ class DashboardSitemapController extends Controller {
 	public function view() {
 		$this->redirect('/dashboard/sitemap/full');
 	}
-	
+
 }

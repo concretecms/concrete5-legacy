@@ -11,7 +11,7 @@ class StackList extends PageList {
 		$this->addToQuery('inner join Stacks on Stacks.cID = p1.cID');
 		$this->filterByParentID($c->getCollectionID());
 	}
-	
+
 	public function filterByGlobalAreas() {
 		$this->filter('stType', Stack::ST_TYPE_GLOBAL_AREA);
 	}
@@ -19,7 +19,7 @@ class StackList extends PageList {
 	public function filterByUserAdded() {
 		$this->filter('stType', Stack::ST_TYPE_USER_ADDED);
 	}
-	
+
 	public static function export(SimpleXMLElement $x) {
 		$db = Loader::db();
 		$r = $db->Execute('select stName, cID, stType from Stacks order by stName asc');
@@ -32,5 +32,5 @@ class StackList extends PageList {
 		}
 	}
 
-	
+
 }

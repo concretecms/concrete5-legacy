@@ -1,6 +1,6 @@
 <?
 defined('C5_EXECUTE') or die("Access Denied.");
-$c = Page::getByID($_REQUEST['cID']); 
+$c = Page::getByID($_REQUEST['cID']);
 $a = Area::get($c, $_GET['arHandle']);
 $ax = $a;
 $cx = $c;
@@ -26,7 +26,7 @@ if ($a->isGlobalArea()) {
 	echo '<div class="ccm-ui"><div class="alert-message block-message warning">';
 	echo t('This is a global area. Content added here will be visible on every page that contains this area.');
 	echo('</div></div>');
-} 
+}
 
 switch($_GET['atask']) {
 	case 'add':
@@ -57,9 +57,9 @@ switch($_GET['atask']) {
 		if ($canViewPane) {
 			if ($_REQUEST['subtask'] == 'delete_custom_style_preset') {
 				$styleToDelete = CustomStylePreset::getByID($_REQUEST['deleteCspID']);
-				$styleToDelete->delete(); 
+				$styleToDelete->delete();
 			}
-		}		
+		}
 		break;
 	case 'groups':
 		$toolSection = "permission/lists/area";

@@ -18,24 +18,24 @@ if ($_REQUEST['submitOnChoose']) {
 }
 
 switch($ct->getCollectionTypeComposerPublishMethod()) {
-	case 'PAGE_TYPE': 
+	case 'PAGE_TYPE':
 		Loader::model('page_list');
 		$pages = array();
 		$pl = new PageList();
 		$pl->sortByName();
 		$pl->filterByCollectionTypeID($ct->getCollectionTypeComposerPublishPageTypeID());
 		$pages = $pl->get();
-		
+
 		?>
-	
+
 	<h1><?=t("Where do you want to publish this page?")?></h1>
 	<ul class="icon-select-list">
-	<? foreach($pages as $p) { 
+	<? foreach($pages as $p) {
 		$trail = $navigation->getTrailToCollection($p);
 		$crumbs = array();
 		if(is_array($trail) && count($trail)) {
 			$trail = array_reverse($trail,false);
-			foreach($trail as $t) { 
+			foreach($trail as $t) {
 				$crumbs[] = $th->shortText($t->getCollectionName(),10);
 			}
 		}
@@ -45,7 +45,7 @@ switch($ct->getCollectionTypeComposerPublishMethod()) {
 		</li>
 	<? } ?>
 	</ul>
-	
+
 	<?
 		break;
 	case 'CHOOSE':
@@ -54,7 +54,7 @@ switch($ct->getCollectionTypeComposerPublishMethod()) {
 		$args['callback'] = $function;
 		$args['display_mode'] = 'full';
 		$args['instance_id'] = time();
-		Loader::element('dashboard/sitemap', $args);	
+		Loader::element('dashboard/sitemap', $args);
 		break;
 }
 

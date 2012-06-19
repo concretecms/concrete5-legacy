@@ -6,11 +6,11 @@
 	 * @author Remo Laubacher <remo.laubacher@gmail.com>
 	 * @author Andrew Embler <andrew@concrete5.org>
 	 */
-	 
-	Loader::block('library_file');	
+
+	Loader::block('library_file');
 	defined('C5_EXECUTE') or die("Access Denied.");
 	class VideoBlockController extends BlockController {
- 
+
 		protected $btInterfaceWidth = 320;
 		protected $btInterfaceHeight = 220;
 		protected $btTable = 'btVideo';
@@ -20,18 +20,18 @@
 		protected $btCacheBlockOutputForRegisteredUsers = false;
 		protected $btExportFileColumns = array('fID');
 		protected $btWrapperClass = 'ccm-ui';
-		
+
 		public $width  = '';
 		public $height = '';
 		public $fID = 0;
-		
-		/** 
+
+		/**
 		 * Used for localization. If we want to localize the name/description we have to include this
 		 */
 		public function getBlockTypeDescription() {
 			return t("Embeds uploaded video into a web page. Supports AVI, WMV, Quicktime/MPEG4 and FLV formats.");
 		}
-		
+
 		public function getBlockTypeName() {
 			return t("Video Player");
 		}
@@ -45,20 +45,20 @@
 			return File::getByID($this->fID);
 		}
 
-		function save($data) { 
-			$args['fID']    = intval($data['fID']);	
+		function save($data) {
+			$args['fID']    = intval($data['fID']);
 			$args['width']  = (intval($data['width'])>0)  ? intval($data['width'])  : 425;
-			$args['height'] = (intval($data['height'])>0) ? intval($data['height']) : 334;		
-			
+			$args['height'] = (intval($data['height'])>0) ? intval($data['height']) : 334;
+
 			parent::save($args);
-		}				
+		}
 
 		public function on_page_view() {
 			$html = Loader::helper('html');
 			$this->addHeaderItem($html->javascript('swfobject.js'));
 		}
-		
-		
+
+
 	}
 
 ?>

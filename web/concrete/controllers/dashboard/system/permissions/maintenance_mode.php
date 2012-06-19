@@ -2,13 +2,13 @@
 
 class DashboardSystemPermissionsMaintenanceModeController extends DashboardBaseController {
 
-	public $helpers = array('form'); 
-	
+	public $helpers = array('form');
+
 	public function view() {
 		if ($this->isPost()) {
 			if ($this->token->validate("update_maintenance")) {
 				$mode = $this->post('site_maintenance_mode');
-				if ($mode == 1) { 
+				if ($mode == 1) {
 					Config::save('SITE_MAINTENANCE_MODE', 1);
 					$this->redirect('/dashboard/system/permissions/maintenance_mode','saved',"enabled");
 					exit;
@@ -27,7 +27,7 @@ class DashboardSystemPermissionsMaintenanceModeController extends DashboardBaseC
 		}
 		$this->set('site_maintenance_mode', $site_maintenance_mode);
 	}
-	
+
 	public function saved($s = false) {
 		if($s == 'enabled') {
 			$this->set('message', t('Maintenance Mode turned on. Your site is now private.'));

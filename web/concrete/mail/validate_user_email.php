@@ -7,7 +7,7 @@ $body = t("
 
 You must click the following URL in order to activate your account for %s:
 
-%s 
+%s
 
 Thanks for your interest in %s
 

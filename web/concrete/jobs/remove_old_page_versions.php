@@ -11,11 +11,11 @@ class RemoveOldPageVersions extends Job {
 	public function getJobName() {
 		return t("Remove Old Page Versions");
 	}
-	
+
 	public function getJobDescription() {
 		return t("Removes all except the 10 most recent page versions for each page.");
 	}
-		
+
 	public function run() {
 		//$u = new User();
 		//if(!$u->isSuperUser()) { die(t("Access Denied."));} // cheap security check...
@@ -27,16 +27,16 @@ class RemoveOldPageVersions extends Job {
 		if($pNum <= 0) {
 			$cfg->save('OLD_VERSION_JOB_PAGE_NUM',0);
 		}
-		
+
 		$pl->setItemsPerPage(3);
-		
-		/* probably want to keep a record of pages that have been gone through 
+
+		/* probably want to keep a record of pages that have been gone through
 		 * so you don't start from the beginning each time..
 		 */
 		$pNum = $pNum +1;
 		$pages = $pl->getPage($pNum);
 		$cfg->save('OLD_VERSION_JOB_PAGE_NUM',$pNum);
-		
+
 		$pageCount = 0;
 		$versionCount = 0;
 		if(count($pages) == 0) {
@@ -48,7 +48,7 @@ class RemoveOldPageVersions extends Job {
 				$pvl = new VersionList($page);
 				$versions = $pvl->getVersionListArray();
 				$versions = array_reverse($versions);
-				
+
 				$vCount = count($versions);
 				if($vCount <= 10) { continue; }
 				$pageCount++;

@@ -1,6 +1,6 @@
 <?
 	defined('C5_EXECUTE') or die("Access Denied.");
-	
+
 	$co = Request::get();
 	if ($co->isIncludeRequest() && $co->getFilename() == 'upgrade.php') {
 		if (file_exists(DIR_FILES_TOOLS . '/' . $co->getFilename())) {

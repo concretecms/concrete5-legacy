@@ -2,24 +2,24 @@
 defined('C5_EXECUTE') or die("Access Denied.");
 
 	class AttributeTypeController extends Controller {
-		
+
 		protected $identifier;
 		protected static $sets = array();
 	 	protected $attributeKey;
 		protected $requestArray = false;
-		
+
 		public function setRequestArray($array) {
 			$this->requestArray = $array;
 		}
-		
+
 	 	public function setAttributeKey($attributeKey) {
 	 		$this->attributeKey = $attributeKey;
 	 	}
-	 	
+
 	 	public function setAttributeValue($attributeValue) {
 	 		$this->attributeValue = $attributeValue;
 	 	}
-	 	
+
 	 	public function getAttributeKey() {
 	 		return $this->attributeKey;
 	 	}
@@ -27,21 +27,21 @@ defined('C5_EXECUTE') or die("Access Denied.");
 	 	public function getAttributeValue() {
 	 		return $this->attributeValue;
 	 	}
-	 	
+
 	 	public function getAttributeType() {
 	 		return $this->attributeType;
 	 	}
-	 	
+
 	 	public function exportKey($ak) {
 	 		return $ak;
 	 	}
-	 	
+
 	 	public function importValue(SimpleXMLElement $akv) {
 			if (isset($akv->value)) {
 				return (string) $akv->value;
 			}
 	 	}
-	 	
+
 	 	public function exportValue(SimpleXMLElement $akv) {
 			$val = $this->attributeValue->getValue();
 			if (is_object($val)) {
@@ -50,18 +50,18 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			$av = $akv->addChild('value', '<![CDATA[' . $val . ']]>');
 	 		return $av;
 	 	}
-	 	
+
 	 	public function importKey($akn) {
-	 		
+
 	 	}
-	 	
-	 	
+
+
 	 	protected function getAttributeValueID() {
 	 		if (is_object($this->attributeValue)) {
 		 		return $this->attributeValue->getAttributeValueID();
 		 	}
 	 	}
-	 	
+
 		public function field($fieldName) {
 			return 'akID[' . $this->attributeKey->getAttributeKeyID() . '][' . $fieldName . ']';
 		}
@@ -74,14 +74,14 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			}
 			print Loader::helper('form')->label($this->field('value'), $text);
 		}
-		
+
 		public function __construct($attributeType) {
 			$this->identifier = $attributeType->getAttributeTypeID();
 			$this->attributeType = $attributeType;
 			parent::__construct();
 			$this->set('controller', $this);
 		}
-		
+
 		public function post($field = false) {
 			// the only post that matters is the one for this attribute's name space
 			$req = ($this->requestArray == false) ? $_POST : $this->requestArray;
@@ -91,13 +91,13 @@ defined('C5_EXECUTE') or die("Access Denied.");
 					return $p[$field];
 				}
 				return $p;
-			}			
+			}
 			return parent::post($field);
 		}
 
 		public function request($field = false) {
 			$req = ($this->requestArray == false) ? $_REQUEST : $this->requestArray;
-			
+
 			if (is_object($this->attributeKey) && is_array($req['akID'])) {
 				$p = $req['akID'][$this->attributeKey->getAttributeKeyID()];
 				if ($field) {
@@ -105,19 +105,19 @@ defined('C5_EXECUTE') or die("Access Denied.");
 				}
 				return $p;
 			}
-			
+
 			return parent::request($field);
 		}
-		
+
 		public function getView() {
 			$av = new AttributeTypeView($this->attributeType, $this->attributeKey, $this->attributeValue);
 			return $av;
 		}
-		
+
 		public function getSearchIndexFieldDefinition() {
 			return $this->searchIndexFieldDefinition;
 		}
-		
+
 		public function setupAndRun($method) {
 			$args = func_get_args();
 			$args = array_slice($args, 1);
@@ -130,34 +130,34 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			if ($method == 'composer') {
 				$method = array('composer', 'form');
 			}
-			
+
 			if ($method) {
 				$this->runTask($method, $args);
 			}
-			
+
 			if (method_exists($this, 'on_before_render')) {
 				$this->on_before_render($method);
 			}
 		}
 
 		public function saveKey() {
-		
+
 		}
-		
+
 		public function duplicateKey() {
-		
+
 		}
-		
+
 		// return a string we can use to search by
 		public function searchKeywords($keywords, $list = false) {
 			$db = Loader::db();
 			$qkeywords = $db->quote('%' . $keywords . '%');
 			return 'ak_' . $this->attributeKey->getAttributeKeyHandle() . ' like '.$qkeywords.' ';
 		}
-		
+
 		/* Automatically run when an attribute key is added or updated
 		* @return ValidationError
-		*/		
+		*/
 		public function validateKey($args = false) {
 			if ($args == false) {
 				$args =  $this->post();
@@ -170,15 +170,15 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			$val->addRequired("atID", t('Type required.'));
 			$val->test();
 			$error = $val->getError();
-		
+
 			if (!$valt->validate('add_or_update_attribute')) {
 				$error->add($valt->getErrorMessage());
 			}
-			
+
 			if(preg_match("/[^A-Za-z0-9\_]/", $args['akHandle'])) {
 				$error->add(t('Attribute handles may only contain letters, numbers and underscore "_" characters'));
 			}
-			
+
 			$akc = AttributeKeyCategory::getByID($args['akCategoryID']);
 			if (is_object($akc)) {
 				if ($akc->handleExists($args['akHandle'])) {
@@ -194,9 +194,8 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			} else {
 				$error->add('Invalid attribute category.');
 			}
-			
-			return $error;			
+
+			return $error;
 		}
-		
+
 	}
-	

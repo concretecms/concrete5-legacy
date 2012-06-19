@@ -1,7 +1,7 @@
 <?  defined('C5_EXECUTE') or die("Access Denied.");
 
 $tp = new TaskPermission();
-if ($tp->canInstallPackages()) { 
+if ($tp->canInstallPackages()) {
 	Loader::library('marketplace');
 	$mi = Marketplace::getInstance();
 	Loader::model('marketplace_remote_item');

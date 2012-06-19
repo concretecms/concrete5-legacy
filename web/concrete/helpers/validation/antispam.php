@@ -2,19 +2,19 @@
 
 defined('C5_EXECUTE') or die("Access Denied.");
 class ValidationAntispamHelper {
-	
+
 	protected $controller = false;
-	
+
 	public function __construct() {
 		Loader::model('system/antispam/library');
 		$library = SystemAntispamLibrary::getActive();
-		if (is_object($library)) { 
+		if (is_object($library)) {
 			$this->controller = $library->getController();
 		}
-	}		
-	
+	}
+
 	public function check($content, $type, $additionalArgs = array()) {
-		if ($this->controller) { 
+		if ($this->controller) {
 			$args['ip_address'] = $_SERVER['REMOTE_ADDR'];
 			$args['user_agent'] = $_SERVER['HTTP_USER_AGENT'];
 			$args['content'] = $content;
@@ -35,11 +35,11 @@ class ValidationAntispamHelper {
 				return true;
 			} else {
 				$c = Page::getCurrentPage();
-				if (is_object($c)) { 
+				if (is_object($c)) {
 					$logText .= t('URL: %s', Loader::helper('navigation')->getLinkToCollection($c, true));
 					$logText .= "\n";
 				}
-				if ($u->isRegistered()) { 
+				if ($u->isRegistered()) {
 					$logText .= t('User: %s (ID %s)', $u->getUserName(), $u->getUserID());
 					$logText .= "\n";
 				}
@@ -48,7 +48,7 @@ class ValidationAntispamHelper {
 				foreach($args as $key => $value) {
 					$logText .= Loader::helper('text')->unhandle($key) . ': ' . $value . "\n";
 				}
-				
+
 				if (Config::get('ANTISPAM_LOG_SPAM')) {
 					Log::addEntry($logText, t('spam'));
 				}
@@ -65,12 +65,12 @@ class ValidationAntispamHelper {
 			return true; // return true if it passes the test
 		}
 	}
-	
+
 	public function __call($nm, $args) {
-		if (method_exists($this->controller, $nm)) { 
+		if (method_exists($this->controller, $nm)) {
 			return call_user_func_array(array($this->controller, $nm), $args);
 		}
 	}
-	
-	
+
+
 }

@@ -1,4 +1,4 @@
-<? 
+<?
 defined('C5_EXECUTE') or die("Access Denied.");
 ?>
 <h2><?=t('Slot')?></h2>

@@ -1,4 +1,4 @@
-<? defined('C5_EXECUTE') or die("Access Denied."); ?> 
+<? defined('C5_EXECUTE') or die("Access Denied."); ?>
 <?
 
 $searchFields = array(
@@ -25,9 +25,9 @@ foreach($searchFieldAttributes as $ak) {
 ?>
 
 <? $form = Loader::helper('form'); ?>
-	
+
 	<div id="ccm-<?=$searchInstance?>-search-field-base-elements" style="display: none">
-	
+
 		<span class="ccm-search-option"  search-field="keywords">
 		<?=$form->text('keywords', $searchRequest['keywords'], array('style' => 'width: 120px'))?>
 		</span>
@@ -60,20 +60,20 @@ foreach($searchFieldAttributes as $ak) {
 		<li><label><?=$form->radio('cvIsApproved', 1, false)?> <span><?=t('Approved')?></span></label></li>
 		</ul>
 		</span>
-			
+
 		<? if (!$searchDialog) { ?>
 		<span class="ccm-search-option" search-field="parent">
 
 		<? $ps = Loader::helper("form/page_selector");
 		print $ps->selectPage('cParentIDSearchField');
 		?>
-		
+
 		<br/><strong><?=t('Search All Children?')?></strong><br/>
 		<ul class="inputs-list">
 		<li><label><?=$form->radio('cParentAll', 0, false)?> <span><?=t('No')?></label></li>
 		<li><label><?=$form->radio('cParentAll', 1, false)?> <span><?=t('Yes')?></span></label></li>
 		</ul>
-		
+
 
 		</span>
 		<? } ?>
@@ -85,11 +85,11 @@ foreach($searchFieldAttributes as $ak) {
 			</select>
 			<input type="text" name="cChildren" value="<?=$req['cChildren']?>" />
 		</span>
-		
-		<? foreach($searchFieldAttributes as $sfa) { 
+
+		<? foreach($searchFieldAttributes as $sfa) {
 			$sfa->render('search'); ?>
 		<? } ?>
-		
+
 	</div>
 
 	<form method="get" id="ccm-<?=$searchInstance?>-advanced-search" action="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/pages/search_results">
@@ -97,11 +97,11 @@ foreach($searchFieldAttributes as $ak) {
 	<input type="hidden" name="searchInstance" value="<?=$searchInstance?>" />
 
 	<div class="ccm-pane-options-permanent-search">
-	
+
 		<input type="hidden" name="submit_search" value="1" />
-	<?	
-		print $form->hidden('ccm_order_dir', $searchRequest['ccm_order_dir']); 
-		print $form->hidden('ccm_order_by', $searchRequest['ccm_order_by']); 
+	<?
+		print $form->hidden('ccm_order_dir', $searchRequest['ccm_order_dir']);
+		print $form->hidden('ccm_order_by', $searchRequest['ccm_order_by']);
 		if ($searchDialog) {
 			print $form->hidden('searchDialog', true);
 		}
@@ -126,14 +126,14 @@ foreach($searchFieldAttributes as $ak) {
 		<div class="span4">
 		<?=$form->label('ctID', t('Page Type'))?>
 		<div class="input">
-			<? 
+			<?
 			Loader::model('collection_types');
 			$ctl = CollectionType::getList();
 			$ctypes = array('' => t('** All'));
 			foreach($ctl as $ct) {
 				$ctypes[$ct->getCollectionTypeID()] = $ct->getCollectionTypeName();
 			}
-			
+
 			print $form->select('ctID', $ctypes, $searchRequest['ctID'], array('style' => 'width:120px'))?>
 
 		</div>
@@ -168,19 +168,19 @@ foreach($searchFieldAttributes as $ak) {
 			<td width="100%">
 			<input type="hidden" value="" class="ccm-<?=$searchInstance?>-selected-field" name="selectedSearchField[]" />
 			<div class="ccm-selected-field-content">
-				<?=t('Select Search Field.')?>				
+				<?=t('Select Search Field.')?>
 			</div></td>
 			<td><a href="javascript:void(0)" class="ccm-search-remove-option"><img src="<?=ASSETS_URL_IMAGES?>/icons/remove_minus.png" width="16" height="16" /></a></td>
 		</tr>
-		<? 
+		<?
 		$i = 1;
-		if (is_array($searchRequest['selectedSearchField'])) { 
-			foreach($searchRequest['selectedSearchField'] as $req) { 
+		if (is_array($searchRequest['selectedSearchField'])) {
+			foreach($searchRequest['selectedSearchField'] as $req) {
 				if ($req == '') {
 					continue;
 				}
 				?>
-				
+
 				<tr class="ccm-search-field ccm-search-request-field-set" ccm-search-type="<?=$req?>" id="ccm-<?=$searchInstance?>-search-field-set<?=$i?>">
 				<td><?=$form->select('searchField' . $i, $searchFields, $req); ?></td>
 				<td width="100%"><input type="hidden" value="<?=$req?>" class="ccm-<?=$searchInstance?>-selected-field" name="selectedSearchField[]" />
@@ -232,14 +232,14 @@ foreach($searchFieldAttributes as $ak) {
 							</ul>
 							</span>
 						<? } ?>
-						
+
 						<? if ((!$searchDialog) && $req == 'parent') { ?>
 						<span class="ccm-search-option" search-field="parent">
 
 						<? $ps = Loader::helper("form/page_selector");
 						print $ps->selectPage('cParentIDSearchField', $searchRequest['cParentIDSearchField']);
 						?>
-						
+
 						<br/><strong><?=t('Search All Children?')?></strong><br/>
 
 						<ul class="inputs-list">
@@ -248,8 +248,8 @@ foreach($searchFieldAttributes as $ak) {
 						</ul>
 						</span>
 						<? } ?>
-						
-						<? foreach($searchFieldAttributes as $sfa) { 
+
+						<? foreach($searchFieldAttributes as $sfa) {
 							if ($sfa->getAttributeKeyID() == $req) {
 								$at = $sfa->getAttributeType();
 								$at->controller->setRequestArray($searchRequest);
@@ -259,14 +259,14 @@ foreach($searchFieldAttributes as $ak) {
 					</td>
 					<td><a href="javascript:void(0)" class="ccm-search-remove-option"><img src="<?=ASSETS_URL_IMAGES?>/icons/remove_minus.png" width="16" height="16" /></a></td>
 					</tr>
-				<? 
+				<?
 					$i++;
-				} 
-				
+				}
+
 				} ?>
 		</table>
 		<div id="ccm-search-fields-submit">
 			<a href="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/pages/customize_search_columns?searchInstance=<?=$searchInstance?>" id="ccm-list-view-customize"><span class="ccm-menu-icon ccm-icon-properties"></span><?=t('Customize Results')?></a>
 		</div>
 	</div>
-</form>	
+</form>

@@ -17,9 +17,9 @@ if ($c->isEditMode()) { ?>
 		<div style="padding:8px 0px; padding-top: <?php echo round($vHeight/2)-10; ?>px;"><?php echo t('YouTube Video disabled in edit mode.'); ?></div>
 	</div>
 <? } elseif ($vPlayer==1) { ?>
-	
+
 	<div id="youtube<?php echo $bID?>" class="youtubeBlock">
-	
+
 	<?php if($url['host'] == 'youtu.be') { ?>
 		<iframe class="youtube-player" type="text/html" width="<?php  echo $vWidth; ?>" height="<?php  echo $vHeight; ?>" src="http://www.youtube.com/embed/<?php echo $url['path']?>/<?php echo (strpos($url['path'], '@')) ? '@' : '?'; ?>wmode=transparent" frameborder="0"></iframe>
 	<?php }else { ?>
@@ -27,11 +27,11 @@ if ($c->isEditMode()) { ?>
 	<?php } ?>
 	</div>
 <? } else { ?>
-	
+
 	<div id="youtube<?php echo $bID?>" class="youtubeBlock"><div id="youtube<?php echo $bID?>_video"><?php echo t('You must install Adobe Flash to view this content.')?></div></div>
-	
-	<?php 
-	
+
+	<?php
+
 	if($url['host'] == 'youtu.be') { ?>
 		<script type="text/javascript">
 		//<![CDATA[

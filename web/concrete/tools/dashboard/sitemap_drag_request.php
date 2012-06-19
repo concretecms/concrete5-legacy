@@ -39,7 +39,7 @@ foreach($originalPages as $oc) {
 	if (!$ocp->canRead()) {
 		$canReadSource = false;
 	}
-	if (!$ocp->canMoveOrCopyPage()) { 
+	if (!$ocp->canMoveOrCopyPage()) {
 		$canMoveCopyPages = false;
 	}
 	$ct = CollectionType::getByID($oc->getCollectionTypeID());
@@ -48,7 +48,7 @@ foreach($originalPages as $oc) {
 	}
 	if (!$oc->canMoveCopyTo($dc)) {
 		$canMoveCopyTo = false;
-	}	
+	}
 	if ((!$u->isSuperUser()) || ($oc->getCollectionPointerID() > 0)) {
 		$canCopyChildren = false;
 	}
@@ -118,9 +118,9 @@ if (!$error) {
 						$pkr->setRequesterUserID($u->getUserID());
 						$u->unloadCollectionEdit($oc);
 						$r = $pkr->trigger();
-						if ($r instanceof WorkflowProgressResponse) { 
+						if ($r instanceof WorkflowProgressResponse) {
 							$successMessage .= '"' . $oc->getCollectionName() . '" '.t('was moved beneath').' "' . $dc->getCollectionName() . '." ';
-						} else { 
+						} else {
 							$successMessage .= t("Your request to move \"%s\" beneath \"%s\" has been stored. Someone with approval rights will have to activate the change.\n", $oc->getCollectionName() , $dc->getCollectionName() );
 						}
 					}
@@ -129,7 +129,7 @@ if (!$error) {
 			}
 		} else {
 			$error = $valt->getErrorMessage();
-		}	
+		}
 	}
 }
 
@@ -180,26 +180,26 @@ if ($successMessage) {
 		<input type="checkbox" id="saveOldPagePath" name="saveOldPagePath" value="1" style="vertical-align: middle" <? if (isset($_SESSION['movePageSaveOldPagePath']) && $_SESSION['movePageSaveOldPagePath']) { ?> checked="checked" <? } ?> /> <?=t('Save old page path')?>
 		</div>
 		<br/>
-		
+
 		<? if ($oc->getCollectionPointerID() < 1) { ?>
 		<input type="radio" style="vertical-align: middle" id="ctaskAlias" name="ctask" value="ALIAS" onclick="toggleAlias()" />
 		<strong><?=t('Alias')?></strong> <? if (count($originalPages) == 1) { ?>"<?=$oc->getCollectionName()?>"<? } ?> <?=t('beneath')?> "<?=$dc->getCollectionName()?>" - <?=t('Pages appear in both locations; all edits to originals will be reflected in their alias.')?>
 		<br/><br/>
 		<? } ?>
-		
+
 		<input type="radio" style="vertical-align: middle" id="ctaskCopy" name="ctask" value="COPY" onclick="toggleCopy()" />
 		<strong><?=t('Copy')?></strong> <? if (count($originalPages) == 1) { ?>"<?=$oc->getCollectionName()?>"<? } ?> <?=t('beneath')?> "<?=$dc->getCollectionName()?>"
 		<div style="margin: 4px 0px 0px 20px">
 		<? if ($canCopyChildren) { ?>
 			<input type="radio" id="copyThisPage" name="copyAll" value="0" style="vertical-align: middle" disabled /> <?=t('Copy page.')?><br/>
 			<input type="radio" id="copyChildren" name="copyAll" value="1" style="vertical-align: middle" disabled /> <?=t('Copy page + children.')?>
-		<? } else { ?> 
+		<? } else { ?>
 			<?=t('Your copy operation will only affect the current page - not any children.')?>
 		<? } ?>
 		</div>
-		
+
 		<br/>
-	
+
 	<div class="dialog-buttons">
 	<? if ($_REQUEST['sitemap_mode'] == 'move_copy_delete') { ?>
 		<a href="javascript:void(0)" onclick="$.fn.dialog.closeTop()" id="ccm-exit-drag-request" title="<?=t('Choose Page')?>" class="ccm-button-left btn"><?=t('Cancel')?></a>
@@ -208,7 +208,7 @@ if ($successMessage) {
 	<? } ?>
 	<a href="javascript:void(0)" onclick="moveCopyAliasNode(<? if ($_REQUEST['select_mode'] == 'move_copy_delete') { ?>true<? } ?>)" class="ccm-button-right btn primary"><span><?=t('Go')?></span></a>
 	</div>
-	
+
 	<div class="ccm-spacer">&nbsp;</div>
 	</form>
 

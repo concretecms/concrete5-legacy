@@ -4,16 +4,16 @@
 </div>
 <div class="ccm-form">
 
-<? 
-if($success) { 
-	switch($success) { 
-		case "registered": 
+<?
+if($success) {
+	switch($success) {
+		case "registered":
 			?>
 			<p><strong><?=$successMsg ?></strong><br/><br/>
 			<a href="<?=$this->url('/')?>"><?=t('Return to Home')?></a>
-			<? 
+			<?
 		break;
-		case "validate": 
+		case "validate":
 			?>
 			<p><?=$successMsg[0] ?></p>
 			<p><?=$successMsg[1] ?></p>
@@ -27,7 +27,7 @@ if($success) {
             <?
 		break;
 	}
-		
+
 } else { ?>
 
 <form method="post" action="<?=$this->url('/register', 'do_register')?>">
@@ -43,7 +43,7 @@ if($success) {
 				</div>
 			</div>
 		<? } ?>
-	
+
 		<div class="clearfix">
 			<?php echo $form->label('uEmail',t('Email Address')); ?>
 			<div class="input">
@@ -69,30 +69,30 @@ if($success) {
 	<fieldset>
 		<legend><?=t('Options')?></legend>
 	<?
-	
+
 	$attribs = UserAttributeKey::getRegistrationList();
 	$af = Loader::helper('form/attribute');
-	
-	foreach($attribs as $ak) { ?> 
+
+	foreach($attribs as $ak) { ?>
 			<?= $af->display($ak, $ak->isAttributeKeyRequiredOnRegister());	?>
 	<? }?>
 	</fieldset>
 </div>
 <div class="span16 columns ">
 	<? if (ENABLE_REGISTRATION_CAPTCHA) { ?>
-	
+
 		<div class="clearfix">
-			<?php $captcha = Loader::helper('validation/captcha'); ?>			
+			<?php $captcha = Loader::helper('validation/captcha'); ?>
 			<?=$captcha->label()?>
 			<div class="input">
 			<?
-		  	  $captcha->showInput(); 
+		  	  $captcha->showInput();
 			  $captcha->display();
 		  	  ?>
 			</div>
 		</div>
-	
-		
+
+
 	<? } ?>
 
 </div>
@@ -102,7 +102,7 @@ if($success) {
 	<?=$form->submit('register', t('Register') . ' &gt;', array('class' => 'primary'))?>
 	</div>
 </div>
-	
+
 </div>
 </form>
 <? } ?>

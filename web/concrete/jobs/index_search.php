@@ -9,15 +9,15 @@ defined('C5_EXECUTE') or die("Access Denied.");
 class IndexSearch extends Job {
 
 	public $jNotUninstallable=1;
-	
+
 	public function getJobName() {
 		return t("Index Search Engine");
 	}
-	
+
 	public function getJobDescription() {
 		return t("Index the site to allow searching to work quickly and accurately.");
 	}
-	
+
 	public function run() {
 		Cache::disableCache();
 

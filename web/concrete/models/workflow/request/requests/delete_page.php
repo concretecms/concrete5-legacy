@@ -7,9 +7,9 @@ defined('C5_EXECUTE') or die("Access Denied.");
  * @license    http://www.concrete5.org/license/     MIT License
  *
  */
- 
+
 class DeletePagePageWorkflowRequest extends PageWorkflowRequest {
-	
+
 	protected $wrStatusNum = 100;
 
 	public function __construct() {
@@ -26,19 +26,19 @@ class DeletePagePageWorkflowRequest extends PageWorkflowRequest {
 		$d->setShortStatus(t("Pending Delete"));
 		return $d;
 	}
-	
+
 	public function getWorkflowRequestStyleClass() {
 		return 'error';
 	}
-	
+
 	public function getWorkflowRequestApproveButtonClass() {
 		return 'error';
 	}
 
 	public function getWorkflowRequestApproveButtonInnerButtonRightHTML() {
 		return '<i class="icon-white icon-trash"></i>';
-	}	
-	
+	}
+
 	public function getWorkflowRequestApproveButtonText() {
 		return t('Approve Delete');
 	}
@@ -56,5 +56,5 @@ class DeletePagePageWorkflowRequest extends PageWorkflowRequest {
 		return $wpr;
 	}
 
-	
+
 }

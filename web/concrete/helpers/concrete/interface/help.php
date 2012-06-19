@@ -6,12 +6,12 @@ class ConcreteInterfaceHelpHelper {
 		$blockTypes = array(
 		/*	'autonav' => array(t('Auto-nav is great!'), 'http://www.concrete5.org/documentation/editors-guide/in-page-editing/block-areas/add-block/auto-nav/'),
 		'content' => t('Content block is great!') */
-			
+
 		);
-		
+
 		return $blockTypes;
 	}
-	
+
 	public function getPages() {
 		$pages = array(
 			'/dashboard/composer/write' => t('Composer lets you prepare content outside the context of your site; similar to most blogging applications.  To use composer, a page type needs to have at least one of its default blocks set to be editable in composer.'),

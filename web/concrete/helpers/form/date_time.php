@@ -21,7 +21,7 @@
 defined('C5_EXECUTE') or die("Access Denied.");
 class FormDateTimeHelper {
 
-	/** 
+	/**
 	 * Takes a "field" and grabs all the corresponding disparate fields from $_POST and translates into a timestamp
 	 * @param string $field
 	 * @param array $arr
@@ -31,7 +31,7 @@ class FormDateTimeHelper {
 		if ($arr == null) {
 			$arr = $_POST;
 		}
-		
+
 		if (isset($arr[$field . '_dt'])) {
 			$dt = date('Y-m-d', strtotime($arr[$field . '_dt']));
 			if (DATE_FORM_HELPER_FORMAT_HOUR == '12') {
@@ -48,7 +48,7 @@ class FormDateTimeHelper {
 		}
 	}
 
-	/** 
+	/**
 	 * Creates form fields and JavaScript calendar includes for a particular item
 	 * <code>
 	 *     $dh->datetime('yourStartDate', '2008-07-12 3:00:00');
@@ -73,7 +73,7 @@ class FormDateTimeHelper {
 			$_m = $prefix . '_m';
 			$_a = $prefix . '_a';
 		}
-		
+
 		$dfh = (DATE_FORM_HELPER_FORMAT_HOUR == '12') ? 'h' : 'H';
 		$dfhe = (DATE_FORM_HELPER_FORMAT_HOUR == '12') ? '12' : '23';
 		$dfhs = (DATE_FORM_HELPER_FORMAT_HOUR == '12') ? '1' : '0';
@@ -97,7 +97,7 @@ class FormDateTimeHelper {
 			} else {
 				$disabled = 'disabled';
 			}
-			
+
 			$html .= '<input type="checkbox" id="' . $id . '_activate" class="ccm-activate-date-time" ccm-date-time-id="' . $id . '" name="' . $_activate . '" ' . $activated . ' />';
 		}
 		$html .= '<span class="ccm-input-date-wrapper" id="' . $id . '_dw"><input id="' . $id . '_dt" name="' . $_dt . '" class="ccm-input-date" value="' . $dt . '" ' . $disabled . ' /></span>';
@@ -137,11 +137,11 @@ class FormDateTimeHelper {
 			$html .= '</select>';
 		}
 		$html .= '</span>';
-		if ($calendarAutoStart) { 
+		if ($calendarAutoStart) {
 			$html .= '<script type="text/javascript">$(function() { $("#' . $id . '_dt").datepicker({ dateFormat: \'' . DATE_APP_DATE_PICKER . '\', changeYear: true, showAnim: \'fadeIn\' }); });</script>';
 		}
 		// first we add a calendar input
-		
+
 		if ($includeActivation) {
 			$html .=<<<EOS
 			<script type="text/javascript">$("#{$id}_activate").click(function() {
@@ -163,13 +163,13 @@ class FormDateTimeHelper {
 			});
 			</script>
 EOS;
-			
+
 		}
 		return $html;
-	
+
 	}
-	
-	/** 
+
+	/**
 	 * Creates form fields and JavaScript calendar includes for a particular item but includes only calendar controls (no time.)
 	 * <code>
 	 *     $dh->datetime('yourStartDate', '2008-07-12 3:00:00');
@@ -194,12 +194,12 @@ EOS;
 		$html = '';
 		$html .= '<span class="ccm-input-date-wrapper" id="' . $id . '_dw"><input id="' . $id . '" name="' . $field . '" class="ccm-input-date" value="' . $dt . '"  /></span>';
 
-		if ($calendarAutoStart) { 
+		if ($calendarAutoStart) {
 			$html .= '<script type="text/javascript">$(function() { $("#' . $id . '").datepicker({ dateFormat: \'' . DATE_APP_DATE_PICKER . '\', changeYear: true, showAnim: \'fadeIn\' }); });</script>';
 		}
 		return $html;
-	
-	}	
+
+	}
 
 }
 

@@ -9,7 +9,7 @@ if ($res) {
 
 	header('Location: ' . View::url('/register', 'register_success'));
 	exit;
-	
+
 }
 
 ?>

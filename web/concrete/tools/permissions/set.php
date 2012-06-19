@@ -7,7 +7,7 @@ if ($_REQUEST['task'] == 'copy_permission_set' && Loader::helper("validation/tok
 	foreach($_POST['pkID'] as $pkID => $paID) {
 		$ps->addPermissionAssignment($pkID, $paID);
 	}
-	$ps->saveToSession();	
+	$ps->saveToSession();
 }
 
 if ($_REQUEST['task'] == 'paste_permission_set' && Loader::helper("validation/token")->validate('paste_permission_set')) {

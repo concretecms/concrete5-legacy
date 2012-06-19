@@ -13,5 +13,5 @@
 		ccm_setNewsflowPagingArrowHeight();
 	});
 	</script>
-	
+
 <? } ?>

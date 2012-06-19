@@ -1,14 +1,14 @@
 <?  defined('C5_EXECUTE') or die("Access Denied.");
 
 $tp = new TaskPermission();
-if ($tp->canInstallPackages()) { 
+if ($tp->canInstallPackages()) {
 	Loader::library('marketplace');
 	$mi = Marketplace::getInstance();
-	if ($_REQUEST['complete']) { 
-	
+	if ($_REQUEST['complete']) {
+
 		Config::save('MARKETPLACE_SITE_TOKEN', $_POST['csToken']);
 		Config::save('MARKETPLACE_SITE_URL_TOKEN', $_POST['csURLToken']);
-	
+
 		?>
 		<script type="text/javascript">
 			<? if ($_REQUEST['task'] == 'get') { ?>

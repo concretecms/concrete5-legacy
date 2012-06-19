@@ -61,7 +61,7 @@ if ($fsp->canEditFileSetPermissions()) {
 				$pa = PermissionAccess::getByID($paID, $pk);
 				if (is_object($pa)) {
 					$pk->assignPermissionAccess($pa);
-				}			
+				}
 			}
 		}
 	}

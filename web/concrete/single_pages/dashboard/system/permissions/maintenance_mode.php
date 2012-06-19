@@ -27,8 +27,8 @@ echo $h->getDashboardPaneHeaderWrapper(t('Maintenance Mode'), false, 'span8 offs
 				</li>
 			</ul>
 		</div>
-	</div>	
-	
+	</div>
+
 </div>
 <div class="ccm-pane-footer">
 <?php

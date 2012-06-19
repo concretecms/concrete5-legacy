@@ -37,7 +37,7 @@ var CCM_SITEMAP_EXPLORE_NODE = "<?=$node?>";
 
 <div id="ccm-dashboard-select-display-mode">
 <form>
-<? 
+<?
 $u = new User();
 $sitemapOverlayPreference = $u->config('SITEMAP_OVERLAY_DISPLAY_MODE');
 $display_mode = $sitemapOverlayPreference;

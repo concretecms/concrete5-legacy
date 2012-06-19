@@ -18,9 +18,9 @@
 
 	defined('C5_EXECUTE') or die("Access Denied.");
 	class ConcreteAssetLibraryHelper {
-	
-		/** 
-		 * Sets up a file field for use with a block. 
+
+		/**
+		 * Sets up a file field for use with a block.
 		 * @param string $id The ID of your form field
 		 * @param string $postname The name of your database column into which you'd like to save the file ID
 		 * @param string $chooseText
@@ -28,23 +28,23 @@
 		 * return string $html
 		 */
 		public function file($id, $postname, $chooseText, $bf = null, $filterArgs = array()) {
-		
+
 			$selectedDisplay = 'none';
 			$resetDisplay = 'block';
 			$fileID = 0;
-			
+
 			if (isset($_POST[$postname])) {
 				$bf = File::getByID($_POST[$postname]);
 			}
-			
+
 			if (is_object($bf) && (!$bf->isError()) && $bf->getFileID() > 0) {
 				$fileID = $bf->getFileID();
 				$selectedDisplay = 'block';
 				$resetDisplay = 'none';
 			}
-				
+
 			$html = '<div id="' . $id . '-fm-selected" onclick="ccm_chooseAsset=false" class="ccm-file-selected-wrapper" style="display: ' . $selectedDisplay . '"><img src="' . ASSETS_URL_IMAGES . '/throbber_white_16.gif" /></div>';
-			
+
 			$html .= '<div class="ccm-file-manager-select" id="' . $id . '-fm-display" ccm-file-manager-field="' . $id . '" style="display: ' . $resetDisplay . '">';
 			$html .= '<a href="javascript:void(0)" onclick="ccm_chooseAsset=false; ccm_alLaunchSelectorFileManager(\'' . $id . '\')">' . $chooseText . '</a>';
 			if ($filterArgs != false) {
@@ -57,11 +57,11 @@
 			if (is_object($bf) && (!$bf->isError()) && $bf->getFileID() > 0) {
 				$html .= '<script type="text/javascript">$(function() { ccm_triggerSelectFile(' . $fileID . ', \'' . $id . '\'); });</script>';
 			}
-			
+
 			return $html;
 		}
-		
-		/** 
+
+		/**
 		 * Sets up an image to be chosen for use with a block.
 		 * @param string $id The ID of your form field
 		 * @param string $postname The name of your database column into which you'd like to save the file ID
@@ -90,7 +90,7 @@
 			$args = array_merge($args, $additionalArgs);
 			return $this->file($id, $postname, $chooseText, $fileInstanceBlock, $args);
 		}
-	
+
 			/**
 		* Sets up a text file to be chosen for use with a block.
 		 * @param string $id The ID of your form field
@@ -106,7 +106,7 @@
 			$args = array_merge($args, $additionalArgs);
 			return $this->file($id, $postname, $chooseText, $fileInstanceBlock, $args);
 		}
-	
+
 		 /**
 		 * Sets up audio to be chosen for use with a block.
 		 * @param string $id The ID of your form field
@@ -122,7 +122,7 @@
 			$args = array_merge($args, $additionalArgs);
 			return $this->file($id, $postname, $chooseText, $fileInstanceBlock, $args);
 		}
-	
+
 		 /**
 		 * Sets up a document to be chosen for use with a block.
 		 * @param string $id The ID of your form field
@@ -138,7 +138,7 @@
 			$args = array_merge($args, $additionalArgs);
 			return $this->file($id, $postname, $chooseText, $fileInstanceBlock, $args);
 		}
-	
+
 		 /**
 		 * Sets up an application to be chosen for use with a block.
 		 * @param string $id The ID of your form field
@@ -154,5 +154,5 @@
 			$args = array_merge($args, $additionalArgs);
 			return $this->file($id, $postname, $chooseText, $fileInstanceBlock, $args);
 		}
-	
+
 	}

@@ -20,7 +20,7 @@ if (is_array($_REQUEST['cID'])) {
 
 $pcnt = 0;
 $cIDStr = '';
-foreach($pages as $c) { 
+foreach($pages as $c) {
 	$cp = new Permissions($c);
 	if ($cp->canEditPagePermissions()) {
 		$cIDStr .= '&cID[]=' . $c->getCollectionID();
@@ -59,28 +59,28 @@ $searchInstance = Loader::helper('text')->entities($_REQUEST['searchInstance']);
 	}
 
 	if ($_REQUEST['subtask'] == 'set' && $permissionsInherit == 'OVERRIDE') { ?>
-		
-		
+
+
 	<?
 	$pk = PagePermissionKey::getByID($_REQUEST['pkID']);
 	$pk->setPermissionObject($pages[0]);
 	$pk->setMultiplePageArray($pages);
-	
+
 	?>
-	
+
 	<? Loader::element("permission/detail", array('permissionKey' => $pk)); ?>
-	
-	
+
+
 	<script type="text/javascript">
-	var ccm_permissionDialogURL = '<?=REL_DIR_FILES_TOOLS_REQUIRED?>/pages/permissions?subtask=set<?=$cIDStr?>'; 
+	var ccm_permissionDialogURL = '<?=REL_DIR_FILES_TOOLS_REQUIRED?>/pages/permissions?subtask=set<?=$cIDStr?>';
 	</script>
 
-	
-	
+
+
 	<? } else { ?>
 
 	<form>
-	
+
 	<div class="ccm-pane-options" style="padding-bottom: 0px">
 	<div class="clearfix">
 	<label for="ccm-page-permissions-inherit"><?=t('Assign Permissions')?></label>
@@ -104,13 +104,13 @@ $searchInstance = Loader::helper('text')->entities($_REQUEST['searchInstance']);
 		</select>
 	</div>
 	</div>
-	
+
 	</div>
 	</form>
-	
+
 	<br/>
-	
-	
+
+
 	<? if ($permissionsInherit == 'OVERRIDE') { ?>
 
 <?=Loader::element('permission/help');?>
@@ -121,7 +121,7 @@ $searchInstance = Loader::helper('text')->entities($_REQUEST['searchInstance']);
 <table class="ccm-permission-grid">
 <?
 $permissions = PermissionKey::getList('page');
-foreach($permissions as $pk) { 
+foreach($permissions as $pk) {
 	$pk->setPermissionObject($c);
 	?>
 	<tr>
@@ -141,7 +141,7 @@ ccm_permissionLaunchDialog = function(link) {
 		modal: false,
 		width: 500,
 		height: 380
-	});		
+	});
 }
 </script>
 
@@ -152,13 +152,13 @@ ccm_permissionLaunchDialog = function(link) {
 </div>
 <? } ?>
 
-	
+
 	<? } else { ?>
 		<? $pkl = PermissionKey::getList('page'); $pk = $pkl[0];?>
 		<p><?=t('You may only set specific permissions for pages if they are set to override defaults or their parent pages.')?></p>
 	<? } ?>
-	
-	
+
+
 	<div id="ccm-page-permissions-confirm-dialog" style="display: none">
 	<?=t('Changing this setting will affect this page immediately. Are you sure?')?>
 	<div id="dialog-buttons-start">
@@ -166,22 +166,22 @@ ccm_permissionLaunchDialog = function(link) {
 		<input type="button" class="btn error ccm-button-right" value="Ok" onclick="ccm_pagePermissionsConfirmInheritanceChange()" />
 	</div>
 	</div>
-	
-	
+
+
 	</form>
 	<? $pk->setPermissionObject($pages[0]); ?>
 	<? $pk->setMultiplePageArray($pages); ?>
 
 	<script type="text/javascript">
 	var inheritanceVal = '';
-	
+
 	ccm_pagePermissionsCancelInheritance = function() {
 		$('#ccm-page-permissions-inherit').val(inheritanceVal);
 	}
-	
-	ccm_pagePermissionsConfirmInheritanceChange = function() { 
+
+	ccm_pagePermissionsConfirmInheritanceChange = function() {
 		jQuery.fn.dialog.showLoader();
-		$.getJSON('<?=$pk->getPermissionAssignmentObject()->getPermissionKeyToolsURL("change_permission_inheritance")?>&mode=' + $('#ccm-page-permissions-inherit').val(), function(r) { 
+		$.getJSON('<?=$pk->getPermissionAssignmentObject()->getPermissionKeyToolsURL("change_permission_inheritance")?>&mode=' + $('#ccm-page-permissions-inherit').val(), function(r) {
 			if (r.deferred) {
 				jQuery.fn.dialog.closeAll();
 				jQuery.fn.dialog.hideLoader();
@@ -192,17 +192,17 @@ ccm_permissionLaunchDialog = function(link) {
 			}
 		});
 	}
-	
-	
+
+
 	$(function() {
 
 		$('#ccm-permission-list-form').ajaxForm({
 			dataType: 'json',
-			
+
 			beforeSubmit: function() {
 				jQuery.fn.dialog.showLoader();
 			},
-			
+
 			success: function(r) {
 				jQuery.fn.dialog.hideLoader();
 				jQuery.fn.dialog.closeTop();
@@ -212,15 +212,15 @@ ccm_permissionLaunchDialog = function(link) {
 					jQuery.fn.dialog.closeTop();
 					ccmAlert.hud(ccmi18n.setPermissionsDeferredMsg, 2000, 'success', ccmi18n_sitemap.setPagePermissions);
 				}
-	
-			}		
+
+			}
 		});
 
 		inheritanceVal = $('#ccm-page-permissions-inherit').val();
 		$('#ccm-page-permissions-inherit').change(function() {
-			if ($(this).val() == '-1') { 
+			if ($(this).val() == '-1') {
 				ccm_pagePermissionsCancelInheritance();
-			} else { 
+			} else {
 				$('#dialog-buttons-start').addClass('dialog-buttons');
 				jQuery.fn.dialog.open({
 					element: '#ccm-page-permissions-confirm-dialog',
@@ -236,7 +236,7 @@ ccm_permissionLaunchDialog = function(link) {
 
 		$('#ccm-page-permissions-subpages-override-template-permissions').change(function() {
 			jQuery.fn.dialog.showLoader();
-			$.getJSON('<?=$pk->getPermissionAssignmentObject()->getPermissionKeyToolsURL("change_subpage_defaults_inheritance")?>&inherit=' + $(this).val(), function(r) { 
+			$.getJSON('<?=$pk->getPermissionAssignmentObject()->getPermissionKeyToolsURL("change_subpage_defaults_inheritance")?>&inherit=' + $(this).val(), function(r) {
 				if (r.deferred) {
 					jQuery.fn.dialog.closeTop();
 					jQuery.fn.dialog.hideLoader();
@@ -246,21 +246,21 @@ ccm_permissionLaunchDialog = function(link) {
 				}
 			});
 		});
-		
-		
+
+
 	});
-	
+
 	ccm_refreshPagePermissions = function() {
 		jQuery.fn.dialog.showLoader();
-		$.get('<?=REL_DIR_FILES_TOOLS_REQUIRED?>/pages/permissions?foo=1<?=$cIDStr?>', function(r) { 
+		$.get('<?=REL_DIR_FILES_TOOLS_REQUIRED?>/pages/permissions?foo=1<?=$cIDStr?>', function(r) {
 			jQuery.fn.dialog.replaceTop(r);
 			jQuery.fn.dialog.hideLoader();
-		});	
+		});
 	}
-	
+
 	</script>
-	
-	
+
+
 <? }
 
 ?>

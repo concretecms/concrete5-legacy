@@ -1,57 +1,57 @@
 <?
 defined('C5_EXECUTE') or die("Access Denied.");
 class AttributeKey extends Object {
-	
+
 	public function getIndexedSearchTable() {return false;}
 	public function getSearchIndexFieldDefinition() {
 		return $this->searchIndexFieldDefinition;
 	}
-	/** 
+	/**
 	 * Returns the name for this attribute key
 	 */
 	public function getAttributeKeyName() { return $this->akName;}
 
-	/** 
+	/**
 	 * Returns the handle for this attribute key
 	 */
 	public function getAttributeKeyHandle() { return $this->akHandle;}
-	
+
 	public function getAttributeKeyDisplayHandle() {
 		return Loader::helper('text')->unhandle($this->akHandle);
 	}
-	
-	/** 
+
+	/**
 	 * Returns the ID for this attribute key
 	 */
 	public function getAttributeKeyID() {return $this->akID;}
 	public function getAttributeKeyCategoryID() {return $this->akCategoryID;}
-	
-	/** 
-	 * Returns whether the attribute key is searchable 
+
+	/**
+	 * Returns whether the attribute key is searchable
 	 */
 	public function isAttributeKeySearchable() {return $this->akIsSearchable;}
 
-	/** 
-	 * Returns whether the attribute key is indexed as a "keyword search" field. 
+	/**
+	 * Returns whether the attribute key is indexed as a "keyword search" field.
 	 */
 	public function isAttributeKeyContentIndexed() {return $this->akIsSearchableIndexed;}
 
-	/** 
-	 * Returns whether the attribute key is one that was automatically created by a process. 
+	/**
+	 * Returns whether the attribute key is one that was automatically created by a process.
 	 */
 	public function isAttributeKeyAutoCreated() {return $this->akIsAutoCreated;}
 
-	/** 
-	 * Returns whether the attribute key is included in the standard search for this category. 
+	/**
+	 * Returns whether the attribute key is included in the standard search for this category.
 	 */
 	public function isAttributeKeyColumnHeader() {return $this->akIsColumnHeader;}
 
-	/** 
-	 * Returns whether the attribute key is one that can be edited through the frontend. 
+	/**
+	 * Returns whether the attribute key is one that can be edited through the frontend.
 	 */
 	public function isAttributeKeyEditable() {return $this->akIsEditable;}
-	
-	/** 
+
+	/**
 	 * Loads the required attribute fields for this instantiated attribute
 	 */
 	protected function load($akID) {
@@ -61,16 +61,16 @@ class AttributeKey extends Object {
 		if ($akCategoryHandle != '') {
 			$row = $db->GetRow('select akID, akHandle, akName, AttributeKeys.akCategoryID, akIsEditable, akIsSearchable, akIsSearchableIndexed, akIsAutoCreated, akIsColumnHeader, AttributeKeys.atID, atHandle, AttributeKeys.pkgID from AttributeKeys inner join AttributeKeyCategories on AttributeKeys.akCategoryID = AttributeKeyCategories.akCategoryID inner join AttributeTypes on AttributeKeys.atID = AttributeTypes.atID where akID = ? and akCategoryHandle = ?', array($akID, $akCategoryHandle));
 		} else {
-			$row = $db->GetRow('select akID, akHandle, akName, akCategoryID, akIsEditable, akIsSearchable, akIsSearchableIndexed, akIsAutoCreated, akIsColumnHeader, AttributeKeys.atID, atHandle, AttributeKeys.pkgID from AttributeKeys inner join AttributeTypes on AttributeKeys.atID = AttributeTypes.atID where akID = ?', array($akID));		
+			$row = $db->GetRow('select akID, akHandle, akName, akCategoryID, akIsEditable, akIsSearchable, akIsSearchableIndexed, akIsAutoCreated, akIsColumnHeader, AttributeKeys.atID, atHandle, AttributeKeys.pkgID from AttributeKeys inner join AttributeTypes on AttributeKeys.atID = AttributeTypes.atID where akID = ?', array($akID));
 		}
 		$this->setPropertiesFromArray($row);
 	}
-	
+
 	public function getPackageID() { return $this->pkgID;}
 	public function getPackageHandle() {
 		return PackageList::getHandle($this->pkgID);
 	}
-	
+
 	public static function getInstanceByID($akID) {
 		$db = Loader::db();
 		$akCategoryID = $db->GetOne('select akCategoryID from AttributeKeys where akID = ?', $akID);
@@ -79,17 +79,17 @@ class AttributeKey extends Object {
 			return $akc->getAttributeKeyByID($akID);
 		}
 	}
-	
-	/** 
-	 * Returns an attribute type object 
+
+	/**
+	 * Returns an attribute type object
 	 */
 	public function getAttributeType() {
 		return AttributeType::getByID($this->atID);
 	}
 	//deprecated
-	public function getAttributeKeyType(){ return $this->getAttributeType(); }	
-	
-	/** 
+	public function getAttributeKeyType(){ return $this->getAttributeType(); }
+
+	/**
 	 * Returns a list of all attributes of this category
 	 */
 	public static function getList($akCategoryHandle, $filters = array()) {
@@ -102,7 +102,7 @@ class AttributeKey extends Object {
 		$r = $db->Execute($q, array($akCategoryHandle));
 		$list = array();
 		$txt = Loader::helper('text');
-		if ($pkgHandle) { 
+		if ($pkgHandle) {
 			Loader::model('attribute/categories/' . $akCategoryHandle, $pkgHandle);
 		} else {
 			Loader::model('attribute/categories/' . $akCategoryHandle);
@@ -118,14 +118,14 @@ class AttributeKey extends Object {
 		$r->Close();
 		return $list;
 	}
-	
+
 	public function export($axml, $exporttype = 'full') {
 		$type = $this->getAttributeType()->getAttributeTypeHandle();
 		$category = AttributeKeyCategory::getByID($this->akCategoryID)->getAttributeKeyCategoryHandle();
 		$akey = $axml->addChild('attributekey');
 		$akey->addAttribute('handle',$this->getAttributeKeyHandle());
-		
-		if ($exporttype == 'full') { 
+
+		if ($exporttype == 'full') {
 			$akey->addAttribute('name', $this->getAttributeKeyName());
 			$akey->addAttribute('package', $this->getPackageHandle());
 			$akey->addAttribute('searchable', $this->isAttributeKeySearchable());
@@ -134,7 +134,7 @@ class AttributeKey extends Object {
 			$akey->addAttribute('category', $category);
 			$this->getController()->exportKey($akey);
 		}
-		
+
 		return $akey;
 	}
 
@@ -148,8 +148,8 @@ class AttributeKey extends Object {
 			}
 		}
 	}
-	
-	/** 
+
+	/**
 	 * Note, this queries both the pkgID found on the AttributeKeys table AND any attribute keys of a special type
 	 * installed by that package, and any in categories by that package.
 	 * That's because a special type, if the package is uninstalled, is going to be unusable
@@ -181,8 +181,8 @@ class AttributeKey extends Object {
 		}
 		$r->Close();
 		return $list;
-	}	
-	
+	}
+
 	public static function import(SimpleXMLElement $ak) {
 		$type = AttributeType::getByHandle($ak['type']);
 		$akCategoryHandle = $ak['category'];
@@ -193,12 +193,12 @@ class AttributeKey extends Object {
 		$akn = self::add($akCategoryHandle, $type, array('akHandle' => $ak['handle'], 'akName' => $ak['name'], 'akIsSearchableIndexed' => $ak['indexed'], 'akIsSearchable' => $ak['searchable']), $pkg);
 		$akn->getController()->importKey($ak);
 	}
-	
-	/** 
-	 * Adds an attribute key. 
+
+	/**
+	 * Adds an attribute key.
 	 */
 	protected function add($akCategoryHandle, $type, $args, $pkg = false) {
-		
+
 		$vn = Loader::helper('validation/numbers');
 		$txt = Loader::helper('text');
 		if (!is_object($type)) {
@@ -211,14 +211,14 @@ class AttributeKey extends Object {
 		if (is_object($pkg)) {
 			$pkgID = $pkg->getPackageID();
 		}
-		
+
 		extract($args);
-		
+
 		$_akIsSearchable = 1;
 		$_akIsSearchableIndexed = 1;
 		$_akIsAutoCreated = 1;
 		$_akIsEditable = 1;
-		
+
 		if (!$akIsSearchable) {
 			$_akIsSearchable = 0;
 		}
@@ -231,14 +231,14 @@ class AttributeKey extends Object {
 		if (isset($akIsEditable) && (!$akIsEditable)) {
 			$_akIsEditable = 0;
 		}
-		
+
 		$db = Loader::db();
 		$akCategoryID = $db->GetOne("select akCategoryID from AttributeKeyCategories where akCategoryHandle = ?", $akCategoryHandle);
 		$a = array($akHandle, $akName, $_akIsSearchable, $_akIsSearchableIndexed, $_akIsAutoCreated, $_akIsEditable, $atID, $akCategoryID, $pkgID);
 		$r = $db->query("insert into AttributeKeys (akHandle, akName, akIsSearchable, akIsSearchableIndexed, akIsAutoCreated, akIsEditable, atID, akCategoryID, pkgID) values (?, ?, ?, ?, ?, ?, ?, ?, ?)", $a);
-		
+
 		$category = AttributeKeyCategory::getByID($akCategoryID);
-		
+
 		if ($r) {
 			$akID = $db->Insert_ID();
 			$className = $txt->camelcase($akCategoryHandle) . 'AttributeKey';
@@ -247,7 +247,7 @@ class AttributeKey extends Object {
 			switch($category->allowAttributeSets()) {
 				case AttributeKeyCategory::ASET_ALLOW_SINGLE:
 					if ($asID > 0) {
-						$ak->setAttributeSet(AttributeSet::getByID($asID));			
+						$ak->setAttributeSet(AttributeSet::getByID($asID));
 					}
 					break;
 			}
@@ -257,10 +257,10 @@ class AttributeKey extends Object {
 			$cnt->setAttributeKey($ak);
 			$cnt->saveKey($args);
 			$ak->updateSearchIndex();
-			
+
 			$at->__destruct();
 			unset($at);
-			unset($cnt);		
+			unset($cnt);
 			return $ak;
 		}
 	}
@@ -268,9 +268,9 @@ class AttributeKey extends Object {
 	public function refreshCache() {
 		Cache::delete(Loader::helper('text')->uncamelcase(get_class($this)), $this->getAttributeKeyID());
 	}
-	
-	/** 
-	 * Updates an attribute key. 
+
+	/**
+	 * Updates an attribute key.
 	 */
 	public function update($args) {
 		$prevHandle = $this->getAttributeKeyHandle();
@@ -288,7 +288,7 @@ class AttributeKey extends Object {
 		$akCategoryHandle = $db->GetOne("select akCategoryHandle from AttributeKeyCategories inner join AttributeKeys on AttributeKeys.akCategoryID = AttributeKeyCategories.akCategoryID where akID = ?", $this->getAttributeKeyID());
 		$a = array($akHandle, $akName, $akIsSearchable, $akIsSearchableIndexed, $this->getAttributeKeyID());
 		$r = $db->query("update AttributeKeys set akHandle = ?, akName = ?, akIsSearchable = ?, akIsSearchableIndexed = ? where akID = ?", $a);
-		
+
 		$category = AttributeKeyCategory::getByID($this->akCategoryID);
 		switch($category->allowAttributeSets()) {
 			case AttributeKeyCategory::ASET_ALLOW_SINGLE:
@@ -305,7 +305,7 @@ class AttributeKey extends Object {
 				break;
 		}
 
-		
+
 		if ($r) {
 			$txt = Loader::helper('text');
 			$className = $txt->camelcase($akCategoryHandle) . 'AttributeKey';
@@ -320,14 +320,14 @@ class AttributeKey extends Object {
 			return $ak;
 		}
 	}
-	
-	/** 
-	 * Duplicates an attribute key 
+
+	/**
+	 * Duplicates an attribute key
 	 */
 	public function duplicate($args = array()) {
 		$ar = new ADODB_Active_Record('AttributeKeys');
 		$ar->Load('akID=?', array($this->akID));
-		
+
 		$ar2 = clone $ar;
 		$ar2->akID = null;
 		foreach($args as $key=>$value) {
@@ -337,29 +337,29 @@ class AttributeKey extends Object {
 		$db = Loader::db();
 		$ak = new AttributeKey();
 		$ak->load($db->Insert_ID());
-		
+
 		// now we duplicate the specific category fields
 		$this->getController()->duplicateKey($ak);
-		
+
 		return $ak;
 	}
-	
+
 	public function inAttributeSet($as) {
 		if (is_object($as)) {
 			return $as->contains($this);
 		}
 	}
-	
+
 	public function setAttributeKeyColumnHeader($r) {
 		$db = Loader::db();
 		$r = ($r == true) ? 1 : 0;
 		$db->Execute('update AttributeKeys set akIsColumnHeader = ? where akID = ?', array($r, $this->getAttributeKeyID()));
 	}
-	
+
 	public function reindex($tbl, $columnHeaders, $attribs, $rs) {
 		$db = Loader::db();
 		$columns = $db->MetaColumns($tbl);
-		
+
 		foreach($attribs as $akHandle => $value) {
 			if (is_array($value)) {
 				foreach($value as $key => $v) {
@@ -375,15 +375,15 @@ class AttributeKey extends Object {
 				}
 			}
 		}
-		
-		//this shouldn't be necessary, but i had a saying telling me that the static variable 'db' was protected, 
-		//even though it was declared as public 
+
+		//this shouldn't be necessary, but i had a saying telling me that the static variable 'db' was protected,
+		//even though it was declared as public
 		$q = $db->GetInsertSQL($rs, $columnHeaders);
 		$r = $db->Execute($q);
 		$r->Close();
 		$rs->Close();
 	}
-	
+
 	public function updateSearchIndex($prevHandle = false) {
 		$type = $this->getAttributeType();
 		$cnt = $type->getController();
@@ -393,7 +393,7 @@ class AttributeKey extends Object {
 		if ($cnt->getSearchIndexFieldDefinition() == false) {
 			return false;
 		}
-		
+
 		$fields = array();
 		if (!is_array($cnt->getSearchIndexFieldDefinition())) {
 			$fields[] = $this->akHandle . ' ' . $cnt->getSearchIndexFieldDefinition();
@@ -402,17 +402,17 @@ class AttributeKey extends Object {
 				$fields[$col] = $this->akHandle . '_' . $col . ' ' . $def;
 			}
 		}
-		
+
 		$db = Loader::db();
 		$columns = $db->MetaColumns($this->getIndexedSearchTable());
 		$dba = NewDataDictionary($db, DB_TYPE);
-		
+
 		foreach($fields as $col => $field) {
 
 			$addColumn = true;
 
 			$field = 'ak_' . $field;
-			
+
 			if (!is_int($col)) {
 				$column = 'ak_' . $this->akHandle . '_' . $col;
 			} else {
@@ -425,7 +425,7 @@ class AttributeKey extends Object {
 					$prevColumn = 'ak_' . $prevHandle;
 				}
 			}
-			
+
 			if ($prevColumn != false) {
 				if ($columns[strtoupper($prevColumn)]) {
 					$q = $dba->RenameColumnSQL($this->getIndexedSearchTable(), $prevColumn, $column, $field);
@@ -433,23 +433,23 @@ class AttributeKey extends Object {
 					$addColumn = false;
 				}
 			}
-			
+
 			if ($addColumn) {
 				if (!$columns[strtoupper($column)]) {
 					$q = $dba->AddColumnSQL($this->getIndexedSearchTable(), $field);
 					$db->Execute($q[0]);
 				}
 			}
-			
+
 		}
 	}
-	
+
 	public function delete() {
 		$at = $this->getAttributeType();
 		$at->controller->setAttributeKey($this);
 		$at->controller->deleteKey();
 		$cnt = $this->getController();
-		
+
 		$db = Loader::db();
 		$db->Execute('delete from AttributeKeys where akID = ?', array($this->getAttributeKeyID()));
 		$db->Execute('delete from AttributeSetKeys where akID = ?', array($this->getAttributeKeyID()));
@@ -457,7 +457,7 @@ class AttributeKey extends Object {
 		if ($this->getIndexedSearchTable()) {
 			$columns = $db->MetaColumns($this->getIndexedSearchTable());
 			$dba = NewDataDictionary($db, DB_TYPE);
-			
+
 			$fields = array();
 			if (!is_array($cnt->getSearchIndexFieldDefinition())) {
 				$dropColumns[] = 'ak_' . $this->akHandle;
@@ -466,7 +466,7 @@ class AttributeKey extends Object {
 					$dropColumns[] = 'ak_' . $this->akHandle . '_' . $col;
 				}
 			}
-			
+
 			foreach($dropColumns as $dc) {
 				if ($columns[strtoupper($dc)]) {
 					$q = $dba->DropColumnSQL($this->getIndexedSearchTable(), $dc);
@@ -477,7 +477,7 @@ class AttributeKey extends Object {
 		$this->refreshCache();
 
 	}
-	
+
 	public function getAttributeValueIDList() {
 		$db = Loader::db();
 		$ids = array();
@@ -489,7 +489,7 @@ class AttributeKey extends Object {
 		return $ids;
 	}
 
-	/** 
+	/**
 	 * Adds a generic attribute record (with this type) to the AttributeValues table
 	 */
 	public function addAttributeValue() {
@@ -503,20 +503,20 @@ class AttributeKey extends Object {
 		$avID = $db->Insert_ID();
 		return AttributeValue::getByID($avID);
 	}
-	
+
 	public function getAttributeKeyIconSRC() {
 		$type = $this->getAttributeType();
 		return $type->getAttributeTypeIconSRC();
 	}
-	
+
 	public function getController() {
 		$at = AttributeType::getByHandle($this->atHandle);
 		$cnt = $at->getController();
 		$cnt->setAttributeKey($this);
 		return $cnt;
 	}
-	
-	/** 
+
+	/**
 	 * Renders a view for this attribute key. If no view is default we display it's "view"
 	 * Valid views are "view", "form" or a custom view (if the attribute has one in its directory)
 	 * Additionally, an attribute does not have to have its own interface. If it doesn't, then whatever
@@ -529,8 +529,8 @@ class AttributeKey extends Object {
 			return $resp;
 		}
 	}
-	
-	/** 
+
+	/**
 	 * Calls the functions necessary to save this attribute to the database. If no passed value is passed, then we save it via the stock form.
 	 */
 	protected function saveAttribute($attributeValue, $passedValue = false) {
@@ -545,11 +545,11 @@ class AttributeKey extends Object {
 		$at->__destruct();
 		unset($at);
 	}
-	
+
 	public function __destruct() {
 
 	}
-	
+
 	public function validateAttributeForm($h = false) {
 		$at = $this->getAttributeType();
 		$at->controller->setAttributeKey($this);
@@ -576,12 +576,12 @@ class AttributeKey extends Object {
 		}
 		$as->addKey($this);
 	}
-	
+
 	public function clearAttributeSets() {
 		$db = Loader::db();
 		$db->Execute('delete from AttributeSetKeys where akID = ?', $this->akID);
 	}
-	
+
 	public function getAttributeSets() {
 		$db = Loader::db();
 		$sets = array();
@@ -591,39 +591,39 @@ class AttributeKey extends Object {
 		}
 		return $sets;
 	}
-	
-	/** 
+
+	/**
 	 * Saves an attribute using its stock form.
 	 */
 	public function saveAttributeForm($obj) {
 		$this->saveAttribute($obj);
 	}
-	
-	/** 
+
+	/**
 	 * Sets an attribute directly with a passed value.
 	 */
 	public function setAttribute($obj, $value) {
 		$this->saveAttribute($obj, $value);
 	}
-	
-	/** 
+
+	/**
 	 * @deprecated */
 	public function outputSearchHTML() {
 		$this->render('search');
 	}
-	
+
 	// deprecated
 	public function getKeyName() { return $this->getAttributeKeyName();}
 
-	/** 
+	/**
 	 * Returns the handle for this attribute key
 	 */
 	public function getKeyHandle() { return $this->getAttributeKeyHandle();}
-	
-	/** 
+
+	/**
 	 * Returns the ID for this attribute key
 	 */
 	public function getKeyID() {return $this->getAttributeKeyID();}
-	
+
 
 }

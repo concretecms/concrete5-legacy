@@ -8,7 +8,7 @@
 	<option value="">** <?=t('Select a form')?></option>
 <? foreach($filenames as $ffilename) {
 	$selected = ($ffilename == $filename) ? " selected" : "";
-	
+
 	echo('<option value="' . $ffilename . '"' . $selected . '>' . $file->unfilename($ffilename) . '</option>');
 } ?>
 </select></div>

@@ -14,13 +14,13 @@ if (count($items) > 0) { ?>
 	<th class="<?=$list->getSearchResultsClass('wpCurrentStatus')?>"><a href="<?=$list->getSortByURL('wpCurrentStatus', 'desc')?>"><?=t('Current Status')?></a></th>
 	<th>&nbsp;</th>
 </tr>
-<? 
+<?
 $noitems = true;
-	foreach($items as $it) { 
+	foreach($items as $it) {
 	$p = $it->getPageObject();
 	$wp = $it->getWorkflowProgressObject();
 	$wf = $wp->getWorkflowObject();
-	if ($wf->canApproveWorkflowProgressObject($wp)) { 
+	if ($wf->canApproveWorkflowProgressObject($wp)) {
 		$noitems = false;
 	?>
 <tr class="ccm-workflow-waiting-for-me-row<?=$wp->getWorkflowProgressID()?>">
@@ -31,7 +31,7 @@ $noitems = true;
 	<td class="ccm-workflow-progress-actions">
 	<form action="<?=$wp->getWorkflowProgressFormAction()?>" method="post">
 	<? $actions = $wp->getWorkflowProgressActions(); ?>
-	<? foreach($actions as $act) { 
+	<? foreach($actions as $act) {
 		$attribs = '';
 		$_attribs = $act->getWorkflowProgressActionExtraButtonParameters();
 		foreach($_attribs as $key => $value) {
@@ -47,7 +47,7 @@ $noitems = true;
 		}
 		if ($act->getWorkflowProgressActionURL() != '') {
 			print '<a href="' . $act->getWorkflowProgressActionURL() . '&source=dashboard" ' . $attribs . ' class="btn btn-mini ' . $act->getWorkflowProgressActionStyleClass() . '">' . $bl . $act->getWorkflowProgressActionLabel() . $br . '</a> ';
-		} else { 
+		} else {
 			print '<button type="submit" ' . $attribs . ' name="action_' . $act->getWorkflowProgressActionTask() . '" class="btn btn-mini ' . $act->getWorkflowProgressActionStyleClass() . '">' . $bl . $act->getWorkflowProgressActionLabel() . $br . '</button> ';
 		}
 	 } ?>
@@ -60,7 +60,7 @@ $noitems = true;
 	</td>
 </tr>
 
-<? } 
+<? }
 
 } ?>
 <? if ($noitems) { ?>
@@ -73,7 +73,7 @@ $noitems = true;
 
 <script type="text/javascript">
 $(function() {
-	$('.ccm-workflow-progress-actions form').ajaxForm({ 
+	$('.ccm-workflow-progress-actions form').ajaxForm({
 		dataType: 'json',
 		beforeSubmit: function() {
 			jQuery.fn.dialog.showLoader();
@@ -83,7 +83,7 @@ $(function() {
 			$('.ccm-workflow-waiting-for-me-row' + wpID).fadeOut(300, function() {
 				jQuery.fn.dialog.hideLoader();
 				$('.ccm-workflow-waiting-for-me-row' + wpID).remove();
-				if ($('#ccm-workflow-waiting-for-me tr').length == 1) { 
+				if ($('#ccm-workflow-waiting-for-me tr').length == 1) {
 					$("#ccm-workflow-waiting-for-me-wrapper").html('<?=t('None.')?>');
 				}
 			});

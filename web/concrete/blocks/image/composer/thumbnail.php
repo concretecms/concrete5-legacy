@@ -10,7 +10,7 @@ $form = Loader::helper('form');
 $html = Loader::helper('html');
 $url = Loader::helper('concrete/urls');
 
-if ($controller->getFileID() > 0) { 
+if ($controller->getFileID() > 0) {
 	$bf = $controller->getFileObject();
 }
 
@@ -32,7 +32,7 @@ $al = Loader::helper('concrete/asset_library');
 	<div class="ccm-spacer" style="height: 10px;"></div>
 </div>
 <script type="text/javascript">
-ccm_triggerSelectFileComplete = function(fID, af) { 
+ccm_triggerSelectFileComplete = function(fID, af) {
 	// af = ccm-b-image-blockid
 	var td = $("#ccm-image-composer-thumbnail-" + af.substring(12));
 	ccm_alGetFileData(fID, function(data) {
@@ -52,16 +52,16 @@ ccm_triggerSelectFileComplete = function(fID, af) {
 		}
 		td.append('<strong>Actual Width</strong>: ' + dw + '<br/>');
 		td.append('<strong>Actual Height</strong>: ' + dh + '<br/>');
-		td.append('<a href="<?=$dialogurl?>?bID=' + af.substring(12) + '&width=' + tw + '&height=' + th + '&fID=' + fID + '" class="dialog-launch" dialog-modal="false" dialog-width="95%" dialog-height="460" dialog-title="Crop Image" class="dialog-launch" id="cropper-dialog-' + af.substring(12) + '">Crop + Upload Image</a>');		
+		td.append('<a href="<?=$dialogurl?>?bID=' + af.substring(12) + '&width=' + tw + '&height=' + th + '&fID=' + fID + '" class="dialog-launch" dialog-modal="false" dialog-width="95%" dialog-height="460" dialog-title="Crop Image" class="dialog-launch" id="cropper-dialog-' + af.substring(12) + '">Crop + Upload Image</a>');
 		$("#cropper-dialog-" + af.substring(12)).dialog();
 		if(crop) {
 			$("#cropper-dialog-" + af.substring(12)).trigger('click');
 		}
 	});
-	
+
 }
 
-ThumbnailBuilder_onSaveCompleted = function(r) { 
+ThumbnailBuilder_onSaveCompleted = function(r) {
 	r = eval('(' + r + ')');
 	jQuery.fn.dialog.closeTop();
 	ccm_triggerSelectFile(r.fID, 'ccm-b-image-' + r.bID, false);

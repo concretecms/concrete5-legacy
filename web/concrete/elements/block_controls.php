@@ -1,4 +1,4 @@
-<? 
+<?
 	defined('C5_EXECUTE') or die("Access Denied.");
 	if ($a->isGlobalArea()) {
 		$c = Page::getCurrentPage();
@@ -33,7 +33,7 @@
 		$step = "&step={$_GET['step']}";
 	}
 ?>
-	
+
 
 <script type="text/javascript">
 <? $id = $bID . $a->getAreaID(); ?>
@@ -54,7 +54,7 @@ ccm_menuObj<?=$id?>.canWrite =true;
 ccm_menuObj<?=$id?>.btName = "<?=$btOriginal->getBlockTypeName()?>";
 ccm_menuObj<?=$id?>.width = <?=$btOriginal->getBlockTypeInterfaceWidth()?>;
 ccm_menuObj<?=$id?>.height = <?=$btOriginal->getBlockTypeInterfaceHeight()+$heightPlus ?>;
-<? } else if ($b->getBlockTypeHandle() == BLOCK_HANDLE_STACK_PROXY) { 
+<? } else if ($b->getBlockTypeHandle() == BLOCK_HANDLE_STACK_PROXY) {
 	$bi = $b->getInstance();
 	$stack = Stack::getByID($bi->stID);
 	$sp = new Permissions($stack);
@@ -62,14 +62,14 @@ ccm_menuObj<?=$id?>.height = <?=$btOriginal->getBlockTypeInterfaceHeight()+$heig
 	?>
 	ccm_menuObj<?=$id?>.canWriteStack =true;
 	ccm_menuObj<?=$id?>.stID = <?=$bi->stID?>;
-	<? } 
-} 
+	<? }
+}
 
 if ($b->getBlockTypeHandle() == BLOCK_HANDLE_STACK_PROXY) { ?>
-	ccm_menuObj<?=$id?>.canCopyToScrapbook = false;	
+	ccm_menuObj<?=$id?>.canCopyToScrapbook = false;
 <? } else { ?>
 	ccm_menuObj<?=$id?>.canCopyToScrapbook = true;
-<? } 
+<? }
 if ($p->canEditBlockPermissions() && PERMISSIONS_MODEL != 'simple') { ?>
 ccm_menuObj<?=$id?>.canModifyGroups = true;
 <? }
@@ -105,7 +105,7 @@ if ($ct->isCollectionTypeIncludedInComposer()) { ?>
 
 if ($p->canWrite() && (!$a->isGlobalArea())) {  ?>
 	ccm_menuObj<?=$id?>.canArrange = true;
-<? 
+<?
 }
 if ($editMessage) { ?>
 ccm_menuObj<?=$id?>.editMessage = "<?=$editMessage?>";

@@ -7,12 +7,12 @@ defined('C5_EXECUTE') or die("Access Denied.");
  * @license    http://www.concrete5.org/license/     MIT License
  *
  */
-class WorkflowDescription extends Object {  
-	
+class WorkflowDescription extends Object {
+
 	public function getText() {
 		return $this->text;
 	}
-	
+
 	public function setText($text) {
 		$this->text = $text;
 	}
@@ -20,18 +20,18 @@ class WorkflowDescription extends Object {
 	public function setHTML($html) {
 		$this->html = $html;
 	}
-	
+
 	public function getHTML() {
 		return $this->html;
 	}
-	
+
 	public function setShortStatus($status) {
 		$this->status = $status;
 	}
-	
+
 	public function getShortStatus() {
 		return $this->status;
 	}
-	
+
 
 }

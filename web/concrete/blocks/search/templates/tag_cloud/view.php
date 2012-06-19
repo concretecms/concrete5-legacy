@@ -1,4 +1,4 @@
-<? defined('C5_EXECUTE') or die("Access Denied."); ?> 
+<? defined('C5_EXECUTE') or die("Access Denied."); ?>
 
 <?
 	Loader::model('attribute/categories/collection');
@@ -6,9 +6,9 @@
 	$ak = CollectionAttributeKey::getByHandle('tags');
 	$akc = $ak->getController();
 	$pp = false;
-	
+
 	$tagCounts = array();
-	
+
 	if ($baseSearchPath != '') {
 		$pp = Page::getByPath($baseSearchPath);
 	}
@@ -24,13 +24,13 @@
 	foreach($tagCounts as $tagCount => $pos) {
 		$tagSizes[$pos] = setFontPx(($pos + 1) / $count);
 	}
-	
-	
+
+
 	function setFontPx($weight) {
 		$tagMinFontPx = '10';
 		$tagMaxFontPx = '24';
 
-		
+
 		$em = ($weight * ($tagMaxFontPx - $tagMinFontPx)) + $tagMinFontPx;
 		$em = round($em);
 		return $em;

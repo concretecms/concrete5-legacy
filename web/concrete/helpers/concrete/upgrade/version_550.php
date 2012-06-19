@@ -38,14 +38,14 @@ class ConcreteUpgradeVersion550Helper {
 			$db->Execute('alter table PageSearchIndex add column cRequiresReindex tinyint(1) not null default 0');
 			$db->Execute('alter table PageSearchIndex add index (cRequiresReindex)');
 		}
-		
+
 		// install version job
 		Loader::model("job");
-		Job::installByHandle('remove_old_page_versions');		
-		
-		// flag system pages appropriately 
-		Page::rescanSystemPages();		
-		
+		Job::installByHandle('remove_old_page_versions');
+
+		// flag system pages appropriately
+		Page::rescanSystemPages();
+
 		// add a newsflow task permission
 		$db = Loader::db();
 		$cnt = $db->GetOne('select count(*) from TaskPermissions where tpHandle = ?', array('view_newsflow'));
@@ -62,31 +62,31 @@ class ConcreteUpgradeVersion550Helper {
 
 		// install stacks, trash and drafts
 		$this->installSinglePages();
-		
+
 		// move the old dashboard
 		$newDashPage = Page::getByPath('/dashboard/welcome');
 		if (!is_object($newDashPage) || $newDashPage->isError()) {
 			$dashboard = Page::getByPath('/dashboard');
 			$dashboard->moveToTrash();
-			
-			// install new dashboard + page types		
+
+			// install new dashboard + page types
 			$this->installDashboard();
-		
+
 			$this->migrateOldDashboard();
 		}
-		
+
 		Loader::model('system/captcha/library');
 		$scl = SystemCaptchaLibrary::getByHandle('securimage');
 		if (!is_object($scl)) {
 			$scl = SystemCaptchaLibrary::add('securimage', t('SecurImage (Default)'));
 			$scl->activate();
 		}
-		
+
 		Config::save('SEEN_INTRODUCTION', 1);
 
-		
+
 	}
-	
+
 	public function installSinglePages() {
 		Loader::model('single_page');
 		$spl = SinglePage::add(TRASH_PAGE_PATH);
@@ -105,14 +105,14 @@ class ConcreteUpgradeVersion550Helper {
 			$spl->moveToRoot();
 		}
 	}
- 
+
 	public function migrateOldDashboard() {
 		$pagesToSkip = array(
 			'sitemap',
 			'sitemap/full',
 			'sitemap/explore',
 			'sitemap/search',
-			'sitemap/access',	
+			'sitemap/access',
 			'files',
 			'files/search',
 			'files/attributes',
@@ -157,13 +157,13 @@ class ConcreteUpgradeVersion550Helper {
 		$dashboard = Page::getByPath('/dashboard');
 		foreach($children as $cID) {
 			$c = Page::getByID($cID, 'RECENT');
-			if ($c->isInTrash()) { 
+			if ($c->isInTrash()) {
 				// we do this so that we don't move something that has already been moved out of the trash.
 				$path = str_replace(TRASH_PAGE_PATH . '/dashboard/', '', $c->getCollectionPath());
 				if (!in_array($path, $pagesToSkip)) {
 					$targetPath = substr($path, 0, strrpos($path, '/'));
-					if (!$targetPath) { 
-						$c->move($dashboard);		
+					if (!$targetPath) {
+						$c->move($dashboard);
 					} else {
 						$target = Page::getByPath('/dashboard/' . $targetPath);
 						if (is_object($target) && !$target->isError()) {
@@ -172,52 +172,52 @@ class ConcreteUpgradeVersion550Helper {
 							$c->move($dashboard);
 						}
 					}
-				}				
+				}
 			}
-		}		
+		}
 	}
-	
+
 	public function installBlockTypes() {
 		$bt = BlockType::getByHandle('core_scrapbook_display');
 		if (!is_object($bt)) {
-			BlockType::installBlockType('core_scrapbook_display');			
+			BlockType::installBlockType('core_scrapbook_display');
 		}
 		$bt = BlockType::getByHandle('core_stack_display');
 		if (!is_object($bt)) {
-			BlockType::installBlockType('core_stack_display');			
+			BlockType::installBlockType('core_stack_display');
 		}
 		$bt = BlockType::getByHandle('dashboard_app_status');
 		if (!is_object($bt)) {
-			BlockType::installBlockType('dashboard_app_status');			
+			BlockType::installBlockType('dashboard_app_status');
 		}
 		$bt = BlockType::getByHandle('dashboard_featured_addon');
 		if (!is_object($bt)) {
-			BlockType::installBlockType('dashboard_featured_addon');			
+			BlockType::installBlockType('dashboard_featured_addon');
 		}
 		$bt = BlockType::getByHandle('dashboard_featured_theme');
 		if (!is_object($bt)) {
-			BlockType::installBlockType('dashboard_featured_theme');			
+			BlockType::installBlockType('dashboard_featured_theme');
 		}
 		$bt = BlockType::getByHandle('dashboard_site_activity');
 		if (!is_object($bt)) {
-			BlockType::installBlockType('dashboard_site_activity');			
+			BlockType::installBlockType('dashboard_site_activity');
 		}
 		$bt = BlockType::getByHandle('dashboard_newsflow_latest');
 		if (!is_object($bt)) {
-			BlockType::installBlockType('dashboard_newsflow_latest');			
+			BlockType::installBlockType('dashboard_newsflow_latest');
 		}
 	}
-	
+
 	public function installDashboard() {
 		Loader::library('content/importer');
 		$ci = new ContentImporter();
 		$ci->importContentFile(DIR_BASE_CORE. '/config/install/base/dashboard.xml');
 	}
-	
+
 	public function prepare() {
 		// we install the updated schema just for tables that matter
 		Package::installDB(dirname(__FILE__) . '/db/version_550.xml');
 	}
 
-	
+
 }

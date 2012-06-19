@@ -11,5 +11,5 @@ class DashboardComposerController extends Controller {
 			$this->redirect('/dashboard/composer/write');
 		}
 	}
-	
+
 }

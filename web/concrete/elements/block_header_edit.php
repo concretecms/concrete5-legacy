@@ -9,14 +9,14 @@ global $c; ?>
 <script type="text/javascript">
 
 <? $ci = Loader::helper("concrete/urls"); ?>
-<? $url = $ci->getBlockTypeJavaScriptURL($bt); 
+<? $url = $ci->getBlockTypeJavaScriptURL($bt);
 if ($url != '') { ?>
 	ccm_addHeaderItem("<?=$url?>", 'JAVASCRIPT');
-<? } 
+<? }
 
 $identifier = strtoupper('BLOCK_CONTROLLER_' . $btHandle);
 if (is_array($headerItems[$identifier])) {
-	foreach($headerItems[$identifier] as $item) { 
+	foreach($headerItems[$identifier] as $item) {
 		if ($item instanceof CSSOutputObject) {
 			$type = 'CSS';
 		} else {
@@ -52,8 +52,8 @@ if (isset($blockTypes[$bt->getBlockTypeHandle()])) {
 	}
 }
 if (isset($help)) { ?>
-	<div class="dialog-help" id="ccm-menu-help-content"><? 
-		if (is_array($help)) { 
+	<div class="dialog-help" id="ccm-menu-help-content"><?
+		if (is_array($help)) {
 			print $help[0] . '<br><br><a href="' . $help[1] . '" class="btn small" target="_blank">' . t('Learn More') . '</a></div>';
 		} else {
 			print $help;

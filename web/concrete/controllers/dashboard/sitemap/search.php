@@ -2,38 +2,38 @@
 defined('C5_EXECUTE') or die("Access Denied.");
 Loader::model('page_list');
 class DashboardSitemapSearchController extends Controller {
-	
+
 	public $helpers = array('form');
-	
+
 	public function view() {
 		$html = Loader::helper('html');
-		
+
 		$pageList = $this->getRequestedSearchResults();
 		if (is_object($pageList)) {
 			$searchInstance = 'page' . time();
 
 			$this->addHeaderItem('<script type="text/javascript">$(function() { ccm_sitemapSetupSearch(\'' . $searchInstance . '\'); });</script>');
 			$pages = $pageList->getPage();
-					
-			$this->set('pageList', $pageList);		
-			$this->set('pages', $pages);		
+
+			$this->set('pageList', $pageList);
+			$this->set('pages', $pages);
 			$this->set('searchInstance', $searchInstance);
 			$this->set('pagination', $pageList->getPagination());
-			
+
 		}
 	}
-	
+
 	public function getRequestedSearchResults() {
-	
+
 		$dh = Loader::helper('concrete/dashboard/sitemap');
 		if (!$dh->canRead()) {
 			return false;
 		}
-		
+
 		$pageList = new PageList();
 		$pageList->ignoreAliases();
 		$pageList->enableStickySearchRequest();
-		
+
 		if ($_REQUEST['submit_search']) {
 			$pageList->resetSearchRequest();
 		}
@@ -45,9 +45,9 @@ class DashboardSitemapSearchController extends Controller {
 
 		$columns = PageSearchColumnSet::getCurrent();
 		$this->set('columns', $columns);
-		
+
 		$cvName = htmlentities($req['cvName'], ENT_QUOTES, APP_CHARSET);
-		
+
 		if ($cvName != '') {
 			$pageList->filterByName($cvName);
 		}
@@ -76,7 +76,7 @@ class DashboardSitemapSearchController extends Controller {
 							} else if ($req['cChildrenSelect'] == 'lt') {
 								$symbol = '<';
 							}
-							$pageList->filterByNumberOfChildren($req['cChildren'], $symbol);						
+							$pageList->filterByNumberOfChildren($req['cChildren'], $symbol);
 							break;
 						case 'owner':
 							$ui = UserInfo::getByUserName($req['owner']);
@@ -116,7 +116,7 @@ class DashboardSitemapSearchController extends Controller {
 							}
 							if ($dateTo != '') {
 								$dateTo = date('Y-m-d', strtotime($dateTo));
-								$dateTo .= ' 23:59:59';								
+								$dateTo .= ' 23:59:59';
 								$pageList->filterByPublicDate($dateTo, '<=');
 							}
 							break;
@@ -130,7 +130,7 @@ class DashboardSitemapSearchController extends Controller {
 							}
 							if ($dateTo != '') {
 								$dateTo = date('Y-m-d', strtotime($dateTo));
-								$dateTo .= ' 23:59:59';								
+								$dateTo .= ' 23:59:59';
 								$pageList->filterByDateLastModified($dateTo, '<=');
 							}
 							break;
@@ -144,7 +144,7 @@ class DashboardSitemapSearchController extends Controller {
 							}
 							if ($dateTo != '') {
 								$dateTo = date('Y-m-d', strtotime($dateTo));
-								$dateTo .= ' 23:59:59';								
+								$dateTo .= ' 23:59:59';
 								$pageList->filterByDateAdded($dateTo, '<=');
 							}
 							break;
@@ -156,7 +156,7 @@ class DashboardSitemapSearchController extends Controller {
 							if (!is_object($fak) || (!($fak instanceof CollectionAttributeKey))) {
 								break;
 							}
-							
+
 							$type = $fak->getAttributeType();
 							$cnt = $type->getController();
 							$cnt->setRequestArray($req);

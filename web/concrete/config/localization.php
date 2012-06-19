@@ -1,5 +1,5 @@
 <?
-defined('C5_EXECUTE') or die("Access Denied."); 
+defined('C5_EXECUTE') or die("Access Denied.");
 
 $u = new User();
 Config::getOrDefine('SITE_LOCALE', 'en_US');

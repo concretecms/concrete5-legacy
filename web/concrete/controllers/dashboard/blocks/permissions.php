@@ -1,9 +1,9 @@
 <?php defined('C5_EXECUTE') or die("Access Denied.");
 class DashboardBlocksPermissionsController extends DashboardBaseController {
-	
+
 	public function save() {
 		if (Loader::helper('validation/token')->validate('save_permissions')) {
-			
+
 			$tp = new TaskPermission();
 			if ($tp->canAccessTaskPermissions()) {
 				$permissions = PermissionKey::getList('block_type');
@@ -15,18 +15,18 @@ class DashboardBlocksPermissionsController extends DashboardBaseController {
 						$pa = PermissionAccess::getByID($paID, $pk);
 						if (is_object($pa)) {
 							$pt->assignPermissionAccess($pa);
-						}			
-					}		
+						}
+					}
 				}
 				$this->redirect('/dashboard/blocks/permissions', 'updated');
 			}
-			
+
 		} else {
 			$this->error->add(Loader::helper("validation/token")->getErrorMessage());
 		}
-		
+
 	}
-	
+
 	public function updated() {
 		$this->set('success', t('Permissions updated successfully.'));
 	}

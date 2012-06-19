@@ -4,7 +4,7 @@ class CacheLocal {
 
 	public $cache = array();
 	public $enabled = true; // disabled because of weird annoying race conditions. This will slow things down but only if you don't have zend cache active.
-	
+
 	public static function get() {
 		static $instance;
 		if (!isset($instance)) {
@@ -16,11 +16,11 @@ class CacheLocal {
 }
 
 class Cache {
-	
+
 	public function key($type, $id) {
 		return md5($type . $id);
 	}
-	
+
 	public function getLibrary() {
 		static $cache;
 		if (!isset($cache) && defined('DIR_FILES_CACHE')) {
@@ -30,7 +30,7 @@ class Cache {
 				$frontendOptions = array(
 					'lifetime' => CACHE_LIFETIME,
 					'automatic_serialization' => true,
-					'cache_id_prefix' => CACHE_ID		
+					'cache_id_prefix' => CACHE_ID
 				);
 				$backendOptions = array(
 					'cache_dir' => DIR_FILES_CACHE,
@@ -60,37 +60,37 @@ class Cache {
 		}
 		return $cache;
 	}
-	
+
 	public function startup() {
 		$cache = Cache::getLibrary();
 	}
-	
+
 	public function disableCache() {
 		$ca = Cache::getLibrary();
 		if (is_object($ca)) {
 			$ca->setOption('caching', false);
 		}
 	}
-	
+
 	public function enableCache() {
 		$ca = Cache::getLibrary();
 		if (is_object($ca)) {
 			$ca->setOption('caching', true);
 		}
 	}
-	
+
 	public function disableLocalCache() {
 		CacheLocal::get()->enabled = false;
 	}
 	public function enableLocalCache() {
 		CacheLocal::get()->enabled = true;
 	}
-	
-	/** 
+
+	/**
 	 * Inserts or updates an item to the cache
 	 * If $forceSet is true, we sidestep ENABLE_CACHE. This is for certain operations that
 	 * the cache must always be enabled for (getting remote data, etc..)
-	 */	
+	 */
 	public function set($type, $id, $obj, $expire = false) {
 		$loc = CacheLocal::get();
 		if ($loc->enabled) {
@@ -107,19 +107,19 @@ class Cache {
 		}
 		$cache->save($obj, Cache::key($type, $id), array($type), $expire);
 	}
-	
-	/** 
+
+	/**
 	 * Retrieves an item from the cache
 	 * If $forceGet is true, we sidestep ENABLE_CACHE. This is for certain operations that
 	 * the cache must always be enabled for (getting remote data, etc..)
-	 */	
+	 */
 	public function get($type, $id, $mustBeNewerThan = false, $forceGet = false) {
 		$loc = CacheLocal::get();
 		$key = Cache::key($type, $id);
 		if ($loc->enabled && array_key_exists($key, $loc->cache)) {
 			return $loc->cache[$key];
 		}
-			
+
 		$cache = Cache::getLibrary();
 		if (!$cache) {
 			if ($loc->enabled) {
@@ -127,7 +127,7 @@ class Cache {
 			}
 			return false;
 		}
-		
+
 		// if mustBeNewerThan is set, we check the cache mtime
 		// if mustBeNewerThan is newer than that time, we relinquish
 		if ($mustBeNewerThan != false) {
@@ -141,7 +141,7 @@ class Cache {
 				return false;
 			}
 		}
-		
+
 		$loaded = $cache->load($key);
 		if ($loc->enabled) {
 			$loc->cache[$key] = $loaded;
@@ -149,7 +149,7 @@ class Cache {
 		return $loaded;
 	}
 
-	/** 
+	/**
 	 * not used. Good idea but doesn't work with all cache layers and on large caches is VERY slow.
 
 	public function deleteType($type) {
@@ -157,12 +157,12 @@ class Cache {
 		$loc = CacheLocal::get();
 		$loc->enabled = false;
 	}
-	
+
 	*/
-	
-	/** 
+
+	/**
 	 * Removes an item from the cache
-	 */	
+	 */
 	public function delete($type, $id){
 		$cache = Cache::getLibrary();
 		if ($cache) {
@@ -174,13 +174,13 @@ class Cache {
 			unset($loc->cache[Cache::key($type, $id)]);
 		}
 	}
-	
-	/** 
+
+	/**
 	 * Completely flushes the cache
-	 */	
+	 */
 	public function flush() {
 		$cache = Cache::getLibrary();
-		
+
 		$loc = CacheLocal::get();
 		$loc->cache = array();
 		if (!$cache) {
@@ -190,8 +190,8 @@ class Cache {
 		$cache->clean(Zend_Cache::CLEANING_MODE_ALL);
 		if (!ENABLE_CACHE) {
 			Cache::disableCache();
-		}		
+		}
 		return true;
 	}
-		
+
 }

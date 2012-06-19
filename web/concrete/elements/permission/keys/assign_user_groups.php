@@ -22,7 +22,7 @@ foreach($gIDs as $gID) {
 <h3><?=t('Who can assign what?')?></h3>
 
 <? foreach($included as $assignment) {
-	$entity = $assignment->getAccessEntityObject(); 
+	$entity = $assignment->getAccessEntityObject();
 ?>
 
 
@@ -48,7 +48,7 @@ foreach($gIDs as $gID) {
 <h3><?=t('Who can\'t assign what?')?></h3>
 
 <? foreach($excluded as $assignment) {
-	$entity = $assignment->getAccessEntityObject(); 
+	$entity = $assignment->getAccessEntityObject();
 ?>
 
 

@@ -1,10 +1,10 @@
-<? defined('C5_EXECUTE') or die("Access Denied."); ?> 
+<? defined('C5_EXECUTE') or die("Access Denied."); ?>
 <div id="ccm-slideshowBlock-imgRow<?=$imgInfo['slideshowImgId']?>" class="ccm-slideshowBlock-imgRow" >
 	<div class="backgroundRow" style="background: url(<?=$imgInfo['thumbPath']?>) no-repeat left top; padding-left: 100px">
 		<div class="cm-slideshowBlock-imgRowIcons" >
 			<div style="float:right">
 				<a onclick="SlideshowBlock.moveUp('<?=$imgInfo['slideshowImgId']?>')" class="moveUpLink"></a>
-				<a onclick="SlideshowBlock.moveDown('<?=$imgInfo['slideshowImgId']?>')" class="moveDownLink"></a>									  
+				<a onclick="SlideshowBlock.moveDown('<?=$imgInfo['slideshowImgId']?>')" class="moveDownLink"></a>
 			</div>
 			<div style="margin-top:4px"><a onclick="SlideshowBlock.removeImage('<?=$imgInfo['slideshowImgId']?>')"><img src="<?=ASSETS_URL_IMAGES?>/icons/delete_small.png" /></a></div>
 		</div>

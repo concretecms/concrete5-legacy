@@ -12,30 +12,30 @@ if (!$tp->canInstallPackages()) { ?>
 	<div class="ccm-pane-body-inner">
 		<? Loader::element('dashboard/marketplace_connect_failed')?>
 	</div>
-<? } else {	
-	$ch = Loader::helper('concrete/interface'); 
+<? } else {
+	$ch = Loader::helper('concrete/interface');
 	Loader::library('marketplace');
 	Loader::model('marketplace_remote_item');
-	
+
 	$mpID = $_REQUEST['mpID'];
 	if (!empty($mpID)) {
 		$mri = MarketplaceRemoteItem::getByID($mpID);
 	}
 	if (is_object($mri)) { ?>
-	
+
 		<? $screenshots = $mri->getScreenshots(); ?>
-		
-		
+
+
 		<table class="ccm-marketplace-details-table">
 		<tr>
 			<td valign="top">
-				<div class="ccm-nivo-theme-default" id="ccm-marketplace-item-screenshots-wrapper">	
+				<div class="ccm-nivo-theme-default" id="ccm-marketplace-item-screenshots-wrapper">
 				<div class="ribbon"></div>
 				<div id="ccm-marketplace-item-screenshots" class="nivoSlider">
 				<?
-				if (count($screenshots) > 0) { 
+				if (count($screenshots) > 0) {
 					foreach($screenshots as $si) { ?>
-						<img src="<?=$si->src?>" width="<?=$si->width?>" height="<?=$si->height?>" />	
+						<img src="<?=$si->src?>" width="<?=$si->width?>" height="<?=$si->height?>" />
 					<? }
 				} else { ?>
 					<div class="ccm-marketplace-item-screenshots-none">
@@ -44,7 +44,7 @@ if (!$tp->canInstallPackages()) { ?>
 				<? } ?>
 				</div>
 				</div>
-						
+
 				<? if (!$mri->getMarketplaceItemVersionForThisSite()) { ?>
 					<Div class="clearfix" style="clear: both">
 					<div class="block-message alert-message error">
@@ -54,7 +54,7 @@ if (!$tp->canInstallPackages()) { ?>
 				<? } ?>
 			</td>
 			<td valign="top">
-			
+
 		<div class="ccm-marketplace-item-information">
 		<div class="ccm-marketplace-item-information-inner">
 		<h1><?=$mri->getName()?></h1>
@@ -75,7 +75,7 @@ if (!$tp->canInstallPackages()) { ?>
 
 		<div>
 		<h2><?=t('Details')?></h2>
-		<p><?=$mri->getBody()?></p>	
+		<p><?=$mri->getBody()?></p>
 		</div>
 	<?
 		if ($mri->purchaseRequired()) {
@@ -86,31 +86,31 @@ if (!$tp->canInstallPackages()) { ?>
 			if ($type == 'themes') {
 				$buttonAction = 'javascript:ccm_getMarketplaceItem({mpID: \'' . $mri->getMarketplaceItemID() . '\', onComplete: function() {window.location.href=\'' . View::url('/dashboard/pages/themes') . '\'}})';
 			} else {
-				$buttonAction = 'javascript:ccm_getMarketplaceItem({mpID: \'' . $mri->getMarketplaceItemID() . '\', onComplete: function() {window.location.href=\'' . View::url('/dashboard/extend/install') . '\'}})';					
+				$buttonAction = 'javascript:ccm_getMarketplaceItem({mpID: \'' . $mri->getMarketplaceItemID() . '\', onComplete: function() {window.location.href=\'' . View::url('/dashboard/extend/install') . '\'}})';
 			}
 		}
-		
+
 		if (!$mri->getMarketplaceItemVersionForThisSite()) {
 			$buttonAction = 'javascript:void(0)';
 		}
 
 	?>
-	
+
 		<div class="dialog-buttons">
 			<input type="button" class="btn primary <? if (!$mri->getMarketplaceItemVersionForThisSite()) { ?> disabled<? } ?> ccm-button-right" value="<?=$buttonText?>" onclick="<?=$buttonAction?>" />
-			<input type="button" class="btn" value="<?=t('View in Marketplace')?>" onclick="window.open('<?=$mri->getRemoteURL()?>')" /> 
+			<input type="button" class="btn" value="<?=t('View in Marketplace')?>" onclick="window.open('<?=$mri->getRemoteURL()?>')" />
 			<? if ($mri->getMarketplaceItemType() == 'theme') { ?>
-				<a title="<?php echo t('Preview')?>" onclick="ccm_previewMarketplaceTheme(1, <?php echo intval($mri->getRemoteCollectionID())?>,'<?php echo addslashes($mri->getName()) ?>','<?php echo addslashes($mri->getHandle()) ?>')" 
+				<a title="<?php echo t('Preview')?>" onclick="ccm_previewMarketplaceTheme(1, <?php echo intval($mri->getRemoteCollectionID())?>,'<?php echo addslashes($mri->getName()) ?>','<?php echo addslashes($mri->getHandle()) ?>')"
 				href="javascript:void(0)" class="btn"><?=t('Preview')?></a>
 			<? } ?>
 		</div>
 		<br/>
-		
-	
+
+
 	</td>
 	</tr>
 	</table>
-	
+
 	<? } else { ?>
 		<div class="block-message alert-message error"><p><?=t('Invalid marketplace item.')?></p></div>
 	<? } ?>

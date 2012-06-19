@@ -4,7 +4,7 @@
 <form method="post" id="update-cache-form" action="<?php echo $this->url('/dashboard/system/optimization/cache', 'update_cache')?>">
     <div class="ccm-pane-body">
         <?php echo $this->controller->token->output('update_cache')?>
-    
+
         <h3><?php echo t('Basic Cache')?></h3>
     	<div class="clearfix inputs-list">
             <label>
@@ -28,7 +28,7 @@
                 <span><?php echo t('On - Helps speed up a live site.')?></span>
             </label>
         </div>
-        
+
         <h3><?php echo t('Full Page Caching')?></h3>
     	<div class="clearfix inputs-list">
             <label>
@@ -44,7 +44,7 @@
                 <span><?php echo t('On - In all cases.')?></span>
             </label>
         </div>
-        
+
         <h3><?php echo t('Full Page Cache Rebuild')?></h3>
     	<div class="clearfix inputs-list ccm-cache-settings-full-page">
             <label>
@@ -69,10 +69,10 @@
     <div class="ccm-pane-footer">
         <?
         print $interface->submit(t('Save'), 'update-cache-form', 'right', 'primary');
-        ?>    
+        ?>
     </div>
 </form>
-<?php echo Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper(false);?>  
+<?php echo Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper(false);?>
 
 <script type="text/javascript">
 	ccm_settingsSetupCacheForm = function() {
@@ -89,13 +89,13 @@
 		} else {
 			$('input[name=FULL_PAGE_CACHE_LIFETIME_CUSTOM]').attr('disabled', true);
 			$('input[name=FULL_PAGE_CACHE_LIFETIME_CUSTOM]').val('');
-		}			
+		}
 	}
-	
-	$(function(){ 
-		$("input[name='CONTENTS_TXT_EDITOR_MODE']").each(function(i,el){ 
+
+	$(function(){
+		$("input[name='CONTENTS_TXT_EDITOR_MODE']").each(function(i,el){
 			el.onchange=function(){isTxtEditorModeCustom();}
-		})	 	
+		})
 		$("input[name=ENABLE_CACHE]").click(function() {
 			ccm_settingsSetupCacheForm();
 		});

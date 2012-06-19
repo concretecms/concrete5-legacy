@@ -9,24 +9,24 @@
 		protected $btExportPageColumns = array('cParentID');
 		protected $btExportPageTypeColumns = array('ctID');
 		protected $btCacheBlockRecord = true;
-		
-		/** 
+
+		/**
 		 * Used for localization. If we want to localize the name/description we have to include this
 		 */
 		public function getBlockTypeDescription() {
 			return t("List pages based on type, area.");
 		}
-		
+
 		public function getBlockTypeName() {
 			return t("Page List");
 		}
-		
+
 		public function getJavaScriptStrings() {
 			return array(
 				'feed-name' => t('Please give your RSS Feed a name.')
 			);
 		}
-		
+
 		function getPages($query = null) {
 			Loader::model('page_list');
 			$db = Loader::db();
@@ -46,11 +46,11 @@
 				$row['rss'] = $this->rss;
 				$row['displayAliases'] = $this->displayAliases;
 			}
-			
+
 
 			$pl = new PageList();
 			$pl->setNameSpace('b' . $this->bID);
-			
+
 			$cArray = array();
 
 			switch($row['orderBy']) {
@@ -75,7 +75,7 @@
 			}
 
 			$num = (int) $row['num'];
-			
+
 			if ($num > 0) {
 				$pl->setItemsPerPage($num);
 			}
@@ -84,7 +84,7 @@
 			if (is_object($c)) {
 				$this->cID = $c->getCollectionID();
 			}
-			
+
 			Loader::model('attribute/categories/collection');
 			if ($this->displayFeaturedOnly == 1) {
 				$cak = CollectionAttributeKey::getByHandle('is_featured');
@@ -95,17 +95,17 @@
 			if (!$row['displayAliases']) {
 				$pl->filterByIsAlias(0);
 			}
-			$pl->filter('cvName', '', '!=');			
-		
+			$pl->filter('cvName', '', '!=');
+
 			if ($row['ctID']) {
 				$pl->filterByCollectionTypeID($row['ctID']);
 			}
-			
+
 			$columns = $db->MetaColumns(CollectionAttributeKey::getIndexedSearchTable());
 			if (isset($columns['AK_EXCLUDE_PAGE_LIST'])) {
 				$pl->filter(false, '(ak_exclude_page_list = 0 or ak_exclude_page_list is null)');
 			}
-			
+
 			if ( intval($row['cParentID']) != 0) {
 				$cParentID = ($row['cThis']) ? $this->cID : $row['cParentID'];
 				if ($this->includeAllDescendents) {
@@ -123,14 +123,14 @@
 			$this->set('pl', $pl);
 			return $pages;
 		}
-		
+
 		public function view() {
 			$cArray = $this->getPages();
 			$nh = Loader::helper('navigation');
 			$this->set('nh', $nh);
 			$this->set('cArray', $cArray); //Legacy (pre-5.4.2)
 			$this->set('pages', $cArray); //More descriptive variable name (introduced in 5.4.2)
-			
+
 			//RSS...
 			$showRss = false;
 			$rssIconSrc = '';
@@ -158,7 +158,7 @@
 			$this->set('paginator', $paginator);
 
 		}
-		
+
 		// this doesn't work yet
 		/*
 		public function on_page_view() {
@@ -168,7 +168,7 @@
 			}
 		}
 		*/
-		
+
 		public function add() {
 			Loader::model("collection_types");
 			$c = Page::getCurrentPage();
@@ -179,14 +179,14 @@
 			$this->set('bt', BlockType::getByHandle('page_list'));
 			$this->set('displayAliases', true);
 		}
-	
+
 		public function edit() {
 			$b = $this->getBlockObject();
 			$bCID = $b->getBlockCollectionID();
 			$bID=$b->getBlockID();
 			$this->set('bID', $bID);
 			$c = Page::getCurrentPage();
-			if ($c->getCollectionID() != $this->cParentID && (!$this->cThis) && ($this->cParentID != 0)) { 
+			if ($c->getCollectionID() != $this->cParentID && (!$this->cThis) && ($this->cParentID != 0)) {
 				$isOtherPage = true;
 				$this->set('isOtherPage', true);
 			}
@@ -194,7 +194,7 @@
 			$this->set('uh', $uh);
 			$this->set('bt', BlockType::getByHandle('page_list'));
 		}
-		
+
 		function save($args) {
 			// If we've gotten to the process() function for this class, we assume that we're in
 			// the clear, as far as permissions are concerned (since we check permissions at several
@@ -206,7 +206,7 @@
 			if (is_object($c)) {
 				$this->cID = $c->getCollectionID();
 			}
-			
+
 			$args['num'] = ($args['num'] > 0) ? $args['num'] : 0;
 			$args['cThis'] = ($args['cParentID'] == $this->cID) ? '1' : '0';
 			$args['cParentID'] = ($args['cParentID'] == 'OTHER') ? $args['cParentIDValue'] : $args['cParentID'];
@@ -217,13 +217,13 @@
 			$args['truncateSummaries'] = ($args['truncateSummaries']) ? '1' : '0';
 			$args['displayFeaturedOnly'] = ($args['displayFeaturedOnly']) ? '1' : '0';
 			$args['displayAliases'] = ($args['displayAliases']) ? '1' : '0';
-			$args['truncateChars'] = intval($args['truncateChars']); 
-			$args['paginate'] = intval($args['paginate']); 
+			$args['truncateChars'] = intval($args['truncateChars']);
+			$args['paginate'] = intval($args['paginate']);
 			$args['rss'] = intval($args['rss']);
 			$args['ctID'] = intval($args['ctID']);
 
 			parent::save($args);
-		
+
 		}
 
 		public function getRssUrl($b, $tool = 'rss'){

@@ -3,14 +3,14 @@
 	<?=Loader::element('permission/help');?>
 	<? $help = ob_get_contents(); ?>
 	<? ob_end_clean(); ?>
-	
+
 	<?=Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('User Permissions'), $help, 'span12 offset2', false)?>
 	<form method="post" action="<?=$this->action('save')?>">
 	<?=Loader::helper('validation/token')->output('save_permissions')?>
 	<div class="ccm-pane-body">
 	<?
 	$tp = new TaskPermission();
-	if ($tp->canAccessTaskPermissions()) { ?>	
+	if ($tp->canAccessTaskPermissions()) { ?>
 		<? Loader::element('permission/lists/user')?>
 	<? } else { ?>
 		<p><?=t('You cannot access task permissions.')?></p>

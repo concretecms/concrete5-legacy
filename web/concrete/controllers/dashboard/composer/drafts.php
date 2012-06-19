@@ -8,9 +8,9 @@ class DashboardComposerDraftsController extends Controller {
 		$this->set('disableThirdLevelNav', true);
 		$this->set('drafts', ComposerPage::getMyDrafts());
 	}
-	
+
 	public function draft_discarded() {
 		$this->set('message', t('Draft deleted.'));
 	}
-	
+
 }

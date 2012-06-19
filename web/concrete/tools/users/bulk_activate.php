@@ -10,7 +10,7 @@ $ek = PermissionKey::getByHandle('activate_user');
 $form = Loader::helper('form');
 $ih = Loader::helper('concrete/interface');
 $tp = new TaskPermission();
-if (!$tp->canActivateUser()) { 
+if (!$tp->canActivateUser()) {
 	die(t("Access Denied."));
 }
 
@@ -23,7 +23,7 @@ if (is_array($_REQUEST['uID'])) {
 }
 
 foreach($users as $ui) {
-	if (!$sk->validate($ui)) { 
+	if (!$sk->validate($ui)) {
 		die(t("Access Denied."));
 	}
 }
@@ -36,7 +36,7 @@ if ($_POST['task'] == 'activate') {
 	}
 	echo Loader::helper('json')->encode(array('error'=>false));
 	exit;
-} 
+}
 
 if (!isset($_REQUEST['reload'])) { ?>
 	<div id="ccm-user-bulk-activate-wrapper">
@@ -52,10 +52,10 @@ if (!isset($_REQUEST['reload'])) { ?>
 			?>
 			<?php echo t('Are you sure you would like to activate the following users?');?><br/><br/>
 			<?php Loader::element('users/confirm_list',array('users'=>$users)); ?>
-		</form>	
+		</form>
 	</div>
 	<div class="dialog-buttons">
-		<?=$ih->button_js(t('Cancel'), 'jQuery.fn.dialog.closeTop()', 'left', 'btn')?>	
+		<?=$ih->button_js(t('Cancel'), 'jQuery.fn.dialog.closeTop()', 'left', 'btn')?>
 		<?=$ih->button_js(t('Activate'), 'ccm_userBulkActivate()', 'right', 'btn primary')?>
 	</div>
 <?
@@ -64,7 +64,7 @@ if (!isset($_REQUEST['reload'])) { ?>
 <? } ?>
 
 <script type="text/javascript">
-ccm_userBulkActivate = function() { 
+ccm_userBulkActivate = function() {
 	jQuery.fn.dialog.showLoader();
 	$("#ccm-user-bulk-activate").ajaxSubmit(function(resp) {
 		jQuery.fn.dialog.closeTop();

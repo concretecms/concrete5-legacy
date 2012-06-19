@@ -21,11 +21,11 @@
 
 defined('C5_EXECUTE') or die("Access Denied.");
 class Events {
-	
+
 	const EVENT_TYPE_PAGETYPE = "page_type";
 	const EVENT_TYPE_GLOBAL = "global";
-	
-	/** 
+
+	/**
 	 * Enables events if they haven't been enabled yet. This happens automatically if a particular 3rd party addon requires it
 	 */
 	public static function enableEvents() {
@@ -33,8 +33,8 @@ class Events {
 			define("ENABLE_APPLICATION_EVENTS", true);
 		}
 	}
-	
-	/** 
+
+	/**
 	 * Returns an instance of the systemwide Events object.
 	 */
 	public function getInstance() {
@@ -44,12 +44,12 @@ class Events {
 			$instance = new $v;
 		}
 		return $instance;
-	}		
+	}
 
 	private $registeredEvents = array();
-	
-	
-	/** 
+
+
+	/**
 	 * When passed an "event" as a string, a user-defined method will be run INSIDE this page's controller
 	 * whenever an event takes place. The name/location of this event is not customizable. If you want more
 	 * customization, used extend() below.
@@ -109,9 +109,9 @@ class Events {
 		);
 		self::sortByPriority();
 	}
-	
-	/** 
-	 * An internal function used by Concrete to "fire" a system-wide event. Any time this happens, events that 
+
+	/**
+	 * An internal function used by Concrete to "fire" a system-wide event. Any time this happens, events that
 	 * a developer has hooked into will be run.
 	 * @param string $event
 	 * @return void
@@ -120,7 +120,7 @@ class Events {
 		if ((!defined('ENABLE_APPLICATION_EVENTS')) || (ENABLE_APPLICATION_EVENTS == false)) {
 			return;
 		}
-		
+
 		// any additional arguments passed to the fire function will get passed FIRST to the method, with the method's own registered
 		// params coming at the end. e.g. if I fire Events::fire('on_login', $userObject) it will come in with user object first
 		$args = func_get_args();
@@ -134,7 +134,7 @@ class Events {
 		$events = $ce->registeredEvents[$event];
 
 		$eventReturn = false;
-		
+
 		if (is_array($events)) {
 			foreach($events as $ev) {
 				$type = $ev[0];
@@ -149,11 +149,11 @@ class Events {
 						}
 					}
 				}
-				
+
 				if ($proceed) {
 					if ($ev[3] != false) {
 						// HACK - second part is for windows and its paths
-					
+
 						if (substr($ev[3], 0, 1) == '/' || substr($ev[3], 1, 1) == ':') {
 							// then this means that our path is a full one
 							require_once($ev[3]);
@@ -162,7 +162,7 @@ class Events {
 						}
 					}
 					$params = (is_array($ev[4])) ? $ev[4] : array();
-					
+
 					// now if args has any values we put them FIRST
 					if (is_array($args)) {
 						$params = array_merge($args, $params);
@@ -179,7 +179,7 @@ class Events {
 					}
 				}
 			}
-		}		
+		}
 		return $eventReturn;
 	}
 

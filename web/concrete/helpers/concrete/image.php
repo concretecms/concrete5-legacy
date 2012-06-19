@@ -24,7 +24,7 @@ class ConcreteImageHelper {
 		$scaley =  $targetHeight / $sourceHeight;
 		return min($scalex, $scaley);
 	}
-	
+
 	function startImageProcess($f){
 		$function = '';
 		$ext = strtolower($f->getExtension());
@@ -48,7 +48,7 @@ class ConcreteImageHelper {
 			return $image;
 		}
 	}
-	
+
 	function parseImage($ext,$img,$file = null){
 		switch(strtolower($ext)){
 			case "png":
@@ -65,8 +65,8 @@ class ConcreteImageHelper {
 				break;
 		}
 	}
-	
-	function setTransparency($imgSrc,$imgDest,$ext){	
+
+	function setTransparency($imgSrc,$imgDest,$ext){
 		if($ext == "png" || $ext == "gif"){
 			$trnprt_indx = imagecolortransparent($imgSrc);
 			// If we have a specific transparent color
@@ -91,8 +91,8 @@ class ConcreteImageHelper {
 				// Restore transparency blending
 				imagesavealpha($imgDest, true);
 			}
-	
+
 		}
-	}	
+	}
 
 }

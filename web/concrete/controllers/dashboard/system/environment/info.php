@@ -1,11 +1,11 @@
-<?php 
+<?php
 
 defined('C5_EXECUTE') or die("Access Denied.");
-class DashboardSystemEnvironmentInfoController extends DashboardBaseController {	
-	
+class DashboardSystemEnvironmentInfoController extends DashboardBaseController {
+
 	public function get_environment_info() {
 		set_time_limit(5);
-		
+
 		$environmentMessage = '# ' . t('concrete5 Version') . "\n" . APP_VERSION . "\n\n";
 		$environmentMessage .= '# ' . t('concrete5 Packages') . "\n";
 		$pla = PackageList::get();
@@ -14,7 +14,7 @@ class DashboardSystemEnvironmentInfoController extends DashboardBaseController {
 		foreach($pl as $p) {
 			if ($p->isPackageInstalled()) {
 				$packages[] =$p->getPackageName() . ' (' . $p->getPackageVersion() . ')';
-			}			
+			}
 		}
 		if (count($packages) > 0) {
 			natcasesort($packages);
@@ -24,7 +24,7 @@ class DashboardSystemEnvironmentInfoController extends DashboardBaseController {
 			$environmentMessage .= t('None') . "\n";
 		}
 		$environmentMessage .= "\n";
-		
+
 		// overrides
 		$environmentMessage .= '# ' . t('concrete5 Overrides') . "\n";
 		$fh = Loader::helper('file');
@@ -96,7 +96,7 @@ class DashboardSystemEnvironmentInfoController extends DashboardBaseController {
 		$environmentMessage .= "\n";
 
 		print $environmentMessage;
-		
+
 		$environmentMessage = '# ' . t('Server Software') . "\n" . $_SERVER['SERVER_SOFTWARE'] . "\n\n";
 		$environmentMessage .= '# ' . t('Server API') . "\n" . php_sapi_name() . "\n\n";
 		$environmentMessage .= '# ' . t('PHP Version') . "\n" . PHP_VERSION . "\n\n";
@@ -124,7 +124,7 @@ class DashboardSystemEnvironmentInfoController extends DashboardBaseController {
 			} else {
 				$phpinfo[end(array_keys($phpinfo))][] = $match[2];
 			}
-		}		
+		}
 		$environmentMessage = "\n# " . t('PHP Settings') . "\n";
 
 		foreach($phpinfo as $name => $section) {
@@ -141,7 +141,7 @@ class DashboardSystemEnvironmentInfoController extends DashboardBaseController {
 				}
 			}
 		}
-		
+
 		print $environmentMessage;
 		exit;
 	}

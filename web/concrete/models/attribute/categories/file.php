@@ -10,7 +10,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
  *
  */
 /**
- * An object that represents metadata added to files. 
+ * An object that represents metadata added to files.
  * @author Andrew Embler <andrew@concrete5.org>
  * @package Pages
  * @category Concrete
@@ -25,9 +25,9 @@ class FileAttributeKey extends AttributeKey {
 	}
 
 	protected $searchIndexFieldDefinition = 'fID I(11) UNSIGNED NOTNULL DEFAULT 0 PRIMARY';
-	
-	/** 
-	 * Returns an attribute value list of attributes and values (duh) which a collection version can store 
+
+	/**
+	 * Returns an attribute value list of attributes and values (duh) which a collection version can store
 	 * against its object.
 	 * @return AttributeValueList
 	 */
@@ -41,10 +41,10 @@ class FileAttributeKey extends AttributeKey {
 				$value = $ak->getAttributeValue($val['avID'], $method);
 				$avl->addAttributeValue($ak, $value);
 			}
-		}		
+		}
 		return $avl;
 	}
-	
+
 	public function getAttributeValue($avID, $method = 'getValue') {
 		$av = FileAttributeValue::getByID($avID);
 		if (is_object($av)) {
@@ -52,26 +52,26 @@ class FileAttributeKey extends AttributeKey {
 			return $av->{$method}();
 		}
 	}
-	
+
 	public static function getByID($akID) {
 		$fak = Cache::get('file_attribute_key', $akID);
 		if (is_object($fak)) {
 			return $fak;
 		}
-		
+
 		$ak = new FileAttributeKey();
 		$ak->load($akID);
 		if ($ak->getAttributeKeyID() > 0) {
 			Cache::set('file_attribute_key', $akID, $ak);
-			return $ak;	
-		}	
+			return $ak;
+		}
 	}
 
 	public static function getByHandle($akHandle) {
 		$db = Loader::db();
-		$q = "SELECT ak.akID 
+		$q = "SELECT ak.akID
 			FROM AttributeKeys ak
-			INNER JOIN AttributeKeyCategories akc ON ak.akCategoryID = akc.akCategoryID 
+			INNER JOIN AttributeKeyCategories akc ON ak.akCategoryID = akc.akCategoryID
 			WHERE ak.akHandle = ?
 			AND akc.akCategoryHandle = 'file'";
 		$akID = $db->GetOne($q, array($akHandle));
@@ -93,22 +93,22 @@ class FileAttributeKey extends AttributeKey {
 				);
 			 	return FileAttributeKey::add($at, $args);
 			 }
-		}	
+		}
 	}
-	
+
 	public static function getList() {
-		return parent::getList('file');	
+		return parent::getList('file');
 	}
 
 	public static function getSearchableList() {
-		return parent::getList('file', array('akIsSearchable' => 1));	
+		return parent::getList('file', array('akIsSearchable' => 1));
 	}
 	public static function getSearchableIndexedList() {
-		return parent::getList('file', array('akIsSearchableIndexed' => 1));	
+		return parent::getList('file', array('akIsSearchableIndexed' => 1));
 	}
 
 	public static function getImporterList($fv = false) {
-		$list = parent::getList('file', array('akIsAutoCreated' => 1));	
+		$list = parent::getList('file', array('akIsAutoCreated' => 1));
 		if ($fv == false) {
 			return $list;
 		}
@@ -124,16 +124,16 @@ class FileAttributeKey extends AttributeKey {
 	}
 
 	public static function getUserAddedList() {
-		return parent::getList('file', array('akIsAutoCreated' => 0));	
+		return parent::getList('file', array('akIsAutoCreated' => 0));
 	}
-	
-	/** 
-	 * @access private 
+
+	/**
+	 * @access private
 	 */
 	public function get($akID) {
 		return FileAttributeKey::getByID($akID);
 	}
-	
+
 	protected function saveAttribute($f, $value = false) {
 		// We check a cID/cvID/akID combo, and if that particular combination has an attribute value ID that
 		// is NOT in use anywhere else on the same cID, cvID, akID combo, we use it (so we reuse IDs)
@@ -143,9 +143,9 @@ class FileAttributeKey extends AttributeKey {
 		$db = Loader::db();
 		$v = array($f->getFileID(), $f->getFileVersionID(), $this->getAttributeKeyID(), $av->getAttributeValueID());
 		$db->Replace('FileAttributeValues', array(
-			'fID' => $f->getFileID(), 
-			'fvID' => $f->getFileVersionID(), 
-			'akID' => $this->getAttributeKeyID(), 
+			'fID' => $f->getFileID(),
+			'fvID' => $f->getFileVersionID(),
+			'akID' => $this->getAttributeKeyID(),
 			'avID' => $av->getAttributeValueID()
 		), array('fID', 'fvID', 'akID'));
 		$f->logVersionUpdate(FileVersion::UT_EXTENDED_ATTRIBUTE, $this->getAttributeKeyID());
@@ -162,12 +162,12 @@ class FileAttributeKey extends AttributeKey {
 		$ak = parent::add('file', $at, $args, $pkg);
 		return $ak;
 	}
-	
+
 	public static function getColumnHeaderList() {
-		return parent::getList('file', array('akIsColumnHeader' => 1));	
+		return parent::getList('file', array('akIsColumnHeader' => 1));
 	}
 
-	
+
 	public function delete() {
 		parent::delete();
 		$db = Loader::db();
@@ -185,7 +185,7 @@ class FileAttributeValue extends AttributeValue {
 	public function setFile($f) {
 		$this->f = $f;
 	}
-	
+
 	public static function getByID($avID) {
 		$fav = new FileAttributeValue();
 		$fav->load($avID);
@@ -197,7 +197,7 @@ class FileAttributeValue extends AttributeValue {
 	public function delete() {
 		$db = Loader::db();
 		$db->Execute('delete from FileAttributeValues where fID = ? and fvID = ? and akID = ? and avID = ?', array(
-			$this->f->getFileID(), 
+			$this->f->getFileID(),
 			$this->f->getFileVersionID(),
 			$this->attributeKey->getAttributeKeyID(),
 			$this->getAttributeValueID()

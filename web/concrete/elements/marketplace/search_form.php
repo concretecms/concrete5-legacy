@@ -11,7 +11,7 @@ $form = Loader::helper('form');
 		<?=$form->text('marketplaceRemoteItemKeywords', array('style' => 'width: 140px'))?>
 	</div>
 	</div>
-	
+
 	<div class="span4">
 	<?=$form->label('marketplaceRemoteItemSetID', t('Category'))?>
 	<div class="input">
@@ -45,7 +45,7 @@ $form = Loader::helper('form');
 	</td>
 	</tr>
 	</table>
-	
-</div>	
 
-</form>	
+</div>
+
+</form>

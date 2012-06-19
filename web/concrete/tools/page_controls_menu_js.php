@@ -34,7 +34,7 @@ if (isset($cp)) {
 		}
 	}
 
-	if ($cp->canViewToolbar()) { 
+	if ($cp->canViewToolbar()) {
 		$cID = $c->getCollectionID(); ?>
 
 
@@ -53,19 +53,19 @@ menuHTML += '<li id="ccm-logo-wrapper"><?=Loader::helper('concrete/interface')->
 
 <?
 	if ($cp->canViewToolbar()) {  ?>
-	
+
 	menuHTML += '<li <? if ($c->isEditMode()) { ?>class="ccm-nav-edit-mode-active"<? } ?>><a class="ccm-icon-edit ccm-menu-icon" id="ccm-nav-edit" href="<? if (!$c->isEditMode()) { ?><?=DIR_REL?>/<?=DISPATCHER_FILENAME?>?cID=<?=$c->getCollectionID()?>&ctask=check-out<?=$token?><? } else { ?>javascript:void(0);<? } ?>"><? if ($c->isEditMode()) { ?><?=t('Editing')?><? } else { ?><?=t('Edit')?><? } ?></a></li>';
 	<?
 	$items = $ihm->getPageHeaderMenuItems('left');
 	foreach($items as $ih) {
-		$cnt = $ih->getController(); 
+		$cnt = $ih->getController();
 		if ($cnt->displayItem()) {
 		?>
 			menuHTML += '<li><?=$cnt->getMenuLinkHTML()?></li>';
 		<?
 		}
 	}
-	
+
 } ?>
 
 <? if (Loader::helper('concrete/interface')->showWhiteLabelMessage()) { ?>
@@ -77,7 +77,7 @@ menuHTML += '<ul id="ccm-system-nav">';
 <?
 $items = $ihm->getPageHeaderMenuItems('right');
 foreach($items as $ih) {
-	$cnt = $ih->getController(); 
+	$cnt = $ih->getController();
 	if ($cnt->displayItem()) {
 	?>
 		menuHTML += '<li><?=$cnt->getMenuLinkHTML()?></li>';
@@ -194,26 +194,26 @@ menuHTML += '<?=addslashes($ish->getQuickNavigationBar())?>';
 
 <?
 	}
-	
+
 } ?>
 
 $(function() {
 	<? if ($c->isEditMode()) { ?>
-		$(ccm_editInit);	
+		$(ccm_editInit);
 	<? } ?>
 
-	<? 
+	<?
 	if (!$dh->inDashboard()) { ?>
-		$("#ccm-page-controls-wrapper").html(menuHTML); 
+		$("#ccm-page-controls-wrapper").html(menuHTML);
 		<? if ($cantCheckOut) { ?>
 			item = new ccm_statusBarItem();
 			item.setCSSClass('info');
 			item.setDescription('<?= t("%s is currently editing this page.", $c->getCollectionCheckedOutUserName())?>');
-			ccm_statusBar.addItem(item);		
+			ccm_statusBar.addItem(item);
 		<? } ?>
 
 		<? if ($c->getCollectionPointerID() > 0) { ?>
-	
+
 			item = new ccm_statusBarItem();
 			item.setCSSClass('info');
 			item.setDescription('<?= t("This page is an alias of one that actually appears elsewhere.", $c->getCollectionCheckedOutUserName())?>');
@@ -228,25 +228,25 @@ $(function() {
 				btn2.setURL('<?=DIR_REL . "/" . DISPATCHER_FILENAME . "?cID=" . $c->getCollectionPointerOriginalID() . "&ctask=remove-alias" . $token?>');
 				item.addButton(btn2);
 			<? } ?>
-			ccm_statusBar.addItem(item);		
-		
-		<? } 	
+			ccm_statusBar.addItem(item);
+
+		<? }
 
 		if ($c->isMasterCollection()) { ?>
 
 			item = new ccm_statusBarItem();
 			item.setCSSClass('info');
 			item.setDescription('<?= t('Page Defaults for %s Page Type. All edits take effect immediately.', $c->getCollectionTypeName()) ?>');
-			ccm_statusBar.addItem(item);		
+			ccm_statusBar.addItem(item);
 		<? } ?>
 		<?
 		$hasPendingPageApproval = false;
-		
+
 		if ($cp->canViewToolbar()) { ?>
 			<? if (is_array($workflowList)) { ?>
 				<? foreach($workflowList as $wl) { ?>
-					<? $wr = $wl->getWorkflowRequestObject(); 
-					$wrk = $wr->getWorkflowRequestPermissionKeyObject(); 
+					<? $wr = $wl->getWorkflowRequestObject();
+					$wrk = $wr->getWorkflowRequestPermissionKeyObject();
 					if ($wrk->getPermissionKeyHandle() == 'approve_page_versions') {
 						$hasPendingPageApproval = true;
 					}
@@ -278,20 +278,20 @@ $(function() {
 					<? } ?>
 					ccm_statusBar.addItem(item);
 				<? } ?>
-			
+
 			<? } ?>
 		<? } ?>
-		
-		<?		
-		
+
+		<?
+
 		if (!$c->getCollectionPointerID() && !$hasPendingPageApproval) {
 			if (is_object($vo)) {
 				if (!$vo->isApproved() && !$c->isEditMode()) { ?>
-				
+
 					item = new ccm_statusBarItem();
 					item.setCSSClass('info');
 					item.setDescription('<?= t("This page is pending approval.")?>');
-					<? if ($cp->canApprovePageVersions() && !$c->isCheckedOut()) { 
+					<? if ($cp->canApprovePageVersions() && !$c->isCheckedOut()) {
 						$pk = PagePermissionKey::getByHandle('approve_page_versions');
 						$pk->setPermissionObject($c);
 						$pa = $pk->getPermissionAccessObject();
@@ -309,18 +309,18 @@ $(function() {
 						btn1.setURL('<?=DIR_REL . "/" . DISPATCHER_FILENAME . "?cID=" . $c->getCollectionID() . "&ctask=approve-recent" . $token?>');
 						item.addButton(btn1);
 					<? } ?>
-					ccm_statusBar.addItem(item);		
+					ccm_statusBar.addItem(item);
 				<? }
 			}
-		} ?>		
-		
+		} ?>
 
-		ccm_statusBar.activate();		
+
+		ccm_statusBar.activate();
 		$(".launch-tooltip").tooltip();
 		ccm_activateToolbar();
 	<? } ?>
-	
-	
 
-	
+
+
+
 });

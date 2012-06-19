@@ -1,7 +1,7 @@
 <?php defined('C5_EXECUTE') or die("Access Denied.");
 
-class BlogEntryPageTypeController extends Controller {	
-	
+class BlogEntryPageTypeController extends Controller {
+
 	/**
 	 * Returns a formatted text for the number of comments in the first comment block in the "Entry Comments" area
 	 * @param string $singular_format
@@ -12,7 +12,7 @@ class BlogEntryPageTypeController extends Controller {
 	public function getCommentCountString($singular_format, $plural_format, $disabled_message = '') {
 		$count = 0;
 		$comments_enabled = false;
-		
+
 		$c = $this->getCollectionObject();
 		$a = new Area('Blog Post Footer');
 		$blocks = $a->getAreaBlocksArray($c);
@@ -23,10 +23,10 @@ class BlogEntryPageTypeController extends Controller {
 					$count = $controller->getEntryCount($c->getCollectionID());
 					$comments_enabled = true;
 					break;// stop at the fist guestbook block found
-				}	
+				}
 			}
 		}
-		
+
 		if($comments_enabled) {
 			$format = ($count == 1 ? $singular_format : $plural_format);
 			return sprintf($format, $count);
@@ -34,6 +34,6 @@ class BlogEntryPageTypeController extends Controller {
 			return $disabled_message;
 		}
 	}
-	
+
 }
 ?>

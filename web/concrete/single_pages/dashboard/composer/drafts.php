@@ -2,7 +2,7 @@
 
 <?=Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Composer Drafts'))?>
 
-<? 
+<?
 $today = Loader::helper('date')->getLocalDateTime('now', 'Y-m-d');
 if (count($drafts) > 0) { ?>
 
@@ -30,7 +30,7 @@ if (count($drafts) > 0) { ?>
 </table>
 
 <? } else { ?>
-	
+
 	<p><?=t('You have not created any drafts. <a href="%s">Visit Composer &gt;</a>', $this->url('/dashboard/composer/write'))?></p>
 
 <? } ?>

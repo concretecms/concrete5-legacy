@@ -12,7 +12,7 @@ class CoreStackPageTypeController extends Controller {
 			$pcp = new Permissions($c);
 			if ((!$pcp->canViewPageVersions()) || ($_GET['vtask'] != 'view_versions' && $_GET['vtask'] != 'compare')) {
 				$cID = $c->getCollectionID();
-				$this->redirect('/dashboard/blocks/stacks','view_details', $cID);		
+				$this->redirect('/dashboard/blocks/stacks','view_details', $cID);
 			} else {
 				$this->theme = 'dashboard';
 			}
@@ -24,10 +24,10 @@ class CoreStackPageTypeController extends Controller {
 			$v->setCollectionObject($c);
 			$this->c = $c;
 			$cont = Loader::controller("/page_not_found");
-			$v->setController($cont);				
+			$v->setController($cont);
 			$v->render('/page_not_found');
 		}
-	}		
-	
+	}
+
 
 }

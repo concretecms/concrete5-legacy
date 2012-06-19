@@ -1022,7 +1022,7 @@ class Zend_Http_Client
                 // Avoid problems with buggy servers that add whitespace at the
                 // end of some headers (See ZF-11283)
                 $location = trim($location);
-                
+
                 // Check whether we send the exact same request again, or drop the parameters
                 // and send a GET request
                 if ($response->getStatus() == 303 ||

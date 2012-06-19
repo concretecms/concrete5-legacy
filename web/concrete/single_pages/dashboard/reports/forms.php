@@ -112,7 +112,7 @@ if ($showTable) { ?>
 			<? } else { ?>
 			<th class="header headerSortUp">
 				<a href="<?=$text->entities($urlhelper->setVariable('sortBy', 'chrono'))?>">
-			<? } ?>		
+			<? } ?>
 				<?=t('Date')?>
 				</a>
 			</th>
@@ -121,7 +121,7 @@ if ($showTable) { ?>
 			<th><?=$question['question']?></th>
 <?endforeach?>
 			<th><?=t('Actions')?></th>
-		</tr>	
+		</tr>
 	</thead>
 	<tbody>
 <?foreach($answerSets as $answerSetId => $answerSet):?>
@@ -129,7 +129,7 @@ if ($showTable) { ?>
 			<td>
 <?=$dh->getSystemDateTime($answerSet['created'])?></td>
 			<td><?
-			if ($answerSet['uID'] > 0) { 
+			if ($answerSet['uID'] > 0) {
 				$ui = UserInfo::getByID($answerSet['uID']);
 				if (is_object($ui)) {
 					print $ui->getUserName().' ';
@@ -153,7 +153,7 @@ if ($showTable) { ?>
 			} else {
 				echo '<td>'.$text->entities($answerSet['answers'][$questionId]['answer']).'</td>';
 			}
-			
+
 endforeach?>
 			<td>
 				<?=$ih->button(
@@ -168,20 +168,20 @@ endforeach?>
 	</tbody>
 </table>
 </div>
-<? if($paginator && strlen($paginator->getPages())>0){ ?>	 
+<? if($paginator && strlen($paginator->getPages())>0){ ?>
 <div class="ccm-pane-footer">
 	<div class="pagination">
 	  <ul>
 		  <li class="prev"><?=$paginator->getPrevious()?></li>
-		  
+
 		  <? // Call to pagination helper's 'getPages' method with new $wrapper var ?>
 		  <?=$paginator->getPages('li')?>
-		  
+
 		  <li class="next"><?=$paginator->getNext()?></li>
 	  </ul>
 	</div>
 </div>
-<? } ?>		
+<? } ?>
 <?endif?>
 <?=$h->getDashboardPaneFooterWrapper(false);?>
 <?endif?>

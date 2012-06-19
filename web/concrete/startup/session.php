@@ -1,4 +1,4 @@
-<?php 
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 
 // Start the session
@@ -6,7 +6,7 @@ if(@ini_get('session.auto_start')) {
 	@session_destroy();
 }
 
-ini_set('session.use_trans_sid',0);  
+ini_set('session.use_trans_sid',0);
 session_set_cookie_params(
 	(defined('SESSION_COOKIE_PARAM_LIFETIME')?SESSION_COOKIE_PARAM_LIFETIME:0),
 	(defined('SESSION_COOKIE_PARAM_PATH')?SESSION_COOKIE_PARAM_PATH:str_replace(' ', '%20', DIR_REL) . '/'),
@@ -14,7 +14,7 @@ session_set_cookie_params(
 	(defined('SESSION_COOKIE_PARAM_SECURE')?SESSION_COOKIE_PARAM_SECURE:false),
 	(defined('SESSION_COOKIE_PARAM_HTTPONLY')?SESSION_COOKIE_PARAM_HTTPONLY:false)
 	);
-	
+
 if (ini_get('session.save_handler') == 'files') {
      ini_set('session.save_path', DIR_SESSIONS);
 }

@@ -15,9 +15,9 @@ $install = isset($_REQUEST['install']) ? $_REQUEST['install'] : false;
 $error = Loader::helper('validation/error');
 
 if (!empty($mpID)) {
-	
+
 	$mri = MarketplaceRemoteItem::getByID($mpID);
-	if (is_object($mri)) { 
+	if (is_object($mri)) {
 		$r = $mri->download();
 		if ($r != false) {
 			if (is_array($r)) {
@@ -59,7 +59,7 @@ if (!$error->has()) { ?>
  		echo t('The package was successfully installed.');
 	} else {
 		echo t('The package was successfully downloaded and decompressed on your server.');
-	} 
+	}
 	print '<div class="dialog-buttons">';
 	print Loader::helper('concrete/interface')->button_js(t('Return'), 'javascript:ccm_getMarketplaceItem.onComplete()', 'right');
 	print '</div>';

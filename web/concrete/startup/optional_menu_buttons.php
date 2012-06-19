@@ -12,7 +12,7 @@
 			'dialog-height' => "70%",
 			'dialog-modal' => "false"
 		));
-	
+
 		$ihm->addPageHeaderMenuItem('filemanager', t('File Manager'), 'right', array(
 			'dialog-title' => t('Navigate to Page'),
 			'href' => REL_DIR_FILES_TOOLS_REQUIRED . '/files/search_dialog?disable_choose=1',
@@ -22,5 +22,5 @@
 			'dialog-modal' => "false"
 		));
 		*/
-	
+
 	}

@@ -1,4 +1,4 @@
-<? 
+<?
 defined('C5_EXECUTE') or die("Access Denied.");
 
 // HELPERS
@@ -14,19 +14,19 @@ $areEntries = count($entries) > 0 ? true : false;
 ?>
 
 	<?=Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Logs'), false, false, false);?>
-    
+
     <? if(!$areEntries) { ?>
-    
+
     <div class="ccm-pane-body ccm-pane-body-footer">
-    
+
     	<p><?=t('There are no log entries to show at the moment.')?></p>
-    
+
     </div>
-    
+
     <?=Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper(false);?>
-    
+
     <? } else { ?>
-    
+
     <div class="ccm-pane-options ccm-pane-options-permanent-search">
     	<form method="post" id="ccm-log-search"  action="<?=$pageBase?>">
         	<div class="row">
@@ -46,7 +46,7 @@ $areEntries = count($entries) > 0 ? true : false;
             </div>
         </form>
     </div>
-        
+
 	<div class="ccm-pane-body <? if(!$paginator || !strlen($paginator->getPages())>0) { ?>ccm-pane-body-footer <? } ?>">
 
         <table class="table table-bordered">
@@ -70,20 +70,20 @@ $areEntries = count($entries) > 0 ? true : false;
                 <? } // END FOREACH ?>
 			</tbody>
 		</table>
-    
+
     </div>
     <!-- END Body Pane -->
-    
+
 	<? if($paginator && strlen($paginator->getPages())>0){ ?>
     <div class="ccm-pane-footer">
-        
+
         	<div class="pagination">
               <ul>
                   <li class="prev"><?=$paginator->getPrevious()?></li>
-                  
+
                   <? // Call to pagination helper's 'getPages' method with new $wrapper var ?>
                   <?=$paginator->getPages('li')?>
-                  
+
                   <li class="next"><?=$paginator->getNext()?></li>
               </ul>
 			</div>
@@ -91,7 +91,7 @@ $areEntries = count($entries) > 0 ? true : false;
 
 	</div>
         <? } // PAGINATOR ?>
-    
+
     <?=Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper(false);?>
-    
+
     <? } ?>

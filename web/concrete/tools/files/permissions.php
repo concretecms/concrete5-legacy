@@ -3,7 +3,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 $u = new User();
 $form = Loader::helper('form');
 $searchInstance = Loader::helper('text')->entities($_REQUEST['searchInstance']);
-$ih = Loader::helper('concrete/interface'); 
+$ih = Loader::helper('concrete/interface');
 $f = File::getByID($_REQUEST['fID']);
 $cp = new Permissions($f);
 if (!$cp->canAdmin()) {
@@ -106,7 +106,7 @@ if (is_object($fsl)) { ?>
 </div>
 
 <script type="text/javascript">
-	
+
 $("#ccm-file-permissions-tabs a").click(function() {
 	$("li.active").removeClass('active');
 	$("#" + ccm_fpActiveTab + "-tab").hide();
@@ -146,5 +146,5 @@ $(function() {
 		return false;
 	});
 });
-	
+
 </script>

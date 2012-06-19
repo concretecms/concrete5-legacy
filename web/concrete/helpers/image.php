@@ -20,13 +20,13 @@
 defined('C5_EXECUTE') or die("Access Denied.");
 class ImageHelper {
 
-		
+
 	/**
 	 * Creates a new image given an original path, a new path, a target width and height.
 	 * Optionally crops image to exactly match given width and height.
 	 * @params string $originalPath, string $newpath, int $width, int $height, bool $crop
 	 * @return void
-	 */		
+	 */
 	public function create($originalPath, $newPath, $width, $height, $crop = false) {
 		// first, we grab the original image. We shouldn't ever get to this function unless the image is valid
 		$imageSize = @getimagesize($originalPath);
@@ -62,7 +62,7 @@ class ImageHelper {
 			// first, we divide original width and height by new width and height, and find which difference is greater
 			$wDiff = $oWidth / $width;
 			$hDiff = ($height != 0 ? $oHeight / $height : 0);
-			
+
 			if (!$crop && ($wDiff > $hDiff)) {
 				//no cropping, just resize down based on target width
 				$finalWidth = $width;
@@ -83,7 +83,7 @@ class ImageHelper {
 				$do_crop_y = true;
 			}
 		}
-		
+
 		//Calculate cropping to center image
 		if ($do_crop_x) {
 			/*
@@ -103,15 +103,15 @@ class ImageHelper {
 			*/
 			$crop_src_y = round(($oHeight - ($height * $oWidth / $width)) * 0.5);
 		}
-		
+
 		//create "canvas" to put new resized and/or cropped image into
 		if ($crop) {
 			$image = @imageCreateTrueColor($width, $height);
 		} else {
 			$image = @imageCreateTrueColor($finalWidth, $finalHeight);
 		}
-		
-		$im = false;		
+
+		$im = false;
 		switch($imageSize[2]) {
 			case IMAGETYPE_GIF:
 				$im = @imageCreateFromGIF($originalPath);
@@ -123,45 +123,45 @@ class ImageHelper {
 				$im = @imageCreateFromPNG($originalPath);
 				break;
 		}
-		
+
 		if ($im) {
 			// Better transparency - thanks for the ideas and some code from mediumexposure.com
 			if (($imageSize[2] == IMAGETYPE_GIF) || ($imageSize[2] == IMAGETYPE_PNG)) {
 				$trnprt_indx = imagecolortransparent($im);
-				
+
 				// If we have a specific transparent color
 				if ($trnprt_indx >= 0) {
-			
+
 					// Get the original image's transparent color's RGB values
 					$trnprt_color = imagecolorsforindex($im, $trnprt_indx);
-					
+
 					// Allocate the same color in the new image resource
 					$trnprt_indx = imagecolorallocate($image, $trnprt_color['red'], $trnprt_color['green'], $trnprt_color['blue']);
-					
+
 					// Completely fill the background of the new image with allocated color.
 					imagefill($image, 0, 0, $trnprt_indx);
-					
+
 					// Set the background color for new image to transparent
 					imagecolortransparent($image, $trnprt_indx);
-					
-				
+
+
 				} else if ($imageSize[2] == IMAGETYPE_PNG) {
-				
+
 					// Turn off transparency blending (temporarily)
 					imagealphablending($image, false);
-					
+
 					// Create a new transparent color for image
 					$color = imagecolorallocatealpha($image, 0, 0, 0, 127);
-					
+
 					// Completely fill the background of the new image with allocated color.
 					imagefill($image, 0, 0, $color);
-					
+
 					// Restore transparency blending
 					imagesavealpha($image, true);
-			
+
 				}
 			}
-			
+
 			$res = @imageCopyResampled($image, $im, 0, 0, $crop_src_x, $crop_src_y, $finalWidth, $finalHeight, $oWidth, $oHeight);
 			if ($res) {
 				switch($imageSize[2]) {
@@ -178,13 +178,13 @@ class ImageHelper {
 				}
 			}
 		}
-		
+
 		@chmod($newPath, FILE_PERMISSIONS_MODE);
 	}
-	
-	/** 
+
+	/**
 	 * Returns a path to the specified item, resized and/or cropped to meet max width and height. $obj can either be
-	 * a string (path) or a file object. 
+	 * a string (path) or a file object.
 	 * Returns an object with the following properties: src, width, height
 	 * @param mixed $obj
 	 * @param int $maxWidth
@@ -196,8 +196,8 @@ class ImageHelper {
 			$path = $obj->getPath();
 		} else {
 			$path = $obj;
-		}		
-		
+		}
+
 		$fh = Loader::helper('file');
 		$prefix = ($crop ? 'cropped:' : ''); //Name cropped images different from resized images so they don't get mixed up in the cache
 		if (file_exists($path)) {
@@ -210,20 +210,20 @@ class ImageHelper {
 			// create image there
 			$this->create($path, DIR_FILES_CACHE . '/' . $filename, $maxWidth, $maxHeight, $crop);
 		}
-		
+
 		$src = REL_DIR_FILES_CACHE . '/' . $filename;
 		$abspath = DIR_FILES_CACHE . '/' . $filename;
 		$thumb = new stdClass;
-		if (isset($abspath) && file_exists($abspath)) {			
+		if (isset($abspath) && file_exists($abspath)) {
 			$thumb->src = $src;
 			$dimensions = getimagesize($abspath);
 			$thumb->width = $dimensions[0];
 			$thumb->height = $dimensions[1];
 			return $thumb;
-		}					
+		}
 	}
-	
-	/** 
+
+	/**
 	 * Runs getThumbnail on the path, and then prints it out as an XHTML image
 	 */
 	public function outputThumbnail($obj, $maxWidth, $maxHeight, $alt = null, $return = false, $crop = false) {
@@ -235,7 +235,7 @@ class ImageHelper {
 			print $html;
 		}
 	}
-	
+
 	public function output($obj, $alt = null, $return = false) {
 		$s = @getimagesize($obj->getPath());
 		$html = '<img class="ccm-output-image" alt="' . $alt . '" src="' . $obj->getRelativePath() . '" width="' . $s[0] . '" height="' . $s[1] . '" />';

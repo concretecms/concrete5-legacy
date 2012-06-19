@@ -2,18 +2,18 @@
 defined('C5_EXECUTE') or die("Access Denied.");
 
 class CustomStyleRule extends Object {
-	
+
 	protected static $headerStylesAdded = false;
-	public static $fontFamilies = array( 
-		'inherit'=>'inherit', 
+	public static $fontFamilies = array(
+		'inherit'=>'inherit',
 		'Arial'=>"Arial, Helvetica, sans-serif",
 		'Times New Roman'=>"'Times New Roman', Times, serif",
 		'Courier'=>"'Courier New', Courier, monospace",
 		'Georgia'=>"Georgia, 'Times New Roman', Times, serif",
-		'Verdana'=>"Verdana, Arial, Helvetica, sans-serif"		
-	);			 
+		'Verdana'=>"Verdana, Arial, Helvetica, sans-serif"
+	);
 	protected $customStyleNameSpace = 'customStyle';
-	
+
 	public function getCustomStyleRuleID() {return $this->csrID;}
 	public function getCustomStylePresetID() {
 		return $this->cspID;
@@ -27,7 +27,7 @@ class CustomStyleRule extends Object {
 			return '';
 		}
 	}
-	
+
 	public function setCustomStyleNameSpace($ns) {
 		$this->customStyleNameSpace = $ns;
 	}
@@ -41,20 +41,20 @@ class CustomStyleRule extends Object {
 		}
 		return $styles;
 	}
-	
+
 	public function getCustomStyleRuleText() {
-		$stylesStr=''; 
+		$stylesStr='';
 		$tempStyles=array();
 		$styles = $this->getCustomStyleRuleCustomStylesArray();
 		foreach($styles as $key=>$val){
 			if( !trim($key) ) continue;
-			switch($key){ 					
-				case 'border_position':	
-				case 'border_color':	
-				case 'border_style':	
+			switch($key){
+				case 'border_position':
+				case 'border_color':
+				case 'border_style':
 					$tempStyles[$key]=$val;
-					break;					
-								
+					break;
+
 				case 'border_width':
 				case 'padding_left':
 				case 'padding_top':
@@ -63,22 +63,22 @@ class CustomStyleRule extends Object {
 				case 'margin_left':
 				case 'margin_top':
 				case 'margin_right':
-				case 'margin_bottom':				
+				case 'margin_bottom':
 					if( !strlen(trim($val)) ) $val=0;
 					if( strlen(trim($val))==strlen(intval($val)) && intval($val) )
 						$val=intval($val).'px';
 					$tempStyles[$key]=$val;
 					break;
-					
-				case 'line_height':	
-				case 'font_size':	
-					if( !strlen(trim($val)) || !$val ) continue; 
+
+				case 'line_height':
+				case 'font_size':
+					if( !strlen(trim($val)) || !$val ) continue;
 					if( strlen(trim($val))==strlen(intval($val)) && intval($val) )
-						$val=intval($val).'px';					
+						$val=intval($val).'px';
 					$stylesStr.=str_replace('_','-',$key).':'.$val.'; ';
 					break;
-				
-				case 'font_family':						
+
+				case 'font_family':
 					if( $val=='inherit' ) continue;
 					$val=self::$fontFamilies[$val];
 					$stylesStr.=str_replace('_','-',$key).':'.$val.'; ';
@@ -94,44 +94,44 @@ class CustomStyleRule extends Object {
 					$stylesStr.=str_replace('_','-',$key).':'.$val.'; ';
 			}
 		}
-		
+
 		//shorthand approach to make the css a little tighter looking
 		if( $tempStyles['margin_top'] || $tempStyles['margin_right'] || $tempStyles['margin_bottom'] || $tempStyles['margin_left'] ){
 			$stylesStr.='margin:'.$tempStyles['margin_top'].' '.$tempStyles['margin_right'].' '.$tempStyles['margin_bottom'].' '.$tempStyles['margin_left'].'; ';
 		}
-		
+
 		if( $tempStyles['padding_top'] || $tempStyles['padding_right'] || $tempStyles['padding_bottom'] || $tempStyles['padding_left'] ){
 			$stylesStr.='padding:'.$tempStyles['padding_top'].' '.$tempStyles['padding_right'].' '.$tempStyles['padding_bottom'].' '.$tempStyles['padding_left'].'; ';
 		}
-		
+
 		if( $tempStyles['border_width'] && $tempStyles['border_style']!='none' ){
-			if($tempStyles['border_position']!='full') 
+			if($tempStyles['border_position']!='full')
 				$borderPos='-'.$tempStyles['border_position'];
 			$stylesStr.='border'.$borderPos.':'.$tempStyles['border_width'].' '.$tempStyles['border_style'].' '.$tempStyles['border_color'].'; ';
-		}				
-		
+		}
+
 		if( !strlen(trim($stylesStr)) && !strlen(trim($this->getCustomStyleRuleCSSCustom())) ) return '';
-		$styleRules= str_replace( array("\n","\r"),'', $stylesStr.$this->getCustomStyleRuleCSSCustom() ); 
-		return $styleRules;	
+		$styleRules= str_replace( array("\n","\r"),'', $stylesStr.$this->getCustomStyleRuleCSSCustom() );
+		return $styleRules;
 	}
-	
+
 	protected function sanitize($id, $class, $custom, $keys) {
 		$cssData = array();
-		$id = str_replace( array('"', "'", ';', "<", ">", "#"), '', $id);							
+		$id = str_replace( array('"', "'", ';', "<", ">", "#"), '', $id);
 		$class = str_replace( array('"', "'", ';', "<", ">", "."), '', $class);
-		$custom = str_replace( '"' , "'", $custom) ;	
-	
+		$custom = str_replace( '"' , "'", $custom) ;
+
 		$styleKeys=array('font_family','color','font_size','line_height','text_align','background_color','border_style',
 			'border_color','border_width','border_position','margin_top','margin_right','margin_bottom','margin_left',
 			'padding_top','padding_right','padding_bottom','padding_left', 'background_image', 'background_repeat');
-			
+
 		$cssDataRaw=array();
 		foreach($styleKeys as $styleKey){
 			$cssDataRaw[$styleKey]=$keys[$styleKey];
 		}
-		
+
 		$cssData = serialize($cssDataRaw);
-		
+
 		$obj = new stdClass;
 		$obj->id = $id;
 		$obj->class = $class;
@@ -139,21 +139,21 @@ class CustomStyleRule extends Object {
 		$obj->cssData = $cssData;
 		return $obj;
 	}
-	
+
 	public function add($id, $class, $custom, $keys) {
 		$obj = CustomStyleRule::sanitize($id, $class, $custom, $keys);
 		$db = Loader::db();
 		$db->Execute('insert into CustomStyleRules (css_id, css_class, css_custom, css_serialized) values (?, ?, ?, ?)', array($obj->id, $obj->class, $obj->custom, $obj->cssData));
 		$csrID = $db->Insert_ID();
-		return CustomStyleRule::getByID($csrID);		
+		return CustomStyleRule::getByID($csrID);
 	}
-	
+
 	public function update($id, $class, $custom, $keys) {
 		$obj = $this->sanitize($id, $class, $custom, $keys);
 		$db = Loader::db();
 		$db->Execute('update CustomStyleRules set css_id = ?, css_class = ?, css_custom = ?, css_serialized = ? where csrID = ?', array($obj->id, $obj->class, $obj->custom, $obj->cssData, $this->getCustomStyleRuleID()));
 	}
-	
+
 	public function getByID($csrID) {
 		$csr = new CustomStyleRule();
 		$csr->load($csrID);
@@ -161,7 +161,7 @@ class CustomStyleRule extends Object {
 			return $csr;
 		}
 	}
-	
+
 	public function load($csrID) {
 		$db = Loader::db();
 		$r = $db->GetRow('select CustomStyleRules.*, CustomStylePresets.cspID from CustomStyleRules left join CustomStylePresets on CustomStyleRules.csrID = CustomStylePresets.csrID where CustomStyleRules.csrID = ?', array($csrID));
@@ -169,8 +169,8 @@ class CustomStyleRule extends Object {
 			$this->setPropertiesFromArray($r);
 		}
 	}
-	
-	
+
+
 }
 
 class CustomStylePreset extends Object {
@@ -199,7 +199,7 @@ class CustomStylePreset extends Object {
 			return $csp;
 		}
 	}
-	
+
 	public function load($cspID) {
 		$db = Loader::db();
 		$r = $db->GetRow('select cspID, cspName, csrID from CustomStylePresets where cspID  = ?', array($cspID));
@@ -207,22 +207,22 @@ class CustomStylePreset extends Object {
 			$this->setPropertiesFromArray($r);
 		}
 	}
-	
-	/** 
+
+	/**
 	 * Removes a preset. Does NOT remove the associated rule
 	 */
 	public function delete() {
 		$db = Loader::db();
 		$db->Execute('delete from CustomStylePresets where cspID = ?', array($this->cspID));
 	}
-	
+
 	public function add($cspName, $csr) {
 		$db = Loader::db();
 		$db->Execute('insert into CustomStylePresets (cspName, csrID) values (?, ?)', array(
 			$cspName,
 			$csr->getCustomStyleRuleID()
 		));
-	
+
 	}
-	
+
 }

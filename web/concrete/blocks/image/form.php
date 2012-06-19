@@ -1,13 +1,13 @@
-<?php  
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 $al = Loader::helper('concrete/asset_library');
 $bf = null;
 $bfo = null;
 
-if ($controller->getFileID() > 0) { 
+if ($controller->getFileID() > 0) {
 	$bf = $controller->getFileObject();
 }
-if ($controller->getFileOnstateID() > 0) { 
+if ($controller->getFileOnstateID() > 0) {
 	$bfo = $controller->getFileOnstateObject();
 
 }
@@ -26,13 +26,13 @@ if ($forceImageToMatchDimensions && $maxWidth && $maxHeight) {
 
 <div class="clearfix">
 	<label><?=t('Image')?></label>
-	<div class="input">	
+	<div class="input">
 		<?=$al->image('ccm-b-image', 'fID', t('Choose Image'), $bf, $args);?>
 	</div>
 </div>
 <div class="clearfix">
 	<label><?=t('Image On-State')?></label>
-	<div class="input">	
+	<div class="input">
 		<?=$al->image('ccm-b-image-onstate', 'fOnstateID', t('Choose Image On-State'), $bfo, $args);?>
 	</div>
 </div>
@@ -44,7 +44,7 @@ if ($forceImageToMatchDimensions && $maxWidth && $maxHeight) {
 
 <div class="clearfix">
 	<?=$form->label('linkType', t('Image Links to:'))?>
-	<div class="input">	
+	<div class="input">
 		<select name="linkType" id="linkType">
 			<option value="0" <?=(empty($externalLink) && empty($internalLinkCID) ? 'selected="selected"' : '')?>><?=t('Nothing')?></option>
 			<option value="1" <?=(empty($externalLink) && !empty($internalLinkCID) ? 'selected="selected"' : '')?>><?=t('Another Page')?></option>
@@ -69,7 +69,7 @@ if ($forceImageToMatchDimensions && $maxWidth && $maxHeight) {
 
 <div class="clearfix">
 	<?=$form->label('altText', t('Alt Text/Caption'))?>
-	<div class="input">	
+	<div class="input">
 		<?= $form->text('altText', $altText, array('style' => 'width: 250px')); ?>
 	</div>
 </div>
@@ -78,9 +78,9 @@ if ($forceImageToMatchDimensions && $maxWidth && $maxHeight) {
 
 <div>
 <h4><?=t('Constrain Image Dimensions')?></h4>
-<? if ($maxWidth == 0) { 
+<? if ($maxWidth == 0) {
 	$maxWidth = '';
-} 
+}
 if ($maxHeight == 0) {
 	$maxHeight = '';
 }
@@ -88,14 +88,14 @@ if ($maxHeight == 0) {
 
 <div class="clearfix">
 	<?=$form->label('maxWidth', t('Max Width'))?>
-	<div class="input">	
+	<div class="input">
 		<?= $form->text('maxWidth', $maxWidth, array('style' => 'width: 60px')); ?>
 	</div>
 </div>
 
 <div class="clearfix">
 	<?=$form->label('maxHeight', t('Max Height'))?>
-	<div class="input">	
+	<div class="input">
 		<?= $form->text('maxHeight', $maxHeight, array('style' => 'width: 60px')); ?>
 	</div>
 </div>
@@ -103,7 +103,7 @@ if ($maxHeight == 0) {
 
 <div class="clearfix">
 	<?=$form->label('forceImageToMatchDimensions', t('Scale Image'))?>
-	<div class="input">	
+	<div class="input">
 		<select name="forceImageToMatchDimensions" id="forceImageToMatchDimensions">
 			<option value="0" <? if (!$forceImageToMatchDimensions) { ?> selected="selected" <? } ?>><?=t('Automatically')?></option>
 			<option value="1" <? if ($forceImageToMatchDimensions == 1) { ?> selected="selected" <? } ?>><?=t('Force Exact Image Match')?></option>

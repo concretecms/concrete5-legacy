@@ -57,7 +57,7 @@
  - Flash button to stream mp3 audio (Douglas Walsh www.douglaswalsh.net)
  - Audio output is mp3 format by default
  - Change font to AlteHaasGrotesk by yann le coroller
- - Some code cleanup 
+ - Some code cleanup
 
  1.0.4 (unreleased)
  - Ability to output audible codes in mp3 format to stream from flash
@@ -327,15 +327,15 @@ class Securimage {
 
 	/**
 	 * Text to write at the bottom corner of captcha image
-	 * 
+	 *
 	 * @since 2.0
 	 * @var string Signature text
 	 */
 	var $image_signature;
-	
+
 	/**
 	 * Color to use for writing signature text
-	 * 
+	 *
 	 * @since 2.0
 	 * @var Securimage_Color
 	 */
@@ -365,30 +365,30 @@ class Securimage {
 	 * @var string
 	 */
 	var $session_name = '';
-	
+
 	/**
 	 * The amount of time in seconds that a code remains valid.<br />
 	 * Any code older than this number will be considered invalid even if entered correctly.<br />
 	 * Any non-numeric or value less than 1 disables this functionality.
-	 * 
+	 *
 	 * @var int
 	 */
 	var $expiry_time;
-	
+
 	/**
 	 * Path to the file to use for storing codes for users.<br />
 	 * THIS FILE MUST ABSOLUTELY NOT BE ACCESSIBLE FROM A WEB BROWSER!!<br />
 	 * Put this file in a directory below the web root or one that is restricted (i.e. an apache .htaccess file with deny from all)<br />
 	 * If you cannot meet those requirements your forms may not be completely protected.<br />
 	 * You could obscure the database file name but this is also not recommended.
-	 * 
+	 *
 	 * @var string
 	 */
 	var $sqlite_database;
-	
+
 	/**
 	 * Use an SQLite database for storing codes as a backup to sessions.<br />
-	 * Note: Sessions will still be used 
+	 * Note: Sessions will still be used
 	 */
 	var $use_sqlite_db;
 
@@ -452,7 +452,7 @@ class Securimage {
 	 * @var boolean
 	 */
 	var $correct_code;
-	
+
 	/**
 	 * Handle to SQLite database
 	 *
@@ -460,47 +460,47 @@ class Securimage {
 	 * @var resource
 	 */
 	var $sqlite_handle;
-	
+
 	/**
 	 * Color resource for image line color
-	 * 
+	 *
 	 * @access private
 	 * @var int
 	 */
 	var $gdlinecolor;
-	
+
 	/**
 	 * Array of colors for multi colored codes
-	 * 
+	 *
 	 * @access private
 	 * @var array
 	 */
 	var $gdmulticolor;
-	
+
 	/**
 	 * Color resource for image font color
-	 * 
+	 *
 	 * @access private
 	 * @var int
 	 */
 	var $gdtextcolor;
-	
+
 	/**
 	 * Color resource for image signature color
-	 * 
+	 *
 	 * @access private
 	 * @var int
 	 */
 	var $gdsignaturecolor;
-	
+
 	/**
 	 * Color resource for image background color
-	 * 
+	 *
 	 * @access private
 	 * @var int
 	 */
 	var $gdbgcolor;
-	
+
 
 	/**
 	 * Class constructor.<br />
@@ -572,10 +572,10 @@ class Securimage {
 		$this->audio_format = 'mp3';
 		$this->session_name = '';
 		$this->expiry_time  = 900;
-		
+
 		$this->sqlite_database = 'database/securimage.sqlite';
 		$this->use_sqlite_db   = false;
-		
+
 		$this->sqlite_handle = false;
 	}
 
@@ -624,13 +624,13 @@ class Securimage {
 
 	/**
 	 * Output audio file with HTTP headers to browser
-	 * 
+	 *
 	 * <code>
 	 *   $sound = new Securimage();
 	 *   $sound->audio_format = 'mp3';
 	 *   $sound->outputAudioFile();
 	 * </code>
-	 * 
+	 *
 	 * @since 2.0
 	 */
 	function outputAudioFile()
@@ -675,7 +675,7 @@ class Securimage {
 			$this->im     = imagecreate($this->image_width, $this->image_height);
 			$this->tmpimg = imagecreate($this->image_width * $this->iscale, $this->image_height * $this->iscale);
 		}
-		
+
 		$this->allocateColors();
 		imagepalettecopy($this->tmpimg, $this->im);
 
@@ -695,10 +695,10 @@ class Securimage {
 		$this->output();
 
 	}
-	
+
 	/**
 	 * Allocate all colors that will be used in the CAPTCHA image
-	 * 
+	 *
 	 * @since 2.0.1
 	 * @access private
 	 */
@@ -706,9 +706,9 @@ class Securimage {
 	{
 		// allocate bg color first for imagecreate
 		$this->gdbgcolor = imagecolorallocate($this->im, $this->image_bg_color->r, $this->image_bg_color->g, $this->image_bg_color->b);
-		
+
 		$alpha = intval($this->text_transparency_percentage / 100 * 127);
-		
+
 		if ($this->use_transparent_text == true) {
       $this->gdtextcolor = imagecolorallocatealpha($this->im, $this->text_color->r, $this->text_color->g, $this->text_color->b, $alpha);
       $this->gdlinecolor = imagecolorallocatealpha($this->im, $this->line_color->r, $this->line_color->g, $this->line_color->b, $alpha);
@@ -716,12 +716,12 @@ class Securimage {
 			$this->gdtextcolor = imagecolorallocate($this->im, $this->text_color->r, $this->text_color->g, $this->text_color->b);
       $this->gdlinecolor = imagecolorallocate($this->im, $this->line_color->r, $this->line_color->g, $this->line_color->b);
 		}
-    
+
     $this->gdsignaturecolor = imagecolorallocate($this->im, $this->signature_color->r, $this->signature_color->g, $this->signature_color->b);
-    
+
     if ($this->use_multi_text == true) {
     	$this->gdmulticolor = array();
-    	
+
     	foreach($this->multi_text_color as $color) {
     		if ($this->use_transparent_text == true) {
     		  $this->gdmulticolor[] = imagecolorallocatealpha($this->im, $color->r, $color->g, $color->b, $alpha);
@@ -742,7 +742,7 @@ class Securimage {
 	{
 		imagefilledrectangle($this->im, 0, 0, $this->image_width * $this->iscale, $this->image_height * $this->iscale, $this->gdbgcolor);
     imagefilledrectangle($this->tmpimg, 0, 0, $this->image_width * $this->iscale, $this->image_height * $this->iscale, $this->gdbgcolor);
-    
+
 		if ($this->bgimg == '') {
 			if ($this->background_directory != null && is_dir($this->background_directory) && is_readable($this->background_directory)) {
 				$img = $this->getBackgroundFromDirectory();
@@ -753,7 +753,7 @@ class Securimage {
 		}
 
 		$dat = @getimagesize($this->bgimg);
-		if($dat == false) { 
+		if($dat == false) {
 			return;
 		}
 
@@ -811,12 +811,12 @@ class Securimage {
 			$x = $this->image_width * (1 + $line) / ($this->num_lines + 1);
 			$x += (0.5 - $this->frand()) * $this->image_width / $this->num_lines;
 			$y = rand($this->image_height * 0.1, $this->image_height * 0.9);
-			 
+
 			$theta = ($this->frand()-0.5) * M_PI * 0.7;
 			$w = $this->image_width;
 			$len = rand($w * 0.4, $w * 0.7);
 			$lwid = rand(0, 2);
-			 
+
 			$k = $this->frand() * 0.6 + 0.2;
 			$k = $k * $k * 0.5;
 			$phi = $this->frand() * 6.28;
@@ -827,10 +827,10 @@ class Securimage {
 			$amp = 1.5 * $this->frand() / ($k + 5.0 / $len);
 			$x0 = $x - 0.5 * $len * cos($theta);
 			$y0 = $y - 0.5 * $len * sin($theta);
-			 
+
 			$ldx = round(-$dy * $lwid);
 			$ldy = round($dx * $lwid);
-			 
+
 			for ($i = 0; $i < $n; ++$i) {
 				$x = $x0 + $i * $dx + $amp * $dy * sin($k * $i * $step + $phi);
 				$y = $y0 + $i * $dy - $amp * $dx * sin($k * $i * $step + $phi);
@@ -849,7 +849,7 @@ class Securimage {
 	{
 		$width2 = $this->image_width * $this->iscale;
 		$height2 = $this->image_height * $this->iscale;
-		 
+
 		if ($this->use_gd_font == true || !is_readable($this->ttf_file)) {
 			if (!is_int($this->gd_font_file)) { //is a file name
 				$font = @imageloadfont($this->gd_font_file);
@@ -885,11 +885,11 @@ class Securimage {
 					} else {
 						$font_color = $this->gdtextcolor;
 					}
-					
+
 					$ch = $this->code{$i};
-					 
+
 					imagettftext($this->tmpimg, $font_size, $angle, $x, $y, $font_color, $this->ttf_file, $ch);
-					 
+
 					// estimate character widths to increment $x without creating spaces that are too large or too small
 					// these are best estimates to align text but may vary between fonts
 					// for optimal character widths, do not use multiple text colors or character angles and the complete string will be written by imagettftext
@@ -909,7 +909,7 @@ class Securimage {
 						$min_x = $font_size + ($this->iscale * 2);
 						$max_x = $font_size + ($this->iscale * 5);
 					}
-					 
+
 					$x += rand($min_x, $max_x);
 				} //for loop
 			} // angled or multi-color
@@ -931,7 +931,7 @@ class Securimage {
 	function distortedCopy()
 	{
 		$numpoles = 3; // distortion factor
-		 
+
 		// make array of poles AKA attractor points
 		for ($i = 0; $i < $numpoles; ++$i) {
 			$px[$i]  = rand($this->image_width * 0.3, $this->image_width * 0.7);
@@ -940,19 +940,19 @@ class Securimage {
 			$tmp     = -$this->frand() * 0.15 - 0.15;
 			$amp[$i] = $this->perturbation * $tmp;
 		}
-		 
+
 		$bgCol   = imagecolorat($this->tmpimg, 0, 0);
 		$width2  = $this->iscale * $this->image_width;
 		$height2 = $this->iscale * $this->image_height;
-		 
+
 		imagepalettecopy($this->im, $this->tmpimg); // copy palette to final image so text colors come across
-		 
+
 		// loop over $img pixels, take pixels from $tmpimg with distortion field
 		for ($ix = 0; $ix < $this->image_width; ++$ix) {
 			for ($iy = 0; $iy < $this->image_height; ++$iy) {
 				$x = $ix;
 				$y = $iy;
-					
+
 				for ($i = 0; $i < $numpoles; ++$i) {
 					$dx = $ix - $px[$i];
 					$dy = $iy - $py[$i];
@@ -965,7 +965,7 @@ class Securimage {
 					$x += $dx * $rscale;
 					$y += $dy * $rscale;
 				}
-					
+
 				$c = $bgCol;
 				$x *= $this->iscale;
 				$y *= $this->iscale;
@@ -999,7 +999,7 @@ class Securimage {
 		if ($this->code == false) {
 			$this->code = $this->generateCode($this->code_length);
 		}
-		
+
 		$this->saveData();
 	}
 
@@ -1143,7 +1143,7 @@ class Securimage {
 	{
 		$_SESSION['securimage_code_value'] = strtolower($this->code);
 		$_SESSION['securimage_code_ctime'] = time();
-		
+
 		$this->saveCodeToDatabase();
 	}
 
@@ -1156,9 +1156,9 @@ class Securimage {
 	function validate()
 	{
 		// retrieve code from session, if no code exists check sqlite database if supported.
-		
+
 		if (isset($_SESSION['securimage_code_value']) && trim($_SESSION['securimage_code_value']) != '') {
-			if ($this->isCodeExpired($_SESSION['securimage_code_ctime']) == false) { 
+			if ($this->isCodeExpired($_SESSION['securimage_code_ctime']) == false) {
 			  $code = $_SESSION['securimage_code_value'];
 			}
 		} else if ($this->use_sqlite_db == true && function_exists('sqlite_open')) { // no code in session - may mean user has cookies turned off
@@ -1168,11 +1168,11 @@ class Securimage {
 			// session code invalid or non-existant and code not found in sqlite db or sqlite is not available
 			$code = '';
 		}
-		
+
 		$code               = trim(strtolower($code));
 		$code_entered       = trim(strtolower($this->code_entered));
 		$this->correct_code = false;
-		
+
 		if ($code != '') {
 			if ($code == $code_entered) {
 			  $this->correct_code = true;
@@ -1195,7 +1195,7 @@ class Securimage {
 			return strtolower($_SESSION['securimage_code_value']);
 		} else {
 			if ($this->sqlite_handle == false) $this->openDatabase();
-			
+
 			return $this->getCodeFromDatabase(); // attempt to get from database, returns empty string if sqlite is not available or disabled
 		}
 	}
@@ -1308,10 +1308,10 @@ class Securimage {
 		} else { // mp3
 			$start = 4; // 4 byte (32 bit) frame header
 		}
-		 
+
 		$start  += rand(1, 64); // randomize starting offset
 		$datalen = strlen($data) - $start - 256; // leave last 256 bytes unchanged
-		 
+
 		for ($i = $start; $i < $datalen; $i += 64) {
 			$ch = ord($data{$i});
 			if ($ch < 9 || $ch > 119) continue;
@@ -1372,19 +1372,19 @@ class Securimage {
 		if ($this->use_gd_font) {
 			imagestring($this->im, 5, $this->image_width - (strlen($this->image_signature) * 10), $this->image_height - 20, $this->image_signature, $this->gdsignaturecolor);
 		} else {
-			 
+
 			$bbox = imagettfbbox(10, 0, $this->signature_font, $this->image_signature);
 			$textlen = $bbox[2] - $bbox[0];
 			$x = $this->image_width - $textlen - 5;
 			$y = $this->image_height - 3;
-			 
+
 			imagettftext($this->im, 10, 0, $x, $y, $this->gdsignaturecolor, $this->signature_font, $this->image_signature);
 		}
 	}
-	
+
 	/**
 	 * Get hashed IP address of remote user
-	 * 
+	 *
 	 * @access private
 	 * @since 2.0.1
 	 * @return string
@@ -1393,10 +1393,10 @@ class Securimage {
 	{
 		return strtolower(md5($_SERVER['REMOTE_ADDR']));
 	}
-	
+
 	/**
 	 * Open SQLite database
-	 * 
+	 *
 	 * @access private
 	 * @since 2.0.1
 	 * @return bool true if database was opened successfully
@@ -1404,26 +1404,26 @@ class Securimage {
 	function openDatabase()
 	{
 		$this->sqlite_handle = false;
-		
+
 		if ($this->use_sqlite_db && function_exists('sqlite_open')) {
 			$this->sqlite_handle = sqlite_open($this->sqlite_database, 0666, $error);
-			
+
 			if ($this->sqlite_handle !== false) {
 				$res = sqlite_query($this->sqlite_handle, "PRAGMA table_info(codes)");
 				if (sqlite_num_rows($res) == 0) {
 				  sqlite_query($this->sqlite_handle, "CREATE TABLE codes (iphash VARCHAR(32) PRIMARY KEY, code VARCHAR(32) NOT NULL, created INTEGER)");
 				}
 			}
-			
+
 			return $this->sqlite_handle != false;
 		}
-		
+
 		return $this->sqlite_handle;
 	}
-	
+
 	/**
 	 * Save captcha code to sqlite database
-	 * 
+	 *
 	 * @access private
 	 * @since 2.0.1
 	 * @return bool true if code was saved, false if not
@@ -1431,22 +1431,22 @@ class Securimage {
 	function saveCodeToDatabase()
 	{
 		$success = false;
-		
+
 		$this->openDatabase();
-		
+
 		if ($this->use_sqlite_db && $this->sqlite_handle !== false) {
 			$ip = $this->getIPHash();
 			$time = time();
 			$code = $_SESSION['securimage_code_value']; // hash code for security - if cookies are disabled the session still exists at this point
 			$success = sqlite_query($this->sqlite_handle, "INSERT OR REPLACE INTO codes(iphash, code, created) VALUES('$ip', '$code', $time)");
 		}
-		
+
 		return $success !== false;
 	}
-	
+
 	/**
 	 * Get stored captcha code from sqlite database based on ip address hash
-	 * 
+	 *
 	 * @access private
 	 * @since 2.0.1
 	 * @return string captcha code
@@ -1457,23 +1457,23 @@ class Securimage {
 
     if ($this->use_sqlite_db && $this->sqlite_handle !== false) {
     	$ip = $this->getIPHash();
-    	
+
     	$res = sqlite_query($this->sqlite_handle, "SELECT * FROM codes WHERE iphash = '$ip'");
     	if ($res && sqlite_num_rows($res) > 0) {
     		$res = sqlite_fetch_array($res);
-    		
+
     		if ($this->isCodeExpired($res['created']) == false) {
     			$code = $res['code'];
     		}
     	}
     }
-    
+
     return $code;
 	}
-	
+
 	/**
 	 * Delete a code from the database by ip address hash
-	 * 
+	 *
 	 * @access private
 	 * @since 2.0.1
 	 */
@@ -1481,14 +1481,14 @@ class Securimage {
 	{
 		if ($this->sqlite_handle !== false) {
 			$ip = $this->getIPHash();
-			
+
 			sqlite_query($this->sqlite_handle, "DELETE FROM codes WHERE iphash = '$ip'");
 		}
 	}
-	
+
 	/**
 	 * Purge codes over a day old from database
-	 * 
+	 *
 	 * @access private
 	 * @since 2.0.1
 	 */
@@ -1497,14 +1497,14 @@ class Securimage {
 		if ($this->use_sqlite_db && $this->sqlite_handle !== false) {
 			$now   = time();
 			$limit = (!is_numeric($this->expiry_time) || $this->expiry_time < 1) ? 86400 : $this->expiry_time;
-			
+
 			sqlite_query($this->sqlite_handle, "DELETE FROM codes WHERE $now - created > $limit");
 		}
 	}
-	
+
 	/**
 	 * Check a code to see if it is expired based on creation time
-	 * 
+	 *
 	 * @access private
 	 * @since 2.0.1
 	 * @param $creation_time unix timestamp of code creation time
@@ -1513,16 +1513,16 @@ class Securimage {
 	function isCodeExpired($creation_time)
 	{
 		$expired = true;
-		
+
 		if (!is_numeric($this->expiry_time) || $this->expiry_time < 1) {
 			$expired = false;
 		} else if (time() - $creation_time < $this->expiry_time) {
 			$expired = false;
 		}
-		
+
 		return $expired;
 	}
-	
+
 } /* class Securimage */
 
 
@@ -1575,9 +1575,9 @@ class Securimage_Color {
 			} else {
 				$red   = substr($col, 0, 2);
 				$green = substr($col, 2, 2);
-				$blue  = substr($col, 4, 2); 
+				$blue  = substr($col, 4, 2);
 			}
-			
+
 			$red   = hexdec($red);
 			$green = hexdec($green);
 			$blue  = hexdec($blue);

@@ -1,7 +1,7 @@
 <? defined('C5_EXECUTE') or die("Access Denied."); ?>
 
 <?=Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Connect to Community'), false, 'span16')?>
-<? 
+<?
 	$mi = Marketplace::getInstance();
 	if ($mi->hasConnectionError() && $mi->getConnectionError() == Marketplace::E_MARKETPLACE_SUPPORT_MANUALLY_DISABLED) { ?>
 		<p><?=t("External marketplace support has been disabled for this website.")?></p>

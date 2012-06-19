@@ -7,16 +7,16 @@ defined('C5_EXECUTE') or die("Access Denied.");
  * @license    http://www.concrete5.org/license/     MIT License
  *
  */
- 
+
 class ApprovePagePageWorkflowRequest extends PageWorkflowRequest {
-	
+
 	protected $wrStatusNum = 30;
 
 	public function __construct() {
 		$pk = PermissionKey::getByHandle('approve_page_versions');
 		parent::__construct($pk);
 	}
-	
+
 	public function setRequestedVersionID($cvID) {
 		$this->cvID = $cvID;
 	}
@@ -34,25 +34,25 @@ class ApprovePagePageWorkflowRequest extends PageWorkflowRequest {
 		$d->setShortStatus(t("Pending Approval"));
 		return $d;
 	}
-	
+
 	public function getWorkflowRequestStyleClass() {
 		return 'info';
 	}
-	
+
 	public function getWorkflowRequestApproveButtonClass() {
 		return 'success';
 	}
-	
+
 	public function getWorkflowRequestApproveButtonInnerButtonRightHTML() {
 		return '<i class="icon-white icon-thumbs-up"></i>';
-	}		
-	
+	}
+
 	public function getWorkflowRequestApproveButtonText() {
 		return t('Approve Page');
 	}
-	
+
 	public function getWorkflowRequestAdditionalActions(WorkflowProgress $wp) {
-		
+
 		$buttons = array();
 		$c = Page::getByID($this->cID, 'ACTIVE');
 		$button = new WorkflowProgressAction();
@@ -76,5 +76,5 @@ class ApprovePagePageWorkflowRequest extends PageWorkflowRequest {
 		return $wpr;
 	}
 
-	
+
 }

@@ -2,7 +2,7 @@
 defined('C5_EXECUTE') or die("Access Denied.");
 
 class EditPageThemePagePermissionKey extends PagePermissionKey  {
-	
+
 	protected function getAllowedThemeIDs() {
 
 		$u = new User();
@@ -10,12 +10,12 @@ class EditPageThemePagePermissionKey extends PagePermissionKey  {
 		if (!is_object($pae)) {
 			return array();
 		}
-		
+
 		$accessEntities = $u->getUserAccessEntityObjects();
 		$accessEntities = $pae->validateAndFilterAccessEntities($accessEntities);
 		$list = $this->getAccessListItems(PagePermissionKey::ACCESS_TYPE_ALL, $accessEntities);
 		$list = PermissionDuration::filterByActive($list);
-		
+
 		$db = Loader::db();
 		$allptIDs = $db->GetCol('select ptID from PageThemes order by ptID asc');
 		$ptIDs = array();
@@ -26,7 +26,7 @@ class EditPageThemePagePermissionKey extends PagePermissionKey  {
 			if ($l->getThemesAllowedPermission() == 'C') {
 				if ($l->getAccessType() == PagePermissionKey::ACCESS_TYPE_EXCLUDE) {
 					$ptIDs = array_values(array_diff($ptIDs, $l->getThemesAllowedArray()));
-				} else { 
+				} else {
 					$ptIDs = array_unique(array_merge($ptIDs, $l->getThemesAllowedArray()));
 				}
 			}
@@ -34,10 +34,10 @@ class EditPageThemePagePermissionKey extends PagePermissionKey  {
 				$ptIDs = $allptIDs;
 			}
 		}
-		
+
 		return $ptIDs;
 	}
-	
+
 	public function validate($theme = false) {
 		$u = new User();
 		if ($u->isSuperUser()) {
@@ -51,8 +51,8 @@ class EditPageThemePagePermissionKey extends PagePermissionKey  {
 			return count($themes) > 0;
 		}
 	}
-	
-	
+
+
 }
 
 class EditPageThemePagePermissionAccess extends PagePermissionAccess {
@@ -78,32 +78,32 @@ class EditPageThemePagePermissionAccess extends PagePermissionAccess {
 		$db = Loader::db();
 		$db->Execute('delete from PagePermissionThemeAccessList where paID = ?', array($this->getPermissionAccessID()));
 		$db->Execute('delete from PagePermissionThemeAccessListCustom where paID = ?', array($this->getPermissionAccessID()));
-		if (is_array($args['themesIncluded'])) { 
+		if (is_array($args['themesIncluded'])) {
 			foreach($args['themesIncluded'] as $peID => $permission) {
 				$v = array($this->getPermissionAccessID(), $peID, $permission);
 				$db->Execute('insert into PagePermissionThemeAccessList (paID, peID, permission) values (?, ?, ?)', $v);
 			}
 		}
-		
-		if (is_array($args['themesExcluded'])) { 
+
+		if (is_array($args['themesExcluded'])) {
 			foreach($args['themesExcluded'] as $peID => $permission) {
 				$v = array($this->getPermissionAccessID(), $peID, $permission);
 				$db->Execute('insert into PagePermissionThemeAccessList (paID, peID, permission) values (?, ?, ?)', $v);
 			}
 		}
 
-		if (is_array($args['ptIDInclude'])) { 
+		if (is_array($args['ptIDInclude'])) {
 			foreach($args['ptIDInclude'] as $peID => $ptIDs) {
-				foreach($ptIDs as $ptID) { 
+				foreach($ptIDs as $ptID) {
 					$v = array($this->getPermissionAccessID(), $peID, $ptID);
 					$db->Execute('insert into PagePermissionThemeAccessListCustom (paID, peID, ptID) values (?, ?, ?)', $v);
 				}
 			}
 		}
 
-		if (is_array($args['ptIDExclude'])) { 
+		if (is_array($args['ptIDExclude'])) {
 			foreach($args['ptIDExclude'] as $peID => $ptIDs) {
-				foreach($ptIDs as $ptID) { 
+				foreach($ptIDs as $ptID) {
 					$v = array($this->getPermissionAccessID(), $peID, $ptID);
 					$db->Execute('insert into PagePermissionThemeAccessListCustom (paID, peID, ptID) values (?, ?, ?)', $v);
 				}
@@ -120,7 +120,7 @@ class EditPageThemePagePermissionAccess extends PagePermissionAccess {
 		foreach($list as $l) {
 			$pe = $l->getAccessEntityObject();
 			$prow = $db->GetRow('select permission from PagePermissionThemeAccessList where peID = ? and paID = ?', array($pe->getAccessEntityID(), $l->getPermissionAccessID()));
-			if (is_array($prow) && $prow['permission']) { 
+			if (is_array($prow) && $prow['permission']) {
 				$l->setThemesAllowedPermission($prow['permission']);
 				$permission = $prow['permission'];
 			} else if ($l->getAccessType() == PagePermissionKey::ACCESS_TYPE_INCLUDE) {
@@ -128,7 +128,7 @@ class EditPageThemePagePermissionAccess extends PagePermissionAccess {
 			} else {
 				$l->setThemesAllowedPermission('N');
 			}
-			if ($permission == 'C') { 
+			if ($permission == 'C') {
 				$ptIDs = $db->GetCol('select ptID from PagePermissionThemeAccessListCustom where peID = ? and paID = ?', array($pe->getAccessEntityID(), $l->getPermissionAccessID()));
 				$l->setThemesAllowedArray($ptIDs);
 			}
@@ -139,7 +139,7 @@ class EditPageThemePagePermissionAccess extends PagePermissionAccess {
 }
 
 class EditPageThemePagePermissionAccessListItem extends PagePermissionAccessListItem {
-	
+
 	protected $customThemeArray = array();
 	protected $themesAllowedPermission = 'N';
 
@@ -155,5 +155,5 @@ class EditPageThemePagePermissionAccessListItem extends PagePermissionAccessList
 	public function getThemesAllowedArray() {
 		return $this->customThemeArray;
 	}
-	
+
 }

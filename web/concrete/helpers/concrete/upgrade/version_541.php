@@ -24,12 +24,12 @@ class ConcreteUpgradeVersion541Helper {
 		// we install the updated schema just for tables that matter
 		Package::installDB(dirname(__FILE__) . '/db/version_541.xml');
 	}
-	
+
 	public function run() {
-		BlockType::installBlockType('tags');			
-		BlockType::installBlockType('next_previous');			
+		BlockType::installBlockType('tags');
+		BlockType::installBlockType('next_previous');
 		BlockType::installBlockType('date_nav');
-		
+
         Loader::model('collection_types');
         $blogEntry = CollectionType::getByHandle('blog_entry');
         if( !$blogEntry || !intval($blogEntry->getCollectionTypeID()) ){
@@ -37,8 +37,8 @@ class ConcreteUpgradeVersion541Helper {
             $data['ctName'] = t('Blog Entry');
             $blogEntry = CollectionType::add($data);
         }
-		
+
 	}
 
-	
+
 }

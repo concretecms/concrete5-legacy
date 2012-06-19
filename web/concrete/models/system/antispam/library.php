@@ -10,15 +10,15 @@ class SystemAntispamLibrary extends Object {
 		return PackageList::getHandle($this->pkgID);
 	}
 	public function getPackageObject() {return Package::getByID($this->pkgID);}
-	
+
 	public static function getActive() {
 		$db = Loader::db();
 		$saslHandle = $db->GetOne('select saslHandle from SystemAntispamLibraries where saslIsActive = 1');
-		if ($saslHandle) { 
+		if ($saslHandle) {
 			return SystemAntispamLibrary::getByHandle($saslHandle);
 		}
 	}
-	
+
 	public static function getByHandle($saslHandle) {
 		$db = Loader::db();
 		$r = $db->GetRow('select saslHandle, saslIsActive, pkgID, saslName from SystemAntispamLibraries where saslHandle = ?', array($saslHandle));
@@ -28,7 +28,7 @@ class SystemAntispamLibrary extends Object {
 			return $sc;
 		}
 	}
-	
+
 	public static function add($saslHandle, $saslName, $pkg = false) {
 		$pkgID = 0;
 		if (is_object($pkg)) {
@@ -38,23 +38,23 @@ class SystemAntispamLibrary extends Object {
 		$db->Execute('insert into SystemAntispamLibraries (saslHandle, saslName, pkgID) values (?, ?, ?)', array($saslHandle, $saslName, $pkgID));
 		return SystemAntispamLibrary::getByHandle($saslHandle);
 	}
-	
+
 	public function delete() {
 		$db = Loader::db();
 		$db->Execute('delete from SystemAntispamLibraries where saslHandle = ?', array($this->saslHandle));
 	}
-	
+
 	public function activate() {
 		$db = Loader::db();
 		self::deactivateAll();
 		$db->Execute('update SystemAntispamLibraries set saslIsActive = 1 where saslHandle = ?', array($this->saslHandle));
 	}
-	
+
 	public static function deactivateAll() {
 		$db = Loader::db();
 		$db->Execute('update SystemAntispamLibraries set saslIsActive = 0');
 	}
-		
+
 	public static function getList() {
 		$db = Loader::db();
 		$saslHandles = $db->GetCol('select saslHandle from SystemAntispamLibraries order by saslHandle asc');
@@ -76,11 +76,11 @@ class SystemAntispamLibrary extends Object {
 		}
 		return $libraries;
 	}
-	
+
 	public static function exportList($xml) {
 		$list = self::getList();
 		$nxml = $xml->addChild('systemantispam');
-		
+
 		foreach($list as $sc) {
 			$activated = 0;
 			$type = $nxml->addChild('library');
@@ -90,8 +90,8 @@ class SystemAntispamLibrary extends Object {
 			$type->addAttribute('activated', $sc->isSystemAntispamLibraryActive());
 		}
 	}
-	
-	
+
+
 	public function hasOptionsForm() {
 		$path = DIRNAME_SYSTEM . '/' . DIRNAME_SYSTEM_ANTISPAM . '/' . $this->saslHandle . '/' . FILENAME_FORM;
 		if (file_exists(DIR_ELEMENTS . '/' . $path)) {
@@ -108,11 +108,11 @@ class SystemAntispamLibrary extends Object {
 		} else {
 			return file_exists(DIR_ELEMENTS . '/' . $path);
 		}
-		
+
 		return false;
 	}
-	
-	/** 
+
+	/**
 	 * Returns the controller class for the currently selected captcha library
 	 */
 	public function getController() {

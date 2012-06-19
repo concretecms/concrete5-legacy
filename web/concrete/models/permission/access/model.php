@@ -2,14 +2,14 @@
 defined('C5_EXECUTE') or die("Access Denied.");
 
 class PermissionAccess extends Object {
-	
+
 	protected $paID;
 	protected $paIDList = array();
-	
+
 	public function setPermissionKey($permissionKey) {
 		$this->pk = $permissionKey;
 	}
-	
+
 	public function getPermissionObject() {
 		return $this->pk->getPermissionObject();
 	}
@@ -17,10 +17,10 @@ class PermissionAccess extends Object {
 	public function getPermissionObjectToCheck() {
 		return $this->pk->getPermissionObjectToCheck();
 	}
-		
+
 	public function getPermissionAccessID() {return $this->paID;}
 	public function isPermissionAccessInUse() {return $this->paIsInUse;}
-	
+
 	protected function deliverAccessListItems($q, $accessType, $filterEntities) {
 		$db = Loader::db();
 		$class = str_replace('PermissionKey', 'PermissionAccessListItem', get_class($this->pk));
@@ -44,7 +44,7 @@ class PermissionAccess extends Object {
 		}
  		return $list;
 	}
-	
+
 	public function validateAndFilterAccessEntities($accessEntities) {
 		$entities = array();
 		foreach($accessEntities as $ae) {
@@ -54,7 +54,7 @@ class PermissionAccess extends Object {
 		}
 		return $entities;
 	}
-	
+
 	public function validate() {
 		$u = new User();
 		if ($u->isSuperUser()) {
@@ -73,10 +73,10 @@ class PermissionAccess extends Object {
 				$valid = false;
 			}
 		}
-		return $valid;		
-		
+		return $valid;
+
 	}
-	
+
 	public static function createByMerge($permissions) {
 		$class = get_class($permissions[0]);
 		$p = new $class();
@@ -87,7 +87,7 @@ class PermissionAccess extends Object {
 		$p->paID = -1;
 		return $p;
 	}
-	
+
 	public function getAccessListItems($accessType = PermissionKey::ACCESS_TYPE_INCLUDE, $filterEntities = array()) {
 		if (count($this->paIDList) > 0) {
 			$q = 'select paID, peID, pdID, accessType from PermissionAccessList where paID in (' . implode(',', $this->paIDList) . ')';
@@ -97,7 +97,7 @@ class PermissionAccess extends Object {
 		return $this->deliverAccessListItems($q, $accessType, $filterEntities);
 	}
 
-	protected function buildAssignmentFilterString($accessType, $filterEntities) { 
+	protected function buildAssignmentFilterString($accessType, $filterEntities) {
 		$peIDs = '';
 		$filters = array();
 		if (count($filterEntities) > 0) {
@@ -108,12 +108,12 @@ class PermissionAccess extends Object {
 		}
 		if ($accessType == 0) {
 			$accessType = '';
-		} else { 
+		} else {
 			$accessType = ' and accessType = ' . $accessType;
 		}
 		return $peIDs . ' ' . $accessType . ' order by accessType desc'; // we order desc so that excludes come last (-1)
 	}
-	
+
 	public function clearWorkflows() {
 		$db = Loader::db();
 		$db->Execute('delete from PermissionAccessWorkflows where paID = ?', array($this->getPermissionAccessID()));
@@ -122,7 +122,7 @@ class PermissionAccess extends Object {
 	public function attachWorkflow(Workflow $wf) {
 		$db = Loader::db();
 		$db->Replace('PermissionAccessWorkflows', array('paID' => $this->getPermissionAccessID(), 'wfID' => $wf->getWorkflowID()), array('paID', 'wfID'), true);
-	}	
+	}
 
 	public function getWorkflows() {
 		$db = Loader::db();
@@ -166,7 +166,7 @@ class PermissionAccess extends Object {
 		if ($durationObject instanceof PermissionDuration) {
 			$pdID = $durationObject->getPermissionDurationID();
 		}
-		
+
 		$db->Replace('PermissionAccessList', array(
 			'paID' => $this->getPermissionAccessID(),
 			'peID' => $pae->getAccessEntityID(),
@@ -177,9 +177,9 @@ class PermissionAccess extends Object {
 
 	public function removeListItem(PermissionAccessEntity $pe) {
 		$db = Loader::db();
-		$db->Execute('delete from PermissionAccessList where peID = ? and paID = ?', array($pe->getAccessEntityID(), $this->getPermissionAccessID()));	
+		$db->Execute('delete from PermissionAccessList where peID = ? and paID = ?', array($pe->getAccessEntityID(), $this->getPermissionAccessID()));
 	}
-	
+
 	public function save() {}
 
 	public static function create(PermissionKey $pk) {
@@ -188,7 +188,7 @@ class PermissionAccess extends Object {
 		$db->Execute('insert into PermissionAccess (paIsInUse) values (0)');
 		return call_user_func_array(array($class, 'getByID'), array($db->Insert_ID(), $pk));
 	}
-	
+
 	public static function getByID($paID, PermissionKey $pk) {
 		$db = Loader::db();
 		$row = $db->GetRow('select * from PermissionAccess where paID = ?', array($paID));
@@ -200,5 +200,5 @@ class PermissionAccess extends Object {
 			return $obj;
 		}
 	}
-	
+
 }

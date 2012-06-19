@@ -15,9 +15,9 @@ class NumberAttributeTypeController extends AttributeTypeController  {
 				$p = $i+1;
 			}
 		}
-		return round($value, $p);	
+		return round($value, $p);
 	}
-	
+
 	public function searchForm($list) {
 		$numFrom = $this->request('from');
 		$numTo = $this->request('to');
@@ -29,7 +29,7 @@ class NumberAttributeTypeController extends AttributeTypeController  {
 		}
 		return $list;
 	}
-	
+
 	public function search() {
 		$f = Loader::helper('form');
 		$html = $f->text($this->field('from'), $this->request('from'));
@@ -37,14 +37,14 @@ class NumberAttributeTypeController extends AttributeTypeController  {
 		$html .= $f->text($this->field('to'), $this->request('to'));
 		print $html;
 	}
-	
+
 	public function form() {
 		if (is_object($this->attributeValue)) {
 			$value = $this->getAttributeValue()->getValue();
 		}
 		print Loader::helper('form')->text($this->field('value'), $value, array('style' => 'width:80px'));
 	}
-	
+
 	public function validateForm($p) {
 		return $p['value'] != false;
 	}
@@ -55,7 +55,7 @@ class NumberAttributeTypeController extends AttributeTypeController  {
 		$value = ($value == false || $value == '0') ? 0 : $value;
 		$db->Replace('atNumber', array('avID' => $this->getAttributeValueID(), 'value' => $value), 'avID', true);
 	}
-	
+
 	public function deleteKey() {
 		$db = Loader::db();
 		$arr = $this->attributeKey->getAttributeValueIDList();
@@ -63,15 +63,15 @@ class NumberAttributeTypeController extends AttributeTypeController  {
 			$db->Execute('delete from atNumber where avID = ?', array($id));
 		}
 	}
-	
+
 	public function saveForm($data) {
 		$db = Loader::db();
 		$this->saveValue($data['value']);
 	}
-	
+
 	public function deleteValue() {
 		$db = Loader::db();
 		$db->Execute('delete from atNumber where avID = ?', array($this->getAttributeValueID()));
 	}
-	
+
 }

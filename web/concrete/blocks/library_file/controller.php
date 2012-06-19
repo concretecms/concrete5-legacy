@@ -21,20 +21,20 @@
  */
 	defined('C5_EXECUTE') or die("Access Denied.");
 	class LibraryFileBlockController extends BlockController {
-	 
+
 		protected $btIsInternal = 1;
 		protected $btTable = 'btFile';
-		
-		/** 
+
+		/**
 		 * Used for localization. If we want to localize the name/description we have to include this
 		 */
 		public function getBlockTypeDescription() {
 			return t("Files added to the asset library");
 		}
-		
+
 		public function getBlockTypeName() {
 			return t("Library File");
-		}		
+		}
 
 		function getFile($fID) {
 			Loader::model('file');
@@ -42,7 +42,7 @@
 
 			$file_obj = $mf->getByID($fID);
 			$fileversion_obj = $file_obj->getVersion();
-				
+
 			$bf = new LibraryFileBlockController;
 
 			$ftype = FileTypeList::getType($fileversion_obj->getExtension());
@@ -54,10 +54,10 @@
 			$this->relpath = $fileversion_obj->getRelativePath();
 			$this->origfilename = $fileversion_obj->getRelativePath();
 			$this->filesize = $fileversion_obj->getFullSize();
-			
+
 			$len = strlen(REL_DIR_FILES_UPLOADED);
 			$fh = Loader::helper('concrete/file');
-			
+
 			$bf->bID 			= $fileversion_obj->getFileID();
 			$bf->generictype 	= $this->generictype;
 			$bf->type 			= $this->type;
@@ -74,18 +74,18 @@
 			if (file_exists(DIR_AL_ICONS . '/type_' . $type . '.png')) {
 				$file = REL_DIR_AL_ICONS . '/type_' . $type . '.png';
 			} else if (file_exists(DIR_AL_ICONS . '/generic_' . $generictype . '.png')) {
-				$file = REL_DIR_AL_ICONS . '/generic_' . $generictype . '.png';				
+				$file = REL_DIR_AL_ICONS . '/generic_' . $generictype . '.png';
 			} else {
-				$file = REL_DIR_AL_ICONS . '/generic_file.png';	
+				$file = REL_DIR_AL_ICONS . '/generic_file.png';
 			}
-			
+
 			if (!$getSRC) {
 				return $file;
 			} else {
 				return '<img class="ccm-al-icon" src="' . $file . '" width="' . AL_ICON_WIDTH . '" height="' . AL_ICON_HEIGHT . '" />';
 			}
 		}
-		
+
 		function sanitizeTitle($filename, $maxLength = 60) {
 			// remove all numbers from the front of a file
 			$st = preg_replace("/^[0-9]+/", "", $filename);
@@ -94,7 +94,7 @@
 			}
 			return $st;
 		}
-		
+
 		/**
 		 * Gets the original filename of an uploaded file.
 	     * @author Tony Trupp <tony@concrete5.org>
@@ -120,8 +120,8 @@
 		public function getFileFullURL() {
 			return BASE_URL . $this->url;
 		}
-		
-		
+
+
 		/*
 		 * Returns the dimensions of the file object (assumed to be an image, movie or flash file) as an array
 		 * Array keys: 0 = width, 1 = height
@@ -133,7 +133,7 @@
 				return $r;
 			}
 		}
-		
+
 		/**
 		 * Goes through all files without an original filename and makes one by using the sanitizeTitle() function
 		 * @return void
@@ -146,18 +146,18 @@
 				$db->Execute("update btFile set origfilename = ? where bID = ?", array($origfilename, $row['bID']));
 			}
 		}
-		
+
 		/**
 	  	 * Creates a new image given an original path, a new path, a target width and height.
 		 * @params string $originalPath, string $newpath, int $width, int $height
 		 * @return void
-		 */		
+		 */
 		public function createImage($originalPath, $newPath, $width, $height) {
 			$fi = Loader::helper('image');
 			$fi->create($originalPath, $newPath, $width, $height);
 		}
 
-		/** 
+		/**
 		 * Gets the system thumbnail for a given file object. This function returns a relative path
 		 * @return string $path
 		 */
@@ -176,15 +176,15 @@
 			}
 		}
 
-		/** 
+		/**
 		 * Gets the system thumbnail for a given file object. This function returns the absolute path
 		 * @return string $path
 		 */
 		function getThumbnailAbsolutePath($filename = null) {
-			
+
 		}
-		
-		/** 
+
+		/**
 		 * Returns a thumbnail for the current file object. If a width and height are specified, attempts to create or retrieve a thumbnail of that size specifically
 		 * Returns an object with the following properties: src, width, height, alt
 		 * @param int $maxWidth
@@ -206,18 +206,18 @@
 				$src = REL_DIR_FILES_CACHE . '/' . $filename;
 				$abspath = DIR_FILES_CACHE . '/' . $filename;
 			}
-			
-			if (isset($abspath) && file_exists($abspath)) {			
+
+			if (isset($abspath) && file_exists($abspath)) {
 				$thumb->src = $src;
 				$dimensions = getimagesize($abspath);
 				$thumb->width = $dimensions[0];
 				$thumb->height = $dimensions[1];
 				$thumb->alt = $this->getOriginalFilename();
 				return $thumb;
-			}				
+			}
 		}
-		
-		/** 
+
+		/**
 		 * Prints out an image string for the current thumbnail, using the getThumbnail method
 		 */
 		public function outputThumbnail($maxWidth = null, $maxHeight = null) {
@@ -234,7 +234,7 @@
 		function delete() {
 			$db = Loader::db();
 			$bID = $this->bID;
-			
+
 			// first, we remove the image
 
 			$q = "select filename from btFile where bID = '$bID'";
@@ -255,7 +255,7 @@
 			$q = "delete from btFile where bID = '$bID'";
 			$r = $db->query($q);
 		}
-		
+
 		function sanitizeAndCopy($pointer, $filename) {
 			$prefix = rand(1000, 10000) . time();
 			$filename = preg_replace(array("/[^0-9A-Za-z-.]/","/[\s]/"),"", $filename);
@@ -264,20 +264,20 @@
 			copy($pointer, $path);
 			return $filename;
 		}
-		
+
 		function createThumbnail($existingFile) {
-			if (file_exists(DIR_FILES_UPLOADED . '/' . $existingFile)) {	
+			if (file_exists(DIR_FILES_UPLOADED . '/' . $existingFile)) {
 				$thumbnailFileName = substr($existingFile, 0, strrpos($existingFile, '.')) . '.jpg';
 				$thumbnailFilePath = DIR_FILES_UPLOADED_THUMBNAILS . '/' . $thumbnailFileName;
 				LibraryFileBlockController::createImage(DIR_FILES_UPLOADED . '/' . $existingFile, $thumbnailFilePath, AL_THUMBNAIL_WIDTH, AL_THUMBNAIL_HEIGHT);
 			}
 		}
-		
+
 		function duplicate($newBID) {
 			// nothing
 		}
 
-		
+
 		function save($data) {
 			Loader::library("file/importer");
 
@@ -287,21 +287,21 @@
            		$resp = $fi->import($data['file'], $data['name']);
 
 				$lbc = new LibraryFileBlockController();
-				return $lbc->getFile($resp->getFileID());				
+				return $lbc->getFile($resp->getFileID());
 			}
 		}
 
 /*
 		function save_OLD($data) {
-			
+
 			if (file_exists($data['file'])) {
 				// copy the file into the files directory
 				$filename = LibraryFileBlockController::sanitizeAndCopy($data['file'], $data['name']);
 				$bo = $this->getBlockObject();
 				$bo->updateBlockName($filename);
-				
+
 				$size = @getimagesize(DIR_FILES_UPLOADED . '/' . $filename);
-				
+
 				// TODO: extend these out to more useful file types
 				if ($size) {
 					$generictype = "image";
@@ -317,26 +317,26 @@
 						case IMAGETYPE_GIF:
 							$type = 'gif';
 							break;
-					}							
+					}
 				} else {
 					$generictype = "file";
 					$type = '';
 					$ext = substr(strrchr($filename, '.'), 1);
-					$type = $ext;	
-					
+					$type = $ext;
+
 				}
-				
+
 				$db = Loader::db();
 				$origfilename= LibraryFileBlockController::sanitizeTitle($filename, 12);
 				$v = array($filename, $origfilename, $type, $generictype, $bo->getBlockID());
 
 				$r = $db->query("insert into btFile (filename,origfilename, type, generictype, bID) values (?, ?, ?, ?, ?)", $v);
-				
+
 				$bf = LibraryFileBlockController::getFile($bo->getBlockID());
 				$ret = Events::fire('on_file_upload', $bf);
 			}
 		}
-		*/	
+		*/
 	}
 
 ?>

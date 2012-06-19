@@ -5,18 +5,18 @@ Loader::library('archive');
 
 /**
 *
-* This class is responsible for unpacking themes that have been zipped and uploaded to the system. 
+* This class is responsible for unpacking themes that have been zipped and uploaded to the system.
 * @package Pages
 * @subpackage Themes
 */
 class PageThemeArchive extends Archive {
-	
+
 	// takes a zip file and tries to unpack it to the theme directory on the site
-	
+
 	public function install($file, $inplace=false) {
 		parent::install($file, $inplace);
 	}
-	
+
 	public function __construct($theme = null) {
 		parent::__construct();
 		$this->targetDirectory = DIR_FILES_THEMES;
@@ -24,7 +24,7 @@ class PageThemeArchive extends Archive {
 			$this->_theme = $theme;
 		}
 	}
-	
+
 	public function uninstall() {
 		// can only uninstall non-global ones
 		if ($this->_theme) {
@@ -39,8 +39,8 @@ class PageThemeArchive extends Archive {
 			/* else {
 				throw new Exception('You may only remove themes that are contained within your website\'s /themes directory.');
 			}*/
-			
+
 		}
 	}
-	
+
 }

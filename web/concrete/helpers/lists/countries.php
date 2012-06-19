@@ -15,7 +15,7 @@
  * @copyright  Copyright (c) 2003-2008 Concrete5. (http://www.concrete5.org)
  * @license    http://www.concrete5.org/license/     MIT License
  */
- 
+
 defined('C5_EXECUTE') or die("Access Denied.");
 class ListsCountriesHelper {
 
@@ -265,14 +265,14 @@ class ListsCountriesHelper {
 	'ZR' => 'Zaire',
 	'ZW' => 'Zimbabwe'
 	);
-	
-	/** 
+
+	/**
 	 * Returns an array of Countries with their short name as the key and their full name as the value
 	 * @return array
 	 */
 	public function getCountries() { asort($this->countries); return $this->countries;}
 
-	/** 
+	/**
 	 * Gets a country full name given its index
 	 * @return string
 	 * @param string $index

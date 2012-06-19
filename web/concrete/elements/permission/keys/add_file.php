@@ -16,7 +16,7 @@ $extensions = Loader::helper('concrete/file')->getAllowedFileExtensions();
 <h3><?=t('Who can add what?')?></h3>
 
 <? foreach($included as $assignment) {
-	$entity = $assignment->getAccessEntityObject(); 
+	$entity = $assignment->getAccessEntityObject();
 ?>
 
 
@@ -44,7 +44,7 @@ $extensions = Loader::helper('concrete/file')->getAllowedFileExtensions();
 <h3><?=t('Who can\'t add what?')?></h3>
 
 <? foreach($excluded as $assignment) {
-	$entity = $assignment->getAccessEntityObject(); 
+	$entity = $assignment->getAccessEntityObject();
 ?>
 
 

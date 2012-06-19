@@ -5,14 +5,14 @@ defined('C5_EXECUTE') or die("Access Denied.");
 class GlobalArea extends Area {
 
 	protected $arIsGlobal = 1;
-	
+
 	public function display() {
 		$c = Page::getCurrentPage();
-		parent::getOrCreate($c, $this->arHandle, 1);		
+		parent::getOrCreate($c, $this->arHandle, 1);
 		parent::display($c);
 	}
 
-	public static function deleteByName($arHandle) { 
+	public static function deleteByName($arHandle) {
 		$db = Loader::db();
 		$r = $db->Execute('select cID from Areas where arHandle = ? and arIsGlobal = 1', array($arHandle));
 		while ($row = $r->FetchRow()) {
@@ -20,5 +20,5 @@ class GlobalArea extends Area {
 		}
 		$db->Execute('delete from Areas where arHandle = ? and arIsGlobal = 1', array($arHandle));
 	}
-	
+
 }

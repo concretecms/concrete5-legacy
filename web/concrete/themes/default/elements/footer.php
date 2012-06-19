@@ -7,7 +7,7 @@
 			<?
 			$u = new User();
 			if ($u->isRegistered()) { ?>
-				<? 
+				<?
 				if (Config::get("ENABLE_USER_PROFILES")) {
 					$userName = '<a href="' . $this->url('/profile') . '">' . $u->getUserName() . '</a>';
 				} else {
@@ -18,7 +18,7 @@
 			<? } else { ?>
 				<span class="sign-in"><a href="<?=$this->url('/login')?>"><?=t('Sign In to Edit this Site')?></a></span>
 			<? } ?>
-            
+
 	</div>
 
 </div>

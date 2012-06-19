@@ -4,9 +4,9 @@ class DashboardSystemPermissionsSiteController extends DashboardBaseController {
 		if (PERMISSIONS_MODEL != 'simple') {
 			return;
 		}
-		
+
 		$editAccess = array();
-		
+
 		$home = Page::getByID(1, "RECENT");
 		$pk = PermissionKey::getByHandle('view_page');
 		$pk->setPermissionObject($home);
@@ -19,7 +19,7 @@ class DashboardSystemPermissionsSiteController extends DashboardBaseController {
 				$this->set('registeredCanRead', true);
 			}
 		}
-		
+
 		Loader::model('search/group');
 		$gl = new GroupSearch();
 		$gl->filter('gID', REGISTERED_GROUP_ID, '>');
@@ -42,10 +42,10 @@ class DashboardSystemPermissionsSiteController extends DashboardBaseController {
 		$this->set('home', $home);
 		$this->set('gArray', $gArray);
 		$this->set('editAccess', $editAccess);
-		
+
 		if ($this->isPost()) {
 			if ($this->token->validate('site_permissions_code')) {
-				
+
 				switch($_POST['view']) {
 					case "ANYONE":
 						$viewObj = GroupPermissionAccessEntity::getOrCreate(Group::getByID(GUEST_GROUP_ID));
@@ -55,10 +55,10 @@ class DashboardSystemPermissionsSiteController extends DashboardBaseController {
 						break;
 					case "PRIVATE":
 						$viewObj = GroupPermissionAccessEntity::getOrCreate(Group::getByID(ADMIN_GROUP_ID));
-						break;							
+						break;
 				}
-				
-				
+
+
 				$pk = PermissionKey::getByHandle('view_page');
 				$pk->setPermissionObject($home);
 				$pt = $pk->getPermissionAssignmentObject();
@@ -66,14 +66,14 @@ class DashboardSystemPermissionsSiteController extends DashboardBaseController {
 				$pa = PermissionAccess::create($pk);
 				$pa->addListItem($viewObj);
 				$pt->assignPermissionAccess($pa);
-				
+
 				$editAccessEntities = array();
 				if (is_array($_POST['gID'])) {
 					foreach($_POST['gID'] as $gID) {
 						$editAccessEntities[] = GroupPermissionAccessEntity::getOrCreate(Group::getByID($gID));
 					}
 				}
-				
+
 				$editPermissions = array(
 					'view_page_versions',
 					'edit_page_properties',
@@ -90,7 +90,7 @@ class DashboardSystemPermissionsSiteController extends DashboardBaseController {
 					'add_subpage',
 					'move_or_copy_page',
 				);
-				foreach($editPermissions as $pkHandle) { 
+				foreach($editPermissions as $pkHandle) {
 					$pk = PermissionKey::getByHandle($pkHandle);
 					$pk->setPermissionObject($home);
 					$pt = $pk->getPermissionAssignmentObject();
@@ -108,7 +108,7 @@ class DashboardSystemPermissionsSiteController extends DashboardBaseController {
 			}
 		}
 	}
-	
+
 	public function saved() {
 		$this->view();
 		$this->set('message', t('Permissions saved'));

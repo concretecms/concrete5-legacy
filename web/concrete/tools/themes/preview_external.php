@@ -5,14 +5,14 @@ Loader::model('collection_types');
 Loader::library('marketplace');
 $mi = Marketplace::getInstance();
 $tp = new TaskPermission();
-if ($mi->isConnected() && $tp->canInstallPackages()) { 
-	
+if ($mi->isConnected() && $tp->canInstallPackages()) {
+
 	$previewCID=intval($_REQUEST['previewCID']);
 	$themeCID=intval($_REQUEST['themeCID']);
 	$themeHandle=$_REQUEST['themeHandle'];
 
 	$postStr= '&themeHandle='.$themeHandle.'&ctID='.$ctID.'&ctHandle='.$ctHandle;
-	
+
 	if (!function_exists('curl_init')) { ?>
 		<div><?=t('curl must be enabled to preview external themes.')?></div>
 	<? }else{
@@ -24,5 +24,5 @@ if ($mi->isConnected() && $tp->canInstallPackages()) {
 		$contents = curl_exec($curl_handle);
 		curl_close($curl_handle);
 		echo $contents;
-	} 
+	}
 }

@@ -3,7 +3,7 @@
 $dh = Loader::helper('concrete/dashboard');
 if ($dh->canRead()) {
 	session_write_close();
-	
+
 	$js = Loader::helper('json');
 	Loader::model('marketplace_remote_item');
 
@@ -14,9 +14,9 @@ if ($dh->canRead()) {
 	$keywords = $_REQUEST['q'];
 	$mri->filterByKeywords($keywords);
 	$mri->execute();
-	$items = $mri->getPage();	
+	$items = $mri->getPage();
 
-	$r = array();	
+	$r = array();
 	foreach($items as $it) {
 		$obj = new stdClass;
 		$obj->mpID = $it->getMarketplaceItemID();

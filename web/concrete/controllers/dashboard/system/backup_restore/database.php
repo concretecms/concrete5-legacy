@@ -2,12 +2,12 @@
 defined('C5_EXECUTE') or die("Access Denied.");
 
 class DashboardSystemBackupRestoreDatabaseController extends DashboardBaseController {
-	
+
 	public function view(){
 	}
-	
+
 	public function export_database_schema() {
-		if (!ENABLE_DEVELOPER_OPTIONS) { 
+		if (!ENABLE_DEVELOPER_OPTIONS) {
 			return false;
 		}
 		$db = Loader::db();
@@ -15,7 +15,7 @@ class DashboardSystemBackupRestoreDatabaseController extends DashboardBaseContro
 		$xml = $ab->ExtractSchema();
 		$this->set('schema', $xml);
 	}
-	
+
 	public function refresh_database_schema() {
 		if ($this->token->validate("refresh_database_schema")) {
 			$msg = '';
@@ -29,7 +29,7 @@ class DashboardSystemBackupRestoreDatabaseController extends DashboardBaseContro
 					$this->set('error', $e);
 				}
 			}
-			
+
 			if ($this->post('refresh_local_schema')) {
 				// refresh concrete/config/db.xml and all installed blocks
 				if (file_exists('config/' . FILENAME_LOCAL_DB)) {
@@ -38,10 +38,10 @@ class DashboardSystemBackupRestoreDatabaseController extends DashboardBaseContro
 						$msg .= ' ' . t('Local database file refreshed.');
 					} catch(Exception $e) {
 						$this->set('error', $e);
-					}					
+					}
 				}
 			}
-			
+
 			$msg = trim($msg);
 			$this->set('message', $msg);
 

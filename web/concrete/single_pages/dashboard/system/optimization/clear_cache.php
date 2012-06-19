@@ -1,5 +1,5 @@
 <? defined('C5_EXECUTE') or die("Access Denied."); ?>
-    
+
 <?php echo Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Clear Cache'), false, 'span12 offset2')?>
 
 <form method="post" id="clear-cache-form" action="<?php echo $this->url('/dashboard/system/optimization/clear_cache', 'do_clear')?>">

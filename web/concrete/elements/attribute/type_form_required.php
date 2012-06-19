@@ -1,5 +1,5 @@
-<? 
-$form = Loader::helper('form'); 
+<?
+$form = Loader::helper('form');
 $ih = Loader::helper("concrete/interface");
 $valt = Loader::helper('validation/token');
 $akName = '';
@@ -31,12 +31,12 @@ if (is_object($key)) {
 	?>
 	<script type="text/javascript">
 	deleteAttribute = function() {
-		if (confirm('<?=$delConfirmJS?>')) { 
-			location.href = "<?=$this->action('delete', $key->getAttributeKeyID(), $valt->generate('delete_attribute'))?>";				
+		if (confirm('<?=$delConfirmJS?>')) {
+			location.href = "<?=$this->action('delete', $key->getAttributeKeyID(), $valt->generate('delete_attribute'))?>";
 		}
 	}
 	</script>
-	
+
 	<? print $ih->button_js(t('Delete Attribute'), "deleteAttribute()", 'right', 'error');?>
 <? } ?>
 
@@ -91,7 +91,7 @@ if (is_object($key)) {
 			break;
 		case 'file':
 			$keyword_label = t('Content included in file search index.');
-			$advanced_label = t('Field available in File Manager Search.');			
+			$advanced_label = t('Field available in File Manager Search.');
 			break;
 		case 'user':
 			$keyword_label = t('Content included in user keyword search.');
@@ -110,8 +110,8 @@ if (is_object($key)) {
 <?=$form->hidden('atID', $type->getAttributeTypeID())?>
 <?=$form->hidden('akCategoryID', $category->getAttributeKeyCategoryID()); ?>
 <?=$valt->output('add_or_update_attribute')?>
-<? 
-if ($category->getPackageID() > 0) { 
+<?
+if ($category->getPackageID() > 0) {
 	Loader::packageElement('attribute/categories/' . $category->getAttributeKeyCategoryHandle(), $category->getPackageHandle(), array('key' => $key));
 } else {
 	Loader::element('attribute/categories/' . $category->getAttributeKeyCategoryHandle(), array('key' => $key));

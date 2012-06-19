@@ -3,7 +3,7 @@
 	$c = Page::getCurrentPage();
 	$cp = new Permissions($c);
 	if ($cp->canViewPageVersions()) {
-		$stack = Stack::getByID($stID);	
+		$stack = Stack::getByID($stID);
 	} else {
 		$stack = Stack::getByID($stID, 'ACTIVE');
 	}

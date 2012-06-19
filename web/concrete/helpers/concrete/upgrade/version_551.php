@@ -41,5 +41,5 @@ class ConcreteUpgradeVersion551Helper {
 		//Package::installDB(dirname(__FILE__) . '/db/version_551.xml');
 	}
 
-	
+
 }

@@ -3,8 +3,8 @@
 	if (!User::isLoggedIn()) {
 		User::checkUserForeverCookie();
 	}
-	
-	if (User::isLoggedIn()) {		
+
+	if (User::isLoggedIn()) {
 		// check to see if this is a valid user account
 		$u = new User();
 		if (!$u->checkLogin()) {
@@ -12,9 +12,9 @@
 			$v = View::getInstance();
 			$v->setTheme(VIEW_CORE_THEME);
 			if (!$u->isActive()) {
-				Loader::controller('/login')->redirect("/login", "account_deactivated");		
+				Loader::controller('/login')->redirect("/login", "account_deactivated");
 			} else {
-				$v->render("/user_error");		
+				$v->render("/user_error");
 			}
 		}
 	}

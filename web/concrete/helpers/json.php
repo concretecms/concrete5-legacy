@@ -18,8 +18,8 @@
 defined('C5_EXECUTE') or die("Access Denied.");
 class JsonHelper {
 
-	
-	/** 
+
+	/**
 	 * Decodes a JSON string
 	 * @param string $string
 	 * @return string
@@ -33,9 +33,9 @@ class JsonHelper {
 			return $sjs->decode($string);
 		}
 	}
-	
-	
-	/** 
+
+
+	/**
 	 * Encodes a data structure into a JSON string
 	 * @param string $mixed
 	 * @return string
@@ -49,7 +49,7 @@ class JsonHelper {
 			return $sjs->encode($mixed);
 		}
 	}
-	
+
 
 
 }

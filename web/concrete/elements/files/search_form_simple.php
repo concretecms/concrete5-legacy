@@ -1,4 +1,4 @@
-<? defined('C5_EXECUTE') or die("Access Denied."); ?> 
+<? defined('C5_EXECUTE') or die("Access Denied."); ?>
 <?
 Loader::model('file_set');
 $s1 = FileSet::getMySets();
@@ -18,10 +18,10 @@ foreach($s1 as $s) {
 	<? /* I'm not proud of this */ ?>
 	<form method="get" class="ccm-dashboard-file-search" action="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/files/search_results">
 	<?
-	/** 
+	/**
 	 * Here are all the things that could be passed through the asset library that we need to account for, as hidden form fields
 	 */
-	print $form->hidden('fType'); 
+	print $form->hidden('fType');
 	?>
 
 	<input type="hidden" name="search" value="1" />

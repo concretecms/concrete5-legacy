@@ -13,7 +13,7 @@ if (!defined('ENABLE_CMS_FOR_DIRECTORY')) {
 
 # These items should be set by site.php in config/ but if they're not that means we're installing and we need something there
 /* https patch applied here */
-if (!defined('BASE_URL')) { 
+if (!defined('BASE_URL')) {
 	if(isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == 'on')) {
 		define('BASE_URL', 'https://' . $_SERVER['HTTP_HOST']);
 	} else {
@@ -49,7 +49,7 @@ if (!defined('ENABLE_DEVELOPER_OPTIONS')) {
 }
 
 /*
-if (!defined('ENABLE_OPENID_AUTHENTICATION')) { 
+if (!defined('ENABLE_OPENID_AUTHENTICATION')) {
 	define('ENABLE_OPENID_AUTHENTICATION', false);
 }
 */
@@ -93,7 +93,7 @@ if (!defined('PAGING_STRING')) {
 	define('PAGING_STRING', 'ccm_paging_p');
 }
 
-/** 
+/**
  * Character support
  */
 
@@ -147,7 +147,7 @@ define('DIR_HELPERS_CORE', DIR_BASE_CORE . '/helpers'); // front-end
 define('DIR_FILES_TOOLS', DIR_BASE . '/tools'); // front-end
 define('DIR_FILES_TOOLS_REQUIRED', DIR_BASE_CORE . '/tools'); // global
 
-# Packages 
+# Packages
 if (!defined('DIR_PACKAGES')) {
 	define('DIR_PACKAGES', DIR_BASE . '/packages');
 }
@@ -370,7 +370,7 @@ if (!defined('DIR_FILES_BIN_ZIP')) {
 }
 if(!defined('DIR_FILES_BIN_ASPELL')) define('DIR_FILES_BIN_ASPELL', '/usr/bin/aspell'); // spellchecker
 
-# Asset library constants 
+# Asset library constants
 define('AL_THUMBNAIL_WIDTH', '60');
 define('AL_THUMBNAIL_HEIGHT', '60');
 define('AL_THUMBNAIL_WIDTH_LEVEL1', '60'); // level1 duplicated here for internal functions
@@ -384,8 +384,8 @@ define('DIR_AL_ICONS', DIR_BASE_CORE . '/images/icons/filetypes');
 define('REL_DIR_AL_ICONS', ASSETS_URL_IMAGES . '/icons/filetypes');
 define('AL_ICON_DEFAULT', ASSETS_URL_IMAGES . '/icons/filetypes/default.png');
 
-if (!defined('AL_THUMBNAIL_JPEG_COMPRESSION')){ 
-	define('AL_THUMBNAIL_JPEG_COMPRESSION', 80); 
+if (!defined('AL_THUMBNAIL_JPEG_COMPRESSION')){
+	define('AL_THUMBNAIL_JPEG_COMPRESSION', 80);
 }
 
 # This is the max size of any image in the system
@@ -415,7 +415,7 @@ if (!defined('PAGE_SEARCH_INDEX_BATCH_SIZE')) {
 	define('PAGE_SEARCH_INDEX_BATCH_SIZE', 200);
 }
 
-# Versioning/Editing defaults 
+# Versioning/Editing defaults
 define('CHECKOUT_TIMEOUT', 300); // # in seconds.
 define('VERSION_INITIAL_COMMENT', 'Initial Version');
 define('ONLINE_NOW_TIMEOUT', 300);
@@ -498,7 +498,7 @@ if (!defined('NEWSFLOW_URL')) {
 	define('NEWSFLOW_URL', 'http://newsflow.concrete5.org');
 }
 
-if (!defined('ENABLE_TRASH_CAN')) { 
+if (!defined('ENABLE_TRASH_CAN')) {
 	define('ENABLE_TRASH_CAN', true);
 }
 
@@ -516,7 +516,7 @@ define('MARKETPLACE_URL_CONNECT_TOKEN_NEW', CONCRETE5_ORG_URL.'/marketplace/conn
 define('MARKETPLACE_REMOTE_ITEM_LIST_WS', CONCRETE5_ORG_URL.'/marketplace/');
 
 define('DASHBOARD_BACKGROUND_FEED', 'http://backgroundimages.concrete5.org/wallpaper');
-if (!defined('DASHBOARD_BACKGROUND_INFO')) { 
+if (!defined('DASHBOARD_BACKGROUND_INFO')) {
 	define('DASHBOARD_BACKGROUND_INFO', 'http://backgroundimages.concrete5.org/get_image_data.php');
 }
 

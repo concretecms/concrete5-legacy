@@ -7,13 +7,13 @@
  * 2. Item saved in database? Then it will be used.
  * 3. Otherwise, we setup the defaults below.
  **/
-defined('C5_EXECUTE') or die("Access Denied."); 
+defined('C5_EXECUTE') or die("Access Denied.");
 
 if (!defined('ENABLE_CACHE')) {
-	Config::getOrDefine('ENABLE_CACHE', true); 
+	Config::getOrDefine('ENABLE_CACHE', true);
 }
 if (!defined('ENABLE_OVERRIDE_CACHE')) {
-	Config::getOrDefine('ENABLE_OVERRIDE_CACHE', false); 
+	Config::getOrDefine('ENABLE_OVERRIDE_CACHE', false);
 }
 
 if (!ENABLE_CACHE) {
@@ -21,14 +21,14 @@ if (!ENABLE_CACHE) {
 }
 
 if (ENABLE_CACHE) {
-	Config::getOrDefine('FULL_PAGE_CACHE_GLOBAL', 'blocks');	
+	Config::getOrDefine('FULL_PAGE_CACHE_GLOBAL', 'blocks');
 }
 
 if (!defined('STATISTICS_TRACK_PAGE_VIEWS')) {
 	Config::getOrDefine('STATISTICS_TRACK_PAGE_VIEWS', true);
 }
 
-Config::getOrDefine('FULL_PAGE_CACHE_LIFETIME', 'default');		
+Config::getOrDefine('FULL_PAGE_CACHE_LIFETIME', 'default');
 
 # permissions model - valid options are 'advanced' or 'simple'
 if (!defined('PERMISSIONS_MODEL')) {
@@ -54,15 +54,15 @@ if (!defined('URL_REWRITING')) {
 
 
 # Default marketplace support
-if (!defined('ENABLE_MARKETPLACE_SUPPORT')){  
+if (!defined('ENABLE_MARKETPLACE_SUPPORT')){
 	$marketplace_enabled=Config::get('ENABLE_MARKETPLACE_SUPPORT');
-	if( $marketplace_enabled==NULL ){ 
+	if( $marketplace_enabled==NULL ){
 		Config::save('ENABLE_MARKETPLACE_SUPPORT', 1 );
 		$marketplace_enabled==true;
-	} 
+	}
 	define('MARKETPLACE_CONFIG_OVERRIDE',false);
-	define('ENABLE_MARKETPLACE_SUPPORT',$marketplace_enabled); 
-	//Config::getOrDefine('MARKETPLACE_ENABLED', true);	
+	define('ENABLE_MARKETPLACE_SUPPORT',$marketplace_enabled);
+	//Config::getOrDefine('MARKETPLACE_ENABLED', true);
 }else{
 	define('MARKETPLACE_CONFIG_OVERRIDE',true);
 }
@@ -74,7 +74,7 @@ if (!defined('ENABLE_INTELLIGENT_SEARCH_HELP')) {
 if (!defined('ENABLE_INTELLIGENT_SEARCH_MARKETPLACE')) {
 	if (!ENABLE_MARKETPLACE_SUPPORT) {
 		define('ENABLE_INTELLIGENT_SEARCH_MARKETPLACE', false);
-	} else { 
+	} else {
 		Config::getOrDefine('ENABLE_INTELLIGENT_SEARCH_MARKETPLACE', true);
 	}
 }
@@ -99,7 +99,7 @@ if (!defined("ENABLE_CUSTOM_DESIGN")) {
 	Config::getOrDefine('ENABLE_CUSTOM_DESIGN', true);
 }
 
-if (!defined('URL_REWRITING_ALL')) { 
+if (!defined('URL_REWRITING_ALL')) {
 	define("URL_REWRITING_ALL", false);
 }
 
@@ -126,7 +126,7 @@ if (URL_REWRITING_ALL == true) {
 }
 
 define('REL_DIR_FILES_TOOLS_BLOCKS', REL_DIR_FILES_TOOLS . '/blocks'); // this maps to the /tools/ directory in the blocks subdir
-define('REL_DIR_FILES_TOOLS_PACKAGES', REL_DIR_FILES_TOOLS . '/packages'); 
+define('REL_DIR_FILES_TOOLS_PACKAGES', REL_DIR_FILES_TOOLS . '/packages');
 
 # File settings
 if (!defined('DIR_FILES_UPLOADED')) {
@@ -153,19 +153,19 @@ if (DIR_FILES_UPLOADED != DIR_BASE . '/files') {
 
 # User & Registration Settings
 
-if (!defined('ENABLE_OPENID_AUTHENTICATION')) { 
+if (!defined('ENABLE_OPENID_AUTHENTICATION')) {
 	Config::getOrDefine('ENABLE_OPENID_AUTHENTICATION', false);
 }
 
-if (!defined('MAIL_SEND_METHOD')) { 
+if (!defined('MAIL_SEND_METHOD')) {
 	Config::getOrDefine('MAIL_SEND_METHOD', 'PHP_MAIL');
 }
 
-if (!defined('ENABLE_REGISTRATION_CAPTCHA')) { 
+if (!defined('ENABLE_REGISTRATION_CAPTCHA')) {
 	Config::getOrDefine('ENABLE_REGISTRATION_CAPTCHA', true);
 }
 
-if (!defined('ENABLE_USER_PROFILES')) { 
+if (!defined('ENABLE_USER_PROFILES')) {
 	Config::getOrDefine('ENABLE_USER_PROFILES', false);
 }
 
@@ -176,15 +176,15 @@ if (!defined('USER_REGISTRATION_WITH_EMAIL_ADDRESS')) {
 
 // allow spaces in usernames
 if (!defined('USER_USERNAME_ALLOW_SPACES')) {
-	Config::getOrDefine('USER_USERNAME_ALLOW_SPACES', false);	
+	Config::getOrDefine('USER_USERNAME_ALLOW_SPACES', false);
 }
 
 if (!defined('USER_VALIDATE_EMAIL')) {
-	Config::getOrDefine('USER_VALIDATE_EMAIL', false);	
+	Config::getOrDefine('USER_VALIDATE_EMAIL', false);
 }
 
 if (!defined('USER_VALIDATE_EMAIL_REQUIRED')) {
-	Config::getOrDefine('USER_VALIDATE_EMAIL_REQUIRED', false);	
+	Config::getOrDefine('USER_VALIDATE_EMAIL_REQUIRED', false);
 }
 
 if (!defined('USER_REGISTRATION_APPROVAL_REQUIRED')) {
@@ -200,15 +200,15 @@ if (!defined('EMAIL_ADDRESS_REGISTER_NOTIFICATION')) {
 }
 
 if (!defined('REGISTRATION_TYPE')) {
-	Config::getOrDefine('REGISTRATION_TYPE', 'disabled');	
+	Config::getOrDefine('REGISTRATION_TYPE', 'disabled');
 }
 
 if (!defined('ENABLE_REGISTRATION')) {
-	Config::getOrDefine('ENABLE_REGISTRATION', false);	
+	Config::getOrDefine('ENABLE_REGISTRATION', false);
 }
 
 if (!defined('ENABLE_USER_TIMEZONES')) {
-	Config::getOrDefine('ENABLE_USER_TIMEZONES', false);	
+	Config::getOrDefine('ENABLE_USER_TIMEZONES', false);
 }
 
 // private message limitations

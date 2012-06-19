@@ -4,7 +4,7 @@
 	<?=Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Add Set'), false, 'span12 offset2', false)?>
     <form method="post" id="file-sets-add" action="<?=$this->url('/dashboard/files/add_set', 'do_add')?>">
 	<div class="ccm-pane-body">
-    	
+
 		<?=$validation_token->output('file_sets_add');?>
 
 		<div class="clearfix">

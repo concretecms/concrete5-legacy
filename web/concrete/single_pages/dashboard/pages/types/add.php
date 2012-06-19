@@ -11,17 +11,17 @@ Loader::model('file_set');
 $pageTypeIconsFS = FileSet::getByName("Page Type Icons");
 
 ?>
-	
+
     <!-- START: Add Page Type pane -->
-    
+
     <?=Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Add Page Type'), false, false, false);?>
-	
+
     <form method="post" id="add_page_type" action="<?=$this->url('/dashboard/pages/types/add', 'do_add')?>">
 	<?=$valt->output('add_page_type')?>
     <?=$form->hidden('task', 'add'); ?>
-	
+
     <div class="ccm-pane-body">
-    
+
         <table border="0" cellspacing="0" cellpadding="0">
             <thead>
                 <tr>
@@ -40,12 +40,12 @@ $pageTypeIconsFS = FileSet::getByName("Page Type Icons");
                 </tr>
 			</tbody>
 		</table>
-        
+
         <table border="0" cellspacing="0" cellpadding="0">
             <thead>
                 <tr>
                     <th class="subheader">
-					
+
 					<?=t('Icon')?>
                     <?
                         if (!is_object($pageTypeIconsFS)) {
@@ -58,23 +58,23 @@ $pageTypeIconsFS = FileSet::getByName("Page Type Icons");
                             print '</span>';
                         }
                     ?>
-            
+
                     </th>
                 </tr>
 			</thead>
             <tbody>
                 <tr>
                     <td>
-                    <? 
+                    <?
                     $first = true;
-                    foreach($icons as $ic) { 
+                    foreach($icons as $ic) {
                         if(is_object($ic)) {
-                            $fv = $ic->getApprovedVersion(); 
+                            $fv = $ic->getApprovedVersion();
                             $checked = false;
                             if (isset($_POST['ctIcon']) && $_POST['ctIcon'] == $ic->getFileID()) {
                                 $checked = 'checked';
                             } else {
-                                if ($first) { 
+                                if ($first) {
                                     $checked = 'checked';
                                 }
                             }
@@ -84,13 +84,13 @@ $pageTypeIconsFS = FileSet::getByName("Page Type Icons");
                             <input type="radio" name="ctIcon" value="<?= $ic->getFileID() ?>" style="vertical-align: middle" <?=$checked?> />
                             <img src="<?= $fv->getRelativePath(); ?>" width="<?=COLLECTION_TYPE_ICON_WIDTH?>" height="<?=COLLECTION_TYPE_ICON_HEIGHT?>" style="vertical-align: middle" />
                             </label>
-                        <? 
+                        <?
                         } else {
                             $checked = false;
                             if (isset($_POST['ctIcon']) && $_POST['ctIcon'] == $ic) {
                                 $checked = 'checked';
                             } else {
-                                if ($first) { 
+                                if ($first) {
                                     $checked = 'checked';
                                 }
                             }
@@ -102,13 +102,13 @@ $pageTypeIconsFS = FileSet::getByName("Page Type Icons");
                             </label>
                         <?
                         }
-                    
+
                     } ?>
                     </td>
                 </tr>
 			</tbody>
 		</table>
-        
+
         <table border="0" cellspacing="0" cellpadding="0">
             <thead>
                 <tr>
@@ -119,28 +119,28 @@ $pageTypeIconsFS = FileSet::getByName("Page Type Icons");
                 <?
                     $attribs = CollectionAttributeKey::getList();
                     $i = 0;
-                    foreach($attribs as $ak) { 
+                    foreach($attribs as $ak) {
                     if ($i == 0) { ?>
                         <tr class="inputs-list">
                     <? } ?>
-                    
+
                         <td width="33%">
                             <label>
                                 <input type="checkbox" name="akID[]" value="<?=$ak->getAttributeKeyID()?>" />
                                 <span><?=$ak->getAttributeKeyName()?></span>
                             </label>
                         </td>
-                    
+
                     <? $i++;
-                    
+
                     if ($i == 3) { ?>
                     </tr>
-                    <? 
+                    <?
                     $i = 0;
                     }
-                    
+
                 }
-                
+
                 if ($i < 3 && $i > 0) {
                     for ($j = $i; $j < 3; $j++) { ?>
                         <td>&nbsp;</td>
@@ -149,16 +149,16 @@ $pageTypeIconsFS = FileSet::getByName("Page Type Icons");
         	<? } ?>
         	</tbody>
         </table>
-	
+
 	</div>
-    
+
     <div class="ccm-pane-footer">
         <? print $ih->submit(t('Add'), 'add_page_type', 'right', 'primary'); ?>
         <? print $ih->button(t('Cancel'), $this->url('/dashboard/pages/types'), 'left'); ?>
     </div>
-    
+
     </form>
-    
+
     <?=Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper(false)?>
-    
+
     <!-- END Add Page Type pane -->

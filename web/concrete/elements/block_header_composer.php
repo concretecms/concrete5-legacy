@@ -2,7 +2,7 @@
 
 <? $bt = BlockType::getByID($b->getBlockTypeID());
 $ci = Loader::helper("concrete/urls");
-$btIcon = $ci->getBlockTypeIconURL($bt); 			 
+$btIcon = $ci->getBlockTypeIconURL($bt);
 $cont = $bt->getController();
 
 ?>
@@ -10,14 +10,14 @@ $cont = $bt->getController();
 <script type="text/javascript">
 
 <? $ci = Loader::helper("concrete/urls"); ?>
-<? $url = $ci->getBlockTypeJavaScriptURL($bt); 
+<? $url = $ci->getBlockTypeJavaScriptURL($bt);
 if ($url != '') { ?>
 	ccm_addHeaderItem("<?=$url?>", 'JAVASCRIPT');
-<? } 
+<? }
 
 $identifier = strtoupper('BLOCK_CONTROLLER_' . $btHandle);
 if (is_array($headerItems[$identifier])) {
-	foreach($headerItems[$identifier] as $item) { 
+	foreach($headerItems[$identifier] as $item) {
 		if ($item instanceof CSSOutputObject) {
 			$type = 'CSS';
 		} else {
@@ -39,7 +39,7 @@ $(function() {
 </script>
 
 <?
-if ($b->getBlockName() != '') { 
+if ($b->getBlockName() != '') {
 	$btName = $b->getBlockName();
 } else {
 	$btName = $bt->getBlockTypeName();

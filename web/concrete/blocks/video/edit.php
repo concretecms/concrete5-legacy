@@ -3,7 +3,7 @@
 	$bObj=$controller;
 	$al = Loader::helper('concrete/asset_library');
 	$bf = null;
-	if ($controller->getFileID() > 0) { 
+	if ($controller->getFileID() > 0) {
 		$bf = $controller->getFileObject();
 	}
 ?>
@@ -14,4 +14,4 @@
 </div>
 </div>
 
-<? $this->inc('form_setup_html.php'); ?> 
+<? $this->inc('form_setup_html.php'); ?>

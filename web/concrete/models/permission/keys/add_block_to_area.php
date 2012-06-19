@@ -9,15 +9,15 @@ class AddBlockToAreaAreaPermissionKey extends AreaPermissionKey  {
 		$r = $db->Execute('select peID, pa.paID from PermissionAssignments pa inner join PermissionAccessList pal on pa.paID = pal.paID where pkID = ?', array(
 			$inheritedPKID
 		));
-		if ($r) { 
+		if ($r) {
 			while ($row = $r->FetchRow()) {
 				$db->Replace('AreaPermissionAssignments', array(
-					'cID' => $this->permissionObject->getCollectionID(), 
-					'arHandle' => $this->permissionObject->getAreaHandle(), 
+					'cID' => $this->permissionObject->getCollectionID(),
+					'arHandle' => $this->permissionObject->getAreaHandle(),
 					'pkID' => $this->getPermissionKeyID(),
 					'paID' => $row['paID']
 				), array('cID', 'arHandle', 'pkID'), true);
-					
+
 				$rx = $db->Execute('select permission from BlockTypePermissionBlockTypeAccessList where paID = ? and peID = ?', array(
 						$row['paID'], $row['peID']
 					));
@@ -26,7 +26,7 @@ class AddBlockToAreaAreaPermissionKey extends AreaPermissionKey  {
 						'peID' => $row['peID'],
 						'permission' => $rowx['permission'],
 						'paID' => $row['paID']
-					), array('paID', 'peID'), true);				
+					), array('paID', 'peID'), true);
 				}
 				$db->Execute('delete from AreaPermissionBlockTypeAccessListCustom where paID = ?', array(
 					$row['paID']
@@ -39,12 +39,12 @@ class AddBlockToAreaAreaPermissionKey extends AreaPermissionKey  {
 						'paID' => $row['paID'],
 						'btID' => $rowx['btID'],
 						'peID' => $row['peID']
-					), array('paID', 'peID', 'btID'), true);				
+					), array('paID', 'peID', 'btID'), true);
 				}
 			}
 		}
 	}
-	
+
 
 	protected function getAllowedBlockTypeIDs() {
 
@@ -53,17 +53,17 @@ class AddBlockToAreaAreaPermissionKey extends AreaPermissionKey  {
 		if (!is_object($pae)) {
 			return array();
 		}
-		
+
 		$accessEntities = $u->getUserAccessEntityObjects();
 		$accessEntities = $pae->validateAndFilterAccessEntities($accessEntities);
 		$list = $this->getAccessListItems(AreaPermissionKey::ACCESS_TYPE_ALL, $accessEntities);
 		$list = PermissionDuration::filterByActive($list);
-		
+
 		$db = Loader::db();
 		$dsh = Loader::helper('concrete/dashboard');
 		if ($dsh->inDashboard()) {
 			$allBTIDs = $db->GetCol('select btID from BlockTypes');
-		} else { 
+		} else {
 			$allBTIDs = $db->GetCol('select btID from BlockTypes where btIsInternal = 0');
 		}
 		$btIDs = array();
@@ -74,7 +74,7 @@ class AddBlockToAreaAreaPermissionKey extends AreaPermissionKey  {
 			if ($l->getBlockTypesAllowedPermission() == 'C') {
 				if ($l->getAccessType() == AreaPermissionKey::ACCESS_TYPE_EXCLUDE) {
 					$btIDs = array_values(array_diff($btIDs, $l->getBlockTypesAllowedArray()));
-				} else { 
+				} else {
 					$btIDs = array_unique(array_merge($btIDs, $l->getBlockTypesAllowedArray()));
 				}
 			}
@@ -82,10 +82,10 @@ class AddBlockToAreaAreaPermissionKey extends AreaPermissionKey  {
 				$btIDs = $allBTIDs;
 			}
 		}
-		
+
 		return $btIDs;
 	}
-	
+
 	public function validate($bt = false) {
 		$u = new User();
 		if ($u->isSuperUser()) {
@@ -98,9 +98,9 @@ class AddBlockToAreaAreaPermissionKey extends AreaPermissionKey  {
 		} else {
 			return count($types) > 0;
 		}
-	}	
+	}
 
-	
+
 }
 
 class AddBlockToAreaAreaPermissionAccess extends AreaPermissionAccess {
@@ -129,17 +129,17 @@ class AddBlockToAreaAreaPermissionAccess extends AreaPermissionAccess {
 			$pe = $l->getAccessEntityObject();
 			if ($pobj instanceof Page) {
 				$permission = $db->GetOne('select permission from BlockTypePermissionBlockTypeAccessList where paID = ?', array($l->getPermissionAccessID()));
-			} else { 
+			} else {
 				$permission = $db->GetOne('select permission from AreaPermissionBlockTypeAccessList where paID = ?', array($l->getPermissionAccessID()));
 			}
 			if ($permission != 'N' && $permission != 'C') {
 				$permission = 'A';
 			}
 			$l->setBlockTypesAllowedPermission($permission);
-			if ($permission == 'C') { 
-				if ($pobj instanceof Area) { 
+			if ($permission == 'C') {
+				if ($pobj instanceof Area) {
 					$btIDs = $db->GetCol('select btID from AreaPermissionBlockTypeAccessListCustom where paID = ?', array($l->getPermissionAccessID()));
-				} else { 
+				} else {
 					$btIDs = $db->GetCol('select btID from BlockTypePermissionBlockTypeAccessListCustom where paID = ?', array($l->getPermissionAccessID()));
 				}
 				$l->setBlockTypesAllowedArray($btIDs);
@@ -153,32 +153,32 @@ class AddBlockToAreaAreaPermissionAccess extends AreaPermissionAccess {
 		parent::save();
 		$db->Execute('delete from AreaPermissionBlockTypeAccessList where paID = ?', array($this->getPermissionAccessID()));
 		$db->Execute('delete from AreaPermissionBlockTypeAccessListCustom where paID = ?', array($this->getPermissionAccessID()));
-		if (is_array($args['blockTypesIncluded'])) { 
+		if (is_array($args['blockTypesIncluded'])) {
 			foreach($args['blockTypesIncluded'] as $peID => $permission) {
 				$v = array($this->getPermissionAccessID(), $peID, $permission);
 				$db->Execute('insert into AreaPermissionBlockTypeAccessList (paID, peID, permission) values (?, ?, ?)', $v);
 			}
 		}
-		
-		if (is_array($args['blockTypesExcluded'])) { 
+
+		if (is_array($args['blockTypesExcluded'])) {
 			foreach($args['blockTypesExcluded'] as $peID => $permission) {
 				$v = array($this->getPermissionAccessID(), $peID, $permission);
 				$db->Execute('insert into AreaPermissionBlockTypeAccessList (paID, peID, permission) values (?, ?, ?)', $v);
 			}
 		}
 
-		if (is_array($args['btIDInclude'])) { 
+		if (is_array($args['btIDInclude'])) {
 			foreach($args['btIDInclude'] as $peID => $btIDs) {
-				foreach($btIDs as $btID) { 
+				foreach($btIDs as $btID) {
 					$v = array($this->getPermissionAccessID(), $peID, $btID);
 					$db->Execute('insert into AreaPermissionBlockTypeAccessListCustom (paID, peID, btID) values (?, ?, ?)', $v);
 				}
 			}
 		}
 
-		if (is_array($args['btIDExclude'])) { 
+		if (is_array($args['btIDExclude'])) {
 			foreach($args['btIDExclude'] as $peID => $btIDs) {
-				foreach($btIDs as $btID) { 
+				foreach($btIDs as $btID) {
 					$v = array($this->getPermissionAccessID(), $peID, $btID);
 					$db->Execute('insert into AreaPermissionBlockTypeAccessListCustom (paID, peID, btID) values (?, ?, ?)', $v);
 				}
@@ -189,7 +189,7 @@ class AddBlockToAreaAreaPermissionAccess extends AreaPermissionAccess {
 }
 
 class AddBlockToAreaAreaPermissionAccessListItem extends AreaPermissionAccessListItem {
-	
+
 	protected $customBlockTypeArray = array();
 	protected $blockTypesAllowedPermission = 'N';
 
@@ -205,6 +205,6 @@ class AddBlockToAreaAreaPermissionAccessListItem extends AreaPermissionAccessLis
 	public function getBlockTypesAllowedArray() {
 		return $this->customBlockTypeArray;
 	}
-	
-	
+
+
 }

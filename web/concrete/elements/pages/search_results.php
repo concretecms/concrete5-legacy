@@ -1,4 +1,4 @@
-<? defined('C5_EXECUTE') or die("Access Denied."); ?> 
+<? defined('C5_EXECUTE') or die("Access Denied."); ?>
 <?
 if ($_REQUEST['searchDialog'] == 1) {
 	$searchDialog = true;
@@ -41,7 +41,7 @@ if (isset($_REQUEST['searchInstance'])) {
 			<? } ?>
 			<option value="design"><?=t('Design')?></option>
 			<option value="delete"><?=t('Delete')?></option>
-		</select>	
+		</select>
 	</div>
 
 <?
@@ -53,8 +53,8 @@ if (isset($_REQUEST['searchInstance'])) {
 	$soargs['sitemap_select_callback'] = $sitemap_select_callback;
 	$soargs['searchDialog'] = $searchDialog;
 	$bu = REL_DIR_FILES_TOOLS_REQUIRED . '/pages/search_results';
-	
-	if (count($pages) > 0) { ?>	
+
+	if (count($pages) > 0) { ?>
 		<table border="0" cellspacing="0" cellpadding="0" id="ccm-<?=$searchInstance?>-list" class="ccm-results-list">
 		<tr>
 			<? if (!$searchDialog) { ?><th><input id="ccm-<?=$searchInstance?>-list-cb-all" type="checkbox" /></th><? } ?>
@@ -73,10 +73,10 @@ if (isset($_REQUEST['searchInstance'])) {
 	<?
 		$dsh = Loader::helper('concrete/dashboard/sitemap');
 		foreach($pages as $cobj) {
-			$cpobj = new Permissions($cobj); 
+			$cpobj = new Permissions($cobj);
 			if (!isset($striped) || $striped == 'ccm-list-record-alt') {
 				$striped = '';
-			} else if ($striped == '') { 
+			} else if ($striped == '') {
 				$striped = 'ccm-list-record-alt';
 			}
 
@@ -99,23 +99,23 @@ if (isset($_REQUEST['searchInstance'])) {
 				'canAddSubpages'=>$canAddSubpages,
 				'canAddExternalLinks'=>$canAddExternalLinks
 			);
-			
+
 			?>
-			<tr class="ccm-list-record <?=$striped?>" 
-				cName="<?=htmlentities($cobj->getCollectionName(), ENT_QUOTES, APP_CHARSET)?>" 
-				cID="<?=$cobj->getCollectionID()?>" 
-				sitemap-select-callback="<?=$sitemap_select_callback?>" 
-				sitemap-select-mode="<?=$sitemap_select_mode?>" 
-				sitemap-instance-id="<?=$searchInstance?>" 
-				sitemap-display-mode="search" 
-				cNumChildren="<?=$cobj->getNumChildren()?>" 
+			<tr class="ccm-list-record <?=$striped?>"
+				cName="<?=htmlentities($cobj->getCollectionName(), ENT_QUOTES, APP_CHARSET)?>"
+				cID="<?=$cobj->getCollectionID()?>"
+				sitemap-select-callback="<?=$sitemap_select_callback?>"
+				sitemap-select-mode="<?=$sitemap_select_mode?>"
+				sitemap-instance-id="<?=$searchInstance?>"
+				sitemap-display-mode="search"
+				cNumChildren="<?=$cobj->getNumChildren()?>"
 				cAlias="false"
 				<?=$dsh->getPermissionsNodes($permissionArray);?>>
 			<? if (!$searchDialog) { ?><td class="ccm-<?=$searchInstance?>-list-cb" style="vertical-align: middle !important"><input type="checkbox" value="<?=$cobj->getCollectionID()?>" /></td><? } ?>
 
 			<? foreach($columns->getColumns() as $col) { ?>
 				<? if ($col->getColumnKey() == 'cvName') { ?>
-					<td class="ccm-page-list-name"><?=$txt->highlightSearch($cobj->getCollectionName(), $keywords)?></td>		
+					<td class="ccm-page-list-name"><?=$txt->highlightSearch($cobj->getCollectionName(), $keywords)?></td>
 				<? } else { ?>
 					<td><?=$col->getColumnValue($cobj)?></td>
 				<? } ?>
@@ -125,18 +125,18 @@ if (isset($_REQUEST['searchInstance'])) {
 			<?
 		}
 	?>
-	
+
 	</table>
-	
-	
+
+
 
 	<? } else { ?>
-		
+
 		<div class="ccm-results-list-none"><?=t('No pages found.')?></div>
-		
-	
+
+
 	<? } ?>
-	
+
 </div>
 <?
 	$pageList->displaySummary();

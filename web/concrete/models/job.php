@@ -32,57 +32,57 @@ class Job extends Object {
 	//you must override this method
 	function run(){
 		throw new Exception(t('Error: The Job::run() method must be overridden by your child Job class.'));
-	}	
-	
+	}
+
 	public function getJobName() {return $this->jName;}
-	public function getJobDescription() {return $this->jDescription;}	
+	public function getJobDescription() {return $this->jDescription;}
 	public function getJobHandle() {return $this->jHandle;}
 	public function getPackageHandle() {
 		return PackageList::getHandle($this->pkgID);
 	}
-	
-	
+
+
 	//==========================================================
-	// JOB MANAGEMENT - do not override anything below this line 
+	// JOB MANAGEMENT - do not override anything below this line
 	//==========================================================
-	
-	
+
+
 	//meta variables
 	public $errors=array();
 	protected $jobClassLocations=array();
-	
+
 	//Other Job Variables
 	public $jID=0;
-	public $jStatus='ENABLED';	
+	public $jStatus='ENABLED';
 	public $availableJStatus=array( 'ENABLED','RUNNING','DISABLED_ERROR','DISABLED' );
-	public $jDateLastRun=' default ';	
+	public $jDateLastRun=' default ';
 	public $jHandle='';
 	public $jNotUninstallable=0;
-	
+
 	/*
 	final public __construct(){
-		//$this->jHandle="example_job_file.php";		
+		//$this->jHandle="example_job_file.php";
 	}
 	*/
-	
+
 	final static function jobClassLocations(){
 		return array(DIR_FILES_JOBS, DIR_FILES_JOBS_CORE);
 	}
 
 
-	// authenticateRequest checks against your site's salt and a custom auth field to make 
+	// authenticateRequest checks against your site's salt and a custom auth field to make
 	// sure that this is a request that is coming either from something cronned by the site owner
 	// or from the dashboard
 	final static function authenticateRequest($auth) {
 		$val = PASSWORD_SALT . ':' . DIRNAME_JOBS;
 		return md5($val) == $auth;
 	}
-	
+
 	final static function generateAuth() {
 		$val = PASSWORD_SALT . ':' . DIRNAME_JOBS;
 		return md5($val);
 	}
-	
+
 	public static function exportList($xml) {
 		$jl = self::getList();
 		if ($jl->numRows() > 0) {
@@ -93,12 +93,12 @@ class Job extends Object {
 				$ch->addAttribute('handle',$j->getJobHandle());
 				$ch->addAttribute('package',$j->getPackageHandle());
 			}
-		}	
+		}
 	}
 
-	// Job Retrieval 
+	// Job Retrieval
 	// ==============
-	
+
 	final static function getList(){
 		$db = Loader::db();
 		$v=array();
@@ -106,46 +106,46 @@ class Job extends Object {
 		$rs = $db->query($q, $v);
 		return $rs;
 	}
-	
+
 	public static function resetRunningJobs() {
 		$db = Loader::db();
 		$db->Execute('update Jobs set jStatus = \'ENABLED\' where jStatus = \'RUNNING\'');
 	}
-	
+
 	final static function getByID( $jID=0 ){
-		$db = Loader::db(); 
+		$db = Loader::db();
 		$jobData = $db->getRow("SELECT * FROM Jobs WHERE jID=".intval($jID));
-		if( !$jobData || !$jobData['jHandle']  ) return NULL; 
+		if( !$jobData || !$jobData['jHandle']  ) return NULL;
 		return Job::getJobObjByHandle( $jobData['jHandle'], $jobData );
 	}
-	
+
 	final static function getByHandle( $jHandle='' ){
-		$db = Loader::db(); 
+		$db = Loader::db();
 		$jobData = $db->getRow( 'SELECT * FROM Jobs WHERE jHandle=?', array($jHandle) );
-		if( !$jobData || !$jobData['jHandle']  ) return NULL; 
+		if( !$jobData || !$jobData['jHandle']  ) return NULL;
 		return Job::getJobObjByHandle( $jobData['jHandle'], $jobData );
 	}
-	
+
 	final static function getJobObjByHandle( $jHandle='', $jobData=array() ){
 		$jcl = Job::jobClassLocations();
-		
+
 		//check for the job file in the various locations
 		$db = Loader::db();
 		$pkgID = $db->GetOne('select pkgID from Jobs where jHandle = ?', $jHandle);
 		if ($pkgID > 0) {
 			$pkgHandle = PackageList::getHandle($pkgID);
 			if ($pkgHandle) {
-				
+
 				$jcl[] = DIR_PACKAGES . '/' . $pkgHandle . '/' . DIRNAME_JOBS;
 				$jcl[] = DIR_PACKAGES_CORE . '/' . $pkgHandle . '/' . DIRNAME_JOBS;
-				
+
 			}
 		}
 
 		foreach( $jcl as $jobClassLocation ){
 			//load the file & class, then run the job
-			$path=$jobClassLocation.'/'.$jHandle.'.php';	
-			if( file_exists($path) ){ 
+			$path=$jobClassLocation.'/'.$jHandle.'.php';
+			if( file_exists($path) ){
 				require_once($path);
 				$className=Object::camelcase( $jHandle );
 				$j = new $className();
@@ -154,40 +154,40 @@ class Job extends Object {
 					$j->jID=intval($jobData['jID']);
 					$j->jStatus=$jobData['jStatus'];
 					$j->jDateLastRun=$jobData['jDateLastRun'];
-					$j->jLastStatusText=$jobData['jLastStatusText'];					
+					$j->jLastStatusText=$jobData['jLastStatusText'];
 					$j->pkgID=$jobData['pkgID'];
-					$j->jDateInstalled=$jobData['jDateInstalled'];	
-					$j->jNotUninstallable=$jobData['jNotUninstallable'];			
+					$j->jDateInstalled=$jobData['jDateInstalled'];
+					$j->jNotUninstallable=$jobData['jNotUninstallable'];
 				}
 				return $j;
 			}
 		}
-		
+
 		return NULL;
 	}
-	
+
 	//Scan job directories for job classes
 	final static function getAvailableList($includeConcreteDirJobs=1){
-	
-		$jobObjs=array(); 
-	
+
+		$jobObjs=array();
+
 		//get existing jobs
 		$existingJobHandles=array();
 		$existingJobsRS = Job::getList();
-		while($existingJobsRow = $existingJobsRS->fetchRow() ) 
+		while($existingJobsRow = $existingJobsRS->fetchRow() )
 			$existingJobHandles[]=$existingJobsRow['jHandle'];
-	
+
 		if(!$includeConcreteDirJobs)
 			 $jobClassLocations = array( DIR_FILES_JOBS );
 		else $jobClassLocations = Job::jobClassLocations();
-	
-		foreach( $jobClassLocations as $jobClassLocation){ 
+
+		foreach( $jobClassLocations as $jobClassLocation){
 			// Open a known directory, and proceed to read its contents
 			if (is_dir($jobClassLocation)) {
 				if ($dh = opendir($jobClassLocation)) {
 					while (($file = readdir($dh)) !== false) {
 						if( substr($file,strlen($file)-4)!='.php' ) continue;
-						
+
 						$alreadyInstalled=0;
 						foreach($existingJobHandles as $existingJobHandle){
 							if( substr($file,0,strlen($file)-4)==$existingJobHandle){
@@ -196,7 +196,7 @@ class Job extends Object {
 							}
 						}
 						if($alreadyInstalled) continue;
-						
+
 						$path=$jobClassLocation .'/'. $file;
 						require_once( $jobClassLocation .'/'. $file );
 						$jHandle = substr($file,0,strlen($file)-4);
@@ -208,64 +208,64 @@ class Job extends Object {
 								$jobObjs[$jHandle]->jDescription= t('Error: The Job class must be a child class of Job.');
 								$jobObjs[$jHandle]->invalid=1;
 							}
-						  }else{	
+						  }else{
 						  	$invalidJob = new Job();
 							$invalidJob->jName = $className;
 							$invalidJob->jHandle=$jHandle;
-							$invalidJob->jDescription = t('Error: Invalid Job file. The class %s was not found in %s .', $className, $path); 
+							$invalidJob->jDescription = t('Error: Invalid Job file. The class %s was not found in %s .', $className, $path);
 							$invalidJob->invalid=1;
 							$jobObjs[$jHandle] = $invalidJob;
-						}					
+						}
 					}
 					closedir($dh);
 				}
 			}else throw new Exception( t('Error: Invalid Jobs Directory %s', $jobClassLocation) );
 		}
-		
+
 		return $jobObjs;
 	}
 
-	
-	
+
+
 	// Running Jobs
 	// ==============
 
 	final static function runAllJobs(){
 		//loop through all installed jobs
 		$jobListRS=Job::getList();
-		while( $jobItem = $jobListRS->fetchRow() ){ 
+		while( $jobItem = $jobListRS->fetchRow() ){
 			$jobObj = Job::getJobObjByHandle($jobItem['jHandle']);
 			$jobObj->executeJob();
 		}
 	}
-	
+
 	final function executeJob(){
 		Events::fire('on_before_job_execute', $this);
 		$db = Loader::db();
 		$timestampH =date('Y-m-d g:i:s A');
 		$timestamp=date('Y-m-d H:i:s');
-		$this->jDateLastRun = $timestampH; 
+		$this->jDateLastRun = $timestampH;
 		$rs = $db->query( "UPDATE Jobs SET jStatus='RUNNING', jDateLastRun=? WHERE jHandle=?", array( $timestamp, $this->jHandle ) );
-		try{ 
+		try{
 			$resultMsg=$this->run();
-			if(strlen($resultMsg)==0) 
+			if(strlen($resultMsg)==0)
 				$resultMsg= t('The Job was run successfully.');
 		}catch(Exception $e){
 			$resultMsg=$e->getMessage();
 			$this->loadError(2);
 		}
-		
+
 		if( !$this->isError() ) $jStatus='ENABLED';
 		else $jStatus='DISABLED_ERROR';
 		$rs = $db->query( "UPDATE Jobs SET jStatus=?, jLastStatusText=? WHERE jHandle=?", array( $jStatus, $resultMsg, $this->jHandle ) );
-		
+
 		$enum = 0;
 		if ($this->getError() > 0) {
 			$enum = $this->getError();
 		}
 		$rs = $db->query( "INSERT INTO JobsLog (jID, jlMessage, jlTimestamp, jlError) VALUES(?,?,?,?)", array( $this->jID, $resultMsg, $timestamp, $enum ) );
 		Events::fire('on_job_execute', $this);
-		
+
 		return $resultMsg;
 	}
 
@@ -275,7 +275,7 @@ class Job extends Object {
 			$jStatus='ENABLED';
 		$rs = $db->query( "UPDATE Jobs SET jStatus=? WHERE jHandle=?", array( $jStatus, $this->jHandle ) );
 	}
- 
+
  	final public function installByHandle($jHandle=''){
 		$availableJobs=Job::getAvailableList();
 		foreach( $availableJobs as $availableJobHandle=>$availableJobObj ){
@@ -293,9 +293,9 @@ class Job extends Object {
 		}
 		$r->Close();
 		return $list;
-	}	
-	
-	
+	}
+
+
 	final public function installByPackage($jHandle, $pkg) {
 		$dir = is_dir(DIR_PACKAGES . '/' . $pkg->getPackageHandle()) ? DIR_PACKAGES . '/' . $pkg->getPackageHandle() : DIR_PACKAGES_CORE . '/' . $pkg->getPackageHandle();
 		require_once( $dir .'/'. DIRNAME_JOBS . '/' . $jHandle . '.php');
@@ -303,15 +303,15 @@ class Job extends Object {
 		if(class_exists($className)){
 			$j = new $className();
 			$db = Loader::db();
-			$db->Execute('insert into Jobs (jName, jDescription, jDateInstalled, jNotUninstallable, jHandle, pkgID) values (?, ?, ?, ?, ?, ?)', 
+			$db->Execute('insert into Jobs (jName, jDescription, jDateInstalled, jNotUninstallable, jHandle, pkgID) values (?, ?, ?, ?, ?, ?)',
 				array($j->getJobName(), $j->getJobDescription(), Loader::helper('date')->getLocalDateTime(), 0, $jHandle, $pkg->getPackageID()));
 			Events::fire('on_job_install', $j);
 			return $j;
 		}
 	}
- 
+
 	final public function install(){
-		
+
 		$db = Loader::db();
 		$jobExists=$db->getOne( 'SELECT count(*) FROM Jobs WHERE jHandle=?', array($this->jHandle) );
 		$vals=array($this->getJobName(),$this->getJobDescription(),  date('Y-m-d H:i:s'), $this->jNotUninstallable, $this->jHandle);
@@ -322,7 +322,7 @@ class Job extends Object {
 		}
 		Events::fire('on_job_install', $this);
 	}
- 
+
 	final public function uninstall(){
 		$ret = Events::fire('on_job_uninstall', $this);
 		if($ret < 0) {
@@ -331,9 +331,9 @@ class Job extends Object {
 		$db = Loader::db();
 		$db->query( 'DELETE FROM Jobs WHERE jHandle=?', array($this->jHandle) );
 	}
-	
-	/** 
-	 * Removes Job log entries 
+
+	/**
+	 * Removes Job log entries
 	 */
 	public static function clearLog() {
 		$db = Loader::db();

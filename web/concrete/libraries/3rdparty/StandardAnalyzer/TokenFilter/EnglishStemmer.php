@@ -6,7 +6,7 @@
  * in this standard analyzer package, provide a method for indexing documents with word Stemming,
  * lower-casing, and number handling. The lower-case and number handling is provided by the pre-
  * existing filters from Zend.
- * 
+ *
  * License: see License.txt for a copy of the Zend License.
  *
  */
@@ -30,7 +30,7 @@ class StandardAnalyzer_Analysis_TokenFilter_EnglishStemmer extends Zend_Search_L
      *
      * @param array $stopwords array (set) of words that will be filtered out
      */
-    public function __construct() 
+    public function __construct()
 	{
     }
 
@@ -41,7 +41,7 @@ class StandardAnalyzer_Analysis_TokenFilter_EnglishStemmer extends Zend_Search_L
      * @return Zend_Search_Lucene_Analysis_Token
      */
     public function normalize(Zend_Search_Lucene_Analysis_Token $srcToken) {
-		
+
 		$newToken = new Zend_Search_Lucene_Analysis_Token(
                                      PorterStemmer::stem( $srcToken->getTermText() ),
                                      $srcToken->getStartOffset(),

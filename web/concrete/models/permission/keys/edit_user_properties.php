@@ -6,7 +6,7 @@ class EditUserPropertiesUserPermissionKey extends UserPermissionKey  {
 	public function getMyAssignment() {
 		$u = new User();
 		$asl = new EditUserPropertiesUserPermissionAccessListItem();
-		
+
 		$db = Loader::db();
 		$allAKIDs = $db->GetCol('select akID from UserAttributeKeys order by akID asc');
 
@@ -26,13 +26,13 @@ class EditUserPropertiesUserPermissionKey extends UserPermissionKey  {
 		if (!is_object($pae)) {
 			return $asl;
 		}
-		
+
 		$accessEntities = $u->getUserAccessEntityObjects();
 		$accessEntities = $pae->validateAndFilterAccessEntities($accessEntities);
 		$list = $this->getAccessListItems(UserPermissionKey::ACCESS_TYPE_ALL, $accessEntities);
 		$list = PermissionDuration::filterByActive($list);
 		$properties = array();
-		
+
 		$excluded = array();
 		$akIDs = array();
 		$u = new User();
@@ -89,7 +89,7 @@ class EditUserPropertiesUserPermissionKey extends UserPermissionKey  {
 				$asl->setAttributesAllowedPermission('C');
 				if ($l->getAccessType() == UserPermissionKey::ACCESS_TYPE_EXCLUDE) {
 					$akIDs = array_values(array_diff($akIDs, $l->getAttributesAllowedArray()));
-				} else { 
+				} else {
 					$akIDs = array_unique(array_merge($akIDs, $l->getAttributesAllowedArray()));
 				}
 			}
@@ -98,8 +98,8 @@ class EditUserPropertiesUserPermissionKey extends UserPermissionKey  {
 				$akIDs = $allAKIDs;
 				$asl->setAttributesAllowedPermission('A');
 			}
-		}	
-		
+		}
+
 		$asl->setAttributesAllowedArray($akIDs);
 		return $asl;
 	}
@@ -110,7 +110,7 @@ class EditUserPropertiesUserPermissionKey extends UserPermissionKey  {
 		if ($u->isSuperUser()) {
 			return true;
 		}
-		
+
 		$asl = $this->getMyAssignment();
 
 		if (is_object($obj)) {
@@ -122,43 +122,43 @@ class EditUserPropertiesUserPermissionKey extends UserPermissionKey  {
 					return true;
 				} else {
 					return false;
-				}				
+				}
 			}
 		}
-		
+
 		if (
-			$asl->allowEditUserName() || 
-			$asl->allowEditAvatar() || 
-			$asl->allowEditEmail() || 
-			$asl->allowEditPassword() || 
-			$asl->allowEditTimezone() || 
-			$asl->allowEditDefaultLanguage() || 
+			$asl->allowEditUserName() ||
+			$asl->allowEditAvatar() ||
+			$asl->allowEditEmail() ||
+			$asl->allowEditPassword() ||
+			$asl->allowEditTimezone() ||
+			$asl->allowEditDefaultLanguage() ||
 			($asl->getAttributesAllowedPermission() == 'A' || ($asl->getAttributesAllowedPermission() == 'C' && count($asl->getAttributesAllowedArray() > 0)))) {
 				return true;
 		} else {
 			return false;
 		}
 	}
-	
-	
+
+
 }
 
 class EditUserPropertiesUserPermissionAccess extends UserPermissionAccess {
-	
+
 	public function duplicate($newPA = false) {
 		$newPA = parent::duplicate($newPA);
 		$db = Loader::db();
 		$r = $db->Execute('select * from UserPermissionEditPropertyAccessList where paID = ?', array($this->getPermissionAccessID()));
 		while ($row = $r->FetchRow()) {
-			$v = array($newPA->getPermissionAccessID(), 
-			$row['peID'], 
+			$v = array($newPA->getPermissionAccessID(),
+			$row['peID'],
 			$row['attributePermission'],
 			$row['uName'],
 			$row['uEmail'],
 			$row['uPassword'],
 			$row['uAvatar'],
 			$row['uTimezone'],
-			$row['uDefaultLanguage']			
+			$row['uDefaultLanguage']
 			);
 			$db->Execute('insert into UserPermissionEditPropertyAccessList (paID, peID, attributePermission, uName, uEmail, uPassword, uAvatar, uTimezone, uDefaultLanguage) values (?, ?, ?, ?, ?, ?, ?, ?, ?)', $v);
 		}
@@ -169,13 +169,13 @@ class EditUserPropertiesUserPermissionAccess extends UserPermissionAccess {
 		}
 		return $newPA;
 	}
-	
+
 	public function save($args) {
 		parent::save();
 		$db = Loader::db();
 		$db->Execute('delete from UserPermissionEditPropertyAccessList where paID = ?', array($this->getPermissionAccessID()));
 		$db->Execute('delete from UserPermissionEditPropertyAttributeAccessListCustom where paID = ?', array($this->getPermissionAccessID()));
-		if (is_array($args['propertiesIncluded'])) { 
+		if (is_array($args['propertiesIncluded'])) {
 			foreach($args['propertiesIncluded'] as $peID => $attributePermission) {
 				$allowEditUName = 0;
 				$allowEditUEmail = 0;
@@ -205,8 +205,8 @@ class EditUserPropertiesUserPermissionAccess extends UserPermissionAccess {
 				$db->Execute('insert into UserPermissionEditPropertyAccessList (paID, peID, attributePermission, uName, uEmail, uPassword, uAvatar, uTimezone, uDefaultLanguage) values (?, ?, ?, ?, ?, ?, ?, ?, ?)', $v);
 			}
 		}
-		
-		if (is_array($args['propertiesExcluded'])) { 
+
+		if (is_array($args['propertiesExcluded'])) {
 			foreach($args['propertiesExcluded'] as $peID => $attributePermission) {
 				$allowEditUNameExcluded = 0;
 				$allowEditUEmailExcluded = 0;
@@ -237,18 +237,18 @@ class EditUserPropertiesUserPermissionAccess extends UserPermissionAccess {
 			}
 		}
 
-		if (is_array($args['akIDInclude'])) { 
+		if (is_array($args['akIDInclude'])) {
 			foreach($args['akIDInclude'] as $peID => $akIDs) {
-				foreach($akIDs as $akID) { 
+				foreach($akIDs as $akID) {
 					$v = array($this->getPermissionAccessID(), $peID, $akID);
 					$db->Execute('insert into UserPermissionEditPropertyAttributeAccessListCustom (paID, peID, akID) values (?, ?, ?)', $v);
 				}
 			}
 		}
 
-		if (is_array($args['akIDExclude'])) { 
+		if (is_array($args['akIDExclude'])) {
 			foreach($args['akIDExclude'] as $peID => $akIDs) {
-				foreach($akIDs as $akID) { 
+				foreach($akIDs as $akID) {
 					$v = array($this->getPermissionAccessID(), $peID, $akID);
 					$db->Execute('insert into UserPermissionEditPropertyAttributeAccessListCustom (paID, peID, akID) values (?, ?, ?)', $v);
 				}
@@ -263,7 +263,7 @@ class EditUserPropertiesUserPermissionAccess extends UserPermissionAccess {
 		foreach($list as $l) {
 			$pe = $l->getAccessEntityObject();
 			$prow = $db->GetRow('select attributePermission, uName, uPassword, uEmail, uAvatar, uTimezone, uDefaultLanguage from UserPermissionEditPropertyAccessList where peID = ? and paID = ?', array($pe->getAccessEntityID(), $this->getPermissionAccessID()));
-			if (is_array($prow) && $prow['attributePermission']) { 
+			if (is_array($prow) && $prow['attributePermission']) {
 				$l->setAttributesAllowedPermission($prow['attributePermission']);
 				$l->setAllowEditUserName($prow['uName']);
 				$l->setAllowEditEmail($prow['uEmail']);
@@ -289,7 +289,7 @@ class EditUserPropertiesUserPermissionAccess extends UserPermissionAccess {
 				$l->setAllowEditTimezone(0);
 				$l->setAllowEditDefaultLanguage(0);
 			}
-			if ($attributePermission == 'C') { 
+			if ($attributePermission == 'C') {
 				$akIDs = $db->GetCol('select akID from UserPermissionEditPropertyAttributeAccessListCustom where peID = ? and paID = ?', array($pe->getAccessEntityID(), $this->getPermissionAccessID()));
 				$l->setAttributesAllowedArray($akIDs);
 			}
@@ -300,7 +300,7 @@ class EditUserPropertiesUserPermissionAccess extends UserPermissionAccess {
 
 
 class EditUserPropertiesUserPermissionAccessListItem extends PermissionAccessListItem {
-	
+
 	protected $customAttributeKeyArray = array();
 	protected $attributesAllowedPermission = 'N';
 	protected $allowEditUName = 0;
@@ -322,11 +322,11 @@ class EditUserPropertiesUserPermissionAccessListItem extends PermissionAccessLis
 	public function getAttributesAllowedArray() {
 		return $this->customAttributeKeyArray;
 	}
-	
+
 	public function setAllowEditUserName($allow) {
 		$this->allowEditUName = $allow;
 	}
-	
+
 	public function allowEditUserName() {
 		return $this->allowEditUName;
 	}
@@ -334,7 +334,7 @@ class EditUserPropertiesUserPermissionAccessListItem extends PermissionAccessLis
 	public function setAllowEditEmail($allow) {
 		$this->allowEditUEmail = $allow;
 	}
-	
+
 	public function allowEditEmail() {
 		return $this->allowEditUEmail;
 	}
@@ -342,7 +342,7 @@ class EditUserPropertiesUserPermissionAccessListItem extends PermissionAccessLis
 	public function setAllowEditPassword($allow) {
 		$this->allowEditUPassword = $allow;
 	}
-	
+
 	public function allowEditPassword() {
 		return $this->allowEditUPassword;
 	}
@@ -350,15 +350,15 @@ class EditUserPropertiesUserPermissionAccessListItem extends PermissionAccessLis
 	public function setAllowEditAvatar($allow) {
 		$this->allowEditUAvatar = $allow;
 	}
-	
+
 	public function allowEditAvatar() {
 		return $this->allowEditUAvatar;
 	}
-	
+
 	public function setAllowEditTimezone($allow) {
 		$this->allowEditUTimezone = $allow;
 	}
-	
+
 	public function allowEditTimezone() {
 		return $this->allowEditUTimezone;
 	}
@@ -366,10 +366,10 @@ class EditUserPropertiesUserPermissionAccessListItem extends PermissionAccessLis
 	public function setAllowEditDefaultLanguage($allow) {
 		$this->allowEditUDefaultLanguage = $allow;
 	}
-	
+
 	public function allowEditDefaultLanguage() {
 		return $this->allowEditUDefaultLanguage;
 	}
-	
-	
+
+
 }

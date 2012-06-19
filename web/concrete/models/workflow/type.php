@@ -5,7 +5,7 @@ class WorkflowType extends Object {
 	public function getWorkflowTypeID() {return $this->wftID;}
 	public function getWorkflowTypeHandle() {return $this->wftHandle;}
 	public function getWorkflowTypeName() {return $this->wftName;}
-	
+
 	public static function getByID($wftID) {
 		$db = Loader::db();
 		$row = $db->GetRow('select wftID, pkgID, wftHandle, wftName from WorkflowTypes where wftID = ?', array($wftID));
@@ -24,11 +24,11 @@ class WorkflowType extends Object {
 		while ($row = $r->FetchRow()) {
 			$list[] = WorkflowType::getByID($row['wftID']);
 		}
-		
+
 		$r->Close();
 		return $list;
 	}
-	
+
 	public static function exportList($xml) {
 		$wtypes = WorkflowType::getList();
 		$db = Loader::db();
@@ -40,12 +40,12 @@ class WorkflowType extends Object {
 			$wtype->addAttribute('package', $wt->getPackageHandle());
 		}
 	}
-	
+
 	public function delete() {
 		$db = Loader::db();
 		$db->Execute("delete from WorkflowTypes where wftID = ?", array($this->wftID));
 	}
-	
+
 	public static function getListByPackage($pkg) {
 		$db = Loader::db();
 		$list = array();
@@ -55,13 +55,13 @@ class WorkflowType extends Object {
 		}
 		$r->Close();
 		return $list;
-	}	
-	
+	}
+
 	public function getPackageID() { return $this->pkgID;}
 	public function getPackageHandle() {
 		return PackageList::getHandle($this->pkgID);
 	}
-	
+
 	public static function getByHandle($wftHandle) {
 		$db = Loader::db();
 		$wftID = $db->GetOne('select wftID from WorkflowTypes where wftHandle = ?', array($wftHandle));
@@ -69,7 +69,7 @@ class WorkflowType extends Object {
 			return self::getByID($wftID);
 		}
 	}
-	
+
 	public static function add($wftHandle, $wftName, $pkg = false) {
 		$pkgID = 0;
 		if (is_object($pkg)) {
@@ -81,5 +81,5 @@ class WorkflowType extends Object {
 		$est = WorkflowType::getByID($id);
 		return $est;
 	}
-	
+
 }

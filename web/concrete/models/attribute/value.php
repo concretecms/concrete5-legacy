@@ -1,58 +1,58 @@
 <?
 defined('C5_EXECUTE') or die("Access Denied.");
 /**
- * This class holds a list of attribute values for an object. Why do we need a special class to do this? Because 
+ * This class holds a list of attribute values for an object. Why do we need a special class to do this? Because
  * class can be retrieved by handle
  */
 class AttributeValueList extends Object implements Iterator {
-		
+
 	private $attributes = array();
-	
+
 	public function addAttributeValue($ak, $value) {
 		$this->attributes[$ak->getAttributeKeyHandle()] = $value;
 	}
-	
+
 	public function __construct($array = false) {
 		if (is_array($array)) {
 			$this->attributes = $array;
 		}
 	}
-	
+
 	public function count() {
 		return count($this->attributes);
 	}
-	
+
 	public function getAttribute($akHandle) {
 		return $this->attributes[$akHandle];
 	}
-	
+
 	public function rewind() {
 		reset($this->attributes);
 	}
-	
+
 	public function current() {
 		return current($this->attributes);
 	}
-	
+
 	public function key() {
 		return key($this->attributes);
 	}
-	
+
 	public function next() {
 		next($this->attributes);
 	}
-	
+
 	public function valid() {
 		return $this->current() !== false;
 	}
-	
+
 }
 
 
 class AttributeValue extends Object {
-	
+
 	protected $attributeType;
-	
+
 	public static function getByID($avID) {
 		$av = new AttributeValue();
 		$av->load($avID);
@@ -60,7 +60,7 @@ class AttributeValue extends Object {
 			return $av;
 		}
 	}
-	
+
 	protected function load($avID) {
 		$db = Loader::db();
 		$row = $db->GetRow("select avID, akID, uID, avDateAdded, atID from AttributeValues where avID = ?", array($avID));
@@ -79,7 +79,7 @@ class AttributeValue extends Object {
 			unset($this->attributeType);
 		}
 	}
-	
+
 	public function getValue($mode = false) {
 		if ($mode != false) {
 			$th = Loader::helper('text');
@@ -90,8 +90,8 @@ class AttributeValue extends Object {
 					return $this->attributeType->controller->{$method}();
 				}
 			}
-		}		
-		return $this->attributeType->controller->getValue();		
+		}
+		return $this->attributeType->controller->getValue();
 	}
 
 	public function getSearchIndexValue() {
@@ -101,13 +101,13 @@ class AttributeValue extends Object {
 			return $this->attributeType->controller->getValue();
 		}
 	}
-	
+
 	public function delete() {
 		$this->attributeType->controller->deleteValue();
-		$db = Loader::db();	
+		$db = Loader::db();
 		$db->Execute('delete from AttributeValues where avID = ?', $this->getAttributeValueID());
 	}
-	
+
 	public function getAttributeKey() {
 		return $this->attributeKey;
 	}
@@ -123,5 +123,5 @@ class AttributeValue extends Object {
 		$ato = AttributeType::getByID($this->atID);
 		return $ato;
 	}
-	
+
 }

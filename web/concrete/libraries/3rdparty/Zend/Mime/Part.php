@@ -146,7 +146,7 @@ class Zend_Mime_Part {
             return Zend_Mime::encode($this->_content, $this->encoding, $EOL);
         }
     }
-    
+
     /**
      * Get the RAW unencoded content from this part
      * @return string

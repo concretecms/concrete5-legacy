@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 defined('C5_EXECUTE') or die("Access Denied.");
 
@@ -9,7 +9,7 @@ if (REDIRECT_TO_BASE_URL == true) {
 		$protocol = 'https://';
 		if (defined('BASE_URL_SSL')) {
 			$base_url_ssl = BASE_URL_SSL;
-		} else { 
+		} else {
 			$base_url_ssl = Config::get('BASE_URL_SSL');
 		}
 		if ($base_url_ssl) {
@@ -23,7 +23,7 @@ if (REDIRECT_TO_BASE_URL == true) {
 	}
 
 	if (($base_url != $protocol . $_SERVER['HTTP_HOST']) && ($base_url . ':' . $_SERVER['SERVER_PORT'] != 'https://' . $_SERVER['HTTP_HOST'])) {
-		header('HTTP/1.1 301 Moved Permanently');  
+		header('HTTP/1.1 301 Moved Permanently');
 		header('Location: ' . $base_url . $uri);
 		exit;
 	}

@@ -10,13 +10,13 @@ class SystemCaptchaLibrary extends Object {
 		return PackageList::getHandle($this->pkgID);
 	}
 	public function getPackageObject() {return Package::getByID($this->pkgID);}
-	
+
 	public static function getActive() {
 		$db = Loader::db();
 		$sclHandle = $db->GetOne('select sclHandle from SystemCaptchaLibraries where sclIsActive = 1');
 		return SystemCaptchaLibrary::getByHandle($sclHandle);
 	}
-	
+
 	public static function getByHandle($sclHandle) {
 		$db = Loader::db();
 		$r = $db->GetRow('select sclHandle, sclIsActive, pkgID, sclName from SystemCaptchaLibraries where sclHandle = ?', array($sclHandle));
@@ -26,7 +26,7 @@ class SystemCaptchaLibrary extends Object {
 			return $sc;
 		}
 	}
-	
+
 	public static function add($sclHandle, $sclName, $pkg = false) {
 		$pkgID = 0;
 		if (is_object($pkg)) {
@@ -36,18 +36,18 @@ class SystemCaptchaLibrary extends Object {
 		$db->Execute('insert into SystemCaptchaLibraries (sclHandle, sclName, pkgID) values (?, ?, ?)', array($sclHandle, $sclName, $pkgID));
 		return SystemCaptchaLibrary::getByHandle($sclHandle);
 	}
-	
+
 	public function delete() {
 		$db = Loader::db();
 		$db->Execute('delete from SystemCaptchaLibraries where sclHandle = ?', array($this->sclHandle));
 	}
-	
+
 	public function activate() {
 		$db = Loader::db();
 		$db->Execute('update SystemCaptchaLibraries set sclIsActive = 0');
 		$db->Execute('update SystemCaptchaLibraries set sclIsActive = 1 where sclHandle = ?', array($this->sclHandle));
 	}
-		
+
 	public static function getList() {
 		$db = Loader::db();
 		$sclHandles = $db->GetCol('select sclHandle from SystemCaptchaLibraries order by sclHandle asc');
@@ -69,11 +69,11 @@ class SystemCaptchaLibrary extends Object {
 		}
 		return $libraries;
 	}
-	
+
 	public static function exportList($xml) {
 		$list = self::getList();
 		$nxml = $xml->addChild('systemcaptcha');
-		
+
 		foreach($list as $sc) {
 			$activated = 0;
 			$type = $nxml->addChild('library');
@@ -83,8 +83,8 @@ class SystemCaptchaLibrary extends Object {
 			$type->addAttribute('activated', $sc->isSystemCaptchaLibraryActive());
 		}
 	}
-	
-	
+
+
 	public function hasOptionsForm() {
 		$path = DIRNAME_SYSTEM . '/' . DIRNAME_SYSTEM_CAPTCHA . '/' . $this->sclHandle . '/' . FILENAME_FORM;
 		if (file_exists(DIR_ELEMENTS . '/' . $path)) {
@@ -101,11 +101,11 @@ class SystemCaptchaLibrary extends Object {
 		} else {
 			return file_exists(DIR_ELEMENTS . '/' . $path);
 		}
-		
+
 		return false;
 	}
-	
-	/** 
+
+	/**
 	 * Returns the controller class for the currently selected captcha library
 	 */
 	public function getController() {

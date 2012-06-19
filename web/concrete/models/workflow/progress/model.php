@@ -7,16 +7,16 @@ defined('C5_EXECUTE') or die("Access Denied.");
  * @license    http://www.concrete5.org/license/     MIT License
  *
  */
-abstract class WorkflowProgress extends Object {  
+abstract class WorkflowProgress extends Object {
 
 	protected $wpID;
 	protected $wpDateAdded;
 	protected $wfID;
 	protected $response;
 	protected $wpDateLastAction;
-	
-	
-	/** 
+
+
+	/**
 	 * Gets the Workflow object attached to this WorkflowProgress object
 	 * @return Workflow
 	 */
@@ -28,49 +28,49 @@ abstract class WorkflowProgress extends Object {
 		}
 		return $wf;
 	}
-	
-	/** 
+
+	/**
 	 * Gets an optional WorkflowResponse object. This is set in some cases
 	 */
 	public function getWorkflowProgressResponseObject() {
 		return $this->response;
 	}
-	
+
 	public function setWorkflowProgressResponseObject($obj) {
 		$this->response = $obj;
 	}
-	
-	/** 
+
+	/**
 	 * Gets the date of the last action
 	 */
 	public function getWorkflowProgressDateLastAction() {
 		return $this->wpDateLastAction;
 	}
-	
-	/** 
+
+	/**
 	 * Gets the ID of the progress object
 	 */
 	public function getWorkflowProgressID() {return $this->wpID;}
-	
-	/** 
+
+	/**
 	 * Get the category ID
 	 */
 	public function getWorkflowProgressCategoryID() {return $this->wpCategoryID;}
-	
-	/** 
+
+	/**
 	 * Gets the date the WorkflowProgress object was added
 	 * @return datetime
 	 */
 	public function getWorkflowProgressDateAdded() {return $this->wpDateAdded;}
-	
-	/** 
+
+	/**
 	 * Get the WorkflowRequest object for the current WorkflowProgress object
 	 * @return WorkflowRequest
 	 */
 	public function getWorkflowRequestObject() {
-		if ($this->wrID > 0) { 
+		if ($this->wrID > 0) {
 			$cc = get_called_class();
-			$class = substr($cc, 0, strpos($cc, 'WorkflowProgress')) . 'WorkflowRequest';			
+			$class = substr($cc, 0, strpos($cc, 'WorkflowProgress')) . 'WorkflowRequest';
 			$wr = call_user_func_array(array($class, 'getByID'), array($this->wrID));
 			if (is_object($wr)) {
 				$wr->setCurrentWorkflowProgressObject($this);
@@ -78,8 +78,8 @@ abstract class WorkflowProgress extends Object {
 			}
 		}
 	}
-	
-	/** 
+
+	/**
 	 * Creates a WorkflowProgress object (which will be assigned to a Page, File, etc... in our system.
 	 */
 	public static function add(Workflow $wf, WorkflowRequest $wr) {
@@ -107,15 +107,15 @@ abstract class WorkflowProgress extends Object {
 			$wr->delete();
 		}
 	}
-	
+
 	public static function getByID($wpID) {
 		$db = Loader::db();
 		$r = $db->GetRow('select WorkflowProgress.*, WorkflowProgressCategories.wpCategoryHandle from WorkflowProgress inner join WorkflowProgressCategories on WorkflowProgress.wpCategoryID = WorkflowProgressCategories.wpCategoryID where wpID  = ?', array($wpID));
-		if (!is_array($r) || (!$r['wpID'])) { 
+		if (!is_array($r) || (!$r['wpID'])) {
 			return false;
 		}
 		$class = Loader::helper("text")->camelcase($r['wpCategoryHandle']) . 'WorkflowProgress';
-		
+
 		$wp = new $class;
 		$wp->setPropertiesFromArray($r);
 		$wp->loadDetails();
@@ -126,12 +126,12 @@ abstract class WorkflowProgress extends Object {
 		$task = '';
 		foreach($_POST as $key => $value) {
 			if (strpos($key, 'action_') > -1) {
-				return substr($key, 7);	
+				return substr($key, 7);
 			}
 		}
 	}
-	
-	/** 
+
+	/**
 	 * The function that is automatically run when a workflowprogress object is started
 	 */
 	public function start() {
@@ -142,16 +142,16 @@ abstract class WorkflowProgress extends Object {
 		}
 		return $r;
 	}
-	
+
 	public function updateOnAction(Workflow $wf) {
 		$db = Loader::db();
 		$num = $wf->getWorkflowProgressCurrentStatusNum($this);
 		$time = Loader::helper('date')->getLocalDateTime();
 		$db->Execute('update WorkflowProgress set wpDateLastAction = ?, wpCurrentStatus = ? where wpID = ?', array($time, $num, $this->wpID));
 	}
-	
-	/** 
-	 * Attempts to run a workflow task on the bound WorkflowRequest object first, then if that doesn't exist, attempts to run 
+
+	/**
+	 * Attempts to run a workflow task on the bound WorkflowRequest object first, then if that doesn't exist, attempts to run
 	 * it on the current WorkflowProgress object
 	 * @return WorkflowProgressResponse
 	 */
@@ -166,7 +166,7 @@ abstract class WorkflowProgress extends Object {
 		}
 		return $wpr;
 	}
-	
+
 	public function getWorkflowProgressActions() {
 		$w = $this->getWorkflowObject();
 		$req = $this->getWorkflowRequestObject();
@@ -174,10 +174,10 @@ abstract class WorkflowProgress extends Object {
 		$actions = array_merge($actions, $w->getWorkflowProgressActions($this));
 		return $actions;
 	}
-	
+
 	abstract function getWorkflowProgressFormAction();
 	abstract function loadDetails();
-	
+
 	public function addWorkflowProgressHistoryObject($obj) {
 		$db = Loader::db();
 		$db->Execute('insert into WorkflowProgressHistory (wpID, object) values (?, ?)', array($this->wpID, serialize($obj)));
@@ -187,7 +187,7 @@ abstract class WorkflowProgress extends Object {
 		$db = Loader::db();
 		$db->Execute('update WorkflowProgress set wpIsCompleted = 1 where wpID = ?', array($this->wpID));
 	}
-	
+
 	abstract public function getPendingWorkflowProgressList();
-	
+
 }

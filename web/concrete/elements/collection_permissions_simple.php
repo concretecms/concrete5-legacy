@@ -3,7 +3,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 if ($cp->canEditPagePermissions()) {
 	$editAccess = array();
 	$viewAccess = array();
-		
+
 	$pk = PermissionKey::getByHandle('view_page');
 	$pk->setPermissionObject($c);
 	$assignments = $pk->getAccessListItems();
@@ -25,7 +25,7 @@ if ($cp->canEditPagePermissions()) {
 			$editAccess[] = $ae->getGroupObject()->getGroupID();
 		}
 	}
-	
+
 	Loader::model('search/group');
 	$gl = new GroupSearch();
 	$gl->sortBy('gID', 'asc');
@@ -78,7 +78,7 @@ foreach ($gArray as $g) {
 <div class="dialog-buttons">
 	<a href="javascript:void(0)" onclick="jQuery.fn.dialog.closeTop();" class="ccm-button-left btn"><?=t('Cancel')?></a>
 	<a href="javascript:void(0)" onclick="$('form[name=ccmPermissionsForm]').submit()" class="ccm-button-right btn primary"><?=t('Save')?></a>
-</div>	
+</div>
 <input type="hidden" name="update_permissions" value="1" class="accept">
 <input type="hidden" name="processCollection" value="1">
 

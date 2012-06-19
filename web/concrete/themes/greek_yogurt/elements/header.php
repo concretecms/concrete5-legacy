@@ -25,27 +25,27 @@
 <div id="main-container" class="container_24">
 
 	<div id="header">
-	
-	
-		<?php 
+
+
+		<?php
 		$a = new GlobalArea('Site Name');
 		$a->display();
 		?>
 
-		<?php 
+		<?php
 		$a = new GlobalArea('Header Nav');
 		$a->display();
 		?>
-		
+
 		<div id="header-image">
-		
-			<?php 
+
+			<?php
 			$a = new Area('Header Image');
 			$a->display($c);
 			?>
-		
+
 		</div>
-		
+
 	</div>
-	
+
 	<div class="clear"></div>

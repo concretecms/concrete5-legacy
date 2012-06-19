@@ -24,15 +24,15 @@ class DashboardUsersAddGroupController extends DashboardBaseController {
 		$valt = Loader::helper('validation/token');
 		$gName = $txt->sanitize($_POST['gName']);
 		$gDescription = $_POST['gDescription'];
-		
+
 		if (!$gName) {
 			$this->error->add(t("Name required."));
 		}
-		
+
 		if (!$valt->validate('add_or_update_group')) {
 			$this->error->add($valt->getErrorMessage());
 		}
-		
+
 		$g1 = Group::getByName($gName);
 		if ($g1 instanceof Group) {
 			if ((!is_object($g)) || $g->getGroupID() != $g1->getGroupID()) {
@@ -40,11 +40,11 @@ class DashboardUsersAddGroupController extends DashboardBaseController {
 			}
 		}
 
-		if (!$this->error->has()) { 	
+		if (!$this->error->has()) {
 			$g = Group::add($gName, $_POST['gDescription']);
 			$this->checkExpirationOptions($g);
 			$this->redirect('/dashboard/users/groups', 'group_added');
-		}	
+		}
 	}
 
 }

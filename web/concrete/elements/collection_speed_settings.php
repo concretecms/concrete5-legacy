@@ -8,8 +8,8 @@ global $c;
 
 <form method="post" id="ccmSpeedSettingsForm" action="<?=$c->getCollectionAction()?>">
 
-	<script type="text/javascript"> 
-		
+	<script type="text/javascript">
+
 		ccm_settingsSetupCacheForm = function(reset) {
 			var obj = $('input[name=cCacheFullPageContent]:checked');
 			if (obj.attr('enable-cache') == 1) {
@@ -29,7 +29,7 @@ global $c;
 			}
 
 		}
-		
+
 		$(function() {
 			$("input[name=cCacheFullPageContent]").click(function() {
 				ccm_settingsSetupCacheForm(true);
@@ -63,11 +63,11 @@ global $c;
 			});
 		});
 	</script>
-	
+
 
 
 	<div id="ccm-properties-cache-tab">
-		
+
 		<? if (!ENABLE_CACHE) {
 			print t('The cache has been disabled. Full page caching is not available.');
 		} else { ?>
@@ -118,19 +118,19 @@ global $c;
 			</li>
 			</ul>
 			</div>
-			
+
 			</div>
-			
+
 			<div class="clearfix">
 			<label><?=t('Cache for how long?')?></label>
-			
+
 			<div class="ccm-properties-cache-lifetime input">
 			<ul class="inputs-list">
 				<? $val = ($c->getCollectionFullPageCachingLifetimeCustomValue() > 0 && $c->getCollectionFullPageCachingLifetime()) ? $c->getCollectionFullPageCachingLifetimeCustomValue() : ''; ?>
-				<li><label><span><input type="radio" name="cCacheFullPageContentOverrideLifetime" value="0" <? if ($c->getCollectionFullPageCachingLifetime() == '0') { ?> checked="checked" <? } ?> /> 
+				<li><label><span><input type="radio" name="cCacheFullPageContentOverrideLifetime" value="0" <? if ($c->getCollectionFullPageCachingLifetime() == '0') { ?> checked="checked" <? } ?> />
 				<?=t('Use global setting - %s', $globalSettingLifetime)?>
 				</span></label></li>
-				<li><label><span><?=$form->radio('cCacheFullPageContentOverrideLifetime', 'default', $c->getCollectionFullPageCachingLifetime())?> 
+				<li><label><span><?=$form->radio('cCacheFullPageContentOverrideLifetime', 'default', $c->getCollectionFullPageCachingLifetime())?>
 				<?=t('Default - %s minutes', CACHE_LIFETIME / 60)?>
 				</span></label></li>
 				<li><label><span><?=$form->radio('cCacheFullPageContentOverrideLifetime', 'forever', $c->getCollectionFullPageCachingLifetime())?>
@@ -146,8 +146,8 @@ global $c;
 			</ul>
 			</div>
 		<? } ?>
-	</div>	
-	
+	</div>
+
 	<input type="hidden" name="update_speed_settings" value="1" />
 	<input type="hidden" name="processCollection" value="1">
 </form>

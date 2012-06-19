@@ -7,12 +7,12 @@ if (!$dh->canRead()) {
 }
 
 $c = Page::getByID($_REQUEST['cID']);
-if (is_object($c) && !$c->isError()) { 
+if (is_object($c) && !$c->isError()) {
 	$cp = new Permissions($c);
-	if ($cp->canDeletePage()) { 
-		$c->delete();	
+	if ($cp->canDeletePage()) {
+		$c->delete();
 		$message = t('Page deleted.');
-		
+
 		$obj = new stdClass;
 		$obj->message = $message;
 		print Loader::helper('json')->encode($obj);

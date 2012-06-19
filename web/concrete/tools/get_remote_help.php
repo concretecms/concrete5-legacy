@@ -9,6 +9,6 @@ if ($_REQUEST['q']) {
 		print $r;
 	} else {
 		print Loader::helper('json')->encode(array());
-	}	
+	}
 	exit;
 }

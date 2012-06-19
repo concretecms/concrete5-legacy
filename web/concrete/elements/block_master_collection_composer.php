@@ -18,7 +18,7 @@ $txt = Loader::helper('text');
 	</ul>
 	</div>
 	</div>
-	
+
 	<div class="clearfix">
 	<?=$form->label('bName', t('Block Name'))?>
 	<div class="input">
@@ -35,18 +35,18 @@ $txt = Loader::helper('text');
 		<select name="cbFilename">
 			<option value="">(<?=t('None selected')?>)</option>
 			<? foreach($templates as $tpl) { ?>
-				<option value="<?=$tpl?>" <? if ($b->getBlockComposerFilename() == $tpl) { ?> selected <? } ?>><?	
+				<option value="<?=$tpl?>" <? if ($b->getBlockComposerFilename() == $tpl) { ?> selected <? } ?>><?
 					if (strpos($tpl, '.') !== false) {
 						print substr($txt->unhandle($tpl), 0, strrpos($tpl, '.'));
 					} else {
 						print $txt->unhandle($tpl);
 					}
-					?></option>		
+					?></option>
 			<? } ?>
 		</select>
 	</div>
 	</div>
-	
+
 	<? } ?>
 <?
 $valt = Loader::helper('validation/token');

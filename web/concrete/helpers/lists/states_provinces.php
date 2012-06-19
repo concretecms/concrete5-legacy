@@ -1,4 +1,4 @@
-<? 
+<?
 /**
  * @package Helpers
  * @category Concrete
@@ -15,10 +15,10 @@
  * @copyright  Copyright (c) 2003-2008 Concrete5. (http://www.concrete5.org)
  * @license    http://www.concrete5.org/license/     MIT License
  */
- 
+
 defined('C5_EXECUTE') or die("Access Denied.");
 class ListsStatesProvincesHelper {
-	
+
 	protected $stateProvinces = array(
 	'US' => array(
 		'AL' => 'Alabama',
@@ -73,7 +73,7 @@ class ListsStatesProvincesHelper {
 		'WI' => 'Wisconsin',
 		'WY' => 'Wyoming'
 	),
-	
+
 	'CA' => array(
 		'AB' => 'Alberta',
 		'BC' => 'British Columbia',
@@ -89,7 +89,7 @@ class ListsStatesProvincesHelper {
 		'SK' => 'Saskatchewan',
 		'YT' => 'Yukon'
 	),
-	
+
 	'AU' => array(
 		'AAT' => 'Australian Antarctic Territory',
 		'ACT' => 'Australian Capital Territory',
@@ -101,7 +101,7 @@ class ListsStatesProvincesHelper {
 		'VIC' => 'Victoria',
 		'WA' => 'Western Australia',
 	),
-	
+
 	'DE' => array(
       'BW' => 'Baden-W&uuml;rttemberg',
       'BY' => 'Bayern',
@@ -118,7 +118,7 @@ class ListsStatesProvincesHelper {
       'SN' => 'Sachsen',
       'ST' => 'Sachsen-Anhalt',
       'SH' => 'Schleswig-Holstein',
-      'TH' => 'Th&uuml;ringen'   
+      'TH' => 'Th&uuml;ringen'
    ),
 
    'FR' => array(
@@ -219,7 +219,7 @@ class ListsStatesProvincesHelper {
     '94' => 'Val-de-Marne',
     '95' => 'Val-d&#39;Oise'
 	),
-	
+
 	'UK' => array(
 		'ANGLES' => 'Anglesey',
 		'BRECK' => 'Brecknockshire',
@@ -234,7 +234,7 @@ class ListsStatesProvincesHelper {
 		'MONTG' => 'Mongtomeryshire',
 		'PEMBR' => 'Pembrokeshire',
 		'RADNOR' => 'Radnorshire',
-		
+
 		'ARBERD' => 'Aberdeenshire',
 		'ANGUS' => 'Angus',
 		'ARGYLL' => 'Argyllshire',
@@ -269,9 +269,9 @@ class ListsStatesProvincesHelper {
 		'SUTHER' => 'Sutherland',
 		'WESTL' => 'West Lothian',
 		'WIGTOWN' => 'Wigtownshire',
-		
+
 		'MERSEYSIDE' => 'Merseyside',
-		
+
 		'BEDS' => 'Bedfordshire',
 		'LONDON' => 'London',
 		'BERKS' => 'Berkshire',
@@ -313,7 +313,7 @@ class ListsStatesProvincesHelper {
 		'WORCES' => 'Worcestershire',
 		'YORK' => 'Yorkshire'
 	),
-	
+
 	'IE' => array(
 		'CO ANTRIM' => 'County Antrim',
 		'CO ARMAGH' => 'County Armagh',
@@ -348,9 +348,9 @@ class ListsStatesProvincesHelper {
 		'CO TIPPERARY' => 'County Tipperary',
 		'CO WATERFORD' => 'County Waterford'
 	),
-	
+
 	'NL' => array(
-	
+
 		'DR' => 'Drente',
 		'FL' => 'Flevoland',
 		'FR' => 'Friesland',
@@ -364,9 +364,9 @@ class ListsStatesProvincesHelper {
 		'ZH' => 'Zuid Holland',
 		'ZL' => 'Zeeland'
 	),
-	
+
 	'BR' => array(
-	
+
 		'AC' => 'Acre',
 		'AL' => 'Alagoas',
 		'AM' => 'Amazonas',
@@ -398,7 +398,7 @@ class ListsStatesProvincesHelper {
 
 	)
 	);
-	
+
 	public function __construct() {
 		$this->stateProvinces['GB'] = $this->stateProvinces['UK'];
 	}
@@ -411,13 +411,13 @@ class ListsStatesProvincesHelper {
 			}
 		}
 	}
-	
+
 	public function getStateProvinceArray($k) {
 		$a = $this->stateProvinces[$k];
 		asort($a);
 		return $a;
 	}
-	
+
 	public function getAll() {
 		$sp = $this->stateProvinces;
 		foreach($sp as $p => $pv) {
@@ -425,8 +425,8 @@ class ListsStatesProvincesHelper {
 		}
 		return $sp;
 	}
-	
-	/** 
+
+	/**
 	 * Returns an array of US states
 	 * @deprecated
 	 * @return array
@@ -434,8 +434,8 @@ class ListsStatesProvincesHelper {
 	public function getStates() {
 		return $this->stateProvinces['US'];
 	}
-	
-	/** 
+
+	/**
 	 * Returns an array of Canadian provinces
 	 * @deprecated
 	 * @return array
@@ -443,7 +443,7 @@ class ListsStatesProvincesHelper {
 	public function getCanadianProvinces() {
 		return $this->stateProvinces['CA'];
 	}
-	
+
 
 }
 

@@ -5,13 +5,13 @@ class AccessUserSearchUserPermissionKey extends UserPermissionKey  {
 
 	protected function getAllowedGroupIDs($list = false) {
 
-		if (!$list) { 
+		if (!$list) {
 			$u = new User();
 			$accessEntities = $u->getUserAccessEntityObjects();
 			$list = $this->getAccessListItems(PermissionKey::ACCESS_TYPE_ALL, $accessEntities);
 			$list = PermissionDuration::filterByActive($list);
 		}
-		
+
 		$db = Loader::db();
 		$dsh = Loader::helper('concrete/dashboard');
 		$allgIDs = $db->GetCol('select gID from Groups');
@@ -23,7 +23,7 @@ class AccessUserSearchUserPermissionKey extends UserPermissionKey  {
 			if ($l->getGroupsAllowedPermission() == 'C') {
 				if ($l->getAccessType() == PermissionKey::ACCESS_TYPE_EXCLUDE) {
 					$gIDs = array_values(array_diff($gIDs, $l->getGroupsAllowedArray()));
-				} else { 
+				} else {
 					$gIDs = array_unique(array_merge($gIDs, $l->getGroupsAllowedArray()));
 				}
 			}
@@ -31,11 +31,11 @@ class AccessUserSearchUserPermissionKey extends UserPermissionKey  {
 				$gIDs = $allgIDs;
 			}
 		}
-		
+
 		return $gIDs;
 	}
-	
-	
+
+
 	public function getMyAssignment() {
 		$u = new User();
 		$asl = new AccessUserSearchUserPermissionAccessListItem();
@@ -48,12 +48,12 @@ class AccessUserSearchUserPermissionKey extends UserPermissionKey  {
 		if (!is_object($pae)) {
 			return $asl;
 		}
-		
+
 		$accessEntities = $u->getUserAccessEntityObjects();
 		$accessEntities = $pae->validateAndFilterAccessEntities($accessEntities);
 		$list = $this->getAccessListItems(UserPermissionKey::ACCESS_TYPE_ALL, $accessEntities);
 		$list = PermissionDuration::filterByActive($list);
-		
+
 		$u = new User();
 		foreach($list as $l) {
 			if ($l->getGroupsAllowedPermission() == 'N') {
@@ -67,13 +67,13 @@ class AccessUserSearchUserPermissionKey extends UserPermissionKey  {
 			if ($l->getGroupsAllowedPermission() == 'A') {
 				$asl->setGroupsAllowedPermission('A');
 			}
-		}	
-		if ($asl->getGroupsAllowedPermission() == 'C') { 
+		}
+		if ($asl->getGroupsAllowedPermission() == 'C') {
 			$asl->setGroupsAllowedArray($this->getAllowedGroupIDs());
 		}
 		return $asl;
 	}
-	
+
 	public function validate($obj = false) {
 		$u = new User();
 		if ($u->isSuperUser()) {
@@ -93,9 +93,9 @@ class AccessUserSearchUserPermissionKey extends UserPermissionKey  {
 				return $cnt > 0;
 			} else {
 				return false;
-			}				
+			}
 		}
-		
+
 		$types = $this->getAllowedGroupIDs();
 		if ($obj != false) {
 			if (is_object($obj)) {
@@ -107,7 +107,7 @@ class AccessUserSearchUserPermissionKey extends UserPermissionKey  {
 		} else {
 			return count($types) > 0;
 		}
-	}	
+	}
 
 }
 
@@ -128,7 +128,7 @@ class AccessUserSearchUserPermissionAccess extends PermissionAccess {
 		}
 		return $newPA;
 	}
-	
+
 	public function getAccessListItems($accessType = PermissionKey::ACCESS_TYPE_INCLUDE, $filterEntities = array()) {
 		$db = Loader::db();
 		$list = parent::getAccessListItems($accessType, $filterEntities);
@@ -136,7 +136,7 @@ class AccessUserSearchUserPermissionAccess extends PermissionAccess {
 			$pe = $l->getAccessEntityObject();
 			if ($this->permissionObjectToCheck instanceof Page && $l->getAccessType() == PermissionKey::ACCESS_TYPE_INCLUDE) {
 				$permission = 'A';
-			} else { 
+			} else {
 				$permission = $db->GetOne('select permission from ' . $this->dbTableAccessList . ' where peID = ? and paID = ?', array($pe->getAccessEntityID(), $l->getPermissionAccessID()));
 				if ($permission != 'N' && $permission != 'C') {
 					$permission = 'A';
@@ -144,7 +144,7 @@ class AccessUserSearchUserPermissionAccess extends PermissionAccess {
 
 			}
 			$l->setGroupsAllowedPermission($permission);
-			if ($permission == 'C') { 
+			if ($permission == 'C') {
 				$gIDs = $db->GetCol('select gID from ' . $this->dbTableAccessListCustom . ' where peID = ? and paID = ?', array($pe->getAccessEntityID(), $l->getPermissionAccessID()));
 				$l->setGroupsAllowedArray($gIDs);
 			}
@@ -160,42 +160,42 @@ class AccessUserSearchUserPermissionAccess extends PermissionAccess {
 		$db = Loader::db();
 		$db->Execute('delete from ' . $this->dbTableAccessList . ' where paID = ?', array($this->getPermissionAccessID()));
 		$db->Execute('delete from ' . $this->dbTableAccessListCustom . ' where paID = ?', array($this->getPermissionAccessID()));
-		if (is_array($args['groupsIncluded'])) { 
+		if (is_array($args['groupsIncluded'])) {
 			foreach($args['groupsIncluded'] as $peID => $permission) {
 				$v = array($peID, $this->getPermissionAccessID(), $permission);
 				$db->Execute('insert into ' . $this->dbTableAccessList . ' (peID, paID, permission) values (?, ?, ?)', $v);
 			}
 		}
-		
-		if (is_array($args['groupsExcluded'])) { 
+
+		if (is_array($args['groupsExcluded'])) {
 			foreach($args['groupsExcluded'] as $peID => $permission) {
 				$v = array($peID, $this->getPermissionAccessID(), $permission);
 				$db->Execute('insert into ' . $this->dbTableAccessList . ' (peID, paID, permission) values (?, ?, ?)', $v);
 			}
 		}
 
-		if (is_array($args['gIDInclude'])) { 
+		if (is_array($args['gIDInclude'])) {
 			foreach($args['gIDInclude'] as $peID => $gIDs) {
-				foreach($gIDs as $gID) { 
+				foreach($gIDs as $gID) {
 				$v = array($peID, $this->getPermissionAccessID(), $gID);
 					$db->Execute('insert into ' . $this->dbTableAccessListCustom . ' (peID, paID, gID) values (?, ?, ?)', $v);
 				}
 			}
 		}
 
-		if (is_array($args['gIDExclude'])) { 
+		if (is_array($args['gIDExclude'])) {
 			foreach($args['gIDExclude'] as $peID => $gIDs) {
-				foreach($gIDs as $gID) { 
+				foreach($gIDs as $gID) {
 				$v = array($peID, $this->getPermissionAccessID(), $gID);
 					$db->Execute('insert into ' . $this->dbTableAccessListCustom . ' (peID, paID, gID) values (?, ?, ?)', $v);
 				}
 			}
 		}
 	}
-	
+
 }
 class AccessUserSearchUserPermissionAccessListItem extends PermissionAccessListItem {
-	
+
 	protected $customGroupArray = array();
 	protected $groupsAllowedPermission = 'N';
 
@@ -211,6 +211,6 @@ class AccessUserSearchUserPermissionAccessListItem extends PermissionAccessListI
 	public function getGroupsAllowedArray() {
 		return $this->customGroupArray;
 	}
-	
-	
+
+
 }

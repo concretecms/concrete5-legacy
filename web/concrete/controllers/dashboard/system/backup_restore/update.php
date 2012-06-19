@@ -5,7 +5,7 @@ Loader::library('update');
 Loader::library('archive');
 
 class UpdateArchive extends Archive {
-	
+
 	public function __construct() {
 		parent::__construct();
 		$this->targetDirectory = DIR_APP_UPDATES;
@@ -14,16 +14,16 @@ class UpdateArchive extends Archive {
 	public function install($file) {
 		parent::install($file, true);
 	}
-	
+
 }
 
 if (!ini_get('safe_mode')) {
 	@set_time_limit(240);
 }
 
-class DashboardSystemBackupRestoreUpdateController extends DashboardBaseController { 	 
-	
-	function view() {  
+class DashboardSystemBackupRestoreUpdateController extends DashboardBaseController {
+
+	function view() {
 		$upd = new Update();
 		$updates = $upd->getLocalAvailableUpdates();
 		$remote = $upd->getApplicationUpdateInformation();
@@ -44,20 +44,20 @@ class DashboardSystemBackupRestoreUpdateController extends DashboardBaseControll
 					break;
 				}
 			}
-			
+
 			$this->set('downloadableUpgradeAvailable', $downloadableUpgradeAvailable);
 			$this->set('update', $remote);
 		} else {
 			$this->set('downloadableUpgradeAvailable', false);
 		}
 	}
-	
+
 	public function check_for_updates() {
 		Config::clear('APP_VERSION_LATEST', false);
 		Update::getLatestAvailableVersionNumber();
 		$this->redirect('/dashboard/system/backup_restore/update');
 	}
-	
+
 	public function on_start() {
 		$this->error = Loader::helper('validation/error');
 		$this->secCheck();
@@ -66,12 +66,12 @@ class DashboardSystemBackupRestoreUpdateController extends DashboardBaseControll
 	public function on_before_render() {
 		$this->set('error', $this->error);
 	}
-	
+
 	public function download_update() {
 		if (MULTI_SITE == 1) {
 			return false;
 		}
-		
+
 		$vt = Loader::helper('validation/token');
 		if (!$vt->validate('download_update')) {
 			$this->error->add($vt->getErrorMessage());
@@ -81,7 +81,7 @@ class DashboardSystemBackupRestoreUpdateController extends DashboardBaseControll
 		} else if (!is_writable(DIR_APP_UPDATES)) {
 			$this->error->add(t('The directory %s must be writable by the web server.', DIR_APP_UPDATES));
 		}
-		
+
 		if (!$this->error->has()) {
 			$remote = Update::getApplicationUpdateInformation();
 			if (is_object($remote)) {
@@ -93,14 +93,14 @@ class DashboardSystemBackupRestoreUpdateController extends DashboardBaseControll
 				} else if ($r == Package::E_PACKAGE_SAVE) {
 					$response = array($r);
 				}
-				
+
 				if (isset($response)) {
 					$errors = Package::mapError($response);
 					foreach($errors as $e) {
 						$this->error->add($e);
 					}
 				}
-				
+
 				if (!$this->error->has()) {
 					// the file exists in the right spot
 					Loader::library('archive');
@@ -110,7 +110,7 @@ class DashboardSystemBackupRestoreUpdateController extends DashboardBaseControll
 					} catch(Exception $e) {
 						$this->error->add($e->getMessage());
 					}
-						
+
 				}
 			} else {
 				$this->error->add(t('Unable to retrieve software from update server.'));
@@ -118,7 +118,7 @@ class DashboardSystemBackupRestoreUpdateController extends DashboardBaseControll
 		}
 		$this->view();
 	}
-	
+
 	public function secCheck() {
 		$fh = Loader::helper('file');
 		$updates = $fh->getDirectoryContents(DIR_APP_UPDATES);
@@ -133,7 +133,7 @@ class DashboardSystemBackupRestoreUpdateController extends DashboardBaseControll
 			}
 		}
 	}
-	
+
 	public function do_update() {
 		$updateVersion = $this->post('updateVersion');
 		if (!$updateVersion) {
@@ -141,7 +141,7 @@ class DashboardSystemBackupRestoreUpdateController extends DashboardBaseControll
 		} else {
 			$upd = ApplicationUpdate::getByVersionNumber($updateVersion);
 		}
-		
+
 		if (!is_object($upd)) {
 			$this->error->add(t('Invalid version'));
 		} else {
@@ -149,7 +149,7 @@ class DashboardSystemBackupRestoreUpdateController extends DashboardBaseControll
 				$this->error->add(t('You may only apply updates with a greater version number than the version you are currently running.'));
 			}
 		}
-		
+
 		if (!$this->error->has()) {
 			$resp = $upd->apply();
 			if ($resp !== true) {

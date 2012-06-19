@@ -24,7 +24,7 @@ if (is_array($_REQUEST['uID'])) {
 }
 
 foreach($users as $ui) {
-	if (!$sk->validate($ui)) { 
+	if (!$sk->validate($ui)) {
 		die(t("Access Denied."));
 	}
 }
@@ -41,18 +41,18 @@ if ($_POST['task'] == 'group_remove') {
 	$groups = array();
 	if(is_array($groupIDs) && count($groupIDs)) {
 		foreach($groupIDs as $gID) {
-			$groups[] = Group::getByID($gID);			
+			$groups[] = Group::getByID($gID);
 		}
 	}
-	
+
 	foreach($users as $ui) {
 		if($ui instanceof UserInfo) {
 			$u = $ui->getUserObject();
 			foreach($groups as $g) {
-				if ($gk->validate($g)) { 
+				if ($gk->validate($g)) {
 					if($u->inGroup($g)) { // avoid messing up group enter times
-						$u->exitGroup($g); 
-					}				
+						$u->exitGroup($g);
+					}
 				}
 			}
 		}
@@ -78,27 +78,27 @@ if (!isset($_REQUEST['reload'])) { ?>
 				<?=$form->label('groupIDs', t('Remove the users below from Group(s)'))?>
 				<div class="input">
 					<select multiple name="groupIDs[]" class="chosen-select" data-placeholder="<?php echo t('Select Group(s)');?>" >
-						<? foreach($g1 as $g) { 
-						if ($gk->validate($g['gID'])) { 
-						
+						<? foreach($g1 as $g) {
+						if ($gk->validate($g['gID'])) {
+
 						?>
 							<option value="<?=$g['gID']?>"  <? if (is_array($_REQUEST['groupIDs']) && in_array($g['gID'], $_REQUEST['groupIDs'])) { ?> selected="selected" <? } ?>><?=$g['gName']?></option>
-						<? } 
-						
+						<? }
+
 						}?>
 					</select>
 				</div>
 			</div>
 			</fieldset>
-			
+
 			<?php Loader::element('users/confirm_list',array('users'=>$users)); ?>
 		</form>
-	
 
-	
+
+
 	</div>
 	<div class="dialog-buttons">
-		<?=$ih->button_js(t('Cancel'), 'jQuery.fn.dialog.closeTop()', 'left', 'btn')?>	
+		<?=$ih->button_js(t('Cancel'), 'jQuery.fn.dialog.closeTop()', 'left', 'btn')?>
 		<?=$ih->button_js(t('Save'), 'ccm_userBulkGroupRemove()', 'right', 'btn primary')?>
 	</div>
 <?
@@ -107,7 +107,7 @@ if (!isset($_REQUEST['reload'])) { ?>
 <? } ?>
 
 <script type="text/javascript">
-ccm_userBulkGroupRemove = function() { 
+ccm_userBulkGroupRemove = function() {
 	jQuery.fn.dialog.showLoader();
 	$("#ccm-user-bulk-group-remove").ajaxSubmit(function(resp) {
 		jQuery.fn.dialog.closeTop();
@@ -119,7 +119,7 @@ ccm_userBulkGroupRemove = function() {
 		});
 	});
 };
-$(function() { 
-	$(".chosen-select").chosen();	
+$(function() {
+	$(".chosen-select").chosen();
 });
 </script>
