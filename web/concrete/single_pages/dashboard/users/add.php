@@ -1,7 +1,8 @@
-<?
+<?php    
 defined('C5_EXECUTE') or die("Access Denied.");
 
 $th = Loader::helper('text');
+$fh = Loader::helper('form');
 
 Loader::model('attribute/categories/user');
 $attribs = UserAttributeKey::getRegistrationList();
@@ -15,10 +16,43 @@ $languages = Localization::getAvailableInterfaceLanguages();
 
 ?>
 
-<?=Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Add User'), false, false, false);?>
+<?php    echo Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Add User'), false, false, false);?>
 
-<form method="post" enctype="multipart/form-data" id="ccm-user-form" action="<?=$this->url('/dashboard/users/add')?>">
-	<?=$valt->output('create_account')?>
+<script type="text/javascript">
+	function GeneratePassword() {
+	    var length = 8;
+	    var sPassword = "";
+	    	    
+	    for (i=0; i < length; i++) {
+	        numI = getRandomNum();
+	        while (checkPunc(numI)) { numI = getRandomNum(); }
+	        sPassword = sPassword + String.fromCharCode(numI);
+	    }
+	    
+	    document.getElementById('ccm-user-form').uPassword.value = sPassword;
+	    document.getElementById('generatedPassword').innerHTML = 'Generated Password is : <strong>' + sPassword + '</strong>';
+	    
+	    return true;
+	}
+	
+	function getRandomNum() {
+	    var rndNum = Math.random();  
+	    rndNum = parseInt(rndNum * 1000);      
+	    rndNum = (rndNum % 94) + 33;     
+	    return rndNum;
+	}
+	
+	function checkPunc(num) {
+	    if ((num >=33) && (num <=47)) { return true; }
+	    if ((num >=58) && (num <=64)) { return true; }    
+	    if ((num >=91) && (num <=96)) { return true; }
+	    if ((num >=123) && (num <=126)) { return true; }
+	    return false;
+	}
+</script>
+
+<form method="post" enctype="multipart/form-data" id="ccm-user-form" action="<?php    echo $this->url('/dashboard/users/add')?>">
+	<?php    echo $valt->output('create_account')?>
 	
 	<input type="hidden" name="_disableLogin" value="1">
 
@@ -27,36 +61,39 @@ $languages = Localization::getAvailableInterfaceLanguages();
     	<table border="0" cellspacing="0" cellpadding="0" width="100%">
             <thead>
                 <tr>
-                    <th colspan="2"><?=t('User Information')?></th>
+                    <th colspan="2"><?php    echo t('User Information')?></th>
                 </tr>
             </thead>
             <tbody>
             	<tr>
-                    <td><?=t('Username')?> <span class="required">*</span></td>
-                    <td><?=t('Password')?> <span class="required">*</span></td>
+                    <td><?php    echo t('Username')?> <span class="required">*</span></td>
+                    <td><?php    echo t('Password')?> <span class="required">*</span> </span></td>
                 </tr>
                 <tr>
-					<td><input type="text" name="uName" autocomplete="off" value="<?=$th->entities($_POST['uName'])?>" style="width: 95%"></td>
-					<td><input type="password" autocomplete="off" name="uPassword" value="" style="width: 95%"></td>
+					<td><input type="text" name="uName" autocomplete="off" value="<?php    echo $th->entities($_POST['uName'])?>" style="width: 95%"></td>
+					<td><input type="password" autocomplete="off" name="uPassword" value="" style="width: 95%"> <?php    print $ih->button_js(t('Generate Password'), 'GeneratePassword();', 'left', 'info', array('style'=>'margin-top:5px; float:left;')); ?> <br/> <span id="generatedPassword" style="float: left; color: #C1C1C1; display: block; margin: 10px 0 0 10px;" ></span></td>
 				</tr>
                 <tr>
-                    <td><?=t('Email Address')?> <span class="required">*</span></td>
-                    <td><?=t('User Avatar')?></td>
+                    <td><?php    echo t('Email Address')?> <span class="required">*</span></td>
+                    <td><?php    echo t('User Avatar')?></td>
                 </tr>
                 <tr>
-					<td><input type="text" name="uEmail" autocomplete="off" value="<?=$th->entities($_POST['uEmail'])?>" style="width: 95%"></td>
+					<td><input type="text" name="uEmail" autocomplete="off" value="<?php    echo $th->entities($_POST['uEmail'])?>" style="width: 95%"></td>
 					<td><input type="file" name="uAvatar" style="width: 95%"/></td>
 				</tr>
+				<tr>
+					<td colspan="2"><?php    echo t('Send User Information to Email Address'); ?>.<br/><?php    print $fh->checkbox('send_user_info', '1', false); ?> <?php    echo t('Yes'); ?></td>
+				</tr>
                 
                 
-				<? if (count($languages) > 0) { ?>
+				<?php     if (count($languages) > 0) { ?>
 			
 				<tr>
-					<td colspan="2"><?=t('Language')?></td>
+					<td colspan="2"><?php    echo t('Language')?></td>
 				</tr>	
 				<tr>
 					<td colspan="2">
-					<?
+					<?php    
 						array_unshift($languages, 'en_US');
 						$locales = array();
 						$locales[''] = t('** Default');
@@ -72,57 +109,57 @@ $languages = Localization::getAvailableInterfaceLanguages();
 					</td>
 				</tr>
                 
-				<? } ?>
+				<?php     } ?>
                 
 			</tbody>
 		</table>
 
-	<? if (count($attribs) > 0) { ?>
+	<?php     if (count($attribs) > 0) { ?>
 	
         <table border="0" cellspacing="0" cellpadding="0" width="100%" class="zebra-striped">
         	<thead>
 	        	<tr>
-            		<th><?=t('Registration Data')?></th>
+            		<th><?php    echo t('Registration Data')?></th>
 	        	</tr>
 			</thead>
             <tbody class="inputs-list">
             
-			<? foreach($attribs as $ak) { ?>
+			<?php     foreach($attribs as $ak) { ?>
                 <tr>
                     <td class="clearfix">
-                    	<label><?=$ak->getAttributeKeyName()?> <? if ($ak->isAttributeKeyRequiredOnRegister()) { ?><span class="required">*</span><? } ?></label>
-                        <? $ak->render('form', $caValue, false)?>
+                    	<label><?php    echo $ak->getAttributeKeyName()?> <?php     if ($ak->isAttributeKeyRequiredOnRegister()) { ?><span class="required">*</span><?php     } ?></label>
+                        <?php     $ak->render('form', $caValue, false)?>
                     </td>
                 </tr>
-            <? } // END Foreach ?>
+            <?php     } // END Foreach ?>
         
 			</tbody>
         </table>
 	
-	<? } ?>
+	<?php     } ?>
 
 		<table border="0" cellspacing="0" cellpadding="0" width="100%" class="inputs-list zebra-striped">
         	<thead>
 				<tr>
-					<th><?=t('Groups')?></th>
+					<th><?php    echo t('Groups')?></th>
 				</tr>
         	</thead>
             <tbody>
 				<tr>
 					<td>
                     
-					<? foreach ($gArray as $g) { ?>
+					<?php     foreach ($gArray as $g) { ?>
 						<label>
-							<input type="checkbox" name="gID[]" value="<?=$g['gID']?>" <? 
+							<input type="checkbox" name="gID[]" value="<?php    echo $g['gID']?>" <?php     
                             if (is_array($_POST['gID'])) {
                                 if (in_array($g['gID'], $_POST['gID'])) {
                                     echo(' checked ');
                                 }
                             }
                         ?> />
-							<span><?=$g['gName']?></span>
+							<span><?php    echo $g['gName']?></span>
 						</label>
-                    <? } ?>
+                    <?php     } ?>
 			
 					<div id="ccm-additional-groups"></div>
 			
@@ -136,10 +173,10 @@ $languages = Localization::getAvailableInterfaceLanguages();
     <div class="ccm-pane-footer">
         <div class="ccm-buttons">
             <input type="hidden" name="create" value="1" />
-            <? print $ih->submit(t('Add'), 'ccm-user-form', 'right', 'primary'); ?>
+            <?php     print $ih->submit(t('Add'), 'ccm-user-form', 'right', 'primary'); ?>
         </div>	
     </div>
 
 </form>
     
-<?=Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper(false);?>
+<?php    echo Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper(false);?>
