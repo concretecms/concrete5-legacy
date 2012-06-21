@@ -1,4 +1,4 @@
-<?
+<?php    
 defined('C5_EXECUTE') or die("Access Denied.");
 
 class DashboardUsersAddController extends Controller {
@@ -103,6 +103,20 @@ class DashboardUsersAddController extends Controller {
 			
 						$uo->updateGroups($_POST['gID']);
 						$uID = $uo->getUserID();
+						
+						if($_POST['send_user_info']){
+							$adminUserInfo = UserInfo::getByID(USER_SUPER_ID);
+							$formFromEmailAddress = $adminUserInfo->getUserEmail(); 
+							
+							$mh = Loader::helper('mail');
+							$mh->to( $_POST['uEmail'] ); 
+							$mh->from( $formFromEmailAddress, SITE ); 
+							$mh->addParameter('data', $data);
+							$mh->load('send_user_info', 'users_toolbox');
+							$mh->setSubject(t('Your User Information from %s', SITE));
+							@$mh->sendMail(); 
+						}
+
 						$this->redirect('/dashboard/users/search?uID=' . $uID . '&user_created=1');
 					} else {
 						$this->error->add(t('An error occurred while trying to create the account.'));
