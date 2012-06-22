@@ -276,7 +276,7 @@ class ListsCountriesHelper {
 	 * Returns an array of Countries with their short name as the key and their full name as the value
 	 * @return array
 	 */
-	public function getCountries() { asort($this->countries); return $this->countries; }
+	public function getCountries() { asort($this->countries); return $this->countries;}
 
 	/** 
 	 * Gets a country full name given its index
