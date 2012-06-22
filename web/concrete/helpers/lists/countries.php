@@ -17,7 +17,7 @@
  */
  
 defined('C5_EXECUTE') or die("Access Denied.");
-class SiteListsCountriesHelper {
+class ListsCountriesHelper {
 
 	protected $countries = array(
 	'AD' => 'Andorra',
