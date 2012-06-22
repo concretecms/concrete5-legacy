@@ -1,4 +1,4 @@
-<?
+<?php 
 /**
  * @package Helpers
  * @category Concrete
@@ -266,11 +266,17 @@ class ListsCountriesHelper {
 	'ZW' => 'Zimbabwe'
 	);
 	
+	public function __construct(){
+		foreach($this->countries as $key => $val){
+			$this->countries[$key] = t$val);
+		}
+	}
+	
 	/** 
 	 * Returns an array of Countries with their short name as the key and their full name as the value
 	 * @return array
 	 */
-	public function getCountries() { asort($this->countries); return $this->countries;}
+	public function getCountries() { asort($this->countries); return $this->countries; }
 
 	/** 
 	 * Gets a country full name given its index
