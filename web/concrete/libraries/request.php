@@ -206,6 +206,9 @@ class Request {
 		// tools
 
 		$exploded = explode('/', $path);
+		
+		$exploded = array_filter($exploded); //filter out "//"
+		
 		if($exploded[0] == 'tools') {
 			if($exploded[1] == 'blocks') {
 				$this->btHandle = $exploded[2];
