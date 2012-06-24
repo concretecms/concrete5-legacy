@@ -1,9 +1,9 @@
-<?
+<?php defined('C5_EXECUTE') or die("Access Denied.");
+
 /**
 *
 * @package Utilities
 */
-defined('C5_EXECUTE') or die("Access Denied.");
 
 class DatabaseItemList extends ItemList {
 
@@ -16,6 +16,7 @@ class DatabaseItemList extends ItemList {
 	protected $havingString = '';  
 	protected $autoSortColumns = array();
 	protected $userPostQuery = '';
+	protected $total;
 	
 	public function getTotal() {
 		if ($this->total == -1) {
