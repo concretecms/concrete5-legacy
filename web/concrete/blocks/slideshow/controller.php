@@ -77,7 +77,7 @@ class SlideshowBlockController extends BlockController {
 			$image['fID'] 			= $f->getFileID();
 			$image['fileName'] 		= $f->getFileName();
 			$image['fullFilePath'] 	= $f->getPath();
-			$image['url']			= $f->getRelativePath();
+			$image['url']			= (is_string($this->url) && strlen($this->url)) ? $this->url : $f->getRelativePath();
 			
 			// find the max height of all the images so slideshow doesn't bounce around while rotating
 			$vo = $f->getAttributeValueObject($ak);
@@ -162,6 +162,7 @@ class SlideshowBlockController extends BlockController {
 			$args['fsID'] = $data['fsID'];
 			$args['duration'] = $data['duration'][0];
 			$args['fadeDuration'] = $data['fadeDuration'][0];
+			$args['url'] = $data['url'][0];
 
 			$files = $db->getAll("SELECT fv.fID FROM FileSetFiles fsf, FileVersions fv WHERE fsf.fsID = " . $data['fsID'] .
 			         " AND fsf.fID = fv.fID AND fvIsApproved = 1");

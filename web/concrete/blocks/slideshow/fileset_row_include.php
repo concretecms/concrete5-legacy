@@ -4,6 +4,7 @@
 		<strong><?=t('File Set:')?></strong> <span class="ccm-file-set-pick-cb"><?=$form->select('fsID', $fsInfo['fileSets'], $fsInfo['fsID'])?></span><br/><br/>
 		<?=t('Duration')?>: <input type="text" name="duration[]" value="<?=intval($fsInfo['duration'])?>" style="vertical-align: middle; width: 30px" />
 		&nbsp;
-		<?=t('Fade Duration')?>: <input type="text" name="fadeDuration[]" value="<?=intval($fsInfo['fadeDuration'])?>" style="vertical-align: middle; width: 30px" />
+		<?=t('Fade Duration')?>: <input type="text" name="fadeDuration[]" value="<?=intval($fsInfo['fadeDuration'])?>" style="vertical-align: middle; width: 30px" /><br />
+		<?=t('Link URL (optional)')?>: <input type="text" name="url[]" value="<?=$fsInfo['url']?>" maxlength="255" style="vertical-align: middle; font-size: 10px; width: 140px" />
 	</div>
 </div>
