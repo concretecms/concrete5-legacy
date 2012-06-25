@@ -207,7 +207,9 @@ class Request {
 
 		$exploded = explode('/', $path);
 		
-		$exploded = array_filter($exploded); //filter out "//"
+		$arr = Loader::helper('array');
+		
+		$exploded = $arr->removeNull($exploded); //filter out "//"
 		
 		if($exploded[0] == 'tools') {
 			if($exploded[1] == 'blocks') {
