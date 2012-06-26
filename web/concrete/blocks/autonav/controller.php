@@ -434,9 +434,10 @@
 		}
 		
 		protected function displayPage($tc) {
+			$tcp = new Permissions($tc);
 		
 			if ($tc->isSystemPage() && (!$this->displaySystemPages)) {
-				if ($tc->getCollectionPath() == '/members' && Config::get('ENABLE_USER_PROFILES')) {
+				if ($tc->getCollectionPath() == '/members' && Config::get('ENABLE_USER_PROFILES') && $tcp->canRead()) {
 					return true;
 				}
 				
@@ -444,12 +445,12 @@
 			}
 			
 			$tcv = $tc->getVersionObject();
+			
 			if ((!is_object($tcv)) || (!$tcv->isApproved() && !$this->displayUnapproved)) { 
 				return false;
 			}
 			
 			if ($this->displayUnavailablePages == false) {
-				$tcp = new Permissions($tc);
 				if (!$tcp->canRead() && ($tc->getCollectionPointerExternalLink() == null)) {
 					return false;
 				}
