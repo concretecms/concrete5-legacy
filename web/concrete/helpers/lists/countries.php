@@ -267,9 +267,10 @@ class ListsCountriesHelper {
 	);
 	
 	public function __construct(){
-		foreach($this->countries as $key => $val){
-			$this->countries[$key] = t$val);
+		foreach ($this->countries as &$country) {
+			$country = t($country);
 		}
+		uasort($this->countries,'strcoll');
 	}
 	
 	/** 
