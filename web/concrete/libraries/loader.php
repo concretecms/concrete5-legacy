@@ -65,15 +65,32 @@
 		 * @access private
 		 */
 		public function packageElement($file, $pkgHandle, $args = null) {
-			Loader::element($file, $args, $pkgHandle);
+			Loader::element($file, $pkgHandle, $args);
 		}
 
 		/** 
 		 * Loads an element from C5 or the site
+		 * @param string $file Relative path to a file with .php included
+		 * @param string $pkgHandle Package Handle
+		 * @param array $args Array of values that will be extracted into the element's scope
+		 * @return void
 		 */
-		public function element($file, $args = null, $pkgHandle= null) {
-			if (is_array($args)) {
-				extract($args);
+		public function element($file, $pkgHandle = null, $args = null) {
+		
+			if($pkgHandle != null) {
+				if (is_array($pkgHandle)) { //legacy
+					extract($pkgHandle);
+				} else {
+					$args = $pkgHandle;
+				}
+			}
+			
+			if($args != null) {
+				if (is_array($args)) {
+					extract($args);
+				} else {
+					$pkgHandle = $args; //not legacy but here for consistency
+				}
 			}
 
 			$env = Environment::get();
