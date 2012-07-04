@@ -1,4 +1,4 @@
-<?
+<?php    
 defined('C5_EXECUTE') or die("Access Denied.");
 Loader::model('attribute/categories/user');
 Loader::model('user_list');
@@ -130,10 +130,33 @@ class DashboardUsersSearchController extends Controller {
 					if ($password) {
 						$message .= t("Password changed.");
 					}
+					
 					$editComplete = true;
+										
 					// reload user object
 					$uo = UserInfo::getByID(intval($_GET['uID']));
 					$this->set('message', $message);
+
+					if($_POST['send_user_info']){
+						$adminUserInfo = UserInfo::getByID(USER_SUPER_ID);
+						$formFromEmailAddress = $adminUserInfo->getUserEmail(); 
+							
+						$passInfo = '';
+						if ($password) {
+							$passInfo = $password;
+						}
+						
+						$data = array('uName' => $username, 'uPassword' => $passInfo, 'uEmail' => $_POST['uEmail'], 'uDefaultLanguage' => $_POST['uDefaultLanguage']);
+						
+						$mh = Loader::helper('mail');
+						$mh->to( $_POST['uEmail'] ); 
+						$mh->from( $formFromEmailAddress, SITE ); 
+						$mh->addParameter('data', $data);
+						$mh->load('send_user_info', 'users_toolbox');
+						$mh->setSubject(t('Your User Information from %s', SITE));
+						@$mh->sendMail(); 
+					}
+				
 				} else {
 					$db = Loader::db();
 					$this->error->add($db->ErrorMsg());
@@ -158,7 +181,7 @@ class DashboardUsersSearchController extends Controller {
 			$userList->filterByKeywords($_GET['keywords']);
 		}	
 		
-		if ($_REQUEST['numResults'] && Loader::helper('validation/numbers')->integer($_REQUEST['numResults'])) {
+		if ($_REQUEST['numResults']) {
 			$userList->setItemsPerPage($_REQUEST['numResults']);
 		}
 		
