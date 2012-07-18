@@ -132,8 +132,7 @@ class ImageHelper {
 				$trnprt_indx = imagecolortransparent($im);
 				
 				// If we have a specific transparent color
-				if ($trnprt_indx >= 0) {
-			
+				if ($trnprt_indx >= 0 && $trnprt_indx < imagecolorstotal($im)) {			
 					// Get the original image's transparent color's RGB values
 					$trnprt_color = imagecolorsforindex($im, $trnprt_indx);
 					
