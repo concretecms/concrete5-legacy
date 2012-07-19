@@ -441,7 +441,11 @@
 			
 			return $controller;
 		}
-			
+		
+		/**
+		 * Get the current instance for custom loaders
+		 * @access private
+		 */	
 		public static function getCustomLoaderInstance() {
 			static $clinstance;
 			if (!isset($clinstance)) {
@@ -451,6 +455,9 @@
 			return $clinstance;
 		}
 		
+		/**
+		 * @access private
+		 */
 		private $customLoaders = array();
 
 		/**
