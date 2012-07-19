@@ -441,5 +441,54 @@
 			
 			return $controller;
 		}
+			
+		public static function getCustomLoaderInstance() {
+			static $clinstance;
+			if (!isset($clinstance)) {
+				$v = __CLASS__;
+				$clinstance = new $v;
+			}
+			return $clinstance;
+		}
+		
+		private $customLoaders = array();
+
+		/**
+		 * In PHP 5.3+ this is going to be called instead of __call
+		 */
+		public static function __callStatic($name, $args) {
+			$self = new __CLASS__;
+			$self->__call($name, $args);
+		}
+		
+		public static function __call($name, $args) {
+			$cl = self::getCustomLoaderInstance();
+			if(isset($cl->customLoaders[$name])) {
+				$ev = $cl->customLoaders[$name];
+				if (substr($ev['file'], 0, 1) == '/' || substr($ev['file'], 1, 1) == ':') {
+					// then this means that our path is a full one
+					require_once($ev['file']);
+				} else {
+					require_once(DIR_BASE . '/' . $ev['file']);
+				}
+				call_user_func_array(array($ev['class'], $ev['method']), $args);
+				return;
+			}
+			throw new Exception(t('Fatal Error: Call to undefined method %s::%s', array(__CLASS__, $name)));//similar to the php error
+		}
+		
+		public static function addCustomLoader($custommethod, $class, $method, $file) {
+			$cl = self::getCustomLoaderInstance();
+			
+			if(isset($cl->customLoaders[$custommethod])) { //if this loader is already set we return false
+				return false;
+			}
+			$cl->customLoaders[$custommethod] = array(
+				'class' => $class,
+				'method' => $method,
+				'file' => $file
+			);
+			return true;
+		}
 
 	}
