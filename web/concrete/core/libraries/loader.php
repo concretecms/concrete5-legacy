@@ -456,6 +456,7 @@
 		/**
 		 * In PHP 5.3+ this is going to be called instead of __call
 		 * See __call() below
+		 * @access private
 		 */
 		public static function __callStatic($name, $args) {
 			$class = __CLASS__;
@@ -465,6 +466,7 @@
 		
 		/**
 		 * Used for custom loaders
+		 * @access private
 		 * @param string $name Method name called
 		 * @param array $args Arguments passed to the method
 		 * @return void
