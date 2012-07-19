@@ -474,7 +474,12 @@
 				call_user_func_array(array($ev['class'], $ev['method']), $args);
 				return;
 			}
-			throw new Exception(t('Fatal Error: Call to undefined method %s::%s', array(__CLASS__, $name)));//similar to the php error
+			$dbg = debug_backtrace();
+			$class = '<Unknown>';
+			if(isset($dbg[1])) {
+				$class = $dbg[1]['class'];
+			}
+			trigger_error(sprintf('Call to undefined function: %s::%s().', $class, $name), E_USER_ERROR);
 		}
 		
 		public static function addCustomLoader($custommethod, $class, $method, $file) {
