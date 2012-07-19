@@ -466,20 +466,20 @@
 			$cl = self::getCustomLoaderInstance();
 			if(isset($cl->customLoaders[$name])) {
 				$ev = $cl->customLoaders[$name];
+				if($ev['class'] instanceof Closure) {
+					call_user_func_array($ev['class'], $args);
+					return;
+				}
 				if (substr($ev['file'], 0, 1) == '/' || substr($ev['file'], 1, 1) == ':') {
 					// then this means that our path is a full one
 					require_once($ev['file']);
 				} else {
 					require_once(DIR_BASE . '/' . $ev['file']);
 				}
-				if($ev['class'] instanceof Closure) {
-					call_user_func_array($ev['class'], $args);
+
+				if(method_exists($ev['class'], $ev['method'])) {
+					call_user_func_array(array($ev['class'], $ev['method']), $args);
 					return;
-				} else {
-					if(method_exists($ev['class'], $ev['method'])) {
-						call_user_func_array(array($ev['class'], $ev['method']), $args);
-						return;
-					}
 				}
 			}
 			$dbg = debug_backtrace();
