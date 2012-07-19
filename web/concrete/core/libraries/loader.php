@@ -457,11 +457,12 @@
 		 * In PHP 5.3+ this is going to be called instead of __call
 		 */
 		public static function __callStatic($name, $args) {
-			$self = new __CLASS__;
+			$class = __CLASS__;
+			$self = new $class;
 			$self->__call($name, $args);
 		}
 		
-		public static function __call($name, $args) {
+		public function __call($name, $args) {
 			$cl = self::getCustomLoaderInstance();
 			if(isset($cl->customLoaders[$name])) {
 				$ev = $cl->customLoaders[$name];
@@ -473,10 +474,13 @@
 				}
 				if($ev['class'] instanceof Closure) {
 					call_user_func_array($ev['class'], $args);
+					return;
 				} else {
-					call_user_func_array(array($ev['class'], $ev['method']), $args);
+					if(method_exists($ev['class'], $ev['method'])) {
+						call_user_func_array(array($ev['class'], $ev['method']), $args);
+						return;
+					}
 				}
-				return;
 			}
 			$dbg = debug_backtrace();
 			$class = '<Unknown>';
