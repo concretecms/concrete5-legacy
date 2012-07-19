@@ -471,7 +471,11 @@
 				} else {
 					require_once(DIR_BASE . '/' . $ev['file']);
 				}
-				call_user_func_array(array($ev['class'], $ev['method']), $args);
+				if($ev['class'] instanceof Closure) {
+					call_user_func_array($ev['class'], $args);
+				} else {
+					call_user_func_array(array($ev['class'], $ev['method']), $args);
+				}
 				return;
 			}
 			$dbg = debug_backtrace();
