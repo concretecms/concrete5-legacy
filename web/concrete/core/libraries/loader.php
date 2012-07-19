@@ -455,6 +455,7 @@
 
 		/**
 		 * In PHP 5.3+ this is going to be called instead of __call
+		 * See __call() below
 		 */
 		public static function __callStatic($name, $args) {
 			$class = __CLASS__;
@@ -462,6 +463,12 @@
 			$self->__call($name, $args);
 		}
 		
+		/**
+		 * Used for custom loaders
+		 * @param string $name Method name called
+		 * @param array $args Arguments passed to the method
+		 * @return void
+		 */
 		public function __call($name, $args) {
 			$cl = self::getCustomLoaderInstance();
 			if(isset($cl->customLoaders[$name])) {
@@ -490,7 +497,15 @@
 			trigger_error(sprintf('Call to undefined function: %s::%s().', $class, $name), E_USER_ERROR);
 		}
 		
-		public static function addCustomLoader($custommethod, $class, $method, $file) {
+		/**
+		 * Add a custom loader method
+		 * @param string $custommethod Name of the custom method used in Loader, eg 'testing' = Loader::testing();
+		 * @param string | Closure $class Class or Closure for the custom loader method
+		 * @param string $method Method called with the above class when the custom loader is invoked
+		 * @param string $file Path to the file that contains the class
+		 * @return bool
+		 */
+		public static function addCustomLoader($custommethod, $class, $method = false, $file = false) {
 			$cl = self::getCustomLoaderInstance();
 			
 			if(isset($cl->customLoaders[$custommethod])) { //if this loader is already set we return false
