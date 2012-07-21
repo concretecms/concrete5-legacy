@@ -28,40 +28,41 @@ class MailTemplate extends Object {
 	public function getBody() {return $this->body;}
 	public function getBodyHTML() {return $this->bodyHTML;}
 	
-	private function setThemeForView($pl, $filename, $wrapTemplateInTheme = false) {
+	private function setThemeForView($pl, $filename) {
 		$this->ptHandle = $pl;
 		if (file_exists(DIR_FILES_THEMES . '/' . $pl . '/' . $filename)) {
 			$themePath = DIR_REL . '/' . DIRNAME_THEMES . '/' . $pl;
-			$theme = DIR_FILES_THEMES . "/" . $pl . '/' . $filename;
 			$themeDir = DIR_FILES_THEMES . "/" . $pl;
+			$themeFile = $filename;
 		} else if (file_exists(DIR_FILES_THEMES . '/' . $pl . '/' . FILENAME_THEMES_VIEW)) {
 			$themePath = DIR_REL . '/' . DIRNAME_THEMES . '/' . $pl;
-			$theme = DIR_FILES_THEMES . "/" . $pl . '/' . FILENAME_THEMES_VIEW;
 			$themeDir = DIR_FILES_THEMES . "/" . $pl;
+			$themeFile = FILENAME_THEMES_VIEW;
 		} else if (file_exists(DIR_FILES_THEMES . '/' . DIRNAME_THEMES_CORE . '/' . $pl . '.php')) {
-			$theme = DIR_FILES_THEMES . '/' . DIRNAME_THEMES_CORE . "/" . $pl . '.php';
 			$themeDir = DIR_FILES_THEMES . '/' . DIRNAME_THEMES_CORE;
+			$themeFile = $pl . '.php';
 		} else if (file_exists(DIR_FILES_THEMES_CORE . "/" . $pl . '/' . $filename)) {
 			$themePath = ASSETS_URL . '/' . DIRNAME_THEMES . '/' . DIRNAME_THEMES_CORE . '/' . $pl;
-			$theme = DIR_FILES_THEMES_CORE . "/" . $pl . '/' . $filename;
 			$themeDir = DIR_FILES_THEMES_CORE . "/" . $pl;
+			$themeFile = $filename;
 		} else if (file_exists(DIR_FILES_THEMES_CORE . "/" . $pl . '/' . FILENAME_THEMES_VIEW)) {
 			$themePath = ASSETS_URL . '/' . DIRNAME_THEMES . '/' . DIRNAME_THEMES_CORE . '/' . $pl;
-			$theme = DIR_FILES_THEMES_CORE . "/" . $pl . '/' . FILENAME_THEMES_VIEW;
 			$themeDir = DIR_FILES_THEMES_CORE . "/" . $pl;
+			$themeFile = FILENAME_THEMES_VIEW;
 		} else if (file_exists(DIR_FILES_THEMES_CORE_ADMIN . "/" . $pl . '.php')) {
-			$theme = DIR_FILES_THEMES_CORE_ADMIN . "/" . $pl . '.php';
 			$themeDir = DIR_FILES_THEMES_CORE_ADMIN;
+			$themeFile = $pl . '.php';
 		}
 		
-		$this->theme = $theme;
 		$this->themePath = $themePath;
 		$this->themeDir = $themeDir;
-		$this->themePkgID = $pkgID;
+		if (isset($themeFile)) {
+			$this->theme = $themeDir . '/' . $themeFile;
+		}
 	}
 	
 	/**
-	 * This grabs the theme for a particular path, if one exists in the themePaths array 
+	 * This grabs the theme for a particular path, if one exists in the themePaths array
 	 * @access private
      * @param string $path
 	 * @return string $theme
@@ -98,7 +99,7 @@ class MailTemplate extends Object {
 			include(DIR_PACKAGES_CORE . '/' . $pkgHandle . '/' . DIRNAME_MAIL_TEMPLATES . '/' . $template . '/' . $dataFile);
 		} else if (file_exists(DIR_FILES_EMAIL_TEMPLATES_CORE . '/' . $template . '/' . $dataFile)) {
 			include(DIR_FILES_EMAIL_TEMPLATES_CORE . '/' . $template . '/' . $dataFile);
-		} else if (file_exists(DIR_FILES_EMAIL_TEMPLATES . "/{$template}.php")) {			
+		} else if (file_exists(DIR_FILES_EMAIL_TEMPLATES . "/{$template}.php")) {
 			include(DIR_FILES_EMAIL_TEMPLATES . "/{$template}.php");
 		} else if ($pkgHandle != null && file_exists(DIR_PACKAGES . '/' . $pkgHandle . '/' . DIRNAME_MAIL_TEMPLATES . "/{$template}.php")) {
 			include(DIR_PACKAGES . '/' . $pkgHandle . '/' . DIRNAME_MAIL_TEMPLATES . "/{$template}.php");
@@ -124,7 +125,7 @@ class MailTemplate extends Object {
 				include(DIR_PACKAGES . '/' . $pkgHandle . '/' . DIRNAME_MAIL_TEMPLATES . '/' . $template . '/' . $view);
 			} else if (file_exists(DIR_PACKAGES_CORE . '/' . $pkgHandle . '/' . DIRNAME_MAIL_TEMPLATES . '/' . $template . '/' . $view)) {
 				include(DIR_PACKAGES_CORE . '/' . $pkgHandle . '/' . DIRNAME_MAIL_TEMPLATES . '/' . $template . '/' . $view);
-			} else if (DIR_FILES_EMAIL_TEMPLATES_CORE . '/' . $template . '/' . $view) {
+			} else if (file_exists(DIR_FILES_EMAIL_TEMPLATES_CORE . '/' . $template . '/' . $view)) {
 				include(DIR_FILES_EMAIL_TEMPLATES_CORE . '/' . $template . '/' . $view);
 			}
 			$body = ob_get_contents();
@@ -143,7 +144,7 @@ class MailTemplate extends Object {
 				include(DIR_PACKAGES . '/' . $pkgHandle . '/' . DIRNAME_MAIL_TEMPLATES . '/' . $template . '/' . $view);
 			} else if (file_exists(DIR_PACKAGES_CORE . '/' . $pkgHandle . '/' . DIRNAME_MAIL_TEMPLATES . '/' . $template . '/' . $view)) {
 				include(DIR_PACKAGES_CORE . '/' . $pkgHandle . '/' . DIRNAME_MAIL_TEMPLATES . '/' . $template . '/' . $view);
-			} else if (DIR_FILES_EMAIL_TEMPLATES_CORE . '/' . $template . '/' . $view) {
+			} else if (file_exists(DIR_FILES_EMAIL_TEMPLATES_CORE . '/' . $template . '/' . $view)) {
 				include(DIR_FILES_EMAIL_TEMPLATES_CORE . '/' . $template . '/' . $view);
 			}
 			$bodyHTML = ob_get_contents();

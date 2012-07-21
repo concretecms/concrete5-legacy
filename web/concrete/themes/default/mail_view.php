@@ -1,5 +1,4 @@
-<?php defined('C5_EXECUTE') or die("Access Denied."); 
-?>
+<?php defined('C5_EXECUTE') or die("Access Denied."); ?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -29,7 +28,7 @@ a,a:visited,a:active {
 }
 a:hover {
 	color: #66CC00;
-} 
+}
 </style>
 <!-- outer container -->
 <table cellpadding="0" cellspacing="0" bgcolor="#ffffff" color="#777777" width="100%" height="100%" border="0" style="margin:0; padding:0; font-family:Arial; font-size:13px; color:#777777;"><tr valign="top"><td align="center">

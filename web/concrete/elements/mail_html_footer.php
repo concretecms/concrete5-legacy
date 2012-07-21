@@ -10,7 +10,7 @@ if (WHITE_LABEL_LOGO_SRC) {
 if (strpos($src, "http://") === false && strpos($src, "https://") === false) {
 	$src = BASE_URL . DIR_REL . '/' . trim($src, "/");
 }
-if (MAIL_TPL_HTML_SYSTEM_FOOTER) : 
+if (MAIL_TPL_HTML_SYSTEM_FOOTER) :
 ?>
 <!-- common mail footer -->
 <table width="100%" style="padding-top:30px;">

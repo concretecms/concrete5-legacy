@@ -101,10 +101,10 @@ class MailHelper {
 		$this->data[$key] = $val;
 	}
 	
-	/** 
+	/**
 	 * Loads an email template from the /mail/ directory
-	 * @param string $template 
-	 * @param string $pkgHandle 
+	 * @param string $template
+	 * @param string $pkgHandle
 	 * @return void
 	 */
 	public function load($template, $pkgHandle = null) {
