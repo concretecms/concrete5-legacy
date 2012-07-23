@@ -505,6 +505,10 @@
 		
 		/**
 		 * Add a custom loader method
+		 * <code>
+		 * Loader::addCustomLoader('testing', 'CustomLoaderModel', 'testmethod', $pathToFile.'/model.php');
+		 * Loader::testing('this is a test!');
+		 * </code>
 		 * @param string $custommethod Name of the custom method used in Loader, eg 'testing' = Loader::testing();
 		 * @param string | Closure $class Class or Closure for the custom loader method
 		 * @param string $method Method called with the above class when the custom loader is invoked
