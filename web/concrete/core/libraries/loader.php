@@ -466,8 +466,7 @@
 		 * @access private
 		 */
 		public static function __callStatic($name, $args) {
-			$class = __CLASS__;
-			$self = new $class;
+			$self = self::getCustomLoaderInstance();
 			$self->__call($name, $args);
 		}
 		
@@ -483,8 +482,7 @@
 			if(isset($cl->customLoaders[$name])) {
 				$ev = $cl->customLoaders[$name];
 				if($ev['class'] instanceof Closure) {
-					call_user_func_array($ev['class'], $args);
-					return;
+					return call_user_func_array($ev['class'], $args);
 				}
 				if (substr($ev['file'], 0, 1) == '/' || substr($ev['file'], 1, 1) == ':') {
 					// then this means that our path is a full one
@@ -494,8 +492,7 @@
 				}
 
 				if(method_exists($ev['class'], $ev['method'])) {
-					call_user_func_array(array($ev['class'], $ev['method']), $args);
-					return;
+					return call_user_func_array(array($ev['class'], $ev['method']), $args);
 				}
 			}
 			$dbg = debug_backtrace();
