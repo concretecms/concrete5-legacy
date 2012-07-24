@@ -9,6 +9,8 @@
 
 /**
  * Grabs a list of countries commonly used in web forms.
+ * First looks in Config table; if not there gets from class data. This enables other software
+ * to manipulate/modify the list.
  * @package Helpers
  * @category Concrete
  * @author Andrew Embler <andrew@concrete5.org>
@@ -266,17 +268,37 @@ class ListsCountriesHelper {
 	'ZW' => 'Zimbabwe'
 	);
 	
-	/** 
-	 * Returns an array of Countries with their short name as the key and their full name as the value
+	/**
+	 * Returns an array of Countries with their short name as the key and their full name as the value.
+	 * First looks in Config table; if not there gets from class data. This enables other software
+	 * to manipulate/modify the list.
 	 * @return array
 	 */
-	public function getCountries() { asort($this->countries); return $this->countries;}
+	public function getCountries() {
+		$co = new Config();
 
-	/** 
+		// First look in Config data
+		$ct_ser_list = $co->get('COUNTRIES_LIST');
+		if (!empty($ct_ser_list)){
+			$clist = unserialize($ct_ser_list);
+			if (is_array($clist)){
+				return $clist;
+			}
+		}
+
+		// Else use defaults and copy to Config data
+		asort($this->countries);
+		$co->save('COUNTRIES_LIST', serialize($this->countries));
+		return $this->countries;
+	}
+
+	/**
 	 * Gets a country full name given its index
 	 * @return string
 	 * @param string $index
 	 */
-	public function getCountryName($index) { return $this->countries[$index]; }
-
+	public function getCountryName($index) {
+		$clist = $this->getCountries();
+		return $clist[$index];
+	}
 }
