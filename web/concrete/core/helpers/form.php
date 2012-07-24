@@ -17,83 +17,149 @@
  */
 
 defined('C5_EXECUTE') or die("Access Denied.");
+
+/**
+ *
+ * AMNESIAC version hacked by JohntheFish. Defaults to compatibility
+ * with previous form helper.
+ *
+ * Enable/disable ID output (default enabled)
+ * enableIdOutput()
+ * disableIdOutput()
+ *
+ * Enable/disable data continuity/prersistence etc (default enabled)
+ * enableFormContinuity()
+ * disableFormContinuity()
+ *
+ * The new code is simple but verbose as it just wraps much of the existing code
+ * in tests for these conditions rather than be too clever and add to already tortuous
+ * logic (which may itself be buggy).
+ *
+ * One final important change, method inputType() is now public to facilitate expansion
+ */
+
+
+
 class Concrete5_Helper_Form {
+
 
 
 	private $radioIndex = 1;
 	private $selectIndex = 1;
+	private $idEnable = true;
+	private $continuityEnable = true;
 
 	public function reset() {
 		$this->radioIndex = 1;
 		$this->selectIndex = 1;
 	}
-	
+
 	public function __construct() {
 		$this->th = Loader::helper("text");
 	}
 
-	/** 
+	/**
+	 * Enables the output of id attributes in form elements (default is enabled)
+	 */
+	public function enableIdOutput(){
+		return $this->idEnable = true;
+	}
+	/**
+	 * Disbles the output of id attributes in form elements (default is enabled)
+	 */
+	public function disableIdOutput(){
+		return $this->idEnable = false;
+	}
+	/**
+	 * Returns an id attribute as text suitable for inserting into a tag, or empty, depending on id settings.
+	 * @param string $id
+	 * return string $attribute
+	 */
+	private function idStr($id){
+		if ($this->idEnable){
+			return ' id="' . $id . '" ';
+		} else {
+			return '';
+		}
+	}
+
+	/**
+	 * Enables the preservation of input values in form elements (default is enabled)
+	 */
+	public function enableFormContinuity(){
+		return $this->continuityEnable = true;
+	}
+	/**
+	 * Disbles the preservation of input values in form elements (default is enabled)
+	 */
+	public function disableFormContinuity(){
+		return $this->continuityEnable = false;
+	}
+
+
+
+	/**
 	 * Returns an action suitable for including in a form action property.
 	 * @param string $action
 	 * @param string $task
-	 */ 
+	 */
 	public function action($action, $task = null) {
 		return View::url($action, $task);
 	}
 
-	/** 
+	/**
 	 * Creates a submit button
 	 * @param string $name
 	 * @param string value
 	 * @param array $fields Additional fields appended at the end of the submit button
 	 * return string $html
-	 */	 
+	 */
 	public function submit($name, $value, $fields = array(), $additionalClasses='') {
-		return '<input type="submit"' . $this->parseMiscFields('btn ccm-input-submit ' . $additionalClasses, $fields) . ' id="' . $name . '" name="' . $name . '" value="' . $value . '" />';
+		return '<input type="submit"' . $this->parseMiscFields('btn ccm-input-submit ' . $additionalClasses, $fields) .$this->idStr($name).' name="' . $name . '" value="' . $value . '" />';
 	}
 
-	/** 
+	/**
 	 * Creates a button
 	 * @param string $name
 	 * @param string value
 	 * @param array $fields Additional fields appended at the end of the submit button
 	 * return string $html
-	 */	 
+	 */
 	public function button($name, $value, $fields = array(), $additionalClasses='') {
-		return '<input type="button"' . $this->parseMiscFields('btn ccm-input-button ' . $additionalClasses, $fields) . ' id="' . $name . '" name="' . $name . '" value="' . $value . '" />';
+		return '<input type="button"' . $this->parseMiscFields('btn ccm-input-button ' . $additionalClasses, $fields) .$this->idStr($name).' name="' . $name . '" value="' . $value . '" />';
 	}
 
-	/** 
+	/**
 	 * Creates a label tag
 	 * @param string $field
 	 * @param string $name
 	 * @return string $html
 	 */
 	public function label($field, $name, $miscFields = array()) {
-		$str = '<label for="' . $field . '"' . $this->parseMiscFields('control-label ', $miscFields) . '>' . $name . '</label>';
-		return $str;
-	}
-
-	/** 
-	 * Creates a file input element
-	 * @param string $key
-	 */
-	public function file($key) {
-		$str = '<input type="file" id="' . $key . '" name="' . $key . '" value="" class="ccm-input-file" />';
+		$str = '<label for="' . $field . '"' . $this->parseMiscFields(null, $miscFields) . '>' . $name . '</label>';
 		return $str;
 	}
 
 	/**
-	 * Creates a hidden form field. 
+	 * Creates a file input element
+	 * @param string $key
+	 */
+	public function file($key) {
+		$str = '<input type="file" '.$this->idStr($key).' name="' . $key . '" value="" class="ccm-input-file" />';
+		return $str;
+	}
+
+	/**
+	 * Creates a hidden form field.
 	 * @param string $key
 	 * @param string $value
 	 */
 	public function hidden($key, $value = null) {
 		$val = $this->getRequestValue($key);
-		if ($val !== false && (!is_array($val))) {
+		if ($this->continuityEnable && $val !== false && (!is_array($val))) {
 			$value = $val;
 		}
-		$str = '<input type="hidden" name="' . $key . '" id="' . $key . '" value="' . $value . '" />';
+		$str = '<input type="hidden" name="' . $key . '" '.$this->idStr($key).' value="' . $value . '" />';
 		return $str;
 	}
 
@@ -114,7 +180,9 @@ class Concrete5_Helper_Form {
 			$id = $_field . '_' . $value;
 		}
 
-		if ($isChecked && (!isset($_REQUEST[$_field])) && ($_SERVER['REQUEST_METHOD'] != 'POST')) {
+		if (!$this->continuityEnable){
+			$checked = $isChecked;
+		} else if ($isChecked && (!isset($_REQUEST[$_field])) && ($_SERVER['REQUEST_METHOD'] != 'POST')) {
 			$checked = true;
 		} else if ($this->getRequestValue($key) == $value) {
 			$checked = true;
@@ -126,10 +194,10 @@ class Concrete5_Helper_Form {
 			$checked = 'checked="checked" ';
 		}
 
-		return '<input type="checkbox" '. $this->parseMiscFields('ccm-input-checkbox', $miscFields) . ' name="' . $key . '" id="' . $id . '" value="' . $value . '" ' . $checked . ' />';
+		return '<input type="checkbox" '. $this->parseMiscFields('ccm-input-checkbox', $miscFields) . ' name="' . $key .'" '.$this->idStr($id).' value="' . $value . '" ' . $checked . ' />';
 	}
 
-	/** 
+	/**
 	 * Creates a textarea field. Second argument is either the value of the field (and if it's blank we check post) or a misc. array of fields
 	 * @param string $key
 	 * @return string $html
@@ -137,19 +205,31 @@ class Concrete5_Helper_Form {
 	 public function textarea($key) {
 	 	$a = func_get_args();
 
-		$str = '<textarea id="' . $key . '" name="' . $key . '" ';
+		$str = '<textarea '.$this->idStr($key).' name="' . $key . '" ';
 		$rv = $this->getRequestValue($key);
 
 		if (count($a) == 3) {
-			$innerValue = ($rv !== false) ? $rv : $a[1];
+			if ($this->continuityEnable){
+				$innerValue = ($rv !== false) ? $rv : $a[1];
+			} else {
+				$innerValue = $a[1];
+			}
 			$miscFields = $a[2];
 		} else {
 			if (is_array($a[1])) {
-				$innerValue = ($rv !== false) ? $rv : '';
+				if ($this->continuityEnable){
+					$innerValue = ($rv !== false) ? $rv : '';
+				} else {
+					$innerValue = '';
+				}
 				$miscFields = $a[1];
 			} else {
-				// we ignore this second value if a post is set with this guy in it
-				$innerValue = ($rv !== false) ? $rv : $a[1];
+				if ($this->continuityEnable){
+					// we ignore this second value if a post is set with this guy in it
+					$innerValue = ($rv !== false) ? $rv : $a[1];
+				} else {
+					$innerValue = $a[1];
+				}
 			}
 		}
 
@@ -165,7 +245,7 @@ class Concrete5_Helper_Form {
 	 * @param string $valueOfSelectedOption
 	 */
 	public function radio($key, $value, $valueOrArray = false, $miscFields = array()) {
-		$str = '<input type="radio" name="' . $key . '" id="' . $key . $this->radioIndex . '" value="' . $value . '" ';
+		$str = '<input type="radio" name="' . $key .'" '.$this->idStr($key.$this->radioIndex).' value="' . $value . '" ';
 
 		if (is_array($valueOrArray)) {
 			$miscFields = $valueOrArray;
@@ -173,7 +253,14 @@ class Concrete5_Helper_Form {
 
 		$str .= $this->parseMiscFields('ccm-input-radio', $miscFields) . ' ';
 
-		if ($valueOrArray == $value && !isset($_REQUEST[$key]) || (isset($_REQUEST[$key]) && $_REQUEST[$key] == $value)) {
+		if ( 	$this->continuityEnable
+				&& (
+					$valueOrArray == $value && !isset($_REQUEST[$key])
+					|| (isset($_REQUEST[$key]) && $_REQUEST[$key] == $value)
+				)
+			) {
+			$str .= 'checked="checked" ';
+		} else if (!is_array($valueOrArray) && $value == $valueOrArray){
 			$str .= 'checked="checked" ';
 		}
 
@@ -187,7 +274,7 @@ class Concrete5_Helper_Form {
 		$arr = ($type == 'post') ? $_POST : $_GET;
 		if (strpos($key, '[') !== false) {
 			// we've got something like 'akID[34]['value'] here, which we need to get data from
-			
+
 			/* @var $ah ArrayHelper */
 			$ah = Loader::helper('array');
 			$key = str_replace(']', '', $key);
@@ -230,19 +317,29 @@ class Concrete5_Helper_Form {
 	 * @return $html
 
 	 */
-	protected function inputType($key, $type, $valueOrArray, $miscFields) {
-		$val = $this->getRequestValue($key);
+	public function inputType($key, $type, $valueOrArray, $miscFields) {
 
-		if (is_array($valueOrArray)) {
-			//valueOrArray is, in fact, the miscFields array
-			$miscFields = $valueOrArray;
+		if ($this->continuityEnable ){
+			$val = $this->getRequestValue($key);
+			if (is_array($valueOrArray)) {
+				//valueOrArray is, in fact, the miscFields array
+				$miscFields = $valueOrArray;
+			} else {
+				//valueOrArray is either empty or the default field value; miscFields is either empty or the miscFields
+				$val = ($val !== false) ? $val : $valueOrArray;
+			}
 		} else {
-			//valueOrArray is either empty or the default field value; miscFields is either empty or the miscFields
-			$val = ($val !== false) ? $val : $valueOrArray;
+			if (is_array($valueOrArray)) {
+				//valueOrArray is, in fact, the miscFields array
+				$miscFields = $valueOrArray;
+				$val = '';
+			} else {
+				$val = $valueOrArray;
+			}
 		}
 		$val = str_replace('"', '&#34;', $val);
 
-		return "<input id=\"$key\" type=\"$type\" name=\"$key\" value=\"$val\" " . $this->parseMiscFields("ccm-input-$type", $miscFields) . ' />';
+		return "<input ".$this->idStr($key)." type=\"$type\" name=\"$key\" value=\"$val\" " . $this->parseMiscFields("ccm-input-$type", $miscFields) . ' />';
 	}
 
 	/**
@@ -267,7 +364,7 @@ class Concrete5_Helper_Form {
 	public function email($key, $valueOrArray = false, $miscFields = array()) {
 		return $this->inputType($key, 'email', $valueOrArray, $miscFields);
 	}
-	
+
 	/**
 	 * Renders a telephone input field.
 	 * @param string $key Input element's name and id
@@ -308,7 +405,7 @@ class Concrete5_Helper_Form {
 	 */
 	public function select($key, $optionValues, $valueOrArray = false, $miscFields = array()) {
 		$val = $this->getRequestValue($key);
-		if (is_array($val)) {
+		if ($this->continuityEnable  && is_array($val)) {
 			$valueOrArray = $val[0];
 		}
 
@@ -323,15 +420,22 @@ class Concrete5_Helper_Form {
 		if (is_array($valueOrArray)) {
 			$miscFields = $valueOrArray;
 		} else {
-			$miscFields['ccm-passed-value'] = $valueOrArray;	
+			$miscFields['ccm-passed-value'] = $valueOrArray;
 		}
 
-		$str = '<select name="' . $key . '" id="' . $id . '" ' . $this->parseMiscFields('ccm-input-select', $miscFields) . '>';
+		$str = '<select name="' . $key .'" '.$this->idStr($id). $this->parseMiscFields('ccm-input-select', $miscFields) . '>';
 
 		foreach($optionValues as $k => $value) {
 			$selected = "";
-			if ($valueOrArray == $k && !isset($_REQUEST[$_key]) || ($val !== false && $val == $k) || (is_array($_REQUEST[$_key]) && (in_array($k, $_REQUEST[$_key])))) {
-				$selected = 'selected="selected"';
+
+			if ($this->continuityEnable ){
+				if ($valueOrArray == $k && !isset($_REQUEST[$_key]) || ($val !== false && $val == $k) || (is_array($_REQUEST[$_key]) && (in_array($k, $_REQUEST[$_key])))) {
+					$selected = 'selected="selected"';
+				}
+			}else{
+				if (!is_array($valueOrArray) && $valueOrArray == $k){
+					$selected = 'selected="selected"';
+				}
 			}
 			$str .= '<option value="' . $k . '" ' . $selected . '>' . $value . '</option>';
 		}
@@ -355,12 +459,12 @@ class Concrete5_Helper_Form {
 
         $defaultValues = (array) $defaultValues;
 
-        if ($val) {
+        if ($this->continuityEnable && $val) {
             $defaultValues = $val;
         }
 
         $str = "<input type='hidden' class='ignore' name='{$key}' value='' />
-                <select name=\"{$key}[]\" id=\"$key\" multiple=\"multiple\"" . $this->parseMiscFields('ccm-input-select', $miscFields) . ">";
+                <select name=\"{$key}[]\" ".$this->idStr($key)." multiple=\"multiple\"" . $this->parseMiscFields('ccm-input-select', $miscFields) . ">";
         foreach ($optionValues as $val => $text) {
             $selected = in_array($val, $defaultValues) ? ' selected="selected"' : '';
             $str .= "<option value=\"$val\"$selected>$text</option>";
@@ -393,7 +497,7 @@ class Concrete5_Helper_Form {
 		if ($defaultClass) {
 			$attributes['class'] = trim((isset($attributes['class']) ? $attributes['class'] : '') . ' ' . $defaultClass);
 		}
-		
+
 		foreach ((array) $attributes as $k => $v) {
 			$attr .= " $k=\"$v\"";
 		}
