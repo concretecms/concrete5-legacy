@@ -1,4 +1,4 @@
-<? 
+<?php
 /**
  * @package Helpers
  * @category Concrete
@@ -9,16 +9,18 @@
 
 /**
  * Grabs a list of states and provinces commonly used in web forms.
+ * First looks in Config table; if not there gets from class data. This enables other software
+ * to manipulate/modify the list.
  * @package Helpers
  * @category Concrete
  * @author Andrew Embler <andrew@concrete5.org>
  * @copyright  Copyright (c) 2003-2008 Concrete5. (http://www.concrete5.org)
  * @license    http://www.concrete5.org/license/     MIT License
  */
- 
+
 defined('C5_EXECUTE') or die("Access Denied.");
 class ListsStatesProvincesHelper {
-	
+
 	protected $stateProvinces = array(
 	'US' => array(
 		'AL' => 'Alabama',
@@ -73,7 +75,7 @@ class ListsStatesProvincesHelper {
 		'WI' => 'Wisconsin',
 		'WY' => 'Wyoming'
 	),
-	
+
 	'CA' => array(
 		'AB' => 'Alberta',
 		'BC' => 'British Columbia',
@@ -89,7 +91,7 @@ class ListsStatesProvincesHelper {
 		'SK' => 'Saskatchewan',
 		'YT' => 'Yukon'
 	),
-	
+
 	'AU' => array(
 		'AAT' => 'Australian Antarctic Territory',
 		'ACT' => 'Australian Capital Territory',
@@ -101,7 +103,7 @@ class ListsStatesProvincesHelper {
 		'VIC' => 'Victoria',
 		'WA' => 'Western Australia',
 	),
-	
+
 	'DE' => array(
       'BW' => 'Baden-W&uuml;rttemberg',
       'BY' => 'Bayern',
@@ -118,7 +120,7 @@ class ListsStatesProvincesHelper {
       'SN' => 'Sachsen',
       'ST' => 'Sachsen-Anhalt',
       'SH' => 'Schleswig-Holstein',
-      'TH' => 'Th&uuml;ringen'   
+      'TH' => 'Th&uuml;ringen'
    ),
 
    'FR' => array(
@@ -219,7 +221,7 @@ class ListsStatesProvincesHelper {
     '94' => 'Val-de-Marne',
     '95' => 'Val-d&#39;Oise'
 	),
-	
+
 	'UK' => array(
 		'ANGLES' => 'Anglesey',
 		'BRECK' => 'Brecknockshire',
@@ -234,7 +236,7 @@ class ListsStatesProvincesHelper {
 		'MONTG' => 'Mongtomeryshire',
 		'PEMBR' => 'Pembrokeshire',
 		'RADNOR' => 'Radnorshire',
-		
+
 		'ARBERD' => 'Aberdeenshire',
 		'ANGUS' => 'Angus',
 		'ARGYLL' => 'Argyllshire',
@@ -269,9 +271,9 @@ class ListsStatesProvincesHelper {
 		'SUTHER' => 'Sutherland',
 		'WESTL' => 'West Lothian',
 		'WIGTOWN' => 'Wigtownshire',
-		
+
 		'MERSEYSIDE' => 'Merseyside',
-		
+
 		'BEDS' => 'Bedfordshire',
 		'LONDON' => 'London',
 		'BERKS' => 'Berkshire',
@@ -313,7 +315,7 @@ class ListsStatesProvincesHelper {
 		'WORCES' => 'Worcestershire',
 		'YORK' => 'Yorkshire'
 	),
-	
+
 	'IE' => array(
 		'CO ANTRIM' => 'County Antrim',
 		'CO ARMAGH' => 'County Armagh',
@@ -348,9 +350,9 @@ class ListsStatesProvincesHelper {
 		'CO TIPPERARY' => 'County Tipperary',
 		'CO WATERFORD' => 'County Waterford'
 	),
-	
+
 	'NL' => array(
-	
+
 		'DR' => 'Drente',
 		'FL' => 'Flevoland',
 		'FR' => 'Friesland',
@@ -364,9 +366,9 @@ class ListsStatesProvincesHelper {
 		'ZH' => 'Zuid Holland',
 		'ZL' => 'Zeeland'
 	),
-	
+
 	'BR' => array(
-	
+
 		'AC' => 'Acre',
 		'AL' => 'Alagoas',
 		'AM' => 'Amazonas',
@@ -398,12 +400,16 @@ class ListsStatesProvincesHelper {
 
 	)
 	);
-	
+
 	public function __construct() {
 		$this->stateProvinces['GB'] = $this->stateProvinces['UK'];
+		// (Note, keeping this here, prior to setting into config, means there are 2 copies in config,
+		//  one for GB and one for UK. However, GB isn't exactly the same as UK, so it also allows for
+		//  those who need to be pedantic about UK/GB boundaries)
 	}
 	public function getStateProvinceName($v, $country) {
-		foreach($this->stateProvinces as $countryKey => $countries) {
+		$sp = $this->getAll();
+		foreach($sp as $countryKey => $countries) {
 			foreach($countries as $key => $value) {
 				if ($key == $v && $country == $countryKey) {
 					return $value;
@@ -411,40 +417,59 @@ class ListsStatesProvincesHelper {
 			}
 		}
 	}
-	
+
 	public function getStateProvinceArray($k) {
-		$a = $this->stateProvinces[$k];
+		$sp = $this->getAll();
+		$a = $sp[$k];
 		asort($a);
 		return $a;
 	}
-	
-	public function getAll() {
+
+	/**
+	 * Returns a 2-dimensional array of State/Provinces by Country code with their short name as the key
+	 * and their full name as the value.
+	 * First looks in Config table; if not there gets from class data. This enables other software
+	 * to manipulate/modify the list.
+	 * @return array
+	 */	public function getAll() {
+		$co = new Config();
+
+		// First look in Config data
+		$sp_ser_list = $co->get('STATE_PROVINCES');
+		if (!empty($sp_ser_list)){
+			$sp = unserialize($sp_ser_list);
+			if (is_array($sp)){
+				return $sp;
+			}
+		}
+
+		// Else use defaults and copy to Config data
 		$sp = $this->stateProvinces;
 		foreach($sp as $p => $pv) {
 			asort($sp[$p]);
 		}
+		$co->save('STATE_PROVINCES', serialize($sp));
 		return $sp;
 	}
-	
-	/** 
+
+	/**
 	 * Returns an array of US states
 	 * @deprecated
 	 * @return array
 	 */
 	public function getStates() {
-		return $this->stateProvinces['US'];
+		$sp = $this->getAll();
+		return $sp['US'];
 	}
-	
-	/** 
+
+	/**
 	 * Returns an array of Canadian provinces
 	 * @deprecated
 	 * @return array
 	 */
 	public function getCanadianProvinces() {
-		return $this->stateProvinces['CA'];
+		$sp = $this->getAll();
+		return $sp['CA'];
 	}
-	
 
 }
-
-?>
