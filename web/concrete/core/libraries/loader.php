@@ -445,6 +445,7 @@
 		/**
 		 * Get the current instance for custom loaders
 		 * @access private
+		 * @return Loader
 		 */	
 		public static function getCustomLoaderInstance() {
 			static $clinstance;
@@ -457,6 +458,7 @@
 		
 		/**
 		 * @access private
+		 * @var array
 		 */
 		private $customLoaders = array();
 
@@ -467,7 +469,7 @@
 		 */
 		public static function __callStatic($name, $args) {
 			$self = self::getCustomLoaderInstance();
-			$self->__call($name, $args);
+			return $self->__call($name, $args);
 		}
 		
 		/**
@@ -504,7 +506,7 @@
 		}
 		
 		/**
-		 * Add a custom loader method
+		 * Add a custom loader method, returns false if the method already exists.
 		 * <code>
 		 * Loader::addCustomLoader('testing', 'CustomLoaderModel', 'testmethod', $pathToFile.'/model.php');
 		 * Loader::testing('this is a test!');
