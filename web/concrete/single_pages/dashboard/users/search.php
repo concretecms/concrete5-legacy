@@ -332,7 +332,7 @@ if (is_object($uo)) {
 		
 		<?
 		$tp = new TaskPermission();
-		if ($uo->getUserID() != $u->getUserID()) {
+		if ( ($uo->getUserID() != $u->getUserID()) && ($uo->getUserID() != USER_SUPER_ID)) {
 			if ($tp->canSudo()) { 
 			
 				$loginAsUserConfirm = t('This will end your current session and sign you in as %s', $uo->getUserName());
