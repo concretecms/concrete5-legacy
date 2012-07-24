@@ -466,6 +466,7 @@
 		 * In PHP 5.3+ this is going to be called instead of __call
 		 * See __call() below
 		 * @access private
+		 * @see Loader::__call()
 		 */
 		public static function __callStatic($name, $args) {
 			$self = self::getCustomLoaderInstance();
@@ -477,7 +478,6 @@
 		 * @access private
 		 * @param string $name Method name called
 		 * @param array $args Arguments passed to the method
-		 * @return void
 		 */
 		public function __call($name, $args) {
 			$cl = self::getCustomLoaderInstance();
