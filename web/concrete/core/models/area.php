@@ -549,6 +549,9 @@ class Concrete5_Model_Area extends Object {
 	/**
 	 * displays the Area in the page
 	 * ex: $a = new Area('Main'); $a->display($c);
+	 * If ENABLE_AREA_EVENTS is set, fires 'on_before_area_header', 'on_after_area_header',
+	 * 'on_before_area_footer' and 'on_after_area_footer'.
+	 * Event handlers have the opportunity to directly output their own wrapping html.
 	 * @param Page|Collection $c
 	 * @param Block[] $alternateBlockArray optional array of blocks to render instead of default behavior
 	 * @return void
@@ -591,71 +594,102 @@ class Concrete5_Model_Area extends Object {
 			$bv->renderElement('block_area_header', array('a' => $ourArea));	
 		}
 
-		$bv->renderElement('block_area_header_view', array('a' => $ourArea));	
-
-		//display layouts tied to this area 
-		//Might need to move this to a better position  
-		$areaLayouts = $this->getAreaLayouts($c);
-		if(is_array($areaLayouts) && count($areaLayouts)){ 
-			foreach($areaLayouts as $layout){
-				$layout->display($c,$this);  
-			}
-			if($this->showControls && ($c->isArrangeMode() || $c->isEditMode())) {
-				echo '<div class="ccm-layouts-block-arrange-placeholder ccm-block-arrange"></div>';
-			}
+		// Event only fires if ENABLE_AREA_EVENTS is set. Provides an opportunity to intercept and modify/create whole area wrappers.
+		if (! $c->isEditMode() && defined('ENABLE_AREA_EVENTS') && ENABLE_AREA_EVENTS && ENABLE_AREA_EVENTS !== 'false'){
+			$ret1 = Events::fire('on_before_area_header', $this->arHandle, $this, $ourArea, $this->totalBlocks);
 		}
-		
-		$blockPositionInArea = 1; //for blockWrapper output
-		
-		foreach ($blocksToDisplay as $b) {
-			$bv = new BlockView();
-			$bv->setAreaObject($ourArea); 
-			
-			// this is useful for rendering areas from one page
-			// onto the next and including interactive elements
-			if ($currentPage->getCollectionID() != $c->getCollectionID()) {
-				$b->setBlockActionCollectionID($c->getCollectionID());
-			}
-			if ($this->arIsGlobal && is_object($stack)) {
-				$b->setBlockActionCollectionID($stack->getCollectionID());
-			}
-			$p = new Permissions($b);
-
-			if ($c->isEditMode() && $this->showControls) {
-				$includeEditStrip = true;
-			}
-
-			if ($p->canViewBlock()) {
-				if (!$c->isEditMode()) {
-					$this->outputBlockWrapper(true, $b, $blockPositionInArea);
-				}
-				if ($includeEditStrip) {
-					$bv->renderElement('block_controls', array(
-						'a' => $ourArea,
-						'b' => $b,
-						'p' => $p
-					));
-					$bv->renderElement('block_header', array(
-						'a' => $ourArea,
-						'b' => $b,
-						'p' => $p
-					));
-				}
-
-				$bv->render($b);
-				if ($includeEditStrip) {
-					$bv->renderElement('block_footer');
-				}
-				if (!$c->isEditMode()) {
-					$this->outputBlockWrapper(false, $b, $blockPositionInArea);
-				}
-			}
-			
-			$blockPositionInArea++;
+		if ($ret1 !== null && is_string($ret1)){
+			echo $ret1;
+		} else {
+			$bv->renderElement('block_area_header_view', array('a' => $ourArea));
 		}
 
-		$bv->renderElement('block_area_footer_view', array('a' => $ourArea));	
+		// Event only fires if ENABLE_AREA_EVENTS is set. Provides an opportunity to intercept and modify/create whole area wrappers.
+		if (! $c->isEditMode() && defined('ENABLE_AREA_EVENTS') && ENABLE_AREA_EVENTS && ENABLE_AREA_EVENTS !== 'false'){
+			$ret2 = Events::fire('on_after_area_header', $this->arHandle, $this, $ourArea, $this->totalBlocks);
+		}
 
+		if ($ret2 !== null && is_string($ret2)){
+			echo $ret2;
+		} else {
+
+			//display layouts tied to this area 
+			//Might need to move this to a better position  
+			$areaLayouts = $this->getAreaLayouts($c);
+			if(is_array($areaLayouts) && count($areaLayouts)){ 
+				foreach($areaLayouts as $layout){
+					$layout->display($c,$this);  
+				}
+				if($this->showControls && ($c->isArrangeMode() || $c->isEditMode())) {
+					echo '<div class="ccm-layouts-block-arrange-placeholder ccm-block-arrange"></div>';
+				}
+			}
+
+			$blockPositionInArea = 1; //for blockWrapper output
+
+			foreach ($blocksToDisplay as $b) {
+				$bv = new BlockView();
+				$bv->setAreaObject($ourArea); 
+
+				// this is useful for rendering areas from one page
+				// onto the next and including interactive elements
+				if ($currentPage->getCollectionID() != $c->getCollectionID()) {
+					$b->setBlockActionCollectionID($c->getCollectionID());
+				}
+				if ($this->arIsGlobal && is_object($stack)) {
+					$b->setBlockActionCollectionID($stack->getCollectionID());
+				}
+				$p = new Permissions($b);
+
+				if ($c->isEditMode() && $this->showControls) {
+					$includeEditStrip = true;
+				}
+
+				if ($p->canViewBlock()) {
+					if (!$c->isEditMode()) {
+						$this->outputBlockWrapper(true, $b, $blockPositionInArea);
+					}
+					if ($includeEditStrip) {
+						$bv->renderElement('block_controls', array(
+							'a' => $ourArea,
+							'b' => $b,
+							'p' => $p
+						));
+						$bv->renderElement('block_header', array(
+							'a' => $ourArea,
+							'b' => $b,
+							'p' => $p
+						));
+					}
+
+					$bv->render($b);
+					if ($includeEditStrip) {
+						$bv->renderElement('block_footer');
+					}
+					if (!$c->isEditMode()) {
+						$this->outputBlockWrapper(false, $b, $blockPositionInArea);
+					}
+				}
+
+				$blockPositionInArea++;
+			}
+		}
+
+		// Event only fires if ENABLE_AREA_EVENTS is set. Provides an opportunity to intercept and modify/create whole area wrappers.
+		if (! $c->isEditMode() && defined('ENABLE_AREA_EVENTS') && ENABLE_AREA_EVENTS && ENABLE_AREA_EVENTS !== 'false'){
+			$ret3 = Events::fire('on_before_area_footer', $this->arHandle, $this, $ourArea, $blockPositionInArea, $this->totalBlocks);
+		}
+		if ($ret3 !== null && is_string($ret3)){
+			echo $ret3;
+		} else {
+			$bv->renderElement('block_area_footer_view', array('a' => $ourArea));
+		}
+
+		// Event only fires if ENABLE_AREA_EVENTS is set. Provides an opportunity to intercept and modify/create whole area wrappers.
+		if (! $c->isEditMode() && defined('ENABLE_AREA_EVENTS') && ENABLE_AREA_EVENTS && ENABLE_AREA_EVENTS !== 'false'){
+			$ret4 = Events::fire('on_after_area_footer', $this->arHandle, $this, $ourArea, $blockPositionInArea, $this->totalBlocks);
+		}
+		
 		if ($this->showControls && $c->isEditMode() && $ap->canViewAreaControls()) {
 			$bv->renderElement('block_area_footer', array('a' => $ourArea));	
 		}
@@ -664,12 +698,29 @@ class Concrete5_Model_Area extends Object {
 	/**
 	 * outputs the block wrapers for each block
 	 * Internal helper function for display()
+	 * If ENABLE_AREA_EVENTS is set, fires 'on_output_block_wrapper_start' and 'on_output_block_wrapper_end'.
+	 * Event handlers have the opportunity to return a modified wrapper.
 	 * @return void
 	 */
 	protected function outputBlockWrapper($isStart, &$block, $blockPositionInArea) {
 		static $th = null;
 		$enclosing = $isStart ? $this->enclosingStart : $this->enclosingEnd;
 		$hasReplacements = $isStart ? $this->enclosingStartHasReplacements : $this->enclosingEndHasReplacements;
+
+		// Event only fires if ENABLE_AREA_EVENTS is set. Provides an opportunity to intercept and modify/create area block wrappers.
+		if (defined('ENABLE_AREA_EVENTS') && ENABLE_AREA_EVENTS && ENABLE_AREA_EVENTS !== 'false'){
+			if ($isStart){
+				$evname = 'on_output_block_wrapper_start';
+			} else {
+				$evname = 'on_output_block_wrapper_end';
+			}
+			$ret = Events::fire($evname, $this->arHandle, $this, $block, $blockPositionInArea, $enclosing, $hasReplacements);
+			// event is now responsible for 
+			if ($ret !== null && is_string($ret)){
+				$enclosing = $ret;
+				$hasReplacements = false;
+			}
+		}
 		
 		if (!empty($enclosing) && $hasReplacements) {
 			$bID = $block->getBlockID();
