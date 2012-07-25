@@ -248,6 +248,15 @@ class Package extends Object {
 		return $result;
 	
 	}
+	public static function importContent($xmlFile) {
+		
+		if (!file_exists($xmlFile)) {
+			return false;
+		}
+		loader::library('content/importer');
+		$ci = new ContentImporter();
+		$ci->importContentFile($xmlFile);
+	}
 	
 	/**
 	 * Loads package translation files into zend translate 
@@ -584,6 +593,7 @@ class Package extends Object {
 		
 		$pkg = Package::getByID($db->Insert_ID());
 		Package::installDB($pkg->getPackagePath() . '/' . FILENAME_PACKAGE_DB);
+		Package::importContent($pkg->getPackagePath() . '/' . FILENAME_PACKAGE_IMPORTER);
 		PackageList::refreshCache();
 		
 		return $pkg;

@@ -200,6 +200,7 @@ define('FILENAME_BLOCK_EDIT', 'edit.php');
 define('FILENAME_BLOCK_ICON', 'icon.png');
 define('FILENAME_BLOCK_CONTROLLER', 'controller.php');
 define('FILENAME_BLOCK_DB', 'db.xml');
+define('FILENAME_PACKAGE_IMPORTER', 'importer.xml');
 define('BLOCK_HANDLE_SCRAPBOOK_PROXY', 'core_scrapbook_display');
 define('FILENAME_FORM', 'form.php');
 
