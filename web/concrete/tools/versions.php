@@ -79,7 +79,11 @@
 				$val = str_replace($val, '</head>', '<style type="text/css">@import "' . ASSETS_URL_CSS . '/ccm.compare.css";</style></head>');
 				print $val;
 			} else {
-				print t('You must make %s executable in order to compare versions of pages.',DIR_FILES_BIN_HTMLDIFF);
+				//print t('You must make %s executable in order to compare versions of pages.',DIR_FILES_BIN_HTMLDIFF);
+				$fh = Loader::helper('file');
+				$from = $fh->getContents($fh->getTemporaryDirectory() . '/' . $src1);
+				$to = $fh->getContents($fh->getTemporaryDirectory() . '/' . $src2);
+				print Loader::helper('html')->diff($from, $to);
 			}
 			exit;
 		

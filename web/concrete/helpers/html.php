@@ -200,8 +200,45 @@ class HtmlHelper {
 			$str = '<img src="' . $src . '" border="0" ' . $attribsStr . ' />';
 		}
 		return $str;
-	}	
+	}
+
+	/**
+	 * While this might not be the best possible/bug free solution, it's better
+	 * than nothing for instances that cannot execute the htmldiff.py
+	 */
+	public function diff($from, $to) {
+		$fromElems = $this->separateBody($from);
+		$toElems = $this->separateBody($to);
+		
+		Loader::library('3rdparty/htmldiff/htmldiff');
+		$diff = new HtmlDiff();
+		$ret = str_replace('</head>', '<style type="text/css">@import "' . ASSETS_URL_CSS . '/ccm.compare.css";</style></head>', $fromElems['start']);
+		$ret .= $diff->diff($fromElems['body'], $toElems['body']);
+		$ret .= $fromElems['end'];
+		
+		return $ret;
+	}
 	
+	public function separateBody($html) {
+		$start = '';
+		$body = $html;
+		$end = '';
+		if (($spos = strpos($html, '<body')) !== false) {
+			$spos = strpos($html, '>', $spos)+1;
+			$epos = strlen($html)-$spos;
+			if (($pos = strpos($html, '</body>')) !== false) {
+				$epos = $pos;
+			}
+			$start = substr($html, 0, $spos);
+			$body = substr($html, $spos, $epos-$spos);
+			$end = substr($html, $epos);
+		}
+		return array(
+			'start' => $start,
+			'body' => $body,
+			'end' => $end
+		);
+	}
 	
 }
 
