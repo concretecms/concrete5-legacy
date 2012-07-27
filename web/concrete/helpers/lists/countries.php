@@ -286,8 +286,12 @@ class ListsCountriesHelper {
 			}
 		}
 
-		// Else use defaults and copy to Config data
-		asort($this->countries);
+		// Else use defaults and copy to Config data. Includes t() from @A387
+		// replaces asort($this->countries);
+		foreach ($this->countries as &$country) {
+			$country = t($country);
+		}
+		uasort($this->countries,'strcoll');
 		$co->save('COUNTRIES_LIST', serialize($this->countries));
 		return $this->countries;
 	}
