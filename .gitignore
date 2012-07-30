@@ -39,3 +39,7 @@ error_log
 
 # ignore Aptana Project files
 .project
+
+# ignore this
+.gitignore
+.gitattributes
