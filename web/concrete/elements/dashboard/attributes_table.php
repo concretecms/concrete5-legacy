@@ -85,8 +85,11 @@ if (count($attribs) > 0) { ?>
 			<h3><?=t('Other')?></h3>
 		
 			<?
-			foreach($unsetattribs as $ak) { ?>
-	
+			foreach($unsetattribs as $ak) {
+				if(is_null($ak)) {
+					continue;
+				}
+			?>
 			<div class="ccm-attribute" id="akID_<?=$as->getAttributeSetID()?>_<?=$ak->getAttributeKeyID()?>">
 				<img class="ccm-attribute-icon" src="<?=$ak->getAttributeKeyIconSRC()?>" width="16" height="16" /><a href="<?=$this->url($editURL, 'edit', $ak->getAttributeKeyID())?>"><?=$ak->getAttributeKeyName()?></a>
 			</div>
