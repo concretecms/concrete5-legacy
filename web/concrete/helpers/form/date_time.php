@@ -20,6 +20,12 @@
 
 defined('C5_EXECUTE') or die("Access Denied.");
 class FormDateTimeHelper {
+    
+    protected $_defaultDateOptions = array(
+		    'dateFormat'    => DATE_APP_DATE_PICKER,
+		    'changeYear'    => true,
+		    'showAnim'      => 'fadeIn'
+		    );
 
 	/** 
 	 * Takes a "field" and grabs all the corresponding disparate fields from $_POST and translates into a timestamp
@@ -57,8 +63,9 @@ class FormDateTimeHelper {
 	 * @param string $value
 	 * @param bool $includeActivation
 	 * @param bool $calendarAutoStart
+	 * @param array extraOptions Hash of extra options to pass to js date plugin
 	 */
-	public function datetime($prefix, $value = null, $includeActivation = false, $calendarAutoStart = true) {
+	public function datetime($prefix, $value = null, $includeActivation = false, $calendarAutoStart = true, $extraOptions = array()) {
 		if (substr($prefix, -1) == ']') {
 			$prefix = substr($prefix, 0, strlen($prefix) -1);
 			$_activate = $prefix . '_activate]';
@@ -138,7 +145,9 @@ class FormDateTimeHelper {
 		}
 		$html .= '</span>';
 		if ($calendarAutoStart) { 
-			$html .= '<script type="text/javascript">$(function() { $("#' . $id . '_dt").datepicker({ dateFormat: \'' . DATE_APP_DATE_PICKER . '\', changeYear: true, showAnim: \'fadeIn\' }); });</script>';
+		    //Get js options
+		    $optString = $this->getJsOptionString($extraOptions);
+			$html .= '<script type="text/javascript">$(function() { $("#' . $id . '").datepicker({ '.$optString.' }); });</script>';
 		}
 		// first we add a calendar input
 		
@@ -178,8 +187,9 @@ EOS;
 	 * @param string $value
 	 * @param bool $includeActivation
 	 * @param bool $calendarAutoStart
+	 * @param array extraOptions Hash of extra options to pass to js date plugin
 	 */
-	public function date($field, $value = null, $calendarAutoStart = true) {
+	public function date($field, $value = null, $calendarAutoStart = true, $extraOptions = array()) {
 		$id = preg_replace("/[^0-9A-Za-z-]/", "_", $field);
 		if (isset($_REQUEST[$field])) {
 			$dt = $_REQUEST[$field];
@@ -194,12 +204,34 @@ EOS;
 		$html = '';
 		$html .= '<span class="ccm-input-date-wrapper" id="' . $id . '_dw"><input id="' . $id . '" name="' . $field . '" class="ccm-input-date" value="' . $dt . '"  /></span>';
 
-		if ($calendarAutoStart) { 
-			$html .= '<script type="text/javascript">$(function() { $("#' . $id . '").datepicker({ dateFormat: \'' . DATE_APP_DATE_PICKER . '\', changeYear: true, showAnim: \'fadeIn\' }); });</script>';
+		if ($calendarAutoStart) {
+			//Get js options
+		    $optString = $this->getJsOptionString($extraOptions);
+			$html .= '<script type="text/javascript">$(function() { $("#' . $id . '").datepicker({ '.$optString.' }); });</script>';
 		}
 		return $html;
 	
 	}	
+	
+	/**
+	 * Build js friendly option string.
+	 * @param array $extraOptions hash of extra options
+	 * return js option string
+	 */
+	protected function getJsOptionString($extraOptions)
+	{
+	    $opts = array_merge($defaultOptions, $extraOptions);
+	    $optString = '';
+	    foreach ($opts as $key => $val) {
+	        if (is_bool($val) || is_numeric($val)) {
+	            $optString.="$key: $val,";
+	        } else {
+	            $optString.="$key: '$val',";
+	        }
+	    }
+	    
+	    return $optString;
+	}
 
 }
 
