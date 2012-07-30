@@ -119,7 +119,14 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			$this->footerItems[$namespace][] = $item;
 		}
 		
-		public function getHeaderItems() {
+		/** 
+		 * Function gets a list of header items.
+		 * If ENABLE_HEADER_FOOTER_ITEMS_EVENT is set, fires 'on_get_header_footer_items'. Event handlers have 
+		 * the opportunity to return a modified $items list.
+		 * @param boolean $from_footer, true if called when outputting a footer
+		 * @return array $items, list of HeaderOutputObjects
+		 */
+		public function getHeaderItems($from_footer=false) {
 			$a1 = (is_array($this->headerItems['CORE'])) ? $this->headerItems['CORE'] : array();
 			$a2 = (is_array($this->headerItems['VIEW'])) ? $this->headerItems['VIEW'] : array();
 			$a3 = (is_array($this->headerItems['CONTROLLER'])) ? $this->headerItems['CONTROLLER'] : array();
@@ -131,9 +138,24 @@ defined('C5_EXECUTE') or die("Access Denied.");
 				// stupid PHP
 				$items = array_unique($items, SORT_STRING);
 			}
+			
+			// Event only fires if ENABLE_HEADER_FOOTER_ITEMS_EVENT is set. Provides an opportunity to intercept and modify the list of items.
+			if (!$from_footer && defined('ENABLE_HEADER_FOOTER_ITEMS_EVENT') && ENABLE_HEADER_FOOTER_ITEMS_EVENT && ENABLE_HEADER_FOOTER_ITEMS_EVENT !== 'false'){
+				$ret = Events::fire('on_get_header_footer_items', 'header', $items);
+				if ($ret && is_array($ret)){
+					$items = $ret;
+				}
+			}	
+			
 			return $items;
 		}
 		
+		/** 
+		 * Function gets a list of footer items.
+		 * If ENABLE_HEADER_FOOTER_ITEMS_EVENT is set, fires 'on_get_header_footer_items'. Event handlers have 
+		 * the opportunity to return a modified $retitems list.
+		 * @return array $retitems, list of HeaderOutputObjects
+		 */
 		public function getFooterItems() {
 			$a1 = (is_array($this->footerItems['CORE'])) ? $this->footerItems['CORE'] : array();
 			$a2 = (is_array($this->footerItems['VIEW'])) ? $this->footerItems['VIEW'] : array();
@@ -149,13 +171,22 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			}
 			
 			// also strip out anything that was in the header
-			$headerItems = $this->getHeaderItems();
+			$headerItems = $this->getHeaderItems(true);
 			$retitems = array();
 			foreach($items as $it) {
 				if (!in_array($it, $headerItems)) {
 					$retitems[] = $it;
 				}
 			}
+
+			// Event only fires if ENABLE_HEADER_FOOTER_ITEMS_EVENT is set. Provides an opportunity to intercept and modify the list of items.
+			if (defined('ENABLE_HEADER_FOOTER_ITEMS_EVENT') && ENABLE_HEADER_FOOTER_ITEMS_EVENT && ENABLE_HEADER_FOOTER_ITEMS_EVENT !== 'false'){
+				$ret = Events::fire('on_get_header_footer_items', 'footer', $retitems);
+				if ($ret && is_array($ret)){
+					$retitems = $ret;
+				}
+			}	
+
 			return $retitems;
 		}
 		
