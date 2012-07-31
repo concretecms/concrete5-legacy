@@ -51,7 +51,16 @@ class ValidationStringsHelper {
 	 */
 	public function notempty($field) {
 		return ((is_array($field) && count($field) > 0) || (is_string($field) && trim($field) != ''));
-	}	
+	}
+	
+	/**
+	 * Returns true if it is not null
+	 * @param string str
+	 * @return bool
+	 */
+	public function isNotNull($str) {
+		return !is_null($str);
+	}
 	
 	/** 
 	 * Returns true on whether the passed string is larger or equal to the passed length

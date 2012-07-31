@@ -92,11 +92,21 @@ class ArrayHelper
 		$tmp = array();
 		foreach($array as $a) { 
 			if(is_array($a)) { 
-				$tmp = array_merge($tmp, array_flat($a)); 
+				$tmp = array_merge($tmp, $this->flatten($a)); 
 			} else { 
 				$tmp[] = $a; 
 			} 
 		} 
 		return $tmp; 
 	} 
+	
+	/**
+	 * Remove null values from an array
+	 * @param array $array
+	 * @return array
+	 */
+	 public function removeNull(array $array) {
+	 	$strh = Loader::helper('validation/string');
+	 	return array_filter($array, array($strh, 'isNotNull'));
+	 }
 }

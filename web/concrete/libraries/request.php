@@ -206,6 +206,11 @@ class Request {
 		// tools
 
 		$exploded = explode('/', $path);
+		
+		$arr = Loader::helper('array');
+		
+		$exploded = $arr->removeNull($exploded); //filter out "//"
+		
 		if($exploded[0] == 'tools') {
 			if($exploded[1] == 'blocks') {
 				$this->btHandle = $exploded[2];
