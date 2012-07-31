@@ -41,7 +41,7 @@ class Page extends Collection {
 			$version = CollectionVersion::getNumericalVersionID($cID, $versionOrig);
 		}
 		$ca = new Cache();
-		$c = ($version > 0) ? $ca->get(strtolower($class), $cID . ':' . $version) : $ca->get(strtolower($class), $cID);
+		$c = ($version > 0) ? $ca->get(strtolower($class), $cID . ':' . $version) : '';
 
 		if ($c instanceof $class) {
 			return $c;
@@ -54,8 +54,6 @@ class Page extends Collection {
 		// must use cID instead of c->getCollectionID() because cID may be the pointer to another page		
 		if ($version > 0) {
 			$ca->set(strtolower($class), $cID . ':' . $version, $c);
-		} else {
-			$ca->set(strtolower($class), $cID, $c);
 		}
 		return $c;
 	}
@@ -883,11 +881,11 @@ class Page extends Collection {
 		if(!$dateFormat) {
 			$dateFormat = 'Y-m-d H:i:s';
 		}
+		$dh = Loader::helper('date');
 		if(ENABLE_USER_TIMEZONES && $type == 'user') {
-			$dh = Loader::helper('date');
 			return $dh->getLocalDateTime($this->vObj->cvDatePublic, $dateFormat);
 		} else {
-			return date($dateFormat, strtotime($this->vObj->cvDatePublic));
+			return $dh->date($dateFormat, strtotime($this->vObj->cvDatePublic));
 		}
 	}
 
@@ -913,11 +911,9 @@ class Page extends Collection {
 	 * @return int
 	 */		
 	function getCollectionParentIDFromChildID($cID) {
-		if ($cParentID == false) {
-			$db = Loader::db();
-			$q = "select cParentID from Pages where cID = '$cID'";
-			$cParentID = $db->GetOne($q);
-		}
+		$db = Loader::db();
+		$q = "select cParentID from Pages where cID = ?";
+		$cParentID = $db->GetOne($q, array($cID));
 		return $cParentID;
 	}
 

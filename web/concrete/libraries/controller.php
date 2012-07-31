@@ -177,7 +177,6 @@ class Controller {
 	 * @return void
 	 */	
 	public function setupAndRun() {
-		$req = Request::get();
 		$this->setupRequestTask();
 		$this->on_start();
 		
@@ -426,6 +425,17 @@ class Controller {
 	 * @return string
 	 */
 	public function getTask() {return $this->task;}
+	
+	/**
+	 * Gets the array of parameters passed to the controller
+	 * @return array
+	 */
+	public function getControllerParameters() { 
+		if (is_array($this->parameters)) {
+			return $this->parameters;
+		}
+		return array();
+	}
 	
 	/** 
 	 * Gets the array of items that have been set using set()

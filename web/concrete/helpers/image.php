@@ -61,25 +61,25 @@ class ImageHelper {
 			// otherwise, we do some complicated stuff
 			// first, we divide original width and height by new width and height, and find which difference is greater
 			$wDiff = $oWidth / $width;
-			$hDiff = $oHeight / $height;
+			$hDiff = ($height != 0 ? $oHeight / $height : 0);
 			
 			if (!$crop && ($wDiff > $hDiff)) {
 				//no cropping, just resize down based on target width
 				$finalWidth = $width;
-				$finalHeight = $oHeight / $wDiff;
+				$finalHeight = ($wDiff != 0 ? $oHeight / $wDiff : 0);
 			} else if (!$crop) {
 				//no cropping, just resize down based on target height
-				$finalWidth = $oWidth / $hDiff;
+				$finalWidth = ($hDiff != 0 ? $oWidth / $hDiff : 0);
 				$finalHeight = $height;
 			} else if ($crop && ($wDiff > $hDiff)) {
 				//resize down to target height, THEN crop off extra width
-				$finalWidth = $oWidth / $hDiff;
+				$finalWidth = ($hDiff != 0 ? $oWidth / $hDiff : 0);
 				$finalHeight = $height;
 				$do_crop_x = true;
 			} else if ($crop) {
 				//resize down to target width, THEN crop off extra height
 				$finalWidth = $width;
-				$finalHeight = $oHeight / $wDiff;
+				$finalHeight = ($wDiff != 0 ? $oHeight / $wDiff : 0);
 				$do_crop_y = true;
 			}
 		}
@@ -130,7 +130,7 @@ class ImageHelper {
 				$trnprt_indx = imagecolortransparent($im);
 				
 				// If we have a specific transparent color
-				if ($trnprt_indx >= 0) {
+				if ($trnprt_indx >= 0 && $trnprt_indx < imagecolorstotal($im)) {
 			
 					// Get the original image's transparent color's RGB values
 					$trnprt_color = imagecolorsforindex($im, $trnprt_indx);
@@ -203,7 +203,7 @@ class ImageHelper {
 		if (file_exists($path)) {
 			$filename = md5($prefix . $path . ':' . $maxWidth . ':' . $maxHeight . ':' . filemtime($path)) . '.' . $fh->getExtension($path);
 		} else {
-			$filename = md5($prefix . $path . ':' . $maxWidth . ':' . $maxHeight . ':') . $fh->getExtension($path);
+			$filename = md5($prefix . $path . ':' . $maxWidth . ':' . $maxHeight . ':') . '.' . $fh->getExtension($path);
 		}
 
 		if (!file_exists(DIR_FILES_CACHE . '/' . $filename)) {
@@ -245,6 +245,4 @@ class ImageHelper {
 			print $html;
 		}
 	}
-
-
 }

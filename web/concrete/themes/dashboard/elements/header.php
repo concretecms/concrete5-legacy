@@ -53,15 +53,10 @@ $v->addHeaderItem($html->css('jquery.ui.css'));
 $valt = Loader::helper('validation/token');
 $disp = '<script type="text/javascript">'."\n";
 $disp .=  "var CCM_SECURITY_TOKEN = '" . $valt->generate() . "';"."\n";
-if ($dashboard->getCollectionID() == $c->getCollectionID()) {
-	$disp .= '$(function() {';
-	$disp .= "ccm_dashboardRequestRemoteInformation();"."\n";
-	$disp .= '});';
-}
 $disp .= "</script>"."\n";
 //require(DIR_FILES_ELEMENTS_CORE . '/header_required.php'); 
 $v->addHeaderItem($disp);
-Loader::element('header_required');
+Loader::element('header_required', array('disableTrackingCode' => true));
 $backgroundImage = Loader::helper('concrete/dashboard')->getDashboardBackgroundImage();
 ?>
 
@@ -144,6 +139,6 @@ print $dh->getDashboardAndSearchMenus();
 	
 	if (isset($message)) { ?>
 		<div class="ccm-ui" id="ccm-dashboard-result-message">
-			<div class="message alert-message info success"><?=Loader::helper('text')->entities($message)?></div>
+			<div class="message alert-message info success"><?=nl2br(Loader::helper('text')->entities($message))?></div>
 		</div>
 	<? } ?>

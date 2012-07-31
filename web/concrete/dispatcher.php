@@ -2,7 +2,13 @@
 	## This constant ensures that we're operating inside dispatcher.php. There is a LATER check to ensure that dispatcher.php is being called correctly. ##
 	if (!defined("C5_EXECUTE")) {
 		define('C5_EXECUTE', true);
-	} 
+	}
+
+	if(defined("E_DEPRECATED")) {
+		error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT & ~E_DEPRECATED); // E_DEPRECATED required for php 5.3.0 because of depreciated function calls in 3rd party libs (adodb).
+	} else {
+		error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT);
+	}
 	
 	## Startup check ##	
 	require(dirname(__FILE__) . '/config/base_pre.php');
@@ -79,6 +85,9 @@
 	Loader::model('task_permission');
 	Loader::model('stack/model');
 
+	## Set default permissions for new files and directories ##
+	require(dirname(__FILE__) . '/startup/file_permission_config.php');
+	
 	## Setup timzone support
 	require(dirname(__FILE__) . '/startup/timezone.php'); // must be included before any date related functions are called (php 5.3 +)
 
@@ -114,13 +123,13 @@
 	require(dirname(__FILE__) . '/startup/debug_logging.php');
 
 	## Site-level config POST user/app config ##
-	if (file_exists(DIR_BASE . '/config/site_post.php')) {
-		require(DIR_BASE . '/config/site_post.php');
+	if (file_exists(DIR_CONFIG_SITE . '/site_post.php')) {
+		require(DIR_CONFIG_SITE . '/site_post.php');
 	}
 	
 	## Site-level config POST user/app config - managed by c5, do NOT add your own stuff here ##
-	if (file_exists(DIR_BASE . '/config/site_post_restricted.php')) {
-		require(DIR_BASE . '/config/site_post_restricted.php');
+	if (file_exists(DIR_CONFIG_SITE . '/site_post_restricted.php')) {
+		require(DIR_CONFIG_SITE . '/site_post_restricted.php');
 	}
 
 	require(dirname(__FILE__) . '/startup/tools_upgrade_check.php');

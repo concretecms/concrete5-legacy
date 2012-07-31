@@ -22,7 +22,11 @@ if (!defined('BASE_URL')) {
 }
 
 if (!defined('DIR_REL')) {
-	$uri = substr($_SERVER['SCRIPT_NAME'], 0, stripos($_SERVER['SCRIPT_NAME'], DISPATCHER_FILENAME) - 1);
+	$pos = stripos($_SERVER['SCRIPT_NAME'], DISPATCHER_FILENAME);
+	if($pos > 0) { //we do this because in CLI circumstances (and some random ones) we would end up with index.ph instead of index.php
+		$pos = $pos - 1;
+	}
+	$uri = substr($_SERVER['SCRIPT_NAME'], 0, $pos);
 	define('DIR_REL', $uri);
 }
 
@@ -106,10 +110,6 @@ if (!defined("DB_COLLATE")) {
 }
 
 define("LANGUAGE_DOMAIN_CORE", "messages");
-
-if (!defined('FILE_PERMISSIONS_MODE')) {
-	define('FILE_PERMISSIONS_MODE', 0775);
-}
 
 # Path to the core files shared between all concrete 5 installations
 if (!defined('DIR_BASE_CORE')) {
@@ -342,18 +342,6 @@ if (!defined('CACHE_ID')) {
 	define('CACHE_ID', md5(str_replace(array('https://', 'http://'), '', BASE_URL) . DIR_REL));
 }
 
-if (defined('DIR_FILES_CACHE') && !is_dir(DIR_FILES_CACHE)) {
-	@mkdir(DIR_FILES_CACHE);
-	@chmod(DIR_FILES_CACHE, 0777);
-}
-
-# Sessions/TMP directories
-if (!defined('DIR_TMP')) {
-	define('DIR_TMP', DIR_BASE . '/files/tmp');
-}
-if (!defined('DIR_SESSIONS')) {
-	define('DIR_SESSIONS', DIR_TMP);
-}
 define('DISPATCHER_FILENAME_CORE', 'dispatcher.php');
 
 
@@ -549,5 +537,24 @@ if (!defined('MARKETPLACE_THEME_PREVIEW_URL')) {
 define('MARKETPLACE_CONTENT_LATEST_THRESHOLD', 10800); // every three hours
 define('MARKETPLACE_DIRNAME_THEME_PREVIEW', 'previewable_themes');
 define('MARKETPLACE_THEME_PREVIEW_ASSETS_URL', CONCRETE5_ORG_URL ."/". MARKETPLACE_DIRNAME_THEME_PREVIEW);
+
+if(!defined('SITEMAPXML_FILE')) {
+	/** The path (relative to the web root) of the sitemap.xml file to save [default value: 'sitemap.xml'].
+	* @var string
+	*/
+	define('SITEMAPXML_FILE', 'sitemap.xml');
+}
+if(!defined('SITEMAPXML_DEFAULT_CHANGEFREQ')) {
+	/** The default page change frequency [default value: 'weekly'; valid values: 'always', 'hourly', 'daily', 'weekly', 'monthly', 'yearly', 'never'].
+	* @var string
+	*/
+	define('SITEMAPXML_DEFAULT_CHANGEFREQ', 'weekly');
+}
+if(!defined('SITEMAPXML_DEFAULT_PRIORITY')) {
+	/** The default page priority [default value: 0.5; valid values from 0.0 to 1.0].
+	* @var float
+	*/
+	define('SITEMAPXML_DEFAULT_PRIORITY', 0.5);
+}
 
 require_once(DIR_LIBRARIES_CORE . '/loader.php');

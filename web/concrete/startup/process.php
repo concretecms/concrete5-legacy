@@ -595,8 +595,24 @@
 			case 'remove-alias':
 				if ($cp->canWrite()) {
 					$redir = $c->removeThisAlias();
-					header('Location: ' . BASE_URL . DIR_REL . '/' . DISPATCHER_FILENAME . '?cID=' . $redir . $step);
-					exit;
+					if ($_POST['rel'] == 'SITEMAP') { 
+						$obj = new stdClass;
+						$obj->rel = $_REQUEST['rel'];
+						$obj->cParentID = $c->getCollectionParentID();
+						if ($c->getCollectionPointerOriginalID() != '') { 
+							$obj->cID = $c->getCollectionPointerOriginalID();
+						} else {
+							$obj->cID = $c->getCollectionID();
+						}
+						$obj->display_mode = $_REQUEST['display_mode'];
+						$obj->select_mode = $_REQUEST['select_mode'];
+						$obj->instance_id = $_REQUEST['instance_id'];
+						print Loader::helper('json')->encode($obj);
+						exit;
+					} else { 
+						header('Location: ' . BASE_URL . DIR_REL . '/' . DISPATCHER_FILENAME . '?cID=' . $redir . $step);
+						exit;
+					}
 				}
 				break;
 			case 'check-out':
@@ -745,13 +761,25 @@
 						// if we're editing a scrapbook display block, we add a new block in this position for the real block type
 						// set the block to the display order
 						// delete the scrapbook display block, and save the data
+						/*
 						$originalDisplayOrder = $b->getBlockDisplayOrder();
 						$btx = BlockType::getByHandle($_b->getBlockTypeHandle());
 						$nb = $nvc->addBlock($btx, $ax, array());
 						$nb->setAbsoluteBlockDisplayOrder($originalDisplayOrder);
 						$b->deleteBlock();
 						$b = &$nb;
-					
+						*/
+						
+						$originalDisplayOrder = $b->getBlockDisplayOrder();
+						$cnt = $b->getController();
+						$ob = Block::getByID($cnt->getOriginalBlockID());
+						$ob->loadNewCollection($nvc);
+						$ob->setBlockAreaObject($ax);
+						$nb = $ob->duplicate($nvc);
+						$nb->setAbsoluteBlockDisplayOrder($originalDisplayOrder);
+						$b->deleteBlock();
+						$b = &$nb;
+
 					} else if ($b->isAlias()) {
 	
 						// then this means that the block we're updating is an alias. If you update an alias, you're actually going

@@ -111,6 +111,10 @@ if (!defined('ENABLE_APP_NEWS')) {
 	Config::getOrDefine('ENABLE_APP_NEWS', true);
 }
 
+if (!defined('FORBIDDEN_SHOW_LOGIN')) {
+	Config::getOrDefine('FORBIDDEN_SHOW_LOGIN', true); //show the login page instead of forbidden for non-logged in users
+}
+
 if (URL_REWRITING_ALL == true) {
 	define('URL_SITEMAP', BASE_URL . DIR_REL . '/dashboard/sitemap');
 	define('REL_DIR_FILES_TOOLS', DIR_REL . '/tools');
@@ -185,6 +189,14 @@ if (!defined('USER_VALIDATE_EMAIL_REQUIRED')) {
 
 if (!defined('USER_REGISTRATION_APPROVAL_REQUIRED')) {
 	Config::getOrDefine('USER_REGISTRATION_APPROVAL_REQUIRED', false);
+}
+
+if (!defined('REGISTER_NOTIFICATION')) {
+	Config::getOrDefine('REGISTER_NOTIFICATION', false);
+}
+
+if (!defined('EMAIL_ADDRESS_REGISTER_NOTIFICATION')) {
+	Config::getOrDefine('EMAIL_ADDRESS_REGISTER_NOTIFICATION', false);
 }
 
 if (!defined('REGISTRATION_TYPE')) {

@@ -75,8 +75,16 @@ if ($tp->canAccessGroupSearch()) { ?>
 </div>
 <div class="ccm-pane-body <? if (!$gl->requiresPaging()) { ?> ccm-pane-body-footer <? } ?>">
 
+	<a href="<?php echo View::url('/dashboard/users/add_group')?>" style="float: right;z-index:999;position:relative;top:-5px"  class="btn primary"><?php echo t("Add Group")?></a>
+
 <? if (count($gResults) > 0) { 
 	$gl->displaySummary();
+	?>
+				<style type="text/css">
+				div.ccm-paging-top {padding-bottom:10px;}
+			</style>
+
+<?
 	
 foreach ($gResults as $g) { ?>
 
@@ -147,7 +155,7 @@ foreach ($gResults as $g) { ?>
 	<div class="clearfix">
 	<?=$form->label('gDescription', t('Description'))?>
 	<div class="input">
-		<textarea name="gDescription" rows="6" class="span6"><?=Loader::helper("text")->entities($_POST['gDescription'])?></textarea>
+		<textarea name="gDescription" rows="6" class="span6"><?=Loader::helper("text")->entities($gDescription)?></textarea>
 	</div>
 	</div>
 	</fieldset>
