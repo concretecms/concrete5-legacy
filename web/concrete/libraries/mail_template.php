@@ -34,10 +34,6 @@ class MailTemplate extends Object {
 			$themePath = DIR_REL . '/' . DIRNAME_THEMES . '/' . $pl;
 			$themeDir = DIR_FILES_THEMES . "/" . $pl;
 			$themeFile = $filename;
-		} else if (file_exists(DIR_FILES_THEMES . '/' . $pl . '/' . FILENAME_THEMES_VIEW)) {
-			$themePath = DIR_REL . '/' . DIRNAME_THEMES . '/' . $pl;
-			$themeDir = DIR_FILES_THEMES . "/" . $pl;
-			$themeFile = FILENAME_THEMES_VIEW;
 		} else if (file_exists(DIR_FILES_THEMES . '/' . DIRNAME_THEMES_CORE . '/' . $pl . '.php')) {
 			$themeDir = DIR_FILES_THEMES . '/' . DIRNAME_THEMES_CORE;
 			$themeFile = $pl . '.php';
@@ -45,10 +41,6 @@ class MailTemplate extends Object {
 			$themePath = ASSETS_URL . '/' . DIRNAME_THEMES . '/' . DIRNAME_THEMES_CORE . '/' . $pl;
 			$themeDir = DIR_FILES_THEMES_CORE . "/" . $pl;
 			$themeFile = $filename;
-		} else if (file_exists(DIR_FILES_THEMES_CORE . "/" . $pl . '/' . FILENAME_THEMES_VIEW)) {
-			$themePath = ASSETS_URL . '/' . DIRNAME_THEMES . '/' . DIRNAME_THEMES_CORE . '/' . $pl;
-			$themeDir = DIR_FILES_THEMES_CORE . "/" . $pl;
-			$themeFile = FILENAME_THEMES_VIEW;
 		} else if (file_exists(DIR_FILES_THEMES_CORE_ADMIN . "/" . $pl . '.php')) {
 			$themeDir = DIR_FILES_THEMES_CORE_ADMIN;
 			$themeFile = $pl . '.php';
@@ -61,23 +53,17 @@ class MailTemplate extends Object {
 		}
 	}
 	
-	/**
-	 * This grabs the theme for a particular path, if one exists in the themePaths array
-	 * @access private
-     * @param string $path
-	 * @return string $theme
-	*/
-	private function getThemeFromPath($path) {
-		// there's probably a more efficient way to do this
-		$theme = false;
-		$txt = Loader::helper('text');
-		foreach($this->themePaths as $lp => $layout) {
-			if ($txt->fnmatch($lp, $path)) {
-				$theme = $layout;
-				break;
-			}
+	protected function getMailTemplateFile($template, $_filename, $pkgHandle = null) {
+		if (file_exists(DIR_FILES_EMAIL_TEMPLATES . '/' . $template . '/' . $_filename)) {
+			return DIR_FILES_EMAIL_TEMPLATES . '/' . $template . '/' . $_filename;
+		} else if (file_exists(DIR_PACKAGES . '/' . $pkgHandle . '/' . DIRNAME_MAIL_TEMPLATES . '/' . $template . '/' . $_filename)) {
+			return DIR_PACKAGES . '/' . $pkgHandle . '/' . DIRNAME_MAIL_TEMPLATES . '/' . $template . '/' . $_filename;
+		} else if (file_exists(DIR_PACKAGES_CORE . '/' . $pkgHandle . '/' . DIRNAME_MAIL_TEMPLATES . '/' . $template . '/' . $_filename)) {
+			return DIR_PACKAGES_CORE . '/' . $pkgHandle . '/' . DIRNAME_MAIL_TEMPLATES . '/' . $template . '/' . $_filename;
+		} else if (file_exists(DIR_FILES_EMAIL_TEMPLATES_CORE . '/' . $template . '/' . $_filename)) {
+			return DIR_FILES_EMAIL_TEMPLATES_CORE . '/' . $template . '/' . $_filename;
 		}
-		return $theme;
+		return false;
 	}
 	
 	public function setTemplate($tpl) {
@@ -90,15 +76,10 @@ class MailTemplate extends Object {
 		// loads template from mail templates directory
 		// the main template file contains the basic data for the template
 		// first checks template/data.php and then template.php
+		// This needs to be here to preserve backwards compatibility!
 		$dataFile = FILENAME_MAIL_DATA;
-		if (file_exists(DIR_FILES_EMAIL_TEMPLATES . '/' . $template . '/' . $dataFile)) {
-			include(DIR_FILES_EMAIL_TEMPLATES . '/' . $template . '/' . $dataFile);
-		} else if ($pkgHandle != null && file_exists(DIR_PACKAGES . '/' . $pkgHandle . '/' . DIRNAME_MAIL_TEMPLATES . '/' . $template . '/' . $dataFile)) {
-			include(DIR_PACKAGES . '/' . $pkgHandle . '/' . DIRNAME_MAIL_TEMPLATES . '/' . $template . '/' . $dataFile);
-		} else if ($pkgHandle != null && file_exists(DIR_PACKAGES_CORE . '/' . $pkgHandle . '/' . DIRNAME_MAIL_TEMPLATES . '/' . $template . '/' . $dataFile)) {
-			include(DIR_PACKAGES_CORE . '/' . $pkgHandle . '/' . DIRNAME_MAIL_TEMPLATES . '/' . $template . '/' . $dataFile);
-		} else if (file_exists(DIR_FILES_EMAIL_TEMPLATES_CORE . '/' . $template . '/' . $dataFile)) {
-			include(DIR_FILES_EMAIL_TEMPLATES_CORE . '/' . $template . '/' . $dataFile);
+		if ($file = $this->getMailTemplateFile($template, $dataFile, $pkgHandle)) {
+			include($file);
 		} else if (file_exists(DIR_FILES_EMAIL_TEMPLATES . "/{$template}.php")) {
 			include(DIR_FILES_EMAIL_TEMPLATES . "/{$template}.php");
 		} else if ($pkgHandle != null && file_exists(DIR_PACKAGES . '/' . $pkgHandle . '/' . DIRNAME_MAIL_TEMPLATES . "/{$template}.php")) {
@@ -119,14 +100,8 @@ class MailTemplate extends Object {
 		if (!isset($body)) {
 			// Check whether plain template exists
 			ob_start();
-			if (file_exists(DIR_FILES_EMAIL_TEMPLATES . '/' . $template . '/' . $view)) {
-				include(DIR_FILES_EMAIL_TEMPLATES . '/' . $template . '/' . $view);
-			} else if (file_exists(DIR_PACKAGES . '/' . $pkgHandle . '/' . DIRNAME_MAIL_TEMPLATES . '/' . $template . '/' . $view)) {
-				include(DIR_PACKAGES . '/' . $pkgHandle . '/' . DIRNAME_MAIL_TEMPLATES . '/' . $template . '/' . $view);
-			} else if (file_exists(DIR_PACKAGES_CORE . '/' . $pkgHandle . '/' . DIRNAME_MAIL_TEMPLATES . '/' . $template . '/' . $view)) {
-				include(DIR_PACKAGES_CORE . '/' . $pkgHandle . '/' . DIRNAME_MAIL_TEMPLATES . '/' . $template . '/' . $view);
-			} else if (file_exists(DIR_FILES_EMAIL_TEMPLATES_CORE . '/' . $template . '/' . $view)) {
-				include(DIR_FILES_EMAIL_TEMPLATES_CORE . '/' . $template . '/' . $view);
+			if ($file = $this->getMailTemplateFile($template, $view, $pkgHandle)) {
+				include($file);
 			}
 			$body = ob_get_contents();
 			ob_end_clean();
@@ -138,14 +113,8 @@ class MailTemplate extends Object {
 		if (!isset($bodyHTML)) {
 			// Check whether HTML template exists
 			ob_start();
-			if (file_exists(DIR_FILES_EMAIL_TEMPLATES . '/' . $template . '/' . $view)) {
-				include(DIR_FILES_EMAIL_TEMPLATES . '/' . $template . '/' . $view);
-			} else if (file_exists(DIR_PACKAGES . '/' . $pkgHandle . '/' . DIRNAME_MAIL_TEMPLATES . '/' . $template . '/' . $view)) {
-				include(DIR_PACKAGES . '/' . $pkgHandle . '/' . DIRNAME_MAIL_TEMPLATES . '/' . $template . '/' . $view);
-			} else if (file_exists(DIR_PACKAGES_CORE . '/' . $pkgHandle . '/' . DIRNAME_MAIL_TEMPLATES . '/' . $template . '/' . $view)) {
-				include(DIR_PACKAGES_CORE . '/' . $pkgHandle . '/' . DIRNAME_MAIL_TEMPLATES . '/' . $template . '/' . $view);
-			} else if (file_exists(DIR_FILES_EMAIL_TEMPLATES_CORE . '/' . $template . '/' . $view)) {
-				include(DIR_FILES_EMAIL_TEMPLATES_CORE . '/' . $template . '/' . $view);
+			if ($file = $this->getMailTemplateFile($template, $view, $pkgHandle)) {
+				include($file);
 			}
 			$bodyHTML = ob_get_contents();
 			ob_end_clean();
@@ -162,15 +131,14 @@ class MailTemplate extends Object {
 		
 		// Determine which outer item/theme to load
 		// obtain theme information for this collection
+		$themeFilename = FILENAME_MAIL_THEME_FILE;
 		$theme = PageTheme::getSiteTheme();
 		if (isset($this->themeOverride)) {
 			$theme = $this->themeOverride;
 		} else if ($this->controller->theme != false) {
 			$theme = $this->controller->theme;
-		} else if (($tmpTheme = $this->getThemeFromPath($viewPath)) != false) {
-			$theme = $tmpTheme;
 		} else if (is_object($theme)) {
-			if (file_exists($theme->getThemeDirectory() . '/' . $view . '.php')) {
+			if (file_exists($theme->getThemeDirectory() . '/' . $themeFilename)) {
 				$theme = $theme->getThemeHandle();
 			} else {
 				$theme = false;
@@ -179,8 +147,7 @@ class MailTemplate extends Object {
 		if (!$theme) {
 			$theme = FILENAME_COLLECTION_DEFAULT_THEME;
 		}
-		$themeFilename = FILENAME_MAIL_THEME_FILE;
-		$this->setThemeForView($theme, $themeFilename, $wrapTemplateInTheme);
+		$this->setThemeForView($theme, $themeFilename);
 		
 		$this->controller->on_before_render();
 		
