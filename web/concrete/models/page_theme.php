@@ -110,6 +110,11 @@ class PageThemeFile {
 	 */
 	const TFTYPE_PAGE_TYPE_EXISTING = 5;
 	
+	/**
+	 * Type of page corresponding to the mail view template (used by HTML formatted mails sent from the site). Typically that means this template file is "mail_view.php"
+	 */
+	const TFTYPE_MAIL_VIEW = 6;
+	
 	/** 
 	 * Sets the filename of this object to the passed parameter.
 	 * @params string $filename
@@ -565,6 +570,8 @@ class PageTheme extends Object {
 					$type = PageThemeFile::TFTYPE_SINGLE_PAGE;
 				} else if (in_array($fHandle, $cts)) {
 					$type = PageThemeFile::TFTYPE_PAGE_TYPE_EXISTING;
+				} else if ($f == FILENAME_MAIL_THEME_FILE) {
+					$type = PageThemeFile::TFTYPE_MAIL_VIEW;
 				} else {
 					$type = PageThemeFile::TFTYPE_PAGE_TYPE_NEW;
 				}
