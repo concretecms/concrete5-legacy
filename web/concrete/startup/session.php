@@ -16,7 +16,9 @@ session_set_cookie_params(
 	);
 	
 if (ini_get('session.save_handler') == 'files') {
-     ini_set('session.save_path', DIR_SESSIONS);
+	if (!ini_get('session.save_path')) {
+		ini_set('session.save_path', DIR_SESSIONS);
+	}
 }
 
 ini_set('session.gc_maxlifetime', SESSION_MAX_LIFETIME);
