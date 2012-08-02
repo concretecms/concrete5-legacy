@@ -70,6 +70,7 @@ if ($fsID > 0) {
 	$fsInfo['fsID'] = $fsID;
 	$fsInfo['duration']=$duration;
 	$fsInfo['fadeDuration']=$fadeDuration;
+	$fsInfo['url']=$url;
 } else {
 	$fsInfo['fsID']='0';
 	$fsInfo['duration']=$defaultDuration;
