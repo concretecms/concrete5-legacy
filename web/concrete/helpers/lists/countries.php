@@ -1,4 +1,4 @@
-<?
+<?php 
 /**
  * @package Helpers
  * @category Concrete
@@ -28,6 +28,13 @@ class ListsCountriesHelper {
 		unset($countries['SU'], $countries['ZZ'], $countries['IM'], $countries['JE'], $countries['VD']);
 		asort($countries, SORT_LOCALE_STRING);
 		$this->countries = $countries;
+	}
+	
+	public function __construct(){
+		foreach ($this->countries as &$country) {
+			$country = t($country);
+		}
+		uasort($this->countries,'strcoll');
 	}
 	
 	/** 
