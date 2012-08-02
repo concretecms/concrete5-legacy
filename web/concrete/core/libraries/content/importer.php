@@ -404,9 +404,9 @@ class Concrete5_Library_Content_Importer {
 				if (isset($tp->access)) {
 					foreach($tp->access->children() as $ch) {
 						if ($ch->getName() == 'group') {
-							$g = Group::getByName($ch['name']);
+							$g = Group::getByName(t((string)$ch['name']));
 							if (!is_object($g)) {
-								$g = Group::add($ch['name'], $ch['description']);
+								$g = Group::add(t((string)$ch['name']), '');
 							}
 							$tpa->addAccess($g);
 						}
@@ -446,9 +446,9 @@ class Concrete5_Library_Content_Importer {
 				if (isset($pk->access)) {
 					foreach($pk->access->children() as $ch) {
 						if ($ch->getName() == 'group') {
-							$g = Group::getByName($ch['name']);
+							$g = Group::getByName(t((string)$ch['name']));
 							if (!is_object($g)) {
-								$g = Group::add($g['name'], $g['description']);
+								$g = Group::add(t((string)$ch['name']), '');
 							}
 							$pae = GroupPermissionAccessEntity::getOrCreate($g);
 							$pa = PermissionAccess::create($pkx);
