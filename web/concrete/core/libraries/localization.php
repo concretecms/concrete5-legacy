@@ -40,14 +40,29 @@
 		}
 		
 		public function setLocale($locale) {
-			if ($locale != 'en_US' && is_dir(DIR_BASE . '/languages/' . $locale)) {
-				if (!isset($this->translate)) {
-					$this->translate = new Zend_Translate('gettext', DIR_BASE . '/languages/' . $locale, $locale);
-				} else {
-					if (!in_array($locale, $this->translate->getList())) {
-						$this->translate->addTranslation(DIR_BASE . '/languages/' . $locale, $locale);
+			if ($locale != 'en_US') {
+				if(defined("DIRNAME_APP_UPDATED")){
+					if(is_dir(DIR_BASE . "/". DIRNAME_UPDATES ."/" . DIRNAME_APP_UPDATED . '/languages/' . $locale)) {
+						if (!isset($this->translate)) {
+							$this->translate = new Zend_Translate('gettext', DIR_BASE . "/". DIRNAME_UPDATES ."/" . DIRNAME_APP_UPDATED . '/languages/' . $locale, $locale);
+						} else {
+							if (!in_array($locale, $this->translate->getList())) {
+								$this->translate->addTranslation(DIR_BASE . "/". DIRNAME_UPDATES ."/" . DIRNAME_APP_UPDATED . '/languages/' . $locale, $locale);
+							}
+							$this->translate->setLocale($locale);
+						}
 					}
-					$this->translate->setLocale($locale);
+				}else{
+					if(is_dir(DIR_BASE . '/languages/' . $locale)){
+						if (!isset($this->translate)) {
+							$this->translate = new Zend_Translate('gettext', DIR_BASE . '/languages/' . $locale, $locale);
+						} else {
+							if (!in_array($locale, $this->translate->getList())) {
+								$this->translate->addTranslation(DIR_BASE . '/languages/' . $locale, $locale);
+							}
+							$this->translate->setLocale($locale);
+						}
+					}
 				}
 			}
 		}
