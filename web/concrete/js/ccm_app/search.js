@@ -136,7 +136,10 @@ ccm_setupSortableColumnSelection = function(searchType) {
 	});
 }
 
-ccm_checkSelectedAdvancedSearchField = function(searchType, fieldset) {
+ccm_checkSelectedAdvancedSearchField = function(searchType, fieldset, date_type) {
+	if(typeof date_type == 'undefined'){
+		date_type = 'date_time'
+	}
 	$("#ccm-" + searchType + "-search-field-set" + fieldset + " .ccm-search-option-type-date_time input").each(function() {
 		if ($(this).attr('id') == 'date_from') {
 			$(this).attr('id', 'date_from' + fieldset);
@@ -153,8 +156,21 @@ ccm_checkSelectedAdvancedSearchField = function(searchType, fieldset) {
 	$("#ccm-" + searchType + "-search-field-set" + fieldset + " .ccm-search-option-type-date_time input").datepicker({
 		showAnim: 'fadeIn'
 	});
+	
+	if(date_type != 'date_time'){
+
+		$("#ccm-" + searchType + "-search-field-set" + fieldset + " .ccm-search-option-type-" + date_type + " input").each(function() {
+			$(this).attr('id', $(this).attr('id') + fieldset);
+		});
+		
+		
+		$("#ccm-" + searchType + "-search-field-set" + fieldset + " .ccm-search-option-type-" + date_type + " .ccm-input-date").datepicker({
+			showAnim: 'fadeIn'
+		});
+	}
+	
 	$("#ccm-" + searchType + "-search-field-set" + fieldset + " .ccm-search-option-type-rating input").rating();		
-}
+};
 
 ccm_activateAdvancedSearchFields = function(searchType, fieldset) {
 	var selTag = $("#ccm-" + searchType + "-search-field-set" + fieldset + " select:first");
@@ -164,30 +180,22 @@ ccm_activateAdvancedSearchFields = function(searchType, fieldset) {
 		$(this).parent().parent().find('input.ccm-' + searchType + '-selected-field').val(selected);
 		
 		var itemToCopy = $('#ccm-' + searchType + '-search-field-base-elements span[search-field=' + selected + ']');
+		var item_class = itemToCopy.attr('class');
+		var item_type = item_class.replace('ccm-search-option ccm-search-option-type-', '');
 		$("#ccm-" + searchType + "-search-field-set" + fieldset + " .ccm-selected-field-content").html('');
 		itemToCopy.clone().appendTo("#ccm-" + searchType + "-search-field-set" + fieldset + " .ccm-selected-field-content");
 		
 		$("#ccm-" + searchType + "-search-field-set" + fieldset + " .ccm-selected-field-content .ccm-search-option").show();
-		ccm_checkSelectedAdvancedSearchField(searchType, fieldset);
+		ccm_checkSelectedAdvancedSearchField(searchType, fieldset, item_type);
 	});
-
-	
-	// add the initial state of the latest select menu
-	/*
-	var lastSelect = $("#ccm-" + searchType + "-search-field-set" + fieldset + " select[ccm-advanced-search-selector=1]").eq($(".ccm-" + searchType + "-search-field select[ccm-advanced-search-selector=1]").length-1);
-	var selected = lastSelect.find(':selected').val();
-	lastSelect.next('input.ccm-" + searchType + "-selected-field').val(selected);
-	*/
 	
 	$("#ccm-" + searchType + "-search-field-set" + fieldset + " .ccm-search-remove-option").unbind();
 	$("#ccm-" + searchType + "-search-field-set" + fieldset + " .ccm-search-remove-option").click(function() {
 		$(this).parents('div.ccm-search-field').remove();
 		$(this).parents('tr.ccm-search-field').remove();
-		
-		//ccm_totalAdvancedSearchFields--;
 	});
 	
-	ccm_checkSelectedAdvancedSearchField(searchType, fieldset);
+	ccm_checkSelectedAdvancedSearchField(searchType, fieldset, item_type);
 	
 }
 
