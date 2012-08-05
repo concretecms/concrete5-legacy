@@ -51,5 +51,4 @@ $img = new securimage();
 //$img->signature_color = new Securimage_Color(rand(0, 64), rand(64, 128), rand(128, 255));
 //$img->image_type = SI_IMAGE_PNG;
 
-
 $img->show(); // alternate use:  $img->show('/path/to/background_image.jpg');

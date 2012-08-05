@@ -6,11 +6,11 @@
 			<unsigned />
 		</field>
 		<field name="title" type="C" size="255">
-		</field> 			
+		</field>
 		<field name="url" type="C" size="255">
-		</field> 		
+		</field>
 		<field name="dateFormat" type="C" size="100">
-		</field> 		
+		</field>
 		<field name="itemsToDisplay" type="I">
 			<unsigned />
 			<default value="5" />
@@ -24,6 +24,6 @@
 			<unsigned />
 			<notnull />
 			<default value="1" />
-		</field>		
+		</field>
 	</table>
 </schema>

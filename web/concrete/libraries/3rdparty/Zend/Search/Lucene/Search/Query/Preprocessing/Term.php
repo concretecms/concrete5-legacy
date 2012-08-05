@@ -20,10 +20,8 @@
  * @version    $Id: Term.php 23775 2011-03-01 17:25:24Z ralph $
  */
 
-
 /** Zend_Search_Lucene_Search_Query_Processing */
 require_once 'Zend/Search/Lucene/Search/Query/Preprocessing.php';
-
 
 /**
  * It's an internal abstract class intended to finalize ase a query processing after query parsing.
@@ -63,9 +61,9 @@ class Zend_Search_Lucene_Search_Query_Preprocessing_Term extends Zend_Search_Luc
     /**
      * Class constructor.  Create a new preprocessing object for prase query.
      *
-     * @param string $word       Non-tokenized word (query parser lexeme) to search.
-     * @param string $encoding   Word encoding.
-     * @param string $fieldName  Field name.
+     * @param string $word      Non-tokenized word (query parser lexeme) to search.
+     * @param string $encoding  Word encoding.
+     * @param string $fieldName Field name.
      */
     public function __construct($word, $encoding, $fieldName)
     {
@@ -77,7 +75,7 @@ class Zend_Search_Lucene_Search_Query_Preprocessing_Term extends Zend_Search_Luc
     /**
      * Re-write query into primitive queries in the context of specified index
      *
-     * @param Zend_Search_Lucene_Interface $index
+     * @param  Zend_Search_Lucene_Interface    $index
      * @return Zend_Search_Lucene_Search_Query
      */
     public function rewrite(Zend_Search_Lucene_Interface $index)
@@ -115,14 +113,17 @@ class Zend_Search_Lucene_Search_Query_Preprocessing_Term extends Zend_Search_Luc
                 $this->_matches = array();
                 if ($hasInsignificantSubqueries) {
                     require_once 'Zend/Search/Lucene/Search/Query/Insignificant.php';
+
                     return new Zend_Search_Lucene_Search_Query_Insignificant();
                 } else {
                     require_once 'Zend/Search/Lucene/Search/Query/Empty.php';
+
                     return new Zend_Search_Lucene_Search_Query_Empty();
                 }
             }
 
             $this->_matches = $query->getQueryTerms();
+
             return $query;
         }
 
@@ -137,6 +138,7 @@ class Zend_Search_Lucene_Search_Query_Preprocessing_Term extends Zend_Search_Luc
             $query->setBoost($this->getBoost());
 
             $this->_matches = $query->getQueryTerms();
+
             return $query;
         }
 
@@ -202,6 +204,7 @@ class Zend_Search_Lucene_Search_Query_Preprocessing_Term extends Zend_Search_Luc
         if (count($tokens) == 0) {
             $this->_matches = array();
             require_once 'Zend/Search/Lucene/Search/Query/Insignificant.php';
+
             return new Zend_Search_Lucene_Search_Query_Insignificant();
         }
 
@@ -213,6 +216,7 @@ class Zend_Search_Lucene_Search_Query_Preprocessing_Term extends Zend_Search_Luc
             $query->setBoost($this->getBoost());
 
             $this->_matches = $query->getQueryTerms();
+
             return $query;
         }
 
@@ -233,13 +237,14 @@ class Zend_Search_Lucene_Search_Query_Preprocessing_Term extends Zend_Search_Luc
         $query->setBoost($this->getBoost());
 
         $this->_matches = $query->getQueryTerms();
+
         return $query;
     }
 
     /**
      * Query specific matches highlighting
      *
-     * @param Zend_Search_Lucene_Search_Highlighter_Interface $highlighter  Highlighter object (also contains doc for highlighting)
+     * @param Zend_Search_Lucene_Search_Highlighter_Interface $highlighter Highlighter object (also contains doc for highlighting)
      */
     protected function _highlightMatches(Zend_Search_Lucene_Search_Highlighter_Interface $highlighter)
     {
@@ -289,9 +294,9 @@ class Zend_Search_Lucene_Search_Query_Preprocessing_Term extends Zend_Search_Luc
             $query = new Zend_Search_Lucene_Search_Query_Wildcard($term);
 
             $query->_highlightMatches($highlighter);
+
             return;
         }
-
 
         // -------------------------------------
         // Recognize one-term multi-term and "insignificant" queries
@@ -305,6 +310,7 @@ class Zend_Search_Lucene_Search_Query_Preprocessing_Term extends Zend_Search_Luc
 
         if (count($tokens) == 1) {
             $highlighter->highlight($tokens[0]->getTermText());
+
             return;
         }
 

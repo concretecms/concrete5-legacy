@@ -20,7 +20,6 @@
  * @version    $Id: Maildir.php 23775 2011-03-01 17:25:24Z ralph $
  */
 
-
 /**
  * @see Zend_Mail_Storage_Folder
  */
@@ -35,7 +34,6 @@ require_once 'Zend/Mail/Storage/Folder/Interface.php';
  * @see Zend_Mail_Storage_Maildir
  */
 require_once 'Zend/Mail/Storage/Maildir.php';
-
 
 /**
  * @category   Zend
@@ -77,13 +75,13 @@ class Zend_Mail_Storage_Folder_Maildir extends Zend_Mail_Storage_Maildir impleme
      *   - delim   delim char for folder structur, default is '.'
      *   - folder intial selected folder, default is 'INBOX'
      *
-     * @param array $params mail reader specific parameters
+     * @param  array                       $params mail reader specific parameters
      * @throws Zend_Mail_Storage_Exception
      */
     public function __construct($params)
     {
         if (is_array($params)) {
-            $params = (object)$params;
+            $params = (object) $params;
         }
 
         if (!isset($params->dirname) || !is_dir($params->dirname)) {
@@ -162,7 +160,7 @@ class Zend_Mail_Storage_Folder_Maildir extends Zend_Mail_Storage_Maildir impleme
                     array_push($folderStack, $parentFolder);
                     $parentFolder = $folder;
                     break;
-                } else if ($stack) {
+                } elseif ($stack) {
                     $parent = array_pop($stack);
                     $parentFolder = array_pop($folderStack);
                 }
@@ -180,8 +178,8 @@ class Zend_Mail_Storage_Folder_Maildir extends Zend_Mail_Storage_Maildir impleme
     /**
      * get root folder or given folder
      *
-     * @param string $rootFolder get folder structure for given folder, else root
-     * @return Zend_Mail_Storage_Folder root or wanted folder
+     * @param  string                      $rootFolder get folder structure for given folder, else root
+     * @return Zend_Mail_Storage_Folder    root or wanted folder
      * @throws Zend_Mail_Storage_Exception
      */
     public function getFolders($rootFolder = null)
@@ -211,6 +209,7 @@ class Zend_Mail_Storage_Folder_Maildir extends Zend_Mail_Storage_Maildir impleme
             require_once 'Zend/Mail/Storage/Exception.php';
             throw new Zend_Mail_Storage_Exception("folder $rootFolder not found");
         }
+
         return $currentFolder;
     }
 
@@ -219,20 +218,20 @@ class Zend_Mail_Storage_Folder_Maildir extends Zend_Mail_Storage_Maildir impleme
      *
      * folder must be selectable!
      *
-     * @param Zend_Mail_Storage_Folder|string $globalName global name of folder or instance for subfolder
+     * @param  Zend_Mail_Storage_Folder|string $globalName global name of folder or instance for subfolder
      * @return null
      * @throws Zend_Mail_Storage_Exception
      */
     public function selectFolder($globalName)
     {
-        $this->_currentFolder = (string)$globalName;
+        $this->_currentFolder = (string) $globalName;
 
         // getting folder from folder tree for validation
         $folder = $this->getFolders($this->_currentFolder);
 
         try {
             $this->_openMaildir($this->_rootdir . '.' . $folder->getGlobalName());
-        } catch(Zend_Mail_Storage_Exception $e) {
+        } catch (Zend_Mail_Storage_Exception $e) {
             // check what went wrong
             if (!$folder->isSelectable()) {
                 /**
@@ -255,7 +254,7 @@ class Zend_Mail_Storage_Folder_Maildir extends Zend_Mail_Storage_Maildir impleme
     /**
      * get Zend_Mail_Storage_Folder instance for current folder
      *
-     * @return Zend_Mail_Storage_Folder instance of current folder
+     * @return Zend_Mail_Storage_Folder    instance of current folder
      * @throws Zend_Mail_Storage_Exception
      */
     public function getCurrentFolder()

@@ -64,7 +64,7 @@ class Zend_Translate_Plural
             return $return;
         }
 
-        switch($locale) {
+        switch ($locale) {
             case 'bo':
             case 'dz':
             case 'id':
@@ -199,8 +199,8 @@ class Zend_Translate_Plural
     /**
      * Set's a new plural rule
      *
-     * @param string $rule   Callback which acts as rule
-     * @param string $locale Locale which is used for this callback
+     * @param  string $rule   Callback which acts as rule
+     * @param  string $locale Locale which is used for this callback
      * @return null
      */
     public static function setPlural($rule, $locale)

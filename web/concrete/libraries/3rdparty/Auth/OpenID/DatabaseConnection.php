@@ -22,14 +22,15 @@
  *
  * @package OpenID
  */
-class Auth_OpenID_DatabaseConnection {
+class Auth_OpenID_DatabaseConnection
+{
     /**
      * Sets auto-commit mode on this database connection.
      *
      * @param bool $mode True if auto-commit is to be used; false if
      * not.
      */
-    function autoCommit($mode)
+    public function autoCommit($mode)
     {
     }
 
@@ -48,28 +49,28 @@ class Auth_OpenID_DatabaseConnection {
      * underlying database engine.  This method is usually used when
      * the result of a query is not important, like a DDL query.
      */
-    function query($sql, $params = array())
+    public function query($sql, $params = array())
     {
     }
 
     /**
      * Starts a transaction on this connection, if supported.
      */
-    function begin()
+    public function begin()
     {
     }
 
     /**
      * Commits a transaction on this connection, if supported.
      */
-    function commit()
+    public function commit()
     {
     }
 
     /**
      * Performs a rollback on this connection, if supported.
      */
-    function rollback()
+    public function rollback()
     {
     }
 
@@ -88,7 +89,7 @@ class Auth_OpenID_DatabaseConnection {
      * first row of the result set.  False if no such result was
      * found.
      */
-    function getOne($sql, $params = array())
+    public function getOne($sql, $params = array())
     {
     }
 
@@ -106,7 +107,7 @@ class Auth_OpenID_DatabaseConnection {
      * @return array $result The first row of the result set, if any,
      * keyed on column name.  False if no such result was found.
      */
-    function getRow($sql, $params = array())
+    public function getRow($sql, $params = array())
     {
     }
 
@@ -123,9 +124,7 @@ class Auth_OpenID_DatabaseConnection {
      * @return array $result An array of arrays representing the
      * result of the query; each array is keyed on column name.
      */
-    function getAll($sql, $params = array())
+    public function getAll($sql, $params = array())
     {
     }
 }
-
-?>

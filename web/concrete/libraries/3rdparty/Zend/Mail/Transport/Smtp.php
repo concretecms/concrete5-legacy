@@ -20,7 +20,6 @@
  * @version    $Id: Smtp.php 23775 2011-03-01 17:25:24Z ralph $
  */
 
-
 /**
  * @see Zend_Mime
  */
@@ -35,7 +34,6 @@ require_once 'Zend/Mail/Protocol/Smtp.php';
  * @see Zend_Mail_Transport_Abstract
  */
 require_once 'Zend/Mail/Transport/Abstract.php';
-
 
 /**
  * SMTP connection object
@@ -64,14 +62,12 @@ class Zend_Mail_Transport_Smtp extends Zend_Mail_Transport_Abstract
      */
     protected $_host;
 
-
     /**
      * Port number
      *
      * @var integer|null
      */
     protected $_port;
-
 
     /**
      * Local client hostname or i.p.
@@ -80,14 +76,12 @@ class Zend_Mail_Transport_Smtp extends Zend_Mail_Transport_Abstract
      */
     protected $_name = 'localhost';
 
-
     /**
      * Authentication type OPTIONAL
      *
      * @var string
      */
     protected $_auth;
-
 
     /**
      * Config options for authentication
@@ -96,7 +90,6 @@ class Zend_Mail_Transport_Smtp extends Zend_Mail_Transport_Abstract
      */
     protected $_config;
 
-
     /**
      * Instance of Zend_Mail_Protocol_Smtp
      *
@@ -104,11 +97,10 @@ class Zend_Mail_Transport_Smtp extends Zend_Mail_Transport_Abstract
      */
     protected $_connection;
 
-
     /**
      * Constructor.
      *
-     * @param  string $host OPTIONAL (Default: 127.0.0.1)
+     * @param  string     $host   OPTIONAL (Default: 127.0.0.1)
      * @param  array|null $config OPTIONAL (Default: null)
      * @return void
      *
@@ -131,7 +123,6 @@ class Zend_Mail_Transport_Smtp extends Zend_Mail_Transport_Abstract
         $this->_config = $config;
     }
 
-
     /**
      * Class destructor to ensure all open connections are closed
      *
@@ -149,7 +140,6 @@ class Zend_Mail_Transport_Smtp extends Zend_Mail_Transport_Abstract
         }
     }
 
-
     /**
      * Sets the connection protocol instance
      *
@@ -161,7 +151,6 @@ class Zend_Mail_Transport_Smtp extends Zend_Mail_Transport_Abstract
     {
         $this->_connection = $connection;
     }
-
 
     /**
      * Gets the connection protocol instance
@@ -221,9 +210,9 @@ class Zend_Mail_Transport_Smtp extends Zend_Mail_Transport_Abstract
      * Some SMTP servers do not strip BCC headers. Most clients do it themselves as do we.
      *
      * @access  protected
-     * @param   array $headers
-     * @return  void
-     * @throws  Zend_Transport_Exception
+     * @param  array                    $headers
+     * @return void
+     * @throws Zend_Transport_Exception
      */
     protected function _prepareHeaders($headers)
     {

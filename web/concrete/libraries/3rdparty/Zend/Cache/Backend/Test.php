@@ -20,7 +20,6 @@
  * @version    $Id: Test.php 23775 2011-03-01 17:25:24Z ralph $
  */
 
-
 /**
  * @see Zend_Cache_Backend_Interface
  */
@@ -98,7 +97,7 @@ class Zend_Cache_Backend_Test extends Zend_Cache_Backend implements Zend_Cache_B
      *
      * @param  string  $id                     Cache id
      * @param  boolean $doNotTestCacheValidity If set to true, the cache validity won't be tested
-     * @return string Cached datas (or false)
+     * @return string  Cached datas (or false)
      */
     public function load($id, $doNotTestCacheValidity = false)
     {
@@ -120,11 +119,12 @@ class Zend_Cache_Backend_Test extends Zend_Cache_Backend implements Zend_Cache_B
         if ($id=='serialized2') {
             return serialize(array('headers' => array(), 'data' => 'foo'));
         }
-        if ( $id == '71769f39054f75894288e397df04e445' || $id == '615d222619fb20b527168340cebd0578'
+        if ($id == '71769f39054f75894288e397df04e445' || $id == '615d222619fb20b527168340cebd0578'
           || $id == '8a02d218a5165c467e7a5747cc6bd4b6' || $id == '648aca1366211d17cbf48e65dc570bee'
           || $id == '4a923ef02d7f997ca14d56dfeae25ea7') {
             return serialize(array('foo', 'bar'));
         }
+
         return 'foo';
     }
 
@@ -134,7 +134,7 @@ class Zend_Cache_Backend_Test extends Zend_Cache_Backend implements Zend_Cache_B
      * For this test backend only, if $id == 'false', then the method will return false
      * (123456 else)
      *
-     * @param  string $id Cache id
+     * @param  string      $id Cache id
      * @return mixed|false false (a cache is not available) or "last modified" timestamp (int) of the available cache record
      */
     public function test($id)
@@ -146,6 +146,7 @@ class Zend_Cache_Backend_Test extends Zend_Cache_Backend implements Zend_Cache_B
         if (($id=='3c439c922209e2cb0b54d6deffccd75a')) {
             return false;
         }
+
         return 123456;
     }
 
@@ -155,10 +156,10 @@ class Zend_Cache_Backend_Test extends Zend_Cache_Backend implements Zend_Cache_B
      * For this test backend only, if $id == 'false', then the method will return false
      * (true else)
      *
-     * @param  string $data             Datas to cache
-     * @param  string $id               Cache id
-     * @param  array  $tags             Array of strings, the cache record will be tagged by each string entry
-     * @param  int    $specificLifetime If != false, set a specific lifetime for this cache record (null => infinite lifetime)
+     * @param  string  $data             Datas to cache
+     * @param  string  $id               Cache id
+     * @param  array   $tags             Array of strings, the cache record will be tagged by each string entry
+     * @param  int     $specificLifetime If != false, set a specific lifetime for this cache record (null => infinite lifetime)
      * @return boolean True if no problem
      */
     public function save($data, $id, $tags = array(), $specificLifetime = false)
@@ -167,6 +168,7 @@ class Zend_Cache_Backend_Test extends Zend_Cache_Backend implements Zend_Cache_B
         if (substr($id,-5)=='false') {
             return false;
         }
+
         return true;
     }
 
@@ -176,7 +178,7 @@ class Zend_Cache_Backend_Test extends Zend_Cache_Backend implements Zend_Cache_B
      * For this test backend only, if $id == 'false', then the method will return false
      * (true else)
      *
-     * @param  string $id Cache id
+     * @param  string  $id Cache id
      * @return boolean True if no problem
      */
     public function remove($id)
@@ -185,6 +187,7 @@ class Zend_Cache_Backend_Test extends Zend_Cache_Backend implements Zend_Cache_B
         if (substr($id,-5)=='false') {
             return false;
         }
+
         return true;
     }
 
@@ -202,8 +205,8 @@ class Zend_Cache_Backend_Test extends Zend_Cache_Backend implements Zend_Cache_B
      * Zend_Cache::CLEANING_MODE_NOT_MATCHING_TAG => remove cache entries not {matching one of the given tags}
      *                                               ($tags can be an array of strings or a single string)
      *
-     * @param  string $mode Clean mode
-     * @param  array  $tags Array of tags
+     * @param  string  $mode Clean mode
+     * @param  array   $tags Array of tags
      * @return boolean True if no problem
      */
     public function clean($mode = Zend_Cache::CLEANING_MODE_ALL, $tags = array())
@@ -212,6 +215,7 @@ class Zend_Cache_Backend_Test extends Zend_Cache_Backend implements Zend_Cache_B
         if ($mode=='false') {
             return false;
         }
+
         return true;
     }
 
@@ -284,7 +288,7 @@ class Zend_Cache_Backend_Test extends Zend_Cache_Backend implements Zend_Cache_B
      *
      * In case of multiple tags, a logical AND is made between tags
      *
-     * @param array $tags array of tags
+     * @param  array $tags array of tags
      * @return array array of matching cache ids (string)
      */
     public function getIdsMatchingTags($tags = array())
@@ -301,7 +305,7 @@ class Zend_Cache_Backend_Test extends Zend_Cache_Backend implements Zend_Cache_B
      *
      * In case of multiple tags, a logical OR is made between tags
      *
-     * @param array $tags array of tags
+     * @param  array $tags array of tags
      * @return array array of not matching cache ids (string)
      */
     public function getIdsNotMatchingTags($tags = array())
@@ -318,7 +322,7 @@ class Zend_Cache_Backend_Test extends Zend_Cache_Backend implements Zend_Cache_B
      *
      * In case of multiple tags, a logical AND is made between tags
      *
-     * @param array $tags array of tags
+     * @param  array $tags array of tags
      * @return array array of any matching cache ids (string)
      */
     public function getIdsMatchingAnyTags($tags = array())
@@ -348,8 +352,8 @@ class Zend_Cache_Backend_Test extends Zend_Cache_Backend implements Zend_Cache_B
      * - tags : a string array of tags
      * - mtime : timestamp of last modification time
      *
-     * @param string $id cache id
-     * @return array array of metadatas (false if the cache id is not found)
+     * @param  string $id cache id
+     * @return array  array of metadatas (false if the cache id is not found)
      */
     public function getMetadatas($id)
     {
@@ -359,8 +363,8 @@ class Zend_Cache_Backend_Test extends Zend_Cache_Backend implements Zend_Cache_B
     /**
      * Give (if possible) an extra lifetime to the given cache id
      *
-     * @param string $id cache id
-     * @param int $extraLifetime
+     * @param  string  $id            cache id
+     * @param  int     $extraLifetime
      * @return boolean true if ok
      */
     public function touch($id, $extraLifetime)

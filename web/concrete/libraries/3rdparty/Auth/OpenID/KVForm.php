@@ -18,7 +18,8 @@
 /**
  * Container for key-value/comma-newline OpenID format and parsing
  */
-class Auth_OpenID_KVForm {
+class Auth_OpenID_KVForm
+{
     /**
      * Convert an OpenID colon/newline separated string into an
      * associative array
@@ -26,7 +27,7 @@ class Auth_OpenID_KVForm {
      * @static
      * @access private
      */
-    function toArray($kvs, $strict=false)
+    public function toArray($kvs, $strict=false)
     {
         $lines = explode("\n", $kvs);
 
@@ -78,7 +79,7 @@ class Auth_OpenID_KVForm {
      * @static
      * @access private
      */
-    function fromArray($values)
+    public function fromArray($values)
     {
         if ($values === null) {
             return null;
@@ -105,8 +106,7 @@ class Auth_OpenID_KVForm {
             }
             $serialized .= "$key:$value\n";
         }
+
         return $serialized;
     }
 }
-
-?>

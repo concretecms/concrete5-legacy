@@ -66,13 +66,14 @@ class Zend_Validate_Sitemap_Lastmod extends Zend_Validate_Abstract
      *
      * @link http://www.sitemaps.org/protocol.php#lastmoddef <lastmod>
      *
-     * @param  string  $value  value to validate
+     * @param  string  $value value to validate
      * @return boolean
      */
     public function isValid($value)
     {
         if (!is_string($value)) {
             $this->_error(self::INVALID);
+
             return false;
         }
 
@@ -80,6 +81,7 @@ class Zend_Validate_Sitemap_Lastmod extends Zend_Validate_Abstract
         $result = @preg_match(self::LASTMOD_REGEX, $value);
         if ($result != 1) {
             $this->_error(self::NOT_VALID);
+
             return false;
         }
 

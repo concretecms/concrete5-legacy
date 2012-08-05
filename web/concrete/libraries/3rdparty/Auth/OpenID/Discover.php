@@ -4,11 +4,11 @@
  * The OpenID and Yadis discovery implementation for OpenID 1.2.
  */
 
-require_once "Auth/OpenID.php";
-require_once "Auth/OpenID/Parse.php";
-require_once "Auth/OpenID/Message.php";
-require_once "Auth/Yadis/XRIRes.php";
-require_once "Auth/Yadis/Yadis.php";
+require_once 'Auth/OpenID.php';
+require_once 'Auth/OpenID/Parse.php';
+require_once 'Auth/OpenID/Message.php';
+require_once 'Auth/Yadis/XRIRes.php';
+require_once 'Auth/Yadis/Yadis.php';
 
 // XML namespace value
 define('Auth_OpenID_XMLNS_1_0', 'http://openid.net/xmlns/1.0');
@@ -35,8 +35,9 @@ function Auth_OpenID_getOpenIDTypeURIs()
 /**
  * Object representing an OpenID service endpoint.
  */
-class Auth_OpenID_ServiceEndpoint {
-    function Auth_OpenID_ServiceEndpoint()
+class Auth_OpenID_ServiceEndpoint
+{
+    public function Auth_OpenID_ServiceEndpoint()
     {
         $this->claimed_id = null;
         $this->server_url = null;
@@ -47,7 +48,7 @@ class Auth_OpenID_ServiceEndpoint {
         $this->display_identifier = null;
     }
 
-    function getDisplayIdentifier()
+    public function getDisplayIdentifier()
     {
         if ($this->display_identifier) {
             return $this->display_identifier;
@@ -65,15 +66,16 @@ class Auth_OpenID_ServiceEndpoint {
         } else {
             $no_frag = "$scheme://$host$path";
         }
+
         return $no_frag;
     }
 
-    function usesExtension($extension_uri)
+    public function usesExtension($extension_uri)
     {
         return in_array($extension_uri, $this->type_uris);
     }
 
-    function preferredNamespace()
+    public function preferredNamespace()
     {
         if (in_array(Auth_OpenID_TYPE_2_0_IDP, $this->type_uris) ||
             in_array(Auth_OpenID_TYPE_2_0, $this->type_uris)) {
@@ -94,7 +96,7 @@ class Auth_OpenID_ServiceEndpoint {
      * @return all types that are in both in type_uris and
      * $this->type_uris
      */
-    function matchTypes($type_uris)
+    public function matchTypes($type_uris)
     {
         $result = array();
         foreach ($type_uris as $test_uri) {
@@ -106,7 +108,7 @@ class Auth_OpenID_ServiceEndpoint {
         return $result;
     }
 
-    function supportsType($type_uri)
+    public function supportsType($type_uri)
     {
         // Does this endpoint support this type?
         return ((in_array($type_uri, $this->type_uris)) ||
@@ -114,27 +116,28 @@ class Auth_OpenID_ServiceEndpoint {
                  $this->isOPIdentifier()));
     }
 
-    function compatibilityMode()
+    public function compatibilityMode()
     {
         return $this->preferredNamespace() != Auth_OpenID_OPENID2_NS;
     }
 
-    function isOPIdentifier()
+    public function isOPIdentifier()
     {
         return in_array(Auth_OpenID_TYPE_2_0_IDP, $this->type_uris);
     }
 
-    function fromOPEndpointURL($op_endpoint_url)
+    public function fromOPEndpointURL($op_endpoint_url)
     {
         // Construct an OP-Identifier OpenIDServiceEndpoint object for
         // a given OP Endpoint URL
         $obj = new Auth_OpenID_ServiceEndpoint();
         $obj->server_url = $op_endpoint_url;
         $obj->type_uris = array(Auth_OpenID_TYPE_2_0_IDP);
+
         return $obj;
     }
 
-    function parseService($yadis_url, $uri, $type_uris, $service_element)
+    public function parseService($yadis_url, $uri, $type_uris, $service_element)
     {
         // Set the state of this object based on the contents of the
         // service element.  Return true if successful, false if not
@@ -156,7 +159,7 @@ class Auth_OpenID_ServiceEndpoint {
         return true;
     }
 
-    function getLocalID()
+    public function getLocalID()
     {
         // Return the identifier that should be sent as the
         // openid.identity_url parameter to the server.
@@ -177,13 +180,14 @@ class Auth_OpenID_ServiceEndpoint {
      * @return array of Auth_OpenID_ServiceEndpoint or null if the
      * document cannot be parsed.
      */
-    function fromXRDS($uri, $xrds_text)
+    public function fromXRDS($uri, $xrds_text)
     {
         $xrds =& Auth_Yadis_XRDS::parseXRDS($xrds_text);
 
         if ($xrds) {
             $yadis_services =
               $xrds->services(array('filter_MatchesAnyOpenIDType'));
+
             return Auth_OpenID_makeOpenIDEndpoints($uri, $yadis_services);
         }
 
@@ -197,7 +201,7 @@ class Auth_OpenID_ServiceEndpoint {
      * @return array of Auth_OpenID_ServiceEndpoint or null if
      * endpoints cannot be created.
      */
-    function fromDiscoveryResult($discoveryResult)
+    public function fromDiscoveryResult($discoveryResult)
     {
         if ($discoveryResult->isXRDS()) {
             return Auth_OpenID_ServiceEndpoint::fromXRDS(
@@ -210,7 +214,7 @@ class Auth_OpenID_ServiceEndpoint {
         }
     }
 
-    function fromHTML($uri, $html)
+    public function fromHTML($uri, $html)
     {
         $discovery_types = array(
                                  array(Auth_OpenID_TYPE_2_0,
@@ -245,7 +249,7 @@ class Auth_OpenID_ServiceEndpoint {
         return $services;
     }
 
-    function copy()
+    public function copy()
     {
         $x = new Auth_OpenID_ServiceEndpoint();
 
@@ -296,7 +300,7 @@ function Auth_OpenID_findOPLocalIdentifier($service, $type_uris)
 
             if ($local_id === null) {
                 $local_id = $content;
-            } else if ($local_id != $content) {
+            } elseif ($local_id != $content) {
                 return false;
             }
         }
@@ -468,6 +472,7 @@ function Auth_OpenID_discoverWithYadis($uri, &$fetcher,
 function Auth_OpenID_discoverURI($uri, &$fetcher)
 {
     $uri = Auth_OpenID::normalizeUrl($uri);
+
     return Auth_OpenID_discoverWithYadis($uri, $fetcher);
 }
 
@@ -544,5 +549,3 @@ function Auth_OpenID_discover($uri, &$fetcher)
 
     return $result;
 }
-
-?>

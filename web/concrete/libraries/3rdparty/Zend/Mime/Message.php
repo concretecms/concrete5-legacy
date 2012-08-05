@@ -19,7 +19,6 @@
  * @version    $Id: Message.php 23775 2011-03-01 17:25:24Z ralph $
  */
 
-
 /**
  * Zend_Mime
  */
@@ -29,7 +28,6 @@ require_once 'Zend/Mime.php';
  * Zend_Mime_Part
  */
 require_once 'Zend/Mime/Part.php';
-
 
 /**
  * @category   Zend
@@ -129,7 +127,7 @@ class Zend_Mime_Message
      * object set by this call will be used. Otherwise, a new Zend_Mime object
      * is generated and used.
      *
-     * @param string $EOL EOL string; defaults to {@link Zend_Mime::LINEEND}
+     * @param  string $EOL EOL string; defaults to {@link Zend_Mime::LINEEND}
      * @return string
      */
     public function generateMessage($EOL = Zend_Mime::LINEEND)
@@ -160,7 +158,7 @@ class Zend_Mime_Message
     /**
      * Get the headers of a given part as an array
      *
-     * @param int $partnum
+     * @param  int   $partnum
      * @return array
      */
     public function getPartHeadersArray($partnum)
@@ -171,7 +169,7 @@ class Zend_Mime_Message
     /**
      * Get the headers of a given part as a string
      *
-     * @param int $partnum
+     * @param  int    $partnum
      * @return string
      */
     public function getPartHeaders($partnum, $EOL = Zend_Mime::LINEEND)
@@ -182,7 +180,7 @@ class Zend_Mime_Message
     /**
      * Get the (encoded) content of a given part as a string
      *
-     * @param int $partnum
+     * @param  int    $partnum
      * @return string
      */
     public function getPartContent($partnum, $EOL = Zend_Mime::LINEEND)
@@ -195,8 +193,8 @@ class Zend_Mime_Message
      *
      * Parts consist of the header and the body of each MIME part.
      *
-     * @param string $body
-     * @param string $boundary
+     * @param  string $body
+     * @param  string $boundary
      * @return array
      */
     protected static function _disassembleMime($body, $boundary)
@@ -228,6 +226,7 @@ class Zend_Mime_Message
 
         // the remaining part also needs to be parsed:
         $res[] = substr($body, $start, $p-$start);
+
         return $res;
     }
 
@@ -235,9 +234,9 @@ class Zend_Mime_Message
      * Decodes a MIME encoded string and returns a Zend_Mime_Message object with
      * all the MIME parts set according to the given string
      *
-     * @param string $message
-     * @param string $boundary
-     * @param string $EOL EOL string; defaults to {@link Zend_Mime::LINEEND}
+     * @param  string            $message
+     * @param  string            $boundary
+     * @param  string            $EOL      EOL string; defaults to {@link Zend_Mime::LINEEND}
      * @return Zend_Mime_Message
      */
     public static function createFromMessage($message, $boundary, $EOL = Zend_Mime::LINEEND)
@@ -253,7 +252,7 @@ class Zend_Mime_Message
                 /**
                  * @todo check for characterset and filename
                  */
-                switch(strtolower($key)) {
+                switch (strtolower($key)) {
                     case 'content-type':
                         $newPart->type = $value;
                         break;
@@ -281,6 +280,7 @@ class Zend_Mime_Message
             }
             $res->addPart($newPart);
         }
+
         return $res;
     }
 }

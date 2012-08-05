@@ -343,7 +343,7 @@
     <field name="uID" type="I" size="10">
       <UNSIGNED/>
     </field>
-  </table> 
+  </table>
   <table name="CollectionAttributeValues">
     <field name="cID" type="I" size="10">
       <KEY/>
@@ -493,44 +493,44 @@
       <UNSIGNED/>
     </field>
   </table>
-  
-  
+
+
   <table name="CollectionVersionAreaLayouts">
     <field name="cvalID" type="I" size="10">
 	  <AUTOINCREMENT/>
-      <KEY/> 
+      <KEY/>
       <UNSIGNED/>
-    </field>  
-    <field name="cID" type="I" size="10"> 
+    </field>
+    <field name="cID" type="I" size="10">
       <DEFAULT value="0"/>
       <UNSIGNED/>
     </field>
-    <field name="cvID" type="I" size="10"> 
+    <field name="cvID" type="I" size="10">
       <DEFAULT value="0"/>
       <UNSIGNED/>
     </field>
-    <field name="arHandle" type="C" size="255"> 
+    <field name="arHandle" type="C" size="255">
     </field>
     <field name="layoutID" type="I" size="10">
       <NOTNULL/>
       <DEFAULT value="0"/>
       <UNSIGNED/>
     </field>
-    <field name="position" type="I" size="10"> 
+    <field name="position" type="I" size="10">
       <DEFAULT value="1000"/>
-    </field>	
-    <field name="areaNameNumber" type="I" size="10"> 
+    </field>
+    <field name="areaNameNumber" type="I" size="10">
       <DEFAULT value="0"/>
       <UNSIGNED/>
-    </field> 
-	<index name="areaLayoutsIndex"> 
+    </field>
+	<index name="areaLayoutsIndex">
 	  <col>cID</col>
-      <col>cvID</col> 
+      <col>cvID</col>
       <col>arHandle</col>
-    </index> 
-  </table>  
-  
-  
+    </index>
+  </table>
+
+
   <table name="CollectionVersionAreaStyles">
     <field name="cID" type="I" size="10">
       <KEY/>
@@ -551,7 +551,7 @@
       <UNSIGNED/>
     </field>
   </table>
-  
+
   <table name="CollectionVersions">
     <field name="cID" type="I" size="10">
       <KEY/>
@@ -718,13 +718,13 @@
       <UNSIGNED/>
     </field>
   </table>
-  
+
   <table name="DownloadStatistics">
     <field name="dsID" type="I" size="10">
       <KEY/>
       <AUTOINCREMENT/>
       <UNSIGNED/>
-    </field> 
+    </field>
     <field name="fID" type="I" size="10">
       <NOTNULL/>
       <UNSIGNED />
@@ -744,8 +744,8 @@
     <field name="timestamp" type="T">
       <NOTNULL/>
       <DEFTIMESTAMP/>
-    </field>		
-  </table>  
+    </field>
+  </table>
   <table name="FileAttributeValues">
     <field name="fID" type="I" size="10">
       <KEY/>
@@ -788,7 +788,7 @@
       <KEY/>
     </field>
   </table>
-  
+
    <table name="CustomStylePresets">
     <field name="cspID" type="I" size="10">
       <KEY/>
@@ -1164,60 +1164,60 @@
       <DEFAULT value="0"/>
     </field>
   </table>
-  
+
   <table name="Layouts">
 		<field name="layoutID" type="I">
 			<key />
 			<unsigned />
 			<AUTOINCREMENT/>
-		</field> 
-		
+		</field>
+
 		<field name="layout_rows" type="i" size="5">
 			<NOTNULL/>
 			<DEFAULT value="3"/>
 		</field>
-		
+
 		<field name="layout_columns" type="i" size="3">
 			<NOTNULL/>
 			<DEFAULT value="3"/>
 		</field>
-		
+
 		<field name="spacing" type="i" size="3">
 			<NOTNULL/>
 			<DEFAULT value="3"/>
-		</field>		
-		
+		</field>
+
 		<field name="breakpoints" type="C" size="255">
 			<DEFAULT value=""/>
 			<NOTNULL/>
 		</field>
-		
+
 		<field name="locked" type="I1" size="1">
 		  <NOTNULL/>
 		  <DEFAULT value="0"/>
-		</field> 
-								
+		</field>
+
   </table>
-  
+
   <table name="LayoutPresets">
 		<field name="lpID" type="I">
 			<key />
 			<unsigned />
 			<AUTOINCREMENT/>
-		</field> 
+		</field>
 		<field name="lpName" type="C" size="128">
 		  <NOTNULL/>
-		</field> 
+		</field>
 		<field name="layoutID" type="I" size="10">
 		  <NOTNULL/>
 		  <DEFAULT value="0"/>
-		  <UNSIGNED/>			
-		</field> 
+		  <UNSIGNED/>
+		</field>
 		<index name="layoutID">
 		  <UNIQUE/>
 		  <col>layoutID</col>
-		</index>				
-  </table>  
+		</index>
+  </table>
 <table name="SystemAntispamLibraries">
     <field name="saslHandle" type="C" size="64">
       <KEY/>
@@ -1247,7 +1247,7 @@
       <DEFAULT value="0"/>
       <UNSIGNED/>
     </field>
-  </table>  
+  </table>
 <table name="SystemNotifications">
     <field name="snID" type="I" size="10">
       <KEY/>
@@ -1275,7 +1275,7 @@
     <field name="snTitle" type="C" size="255"/>
     <field name="snDescription" type="X"/>
     <field name="snBody" type="X"/>
-  </table>  
+  </table>
   <table name="Packages">
     <field name="pkgID" type="I" size="10">
       <KEY/>
@@ -1865,7 +1865,7 @@
     <index name="ipTo">
       <col>ipTo</col>
     </index>
-  </table>  
+  </table>
   <table name="UserGroups">
     <field name="uID" type="I" size="10">
       <KEY/>
@@ -1888,15 +1888,15 @@
     <index name="gID">
       <col>gID</col>
     </index>
-    
+
   </table>
   <table name="UserValidationHashes">
     <field name="uvhID" type="I" size="10">
       <KEY/>
       <AUTOINCREMENT/>
       <UNSIGNED/>
-    </field>  
-    <field name="uID" type="I" size="10"> 
+    </field>
+    <field name="uID" type="I" size="10">
       <UNSIGNED/>
     </field>
     <field name="uHash" type="C" size="64">
@@ -1906,17 +1906,17 @@
       <NOTNULL/>
       <DEFAULT value="0"/>
       <UNSIGNED/>
-    </field>  	
+    </field>
     <field name="uDateGenerated" type="I" size="10">
       <NOTNULL/>
       <DEFAULT value="0"/>
       <UNSIGNED/>
-    </field>  
+    </field>
     <field name="uDateRedeemed" type="I" size="10">
       <NOTNULL/>
       <DEFAULT value="0"/>
       <UNSIGNED/>
-    </field>  
+    </field>
   </table>
   <table name="Logs">
   	<field name="logID" type="I" size="10">
@@ -2080,27 +2080,27 @@
       <col>uName</col>
     </index>
   </table>
-  
+
   <table name="UsersFriends">
     <field name="ufID" type="I" size="10">
       <KEY/>
       <AUTOINCREMENT/>
       <UNSIGNED/>
-    </field>   
-    <field name="uID" type="I" size="10"> 
+    </field>
+    <field name="uID" type="I" size="10">
       <UNSIGNED/>
-    </field> 
+    </field>
     <field name="status" type="C" size="64">
       <NOTNULL/>
-    </field> 
+    </field>
     <field name="friendUID" type="I" size="10">
       <UNSIGNED/>
-    </field> 
+    </field>
     <field name="uDateAdded" type="T">
       <NOTNULL/>
       <DEFAULT value="0000-00-00 00:00:00"/>
-    </field>		 
-  </table>   
+    </field>
+  </table>
 
   <table name="SignupRequests">
     <field name="id" type="I" size="11">
@@ -2119,8 +2119,8 @@
     <index name="index_ipFrom">
       <col>ipFrom</col>
     </index>
-  </table>  
-  
+  </table>
+
   <table name="FileSets">
     <field name="fsID" type="I" size="10">
       <KEY/>
@@ -2142,8 +2142,8 @@
     <index name="fsOverrideGlobalPermissions">
       <col>fsOverrideGlobalPermissions</col>
     </index>
-  </table>    
-  
+  </table>
+
   <table name="FileSetSavedSearches">
     <field name="fsID" type="I" size="10">
       <KEY/>
@@ -2153,13 +2153,13 @@
     <field name="fsSearchRequest" type="X"/>
     <field name="fsResultColumns" type="X"/>
   </table>
-  
+
   <table name="FileSetFiles">
     <field name="fsfID" type="I" size="10">
       <KEY/>
       <AUTOINCREMENT/>
       <UNSIGNED/>
-    </field>  
+    </field>
     <field name="fID" type="I" size="10">
       <UNSIGNED/>
       <NOTNULL/>
@@ -2288,7 +2288,7 @@
       <NOTNULL/>
       <DEFAULT value="0"/>
     </field>
-  </table> 
+  </table>
   <table name="atTextareaSettings">
     <field name="akID" type="I" size="10">
       <KEY/>

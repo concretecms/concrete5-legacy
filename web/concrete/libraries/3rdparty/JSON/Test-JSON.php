@@ -22,13 +22,15 @@
     require_once 'PHPUnit.php';
     require_once 'JSON.php';
 
-    class Services_JSON_EncDec_TestCase extends PHPUnit_TestCase {
-
-        function Services_JSON_EncDec_TestCase($name) {
+    class Services_JSON_EncDec_TestCase extends PHPUnit_TestCase
+    {
+        function Services_JSON_EncDec_TestCase($name)
+        {
             $this->PHPUnit_TestCase($name);
         }
 
-        function setUp() {
+        function setUp()
+        {
             $this->json = new Services_JSON();
 
             $obj = new stdClass();
@@ -154,18 +156,20 @@
         }
     }
 
-    class Services_JSON_AssocArray_TestCase extends PHPUnit_TestCase {
-
-        function Services_JSON_AssocArray_TestCase($name) {
+    class Services_JSON_AssocArray_TestCase extends PHPUnit_TestCase
+    {
+        function Services_JSON_AssocArray_TestCase($name)
+        {
             $this->PHPUnit_TestCase($name);
         }
 
-        function setUp() {
+        function setUp()
+        {
             $this->json_l = new Services_JSON(SERVICES_JSON_LOOSE_TYPE);
             $this->json_s = new Services_JSON();
 
             $this->arr = array('car1'=> array('color'=> 'tan', 'model' => 'sedan'),
-            	'car2' => array('color' => 'red', 'model' => 'sports'));
+                'car2' => array('color' => 'red', 'model' => 'sports'));
             $this->arr_jo = '{"car1":{"color":"tan","model":"sedan"},"car2":{"color":"red","model":"sports"}}';
             $this->arr_d = 'associative array with nested associative arrays';
 
@@ -201,21 +205,23 @@
         {
             // these tests motivated by a bug in which strings that end
             // with backslashes followed by quotes were incorrectly decoded.
-            
-            foreach(array('\\"', '\\\\"', '\\"\\"', '\\""\\""', '\\\\"\\\\"') as $v) {
+
+            foreach (array('\\"', '\\\\"', '\\"\\"', '\\""\\""', '\\\\"\\\\"') as $v) {
                 $this->assertEquals(array($v), $this->json_l->decode($this->json_l->encode(array($v))));
                 $this->assertEquals(array('a' => $v), $this->json_l->decode($this->json_l->encode(array('a' => $v))));
             }
         }
     }
 
-    class Services_JSON_NestedArray_TestCase extends PHPUnit_TestCase {
-
-        function Services_JSON_NestedArray_TestCase($name) {
+    class Services_JSON_NestedArray_TestCase extends PHPUnit_TestCase
+    {
+        function Services_JSON_NestedArray_TestCase($name)
+        {
             $this->PHPUnit_TestCase($name);
         }
 
-        function setUp() {
+        function setUp()
+        {
             $this->json = new Services_JSON(SERVICES_JSON_LOOSE_TYPE);
 
             $this->str1 = '[{"this":"that"}]';
@@ -286,13 +292,15 @@
         }
     }
 
-    class Services_JSON_Object_TestCase extends PHPUnit_TestCase {
-
-        function Services_JSON_Object_TestCase($name) {
+    class Services_JSON_Object_TestCase extends PHPUnit_TestCase
+    {
+        function Services_JSON_Object_TestCase($name)
+        {
             $this->PHPUnit_TestCase($name);
         }
 
-        function setUp() {
+        function setUp()
+        {
             $this->json_l = new Services_JSON(SERVICES_JSON_LOOSE_TYPE);
             $this->json_s = new Services_JSON();
 
@@ -325,13 +333,15 @@
         }
     }
 
-    class Services_JSON_Spaces_Comments_TestCase extends PHPUnit_TestCase {
-
-        function Services_JSON_Spaces_Comments_TestCase($name) {
+    class Services_JSON_Spaces_Comments_TestCase extends PHPUnit_TestCase
+    {
+        function Services_JSON_Spaces_Comments_TestCase($name)
+        {
             $this->PHPUnit_TestCase($name);
         }
 
-        function setUp() {
+        function setUp()
+        {
             $this->json = new Services_JSON(SERVICES_JSON_LOOSE_TYPE);
 
             $this->obj_j = '{"a_string":"\"he\":llo}:{world","an_array":[1,2,3],"obj":{"a_number":123}}';
@@ -373,13 +383,15 @@
         }
     }
 
-    class Services_JSON_Empties_TestCase extends PHPUnit_TestCase {
-
-        function Services_JSON_Empties_TestCase($name) {
+    class Services_JSON_Empties_TestCase extends PHPUnit_TestCase
+    {
+        function Services_JSON_Empties_TestCase($name)
+        {
             $this->PHPUnit_TestCase($name);
         }
 
-        function setUp() {
+        function setUp()
+        {
             $this->json_l = new Services_JSON(SERVICES_JSON_LOOSE_TYPE);
             $this->json_s = new Services_JSON();
 
@@ -415,13 +427,15 @@
         }
     }
 
-    class Services_JSON_UnquotedKeys_TestCase extends PHPUnit_TestCase {
-
-        function Services_JSON_UnquotedKeys_TestCase($name) {
+    class Services_JSON_UnquotedKeys_TestCase extends PHPUnit_TestCase
+    {
+        function Services_JSON_UnquotedKeys_TestCase($name)
+        {
             $this->PHPUnit_TestCase($name);
         }
 
-        function setUp() {
+        function setUp()
+        {
             $this->json = new Services_JSON(SERVICES_JSON_LOOSE_TYPE);
 
             $this->arn = array(0=> array(0=> 'tan', 'model' => 'sedan'), 1 => array(0 => 'red', 'model' => 'sports'));
@@ -443,13 +457,15 @@
         }
     }
 
-    class Services_JSON_ErrorSuppression_TestCase extends PHPUnit_TestCase {
-
-        function Services_JSON_ErrorSuppression_TestCase($name) {
+    class Services_JSON_ErrorSuppression_TestCase extends PHPUnit_TestCase
+    {
+        function Services_JSON_ErrorSuppression_TestCase($name)
+        {
             $this->PHPUnit_TestCase($name);
         }
 
-        function setUp() {
+        function setUp()
+        {
             $this->json = new Services_JSON();
             $this->json_ = new Services_JSON(SERVICES_JSON_SUPPRESS_ERRORS);
 
@@ -517,5 +533,3 @@
     $suite  = new PHPUnit_TestSuite('Services_JSON_ErrorSuppression_TestCase');
     $result = PHPUnit::run($suite);
     echo $result->toString();
-
-?>

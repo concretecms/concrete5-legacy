@@ -17,7 +17,7 @@
 /**
  * Interface import
  */
-require_once "Auth/Yadis/HTTPFetcher.php";
+require_once 'Auth/Yadis/HTTPFetcher.php';
 
 /**
  * This class implements a plain, hand-built socket-based fetcher
@@ -25,16 +25,17 @@ require_once "Auth/Yadis/HTTPFetcher.php";
  *
  * @package OpenID
  */
-class Auth_Yadis_PlainHTTPFetcher extends Auth_Yadis_HTTPFetcher {
+class Auth_Yadis_PlainHTTPFetcher extends Auth_Yadis_HTTPFetcher
+{
     /**
      * Does this fetcher support SSL URLs?
      */
-    function supportsSSL()
+    public function supportsSSL()
     {
         return function_exists('openssl_open');
     }
 
-    function get($url, $extra_headers = null)
+    public function get($url, $extra_headers = null)
     {
         if (!$this->canFetchURL($url)) {
             return null;
@@ -150,7 +151,7 @@ class Auth_Yadis_PlainHTTPFetcher extends Auth_Yadis_HTTPFetcher {
         return new Auth_Yadis_HTTPResponse($url, $code, $new_headers, $body);
     }
 
-    function post($url, $body, $extra_headers = null)
+    public function post($url, $body, $extra_headers = null)
     {
         if (!$this->canFetchURL($url)) {
             return null;
@@ -247,5 +248,3 @@ class Auth_Yadis_PlainHTTPFetcher extends Auth_Yadis_HTTPFetcher {
                                            $new_headers, $response_body);
     }
 }
-
-?>

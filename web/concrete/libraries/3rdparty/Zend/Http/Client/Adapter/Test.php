@@ -88,7 +88,7 @@ class Zend_Http_Client_Adapter_Test implements Zend_Http_Client_Adapter_Interfac
     /**
      * Set the nextRequestWillFail flag
      *
-     * @param boolean $flag
+     * @param  boolean                       $flag
      * @return Zend_Http_Client_Adapter_Test
      */
     public function setNextRequestWillFail($flag)
@@ -124,10 +124,10 @@ class Zend_Http_Client_Adapter_Test implements Zend_Http_Client_Adapter_Interfac
     /**
      * Connect to the remote server
      *
-     * @param string  $host
-     * @param int     $port
-     * @param boolean $secure
-     * @param int     $timeout
+     * @param  string                             $host
+     * @param  int                                $port
+     * @param  boolean                            $secure
+     * @param  int                                $timeout
      * @throws Zend_Http_Client_Adapter_Exception
      */
     public function connect($host, $port = 80, $secure = false)
@@ -142,12 +142,12 @@ class Zend_Http_Client_Adapter_Test implements Zend_Http_Client_Adapter_Interfac
     /**
      * Send request to the remote server
      *
-     * @param string        $method
-     * @param Zend_Uri_Http $uri
-     * @param string        $http_ver
-     * @param array         $headers
-     * @param string        $body
-     * @return string Request as string
+     * @param  string        $method
+     * @param  Zend_Uri_Http $uri
+     * @param  string        $http_ver
+     * @param  array         $headers
+     * @param  string        $body
+     * @return string        Request as string
      */
     public function write($method, $uri, $http_ver = '1.1', $headers = array(), $body = '')
     {
@@ -167,7 +167,6 @@ class Zend_Http_Client_Adapter_Test implements Zend_Http_Client_Adapter_Interfac
         $request .= "\r\n" . $body;
 
         // Do nothing - just return the request as string
-
         return $request;
     }
 
@@ -181,6 +180,7 @@ class Zend_Http_Client_Adapter_Test implements Zend_Http_Client_Adapter_Interfac
         if ($this->responseIndex >= count($this->responses)) {
             $this->responseIndex = 0;
         }
+
         return $this->responses[$this->responseIndex++];
     }
 
@@ -202,7 +202,7 @@ class Zend_Http_Client_Adapter_Test implements Zend_Http_Client_Adapter_Interfac
             $response = $response->asString("\r\n");
         }
 
-        $this->responses = (array)$response;
+        $this->responses = (array) $response;
         $this->responseIndex = 0;
     }
 

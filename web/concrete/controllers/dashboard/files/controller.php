@@ -1,12 +1,12 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
-class DashboardFilesController extends Controller {
+class DashboardFilesController extends Controller
+{
+    public function view()
+    {
+        $this->redirect('/dashboard/files/search');
+    }
 
-	public function view() {
-		$this->redirect('/dashboard/files/search');
-	}
-
-	
 }
 
 ?>

@@ -93,7 +93,7 @@ class Zend_Validate_File_Upload extends Zend_Validate_Abstract
     /**
      * Returns the array of set files
      *
-     * @param  string $files (Optional) The file to return in detail
+     * @param  string                  $files (Optional) The file to return in detail
      * @return array
      * @throws Zend_Validate_Exception If file is not found
      */
@@ -125,7 +125,7 @@ class Zend_Validate_File_Upload extends Zend_Validate_Abstract
     /**
      * Sets the files to be checked
      *
-     * @param  array $files The files to check in syntax of Zend_File_Transfer
+     * @param  array                     $files The files to check in syntax of Zend_File_Transfer
      * @return Zend_Validate_File_Upload Provides a fluent interface
      */
     public function setFiles($files = array())
@@ -141,7 +141,7 @@ class Zend_Validate_File_Upload extends Zend_Validate_Abstract
             $this->_files = array();
         }
 
-        foreach($this->_files as $file => $content) {
+        foreach ($this->_files as $file => $content) {
             if (!isset($content['error'])) {
                 unset($this->_files[$file]);
             }
@@ -155,7 +155,7 @@ class Zend_Validate_File_Upload extends Zend_Validate_Abstract
      *
      * Returns true if and only if the file was uploaded without errors
      *
-     * @param  string $value Single file to check for upload errors, when giving null the $_FILES array
+     * @param string $value Single file to check for upload errors, when giving null the $_FILES array
      *                       from initialization will be used
      * @return boolean
      */
@@ -182,7 +182,7 @@ class Zend_Validate_File_Upload extends Zend_Validate_Abstract
 
         foreach ($files as $file => $content) {
             $this->_value = $file;
-            switch($content['error']) {
+            switch ($content['error']) {
                 case 0:
                     if (!is_uploaded_file($content['tmp_name'])) {
                         $this->_throw($file, self::ATTACK);
@@ -246,6 +246,7 @@ class Zend_Validate_File_Upload extends Zend_Validate_Abstract
         }
 
         $this->_error($errorType);
+
         return false;
     }
 }

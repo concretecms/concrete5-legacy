@@ -1,14 +1,14 @@
-<?
+<?php
 $co = Loader::helper('lists/countries');
 $countries = array_merge(array('' => t('Choose Country')), $co->getCountries());
 
 if (isset($_POST['akCustomCountries'])) {
-	$akCustomCountries = $_POST['akCustomCountries'];
-} else if (!is_array($akCustomCountries)) {
-	$akCustomCountries = array();
+    $akCustomCountries = $_POST['akCustomCountries'];
+} elseif (!is_array($akCustomCountries)) {
+    $akCustomCountries = array();
 }
 if (isset($_POST['akHasCustomCountries'])) {
-	$akHasCustomCountries = $_POST['akHasCustomCountries'];
+    $akHasCustomCountries = $_POST['akHasCustomCountries'];
 }
 
 ?>
@@ -28,12 +28,12 @@ if (isset($_POST['akHasCustomCountries'])) {
 <div class="clearfix">
 <label></label>
 <div class="input">
-	<select id="akCustomCountries" name="akCustomCountries[]" multiple size="7" disabled="disabled">
-		<? foreach ($countries as $key=>$val) { ?>
-			<? if (empty($key) || empty($val)) continue; ?>
-			<option <?=(in_array($key, $akCustomCountries) || $akHasCustomCountries == 0 ?'selected ':'')?>value="<?=$key?>"><?=$val?></option>
-		<? } ?>
-	</select>
+    <select id="akCustomCountries" name="akCustomCountries[]" multiple size="7" disabled="disabled">
+        <?php foreach ($countries as $key=>$val) { ?>
+            <?php if (empty($key) || empty($val)) continue; ?>
+            <option <?=(in_array($key, $akCustomCountries) || $akHasCustomCountries == 0 ?'selected ':'')?>value="<?=$key?>"><?=$val?></option>
+        <?php } ?>
+    </select>
 </div>
 </div>
 

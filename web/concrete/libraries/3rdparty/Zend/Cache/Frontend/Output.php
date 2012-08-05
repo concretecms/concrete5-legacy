@@ -20,12 +20,10 @@
  * @version    $Id: Output.php 23775 2011-03-01 17:25:24Z ralph $
  */
 
-
 /**
  * @see Zend_Cache_Core
  */
 require_once 'Zend/Cache/Core.php';
-
 
 /**
  * @package    Zend_Cache
@@ -56,14 +54,15 @@ class Zend_Cache_Frontend_Output extends Zend_Cache_Core
      * @param  string  $id                     Cache id
      * @param  boolean $doNotTestCacheValidity If set to true, the cache validity won't be tested
      * @param  boolean $echoData               If set to true, datas are sent to the browser if the cache is hit (simpy returned else)
-     * @return mixed True if the cache is hit (false else) with $echoData=true (default) ; string else (datas)
+     * @return mixed   True if the cache is hit (false else) with $echoData=true (default) ; string else (datas)
      */
     public function start($id, $doNotTestCacheValidity = false, $echoData = true)
     {
         $data = $this->load($id, $doNotTestCacheValidity);
         if ($data !== false) {
-            if ( $echoData ) {
+            if ($echoData) {
                 echo($data);
+
                 return true;
             } else {
                 return $data;
@@ -72,6 +71,7 @@ class Zend_Cache_Frontend_Output extends Zend_Cache_Core
         ob_start();
         ob_implicit_flush(false);
         $this->_idStack[] = $id;
+
         return false;
     }
 

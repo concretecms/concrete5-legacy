@@ -19,7 +19,6 @@
  * @version    $Id: Cache.php 23775 2011-03-01 17:25:24Z ralph $
  */
 
-
 /**
  * @package    Zend_Cache
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
@@ -78,13 +77,13 @@ abstract class Zend_Cache
     /**
      * Factory
      *
-     * @param mixed  $frontend        frontend name (string) or Zend_Cache_Frontend_ object
-     * @param mixed  $backend         backend name (string) or Zend_Cache_Backend_ object
-     * @param array  $frontendOptions associative array of options for the corresponding frontend constructor
-     * @param array  $backendOptions  associative array of options for the corresponding backend constructor
-     * @param boolean $customFrontendNaming if true, the frontend argument is used as a complete class name ; if false, the frontend argument is used as the end of "Zend_Cache_Frontend_[...]" class name
-     * @param boolean $customBackendNaming if true, the backend argument is used as a complete class name ; if false, the backend argument is used as the end of "Zend_Cache_Backend_[...]" class name
-     * @param boolean $autoload if true, there will no require_once for backend and frontend (useful only for custom backends/frontends)
+     * @param  mixed                               $frontend             frontend name (string) or Zend_Cache_Frontend_ object
+     * @param  mixed                               $backend              backend name (string) or Zend_Cache_Backend_ object
+     * @param  array                               $frontendOptions      associative array of options for the corresponding frontend constructor
+     * @param  array                               $backendOptions       associative array of options for the corresponding backend constructor
+     * @param  boolean                             $customFrontendNaming if true, the frontend argument is used as a complete class name ; if false, the frontend argument is used as the end of "Zend_Cache_Frontend_[...]" class name
+     * @param  boolean                             $customBackendNaming  if true, the backend argument is used as a complete class name ; if false, the backend argument is used as the end of "Zend_Cache_Backend_[...]" class name
+     * @param  boolean                             $autoload             if true, there will no require_once for backend and frontend (useful only for custom backends/frontends)
      * @throws Zend_Cache_Exception
      * @return Zend_Cache_Core|Zend_Cache_Frontend
      */
@@ -109,16 +108,17 @@ abstract class Zend_Cache
             }
         }
         $frontendObject->setBackend($backendObject);
+
         return $frontendObject;
     }
 
     /**
      * Backend Constructor
      *
-     * @param string  $backend
-     * @param array   $backendOptions
-     * @param boolean $customBackendNaming
-     * @param boolean $autoload
+     * @param  string             $backend
+     * @param  array              $backendOptions
+     * @param  boolean            $customBackendNaming
+     * @param  boolean            $autoload
      * @return Zend_Cache_Backend
      */
     public static function _makeBackend($backend, $backendOptions, $customBackendNaming = false, $autoload = false)
@@ -150,16 +150,17 @@ abstract class Zend_Cache
                 require_once $file;
             }
         }
+
         return new $backendClass($backendOptions);
     }
 
     /**
      * Frontend Constructor
      *
-     * @param string  $frontend
-     * @param array   $frontendOptions
-     * @param boolean $customFrontendNaming
-     * @param boolean $autoload
+     * @param  string                              $frontend
+     * @param  array                               $frontendOptions
+     * @param  boolean                             $customFrontendNaming
+     * @param  boolean                             $autoload
      * @return Zend_Cache_Core|Zend_Cache_Frontend
      */
     public static function _makeFrontend($frontend, $frontendOptions = array(), $customFrontendNaming = false, $autoload = false)
@@ -192,6 +193,7 @@ abstract class Zend_Cache
                 require_once $file;
             }
         }
+
         return new $frontendClass($frontendOptions);
     }
 
@@ -199,7 +201,7 @@ abstract class Zend_Cache
      * Throw an exception
      *
      * Note : for perf reasons, the "load" of Zend/Cache/Exception is dynamic
-     * @param  string $msg  Message for the exception
+     * @param  string               $msg Message for the exception
      * @throws Zend_Cache_Exception
      */
     public static function throwException($msg, Exception $e = null)
@@ -212,7 +214,7 @@ abstract class Zend_Cache
     /**
      * Normalize frontend and backend names to allow multiple words TitleCased
      *
-     * @param  string $name  Name to normalize
+     * @param  string $name Name to normalize
      * @return string
      */
     protected static function _normalizeName($name)
@@ -235,7 +237,7 @@ abstract class Zend_Cache
      *
      * Note : this method comes from Zend_Loader (see #ZF-2891 for details)
      *
-     * @param string   $filename
+     * @param  string  $filename
      * @return boolean
      */
     private static function _isReadable($filename)
@@ -244,6 +246,7 @@ abstract class Zend_Cache
             return false;
         }
         @fclose($fh);
+
         return true;
     }
 

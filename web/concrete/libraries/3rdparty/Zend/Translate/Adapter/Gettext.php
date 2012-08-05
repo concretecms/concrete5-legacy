@@ -31,7 +31,8 @@ require_once 'Zend/Translate/Adapter.php';
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Translate_Adapter_Gettext extends Zend_Translate_Adapter {
+class Zend_Translate_Adapter_Gettext extends Zend_Translate_Adapter
+{
     // Internal variables
     private $_bigEndian   = false;
     private $_file        = false;
@@ -41,7 +42,7 @@ class Zend_Translate_Adapter_Gettext extends Zend_Translate_Adapter {
     /**
      * Read values from the MO file
      *
-     * @param  string  $bytes
+     * @param string $bytes
      */
     private function _readMOData($bytes)
     {
@@ -55,10 +56,10 @@ class Zend_Translate_Adapter_Gettext extends Zend_Translate_Adapter {
     /**
      * Load translation data (MO file reader)
      *
-     * @param  string  $filename  MO file to add, full path must be given for access
-     * @param  string  $locale    New Locale/Language to set, identical with locale identifier,
+     * @param string $filename MO file to add, full path must be given for access
+     * @param string $locale   New Locale/Language to set, identical with locale identifier,
      *                            see Zend_Locale for more information
-     * @param  array   $option    OPTIONAL Options to use
+     * @param  array                      $option OPTIONAL Options to use
      * @throws Zend_Translation_Exception
      * @return array
      */
@@ -81,7 +82,7 @@ class Zend_Translate_Adapter_Gettext extends Zend_Translate_Adapter {
         $input = $this->_readMOData(1);
         if (strtolower(substr(dechex($input[1]), -8)) == "950412de") {
             $this->_bigEndian = false;
-        } else if (strtolower(substr(dechex($input[1]), -8)) == "de120495") {
+        } elseif (strtolower(substr(dechex($input[1]), -8)) == "de120495") {
             $this->_bigEndian = true;
         } else {
             @fclose($this->_file);
@@ -109,7 +110,7 @@ class Zend_Translate_Adapter_Gettext extends Zend_Translate_Adapter {
         fseek($this->_file, $TOffset);
         $transtemp = $this->_readMOData(2 * $total);
 
-        for($count = 0; $count < $total; ++$count) {
+        for ($count = 0; $count < $total; ++$count) {
             if ($origtemp[$count * 2 + 1] != 0) {
                 fseek($this->_file, $origtemp[$count * 2 + 2]);
                 $original = @fread($this->_file, $origtemp[$count * 2 + 1]);
@@ -144,6 +145,7 @@ class Zend_Translate_Adapter_Gettext extends Zend_Translate_Adapter {
         }
 
         unset($this->_data[$locale]['']);
+
         return $this->_data;
     }
 

@@ -19,7 +19,6 @@
  * @version    $Id: PhpMath.php 23775 2011-03-01 17:25:24Z ralph $
  */
 
-
 /**
  * Utility class for proxying math function to bcmath functions, if present,
  * otherwise to PHP builtin math operators, with limited detection of overflow conditions.
@@ -52,7 +51,6 @@ class Zend_Locale_Math_PhpMath extends Zend_Locale_Math
 
     public static $defaultScale;
     public static $defaultPrecision;
-
 
     public static function Add($op1, $op2, $scale = null)
     {
@@ -194,7 +192,7 @@ class Zend_Locale_Math_PhpMath extends Zend_Locale_Math
         }
         $op1 = self::normalize($op1);
         $op2 = self::normalize($op2);
-        if ((int)$op2 == 0) {
+        if ((int) $op2 == 0) {
             return NULL;
         }
         $result = $op1 % $op2;
@@ -226,9 +224,10 @@ class Zend_Locale_Math_PhpMath extends Zend_Locale_Math
         }
         if ($op1 > $op2) {
             return 1;
-        } else if ($op1 < $op2) {
+        } elseif ($op1 < $op2) {
             return -1;
         }
+
         return 0;
     }
 
@@ -240,6 +239,7 @@ class Zend_Locale_Math_PhpMath extends Zend_Locale_Math
         }
         self::$defaultScale     = $scale;
         self::$defaultPrecision = pow(10, -$scale);
+
         return true;
     }
 }

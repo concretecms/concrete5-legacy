@@ -65,7 +65,7 @@ class Zend_Validate_Isbn extends Zend_Validate_Abstract
     /**
      * Set up options.
      *
-     * @param  Zend_Config|array $options
+     * @param  Zend_Config|array       $options
      * @throws Zend_Validate_Exception When $options is not valid
      * @return void
      */
@@ -149,13 +149,14 @@ class Zend_Validate_Isbn extends Zend_Validate_Abstract
      *
      * Returns true if and only if $value is a valid ISBN.
      *
-     * @param  string $value
+     * @param  string  $value
      * @return boolean
      */
     public function isValid($value)
     {
         if (!is_string($value) && !is_int($value)) {
             $this->_error(self::INVALID);
+
             return false;
         }
 
@@ -200,14 +201,17 @@ class Zend_Validate_Isbn extends Zend_Validate_Abstract
 
             default:
                 $this->_error(self::NO_ISBN);
+
                 return false;
         }
 
         // validate
         if (substr($this->_value, -1) != $checksum) {
             $this->_error(self::NO_ISBN);
+
             return false;
         }
+
         return true;
     }
 
@@ -216,9 +220,9 @@ class Zend_Validate_Isbn extends Zend_Validate_Abstract
      *
      * It is allowed only empty string, hyphen and space.
      *
-     * @param  string $separator
+     * @param  string                  $separator
      * @throws Zend_Validate_Exception When $separator is not valid
-     * @return Zend_Validate_Isbn Provides a fluent interface
+     * @return Zend_Validate_Isbn      Provides a fluent interface
      */
     public function setSeparator($separator)
     {
@@ -232,6 +236,7 @@ class Zend_Validate_Isbn extends Zend_Validate_Abstract
         }
 
         $this->_separator = $separator;
+
         return $this;
     }
 
@@ -248,9 +253,9 @@ class Zend_Validate_Isbn extends Zend_Validate_Abstract
     /**
      * Set allowed ISBN type.
      *
-     * @param  string $type
+     * @param  string                  $type
      * @throws Zend_Validate_Exception When $type is not valid
-     * @return Zend_Validate_Isbn Provides a fluent interface
+     * @return Zend_Validate_Isbn      Provides a fluent interface
      */
     public function setType($type)
     {
@@ -264,6 +269,7 @@ class Zend_Validate_Isbn extends Zend_Validate_Abstract
         }
 
         $this->_type = $type;
+
         return $this;
     }
 

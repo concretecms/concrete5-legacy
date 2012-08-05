@@ -133,18 +133,19 @@ abstract class Zend_Validate_Abstract implements Zend_Validate_Interface
     /**
      * Sets the validation failure message template for a particular key
      *
-     * @param  string $messageString
-     * @param  string $messageKey     OPTIONAL
-     * @return Zend_Validate_Abstract Provides a fluent interface
+     * @param  string                  $messageString
+     * @param  string                  $messageKey    OPTIONAL
+     * @return Zend_Validate_Abstract  Provides a fluent interface
      * @throws Zend_Validate_Exception
      */
     public function setMessage($messageString, $messageKey = null)
     {
         if ($messageKey === null) {
             $keys = array_keys($this->_messageTemplates);
-            foreach($keys as $key) {
+            foreach ($keys as $key) {
                 $this->setMessage($messageString, $key);
             }
+
             return $this;
         }
 
@@ -154,6 +155,7 @@ abstract class Zend_Validate_Abstract implements Zend_Validate_Interface
         }
 
         $this->_messageTemplates[$messageKey] = $messageString;
+
         return $this;
     }
 
@@ -161,7 +163,7 @@ abstract class Zend_Validate_Abstract implements Zend_Validate_Interface
      * Sets validation failure message templates given as an array, where the array keys are the message keys,
      * and the array values are the message template strings.
      *
-     * @param  array $messages
+     * @param  array                  $messages
      * @return Zend_Validate_Abstract
      */
     public function setMessages(array $messages)
@@ -169,6 +171,7 @@ abstract class Zend_Validate_Abstract implements Zend_Validate_Interface
         foreach ($messages as $key => $message) {
             $this->setMessage($message, $key);
         }
+
         return $this;
     }
 
@@ -176,7 +179,7 @@ abstract class Zend_Validate_Abstract implements Zend_Validate_Interface
      * Magic function returns the value of the requested property, if and only if it is the value or a
      * message variable.
      *
-     * @param  string $property
+     * @param  string                  $property
      * @return mixed
      * @throws Zend_Validate_Exception
      */
@@ -230,7 +233,7 @@ abstract class Zend_Validate_Abstract implements Zend_Validate_Interface
                 $value = $value->__toString();
             }
         } else {
-            $value = (string)$value;
+            $value = (string) $value;
         }
 
         if ($this->getObscureValue()) {
@@ -295,12 +298,13 @@ abstract class Zend_Validate_Abstract implements Zend_Validate_Interface
     /**
      * Set flag indicating whether or not value should be obfuscated in messages
      *
-     * @param  bool $flag
+     * @param  bool                   $flag
      * @return Zend_Validate_Abstract
      */
     public function setObscureValue($flag)
     {
         $this->_obscureValue = (bool) $flag;
+
         return $this;
     }
 
@@ -331,6 +335,7 @@ abstract class Zend_Validate_Abstract implements Zend_Validate_Interface
             require_once 'Zend/Validate/Exception.php';
             throw new Zend_Validate_Exception('Invalid translator specified');
         }
+
         return $this;
     }
 
@@ -359,7 +364,7 @@ abstract class Zend_Validate_Abstract implements Zend_Validate_Interface
      */
     public function hasTranslator()
     {
-        return (bool)$this->_translator;
+        return (bool) $this->_translator;
     }
 
     /**
@@ -409,18 +414,19 @@ abstract class Zend_Validate_Abstract implements Zend_Validate_Interface
      */
     public static function hasDefaultTranslator()
     {
-        return (bool)self::$_defaultTranslator;
+        return (bool) self::$_defaultTranslator;
     }
 
     /**
      * Indicate whether or not translation should be disabled
      *
-     * @param  bool $flag
+     * @param  bool                   $flag
      * @return Zend_Validate_Abstract
      */
     public function setDisableTranslator($flag)
     {
         $this->_translatorDisabled = (bool) $flag;
+
         return $this;
     }
 

@@ -1,10 +1,9 @@
-<? 
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 
 // HELPERS
 $valt = Loader::helper('validation/token');
 $th = Loader::helper('text');
-
 
 // VARIABLES
 
@@ -13,23 +12,23 @@ $areEntries = count($entries) > 0 ? true : false;
 
 ?>
 
-	<?=Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Logs'), false, false, false);?>
-    
-    <? if(!$areEntries) { ?>
-    
+    <?=Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Logs'), false, false, false);?>
+
+    <?php if (!$areEntries) { ?>
+
     <div class="ccm-pane-body ccm-pane-body-footer">
-    
-    	<p><?=t('There are no log entries to show at the moment.')?></p>
-    
+
+        <p><?=t('There are no log entries to show at the moment.')?></p>
+
     </div>
-    
+
     <?=Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper(false);?>
-    
-    <? } else { ?>
-    
+
+    <?php } else { ?>
+
     <div class="ccm-pane-options ccm-pane-options-permanent-search">
-    	<form method="post" id="ccm-log-search"  action="<?=$pageBase?>">
-        	<div class="row">
+        <form method="post" id="ccm-log-search"  action="<?=$pageBase?>">
+            <div class="row">
                 <div class="span5">
                     <label for="keywords"><?=t('Keywords')?></label>
                     <div class="input">
@@ -46,11 +45,11 @@ $areEntries = count($entries) > 0 ? true : false;
             </div>
         </form>
     </div>
-        
-	<div class="ccm-pane-body <? if(!$paginator || !strlen($paginator->getPages())>0) { ?>ccm-pane-body-footer <? } ?>">
+
+    <div class="ccm-pane-body <?php if (!$paginator || !strlen($paginator->getPages())>0) { ?>ccm-pane-body-footer <?php } ?>">
 
         <table border="0" cellspacing="0" cellpadding="0" class="grid-list zebra-striped">
-        	<thead>
+            <thead>
                 <tr>
                     <th class="subheaderActive"><?=t('Date/Time')?></th>
                     <th class="subheader"><?=t('Type')?></th>
@@ -58,50 +57,49 @@ $areEntries = count($entries) > 0 ? true : false;
                     <th class="subheader" style="position: relative">       <input class="btn error" style="position: absolute; top: 4px; right: 4px" type="button" onclick="if (confirm('<?=t("Are you sure you want to clear this log?")?>')) { location.href='<?=$this->url('/dashboard/reports/logs', 'clear', $valt->generate(), $_POST['logType'])?>'}" value="<?=t('Clear Log')?>" />
 <?=t('Text')?></th>
                 </tr>
-			</thead>
+            </thead>
             <tbody>
-				<? foreach($entries as $ent) { ?>
+                <?php foreach ($entries as $ent) { ?>
                 <tr>
-                    <td valign="top" style="white-space: nowrap" class="active"><?=date(DATE_APP_GENERIC_TS, strtotime($ent->getTimestamp('user')))?><? if (date('m-d-y') != date('m-d-y', strtotime($ent->getTimestamp('user')))) { ?>
+                    <td valign="top" style="white-space: nowrap" class="active"><?=date(DATE_APP_GENERIC_TS, strtotime($ent->getTimestamp('user')))?><?php if (date('m-d-y') != date('m-d-y', strtotime($ent->getTimestamp('user')))) { ?>
                         <?=t(' at ')?><?=date(DATE_APP_GENERIC_MDY, strtotime($ent->getTimestamp('user')))?>
-                    <? } ?></td>
+                    <?php } ?></td>
                     <td valign="top"><strong><?=$ent->getType()?></strong></td>
                     <td valign="top"><strong><?php
-                    if($ent->getUserID() == NULL){
+                    if ($ent->getUserID() == NULL) {
                         echo t("Guest");
-                    }
-                    else{
+                    } else {
                         $u = User::getByUserID($ent->getUserID());
                         echo $u->getUserName();
                     }
                     ?></strong></td>
                     <td style="width: 100%"><?=$th->makenice($ent->getText())?></td>
                 </tr>
-                <? } // END FOREACH ?>
-			</tbody>
-		</table>
-    
+                <?php } // END FOREACH ?>
+            </tbody>
+        </table>
+
     </div>
     <!-- END Body Pane -->
-    
-	<? if($paginator && strlen($paginator->getPages())>0){ ?>
+
+    <?php if ($paginator && strlen($paginator->getPages())>0) { ?>
     <div class="ccm-pane-footer">
-        
-        	<div class="pagination">
+
+            <div class="pagination">
               <ul>
                   <li class="prev"><?=$paginator->getPrevious()?></li>
-                  
-                  <? // Call to pagination helper's 'getPages' method with new $wrapper var ?>
+
+                  <?php // Call to pagination helper's 'getPages' method with new $wrapper var ?>
                   <?=$paginator->getPages('li')?>
-                  
+
                   <li class="next"><?=$paginator->getNext()?></li>
               </ul>
-			</div>
+            </div>
 
 
-	</div>
-        <? } // PAGINATOR ?>
-    
+    </div>
+        <?php } // PAGINATOR ?>
+
     <?=Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper(false);?>
-    
-    <? } ?>
+
+    <?php } ?>

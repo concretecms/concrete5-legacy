@@ -6,7 +6,7 @@
  * in this standard analyzer package, provide a method for indexing documents with word Stemming,
  * lower-casing, and number handling. The lower-case and number handling is provided by the pre-
  * existing filters from Zend.
- * 
+ *
  * License: see License.txt for a copy of the Zend License.
  *
  */
@@ -17,7 +17,6 @@ require_once 'StandardAnalyzer/TokenFilter/EnglishStemmer/PorterStemmer.php';
 require_once 'Zend/Search/Lucene/Analysis/TokenFilter.php';
 /** Zend_Search_Lucene_Exception */
 require_once 'Zend/Search/Lucene/Exception.php';
-
 
 class StandardAnalyzer_Analysis_TokenFilter_EnglishStemmer extends Zend_Search_Lucene_Analysis_TokenFilter
 {
@@ -30,19 +29,19 @@ class StandardAnalyzer_Analysis_TokenFilter_EnglishStemmer extends Zend_Search_L
      *
      * @param array $stopwords array (set) of words that will be filtered out
      */
-    public function __construct() 
-	{
+    public function __construct()
+    {
     }
 
     /**
      * Normalize Token or remove it (if null is returned)
      *
-     * @param Zend_Search_Lucene_Analysis_Token $srcToken
+     * @param  Zend_Search_Lucene_Analysis_Token $srcToken
      * @return Zend_Search_Lucene_Analysis_Token
      */
-    public function normalize(Zend_Search_Lucene_Analysis_Token $srcToken) {
-		
-		$newToken = new Zend_Search_Lucene_Analysis_Token(
+    public function normalize(Zend_Search_Lucene_Analysis_Token $srcToken)
+    {
+        $newToken = new Zend_Search_Lucene_Analysis_Token(
                                      PorterStemmer::stem( $srcToken->getTermText() ),
                                      $srcToken->getStartOffset(),
                                      $srcToken->getEndOffset());
@@ -52,4 +51,3 @@ class StandardAnalyzer_Analysis_TokenFilter_EnglishStemmer extends Zend_Search_L
         return $newToken;
     }
 }
-

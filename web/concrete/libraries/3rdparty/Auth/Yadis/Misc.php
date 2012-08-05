@@ -48,6 +48,7 @@ function Auth_Yadis_pct_escape_unicode($char_match)
     for ($i = 0; $i < strlen($c); $i++) {
         $result .= "%".sprintf("%X", ord($c[$i]));
     }
+
     return $result;
 }
 
@@ -55,5 +56,3 @@ function Auth_Yadis_startswith($s, $stuff)
 {
     return strpos($s, $stuff) === 0;
 }
-
-?>

@@ -98,6 +98,7 @@ class Zend_Http_UserAgent_Features_Adapter_WurflApi
 
         $device   = $wurflManager->getDeviceForHttpRequest(array_change_key_case($request, CASE_UPPER));
         $features = $device->getAllCapabilities();
+
         return $features;
     }
 }

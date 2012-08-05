@@ -20,10 +20,8 @@
  * @version    $Id: Wildcard.php 23775 2011-03-01 17:25:24Z ralph $
  */
 
-
 /** Zend_Search_Lucene_Search_Query */
 require_once 'Zend/Search/Lucene/Search/Query.php';
-
 
 /**
  * @category   Zend
@@ -97,7 +95,7 @@ class Zend_Search_Lucene_Search_Query_Wildcard extends Zend_Search_Lucene_Search
     /**
      * Get terms prefix
      *
-     * @param string $word
+     * @param  string $word
      * @return string
      */
     private static function _getPrefix($word)
@@ -111,7 +109,7 @@ class Zend_Search_Lucene_Search_Query_Wildcard extends Zend_Search_Lucene_Search
             }
 
             return substr($word, 0, $questionMarkPosition);
-        } else if ($astrericPosition !== false) {
+        } elseif ($astrericPosition !== false) {
             return substr($word, 0, $astrericPosition);
         }
 
@@ -121,7 +119,7 @@ class Zend_Search_Lucene_Search_Query_Wildcard extends Zend_Search_Lucene_Search
     /**
      * Re-write query into primitive queries in the context of specified index
      *
-     * @param Zend_Search_Lucene_Interface $index
+     * @param  Zend_Search_Lucene_Interface    $index
      * @return Zend_Search_Lucene_Search_Query
      * @throws Zend_Search_Lucene_Exception
      */
@@ -196,9 +194,11 @@ class Zend_Search_Lucene_Search_Query_Wildcard extends Zend_Search_Lucene_Search
 
         if (count($this->_matches) == 0) {
             require_once 'Zend/Search/Lucene/Search/Query/Empty.php';
+
             return new Zend_Search_Lucene_Search_Query_Empty();
-        } else if (count($this->_matches) == 1) {
+        } elseif (count($this->_matches) == 1) {
             require_once 'Zend/Search/Lucene/Search/Query/Term.php';
+
             return new Zend_Search_Lucene_Search_Query_Term(reset($this->_matches));
         } else {
             require_once 'Zend/Search/Lucene/Search/Query/MultiTerm.php';
@@ -215,7 +215,7 @@ class Zend_Search_Lucene_Search_Query_Wildcard extends Zend_Search_Lucene_Search
     /**
      * Optimize query in the context of specified index
      *
-     * @param Zend_Search_Lucene_Interface $index
+     * @param  Zend_Search_Lucene_Interface    $index
      * @return Zend_Search_Lucene_Search_Query
      */
     public function optimize(Zend_Search_Lucene_Interface $index)
@@ -255,7 +255,7 @@ class Zend_Search_Lucene_Search_Query_Wildcard extends Zend_Search_Lucene_Search
     /**
      * Constructs an appropriate Weight implementation for this query.
      *
-     * @param Zend_Search_Lucene_Interface $reader
+     * @param  Zend_Search_Lucene_Interface     $reader
      * @return Zend_Search_Lucene_Search_Weight
      * @throws Zend_Search_Lucene_Exception
      */
@@ -270,8 +270,8 @@ class Zend_Search_Lucene_Search_Query_Wildcard extends Zend_Search_Lucene_Search
      * Execute query in context of index reader
      * It also initializes necessary internal structures
      *
-     * @param Zend_Search_Lucene_Interface $reader
-     * @param Zend_Search_Lucene_Index_DocsFilter|null $docsFilter
+     * @param  Zend_Search_Lucene_Interface             $reader
+     * @param  Zend_Search_Lucene_Index_DocsFilter|null $docsFilter
      * @throws Zend_Search_Lucene_Exception
      */
     public function execute(Zend_Search_Lucene_Interface $reader, $docsFilter = null)
@@ -297,8 +297,8 @@ class Zend_Search_Lucene_Search_Query_Wildcard extends Zend_Search_Lucene_Search
     /**
      * Score specified document
      *
-     * @param integer $docId
-     * @param Zend_Search_Lucene_Interface $reader
+     * @param  integer                      $docId
+     * @param  Zend_Search_Lucene_Interface $reader
      * @return float
      * @throws Zend_Search_Lucene_Exception
      */
@@ -311,7 +311,7 @@ class Zend_Search_Lucene_Search_Query_Wildcard extends Zend_Search_Lucene_Search
     /**
      * Query specific matches highlighting
      *
-     * @param Zend_Search_Lucene_Search_Highlighter_Interface $highlighter  Highlighter object (also contains doc for highlighting)
+     * @param Zend_Search_Lucene_Search_Highlighter_Interface $highlighter Highlighter object (also contains doc for highlighting)
      */
     protected function _highlightMatches(Zend_Search_Lucene_Search_Highlighter_Interface $highlighter)
     {
@@ -359,4 +359,3 @@ class Zend_Search_Lucene_Search_Query_Wildcard extends Zend_Search_Lucene_Search
         return $query;
     }
 }
-

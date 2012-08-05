@@ -25,7 +25,6 @@
  */
 require_once 'Zend/Mail/Transport/Abstract.php';
 
-
 /**
  * File transport
  *

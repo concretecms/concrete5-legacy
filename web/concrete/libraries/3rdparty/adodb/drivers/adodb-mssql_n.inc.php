@@ -50,19 +50,21 @@ if (!defined('SINGLEQUOTE')) define('SINGLEQUOTE', "'");
 
 include_once(ADODB_DIR.'/drivers/adodb-mssql.inc.php');
 
-class ADODB_mssql_n extends ADODB_mssql {
-	var $databaseType = "mssql_n";
-	
-	function ADODB_mssqlpo()
-	{
-		ADODB_mssql::ADODB_mssql();
-	}
+class ADODB_mssql_n extends ADODB_mssql
+{
+    public $databaseType = "mssql_n";
 
-	function _query($sql,$inputarr=false)
-	{
+    public function ADODB_mssqlpo()
+    {
+        ADODB_mssql::ADODB_mssql();
+    }
+
+    public function _query($sql,$inputarr=false)
+    {
         $sql = $this->_appendN($sql);
-		return ADODB_mssql::_query($sql,$inputarr);
-	}
+
+        return ADODB_mssql::_query($sql,$inputarr);
+    }
 
     /**
      * This function will intercept all the literals used in the SQL, prepending the "N" char to them
@@ -73,8 +75,8 @@ class ADODB_mssql_n extends ADODB_mssql {
      * Note that this hack only must be used if ALL the char-based columns in your DB are of type nchar,
      * nvarchar and ntext
      */
-    function _appendN($sql) {
-
+    public function _appendN($sql)
+    {
         $result = $sql;
 
     /// Check we have some single quote in the query. Exit ok.
@@ -88,6 +90,7 @@ class ADODB_mssql_n extends ADODB_mssql {
             if ($this->debug) {
                 ADOConnection::outp("{$this->databaseType} internal transformation: not converted. Wrong number of quotes (odd)");
             }
+
             return $sql;
         }
 
@@ -98,6 +101,7 @@ class ADODB_mssql_n extends ADODB_mssql {
             if ($this->debug) {
                 ADOConnection::outp("{$this->databaseType} internal transformation: not converted. Found bad use of backslash + single quote");
             }
+
             return $sql;
         }
 
@@ -126,7 +130,6 @@ class ADODB_mssql_n extends ADODB_mssql {
                 $result = str_replace($literals, array_keys($literals), $result);
             }
         }
-
 
     /// Analyse literals to prepend the N char to them if their contents aren't numeric
         if (!empty($literals)) {
@@ -161,11 +164,11 @@ class ADODB_mssql_n extends ADODB_mssql {
     }
 }
 
-class ADORecordset_mssql_n extends ADORecordset_mssql {
-	var $databaseType = "mssql_n";
-	function ADORecordset_mssql_n($id,$mode=false)
-	{
-		$this->ADORecordset_mssql($id,$mode);
-	}
+class ADORecordset_mssql_n extends ADORecordset_mssql
+{
+    public $databaseType = "mssql_n";
+    public function ADORecordset_mssql_n($id,$mode=false)
+    {
+        $this->ADORecordset_mssql($id,$mode);
+    }
 }
-?>

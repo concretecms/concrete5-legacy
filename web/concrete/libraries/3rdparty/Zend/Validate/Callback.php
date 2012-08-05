@@ -70,8 +70,8 @@ class Zend_Validate_Callback extends Zend_Validate_Abstract
      * Sets validator options
      *
      * @param  string|array $callback
-     * @param  mixed   $max
-     * @param  boolean $inclusive
+     * @param  mixed        $max
+     * @param  boolean      $inclusive
      * @return void
      */
     public function __construct($callback = null)
@@ -106,7 +106,7 @@ class Zend_Validate_Callback extends Zend_Validate_Abstract
     /**
      * Sets the callback
      *
-     * @param  string|array $callback
+     * @param  string|array           $callback
      * @return Zend_Validate_Callback Provides a fluent interface
      */
     public function setCallback($callback)
@@ -116,6 +116,7 @@ class Zend_Validate_Callback extends Zend_Validate_Abstract
             throw new Zend_Validate_Exception('Invalid callback given');
         }
         $this->_callback = $callback;
+
         return $this;
     }
 
@@ -132,12 +133,13 @@ class Zend_Validate_Callback extends Zend_Validate_Abstract
     /**
      * Sets options for the callback
      *
-     * @param  mixed $max
+     * @param  mixed                  $max
      * @return Zend_Validate_Callback Provides a fluent interface
      */
     public function setOptions($options)
     {
         $this->_options = (array) $options;
+
         return $this;
     }
 
@@ -147,7 +149,7 @@ class Zend_Validate_Callback extends Zend_Validate_Abstract
      * Returns true if and only if the set callback returns
      * for the provided $value
      *
-     * @param  mixed $value
+     * @param  mixed   $value
      * @return boolean
      */
     public function isValid($value)
@@ -162,10 +164,12 @@ class Zend_Validate_Callback extends Zend_Validate_Abstract
         try {
             if (!call_user_func_array($callback, $options)) {
                 $this->_error(self::INVALID_VALUE);
+
                 return false;
             }
         } catch (Exception $e) {
             $this->_error(self::INVALID_CALLBACK);
+
             return false;
         }
 

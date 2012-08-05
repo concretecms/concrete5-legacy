@@ -18,7 +18,7 @@
     * How easy is that?
     */
 
-	// Porter Stemmer
+    // Porter Stemmer
     class PorterStemmer
     {
         /**
@@ -27,13 +27,11 @@
         */
         private static $regex_consonant = '(?:[bcdfghjklmnpqrstvwxz]|(?<=[aeiou])y|^y)';
 
-
         /**
         * Regex for matching a vowel
         * @var string
         */
         private static $regex_vowel = '(?:[aeiou]|(?<![aeiou])y)';
-
 
         /**
         * Stems a word. Simple huh?
@@ -56,7 +54,6 @@
 
             return $word;
         }
-
 
         /**
         * Step 1
@@ -93,7 +90,7 @@
 
                             $word = substr($word, 0, -1);
 
-                        } else if (self::m($word) == 1 AND self::cvc($word)) {
+                        } elseif (self::m($word) == 1 AND self::cvc($word)) {
                             $word .= 'e';
                         }
                     }
@@ -102,7 +99,6 @@
 
             return $word;
         }
-
 
         /**
         * Step 1c
@@ -119,7 +115,6 @@
 
             return $word;
         }
-
 
         /**
         * Step 2
@@ -178,7 +173,6 @@
             return $word;
         }
 
-
         /**
         * Step 3
         *
@@ -215,7 +209,6 @@
 
             return $word;
         }
-
 
         /**
         * Step 4
@@ -287,7 +280,6 @@
             return $word;
         }
 
-
         /**
         * Step 5
         *
@@ -300,7 +292,7 @@
                 if (self::m(substr($word, 0, -1)) > 1) {
                     self::replace($word, 'e', '');
 
-                } else if (self::m(substr($word, 0, -1)) == 1) {
+                } elseif (self::m(substr($word, 0, -1)) == 1) {
 
                     if (!self::cvc(substr($word, 0, -1))) {
                         self::replace($word, 'e', '');
@@ -315,7 +307,6 @@
 
             return $word;
         }
-
 
         /**
         * Replaces the first string with the second, at the end of the string. If third
@@ -344,7 +335,6 @@
 
             return false;
         }
-
 
         /**
         * What, you mean it's not obvious from the name?
@@ -408,4 +398,3 @@
                    AND $matches[1]{2} != 'y';
         }
     }
-?>

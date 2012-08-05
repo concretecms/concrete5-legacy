@@ -18,7 +18,7 @@
 			<unsigned/>
 			<autoincrement/>
 		</field>
-		<field name="bID" type="I" />	
+		<field name="bID" type="I" />
 		<field name="optionName" type="C" size="255" />
 		<field name="displayOrder" type="I">
 			<default value="0"/>
@@ -38,14 +38,11 @@
 			<unsigned/>
 			<default value="0"/>
 		</field>
-		<field name="bID" type="I" />	
-		<field name="cID" type="I" />	
+		<field name="bID" type="I" />
+		<field name="cID" type="I" />
 		<field name="ipAddress" type="C" size="128" />
 		<field name="timestamp" type="T">
 			<deftimestamp/>
 		</field>
 	</table>
 </schema>
-
-
-

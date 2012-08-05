@@ -109,12 +109,12 @@ class Zend_Http_Client_Adapter_Proxy extends Zend_Http_Client_Adapter_Socket
     /**
      * Send request to the proxy server
      *
-     * @param string        $method
-     * @param Zend_Uri_Http $uri
-     * @param string        $http_ver
-     * @param array         $headers
-     * @param string        $body
-     * @return string Request as string
+     * @param  string        $method
+     * @param  Zend_Uri_Http $uri
+     * @param  string        $http_ver
+     * @param  array         $headers
+     * @param  string        $body
+     * @return string        Request as string
      */
     public function write($method, $uri, $http_ver = '1.1', $headers = array(), $body = '')
     {
@@ -168,7 +168,7 @@ class Zend_Http_Client_Adapter_Proxy extends Zend_Http_Client_Adapter_Socket
             $request .= "$v\r\n";
         }
 
-        if(is_resource($body)) {
+        if (is_resource($body)) {
             $request .= "\r\n";
         } else {
             // Add the request body
@@ -181,8 +181,8 @@ class Zend_Http_Client_Adapter_Proxy extends Zend_Http_Client_Adapter_Socket
             throw new Zend_Http_Client_Adapter_Exception("Error writing request to proxy server");
         }
 
-        if(is_resource($body)) {
-            if(stream_copy_to_stream($body, $this->socket) == 0) {
+        if (is_resource($body)) {
+            if (stream_copy_to_stream($body, $this->socket) == 0) {
                 require_once 'Zend/Http/Client/Adapter/Exception.php';
                 throw new Zend_Http_Client_Adapter_Exception('Error writing request to server');
             }
@@ -251,7 +251,7 @@ class Zend_Http_Client_Adapter_Proxy extends Zend_Http_Client_Adapter_Socket
         );
 
         $success = false;
-        foreach($modes as $mode) {
+        foreach ($modes as $mode) {
             $success = stream_socket_enable_crypto($this->socket, true, $mode);
             if ($success) break;
         }

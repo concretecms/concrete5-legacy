@@ -1,7 +1,7 @@
 <?php
 // contributed by "Horacio Degiorgi" <horaciod@codigophp.com>
 $ADODB_LANG_ARRAY = array (
-			'LANG'                      => 'es',
+            'LANG'                      => 'es',
             DB_ERROR                    => 'error desconocido',
             DB_ERROR_ALREADY_EXISTS     => 'ya existe',
             DB_ERROR_CANNOT_CREATE      => 'imposible crear',
@@ -30,4 +30,3 @@ $ADODB_LANG_ARRAY = array (
             DB_ERROR_NOSUCHDB           => 'base de datos no encontrada',
             DB_ERROR_ACCESS_VIOLATION   => 'permisos insuficientes'
 );
-?>

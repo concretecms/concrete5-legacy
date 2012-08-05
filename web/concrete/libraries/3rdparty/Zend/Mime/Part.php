@@ -32,8 +32,8 @@ require_once 'Zend/Mime.php';
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Mime_Part {
-
+class Zend_Mime_Part
+{
     public $type = Zend_Mime::TYPE_OCTETSTREAM;
     public $encoding = Zend_Mime::ENCODING_8BIT;
     public $id;
@@ -47,13 +47,12 @@ class Zend_Mime_Part {
     protected $_content;
     protected $_isStream = false;
 
-
     /**
      * create a new Mime Part.
      * The (unencoded) content of the Part as passed
      * as a string or stream
      *
-     * @param mixed $content  String or Stream containing the content
+     * @param mixed $content String or Stream containing the content
      */
     public function __construct($content)
     {
@@ -130,6 +129,7 @@ class Zend_Mime_Part {
                 break;
             default:
         }
+
         return $this->_content;
     }
 
@@ -146,7 +146,7 @@ class Zend_Mime_Part {
             return Zend_Mime::encode($this->_content, $this->encoding, $EOL);
         }
     }
-    
+
     /**
      * Get the RAW unencoded content from this part
      * @return string
@@ -206,7 +206,7 @@ class Zend_Mime_Part {
             $headers[] = array('Content-Location', $this->location);
         }
 
-        if ($this->language){
+        if ($this->language) {
             $headers[] = array('Content-Language', $this->language);
         }
 

@@ -20,7 +20,6 @@
  * @version    $Id: Mbox.php 23775 2011-03-01 17:25:24Z ralph $
  */
 
-
 /**
  * @see Zend_Mail_Storage_Folder
  */
@@ -35,7 +34,6 @@ require_once 'Zend/Mail/Storage/Folder/Interface.php';
  * @see Zend_Mail_Storage_Mbox
  */
 require_once 'Zend/Mail/Storage/Mbox.php';
-
 
 /**
  * @category   Zend
@@ -73,13 +71,13 @@ class Zend_Mail_Storage_Folder_Mbox extends Zend_Mail_Storage_Mbox implements Ze
      *   - dirname rootdir of mbox structure
      *   - folder intial selected folder, default is 'INBOX'
      *
-     * @param array $params mail reader specific parameters
+     * @param  array                       $params mail reader specific parameters
      * @throws Zend_Mail_Storage_Exception
      */
     public function __construct($params)
     {
         if (is_array($params)) {
-            $params = (object)$params;
+            $params = (object) $params;
         }
 
         if (isset($params->filename)) {
@@ -112,9 +110,9 @@ class Zend_Mail_Storage_Folder_Mbox extends Zend_Mail_Storage_Mbox implements Ze
      * Result is save in Zend_Mail_Storage_Folder instances with the root in $this->_rootFolder.
      * $parentFolder and $parentGlobalName are only used internally for recursion.
      *
-     * @param string $currentDir call with root dir, also used for recursion.
-     * @param Zend_Mail_Storage_Folder|null $parentFolder used for recursion
-     * @param string $parentGlobalName used for rescursion
+     * @param  string                        $currentDir       call with root dir, also used for recursion.
+     * @param  Zend_Mail_Storage_Folder|null $parentFolder     used for recursion
+     * @param  string                        $parentGlobalName used for rescursion
      * @return null
      * @throws Zend_Mail_Storage_Exception
      */
@@ -158,8 +156,8 @@ class Zend_Mail_Storage_Folder_Mbox extends Zend_Mail_Storage_Mbox implements Ze
     /**
      * get root folder or given folder
      *
-     * @param string $rootFolder get folder structure for given folder, else root
-     * @return Zend_Mail_Storage_Folder root or wanted folder
+     * @param  string                      $rootFolder get folder structure for given folder, else root
+     * @return Zend_Mail_Storage_Folder    root or wanted folder
      * @throws Zend_Mail_Storage_Exception
      */
     public function getFolders($rootFolder = null)
@@ -185,6 +183,7 @@ class Zend_Mail_Storage_Folder_Mbox extends Zend_Mail_Storage_Mbox implements Ze
             require_once 'Zend/Mail/Storage/Exception.php';
             throw new Zend_Mail_Storage_Exception("folder $rootFolder not found");
         }
+
         return $currentFolder;
     }
 
@@ -193,20 +192,20 @@ class Zend_Mail_Storage_Folder_Mbox extends Zend_Mail_Storage_Mbox implements Ze
      *
      * folder must be selectable!
      *
-     * @param Zend_Mail_Storage_Folder|string $globalName global name of folder or instance for subfolder
+     * @param  Zend_Mail_Storage_Folder|string $globalName global name of folder or instance for subfolder
      * @return null
      * @throws Zend_Mail_Storage_Exception
      */
     public function selectFolder($globalName)
     {
-        $this->_currentFolder = (string)$globalName;
+        $this->_currentFolder = (string) $globalName;
 
         // getting folder from folder tree for validation
         $folder = $this->getFolders($this->_currentFolder);
 
         try {
             $this->_openMboxFile($this->_rootdir . $folder->getGlobalName());
-        } catch(Zend_Mail_Storage_Exception $e) {
+        } catch (Zend_Mail_Storage_Exception $e) {
             // check what went wrong
             if (!$folder->isSelectable()) {
                 /**
@@ -229,7 +228,7 @@ class Zend_Mail_Storage_Folder_Mbox extends Zend_Mail_Storage_Mbox implements Ze
     /**
      * get Zend_Mail_Storage_Folder instance for current folder
      *
-     * @return Zend_Mail_Storage_Folder instance of current folder
+     * @return Zend_Mail_Storage_Folder    instance of current folder
      * @throws Zend_Mail_Storage_Exception
      */
     public function getCurrentFolder()

@@ -66,6 +66,7 @@ function _escape_xref($xref_match)
     $xref = str_replace('/', '%2F', $xref);
     $xref = str_replace('?', '%3F', $xref);
     $xref = str_replace('#', '%23', $xref);
+
     return $xref;
 }
 
@@ -74,6 +75,7 @@ function Auth_Yadis_escapeForIRI($xri)
     $xri = str_replace('%', '%25', $xri);
     $xri = preg_replace_callback(Auth_Yadis_getXrefRE(),
                                  '_escape_xref', $xri);
+
     return $xri;
 }
 
@@ -92,7 +94,6 @@ function Auth_Yadis_iriToURI($iri)
                                      'Auth_Yadis_pct_escape_unicode', $iri);
     }
 }
-
 
 function Auth_Yadis_XRIAppendArgs($url, $args)
 {
@@ -138,6 +139,7 @@ function Auth_Yadis_providerIsAuthoritative($providerID, $canonicalID)
 {
     $lastbang = strrpos($canonicalID, '!');
     $p = substr($canonicalID, 0, $lastbang);
+
     return $p == $providerID;
 }
 
@@ -160,7 +162,7 @@ function Auth_Yadis_rootAuthority($xri)
         //   does that before we have a real xriparse function.
         //   Hopefully nobody does that *ever*.
         $root = substr($authority, 0, strpos($authority, ')') + 1);
-    } else if (in_array($authority[0], Auth_Yadis_getXRIAuthorities())) {
+    } elseif (in_array($authority[0], Auth_Yadis_getXRIAuthorities())) {
         // Other XRI reference.
         $root = $authority[0];
     } else {
@@ -181,6 +183,7 @@ function Auth_Yadis_XRI($xri)
     if (!Auth_Yadis_startswith($xri, 'xri://')) {
         $xri = 'xri://' . $xri;
     }
+
     return $xri;
 }
 
@@ -230,5 +233,3 @@ function Auth_Yadis_getCanonicalID($iname, $xrds)
 
     return $canonicalID;
 }
-
-?>

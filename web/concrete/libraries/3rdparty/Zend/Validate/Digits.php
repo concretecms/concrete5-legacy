@@ -59,13 +59,14 @@ class Zend_Validate_Digits extends Zend_Validate_Abstract
      *
      * Returns true if and only if $value only contains digit characters
      *
-     * @param  string $value
+     * @param  string  $value
      * @return boolean
      */
     public function isValid($value)
     {
         if (!is_string($value) && !is_int($value) && !is_float($value)) {
             $this->_error(self::INVALID);
+
             return false;
         }
 
@@ -73,6 +74,7 @@ class Zend_Validate_Digits extends Zend_Validate_Abstract
 
         if ('' === $this->_value) {
             $this->_error(self::STRING_EMPTY);
+
             return false;
         }
 
@@ -83,6 +85,7 @@ class Zend_Validate_Digits extends Zend_Validate_Abstract
 
         if ($this->_value !== self::$_filter->filter($this->_value)) {
             $this->_error(self::NOT_DIGITS);
+
             return false;
         }
 

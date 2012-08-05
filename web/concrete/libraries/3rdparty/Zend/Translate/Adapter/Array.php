@@ -19,13 +19,11 @@
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
-
 /** Zend_Locale */
 require_once 'Zend/Locale.php';
 
 /** Zend_Translate_Adapter */
 require_once 'Zend/Translate/Adapter.php';
-
 
 /**
  * @category   Zend
@@ -40,10 +38,10 @@ class Zend_Translate_Adapter_Array extends Zend_Translate_Adapter
     /**
      * Load translation data
      *
-     * @param  string|array  $data
-     * @param  string        $locale  Locale/Language to add data for, identical with locale identifier,
+     * @param string|array $data
+     * @param string       $locale Locale/Language to add data for, identical with locale identifier,
      *                                see Zend_Locale for more information
-     * @param  array         $options OPTIONAL Options to use
+     * @param  array $options OPTIONAL Options to use
      * @return array
      */
     protected function _loadTranslationData($data, $locale, array $options = array())
@@ -66,6 +64,7 @@ class Zend_Translate_Adapter_Array extends Zend_Translate_Adapter
         }
 
         $this->_data[$locale] = $data + $this->_data[$locale];
+
         return $this->_data;
     }
 

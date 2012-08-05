@@ -7,7 +7,6 @@ $previewMode = true;
 $nh = Loader::helper('navigation');
 $controller = new PageListBlockController($b);
 
-
 $_REQUEST['num'] = ($_REQUEST['num'] > 0) ? $_REQUEST['num'] : 0;
 $_REQUEST['cThis'] = ($_REQUEST['cParentID'] == $controller->cID) ? '1' : '0';
 $_REQUEST['cParentID'] = ($_REQUEST['cParentID'] == 'OTHER') ? $_REQUEST['cParentIDValue'] : $_REQUEST['cParentID'];
@@ -28,7 +27,6 @@ $showRss = false;
 $rssIconSrc = '';
 $showPagination = false;
 $paginator = null;
-
 
 require(dirname(__FILE__) . '/../view.php');
 exit;

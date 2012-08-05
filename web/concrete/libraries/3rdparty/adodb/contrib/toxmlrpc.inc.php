@@ -2,11 +2,11 @@
     /**
     * Helper functions to convert between ADODB recordset objects and XMLRPC values.
     * Uses John Lim's AdoDB and Edd Dumbill's phpxmlrpc libs
-    * 
+    *
     * @author Daniele Baroncelli
     * @author Gaetano Giunta
     * @copyright (c) 2003-2004 Giunta/Baroncelli. All rights reserved.
-    * 
+    *
     * @todo some more error checking here and there
     * @todo document the xmlrpc-struct used to encode recordset info
     * @todo verify if using xmlrpc_encode($rs->GetArray()) would work with:
@@ -16,15 +16,15 @@
 
     /**
     * Include the main libraries
-    */    
-    require_once('xmlrpc.inc');
+    */
+    require_once 'xmlrpc.inc';
     if (!defined('ADODB_DIR')) require_once('adodb.inc.php');
-            
+
     /**
     * Builds an xmlrpc struct value out of an AdoDB recordset
     */
-    function rs2xmlrpcval(&$adodbrs) {
-
+    function rs2xmlrpcval(&$adodbrs)
+    {
         $header = rs2xmlrpcval_header($adodbrs);
         $body = rs2xmlrpcval_body($adodbrs);
 
@@ -113,13 +113,14 @@
         }
         $body = new xmlrpcval ($rows, "array");
 
-        return $body;    
+        return $body;
     }
-    
+
     /**
     * Returns an xmlrpc struct value as string out of an AdoDB recordset
-    */    
-    function rs2xmlrpcstring (&$adodbrs) {
+    */
+    function rs2xmlrpcstring (&$adodbrs)
+    {
         $xmlrpc = rs2xmlrpcval ($adodbrs);
         if ($xmlrpc)
           return $xmlrpc->serialize();
@@ -129,24 +130,24 @@
 
     /**
     * Given a well-formed xmlrpc struct object returns an AdoDB object
-    * 
+    *
     * @todo add some error checking on the input value
     */
-    function xmlrpcval2rs (&$xmlrpcval) {
-
+    function xmlrpcval2rs (&$xmlrpcval)
+    {
         $fields_array = array();
         $data_array = array();
- 
-        // rebuild column information  
+
+        // rebuild column information
         $header = $xmlrpcval->structmem('header');
-        
+
         $numfields = $header->structmem('fieldcount');
         $numfields = $numfields->scalarval();
         $numrecords = $header->structmem('recordcount');
         $numrecords = $numrecords->scalarval();
         $sqlstring = $header->structmem('sql');
         $sqlstring = $sqlstring->scalarval();
-        
+
         $fieldinfo = $header->structmem('fieldinfo');
         for ($i = 0; $i < $numfields; $i++) {
             $temp = $fieldinfo->arraymem($i);
@@ -176,8 +177,7 @@
         // finally build in-memory recordset object and return it
         $rs = new ADORecordSet_array();
         $rs->InitArrayFields($data_array,$fields_array);
+
         return $rs;
 
     }
-
-?>

@@ -1,4 +1,4 @@
-<?
+<?php
 
 defined('C5_EXECUTE') or die("Access Denied.");
 
@@ -10,380 +10,412 @@ defined('C5_EXECUTE') or die("Access Denied.");
 * @package Utilities
 *
 */
-class Pile extends Object {
+class pile extends Object
+{
+    public $pID, $uID, $isDefault, $name, $state, $timestamp;
 
-	var $pID, $uID, $isDefault, $name, $state, $timestamp;
+    public function getUserID() {return $this->uID;}
+    public function getPileID() {return $this->pID;}
+    public function isDefault() {return $this->isDefault;}
+    public function getPileName() {return $this->name;}
+    public function getPileState() {return $this->state;}
 
-	function getUserID() {return $this->uID;}
-	function getPileID() {return $this->pID;}
-	function isDefault() {return $this->isDefault;}
-	function getPileName() {return $this->name;}
-	function getPileState() {return $this->state;}
+    public function get($pID)
+    {
+        $db = Loader::db();
+        $v = array($pID);
+        $q = "select pID, uID, isDefault, name, state from Piles where pID = ?";
+        $r = $db->query($q, $v);
+        $row = $r->fetchRow();
 
-	function get($pID) {
-		$db = Loader::db();
-		$v = array($pID);
-		$q = "select pID, uID, isDefault, name, state from Piles where pID = ?";
-		$r = $db->query($q, $v);
-		$row = $r->fetchRow();
+        $p = new Pile;
+        if (is_array($row)) foreach ($row as $k => $v) {
+            $p->{$k} = $v;
+        }
 
-		$p = new Pile;
-		if(is_array($row)) foreach ($row as $k => $v) {
-			$p->{$k} = $v;
-		}
-		return $p;
-	}
+        return $p;
+    }
 
-	function create($name) {
-		$db = Loader::db();
-		$u = new User();
-		$v = array($u->getUserID(), 0, $name, 'READY');
-		$q = "insert into Piles (uID, isDefault, name, state) values (?, ?, ?, ?)";
-		$r = $db->query($q, $v);
-		if ($r) {
-			$pID = $db->Insert_ID();
-			return Pile::get($pID);
-		}
-	}
-	
-	function getOrCreate($name) {
-		$db = Loader::db();
-		$u = new User();
-		$v = array($name, $u->getUserID());
-		$q = "select pID from Piles where name = ? and uID = ?";
-		$pID = $db->getOne($q, $v);
-		
-		if ($pID > 0) {
-			return Pile::get($pID);
-		}
-		
-		$v = array($u->getUserID(), 0, $name, 'READY');
-		$q = "insert into Piles (uID, isDefault, name, state) values (?, ?, ?, ?)";
-		$r = $db->query($q, $v);
-		if ($r) {
-			$pID = $db->Insert_ID();
-			return Pile::get($pID);
-		}
-	}
+    public function create($name)
+    {
+        $db = Loader::db();
+        $u = new User();
+        $v = array($u->getUserID(), 0, $name, 'READY');
+        $q = "insert into Piles (uID, isDefault, name, state) values (?, ?, ?, ?)";
+        $r = $db->query($q, $v);
+        if ($r) {
+            $pID = $db->Insert_ID();
 
-	function createDefaultPile() {
-		
-		$db = Loader::db();
-		// for the sake of data integrity, we're going to ensure that a general pile does not exist
-		$u = new User();
-		if ($u->isRegistered()) {
-			$v = array($u->getUserID(), 1);
-			$q = "select pID from Piles where uID = ? and isDefault = ?";
-		}
-		$pID = $db->getOne($q, $v);
-		if ($pID > 0) {
-			$p = new Pile($pID);
-			return $p;
-		} else {
-			// create a new one
-			$v = array($u->getUserID(), 1, null, 'READY');
-			$q = "insert into Piles (uID, isDefault, name, state) values (?, ?, ?, ?)";
-			$r = $db->query($q, $v);
-			if ($r) {
-				$pID = $db->Insert_ID();
-				return Pile::get($pID);
-			}
-		}
-	}
-	
-	function inPile($obj) {
-		$db = Loader::db();
-		$v = array();
-		$class = strtoupper(get_class($obj));
-		switch($class) {
-			case "COLLECTION":
-				$v = array("COLLECTION", $obj->getCollectionID());
-				break;
-			case "BLOCK":
-				$v = array("BLOCK", $obj->getBlockID());
-				break;
-		}
-		$v[] = $this->getPileID();
-		$q = "select pcID from PileContents where itemType = ? and itemID = ? and pID = ?";
-		$pcID = $db->getOne($q, $v);
-		
-		return ($pcID > 0);
-	}
+            return Pile::get($pID);
+        }
+    }
 
-	function getDefault() {
-		$db = Loader::db();
-		// checks to see if we're registered, or if we're a visitor. Either way, we get a pile entry
-		$u = new User();
-		if ($u->isRegistered()) {
-			$v = array($u->getUserID(), 1);
-			$q = "select pID from Piles where uID = ? and isDefault = ?";
-		}
-		$pID = $db->getOne($q, $v);
-		if ($pID > 0) {
-			$p = Pile::get($pID);
-			return $p;
-		} else {
-			// create a new one
-			$p = Pile::createDefaultPile();
-			return $p;
-		}
-	}
+    public function getOrCreate($name)
+    {
+        $db = Loader::db();
+        $u = new User();
+        $v = array($name, $u->getUserID());
+        $q = "select pID from Piles where name = ? and uID = ?";
+        $pID = $db->getOne($q, $v);
 
-	function getMyPiles() {
-		$db = Loader::db();
-		
-		$u = new User();
-		if ($u->isRegistered()) {
-			$v = array($u->getUserID());
-			$q = "select pID from Piles where uID = ? order by name asc";
-		}
+        if ($pID > 0) {
+            return Pile::get($pID);
+        }
 
-		$piles = array();
-		$r = $db->query($q, $v);
-		if ($r) {
-			while ($row = $r->fetchRow()) {
-				$piles[] = Pile::get($row['pID']);
-			}
-		}
+        $v = array($u->getUserID(), 0, $name, 'READY');
+        $q = "insert into Piles (uID, isDefault, name, state) values (?, ?, ?, ?)";
+        $r = $db->query($q, $v);
+        if ($r) {
+            $pID = $db->Insert_ID();
 
-		return $piles;
-	}
+            return Pile::get($pID);
+        }
+    }
 
-	function isMyPile() {
-		$u = new User();
-		
-		if ($u->isRegistered()) {
-			return $this->getUserID() == $u->getUserID();
-		}
-	}
+    public function createDefaultPile()
+    {
+        $db = Loader::db();
+        // for the sake of data integrity, we're going to ensure that a general pile does not exist
+        $u = new User();
+        if ($u->isRegistered()) {
+            $v = array($u->getUserID(), 1);
+            $q = "select pID from Piles where uID = ? and isDefault = ?";
+        }
+        $pID = $db->getOne($q, $v);
+        if ($pID > 0) {
+            $p = new Pile($pID);
 
-	function delete() {
-		$db = Loader::db();
-		$v = array($this->pID);
-		$q = "delete from Piles where pID = ?";
-		$db->query($q, $v);
-		$q2 = "delete from PileContents where pID = ?";
-		$db->query($q, $v);
-	}
+            return $p;
+        } else {
+            // create a new one
+            $v = array($u->getUserID(), 1, null, 'READY');
+            $q = "insert into Piles (uID, isDefault, name, state) values (?, ?, ?, ?)";
+            $r = $db->query($q, $v);
+            if ($r) {
+                $pID = $db->Insert_ID();
 
-	function getPileLength() {
-		$db = Loader::db();
-		$q = "select count(pcID) from PileContents where pID = ?";
-		$v = array($this->pID);
-		$r = $db->getOne($q, $v);
-		if ($r > 0) {
-			return $r;
-		} else {
-			return 0;
-		}
-	}
+                return Pile::get($pID);
+            }
+        }
+    }
 
-	function getPileContentObjects($display = 'display_order') {
-		$pc = array();
-		$db = Loader::db();
-		switch($display) {
-			case 'display_order_date':
-				$order = 'displayOrder asc, timestamp desc';
-				break;		
-			case 'date_desc':
-				$order = 'timestamp desc';
-				break;
-			default:
-				$order = 'displayOrder asc';
-				break;
-		}
-		
-		$v = array($this->pID);
-		$q = "select pcID from PileContents where pID = ? order by {$order}";
-		$r = $db->query($q, $v);
-		while($row = $r->fetchRow()) {
-			$pc[] = PileContent::get($row['pcID']);
-		}
-		return $pc;
-	}
-	
-	function add(&$obj, $quantity = 1) {
-		$db = Loader::db();
-		$existingPCID = $this->getPileContentID($obj);
-		$v1 = array($this->pID);
-		$q1 = "select max(displayOrder) as displayOrder from PileContents where pID = ?";
-		$currentDO = $db->getOne($q1, $v1);
-		$displayOrder = $currentDO + 1;
-		if (!$existingPCID) {
-			switch(strtolower(get_class($obj))) {
-				case "page":
-					$v = array($this->pID, $obj->getCollectionID(), "COLLECTION", $quantity, $displayOrder);
-					break;
-				case "block":
-					$v = array($this->pID, $obj->getBlockID(), "BLOCK", $quantity, $displayOrder);
-					break;
-				case "pilecontent":
-					$v = array($this->pID, $obj->getItemID(), $obj->getItemType(), $obj->getQuantity(), $displayOrder);
-					break;
-			}
-			$q = "insert into PileContents (pID, itemID, itemType, quantity, displayOrder) values (?, ?, ?, ?, ?)";
-			$r = $db->query($q, $v);
-			if ($r) {
-				$pcID = $db->Insert_ID();
-				return $pcID;
-			}
-		} else {
-			return $existingPCID;
-		}
-	}
-	
-	function remove(&$obj, $quantity = 1) {
-		$db = Loader::db();
-		switch(strtolower(get_class($obj))) {
-			case "page":
-				$v = array($this->pID, $obj->getCollectionID(), "COLLECTION");
-				break;
-			case "block":
-				$v = array($this->pID, $obj->getBlockID(), "BLOCK");
-				break;
-			case "pilecontent":
-				$v = array($this->pID, $obj->getItemID(), $obj->getItemType());
-				break;
-		}
-		
-		$q = "select quantity from PileContents where pID = ? and itemID = ? and itemType = ?";
-		$exQuantity = $db->getOne($q, $v);
-		if ($exQuantity > $quantity) {
-			$db->query("update PileContent set quantity = quantity - {$quantity} where pID = ? and itemID = ? and itemType = ?", $v);
-		} else {
-			$db->query("delete from PileContents where pID = ? and itemID = ? and itemType = ?", $v);
-		}
-	}
+    public function inPile($obj)
+    {
+        $db = Loader::db();
+        $v = array();
+        $class = strtoupper(get_class($obj));
+        switch ($class) {
+            case "COLLECTION":
+                $v = array("COLLECTION", $obj->getCollectionID());
+                break;
+            case "BLOCK":
+                $v = array("BLOCK", $obj->getBlockID());
+                break;
+        }
+        $v[] = $this->getPileID();
+        $q = "select pcID from PileContents where itemType = ? and itemID = ? and pID = ?";
+        $pcID = $db->getOne($q, $v);
 
-	function getPileContentID(&$obj) {
-		$db = Loader::db();
-		switch(strtolower(get_class($obj))) {
-			case "page":
-				$v = array($this->pID, $obj->getCollectionID(), "COLLECTION");
-				$q = "select pcID from PileContents where pID = ? and itemID = ? and itemType = ?";
-				$pcID = $db->getOne($q, $v);
-				if ($pcID > 0) {
-					return $pcID;
-				}
-				break;
-		}
-	}
+        return ($pcID > 0);
+    }
 
-	function rescanDisplayOrder() {
-		$db = Loader::db();
-		$v = array($this->pID);
-		$q = "select pcID from PileContents where pID = ? order by displayOrder asc";
-		$r = $db->query($q, $v);
-		$currentDisplayOrder = 0;
-		while($row = $r->fetchRow()) {
-			$v1 = array($currentDisplayOrder, $row['pcID']);
-			$q1 = "update PileContents set displayOrder = ? where pcID = ?";
-			$db->query($q1, $v1);
-			$currentDisplayOrder++;
-		}
-	}
+    public function getDefault()
+    {
+        $db = Loader::db();
+        // checks to see if we're registered, or if we're a visitor. Either way, we get a pile entry
+        $u = new User();
+        if ($u->isRegistered()) {
+            $v = array($u->getUserID(), 1);
+            $q = "select pID from Piles where uID = ? and isDefault = ?";
+        }
+        $pID = $db->getOne($q, $v);
+        if ($pID > 0) {
+            $p = Pile::get($pID);
+
+            return $p;
+        } else {
+            // create a new one
+            $p = Pile::createDefaultPile();
+
+            return $p;
+        }
+    }
+
+    public function getMyPiles()
+    {
+        $db = Loader::db();
+
+        $u = new User();
+        if ($u->isRegistered()) {
+            $v = array($u->getUserID());
+            $q = "select pID from Piles where uID = ? order by name asc";
+        }
+
+        $piles = array();
+        $r = $db->query($q, $v);
+        if ($r) {
+            while ($row = $r->fetchRow()) {
+                $piles[] = Pile::get($row['pID']);
+            }
+        }
+
+        return $piles;
+    }
+
+    public function isMyPile()
+    {
+        $u = new User();
+
+        if ($u->isRegistered()) {
+            return $this->getUserID() == $u->getUserID();
+        }
+    }
+
+    public function delete()
+    {
+        $db = Loader::db();
+        $v = array($this->pID);
+        $q = "delete from Piles where pID = ?";
+        $db->query($q, $v);
+        $q2 = "delete from PileContents where pID = ?";
+        $db->query($q, $v);
+    }
+
+    public function getPileLength()
+    {
+        $db = Loader::db();
+        $q = "select count(pcID) from PileContents where pID = ?";
+        $v = array($this->pID);
+        $r = $db->getOne($q, $v);
+        if ($r > 0) {
+            return $r;
+        } else {
+            return 0;
+        }
+    }
+
+    public function getPileContentObjects($display = 'display_order')
+    {
+        $pc = array();
+        $db = Loader::db();
+        switch ($display) {
+            case 'display_order_date':
+                $order = 'displayOrder asc, timestamp desc';
+                break;
+            case 'date_desc':
+                $order = 'timestamp desc';
+                break;
+            default:
+                $order = 'displayOrder asc';
+                break;
+        }
+
+        $v = array($this->pID);
+        $q = "select pcID from PileContents where pID = ? order by {$order}";
+        $r = $db->query($q, $v);
+        while ($row = $r->fetchRow()) {
+            $pc[] = PileContent::get($row['pcID']);
+        }
+
+        return $pc;
+    }
+
+    public function add(&$obj, $quantity = 1)
+    {
+        $db = Loader::db();
+        $existingPCID = $this->getPileContentID($obj);
+        $v1 = array($this->pID);
+        $q1 = "select max(displayOrder) as displayOrder from PileContents where pID = ?";
+        $currentDO = $db->getOne($q1, $v1);
+        $displayOrder = $currentDO + 1;
+        if (!$existingPCID) {
+            switch (strtolower(get_class($obj))) {
+                case "page":
+                    $v = array($this->pID, $obj->getCollectionID(), "COLLECTION", $quantity, $displayOrder);
+                    break;
+                case "block":
+                    $v = array($this->pID, $obj->getBlockID(), "BLOCK", $quantity, $displayOrder);
+                    break;
+                case "pilecontent":
+                    $v = array($this->pID, $obj->getItemID(), $obj->getItemType(), $obj->getQuantity(), $displayOrder);
+                    break;
+            }
+            $q = "insert into PileContents (pID, itemID, itemType, quantity, displayOrder) values (?, ?, ?, ?, ?)";
+            $r = $db->query($q, $v);
+            if ($r) {
+                $pcID = $db->Insert_ID();
+
+                return $pcID;
+            }
+        } else {
+            return $existingPCID;
+        }
+    }
+
+    public function remove(&$obj, $quantity = 1)
+    {
+        $db = Loader::db();
+        switch (strtolower(get_class($obj))) {
+            case "page":
+                $v = array($this->pID, $obj->getCollectionID(), "COLLECTION");
+                break;
+            case "block":
+                $v = array($this->pID, $obj->getBlockID(), "BLOCK");
+                break;
+            case "pilecontent":
+                $v = array($this->pID, $obj->getItemID(), $obj->getItemType());
+                break;
+        }
+
+        $q = "select quantity from PileContents where pID = ? and itemID = ? and itemType = ?";
+        $exQuantity = $db->getOne($q, $v);
+        if ($exQuantity > $quantity) {
+            $db->query("update PileContent set quantity = quantity - {$quantity} where pID = ? and itemID = ? and itemType = ?", $v);
+        } else {
+            $db->query("delete from PileContents where pID = ? and itemID = ? and itemType = ?", $v);
+        }
+    }
+
+    public function getPileContentID(&$obj)
+    {
+        $db = Loader::db();
+        switch (strtolower(get_class($obj))) {
+            case "page":
+                $v = array($this->pID, $obj->getCollectionID(), "COLLECTION");
+                $q = "select pcID from PileContents where pID = ? and itemID = ? and itemType = ?";
+                $pcID = $db->getOne($q, $v);
+                if ($pcID > 0) {
+                    return $pcID;
+                }
+                break;
+        }
+    }
+
+    public function rescanDisplayOrder()
+    {
+        $db = Loader::db();
+        $v = array($this->pID);
+        $q = "select pcID from PileContents where pID = ? order by displayOrder asc";
+        $r = $db->query($q, $v);
+        $currentDisplayOrder = 0;
+        while ($row = $r->fetchRow()) {
+            $v1 = array($currentDisplayOrder, $row['pcID']);
+            $q1 = "update PileContents set displayOrder = ? where pcID = ?";
+            $db->query($q1, $v1);
+            $currentDisplayOrder++;
+        }
+    }
 }
 
-class PileContent extends Object {
+class PileContent extends Object
+{
+    public $p, $pID, $pcID, $itemID, $itemType, $quantity, $timestamp, $displayOrder;
 
-	var $p, $pID, $pcID, $itemID, $itemType, $quantity, $timestamp, $displayOrder;
+    public function getPile() {return $this->p;}
+    public function getPileContentID() {return $this->pcID;}
+    public function getItemID() {return $this->itemID;}
+    public function getItemType() {return $this->itemType;}
+    public function getQuantity() {return $this->quantity;}
 
-	function getPile() {return $this->p;}
-	function getPileContentID() {return $this->pcID;}
-	function getItemID() {return $this->itemID;}
-	function getItemType() {return $this->itemType;}
-	function getQuantity() {return $this->quantity;}
+    public function delete()
+    {
+        // it's assumed that we've already checked whether this user has access to this pile content object
 
-	function delete() {
+        $db = Loader::db();
+        $v = ($this->pcID);
+        $q = "delete from PileContents where pcID = ?";
+        $r = $db->query($q, $v);
+        if ($r) {
+            $this->p->rescanDisplayOrder();
 
-		// it's assumed that we've already checked whether this user has access to this pile content object
+            return true;
+        }
+    }
 
-		$db = Loader::db();
-		$v = ($this->pcID);
-		$q = "delete from PileContents where pcID = ?";
-		$r = $db->query($q, $v);
-		if ($r) {
-			$this->p->rescanDisplayOrder();
-			return true;
-		}
-	}
+    public function moveUp()
+    {
+        $db = Loader::db();
+        $this->p->rescanDisplayOrder();
+        // now that we know everything is cool regarding display order
+        $q = "select displayOrder from PileContents where pcID = {$this->pcID}";
+        $displayOrder = $db->getOne($q);
+        if ($displayOrder > 0) {
+            // we have room to move up
 
-	function moveUp() {
-		$db = Loader::db();
-		$this->p->rescanDisplayOrder();
-		// now that we know everything is cool regarding display order
-		$q = "select displayOrder from PileContents where pcID = {$this->pcID}";
-		$displayOrder = $db->getOne($q);
-		if ($displayOrder > 0) {
-			// we have room to move up
+            $targetDO = $displayOrder - 1;
+            $q = "select pcID from PileContents where displayOrder = {$targetDO}";
 
-			$targetDO = $displayOrder - 1;
-			$q = "select pcID from PileContents where displayOrder = {$targetDO}";
+            $pcID = $db->getOne($q);
+            $q = "update PileContents set displayOrder = {$targetDO} where pcID = {$this->pcID}";
+            $db->query($q);
 
-			$pcID = $db->getOne($q);
-			$q = "update PileContents set displayOrder = {$targetDO} where pcID = {$this->pcID}";
-			$db->query($q);
+            $q = "update PileContents set displayOrder = {$displayOrder} where pcID = {$pcID}";
+            $db->query($q);
+        }
+    }
 
-			$q = "update PileContents set displayOrder = {$displayOrder} where pcID = {$pcID}";
-			$db->query($q);
-		}
-	}
+    public function moveDown()
+    {
+        $db = Loader::db();
+        $this->p->rescanDisplayOrder();
+        // now that we know everything is cool regarding display order
+        $q = "select max(displayOrder) as displayOrder from PileContents where pID = {$this->pID}";
+        $maxDisplayOrder = $db->getOne($q);
 
-	function moveDown() {
-		$db = Loader::db();
-		$this->p->rescanDisplayOrder();
-		// now that we know everything is cool regarding display order
-		$q = "select max(displayOrder) as displayOrder from PileContents where pID = {$this->pID}";
-		$maxDisplayOrder = $db->getOne($q);
+        $q2 = "select displayOrder from PileContents where pcID = {$this->pcID}";
+        $displayOrder = $db->getOne($q2);
+        if ($displayOrder < $maxDisplayOrder) {
+            // we have room to move up
 
-		$q2 = "select displayOrder from PileContents where pcID = {$this->pcID}";
-		$displayOrder = $db->getOne($q2);
-		if ($displayOrder < $maxDisplayOrder) {
-			// we have room to move up
+            $targetDO = $displayOrder + 1;
+            $q = "select pcID from PileContents where displayOrder = {$targetDO}";
+            $pcID = $db->getOne($q);
+            $q = "update PileContents set displayOrder = {$targetDO} where pcID = {$this->pcID}";
+            $db->query($q);
 
-			$targetDO = $displayOrder + 1;
-			$q = "select pcID from PileContents where displayOrder = {$targetDO}";
-			$pcID = $db->getOne($q);
-			$q = "update PileContents set displayOrder = {$targetDO} where pcID = {$this->pcID}";
-			$db->query($q);
+            $q = "update PileContents set displayOrder = {$displayOrder} where pcID = {$pcID}";
+            $db->query($q);
+        }
+    }
 
-			$q = "update PileContents set displayOrder = {$displayOrder} where pcID = {$pcID}";
-			$db->query($q);
-		}
-	}
+    public function get($pcID)
+    {
+        $db = Loader::db();
+        $v = array($pcID);
+        $q = "select pID, pcID, itemID, itemType, displayOrder, quantity, timestamp from PileContents where pcID = ?";
+        $r = $db->query($q, $v);
+        $row = $r->fetchRow();
 
-	function get($pcID) {
-		$db = Loader::db();
-		$v = array($pcID);
-		$q = "select pID, pcID, itemID, itemType, displayOrder, quantity, timestamp from PileContents where pcID = ?";
-		$r = $db->query($q, $v);
-		$row = $r->fetchRow();
+        $pc = new PileContent;
+        if ( is_array($row) ) foreach ($row as $k => $v) {
+            $pc->{$k} = $v;
+        }
 
-		$pc = new PileContent;
-		if( is_array($row) ) foreach ($row as $k => $v) {
-			$pc->{$k} = $v;
-		}
+        $p = Pile::get($pc->pID);
+        $pc->p = $p; // pc-p . get it ?
 
-		$p = Pile::get($pc->pID);
-		$pc->p = $p; // pc-p . get it ?
-		return $pc;
-	}
+        return $pc;
+    }
 
-	function getObject() {
-		switch($this->getItemType()) {
-			case "COLLECTION":
-				$obj = Page::getByID($this->getItemID(), "ACTIVE");
-				break;
-			case "BLOCK":
-				$obj = Block::getByID($this->getItemID());
-				break;
-		}
-		return $obj;
-	}
+    public function getObject()
+    {
+        switch ($this->getItemType()) {
+            case "COLLECTION":
+                $obj = Page::getByID($this->getItemID(), "ACTIVE");
+                break;
+            case "BLOCK":
+                $obj = Block::getByID($this->getItemID());
+                break;
+        }
 
-	function getModuleList() {
-		$modules = explode(',', PILE_MODULES_INSTALLED);
-		return $modules;
-	}
+        return $obj;
+    }
+
+    public function getModuleList()
+    {
+        $modules = explode(',', PILE_MODULES_INSTALLED);
+
+        return $modules;
+    }
 
 }

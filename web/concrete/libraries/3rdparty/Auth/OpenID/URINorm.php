@@ -103,23 +103,23 @@ function Auth_OpenID_remove_dot_segments($path)
     while ($path) {
         if (Auth_Yadis_startswith($path, '../')) {
             $path = substr($path, 3);
-        } else if (Auth_Yadis_startswith($path, './')) {
+        } elseif (Auth_Yadis_startswith($path, './')) {
             $path = substr($path, 2);
-        } else if (Auth_Yadis_startswith($path, '/./')) {
+        } elseif (Auth_Yadis_startswith($path, '/./')) {
             $path = substr($path, 2);
-        } else if ($path == '/.') {
+        } elseif ($path == '/.') {
             $path = '/';
-        } else if (Auth_Yadis_startswith($path, '/../')) {
+        } elseif (Auth_Yadis_startswith($path, '/../')) {
             $path = substr($path, 3);
             if ($result_segments) {
                 array_pop($result_segments);
             }
-        } else if ($path == '/..') {
+        } elseif ($path == '/..') {
             $path = '/';
             if ($result_segments) {
                 array_pop($result_segments);
             }
-        } else if (($path == '..') ||
+        } elseif (($path == '..') ||
                    ($path == '.')) {
             $path = '';
         } else {
@@ -245,5 +245,3 @@ function Auth_OpenID_urinorm($uri)
 
     return $scheme . '://' . $authority . $path . $query . $fragment;
 }
-
-?>

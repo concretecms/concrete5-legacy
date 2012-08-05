@@ -20,7 +20,6 @@
  * @version    $Id: Backend.php 23800 2011-03-10 20:52:08Z mabe $
  */
 
-
 /**
  * @package    Zend_Cache
  * @subpackage Zend_Cache_Backend
@@ -57,7 +56,7 @@ class Zend_Cache_Backend
     /**
      * Constructor
      *
-     * @param  array $options Associative array of options
+     * @param  array                $options Associative array of options
      * @throws Zend_Cache_Exception
      * @return void
      */
@@ -71,7 +70,7 @@ class Zend_Cache_Backend
     /**
      * Set the frontend directives
      *
-     * @param  array $directives Assoc of directives
+     * @param  array                $directives Assoc of directives
      * @throws Zend_Cache_Exception
      * @return void
      */
@@ -95,8 +94,8 @@ class Zend_Cache_Backend
     /**
      * Set an option
      *
-     * @param  string $name
-     * @param  mixed  $value
+     * @param  string               $name
+     * @param  mixed                $value
      * @throws Zend_Cache_Exception
      * @return void
      */
@@ -125,6 +124,7 @@ class Zend_Cache_Backend
         if ($specificLifetime === false) {
             return $this->_directives['lifetime'];
         }
+
         return $specificLifetime;
     }
 
@@ -200,7 +200,7 @@ class Zend_Cache_Backend
     /**
      * Verify if the given temporary directory is readable and writable
      *
-     * @param string $dir temporary directory
+     * @param  string  $dir temporary directory
      * @return boolean true if the directory is ok
      */
     protected function _isGoodTmpDir($dir)
@@ -210,6 +210,7 @@ class Zend_Cache_Backend
                 return true;
             }
         }
+
         return false;
     }
 
@@ -246,7 +247,7 @@ class Zend_Cache_Backend
     /**
      * Log a message at the WARN (4) priority.
      *
-     * @param  string $message
+     * @param  string               $message
      * @throws Zend_Cache_Exception
      * @return void
      */

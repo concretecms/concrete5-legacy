@@ -144,7 +144,7 @@ class Zend_Http_Client_Adapter_Socket implements Zend_Http_Client_Adapter_Interf
      *
      * @since  Zend Framework 1.9
      *
-     * @param  mixed $context Stream context or array of context options
+     * @param  mixed                           $context Stream context or array of context options
      * @return Zend_Http_Client_Adapter_Socket
      */
     public function setStreamContext($context)
@@ -250,12 +250,12 @@ class Zend_Http_Client_Adapter_Socket implements Zend_Http_Client_Adapter_Interf
     /**
      * Send request to the remote server
      *
-     * @param string        $method
-     * @param Zend_Uri_Http $uri
-     * @param string        $http_ver
-     * @param array         $headers
-     * @param string        $body
-     * @return string Request as string
+     * @param  string        $method
+     * @param  Zend_Uri_Http $uri
+     * @param  string        $http_ver
+     * @param  array         $headers
+     * @param  string        $body
+     * @return string        Request as string
      */
     public function write($method, $uri, $http_ver = '1.1', $headers = array(), $body = '')
     {
@@ -284,7 +284,7 @@ class Zend_Http_Client_Adapter_Socket implements Zend_Http_Client_Adapter_Interf
             $request .= "$v\r\n";
         }
 
-        if(is_resource($body)) {
+        if (is_resource($body)) {
             $request .= "\r\n";
         } else {
             // Add the request body
@@ -297,8 +297,8 @@ class Zend_Http_Client_Adapter_Socket implements Zend_Http_Client_Adapter_Interf
             throw new Zend_Http_Client_Adapter_Exception('Error writing request to server');
         }
 
-        if(is_resource($body)) {
-            if(stream_copy_to_stream($body, $this->socket) == 0) {
+        if (is_resource($body)) {
+            if (stream_copy_to_stream($body, $this->socket) == 0) {
                 require_once 'Zend/Http/Client/Adapter/Exception.php';
                 throw new Zend_Http_Client_Adapter_Exception('Error writing request to server');
             }
@@ -348,6 +348,7 @@ class Zend_Http_Client_Adapter_Socket implements Zend_Http_Client_Adapter_Interf
             if (isset($headers['connection']) && $headers['connection'] == 'close') {
                 $this->close();
             }
+
             return $response;
         }
 
@@ -381,8 +382,8 @@ class Zend_Http_Client_Adapter_Socket implements Zend_Http_Client_Adapter_Interf
                         $current_pos = ftell($this->socket);
                         if ($current_pos >= $read_to) break;
 
-                        if($this->out_stream) {
-                            if(stream_copy_to_stream($this->socket, $this->out_stream, $read_to - $current_pos) == 0) {
+                        if ($this->out_stream) {
+                            if (stream_copy_to_stream($this->socket, $this->out_stream, $read_to - $current_pos) == 0) {
                               $this->_checkSocketReadTimeout();
                               break;
                              }
@@ -399,7 +400,7 @@ class Zend_Http_Client_Adapter_Socket implements Zend_Http_Client_Adapter_Interf
                     $chunk .= @fgets($this->socket);
                     $this->_checkSocketReadTimeout();
 
-                    if(!$this->out_stream) {
+                    if (!$this->out_stream) {
                         $response .= $chunk;
                     }
                 } while ($chunksize > 0);
@@ -433,8 +434,8 @@ class Zend_Http_Client_Adapter_Socket implements Zend_Http_Client_Adapter_Interf
                  $read_to > $current_pos;
                  $current_pos = ftell($this->socket)) {
 
-                 if($this->out_stream) {
-                     if(@stream_copy_to_stream($this->socket, $this->out_stream, $read_to - $current_pos) == 0) {
+                 if ($this->out_stream) {
+                     if (@stream_copy_to_stream($this->socket, $this->out_stream, $read_to - $current_pos) == 0) {
                           $this->_checkSocketReadTimeout();
                           break;
                      }
@@ -456,12 +457,12 @@ class Zend_Http_Client_Adapter_Socket implements Zend_Http_Client_Adapter_Interf
         } else {
 
             do {
-                if($this->out_stream) {
-                    if(@stream_copy_to_stream($this->socket, $this->out_stream) == 0) {
+                if ($this->out_stream) {
+                    if (@stream_copy_to_stream($this->socket, $this->out_stream) == 0) {
                           $this->_checkSocketReadTimeout();
                           break;
                      }
-                }  else {
+                } else {
                     $buff = @fread($this->socket, 8192);
                     if ($buff === false || strlen($buff) === 0) {
                         $this->_checkSocketReadTimeout();
@@ -520,12 +521,13 @@ class Zend_Http_Client_Adapter_Socket implements Zend_Http_Client_Adapter_Interf
     /**
      * Set output stream for the response
      *
-     * @param resource $stream
+     * @param  resource                        $stream
      * @return Zend_Http_Client_Adapter_Socket
      */
     public function setOutputStream($stream)
     {
         $this->out_stream = $stream;
+
         return $this;
     }
 

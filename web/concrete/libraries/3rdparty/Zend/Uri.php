@@ -41,7 +41,7 @@ abstract class Zend_Uri
      *
      * @var array
      */
-    static protected $_config = array(
+    protected static $_config = array(
         'allow_unwise' => false
     );
 
@@ -57,6 +57,7 @@ abstract class Zend_Uri
             return $this->getUri();
         } catch (Exception $e) {
             trigger_error($e->getMessage(), E_USER_WARNING);
+
             return '';
         }
     }
@@ -66,7 +67,7 @@ abstract class Zend_Uri
      * by validating it but not returning an object.  Returns TRUE if
      * $uri is a well-formed URI, or FALSE otherwise.
      *
-     * @param  string $uri The URI to check
+     * @param  string  $uri The URI to check
      * @return boolean
      */
     public static function check($uri)
@@ -84,8 +85,8 @@ abstract class Zend_Uri
      * Create a new Zend_Uri object for a URI.  If building a new URI, then $uri should contain
      * only the scheme (http, ftp, etc).  Otherwise, supply $uri with the complete URI.
      *
-     * @param  string $uri       The URI form which a Zend_Uri instance is created
-     * @param  string $className The name of the class to use in order to manipulate URI
+     * @param  string             $uri       The URI form which a Zend_Uri instance is created
+     * @param  string             $className The name of the class to use in order to manipulate URI
      * @throws Zend_Uri_Exception When an empty string was supplied for the scheme
      * @throws Zend_Uri_Exception When an illegal scheme is supplied
      * @throws Zend_Uri_Exception When the scheme is not supported
@@ -169,7 +170,7 @@ abstract class Zend_Uri
      *
      * @param Zend_Config|array $config
      */
-    static public function setConfig($config)
+    public static function setConfig($config)
     {
         if ($config instanceof Zend_Config) {
             $config = $config->toArray();

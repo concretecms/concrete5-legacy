@@ -1,4 +1,4 @@
-<?
+<?php
 
 defined('C5_EXECUTE') or die("Access Denied.");
 
@@ -11,8 +11,8 @@ User Name: %s
 Email Address: %s
 ", $uName, $uEmail);
 
-foreach($attribs as $item) {
-	$body .= $item . "\n";
+foreach ($attribs as $item) {
+    $body .= $item . "\n";
 }
 
 $body .= t("

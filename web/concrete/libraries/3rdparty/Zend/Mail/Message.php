@@ -19,7 +19,6 @@
  * @version    $Id: Message.php 23775 2011-03-01 17:25:24Z ralph $
  */
 
-
 /**
  * Zend_Mail_Part
  */
@@ -51,7 +50,7 @@ class Zend_Mail_Message extends Zend_Mail_Part implements Zend_Mail_Message_Inte
      * - file  filename or file handle of a file with raw message content
      * - flags array with flags for message, keys are ignored, use constants defined in Zend_Mail_Storage
      *
-     * @param  string $rawMessage  full message with or without headers
+     * @param  string              $rawMessage full message with or without headers
      * @throws Zend_Mail_Exception
      */
     public function __construct(array $params)
@@ -92,8 +91,8 @@ class Zend_Mail_Message extends Zend_Mail_Part implements Zend_Mail_Message_Inte
     /**
      * check if flag is set
      *
-     * @param mixed $flag a flag name, use constants defined in Zend_Mail_Storage
-     * @return bool true if set, otherwise false
+     * @param  mixed $flag a flag name, use constants defined in Zend_Mail_Storage
+     * @return bool  true if set, otherwise false
      */
     public function hasFlag($flag)
     {

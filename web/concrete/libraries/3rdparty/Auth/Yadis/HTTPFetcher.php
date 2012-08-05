@@ -16,14 +16,15 @@
 /**
  * Require logging functionality
  */
-require_once "Auth/OpenID.php";
+require_once 'Auth/OpenID.php';
 
 define('Auth_OpenID_FETCHER_MAX_RESPONSE_KB', 1024);
-define('Auth_OpenID_USER_AGENT', 
+define('Auth_OpenID_USER_AGENT',
        'php-openid/'.Auth_OpenID_VERSION.' (php/'.phpversion().')');
 
-class Auth_Yadis_HTTPResponse {
-    function Auth_Yadis_HTTPResponse($final_url = null, $status = null,
+class Auth_Yadis_HTTPResponse
+{
+    public function Auth_Yadis_HTTPResponse($final_url = null, $status = null,
                                          $headers = null, $body = null)
     {
         $this->final_url = $final_url;
@@ -41,9 +42,9 @@ class Auth_Yadis_HTTPResponse {
  * @access private
  * @package OpenID
  */
-class Auth_Yadis_HTTPFetcher {
-
-    var $timeout = 20; // timeout in seconds.
+class Auth_Yadis_HTTPFetcher
+{
+    public $timeout = 20; // timeout in seconds.
 
     /**
      * Return whether a URL can be fetched.  Returns false if the URL
@@ -52,17 +53,19 @@ class Auth_Yadis_HTTPFetcher {
      *
      * @return bool
      */
-    function canFetchURL($url)
+    public function canFetchURL($url)
     {
         if ($this->isHTTPS($url) && !$this->supportsSSL()) {
             Auth_OpenID::log("HTTPS URL unsupported fetching %s",
                              $url);
+
             return false;
         }
 
         if (!$this->allowedURL($url)) {
             Auth_OpenID::log("URL fetching not allowed for '%s'",
                              $url);
+
             return false;
         }
 
@@ -75,7 +78,7 @@ class Auth_Yadis_HTTPFetcher {
      *
      * By default, will attempt to fetch any http or https URL.
      */
-    function allowedURL($url)
+    public function allowedURL($url)
     {
         return $this->URLHasAllowedScheme($url);
     }
@@ -87,7 +90,7 @@ class Auth_Yadis_HTTPFetcher {
      * @return bool $support True if this fetcher supports HTTPS
      * fetching; false if not.
      */
-    function supportsSSL()
+    public function supportsSSL()
     {
         trigger_error("not implemented", E_USER_ERROR);
     }
@@ -97,9 +100,9 @@ class Auth_Yadis_HTTPFetcher {
      *
      * @access private
      */
-    function isHTTPS($url)
+    public function isHTTPS($url)
     {
-        return (bool)preg_match('/^https:\/\//i', $url);
+        return (bool) preg_match('/^https:\/\//i', $url);
     }
 
     /**
@@ -107,22 +110,24 @@ class Auth_Yadis_HTTPFetcher {
      *
      * @access private
      */
-    function URLHasAllowedScheme($url)
+    public function URLHasAllowedScheme($url)
     {
-        return (bool)preg_match('/^https?:\/\//i', $url);
+        return (bool) preg_match('/^https?:\/\//i', $url);
     }
 
     /**
      * @access private
      */
-    function _findRedirect($headers)
+    public function _findRedirect($headers)
     {
         foreach ($headers as $line) {
             if (strpos(strtolower($line), "location: ") === 0) {
                 $parts = explode(" ", $line, 2);
+
                 return $parts[1];
             }
         }
+
         return null;
     }
 
@@ -130,18 +135,16 @@ class Auth_Yadis_HTTPFetcher {
      * Fetches the specified URL using optional extra headers and
      * returns the server's response.
      *
-     * @param string $url The URL to be fetched.
-     * @param array $extra_headers An array of header strings
+     * @param string $url           The URL to be fetched.
+     * @param array  $extra_headers An array of header strings
      * (e.g. "Accept: text/html").
      * @return mixed $result An array of ($code, $url, $headers,
      * $body) if the URL could be fetched; null if the URL does not
      * pass the URLHasAllowedScheme check or if the server's response
      * is malformed.
      */
-    function get($url, $headers)
+    public function get($url, $headers)
     {
         trigger_error("not implemented", E_USER_ERROR);
     }
 }
-
-?>

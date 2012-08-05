@@ -34,7 +34,7 @@ interface Zend_Validate_Interface
      * getMessages() will return an array of messages that explain why the
      * validation failed.
      *
-     * @param  mixed $value
+     * @param  mixed                   $value
      * @return boolean
      * @throws Zend_Validate_Exception If validation of $value is impossible
      */

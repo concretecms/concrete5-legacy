@@ -55,8 +55,8 @@ class Zend_Http_UserAgent_Checker extends Zend_Http_UserAgent_Desktop
     /**
      * Comparison of the UserAgent chain and User Agent signatures
      *
-     * @param string $userAgent User Agent chain
-     * @param  array $server $_SERVER like param
+     * @param  string $userAgent User Agent chain
+     * @param  array  $server    $_SERVER like param
      * @return bool
      */
     public static function match($userAgent, $server)

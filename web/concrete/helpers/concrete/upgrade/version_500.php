@@ -1,4 +1,4 @@
-<?
+<?php
 /**
  * @access private
  * @package Helpers
@@ -18,14 +18,13 @@
  */
 
 defined('C5_EXECUTE') or die("Access Denied.");
-class ConcreteUpgradeVersion500Helper {
-	
-	public function run() {
-		// since we added the date column we need to populate the date column with historical data
-		$db = Loader::db();
-		$db->Execute("update PageStatistics set timestamp = timestamp, date = DATE_FORMAT(timestamp, '%Y-%m-%d')");
-	}
-	
+class ConcreteUpgradeVersion500Helper
+{
+    public function run()
+    {
+        // since we added the date column we need to populate the date column with historical data
+        $db = Loader::db();
+        $db->Execute("update PageStatistics set timestamp = timestamp, date = DATE_FORMAT(timestamp, '%Y-%m-%d')");
+    }
+
 }
-		
-	

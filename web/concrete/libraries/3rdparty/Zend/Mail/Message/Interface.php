@@ -20,7 +20,6 @@
  * @version    $Id: Interface.php 23775 2011-03-01 17:25:24Z ralph $
  */
 
-
 /**
  * @category   Zend
  * @package    Zend_Mail
@@ -41,8 +40,8 @@ interface Zend_Mail_Message_Interface
     /**
      * check if flag is set
      *
-     * @param mixed $flag a flag name, use constants defined in Zend_Mail_Storage
-     * @return bool true if set, otherwise false
+     * @param  mixed $flag a flag name, use constants defined in Zend_Mail_Storage
+     * @return bool  true if set, otherwise false
      */
     public function hasFlag($flag);
 

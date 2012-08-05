@@ -13,6 +13,6 @@
 		</field>
 		<field name="height" type="I">
 			<unsigned />
-		</field>				
+		</field>
 	</table>
 </schema>

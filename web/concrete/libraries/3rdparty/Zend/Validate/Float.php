@@ -96,6 +96,7 @@ class Zend_Validate_Float extends Zend_Validate_Abstract
     {
         require_once 'Zend/Locale.php';
         $this->_locale = Zend_Locale::findLocale($locale);
+
         return $this;
     }
 
@@ -104,13 +105,14 @@ class Zend_Validate_Float extends Zend_Validate_Abstract
      *
      * Returns true if and only if $value is a floating-point value
      *
-     * @param  string $value
+     * @param  string  $value
      * @return boolean
      */
     public function isValid($value)
     {
         if (!is_string($value) && !is_int($value) && !is_float($value)) {
             $this->_error(self::INVALID);
+
             return false;
         }
 
@@ -122,10 +124,12 @@ class Zend_Validate_Float extends Zend_Validate_Abstract
         try {
             if (!Zend_Locale_Format::isFloat($value, array('locale' => $this->_locale))) {
                 $this->_error(self::NOT_FLOAT);
+
                 return false;
             }
         } catch (Zend_Locale_Exception $e) {
             $this->_error(self::NOT_FLOAT);
+
             return false;
         }
 

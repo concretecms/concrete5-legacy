@@ -209,7 +209,7 @@
                     <block type="content" name="">
                         <data table="btContentLocal">
                             <record>
-                                <content><![CDATA[<h1><a title="Home" 
+                                <content><![CDATA[<h1><a title="Home"
                                 	href="{ccm:export:page:}"
                                 >{ccm:export:define:SITE}</a></h1>]]></content>
                             </record>

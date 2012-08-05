@@ -1,8 +1,8 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 
 if (!Loader::helper('validation/numbers')->integer($_REQUEST['fID'])) {
-	die(t('Access Denied'));
+    die(t('Access Denied'));
 }
 
 $selectedField = Loader::helper('text')->entities($_REQUEST['ccm_file_selected_field']);
@@ -11,15 +11,13 @@ $u = new User();
 $form = Loader::helper('form');
 $fp = FilePermissions::getGlobal();
 if (!$fp->canAccessFileManager()) {
-	die(t("Access Denied."));
+    die(t("Access Denied."));
 }
-
-
 
 $f = File::getByID($_REQUEST['fID']);
 $fp = new Permissions($f);
 if (!$fp->canRead()) {
-	die(t("Access Denied."));
+    die(t("Access Denied."));
 }
 
 $fv = $f->getApprovedVersion();

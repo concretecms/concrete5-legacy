@@ -20,12 +20,10 @@
  * @version    $Id: Sendmail.php 23775 2011-03-01 17:25:24Z ralph $
  */
 
-
 /**
  * @see Zend_Mail_Transport_Abstract
  */
 require_once 'Zend/Mail/Transport/Abstract.php';
-
 
 /**
  * Class for sending eMails via the PHP internal mail() function
@@ -44,7 +42,6 @@ class Zend_Mail_Transport_Sendmail extends Zend_Mail_Transport_Abstract
      * @access public
      */
     public $subject = null;
-
 
     /**
      * Config options for sendmail parameters
@@ -85,7 +82,6 @@ class Zend_Mail_Transport_Sendmail extends Zend_Mail_Transport_Abstract
         $this->parameters = $parameters;
     }
 
-
     /**
      * Send mail using PHP native mail()
      *
@@ -106,7 +102,7 @@ class Zend_Mail_Transport_Sendmail extends Zend_Mail_Transport_Abstract
                 $this->header);
             restore_error_handler();
         } else {
-            if(!is_string($this->parameters)) {
+            if (!is_string($this->parameters)) {
                 /**
                  * @see Zend_Mail_Transport_Exception
                  *
@@ -138,7 +134,6 @@ class Zend_Mail_Transport_Sendmail extends Zend_Mail_Transport_Abstract
         }
     }
 
-
     /**
      * Format and fix headers
      *
@@ -147,9 +142,9 @@ class Zend_Mail_Transport_Sendmail extends Zend_Mail_Transport_Abstract
      * prevent duplicate header entries.
      *
      * @access  protected
-     * @param   array $headers
-     * @return  void
-     * @throws  Zend_Mail_Transport_Exception
+     * @param  array                         $headers
+     * @return void
+     * @throws Zend_Mail_Transport_Exception
      */
     protected function _prepareHeaders($headers)
     {
@@ -204,16 +199,17 @@ class Zend_Mail_Transport_Sendmail extends Zend_Mail_Transport_Abstract
     /**
      * Temporary error handler for PHP native mail().
      *
-     * @param int    $errno
-     * @param string $errstr
-     * @param string $errfile
-     * @param string $errline
-     * @param array  $errcontext
+     * @param  int    $errno
+     * @param  string $errstr
+     * @param  string $errfile
+     * @param  string $errline
+     * @param  array  $errcontext
      * @return true
      */
     public function _handleMailErrors($errno, $errstr, $errfile = null, $errline = null, array $errcontext = null)
     {
         $this->_errstr = $errstr;
+
         return true;
     }
 

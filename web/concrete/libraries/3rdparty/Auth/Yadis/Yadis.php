@@ -17,18 +17,18 @@
  * Need both fetcher types so we can use the right one based on the
  * presence or absence of CURL.
  */
-require_once "Auth/Yadis/PlainHTTPFetcher.php";
-require_once "Auth/Yadis/ParanoidHTTPFetcher.php";
+require_once 'Auth/Yadis/PlainHTTPFetcher.php';
+require_once 'Auth/Yadis/ParanoidHTTPFetcher.php';
 
 /**
  * Need this for parsing HTML (looking for META tags).
  */
-require_once "Auth/Yadis/ParseHTML.php";
+require_once 'Auth/Yadis/ParseHTML.php';
 
 /**
  * Need this to parse the XRDS document during Yadis discovery.
  */
-require_once "Auth/Yadis/XRDS.php";
+require_once 'Auth/Yadis/XRDS.php';
 
 /**
  * XRDS (yadis) content type
@@ -45,42 +45,42 @@ define('Auth_Yadis_HEADER_NAME', 'X-XRDS-Location');
  *
  * @package OpenID
  */
-class Auth_Yadis_DiscoveryResult {
-
+class Auth_Yadis_DiscoveryResult
+{
     // The URI that was passed to the fetcher
-    var $request_uri = null;
+    public $request_uri = null;
 
     // The result of following redirects from the request_uri
-    var $normalized_uri = null;
+    public $normalized_uri = null;
 
     // The URI from which the response text was returned (set to
     // None if there was no XRDS document found)
-    var $xrds_uri = null;
+    public $xrds_uri = null;
 
-    var $xrds = null;
+    public $xrds = null;
 
     // The content-type returned with the response_text
-    var $content_type = null;
+    public $content_type = null;
 
     // The document returned from the xrds_uri
-    var $response_text = null;
+    public $response_text = null;
 
     // Did the discovery fail miserably?
-    var $failed = false;
+    public $failed = false;
 
-    function Auth_Yadis_DiscoveryResult($request_uri)
+    public function Auth_Yadis_DiscoveryResult($request_uri)
     {
         // Initialize the state of the object
         // sets all attributes to None except the request_uri
         $this->request_uri = $request_uri;
     }
 
-    function fail()
+    public function fail()
     {
         $this->failed = true;
     }
 
-    function isFailure()
+    public function isFailure()
     {
         return $this->failed;
     }
@@ -93,7 +93,7 @@ class Auth_Yadis_DiscoveryResult {
      * @return array $services An array of {@link Auth_Yadis_Service}
      * objects
      */
-    function services()
+    public function services()
     {
         if ($this->xrds) {
             return $this->xrds->services();
@@ -102,13 +102,13 @@ class Auth_Yadis_DiscoveryResult {
         return null;
     }
 
-    function usedYadisLocation()
+    public function usedYadisLocation()
     {
         // Was the Yadis protocol's indirection used?
         return $this->normalized_uri != $this->xrds_uri;
     }
 
-    function isXRDS()
+    public function isXRDS()
     {
         // Is the response text supposed to be an XRDS document?
         return ($this->usedYadisLocation() ||
@@ -239,8 +239,8 @@ function Auth_Yadis_getServiceEndpoints($input_url, $xrds_parse_func,
  *
  * @package OpenID
  */
-class Auth_Yadis_Yadis {
-
+class Auth_Yadis_Yadis
+{
     /**
      * Returns an HTTP fetcher object.  If the CURL extension is
      * present, an instance of {@link Auth_Yadis_ParanoidHTTPFetcher}
@@ -250,7 +250,7 @@ class Auth_Yadis_Yadis {
      * If Auth_Yadis_CURL_OVERRIDE is defined, this method will always
      * return a {@link Auth_Yadis_PlainHTTPFetcher}.
      */
-    function getHTTPFetcher($timeout = 20)
+    public function getHTTPFetcher($timeout = 20)
     {
         if (Auth_Yadis_Yadis::curlPresent() &&
             (!defined('Auth_Yadis_CURL_OVERRIDE'))) {
@@ -258,10 +258,11 @@ class Auth_Yadis_Yadis {
         } else {
             $fetcher = new Auth_Yadis_PlainHTTPFetcher($timeout);
         }
+
         return $fetcher;
     }
 
-    function curlPresent()
+    public function curlPresent()
     {
         return function_exists('curl_init');
     }
@@ -269,7 +270,7 @@ class Auth_Yadis_Yadis {
     /**
      * @access private
      */
-    function _getHeader($header_list, $names)
+    public function _getHeader($header_list, $names)
     {
         foreach ($header_list as $name => $value) {
             foreach ($names as $n) {
@@ -285,10 +286,11 @@ class Auth_Yadis_Yadis {
     /**
      * @access private
      */
-    function _getContentType($content_type_header)
+    public function _getContentType($content_type_header)
     {
         if ($content_type_header) {
             $parts = explode(";", $content_type_header);
+
             return strtolower($parts[0]);
         }
     }
@@ -317,7 +319,7 @@ class Auth_Yadis_Yadis {
      * Auth_Yadis_Yadis, depending on whether the discovery
      * succeeded.
      */
-    function discover($uri, &$fetcher,
+    public function discover($uri, &$fetcher,
                       $extra_ns_map = null, $timeout = 20)
     {
         $result = new Auth_Yadis_DiscoveryResult($uri);
@@ -335,6 +337,7 @@ class Auth_Yadis_Yadis {
         if (!$response || ($response->status != 200 and
                            $response->status != 206)) {
             $result->fail();
+
             return $result;
         }
 
@@ -365,6 +368,7 @@ class Auth_Yadis_Yadis {
                 if ((!$response) || ($response->status != 200 and
                                      $response->status != 206)) {
                     $result->fail();
+
                     return $result;
                 }
 
@@ -375,8 +379,7 @@ class Auth_Yadis_Yadis {
         }
 
         $result->response_text = $response->body;
+
         return $result;
     }
 }
-
-?>

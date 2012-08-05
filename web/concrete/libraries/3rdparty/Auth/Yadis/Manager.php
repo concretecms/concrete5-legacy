@@ -14,14 +14,15 @@
  *
  * @package OpenID
  */
-class Auth_Yadis_PHPSession {
+class Auth_Yadis_PHPSession
+{
     /**
      * Set a session key/value pair.
      *
-     * @param string $name The name of the session key to add.
+     * @param string $name  The name of the session key to add.
      * @param string $value The value to add to the session.
      */
-    function set($name, $value)
+    public function set($name, $value)
     {
         $_SESSION[$name] = $value;
     }
@@ -29,13 +30,13 @@ class Auth_Yadis_PHPSession {
     /**
      * Get a key's value from the session.
      *
-     * @param string $name The name of the key to retrieve.
+     * @param string $name    The name of the key to retrieve.
      * @param string $default The optional value to return if the key
      * is not found in the session.
      * @return string $result The key's value in the session or
      * $default if it isn't found.
      */
-    function get($name, $default=null)
+    public function get($name, $default=null)
     {
         if (array_key_exists($name, $_SESSION)) {
             return $_SESSION[$name];
@@ -49,7 +50,7 @@ class Auth_Yadis_PHPSession {
      *
      * @param string $name The name of the key to remove.
      */
-    function del($name)
+    public function del($name)
     {
         unset($_SESSION[$name]);
     }
@@ -57,7 +58,7 @@ class Auth_Yadis_PHPSession {
     /**
      * Return the contents of the session in array form.
      */
-    function contents()
+    public function contents()
     {
         return $_SESSION;
     }
@@ -73,13 +74,14 @@ class Auth_Yadis_PHPSession {
  *
  * @package OpenID
  */
-class Auth_Yadis_SessionLoader {
+class Auth_Yadis_SessionLoader
+{
     /**
      * Override this.
      *
      * @access private
      */
-    function check($data)
+    public function check($data)
     {
         return true;
     }
@@ -94,7 +96,7 @@ class Auth_Yadis_SessionLoader {
      *
      * @access private
      */
-    function fromSession($data)
+    public function fromSession($data)
     {
         if (!$data) {
             return null;
@@ -133,7 +135,7 @@ class Auth_Yadis_SessionLoader {
      *
      * @access private
      */
-    function prepareForLoad($data)
+    public function prepareForLoad($data)
     {
         return array();
     }
@@ -146,7 +148,7 @@ class Auth_Yadis_SessionLoader {
      *
      * @access private
      */
-    function newObject($data)
+    public function newObject($data)
     {
         return null;
     }
@@ -159,7 +161,7 @@ class Auth_Yadis_SessionLoader {
      *
      * @access private
      */
-    function toSession($obj)
+    public function toSession($obj)
     {
         $data = array();
         foreach ($obj as $k => $v) {
@@ -182,7 +184,7 @@ class Auth_Yadis_SessionLoader {
      *
      * @access private
      */
-    function prepareForSave($obj)
+    public function prepareForSave($obj)
     {
         return array();
     }
@@ -193,23 +195,25 @@ class Auth_Yadis_SessionLoader {
  *
  * @package OpenID
  */
-class Auth_OpenID_ServiceEndpointLoader extends Auth_Yadis_SessionLoader {
-    function newObject($data)
+class Auth_OpenID_ServiceEndpointLoader extends Auth_Yadis_SessionLoader
+{
+    public function newObject($data)
     {
         return new Auth_OpenID_ServiceEndpoint();
     }
 
-    function requiredKeys()
+    public function requiredKeys()
     {
         $obj = new Auth_OpenID_ServiceEndpoint();
         $data = array();
         foreach ($obj as $k => $v) {
             $data[] = $k;
         }
+
         return $data;
     }
 
-    function check($data)
+    public function check($data)
     {
         return is_array($data['type_uris']);
     }
@@ -220,8 +224,9 @@ class Auth_OpenID_ServiceEndpointLoader extends Auth_Yadis_SessionLoader {
  *
  * @package OpenID
  */
-class Auth_Yadis_ManagerLoader extends Auth_Yadis_SessionLoader {
-    function requiredKeys()
+class Auth_Yadis_ManagerLoader extends Auth_Yadis_SessionLoader
+{
+    public function requiredKeys()
     {
         return array('starting_url',
                      'yadis_url',
@@ -231,7 +236,7 @@ class Auth_Yadis_ManagerLoader extends Auth_Yadis_SessionLoader {
                      'stale');
     }
 
-    function newObject($data)
+    public function newObject($data)
     {
         return new Auth_Yadis_Manager($data['starting_url'],
                                           $data['yadis_url'],
@@ -239,28 +244,30 @@ class Auth_Yadis_ManagerLoader extends Auth_Yadis_SessionLoader {
                                           $data['session_key']);
     }
 
-    function check($data)
+    public function check($data)
     {
         return is_array($data['services']);
     }
 
-    function prepareForLoad($data)
+    public function prepareForLoad($data)
     {
         $loader = new Auth_OpenID_ServiceEndpointLoader();
         $services = array();
         foreach ($data['services'] as $s) {
             $services[] = $loader->fromSession($s);
         }
+
         return array('services' => $services);
     }
 
-    function prepareForSave($obj)
+    public function prepareForSave($obj)
     {
         $loader = new Auth_OpenID_ServiceEndpointLoader();
         $services = array();
         foreach ($obj->services as $s) {
             $services[] = $loader->toSession($s);
         }
+
         return array('services' => $services);
     }
 }
@@ -273,14 +280,14 @@ class Auth_Yadis_ManagerLoader extends Auth_Yadis_SessionLoader {
  *
  * @package OpenID
  */
-class Auth_Yadis_Manager {
-
+class Auth_Yadis_Manager
+{
     /**
      * Intialize a new yadis service manager.
      *
      * @access private
      */
-    function Auth_Yadis_Manager($starting_url, $yadis_url,
+    public function Auth_Yadis_Manager($starting_url, $yadis_url,
                                     $services, $session_key)
     {
         // The URL that was used to initiate the Yadis protocol
@@ -304,7 +311,7 @@ class Auth_Yadis_Manager {
     /**
      * @access private
      */
-    function length()
+    public function length()
     {
         // How many untried services remain?
         return count($this->services);
@@ -316,7 +323,7 @@ class Auth_Yadis_Manager {
      * $this->current() will continue to return that service until the
      * next call to this method.
      */
-    function nextService()
+    public function nextService()
     {
 
         if ($this->services) {
@@ -331,7 +338,7 @@ class Auth_Yadis_Manager {
     /**
      * @access private
      */
-    function current()
+    public function current()
     {
         // Return the current service.
         // Returns None if there are no services left.
@@ -341,7 +348,7 @@ class Auth_Yadis_Manager {
     /**
      * @access private
      */
-    function forURL($url)
+    public function forURL($url)
     {
         return in_array($url, array($this->starting_url, $this->yadis_url));
     }
@@ -349,7 +356,7 @@ class Auth_Yadis_Manager {
     /**
      * @access private
      */
-    function started()
+    public function started()
     {
         // Has the first service been returned?
         return $this->_current !== null;
@@ -366,28 +373,28 @@ class Auth_Yadis_Manager {
  *
  * @package OpenID
  */
-class Auth_Yadis_Discovery {
+class Auth_Yadis_Discovery
+{
+    /**
+     * @access private
+     */
+    public $DEFAULT_SUFFIX = 'auth';
 
     /**
      * @access private
      */
-    var $DEFAULT_SUFFIX = 'auth';
-
-    /**
-     * @access private
-     */
-    var $PREFIX = '_yadis_services_';
+    public $PREFIX = '_yadis_services_';
 
     /**
      * Initialize a discovery object.
      *
      * @param Auth_Yadis_PHPSession $session An object which
      * implements the Auth_Yadis_PHPSession API.
-     * @param string $url The URL on which to attempt discovery.
+     * @param string $url                The URL on which to attempt discovery.
      * @param string $session_key_suffix The optional session key
      * suffix override.
      */
-    function Auth_Yadis_Discovery(&$session, $url,
+    public function Auth_Yadis_Discovery(&$session, $url,
                                       $session_key_suffix = null)
     {
         /// Initialize a discovery object
@@ -405,7 +412,7 @@ class Auth_Yadis_Discovery {
      * Return the next authentication service for the pair of
      * user_input and session. This function handles fallback.
      */
-    function getNextService($discover_cb, &$fetcher)
+    public function getNextService($discover_cb, &$fetcher)
     {
         $manager = $this->getManager();
         if (!$manager || (!$manager->services)) {
@@ -438,7 +445,7 @@ class Auth_Yadis_Discovery {
      * @param $force True if the manager should be deleted regardless
      * of whether it's a manager for $this->url.
      */
-    function cleanup($force=false)
+    public function cleanup($force=false)
     {
         $manager = $this->getManager($force);
         if ($manager) {
@@ -454,7 +461,7 @@ class Auth_Yadis_Discovery {
     /**
      * @access private
      */
-    function getSessionKey()
+    public function getSessionKey()
     {
         // Get the session key for this starting URL and suffix
         return $this->PREFIX . $this->session_key_suffix;
@@ -483,6 +490,7 @@ class Auth_Yadis_Discovery {
             return $manager;
         } else {
             $unused = null;
+
             return $unused;
         }
     }
@@ -503,10 +511,12 @@ class Auth_Yadis_Discovery {
                                               $services, $key);
             $this->session->set($this->session_key,
                                 serialize($loader->toSession($manager)));
+
             return $manager;
         } else {
             // Oh, PHP.
             $unused = null;
+
             return $unused;
         }
     }
@@ -517,7 +527,7 @@ class Auth_Yadis_Discovery {
      * @param $force True if the manager should be deleted regardless
      * of whether it's a manager for $this->url.
      */
-    function destroyManager($force=false)
+    public function destroyManager($force=false)
     {
         if ($this->getManager($force) !== null) {
             $key = $this->getSessionKey();
@@ -525,5 +535,3 @@ class Auth_Yadis_Discovery {
         }
     }
 }
-
-?>

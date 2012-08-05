@@ -49,7 +49,7 @@ interface Zend_Http_UserAgent_Storage
     /**
      * Writes $contents associated to the key parameter to storage
      *
-     * @param  mixed $contents
+     * @param  mixed                                 $contents
      * @throws Zend_Http_UserAgent_Storage_Exception If writing $contents to storage is impossible
      * @return void
      */

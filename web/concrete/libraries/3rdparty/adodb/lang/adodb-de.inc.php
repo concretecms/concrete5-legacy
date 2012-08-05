@@ -1,8 +1,8 @@
 <?php
 // contributed by "Heinz Hombergs" <opn@hhombergs.de>
 $ADODB_LANG_ARRAY = array (
-			'LANG'                      => 'de',
-			DB_ERROR                    => 'Unbekannter Fehler',
+            'LANG'                      => 'de',
+            DB_ERROR                    => 'Unbekannter Fehler',
             DB_ERROR_ALREADY_EXISTS     => 'existiert bereits',
             DB_ERROR_CANNOT_CREATE      => 'kann nicht erstellen',
             DB_ERROR_CANNOT_DELETE      => 'kann nicht l&ouml;schen',
@@ -30,4 +30,3 @@ $ADODB_LANG_ARRAY = array (
             DB_ERROR_NOSUCHDB           => 'keine Datenbank',
             DB_ERROR_ACCESS_VIOLATION   => 'ungen&uml;gende Rechte'
 );
-?>

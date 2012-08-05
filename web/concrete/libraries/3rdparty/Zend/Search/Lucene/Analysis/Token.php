@@ -20,7 +20,6 @@
  * @version    $Id: Token.php 23775 2011-03-01 17:25:24Z ralph $
  */
 
-
 /**
  * @category   Zend
  * @package    Zend_Search_Lucene
@@ -151,4 +150,3 @@ class Zend_Search_Lucene_Analysis_Token
         return $this->_endOffset;
     }
 }
-

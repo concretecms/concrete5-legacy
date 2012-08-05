@@ -8,40 +8,40 @@
 		<field name="num" type="I2">
 			<unsigned />
 			<notnull />
-		</field> 
-		
+		</field>
+
 		<field name="cParentID" type="I">
 			<unsigned />
 			<notnull />
 			<default value="1" />
 		</field>
-		
+
 		<field name="cThis" type="I1">
 			<unsigned />
 			<notnull />
 			<default value="0" />
-		</field> 
-		
+		</field>
+
 		<field name="ctID" type="I2">
 			<unsigned />
-		</field> 
-		
+		</field>
+
 		<field name="flatDisplay" type="I">
 			<default value="0"/>
-		</field>	
-		
+		</field>
+
 		<field name="defaultNode" type="C" size="64">
 			<default value="current_page"/>
-		</field>	
-					
+		</field>
+
 		<field name="truncateTitles" type="I">
 			<default value="0"/>
 		</field>
-		
+
 		<field name="truncateSummaries" type="I">
 			<default value="0"/>
 		</field>
-		
+
 		<field name="displayFeaturedOnly" type="I">
 			<default value="0"/>
 		</field>
@@ -50,10 +50,10 @@
 		</field>
 		<field name="truncateTitleChars" type="I">
 			<default value="128"/>
-		</field>		
-		<field name="showDescriptions" type="I">
-			<default value="0"/> 
 		</field>
-				
+		<field name="showDescriptions" type="I">
+			<default value="0"/>
+		</field>
+
 	</table>
 </schema>

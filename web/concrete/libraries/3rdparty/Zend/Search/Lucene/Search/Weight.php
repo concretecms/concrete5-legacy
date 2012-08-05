@@ -20,14 +20,13 @@
  * @version    $Id: Weight.php 23775 2011-03-01 17:25:24Z ralph $
  */
 
-
 /**
  * Calculate query weights and build query scorers.
  *
  * A Weight is constructed by a query Query->createWeight().
  * The sumOfSquaredWeights() method is then called on the top-level
- * query to compute the query normalization factor Similarity->queryNorm(float).
- * This factor is then passed to normalize(float).  At this point the weighting
+ * query to compute the query normalization factor Similarity->queryNorm(float) .
+ * This factor is then passed to normalize(float) .  At this point the weighting
  * is complete.
  *
  * @category   Zend
@@ -57,7 +56,6 @@ abstract class Zend_Search_Lucene_Search_Weight
      */
     protected $_value;
 
-
     /**
      * The weight for this query.
      *
@@ -82,4 +80,3 @@ abstract class Zend_Search_Lucene_Search_Weight
      */
     abstract public function normalize($norm);
 }
-

@@ -2,7 +2,7 @@
 // Catalan language
 // contributed by "Josep Lladonosa" jlladono#pie.xtec.es
 $ADODB_LANG_ARRAY = array (
-			'LANG'                      => 'ca',
+            'LANG'                      => 'ca',
             DB_ERROR                    => 'error desconegut',
             DB_ERROR_ALREADY_EXISTS     => 'ja existeix',
             DB_ERROR_CANNOT_CREATE      => 'no es pot crear',
@@ -31,4 +31,3 @@ $ADODB_LANG_ARRAY = array (
             DB_ERROR_NOSUCHDB           => 'base de dades inexistent',
             DB_ERROR_ACCESS_VIOLATION   => 'permisos insuficients'
 );
-?>

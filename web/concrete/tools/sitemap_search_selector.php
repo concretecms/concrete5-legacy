@@ -1,8 +1,8 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 $sh = Loader::helper('concrete/dashboard/sitemap');
 if (!$sh->canRead()) {
-	die(t('Access Denied. You do not have access to sitemap permissions.'));
+    die(t('Access Denied. You do not have access to sitemap permissions.'));
 }
 
 ?>
@@ -11,11 +11,11 @@ if (!$sh->canRead()) {
 var ccm_ssActiveTab = "ccm-show-sitemap";
 
 $("#ccm-ss-tabs a").click(function() {
-	$("li.active").removeClass('active');
-	$("#" + ccm_ssActiveTab + "-tab").hide();
-	ccm_ssActiveTab = $(this).attr('id');
-	$(this).parent().addClass("active");
-	$("#" + ccm_ssActiveTab + "-tab").show();
+    $("li.active").removeClass('active');
+    $("#" + ccm_ssActiveTab + "-tab").hide();
+    ccm_ssActiveTab = $(this).attr('id');
+    $(this).parent().addClass("active");
+    $("#" + ccm_ssActiveTab + "-tab").show();
 });
 
 </script>
@@ -28,32 +28,30 @@ $("#ccm-ss-tabs a").click(function() {
 <br/>
 
 <div id="ccm-show-sitemap-tab">
-<? $sitemapCombinedMode = true; ?>
-<? include(DIR_FILES_TOOLS_REQUIRED . '/sitemap_overlay.php'); ?>
+<?php $sitemapCombinedMode = true; ?>
+<?php include(DIR_FILES_TOOLS_REQUIRED . '/sitemap_overlay.php'); ?>
 
 </div>
 
 <div id="ccm-show-search-tab" style="display: none">
 
-<? 
+<?php
 $sitemap_select_mode = $select_mode;
 include(DIR_FILES_TOOLS_REQUIRED . '/pages/search_dialog.php'); ?>
-
 
 </div>
 </div>
 
 <script type="text/javascript">
 ccm_sitemapSearchSelectorHideBottom = function() {
-	$('#ccm-sitemap-search-selector').parent().parent().find('.ui-dialog-buttonpane').hide();
+    $('#ccm-sitemap-search-selector').parent().parent().find('.ui-dialog-buttonpane').hide();
 }
 
 ccm_sitemapSearchSelectorShowBottom = function() {
-	$('#ccm-sitemap-search-selector').parent().parent().find('.ui-dialog-buttonpane').show();
+    $('#ccm-sitemap-search-selector').parent().parent().find('.ui-dialog-buttonpane').show();
 }
 
-
 $(function() {
-	ccm_sitemapSearchSelectorHideBottom();
+    ccm_sitemapSearchSelectorHideBottom();
 });
 </script>

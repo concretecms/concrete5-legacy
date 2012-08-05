@@ -23,7 +23,8 @@ if (!defined('Auth_OpenID_RAND_SOURCE')) {
     define('Auth_OpenID_RAND_SOURCE', '/dev/urandom');
 }
 
-class Auth_OpenID_CryptUtil {
+class Auth_OpenID_CryptUtil
+{
     /**
      * Get the specified number of random bytes.
      *
@@ -34,10 +35,10 @@ class Auth_OpenID_CryptUtil {
      * <code>Auth_OpenID_RAND_SOURCE</code> as <code>null</code>, and
      * the code will fall back on a pseudo-random number generator.
      *
-     * @param int $num_bytes The length of the return value
+     * @param  int    $num_bytes The length of the return value
      * @return string $bytes random bytes
      */
-    function getBytes($num_bytes)
+    public function getBytes($num_bytes)
     {
         static $f = null;
         $bytes = '';
@@ -63,6 +64,7 @@ class Auth_OpenID_CryptUtil {
         } else {
             $bytes = fread($f, $num_bytes);
         }
+
         return $bytes;
     }
 
@@ -77,7 +79,7 @@ class Auth_OpenID_CryptUtil {
      * @return string $result A string of randomly-chosen characters
      * from $chrs
      */
-    function randomString($length, $population = null)
+    public function randomString($length, $population = null)
     {
         if ($population === null) {
             return Auth_OpenID_CryptUtil::getBytes($length);
@@ -105,5 +107,3 @@ class Auth_OpenID_CryptUtil {
         return $str;
     }
 }
-
-?>

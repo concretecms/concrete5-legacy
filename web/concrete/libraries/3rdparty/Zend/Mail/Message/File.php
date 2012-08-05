@@ -19,7 +19,6 @@
  * @version    $Id: File.php 23775 2011-03-01 17:25:24Z ralph $
  */
 
-
 /**
  * Zend_Mail_Part
  */
@@ -50,7 +49,7 @@ class Zend_Mail_Message_File extends Zend_Mail_Part_File implements Zend_Mail_Me
      * In addition to the parameters of Zend_Mail_Part::__construct() this constructor supports:
      * - flags array with flags for message, keys are ignored, use constants defined in Zend_Mail_Storage
      *
-     * @param  string $rawMessage  full message with or without headers
+     * @param  string              $rawMessage full message with or without headers
      * @throws Zend_Mail_Exception
      */
     public function __construct(array $params)
@@ -76,8 +75,8 @@ class Zend_Mail_Message_File extends Zend_Mail_Part_File implements Zend_Mail_Me
     /**
      * check if flag is set
      *
-     * @param mixed $flag a flag name, use constants defined in Zend_Mail_Storage
-     * @return bool true if set, otherwise false
+     * @param  mixed $flag a flag name, use constants defined in Zend_Mail_Storage
+     * @return bool  true if set, otherwise false
      */
     public function hasFlag($flag)
     {

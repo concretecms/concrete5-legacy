@@ -20,12 +20,10 @@
  * @version    $Id: NonPersistent.php 20096 2010-01-06 02:05:09Z bkarwin $
  */
 
-
 /**
  * @see Zend_Http_UserAgent_Storage_Interface
  */
 require_once 'Zend/Http/UserAgent/Storage.php';
-
 
 /**
  * Non-Persistent Browser Storage
@@ -75,7 +73,7 @@ class Zend_Http_UserAgent_Storage_NonPersistent
     /**
      * Writes $contents to storage
      *
-     * @param  mixed $contents
+     * @param  mixed                                 $contents
      * @throws Zend_Http_UserAgent_Storage_Exception If writing $contents to storage is impossible
      * @return void
      */

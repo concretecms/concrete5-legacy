@@ -20,7 +20,6 @@
  * @version    $Id: Interface.php 23775 2011-03-01 17:25:24Z ralph $
  */
 
-
 /**
  * @category   Zend
  * @package    Zend_Search_Lucene
@@ -47,7 +46,7 @@ interface Zend_Search_Lucene_Search_Highlighter_Interface
     /**
      * Highlight specified words (method is invoked once per subquery)
      *
-     * @param string|array $words  Words to highlight. They could be organized using the array or string.
+     * @param string|array $words Words to highlight. They could be organized using the array or string.
      */
     public function highlight($words);
 }

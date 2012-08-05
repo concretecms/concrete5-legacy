@@ -86,7 +86,7 @@ class Zend_Validate_StringLength extends Zend_Validate_Abstract
     {
         if ($options instanceof Zend_Config) {
             $options = $options->toArray();
-        } else if (!is_array($options)) {
+        } elseif (!is_array($options)) {
             $options     = func_get_args();
             $temp['min'] = array_shift($options);
             if (!empty($options)) {
@@ -127,7 +127,7 @@ class Zend_Validate_StringLength extends Zend_Validate_Abstract
     /**
      * Sets the min option
      *
-     * @param  integer $min
+     * @param  integer                    $min
      * @throws Zend_Validate_Exception
      * @return Zend_Validate_StringLength Provides a fluent interface
      */
@@ -142,6 +142,7 @@ class Zend_Validate_StringLength extends Zend_Validate_Abstract
                                             . " $this->_max");
         }
         $this->_min = max(0, (integer) $min);
+
         return $this;
     }
 
@@ -158,7 +159,7 @@ class Zend_Validate_StringLength extends Zend_Validate_Abstract
     /**
      * Sets the max option
      *
-     * @param  integer|null $max
+     * @param  integer|null               $max
      * @throws Zend_Validate_Exception
      * @return Zend_Validate_StringLength Provides a fluent interface
      */
@@ -166,7 +167,7 @@ class Zend_Validate_StringLength extends Zend_Validate_Abstract
     {
         if (null === $max) {
             $this->_max = null;
-        } else if ($max < $this->_min) {
+        } elseif ($max < $this->_min) {
             /**
              * @see Zend_Validate_Exception
              */
@@ -193,7 +194,7 @@ class Zend_Validate_StringLength extends Zend_Validate_Abstract
     /**
      * Sets a new encoding to use
      *
-     * @param string $encoding
+     * @param  string                     $encoding
      * @return Zend_Validate_StringLength
      */
     public function setEncoding($encoding = null)
@@ -210,6 +211,7 @@ class Zend_Validate_StringLength extends Zend_Validate_Abstract
         }
 
         $this->_encoding = $encoding;
+
         return $this;
     }
 
@@ -219,13 +221,14 @@ class Zend_Validate_StringLength extends Zend_Validate_Abstract
      * Returns true if and only if the string length of $value is at least the min option and
      * no greater than the max option (when the max option is not null).
      *
-     * @param  string $value
+     * @param  string  $value
      * @return boolean
      */
     public function isValid($value)
     {
         if (!is_string($value)) {
             $this->_error(self::INVALID);
+
             return false;
         }
 

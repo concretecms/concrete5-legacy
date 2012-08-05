@@ -20,10 +20,8 @@
  * @version    $Id: Document.php 23775 2011-03-01 17:25:24Z ralph $
  */
 
-
 /** Zend_Search_Lucene_Field */
 require_once 'Zend/Search/Lucene/Field.php';
-
 
 /**
  * A Document is a set of fields. Each field has a name and a textual value.
@@ -69,7 +67,7 @@ class Zend_Search_Lucene_Document
     /**
      * Add a field object to this document.
      *
-     * @param Zend_Search_Lucene_Field $field
+     * @param  Zend_Search_Lucene_Field    $field
      * @return Zend_Search_Lucene_Document
      */
     public function addField(Zend_Search_Lucene_Field $field)
@@ -94,7 +92,7 @@ class Zend_Search_Lucene_Document
     /**
      * Returns Zend_Search_Lucene_Field object for a named field in this document.
      *
-     * @param string $fieldName
+     * @param  string                   $fieldName
      * @return Zend_Search_Lucene_Field
      */
     public function getField($fieldName)
@@ -103,9 +101,9 @@ class Zend_Search_Lucene_Document
             require_once 'Zend/Search/Lucene/Exception.php';
             throw new Zend_Search_Lucene_Exception("Field name \"$fieldName\" not found in document.");
         }
+
         return $this->_fields[$fieldName];
     }
-
 
     /**
      * Returns the string value of a named field in this document.

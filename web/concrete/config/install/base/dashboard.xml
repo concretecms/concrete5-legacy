@@ -206,7 +206,7 @@
 				</attributekey>
 			</attributes>
         </page>
-        <page name="Single Pages" path="/dashboard/pages/single" filename="/dashboard/pages/single.php" pagetype="" description="" package=""/>        
+        <page name="Single Pages" path="/dashboard/pages/single" filename="/dashboard/pages/single.php" pagetype="" description="" package=""/>
         <page name="Stacks &amp; Blocks" path="/dashboard/blocks" filename="/dashboard/blocks/view.php" pagetype="" description="Manage sitewide content and administer block types." package="" />
         <page name="Stacks" path="/dashboard/blocks/stacks" filename="/dashboard/blocks/stacks/view.php" pagetype="" description="Share content across your site." package="" />
         <page name="Stack List" path="/dashboard/blocks/stacks/list" filename="/dashboard/blocks/stacks/list/view.php" pagetype="" description="" package="">
@@ -225,7 +225,7 @@
 			</attributes>
         </page>
         <page name="Block Types" path="/dashboard/blocks/types" filename="/dashboard/blocks/types/view.php" pagetype="" description="Manage the installed block types in your site." package=""/>
-    	
+
         <page name="Extend concrete5" path="/dashboard/extend" filename="/dashboard/extend/view.php" pagetype="" description="Connect to the concrete5 marketplace, install custom add-ons, and download updates for marketplace add-ons and themes." package="">
 			<attributes>
 				<attributekey handle="exclude_nav">
@@ -541,7 +541,7 @@
 				</attributekey>
 			</attributes>
         </page>
-        
+
         <page name="Backup &amp; Restore" path="/dashboard/system/backup_restore" filename="/dashboard/system/backup_restore/view.php" pagetype="" description="Backup or restore your website." package=""/>
         <page name="Backup Database" path="/dashboard/system/backup_restore/backup" filename="/dashboard/system/backup_restore/backup.php" pagetype="" description="" package=""/>
         <page name="Update concrete5" path="/dashboard/system/backup_restore/update" filename="/dashboard/system/backup_restore/update.php" pagetype="" description="" package="">
@@ -553,7 +553,7 @@
         </page>
         <page name="Database XML" path="/dashboard/system/backup_restore/database" filename="/dashboard/system/backup_restore/database.php" pagetype="" description="" package=""/>
 
-	
+
 
         <page name="Composer" path="/dashboard/pages/types/composer" filename="/dashboard/pages/types/composer.php" pagetype="" description="" package=""/>
     </singlepages>
@@ -636,7 +636,7 @@
 				</block>
 			</area>
     	</page>
-    	
+
     	<page name="Customize Dashboard Home" path="/dashboard/home" filename="" pagetype="dashboard_primary_five" description="" package="">
 			<attributes>
 				<attributekey handle="exclude_nav">

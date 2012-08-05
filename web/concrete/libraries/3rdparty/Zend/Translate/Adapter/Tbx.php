@@ -19,13 +19,11 @@
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
-
 /** Zend_Locale */
 require_once 'Zend/Locale.php';
 
 /** Zend_Translate_Adapter */
 require_once 'Zend/Translate/Adapter.php';
-
 
 /**
  * @category   Zend
@@ -33,7 +31,8 @@ require_once 'Zend/Translate/Adapter.php';
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Translate_Adapter_Tbx extends Zend_Translate_Adapter {
+class Zend_Translate_Adapter_Tbx extends Zend_Translate_Adapter
+{
     // Internal variables
     private $_file        = false;
     private $_cleared     = array();
@@ -46,10 +45,10 @@ class Zend_Translate_Adapter_Tbx extends Zend_Translate_Adapter {
     /**
      * Load translation data (TBX file reader)
      *
-     * @param  string  $filename  TBX file to add, full path must be given for access
-     * @param  string  $locale    Locale has no effect for TBX because TBX defines all languages within
+     * @param string $filename TBX file to add, full path must be given for access
+     * @param string $locale   Locale has no effect for TBX because TBX defines all languages within
      *                            the source file
-     * @param  array   $option    OPTIONAL Options to use
+     * @param  array                      $option OPTIONAL Options to use
      * @throws Zend_Translation_Exception
      * @return array
      */
@@ -84,12 +83,12 @@ class Zend_Translate_Adapter_Tbx extends Zend_Translate_Adapter {
     {
         if ($this->_term !== null) {
             $this->_content .= "<".$name;
-            foreach($attrib as $key => $value) {
+            foreach ($attrib as $key => $value) {
                 $this->_content .= " $key=\"$value\"";
             }
             $this->_content .= ">";
         } else {
-            switch(strtolower($name)) {
+            switch (strtolower($name)) {
                 case 'termentry':
                     $this->_termentry = null;
                     break;
@@ -148,8 +147,10 @@ class Zend_Translate_Adapter_Tbx extends Zend_Translate_Adapter {
         if (strpos($file, "encoding") !== false) {
             $encoding = substr($file, strpos($file, "encoding") + 9);
             $encoding = substr($encoding, 1, strpos($encoding, $encoding[0], 1) - 1);
+
             return $encoding;
         }
+
         return 'UTF-8';
     }
 

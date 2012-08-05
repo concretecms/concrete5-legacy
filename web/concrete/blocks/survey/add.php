@@ -1,11 +1,11 @@
-<? defined('C5_EXECUTE') or die("Access Denied."); ?> 
+<?php defined('C5_EXECUTE') or die("Access Denied."); ?>
 <style type="text/css">
 div.survey-block-option {
-	position: relative; border-bottom: 1px solid #ddd; padding-bottom: 3px; padding-top: 3px;
+    position: relative; border-bottom: 1px solid #ddd; padding-bottom: 3px; padding-top: 3px;
 }
 
 div.survey-block-option img {
-	position: absolute; top: 3px; right: 0px;
+    position: absolute; top: 3px; right: 0px;
 }
 
 </style>

@@ -78,7 +78,7 @@ class Zend_Validate_Barcode_Code39 extends Zend_Validate_Barcode_AdapterAbstract
     /**
      * Validates the checksum (Modulo 43)
      *
-     * @param  string $value The barcode to validate
+     * @param  string  $value The barcode to validate
      * @return boolean
      */
     protected function _code39($value)
@@ -86,7 +86,7 @@ class Zend_Validate_Barcode_Code39 extends Zend_Validate_Barcode_AdapterAbstract
         $checksum = substr($value, -1, 1);
         $value    = str_split(substr($value, 0, -1));
         $count    = 0;
-        foreach($value as $char) {
+        foreach ($value as $char) {
             $count += $this->_check[$char];
         }
 

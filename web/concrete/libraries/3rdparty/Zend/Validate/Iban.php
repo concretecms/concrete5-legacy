@@ -163,6 +163,7 @@ class Zend_Validate_Iban extends Zend_Validate_Abstract
         }
 
         $this->_locale = $locale;
+
         return $this;
     }
 
@@ -171,7 +172,7 @@ class Zend_Validate_Iban extends Zend_Validate_Abstract
      *
      * Returns true if $value is a valid IBAN
      *
-     * @param  string $value
+     * @param  string  $value
      * @return boolean
      */
     public function isValid($value)
@@ -189,11 +190,13 @@ class Zend_Validate_Iban extends Zend_Validate_Abstract
         if (!array_key_exists($region, $this->_ibanregex)) {
             $this->_setValue($region);
             $this->_error(self::NOTSUPPORTED);
+
             return false;
         }
 
         if (!preg_match($this->_ibanregex[$region], $value)) {
             $this->_error(self::FALSEFORMAT);
+
             return false;
         }
 
@@ -215,6 +218,7 @@ class Zend_Validate_Iban extends Zend_Validate_Abstract
 
         if ($temp != 1) {
             $this->_error(self::CHECKFAILED);
+
             return false;
         }
 

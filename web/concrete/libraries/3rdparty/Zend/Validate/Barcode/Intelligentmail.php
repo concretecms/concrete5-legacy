@@ -30,7 +30,7 @@ require_once 'Zend/Validate/Barcode/AdapterAbstract.php';
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Validate_Barcode_IntelligentMail extends Zend_Validate_Barcode_AdapterAbstract
+class Zend_Validate_Barcode_Intelligentmail extends Zend_Validate_Barcode_AdapterAbstract
 {
     /**
      * Allowed barcode lengths

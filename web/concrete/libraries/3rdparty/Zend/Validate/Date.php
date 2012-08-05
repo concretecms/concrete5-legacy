@@ -78,7 +78,7 @@ class Zend_Validate_Date extends Zend_Validate_Abstract
     {
         if ($options instanceof Zend_Config) {
             $options = $options->toArray();
-        } else if (!is_array($options)) {
+        } elseif (!is_array($options)) {
             $options = func_get_args();
             $temp['format'] = array_shift($options);
             if (!empty($options)) {
@@ -124,6 +124,7 @@ class Zend_Validate_Date extends Zend_Validate_Abstract
     {
         require_once 'Zend/Locale.php';
         $this->_locale = Zend_Locale::findLocale($locale);
+
         return $this;
     }
 
@@ -140,12 +141,13 @@ class Zend_Validate_Date extends Zend_Validate_Abstract
     /**
      * Sets the format option
      *
-     * @param  string $format
+     * @param  string             $format
      * @return Zend_Validate_Date provides a fluent interface
      */
     public function setFormat($format = null)
     {
         $this->_format = $format;
+
         return $this;
     }
 
@@ -164,6 +166,7 @@ class Zend_Validate_Date extends Zend_Validate_Abstract
         if (!is_string($value) && !is_int($value) && !is_float($value) &&
             !is_array($value) && !($value instanceof Zend_Date)) {
             $this->_error(self::INVALID);
+
             return false;
         }
 
@@ -178,6 +181,7 @@ class Zend_Validate_Date extends Zend_Validate_Abstract
                 } else {
                     $this->_error(self::INVALID_DATE);
                 }
+
                 return false;
             }
         } else {
@@ -185,6 +189,7 @@ class Zend_Validate_Date extends Zend_Validate_Abstract
                 $this->_format = 'yyyy-MM-dd';
                 $this->_error(self::FALSEFORMAT);
                 $this->_format = null;
+
                 return false;
             }
 
@@ -192,6 +197,7 @@ class Zend_Validate_Date extends Zend_Validate_Abstract
 
             if (!checkdate($month, $day, $year)) {
                 $this->_error(self::INVALID_DATE);
+
                 return false;
             }
         }
@@ -202,7 +208,7 @@ class Zend_Validate_Date extends Zend_Validate_Abstract
     /**
      * Check if the given date fits the given format
      *
-     * @param  string $value  Date to check
+     * @param  string  $value Date to check
      * @return boolean False when date does not fit the format
      */
     private function _checkFormat($value)

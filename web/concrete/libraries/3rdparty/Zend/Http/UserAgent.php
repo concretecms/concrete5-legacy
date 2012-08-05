@@ -180,6 +180,7 @@ class Zend_Http_UserAgent implements Serializable
             'user_agent'   => $this->getServerValue('http_user_agent'),
             'http_accept'  => $this->getServerValue('http_accept'),
         );
+
         return serialize($spec);
     }
 
@@ -305,7 +306,7 @@ class Zend_Http_UserAgent implements Serializable
     /**
      * Loads class for a user agent device
      *
-     * @param  string $browserType Browser type
+     * @param  string                             $browserType Browser type
      * @return string
      * @throws Zend_Loader_PluginLoader_Exception if unable to load UA device
      */
@@ -372,12 +373,13 @@ class Zend_Http_UserAgent implements Serializable
     /**
      * Force or replace the UA chain in $_server variable
      *
-     * @param  string $userAgent Forced UserAgent chain
+     * @param  string              $userAgent Forced UserAgent chain
      * @return Zend_Http_UserAgent
      */
     public function setUserAgent($userAgent)
     {
         $this->setServerValue('http_user_agent', $userAgent);
+
         return $this;
     }
 
@@ -393,18 +395,20 @@ class Zend_Http_UserAgent implements Serializable
             $accept = self::DEFAULT_HTTP_ACCEPT;
             $this->setHttpAccept($accept);
         }
+
         return $accept;
     }
 
     /**
      * Force or replace the HTTP_ACCEPT chain in self::$_server variable
      *
-     * @param  string $httpAccept Forced HTTP Accept chain
+     * @param  string              $httpAccept Forced HTTP Accept chain
      * @return Zend_Http_UserAgent
      */
     public function setHttpAccept($httpAccept)
     {
         $this->setServerValue('http_accept', $httpAccept);
+
         return $this;
     }
 
@@ -416,7 +420,7 @@ class Zend_Http_UserAgent implements Serializable
      * contain either a fully qualified class name, or a short name that
      * resolves via the plugin loader.
      *
-     * @param  string $browser Browser identifier (User Agent chain)
+     * @param  string                      $browser Browser identifier (User Agent chain)
      * @return Zend_Http_UserAgent_Storage
      */
     public function getStorage($browser = null)
@@ -438,6 +442,7 @@ class Zend_Http_UserAgent implements Serializable
             }
             $this->setStorage(new $adapter($options));
         }
+
         return $this->_storage;
     }
 
@@ -457,6 +462,7 @@ class Zend_Http_UserAgent implements Serializable
         }
 
         $this->_storage = $storage;
+
         return $this;
     }
 
@@ -497,7 +503,7 @@ class Zend_Http_UserAgent implements Serializable
      * $config[(type)]['features']['path']
      * $config[(type)]['features']['classname']
      *
-     * @param  mixed $config (option) Config array
+     * @param  mixed               $config (option) Config array
      * @return Zend_Http_UserAgent
      */
     public function setConfig($config = array())
@@ -525,6 +531,7 @@ class Zend_Http_UserAgent implements Serializable
         }
 
         $this->_config = array_merge($this->_config, $config);
+
         return $this;
     }
 
@@ -583,7 +590,7 @@ class Zend_Http_UserAgent implements Serializable
     /**
      * Set the browser "type"
      *
-     * @param string $browserType
+     * @param  string              $browserType
      * @return Zend_Http_UserAgent
      */
     public function setBrowserType($browserType)
@@ -596,6 +603,7 @@ class Zend_Http_UserAgent implements Serializable
         }
 
         $this->_browserType = $browserType;
+
         return $this;
     }
 
@@ -615,6 +623,7 @@ class Zend_Http_UserAgent implements Serializable
         if (null === $this->_server) {
             $this->setServer($_SERVER);
         }
+
         return $this->_server;
     }
 
@@ -624,7 +633,7 @@ class Zend_Http_UserAgent implements Serializable
      * Basically, the $_SERVER array or an equivalent container storing the
      * data that will be introspected.
      *
-     * @param  array|ArrayAccess $server
+     * @param  array|ArrayAccess             $server
      * @return void
      * @throws Zend_Http_UserAgent_Exception on invalid parameter
      */
@@ -661,6 +670,7 @@ class Zend_Http_UserAgent implements Serializable
         $server = array_change_key_case($server, CASE_LOWER);
 
         $this->_server = $server;
+
         return $this;
     }
 
@@ -679,6 +689,7 @@ class Zend_Http_UserAgent implements Serializable
             $return = $server[$key];
         }
         unset($server);
+
         return $return;
     }
 
@@ -686,7 +697,7 @@ class Zend_Http_UserAgent implements Serializable
      * Set a server value
      *
      * @param  string|int|float $key
-     * @param  mixed $value
+     * @param  mixed            $value
      * @return void
      */
     public function setServerValue($key, $value)
@@ -701,13 +712,14 @@ class Zend_Http_UserAgent implements Serializable
         $server = $this->getServer(); // ensure it's been initialized
         $key    = strtolower($key);
         $this->_server[$key] = $value;
+
         return $this;
     }
 
     /**
      * Set plugin loader
      *
-     * @param  string $type Type of plugin loader; one of 'storage', (?)
+     * @param  string                          $type   Type of plugin loader; one of 'storage', (?)
      * @param  string|Zend_Loader_PluginLoader $loader
      * @return Zend_Http_UserAgent
      */
@@ -750,13 +762,14 @@ class Zend_Http_UserAgent implements Serializable
         }
         $loader->addPrefixPath($prefix, $path);
         $this->_loaders[$type] = $loader;
+
         return $this;
     }
 
     /**
      * Get a plugin loader
      *
-     * @param  string $type A valid plugin loader type; see {@link $_loaderTypes}
+     * @param  string                   $type A valid plugin loader type; see {@link $_loaderTypes}
      * @return Zend_Loader_PluginLoader
      */
     public function getPluginLoader($type)
@@ -766,6 +779,7 @@ class Zend_Http_UserAgent implements Serializable
             require_once 'Zend/Loader/PluginLoader.php';
             $this->setPluginLoader($type, new Zend_Loader_PluginLoader());
         }
+
         return $this->_loaders[$type];
     }
 
@@ -775,7 +789,7 @@ class Zend_Http_UserAgent implements Serializable
      * Verifies that it is in {@link $_loaderTypes}, and returns a normalized
      * version of the type.
      *
-     * @param  string $type
+     * @param  string                        $type
      * @return string
      * @throws Zend_Http_UserAgent_Exception on invalid type
      */
@@ -792,6 +806,7 @@ class Zend_Http_UserAgent implements Serializable
                 (string) $type
             ));
         }
+
         return $type;
     }
 

@@ -5,7 +5,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 $ch = Page::getByPath("/dashboard");
 $chp = new Permissions($ch);
 if (!$chp->canRead()) {
-	die(t("Access Denied."));
+    die(t("Access Denied."));
 }
 
 Loader::library('3rdparty/open_flash_chart' );
@@ -17,17 +17,17 @@ $u = new User();
 $max = 0;
 
 for ($i = -4; $i < 1; $i++) {
-	$date = date('Y-m-d', strtotime($i . ' days'));
-	if ($i == 0) {
-		$daysRow[] = t('Today');
-	} else {
-		$daysRow[] = strftime('%a', strtotime($i . ' days'));
-	}
-	$total = PageStatistics::getTotalPageViewsForOthers($u, $date);
-	$viewsArray[] = $total;
-	if ($total > $max) {
-		$max = $total;
-	}
+    $date = date('Y-m-d', strtotime($i . ' days'));
+    if ($i == 0) {
+        $daysRow[] = t('Today');
+    } else {
+        $daysRow[] = strftime('%a', strtotime($i . ' days'));
+    }
+    $total = PageStatistics::getTotalPageViewsForOthers($u, $date);
+    $viewsArray[] = $total;
+    if ($total > $max) {
+        $max = $total;
+    }
 }
 
 $g = new graph();

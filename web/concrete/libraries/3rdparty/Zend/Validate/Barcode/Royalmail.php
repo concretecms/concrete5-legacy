@@ -71,7 +71,7 @@ class Zend_Validate_Barcode_Royalmail extends Zend_Validate_Barcode_AdapterAbstr
     /**
      * Validates the checksum ()
      *
-     * @param  string $value The barcode to validate
+     * @param  string  $value The barcode to validate
      * @return boolean
      */
     protected function _royalmail($value)
@@ -80,7 +80,7 @@ class Zend_Validate_Barcode_Royalmail extends Zend_Validate_Barcode_AdapterAbstr
         $values   = str_split(substr($value, 0, -1));
         $rowvalue = 0;
         $colvalue = 0;
-        foreach($values as $row) {
+        foreach ($values as $row) {
             $rowvalue += $this->_rows[$row];
             $colvalue += $this->_columns[$row];
         }
@@ -101,7 +101,7 @@ class Zend_Validate_Barcode_Royalmail extends Zend_Validate_Barcode_AdapterAbstr
     /**
      * Allows start and stop tag within checked chars
      *
-     * @param  string $value The barcode to check for allowed characters
+     * @param  string  $value The barcode to check for allowed characters
      * @return boolean
      */
     public function checkChars($value)

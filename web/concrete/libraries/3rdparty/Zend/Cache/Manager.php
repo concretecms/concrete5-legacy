@@ -114,13 +114,14 @@ class Zend_Cache_Manager
     /**
      * Set a new cache for the Cache Manager to contain
      *
-     * @param  string $name
-     * @param  Zend_Cache_Core $cache
+     * @param  string             $name
+     * @param  Zend_Cache_Core    $cache
      * @return Zend_Cache_Manager
      */
     public function setCache($name, Zend_Cache_Core $cache)
     {
         $this->_caches[$name] = $cache;
+
         return $this;
     }
 
@@ -128,7 +129,7 @@ class Zend_Cache_Manager
      * Check if the Cache Manager contains the named cache object, or a named
      * configuration template to lazy load the cache object
      *
-     * @param string $name
+     * @param  string $name
      * @return bool
      */
     public function hasCache($name)
@@ -138,6 +139,7 @@ class Zend_Cache_Manager
         ) {
             return true;
         }
+
         return false;
     }
 
@@ -145,7 +147,7 @@ class Zend_Cache_Manager
      * Fetch the named cache object, or instantiate and return a cache object
      * using a named configuration template
      *
-     * @param  string $name
+     * @param  string          $name
      * @return Zend_Cache_Core
      */
     public function getCache($name)
@@ -189,6 +191,7 @@ class Zend_Cache_Manager
                 $caches[$name] = $this->getCache($name);
             }
         }
+
         return $caches;
     }
 
@@ -196,8 +199,8 @@ class Zend_Cache_Manager
      * Set a named configuration template from which a cache object can later
      * be lazy loaded
      *
-     * @param  string $name
-     * @param  array $options
+     * @param  string             $name
+     * @param  array              $options
      * @return Zend_Cache_Manager
      */
     public function setCacheTemplate($name, $options)
@@ -210,6 +213,7 @@ class Zend_Cache_Manager
                 . ' an associative array or instance of Zend_Config');
         }
         $this->_optionTemplates[$name] = $options;
+
         return $this;
     }
 
@@ -224,6 +228,7 @@ class Zend_Cache_Manager
         if (isset($this->_optionTemplates[$name])) {
             return true;
         }
+
         return false;
     }
 
@@ -245,8 +250,8 @@ class Zend_Cache_Manager
      * configuration
      * template
      *
-     * @param  string $name
-     * @param  array $options
+     * @param  string               $name
+     * @param  array                $options
      * @return Zend_Cache_Manager
      * @throws Zend_Cache_Exception for invalid options format or if option templates do not have $name
      */
@@ -265,6 +270,7 @@ class Zend_Cache_Manager
         }
         $this->_optionTemplates[$name]
             = $this->_mergeOptions($this->_optionTemplates[$name], $options);
+
         return $this;
     }
 
@@ -293,6 +299,7 @@ class Zend_Cache_Manager
                 $current['backend']['options'][$key] = $value;
             }
         }
+
         return $current;
     }
 }

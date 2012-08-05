@@ -34,8 +34,8 @@ interface Zend_Loader_Autoloader_Interface
      * Autoload a class
      *
      * @abstract
-     * @param   string $class
-     * @return  mixed
+     * @param  string $class
+     * @return mixed
      *          False [if unable to load $class]
      *          get_class($class) [if $class is successfully loaded]
      */

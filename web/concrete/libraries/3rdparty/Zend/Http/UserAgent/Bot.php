@@ -109,7 +109,7 @@ class Zend_Http_UserAgent_Bot extends Zend_Http_UserAgent_AbstractDevice
      * Comparison of the UserAgent chain and browser signatures
      *
      * @param  string $userAgent User Agent chain
-     * @param  array $server $_SERVER like param
+     * @param  array  $server    $_SERVER like param
      * @return bool
      */
     public static function match($userAgent, $server)

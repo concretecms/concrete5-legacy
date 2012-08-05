@@ -290,8 +290,8 @@ class Zend_Date_Cities
     /**
      * Returns the location from the selected city
      *
-     * @param  string $city    City to get location for
-     * @param  string $horizon Horizon to use :
+     * @param string $city    City to get location for
+     * @param string $horizon Horizon to use :
      *                         default: effective
      *                         others are civil, nautic, astronomic
      * @return array
@@ -303,6 +303,7 @@ class Zend_Date_Cities
             if (strtolower($key) === strtolower($city)) {
                 $return            = $value;
                 $return['horizon'] = $horizon;
+
                 return $return;
             }
         }

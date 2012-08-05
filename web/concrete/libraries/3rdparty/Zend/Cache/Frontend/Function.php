@@ -20,12 +20,10 @@
  * @version    $Id: Function.php 23775 2011-03-01 17:25:24Z ralph $
  */
 
-
 /**
  * @see Zend_Cache_Core
  */
 require_once 'Zend/Cache/Core.php';
-
 
 /**
  * @package    Zend_Cache
@@ -77,7 +75,7 @@ class Zend_Cache_Frontend_Function extends Zend_Cache_Core
      * @param  array    $tags             Cache tags
      * @param  int      $specificLifetime If != false, set a specific lifetime for this cache record (null => infinite lifetime)
      * @param  int      $priority         integer between 0 (very low priority) and 10 (maximum priority) used by some particular backends
-     * @return mixed Result
+     * @return mixed    Result
      */
     public function call($callback, array $parameters = array(), $tags = array(), $specificLifetime = false, $priority = 8)
     {
@@ -110,6 +108,7 @@ class Zend_Cache_Frontend_Function extends Zend_Cache_Core
         }
 
         echo $output;
+
         return $return;
     }
 
@@ -126,10 +125,10 @@ class Zend_Cache_Frontend_Function extends Zend_Cache_Core
     /**
      * Make a cache id from the function name and parameters
      *
-     * @param  callback $callback A valid callback
-     * @param  array    $args     Function parameters
+     * @param  callback             $callback A valid callback
+     * @param  array                $args     Function parameters
      * @throws Zend_Cache_Exception
-     * @return string Cache id
+     * @return string               Cache id
      */
     public function makeId($callback, array $args = array())
     {

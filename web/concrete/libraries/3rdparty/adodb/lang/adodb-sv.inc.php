@@ -1,7 +1,7 @@
 <?php
 // Christian Tiberg" christian@commsoft.nu
 $ADODB_LANG_ARRAY = array (
-			'LANG'                      => 'en',
+            'LANG'                      => 'en',
             DB_ERROR                    => 'Okänt fel',
             DB_ERROR_ALREADY_EXISTS     => 'finns redan',
             DB_ERROR_CANNOT_CREATE      => 'kan inte skapa',
@@ -30,4 +30,3 @@ $ADODB_LANG_ARRAY = array (
             DB_ERROR_NOSUCHDB           => 'ingen sådan databas',
             DB_ERROR_ACCESS_VIOLATION   => 'otillräckliga rättigheter'
 );
-?>

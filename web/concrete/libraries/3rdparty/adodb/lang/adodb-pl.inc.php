@@ -3,7 +3,7 @@
 // Contributed by Grzegorz Pacan <gp#dione.cc>
 
 $ADODB_LANG_ARRAY = array (
-			'LANG'                      => 'pl',
+            'LANG'                      => 'pl',
             DB_ERROR                    => 'niezidentyfikowany b³±d',
             DB_ERROR_ALREADY_EXISTS     => 'ju¿ istniej±',
             DB_ERROR_CANNOT_CREATE      => 'nie mo¿na stworzyæ',
@@ -32,4 +32,3 @@ $ADODB_LANG_ARRAY = array (
             DB_ERROR_NOSUCHDB           => 'nie znaleziono bazy',
             DB_ERROR_ACCESS_VIOLATION   => 'niedostateczne uprawnienia'
 );
-?>

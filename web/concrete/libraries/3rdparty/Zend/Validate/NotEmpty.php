@@ -89,7 +89,7 @@ class Zend_Validate_NotEmpty extends Zend_Validate_Abstract
     {
         if ($options instanceof Zend_Config) {
             $options = $options->toArray();
-        } else if (!is_array($options)) {
+        } elseif (!is_array($options)) {
             $options = func_get_args();
             $temp    = array();
             if (!empty($options)) {
@@ -117,7 +117,7 @@ class Zend_Validate_NotEmpty extends Zend_Validate_Abstract
     /**
      * Set the types
      *
-     * @param  integer|array $type
+     * @param  integer|array           $type
      * @throws Zend_Validate_Exception
      * @return Zend_Validate_NotEmpty
      */
@@ -125,16 +125,16 @@ class Zend_Validate_NotEmpty extends Zend_Validate_Abstract
     {
         if (is_array($type)) {
             $detected = 0;
-            foreach($type as $value) {
+            foreach ($type as $value) {
                 if (is_int($value)) {
                     $detected += $value;
-                } else if (in_array($value, $this->_constants)) {
+                } elseif (in_array($value, $this->_constants)) {
                     $detected += array_search($value, $this->_constants);
                 }
             }
 
             $type = $detected;
-        } else if (is_string($type) && in_array($type, $this->_constants)) {
+        } elseif (is_string($type) && in_array($type, $this->_constants)) {
             $type = array_search($type, $this->_constants);
         }
 
@@ -144,6 +144,7 @@ class Zend_Validate_NotEmpty extends Zend_Validate_Abstract
         }
 
         $this->_type = $type;
+
         return $this;
     }
 
@@ -152,7 +153,7 @@ class Zend_Validate_NotEmpty extends Zend_Validate_Abstract
      *
      * Returns true if and only if $value is not an empty value.
      *
-     * @param  string $value
+     * @param  string  $value
      * @return boolean
      */
     public function isValid($value)
@@ -160,6 +161,7 @@ class Zend_Validate_NotEmpty extends Zend_Validate_Abstract
         if ($value !== null && !is_string($value) && !is_int($value) && !is_float($value) &&
             !is_bool($value) && !is_array($value) && !is_object($value)) {
             $this->_error(self::INVALID);
+
             return false;
         }
 
@@ -174,6 +176,7 @@ class Zend_Validate_NotEmpty extends Zend_Validate_Abstract
 
             if (is_object($value) && ($value instanceof Countable) && (count($value) == 0)) {
                 $this->_error(self::IS_EMPTY);
+
                 return false;
             }
         }
@@ -186,6 +189,7 @@ class Zend_Validate_NotEmpty extends Zend_Validate_Abstract
             if ((is_object($value) && (!method_exists($value, '__toString'))) ||
                 (is_object($value) && (method_exists($value, '__toString')) && (((string) $value) == ""))) {
                 $this->_error(self::IS_EMPTY);
+
                 return false;
             }
         }
@@ -194,10 +198,11 @@ class Zend_Validate_NotEmpty extends Zend_Validate_Abstract
         if ($type >= self::OBJECT) {
             $type -= self::OBJECT;
             // fall trough, objects are always not empty
-        } else if ($object === false) {
+        } elseif ($object === false) {
             // object not allowed but object given -> return false
             if (is_object($value)) {
                 $this->_error(self::IS_EMPTY);
+
                 return false;
             }
         }
@@ -207,6 +212,7 @@ class Zend_Validate_NotEmpty extends Zend_Validate_Abstract
             $type -= self::SPACE;
             if (is_string($value) && (preg_match('/^\s+$/s', $value))) {
                 $this->_error(self::IS_EMPTY);
+
                 return false;
             }
         }
@@ -216,6 +222,7 @@ class Zend_Validate_NotEmpty extends Zend_Validate_Abstract
             $type -= self::NULL;
             if ($value === null) {
                 $this->_error(self::IS_EMPTY);
+
                 return false;
             }
         }
@@ -225,6 +232,7 @@ class Zend_Validate_NotEmpty extends Zend_Validate_Abstract
             $type -= self::EMPTY_ARRAY;
             if (is_array($value) && ($value == array())) {
                 $this->_error(self::IS_EMPTY);
+
                 return false;
             }
         }
@@ -234,6 +242,7 @@ class Zend_Validate_NotEmpty extends Zend_Validate_Abstract
             $type -= self::ZERO;
             if (is_string($value) && ($value == '0')) {
                 $this->_error(self::IS_EMPTY);
+
                 return false;
             }
         }
@@ -243,6 +252,7 @@ class Zend_Validate_NotEmpty extends Zend_Validate_Abstract
             $type -= self::STRING;
             if (is_string($value) && ($value == '')) {
                 $this->_error(self::IS_EMPTY);
+
                 return false;
             }
         }
@@ -252,6 +262,7 @@ class Zend_Validate_NotEmpty extends Zend_Validate_Abstract
             $type -= self::FLOAT;
             if (is_float($value) && ($value == 0.0)) {
                 $this->_error(self::IS_EMPTY);
+
                 return false;
             }
         }
@@ -261,6 +272,7 @@ class Zend_Validate_NotEmpty extends Zend_Validate_Abstract
             $type -= self::INTEGER;
             if (is_int($value) && ($value == 0)) {
                 $this->_error(self::IS_EMPTY);
+
                 return false;
             }
         }
@@ -270,6 +282,7 @@ class Zend_Validate_NotEmpty extends Zend_Validate_Abstract
             $type -= self::BOOLEAN;
             if (is_bool($value) && ($value == false)) {
                 $this->_error(self::IS_EMPTY);
+
                 return false;
             }
         }

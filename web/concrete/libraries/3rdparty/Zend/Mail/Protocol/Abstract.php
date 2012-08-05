@@ -21,18 +21,15 @@
  * @version    $Id: Abstract.php 23775 2011-03-01 17:25:24Z ralph $
  */
 
-
 /**
  * @see Zend_Validate
  */
 require_once 'Zend/Validate.php';
 
-
 /**
  * @see Zend_Validate_Hostname
  */
 require_once 'Zend/Validate/Hostname.php';
-
 
 /**
  * Zend_Mail_Protocol_Abstract
@@ -54,7 +51,6 @@ abstract class Zend_Mail_Protocol_Abstract
      */
     const EOL = "\r\n";
 
-
     /**
      * Default timeout in seconds for initiating session
      */
@@ -66,13 +62,11 @@ abstract class Zend_Mail_Protocol_Abstract
      */
     protected $_maximumLog = 64;
 
-
     /**
      * Hostname or IP address of remote server
      * @var string
      */
     protected $_host;
-
 
     /**
      * Port number of connection
@@ -80,13 +74,11 @@ abstract class Zend_Mail_Protocol_Abstract
      */
     protected $_port;
 
-
     /**
      * Instance of Zend_Validate to check hostnames
      * @var Zend_Validate
      */
     protected $_validHost;
-
 
     /**
      * Socket connection resource
@@ -94,20 +86,17 @@ abstract class Zend_Mail_Protocol_Abstract
      */
     protected $_socket;
 
-
     /**
      * Last request sent to server
      * @var string
      */
     protected $_request;
 
-
     /**
      * Array of server responses to last request
      * @var array
      */
     protected $_response;
-
 
     /**
      * String template for parsing server responses using sscanf (default: 3 digit code and response string)
@@ -116,19 +105,17 @@ abstract class Zend_Mail_Protocol_Abstract
      */
     protected $_template = '%d%s';
 
-
     /**
      * Log of mail requests and server responses for a session
      * @var array
      */
     private $_log = array();
 
-
     /**
      * Constructor.
      *
-     * @param  string  $host OPTIONAL Hostname of remote connection (default: 127.0.0.1)
-     * @param  integer $port OPTIONAL Port number (default: null)
+     * @param  string                       $host OPTIONAL Hostname of remote connection (default: 127.0.0.1)
+     * @param  integer                      $port OPTIONAL Port number (default: null)
      * @throws Zend_Mail_Protocol_Exception
      * @return void
      */
@@ -149,7 +136,6 @@ abstract class Zend_Mail_Protocol_Abstract
         $this->_port = $port;
     }
 
-
     /**
      * Class destructor to cleanup open resources
      *
@@ -163,14 +149,13 @@ abstract class Zend_Mail_Protocol_Abstract
     /**
      * Set the maximum log size
      *
-     * @param integer $maximumLog Maximum log size
+     * @param  integer $maximumLog Maximum log size
      * @return void
      */
     public function setMaximumLog($maximumLog)
     {
         $this->_maximumLog = (int) $maximumLog;
     }
-
 
     /**
      * Get the maximum log size
@@ -182,14 +167,12 @@ abstract class Zend_Mail_Protocol_Abstract
         return $this->_maximumLog;
     }
 
-
     /**
      * Create a connection to the remote host
      *
      * Concrete adapters for this class will implement their own unique connect scripts, using the _connect() method to create the socket resource.
      */
     abstract public function connect();
-
 
     /**
      * Retrieve the last client request
@@ -201,7 +184,6 @@ abstract class Zend_Mail_Protocol_Abstract
         return $this->_request;
     }
 
-
     /**
      * Retrieve the last server response
      *
@@ -212,7 +194,6 @@ abstract class Zend_Mail_Protocol_Abstract
         return $this->_response;
     }
 
-
     /**
      * Retrieve the transaction log
      *
@@ -222,7 +203,6 @@ abstract class Zend_Mail_Protocol_Abstract
     {
         return implode('', $this->_log);
     }
-
 
     /**
      * Reset the transaction log
@@ -254,7 +234,7 @@ abstract class Zend_Mail_Protocol_Abstract
      *
      * An example $remote string may be 'tcp://mail.example.com:25' or 'ssh://hostname.com:2222'
      *
-     * @param  string $remote Remote
+     * @param  string                       $remote Remote
      * @throws Zend_Mail_Protocol_Exception
      * @return boolean
      */
@@ -288,7 +268,6 @@ abstract class Zend_Mail_Protocol_Abstract
         return $result;
     }
 
-
     /**
      * Disconnect from remote host and free resource
      *
@@ -301,13 +280,12 @@ abstract class Zend_Mail_Protocol_Abstract
         }
     }
 
-
     /**
      * Send the given request followed by a LINEEND to the server.
      *
-     * @param  string $request
+     * @param  string                       $request
      * @throws Zend_Mail_Protocol_Exception
-     * @return integer|boolean Number of bytes written to remote host
+     * @return integer|boolean              Number of bytes written to remote host
      */
     protected function _send($request)
     {
@@ -336,7 +314,6 @@ abstract class Zend_Mail_Protocol_Abstract
 
         return $result;
     }
-
 
     /**
      * Get a line from the stream.
@@ -388,16 +365,15 @@ abstract class Zend_Mail_Protocol_Abstract
         return $reponse;
     }
 
-
     /**
      * Parse server response for successful codes
      *
      * Read the response from the stream and check for expected return code.
      * Throws a Zend_Mail_Protocol_Exception if an unexpected code is returned.
      *
-     * @param  string|array $code One or more codes that indicate a successful response
+     * @param  string|array                 $code One or more codes that indicate a successful response
      * @throws Zend_Mail_Protocol_Exception
-     * @return string Last line of response string
+     * @return string                       Last line of response string
      */
     protected function _expect($code, $timeout = null)
     {
@@ -437,7 +413,7 @@ abstract class Zend_Mail_Protocol_Abstract
     /**
      * Set stream timeout
      *
-     * @param integer $timeout
+     * @param  integer $timeout
      * @return boolean
      */
     protected function _setStreamTimeout($timeout)

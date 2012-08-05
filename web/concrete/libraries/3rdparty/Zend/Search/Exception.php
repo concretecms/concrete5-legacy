@@ -19,12 +19,10 @@
  * @version    $Id: Exception.php 23775 2011-03-01 17:25:24Z ralph $
  */
 
-
 /**
  * Framework base exception
  */
 require_once 'Zend/Exception.php';
-
 
 /**
  * @category   Zend
@@ -34,4 +32,3 @@ require_once 'Zend/Exception.php';
  */
 class Zend_Search_Exception extends Zend_Exception
 {}
-
