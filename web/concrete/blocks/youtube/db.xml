@@ -5,9 +5,9 @@
 			<key />
 			<unsigned />
 		</field>
-		<field name="title" type="C" size="255"></field>		
+		<field name="title" type="C" size="255"></field>
 		<field name="videoURL" type="C" size="255"></field>
-		<field name="vHeight" type="C" size="255"></field>		
+		<field name="vHeight" type="C" size="255"></field>
 		<field name="vWidth" type="C" size="255"></field>
 		<field name="vPlayer" type="I1">
 			<unsigned />

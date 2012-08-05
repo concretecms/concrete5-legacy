@@ -52,7 +52,6 @@ class Zend_Search_Lucene_Search_QueryToken
     const TT_TO_LEXEME            = 17; // 'TO'  or 'to'
     const TT_NUMBER               = 18; // Number, like: 10, 0.8, .64, ....
 
-
     /**
      * Returns all possible lexeme types.
      * It's used for syntax analyzer state machine initialization
@@ -131,11 +130,11 @@ class Zend_Search_Lucene_Search_QueryToken
             case self::TC_WORD:
                 if (  strtolower($tokenText) == 'and') {
                     $this->type = self::TT_AND_LEXEME;
-                } else if (strtolower($tokenText) == 'or') {
+                } elseif (strtolower($tokenText) == 'or') {
                     $this->type = self::TT_OR_LEXEME;
-                } else if (strtolower($tokenText) == 'not') {
+                } elseif (strtolower($tokenText) == 'not') {
                     $this->type = self::TT_NOT_LEXEME;
-                } else if (strtolower($tokenText) == 'to') {
+                } elseif (strtolower($tokenText) == 'to') {
                     $this->type = self::TT_TO_LEXEME;
                 } else {
                     $this->type = self::TT_WORD;

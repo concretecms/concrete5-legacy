@@ -1,7 +1,6 @@
-<? defined('C5_EXECUTE') or die("Access Denied."); ?> 
-<? $valt = Loader::helper('validation/token'); ?>
-<? if ($mode == 'replace') { ?>
-
+<?php defined('C5_EXECUTE') or die("Access Denied."); ?>
+<?php $valt = Loader::helper('validation/token'); ?>
+<?php if ($mode == 'replace') { ?>
 
 <div id="ccm-files-add-asset-replace">
 <h3><?=t('Upload File')?>:</h3>
@@ -11,11 +10,11 @@
     <input type="hidden" name="searchInstance" value="<?=$searchInstance?>" />
     <input type="hidden" name="fID" value="<?=$fID?>" />
     <img class="ccm-al-upload-single-loader" style="display:none;" src="<?=ASSETS_URL_IMAGES?>/dashboard/sitemap/loading.gif" />
-    <input class="ccm-al-upload-single-submit btn" type="submit" value="<?=t('Upload')?>" />    
+    <input class="ccm-al-upload-single-submit btn" type="submit" value="<?=t('Upload')?>" />
 </form>
 </div>
 
-<? } else { 
+<?php } else {
 
 $form = Loader::helper("form");
 $fp = FilePermissions::getGlobal();
@@ -28,17 +27,17 @@ if ($fp->canAddFiles()) {
     <?=Loader::helper('form')->label('Filedata', t('Add File(s)'))?>
     <div class="input">
     <input type="file" name="Filedata" class="span6 ccm-al-upload-single-file"  />
-    <input class="ccm-al-upload-single-submit btn" type="submit" value="<?=t('Upload File')?>" />    
-	<a href="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/files/import?ocID=<?=$ocID?>&searchInstance=<?=$searchInstance?>" class="dialog-launch btn info" dialog-title="<?=t('Add Files')?>" dialog-on-close="if(swfu && swfu.highlight) { ccm_alRefresh(swfu.highlight, '<?=$searchInstance?>') }" dialog-modal="false" dialog-width="450" dialog-height="370" dialog-append-buttons="true"><?=t('Upload Multiple')?></a>
-	<img class="ccm-al-upload-single-loader" style="display:none;" src="<?=ASSETS_URL_IMAGES?>/loader_intelligent_search.gif" />
-	</div>
+    <input class="ccm-al-upload-single-submit btn" type="submit" value="<?=t('Upload File')?>" />
+    <a href="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/files/import?ocID=<?=$ocID?>&searchInstance=<?=$searchInstance?>" class="dialog-launch btn info" dialog-title="<?=t('Add Files')?>" dialog-on-close="if (swfu && swfu.highlight) { ccm_alRefresh(swfu.highlight, '<?=$searchInstance?>') }" dialog-modal="false" dialog-width="450" dialog-height="370" dialog-append-buttons="true"><?=t('Upload Multiple')?></a>
+    <img class="ccm-al-upload-single-loader" style="display:none;" src="<?=ASSETS_URL_IMAGES?>/loader_intelligent_search.gif" />
+    </div>
 <input type="hidden" name="searchInstance" value="<?=$searchInstance?>" />
 <?=$valt->output('upload');?>
 <input type="hidden" name="ocID" value="<?=$ocID?>" />
 </form>
 </div>
 
-<? } 
+<?php }
 
 }
 ?>

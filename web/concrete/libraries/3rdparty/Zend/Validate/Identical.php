@@ -79,7 +79,7 @@ class Zend_Validate_Identical extends Zend_Validate_Abstract
             }
 
             $this->setToken($token['token']);
-        } else if (null !== $token) {
+        } elseif (null !== $token) {
             $this->setToken($token);
         }
     }
@@ -97,13 +97,14 @@ class Zend_Validate_Identical extends Zend_Validate_Abstract
     /**
      * Set token against which to compare
      *
-     * @param  mixed $token
+     * @param  mixed                   $token
      * @return Zend_Validate_Identical
      */
     public function setToken($token)
     {
         $this->_tokenString = (string) $token;
         $this->_token       = $token;
+
         return $this;
     }
 
@@ -125,6 +126,7 @@ class Zend_Validate_Identical extends Zend_Validate_Abstract
     public function setStrict($strict)
     {
         $this->_strict = (boolean) $strict;
+
         return $this;
     }
 
@@ -134,8 +136,8 @@ class Zend_Validate_Identical extends Zend_Validate_Abstract
      * Returns true if and only if a token has been set and the provided value
      * matches that token.
      *
-     * @param  mixed $value
-     * @param  array $context
+     * @param  mixed   $value
+     * @param  array   $context
      * @return boolean
      */
     public function isValid($value, $context = null)
@@ -150,12 +152,14 @@ class Zend_Validate_Identical extends Zend_Validate_Abstract
 
         if ($token === null) {
             $this->_error(self::MISSING_TOKEN);
+
             return false;
         }
 
         $strict = $this->getStrict();
         if (($strict && ($value !== $token)) || (!$strict && ($value != $token))) {
             $this->_error(self::NOT_SAME);
+
             return false;
         }
 

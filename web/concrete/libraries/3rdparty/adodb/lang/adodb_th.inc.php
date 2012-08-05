@@ -1,7 +1,7 @@
 <?php
 // by Trirat Petchsingh <rosskouk#gmail.com>
 $ADODB_LANG_ARRAY = array (
-			'LANG'                      => 'th',
+            'LANG'                      => 'th',
             DB_ERROR                    => 'error ไม่รู้สาเหตุ',
             DB_ERROR_ALREADY_EXISTS     => 'มี�?ล้ว',
             DB_ERROR_CANNOT_CREATE      => 'สร้างไม่ได้',
@@ -30,4 +30,3 @@ $ADODB_LANG_ARRAY = array (
             DB_ERROR_NOSUCHDB           => 'ไม่มีข้อมูลนี้',
             DB_ERROR_ACCESS_VIOLATION   => 'permissions ไม่พอ'
 );
-?>

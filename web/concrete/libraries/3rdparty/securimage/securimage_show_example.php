@@ -58,7 +58,6 @@ $img->num_lines = 7;
 $img->line_color = new Securimage_Color("#eaeaea");
 $img->image_signature = 'phpcaptcha.org';
 $img->signature_color = new Securimage_Color(rand(0, 64), rand(64, 128), rand(128, 255));
-$img->use_wordlist = true; 
+$img->use_wordlist = true;
 
 $img->show('backgrounds/bg3.jpg'); // alternate use:  $img->show('/path/to/background_image.jpg');
-

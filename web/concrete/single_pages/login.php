@@ -1,56 +1,56 @@
-<? defined('C5_EXECUTE') or die("Access Denied."); ?>
-<? Loader::library('authentication/open_id');?>
-<? $form = Loader::helper('form'); ?>
+<?php defined('C5_EXECUTE') or die("Access Denied."); ?>
+<?php Loader::library('authentication/open_id');?>
+<?php $form = Loader::helper('form'); ?>
 
 <script type="text/javascript">
 $(function() {
-	$("input[name=uName]").focus();
+    $("input[name=uName]").focus();
 });
 </script>
 
-<? if (isset($intro_msg)) { ?>
+<?php if (isset($intro_msg)) { ?>
 <div class="alert-message block-message success"><p><?=$intro_msg?></p></div>
-<? } ?>
+<?php } ?>
 
 <div class="page-header">
-	<h1><?=t('Sign in to %s', SITE)?></h1>
+    <h1><?=t('Sign in to %s', SITE)?></h1>
 </div>
 
-<? if( $passwordChanged ){ ?>
+<?php if ($passwordChanged) { ?>
 
-	<div class="block-message info alert-message"><p><?=t('Password changed.  Please login to continue. ') ?></p></div>
+    <div class="block-message info alert-message"><p><?=t('Password changed.  Please login to continue. ') ?></p></div>
 
-<? } ?> 
+<?php } ?>
 
-<? if($changePasswordForm){ ?>
+<?php if ($changePasswordForm) { ?>
 
-	<p><?=t('Enter your new password below.') ?></p>
+    <p><?=t('Enter your new password below.') ?></p>
 
-	<div class="ccm-form">	
+    <div class="ccm-form">
 
-	<form method="post" action="<?=$this->url( '/login', 'change_password', $uHash )?>"> 
+    <form method="post" action="<?=$this->url( '/login', 'change_password', $uHash )?>">
 
-		<div class="clearfix">
-		<label for="uPassword"><?=t('New Password')?></label>
-		<div class="input">
-			<input type="password" name="uPassword" id="uPassword" class="ccm-input-text">
-		</div>
-		</div>
-		<div class="clearfix">
-		<label for="uPasswordConfirm"><?=t('Confirm Password')?></label>
-		<div class="input">
-			<input type="password" name="uPasswordConfirm" id="uPasswordConfirm" class="ccm-input-text">
-		</div>
-		</div>
+        <div class="clearfix">
+        <label for="uPassword"><?=t('New Password')?></label>
+        <div class="input">
+            <input type="password" name="uPassword" id="uPassword" class="ccm-input-text">
+        </div>
+        </div>
+        <div class="clearfix">
+        <label for="uPasswordConfirm"><?=t('Confirm Password')?></label>
+        <div class="input">
+            <input type="password" name="uPasswordConfirm" id="uPasswordConfirm" class="ccm-input-text">
+        </div>
+        </div>
 
-		<div class="actions">
-		<?=$form->submit('submit', t('Sign In') . ' &gt;')?>
-		</div>
-	</form>
-	
-	</div>
+        <div class="actions">
+        <?=$form->submit('submit', t('Sign In') . ' &gt;')?>
+        </div>
+    </form>
 
-<? }elseif($validated) { ?>
+    </div>
+
+<?php } elseif ($validated) { ?>
 
 <h3><?=t('Email Address Verified')?></h3>
 
@@ -61,97 +61,96 @@ $(function() {
 <div class="alert-actions"><a class="btn small" href="<?=$this->url('/')?>"><?=t('Continue to Site')?></a></div>
 </div>
 
-
-<? } else if (isset($_SESSION['uOpenIDError']) && isset($_SESSION['uOpenIDRequested'])) { ?>
+<?php } elseif (isset($_SESSION['uOpenIDError']) && isset($_SESSION['uOpenIDRequested'])) { ?>
 
 <div class="ccm-form">
 
-<? switch($_SESSION['uOpenIDError']) {
-	case OpenIDAuth::E_REGISTRATION_EMAIL_INCOMPLETE: ?>
+<?php switch ($_SESSION['uOpenIDError']) {
+    case OpenIDAuth::E_REGISTRATION_EMAIL_INCOMPLETE: ?>
 
-		<form method="post" action="<?=$this->url('/login', 'complete_openid_email')?>">
-			<p><?=t('To complete the signup process, you must provide a valid email address.')?></p>
-			<label for="uEmail"><?=t('Email Address')?></label><br/>
-			<?=$form->text('uEmail')?>
-				
-			<div class="ccm-button">
-			<?=$form->submit('submit', t('Sign In') . ' &gt;')?>
-			</div>
-		</form>
+        <form method="post" action="<?=$this->url('/login', 'complete_openid_email')?>">
+            <p><?=t('To complete the signup process, you must provide a valid email address.')?></p>
+            <label for="uEmail"><?=t('Email Address')?></label><br/>
+            <?=$form->text('uEmail')?>
 
-	<? break;
-	case OpenIDAuth::E_REGISTRATION_EMAIL_EXISTS:
-	
-	$ui = UserInfo::getByID($_SESSION['uOpenIDExistingUser']);
-	
-	?>
+            <div class="ccm-button">
+            <?=$form->submit('submit', t('Sign In') . ' &gt;')?>
+            </div>
+        </form>
 
-		<form method="post" action="<?=$this->url('/login', 'do_login')?>">
-			<p><?=t('The OpenID account returned an email address already registered on this site. To join this OpenID to the existing user account, login below:')?></p>
-			<label for="uEmail"><?=t('Email Address')?></label><br/>
-			<div><strong><?=$ui->getUserEmail()?></strong></div>
-			<br/>
-			
-			<div>
-			<label for="uName"><? if (USER_REGISTRATION_WITH_EMAIL_ADDRESS == true) { ?>
-				<?=t('Email Address')?>
-			<? } else { ?>
-				<?=t('Username')?>
-			<? } ?></label><br/>
-			<input type="text" name="uName" id="uName" <?= (isset($uName)?'value="'.$uName.'"':'');?> class="ccm-input-text">
-			</div>			<div>
+    <?php break;
+    case OpenIDAuth::E_REGISTRATION_EMAIL_EXISTS:
 
-			<label for="uPassword"><?=t('Password')?></label><br/>
-			<input type="password" name="uPassword" id="uPassword" class="ccm-input-text">
-			</div>
+    $ui = UserInfo::getByID($_SESSION['uOpenIDExistingUser']);
 
-			<div class="ccm-button">
-			<?=$form->submit('submit', t('Sign In') . ' &gt;')?>
-			</div>
-		</form>
+    ?>
 
-	<? break;
+        <form method="post" action="<?=$this->url('/login', 'do_login')?>">
+            <p><?=t('The OpenID account returned an email address already registered on this site. To join this OpenID to the existing user account, login below:')?></p>
+            <label for="uEmail"><?=t('Email Address')?></label><br/>
+            <div><strong><?=$ui->getUserEmail()?></strong></div>
+            <br/>
 
-	}
+            <div>
+            <label for="uName"><?php if (USER_REGISTRATION_WITH_EMAIL_ADDRESS == true) { ?>
+                <?=t('Email Address')?>
+            <?php } else { ?>
+                <?=t('Username')?>
+            <?php } ?></label><br/>
+            <input type="text" name="uName" id="uName" <?= (isset($uName)?'value="'.$uName.'"':'');?> class="ccm-input-text">
+            </div>			<div>
+
+            <label for="uPassword"><?=t('Password')?></label><br/>
+            <input type="password" name="uPassword" id="uPassword" class="ccm-input-text">
+            </div>
+
+            <div class="ccm-button">
+            <?=$form->submit('submit', t('Sign In') . ' &gt;')?>
+            </div>
+        </form>
+
+    <?php break;
+
+    }
 ?>
 
 </div>
 
-<? } else if ($invalidRegistrationFields == true) { ?>
+<?php } elseif ($invalidRegistrationFields == true) { ?>
 
 <div class="ccm-form">
 
-	<p><?=t('You must provide the following information before you may login.')?></p>
-	
+    <p><?=t('You must provide the following information before you may login.')?></p>
+
 <form method="post" action="<?=$this->url('/login', 'do_login')?>">
-	<? 
-	$attribs = UserAttributeKey::getRegistrationList();
-	$af = Loader::helper('form/attribute');
-	
-	$i = 0;
-	foreach($unfilledAttributes as $ak) { 
-		if ($i > 0) { 
-			print '<br/><br/>';
-		}
-		print $af->display($ak, $ak->isAttributeKeyRequiredOnRegister());	
-		$i++;
-	}
-	?>
-	
-	<?=$form->hidden('uName', Loader::helper('text')->entities($_POST['uName']))?>
-	<?=$form->hidden('uPassword', Loader::helper('text')->entities($_POST['uPassword']))?>
-	<?=$form->hidden('uOpenID', $uOpenID)?>
-	<?=$form->hidden('completePartialProfile', true)?>
+    <?php
+    $attribs = UserAttributeKey::getRegistrationList();
+    $af = Loader::helper('form/attribute');
 
-	<div class="ccm-button">
-		<?=$form->submit('submit', t('Sign In'))?>
-		<?=$form->hidden('rcID', $rcID); ?>
-	</div>
-	
+    $i = 0;
+    foreach ($unfilledAttributes as $ak) {
+        if ($i > 0) {
+            print '<br/><br/>';
+        }
+        print $af->display($ak, $ak->isAttributeKeyRequiredOnRegister());
+        $i++;
+    }
+    ?>
+
+    <?=$form->hidden('uName', Loader::helper('text')->entities($_POST['uName']))?>
+    <?=$form->hidden('uPassword', Loader::helper('text')->entities($_POST['uPassword']))?>
+    <?=$form->hidden('uOpenID', $uOpenID)?>
+    <?=$form->hidden('completePartialProfile', true)?>
+
+    <div class="ccm-button">
+        <?=$form->submit('submit', t('Sign In'))?>
+        <?=$form->hidden('rcID', $rcID); ?>
+    </div>
+
 </form>
-</div>	
+</div>
 
-<? } else { ?>
+<?php } else { ?>
 
 <form method="post" action="<?=$this->url('/login', 'do_login')?>">
 
@@ -159,77 +158,77 @@ $(function() {
 <div class="span8 columns">
 
 <fieldset>
-	
-	<legend><?=t('User Account')?></legend>
 
-	<div class="clearfix">
-	
-	<label for="uName"><? if (USER_REGISTRATION_WITH_EMAIL_ADDRESS == true) { ?>
-		<?=t('Email Address')?>
-	<? } else { ?>
-		<?=t('Username')?>
-	<? } ?></label>
-	<div class="input">
-		<input type="text" name="uName" id="uName" <?= (isset($uName)?'value="'.$uName.'"':'');?> class="ccm-input-text">
-	</div>
-	
-	</div>
-	<div class="clearfix">
+    <legend><?=t('User Account')?></legend>
 
-	<label for="uPassword"><?=t('Password')?></label>
-	
-	<div class="input">
-		<input type="password" name="uPassword" id="uPassword" class="ccm-input-text" />
-	</div>
-	
-	</div>
+    <div class="clearfix">
+
+    <label for="uName"><?php if (USER_REGISTRATION_WITH_EMAIL_ADDRESS == true) { ?>
+        <?=t('Email Address')?>
+    <?php } else { ?>
+        <?=t('Username')?>
+    <?php } ?></label>
+    <div class="input">
+        <input type="text" name="uName" id="uName" <?= (isset($uName)?'value="'.$uName.'"':'');?> class="ccm-input-text">
+    </div>
+
+    </div>
+    <div class="clearfix">
+
+    <label for="uPassword"><?=t('Password')?></label>
+
+    <div class="input">
+        <input type="password" name="uPassword" id="uPassword" class="ccm-input-text" />
+    </div>
+
+    </div>
 </fieldset>
 
-<? if (OpenIDAuth::isEnabled()) { ?>
-	<fieldset>
+<?php if (OpenIDAuth::isEnabled()) { ?>
+    <fieldset>
 
-	<legend><?=t('OpenID')?></legend>
+    <legend><?=t('OpenID')?></legend>
 
-	<div class="clearfix">
-		<label for="uOpenID"><?=t('Login with OpenID')?>:</label>
-		<div class="input">
-			<input type="text" name="uOpenID" id="uOpenID" <?= (isset($uOpenID)?'value="'.$uOpenID.'"':'');?> class="ccm-input-openid">
-		</div>
-	</div>
-	</fieldset>
-<? } ?>
+    <div class="clearfix">
+        <label for="uOpenID"><?=t('Login with OpenID')?>:</label>
+        <div class="input">
+            <input type="text" name="uOpenID" id="uOpenID" <?= (isset($uOpenID)?'value="'.$uOpenID.'"':'');?> class="ccm-input-openid">
+        </div>
+    </div>
+    </fieldset>
+<?php } ?>
 
 </div>
 <div class="span8 columns">
 
-	<fieldset>
+    <fieldset>
 
-	<legend><?=t('Options')?></legend>
+    <legend><?=t('Options')?></legend>
 
-	<? if (isset($locales) && is_array($locales) && count($locales) > 0) { ?>
-		<div class="clearfix">
-			<label for="USER_LOCALE"><?=t('Language')?></label>
-			<div class="input"><?=$form->select('USER_LOCALE', $locales)?></div>
-		</div>
-	<? } ?>
-	
-	<div class="clearfix">
-		<label for="uMaintainLogin"><?=t('Remember Me')?></label>
-		<div class="input">
-		<ul class="inputs-list">
-			<li><label><?=$form->checkbox('uMaintainLogin', 1)?> <span><?=t('Remain logged in to website.')?></span></label></li>
-		</ul>
-		</div>
-	</div>
-	<? $rcID = isset($_REQUEST['rcID']) ? Loader::helper('text')->entities($_REQUEST['rcID']) : $rcID; ?>
-	<input type="hidden" name="rcID" value="<?=$rcID?>" />
-	
-	</fieldset>
+    <?php if (isset($locales) && is_array($locales) && count($locales) > 0) { ?>
+        <div class="clearfix">
+            <label for="USER_LOCALE"><?=t('Language')?></label>
+            <div class="input"><?=$form->select('USER_LOCALE', $locales)?></div>
+        </div>
+    <?php } ?>
+
+    <div class="clearfix">
+        <label for="uMaintainLogin"><?=t('Remember Me')?></label>
+        <div class="input">
+        <ul class="inputs-list">
+            <li><label><?=$form->checkbox('uMaintainLogin', 1)?> <span><?=t('Remain logged in to website.')?></span></label></li>
+        </ul>
+        </div>
+    </div>
+    <?php $rcID = isset($_REQUEST['rcID']) ? Loader::helper('text')->entities($_REQUEST['rcID']) : $rcID; ?>
+    <input type="hidden" name="rcID" value="<?=$rcID?>" />
+
+    </fieldset>
 </div>
 <div class="span16 columns">
-	<div class="actions">
-	<?=$form->submit('submit', t('Sign In') . ' &gt;', array('class' => 'primary'))?>
-	</div>
+    <div class="actions">
+    <?=$form->submit('submit', t('Sign In') . ' &gt;', array('class' => 'primary'))?>
+    </div>
 </div>
 </div>
 </form>
@@ -242,22 +241,21 @@ $(function() {
 
 <form method="post" action="<?=$this->url('/login', 'forgot_password')?>">
 <input type="hidden" name="rcID" value="<?=$rcID?>" />
-	
-	<div class="clearfix">
-		<label for="uEmail"><?=t('Email Address')?></label>
-		<div class="input">
-			<input type="text" name="uEmail" value="" class="ccm-input-text" >
-		</div>
-	</div>
-	
-	<div class="actions">
-		<?=$form->submit('submit', t('Reset and Email Password') . ' &gt;')?>
-	</div>
-	
+
+    <div class="clearfix">
+        <label for="uEmail"><?=t('Email Address')?></label>
+        <div class="input">
+            <input type="text" name="uEmail" value="" class="ccm-input-text" >
+        </div>
+    </div>
+
+    <div class="actions">
+        <?=$form->submit('submit', t('Reset and Email Password') . ' &gt;')?>
+    </div>
+
 </form>
 
-
-<? if (ENABLE_REGISTRATION == 1) { ?>
+<?php if (ENABLE_REGISTRATION == 1) { ?>
 <div class="clearfix">
 <h3><?=t('Not a Member')?></h3>
 <p><?=t('Create a user account for use on this website.')?></p>
@@ -265,6 +263,6 @@ $(function() {
 <a class="btn" href="<?=$this->url('/register')?>"><?=t('Register here!')?></a>
 </div>
 </div>
-<? } ?>
+<?php } ?>
 
-<? } ?>
+<?php } ?>

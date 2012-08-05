@@ -20,12 +20,10 @@
  * @version    $Id: Capture.php 23775 2011-03-01 17:25:24Z ralph $
  */
 
-
 /**
  * @see Zend_Cache_Core
  */
 require_once 'Zend/Cache/Core.php';
-
 
 /**
  * @package    Zend_Cache
@@ -52,8 +50,8 @@ class Zend_Cache_Frontend_Capture extends Zend_Cache_Core
     /**
      * Start the cache
      *
-     * @param  string  $id Cache id
-     * @return mixed True if the cache is hit (false else) with $echoData=true (default) ; string else (datas)
+     * @param  string $id Cache id
+     * @return mixed  True if the cache is hit (false else) with $echoData=true (default) ; string else (datas)
      */
     public function start($id, array $tags, $extension = null)
     {
@@ -62,6 +60,7 @@ class Zend_Cache_Frontend_Capture extends Zend_Cache_Core
         ob_start(array($this, '_flush'));
         ob_implicit_flush(false);
         $this->_idStack[] = $id;
+
         return false;
     }
 
@@ -83,6 +82,7 @@ class Zend_Cache_Frontend_Capture extends Zend_Cache_Core
         } else {
             $this->save($data, $id, $this->_tags);
         }
+
         return $data;
     }
 }

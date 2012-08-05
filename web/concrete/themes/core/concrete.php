@@ -1,15 +1,15 @@
-<? defined('C5_EXECUTE') or die("Access Denied."); ?>
+<?php defined('C5_EXECUTE') or die("Access Denied."); ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html lang="<?=LANGUAGE?>" xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<? 
+<?php
 if (is_object($c)) {
-	$v = View::getInstance();
-	$v->disableEditing();
- 	Loader::element('header_required');
-} else { 
-	print Loader::helper('html')->javascript('jquery.js');
-	$this->outputHeaderItems();
+    $v = View::getInstance();
+    $v->disableEditing();
+     Loader::element('header_required');
+} else {
+    print Loader::helper('html')->javascript('jquery.js');
+    $this->outputHeaderItems();
 }
 ?>
 
@@ -22,9 +22,6 @@ if (is_object($c)) {
 <div class="ccm-ui">
 
 <div id="ccm-logo"><?=Loader::helper('concrete/interface')->getToolbarLogoSRC()?></div>
-
-
-
 
 <div class="container">
 

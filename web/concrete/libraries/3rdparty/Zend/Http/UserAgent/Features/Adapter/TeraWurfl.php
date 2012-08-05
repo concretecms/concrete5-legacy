@@ -66,7 +66,6 @@ class Zend_Http_UserAgent_Features_Adapter_TeraWurfl implements Zend_Http_UserAg
             require_once ($config['terawurfl_lib_dir'] . '/TeraWurfl.php');
         }
 
-
         // instantiate the Tera-WURFL object
         $wurflObj = new TeraWurfl();
 
@@ -97,6 +96,7 @@ class Zend_Http_UserAgent_Features_Adapter_TeraWurfl implements Zend_Http_UserAg
                 }
             }
         }
+
         return $features;
     }
 }

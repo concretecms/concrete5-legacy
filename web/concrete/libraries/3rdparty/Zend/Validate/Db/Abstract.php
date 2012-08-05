@@ -102,11 +102,12 @@ abstract class Zend_Validate_Db_Abstract extends Zend_Validate_Abstract
     {
         if ($options instanceof Zend_Db_Select) {
             $this->setSelect($options);
+
             return;
         }
         if ($options instanceof Zend_Config) {
             $options = $options->toArray();
-        } else if (func_num_args() > 1) {
+        } elseif (func_num_args() > 1) {
             $options       = func_get_args();
             $temp['table'] = array_shift($options);
             $temp['field'] = array_shift($options);
@@ -166,13 +167,14 @@ abstract class Zend_Validate_Db_Abstract extends Zend_Validate_Abstract
                 throw new Zend_Validate_Exception('No database adapter present');
             }
         }
+
         return $this->_adapter;
     }
 
     /**
      * Sets a new database adapter
      *
-     * @param  Zend_Db_Adapter_Abstract $adapter
+     * @param  Zend_Db_Adapter_Abstract  $adapter
      * @return Zend_Validate_Db_Abstract
      */
     public function setAdapter($adapter)
@@ -183,6 +185,7 @@ abstract class Zend_Validate_Db_Abstract extends Zend_Validate_Abstract
         }
 
         $this->_adapter = $adapter;
+
         return $this;
     }
 
@@ -199,12 +202,13 @@ abstract class Zend_Validate_Db_Abstract extends Zend_Validate_Abstract
     /**
      * Sets a new exclude clause
      *
-     * @param string|array $exclude
+     * @param  string|array              $exclude
      * @return Zend_Validate_Db_Abstract
      */
     public function setExclude($exclude)
     {
         $this->_exclude = $exclude;
+
         return $this;
     }
 
@@ -221,12 +225,13 @@ abstract class Zend_Validate_Db_Abstract extends Zend_Validate_Abstract
     /**
      * Sets a new field
      *
-     * @param string $field
+     * @param  string                    $field
      * @return Zend_Validate_Db_Abstract
      */
     public function setField($field)
     {
         $this->_field = (string) $field;
+
         return $this;
     }
 
@@ -243,12 +248,13 @@ abstract class Zend_Validate_Db_Abstract extends Zend_Validate_Abstract
     /**
      * Sets a new table
      *
-     * @param string $table
+     * @param  string                    $table
      * @return Zend_Validate_Db_Abstract
      */
     public function setTable($table)
     {
         $this->_table = (string) $table;
+
         return $this;
     }
 
@@ -265,19 +271,20 @@ abstract class Zend_Validate_Db_Abstract extends Zend_Validate_Abstract
     /**
      * Sets a new schema
      *
-     * @param string $schema
+     * @param  string                    $schema
      * @return Zend_Validate_Db_Abstract
      */
     public function setSchema($schema)
     {
         $this->_schema = $schema;
+
         return $this;
     }
 
     /**
      * Sets the select object to be used by the validator
      *
-     * @param Zend_Db_Select $select
+     * @param  Zend_Db_Select            $select
      * @return Zend_Validate_Db_Abstract
      */
     public function setSelect($select)
@@ -287,6 +294,7 @@ abstract class Zend_Validate_Db_Abstract extends Zend_Validate_Abstract
                                               'Zend_Db_Select object');
         }
         $this->_select = $select;
+
         return $this;
     }
 
@@ -325,6 +333,7 @@ abstract class Zend_Validate_Db_Abstract extends Zend_Validate_Abstract
             $select->limit(1);
             $this->_select = $select;
         }
+
         return $this->_select;
     }
 
@@ -332,7 +341,7 @@ abstract class Zend_Validate_Db_Abstract extends Zend_Validate_Abstract
      * Run query and returns matches, or null if no matches are found.
      *
      * @param  String $value
-     * @return Array when matches are found.
+     * @return Array  when matches are found.
      */
     protected function _query($value)
     {

@@ -35,8 +35,8 @@ class Zend_Exception extends Exception
     /**
      * Construct the exception
      *
-     * @param  string $msg
-     * @param  int $code
+     * @param  string    $msg
+     * @param  int       $code
      * @param  Exception $previous
      * @return void
      */
@@ -56,7 +56,7 @@ class Zend_Exception extends Exception
      * For PHP < 5.3.0, provides access to the getPrevious() method.
      *
      * @param  string $method
-     * @param  array $args
+     * @param  array  $args
      * @return mixed
      */
     public function __call($method, array $args)
@@ -64,6 +64,7 @@ class Zend_Exception extends Exception
         if ('getprevious' == strtolower($method)) {
             return $this->_getPrevious();
         }
+
         return null;
     }
 
@@ -81,6 +82,7 @@ class Zend_Exception extends Exception
                        . parent::__toString();
             }
         }
+
         return parent::__toString();
     }
 

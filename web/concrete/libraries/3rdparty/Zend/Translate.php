@@ -29,14 +29,14 @@ require_once 'Zend/Loader.php';
  */
 require_once 'Zend/Translate/Adapter.php';
 
-
 /**
  * @category   Zend
  * @package    Zend_Translate
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Translate {
+class Zend_Translate
+{
     /**
      * Adapter names constants
      */
@@ -63,14 +63,14 @@ class Zend_Translate {
     /**
      * Generates the standard translation object
      *
-     * @param  array|Zend_Config $options Options to use
+     * @param  array|Zend_Config        $options Options to use
      * @throws Zend_Translate_Exception
      */
     public function __construct($options = array())
     {
         if ($options instanceof Zend_Config) {
             $options = $options->toArray();
-        } else if (func_num_args() > 1) {
+        } elseif (func_num_args() > 1) {
             $args               = func_get_args();
             $options            = array();
             $options['adapter'] = array_shift($args);
@@ -86,7 +86,7 @@ class Zend_Translate {
                 $opt     = array_shift($args);
                 $options = array_merge($opt, $options);
             }
-        } else if (!is_array($options)) {
+        } elseif (!is_array($options)) {
             $options = array('adapter' => $options);
         }
 
@@ -96,14 +96,14 @@ class Zend_Translate {
     /**
      * Sets a new adapter
      *
-     * @param  array|Zend_Config $options Options to use
+     * @param  array|Zend_Config        $options Options to use
      * @throws Zend_Translate_Exception
      */
     public function setAdapter($options = array())
     {
         if ($options instanceof Zend_Config) {
             $options = $options->toArray();
-        } else if (func_num_args() > 1) {
+        } elseif (func_num_args() > 1) {
             $args               = func_get_args();
             $options            = array();
             $options['adapter'] = array_shift($args);
@@ -119,7 +119,7 @@ class Zend_Translate {
                 $opt     = array_shift($args);
                 $options = array_merge($opt, $options);
             }
-        } else if (!is_array($options)) {
+        } elseif (!is_array($options)) {
             $options = array('adapter' => $options);
         }
 
@@ -198,7 +198,7 @@ class Zend_Translate {
     /**
      * Clears all set cache data
      *
-     * @param string $tag Tag to clear when the default tag name is not used
+     * @param  string $tag Tag to clear when the default tag name is not used
      * @return void
      */
     public static function clearCache($tag = null)

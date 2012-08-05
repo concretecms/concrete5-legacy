@@ -100,8 +100,8 @@ abstract class Zend_Http_UserAgent_AbstractDevice
      * Constructor
      *
      * @param  null|string|array $userAgent If array, restores from serialized version
-     * @param  array $server
-     * @param  array $config
+     * @param  array             $server
+     * @param  array             $config
      * @return void
      */
     public function __construct($userAgent = null, array $server = array(), array $config = array())
@@ -134,6 +134,7 @@ abstract class Zend_Http_UserAgent_AbstractDevice
             '_userAgent'      => $this->_userAgent,
             '_images'         => $this->_images,
         );
+
         return serialize($spec);
     }
 
@@ -201,7 +202,7 @@ abstract class Zend_Http_UserAgent_AbstractDevice
     /**
      * Gets the value of the current browser/device feature
      *
-     * @param  string $feature Feature to search
+     * @param  string      $feature Feature to search
      * @return string|null
      */
     public function getFeature($feature)
@@ -214,9 +215,9 @@ abstract class Zend_Http_UserAgent_AbstractDevice
     /**
      * Set a feature for the current browser/device.
      *
-     * @param  string $feature The feature to set.
-     * @param  string $value (option) feature value.
-     * @param  string $group (option) Group to associate with the feature
+     * @param  string                             $feature The feature to set.
+     * @param  string                             $value   (option) feature value.
+     * @param  string                             $group   (option) Group to associate with the feature
      * @return Zend_Http_UserAgent_AbstractDevice
      */
     public function setFeature($feature, $value = false, $group = '')
@@ -225,14 +226,15 @@ abstract class Zend_Http_UserAgent_AbstractDevice
         if (!empty($group)) {
             $this->setGroup($group, $feature);
         }
+
         return $this;
     }
 
     /**
      * Affects a feature to a group
      *
-     * @param  string $group Group name
-     * @param  string $feature Feature name
+     * @param  string                             $group   Group name
+     * @param  string                             $feature Feature name
      * @return Zend_Http_UserAgent_AbstractDevice
      */
     public function setGroup($group, $feature)
@@ -243,6 +245,7 @@ abstract class Zend_Http_UserAgent_AbstractDevice
         if (!in_array($feature, $this->_aGroup[$group])) {
             $this->_aGroup[$group][] = $feature;
         }
+
         return $this;
     }
 
@@ -730,6 +733,7 @@ abstract class Zend_Http_UserAgent_AbstractDevice
         }
 
         ksort($result);
+
         return $result;
     }
 
@@ -942,6 +946,7 @@ abstract class Zend_Http_UserAgent_AbstractDevice
     public function setUserAgent($userAgent)
     {
         $this->_userAgent = $userAgent;
+
         return $this;
     }
 
@@ -957,7 +962,7 @@ abstract class Zend_Http_UserAgent_AbstractDevice
      * Match a user agent string against a list of signatures
      *
      * @param  string $userAgent
-     * @param  array $signatures
+     * @param  array  $signatures
      * @return bool
      */
     protected static function _matchAgentAgainstSignatures($userAgent, $signatures)
@@ -971,6 +976,7 @@ abstract class Zend_Http_UserAgent_AbstractDevice
                 }
             }
         }
+
         return false;
     }
 }

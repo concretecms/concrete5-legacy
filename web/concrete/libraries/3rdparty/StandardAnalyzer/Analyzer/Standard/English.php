@@ -6,7 +6,7 @@
  * in this standard analyzer package, provide a method for indexing documents with word Stemming,
  * lower-casing, and number handling. The lower-case and number handling is provided by the pre-
  * existing filters from Zend.
- * 
+ *
  * License: see License.txt for a copy of the Zend License.
  *
  *Ref:
@@ -30,13 +30,12 @@ require_once 'Zend/Search/Lucene/Analysis/TokenFilter/StopWords.php';
 
 class StandardAnalyzer_Analyzer_Standard_English extends StandardAnalyzer_Analyzer_Standard
 {
-	private $_stopWords = array ("a", "an", "and", "are", "as", "at", "be", "but", "by", "for", "if", "in", "into", "is", "it", "no", "not", "of", "on", "or", "s", "such", "t", "that", "the", "their", "then", "there", "these", "they", "this", "to", "was", "will", "with");
-	
+    private $_stopWords = array ("a", "an", "and", "are", "as", "at", "be", "but", "by", "for", "if", "in", "into", "is", "it", "no", "not", "of", "on", "or", "s", "such", "t", "that", "the", "their", "then", "there", "these", "they", "this", "to", "was", "will", "with");
+
     public function __construct()
     {
         $this->addFilter(new Zend_Search_Lucene_Analysis_TokenFilter_LowerCaseUtf8());
         $this->addFilter(new Zend_Search_Lucene_Analysis_TokenFilter_StopWords($this->_stopWords));
-        $this->addFilter(new StandardAnalyzer_Analysis_TokenFilter_EnglishStemmer());	
+        $this->addFilter(new StandardAnalyzer_Analysis_TokenFilter_EnglishStemmer());
     }
 }
-

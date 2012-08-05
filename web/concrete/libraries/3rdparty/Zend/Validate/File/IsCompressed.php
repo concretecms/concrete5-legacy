@@ -131,7 +131,7 @@ class Zend_Validate_File_IsCompressed extends Zend_Validate_File_MimeType
     protected function _throw($file, $errorType)
     {
         $this->_value = $file['name'];
-        switch($errorType) {
+        switch ($errorType) {
             case Zend_Validate_File_MimeType::FALSE_TYPE :
                 $errorType = self::FALSE_TYPE;
                 break;
@@ -144,6 +144,7 @@ class Zend_Validate_File_IsCompressed extends Zend_Validate_File_MimeType
         }
 
         $this->_error($errorType);
+
         return false;
     }
 }

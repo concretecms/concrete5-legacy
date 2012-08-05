@@ -26,12 +26,12 @@
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-abstract class Zend_Date_DateObject {
-
+abstract class Zend_Date_DateObject
+{
     /**
      * UNIX Timestamp
      */
-    private   $_unixTimestamp;
+    private $_unixTimestamp;
     protected static $_cache         = null;
     protected static $_cacheTags     = false;
     protected static $_defaultOffset = 0;
@@ -39,9 +39,9 @@ abstract class Zend_Date_DateObject {
     /**
      * active timezone
      */
-    private   $_timezone    = 'UTC';
-    private   $_offset      = 0;
-    private   $_syncronised = 0;
+    private $_timezone    = 'UTC';
+    private $_offset      = 0;
+    private $_syncronised = 0;
 
     // turn off DST correction if UTC or GMT
     protected $_dst         = true;
@@ -72,8 +72,8 @@ abstract class Zend_Date_DateObject {
     /**
      * Set this object to have a new UNIX timestamp.
      *
-     * @param  string|integer  $timestamp  OPTIONAL timestamp; defaults to local time using time()
-     * @return string|integer  old timestamp
+     * @param  string|integer      $timestamp OPTIONAL timestamp; defaults to local time using time()
+     * @return string|integer      old timestamp
      * @throws Zend_Date_Exception
      */
     protected function setUnixTimestamp($timestamp = null)
@@ -82,7 +82,7 @@ abstract class Zend_Date_DateObject {
 
         if (is_numeric($timestamp)) {
             $this->_unixTimestamp = $timestamp;
-        } else if ($timestamp === null) {
+        } elseif ($timestamp === null) {
             $this->_unixTimestamp = time();
         } else {
             require_once 'Zend/Date/Exception.php';
@@ -97,7 +97,7 @@ abstract class Zend_Date_DateObject {
      * A timestamp greater then the integer range will be returned as string
      * This function does not return the timestamp as object. Use copy() instead.
      *
-     * @return  integer|string  timestamp
+     * @return integer|string timestamp
      */
     protected function getUnixTimestamp()
     {
@@ -113,14 +113,15 @@ abstract class Zend_Date_DateObject {
      * Returns time().  This method exists to allow unit tests to work-around methods that might otherwise
      * be hard-coded to use time().  For example, this makes it possible to test isYesterday() in Date.php.
      *
-     * @param   integer  $sync      OPTIONAL time syncronisation value
-     * @return  integer  timestamp
+     * @param  integer $sync OPTIONAL time syncronisation value
+     * @return integer timestamp
      */
     protected function _getTime($sync = null)
     {
         if ($sync !== null) {
             $this->_syncronised = round($sync);
         }
+
         return (time() + $this->_syncronised);
     }
 
@@ -134,14 +135,14 @@ abstract class Zend_Date_DateObject {
      * Year has to be 4 digits otherwise it would be recognised as
      * year 70 AD instead of 1970 AD as expected !!
      *
-     * @param  integer  $hour
-     * @param  integer  $minute
-     * @param  integer  $second
-     * @param  integer  $month
-     * @param  integer  $day
-     * @param  integer  $year
-     * @param  boolean  $gmt     OPTIONAL true = other arguments are for UTC time, false = arguments are for local time/date
-     * @return  integer|float  timestamp (number of seconds elapsed relative to 1970/01/01 00:00:00 GMT/UTC)
+     * @param  integer       $hour
+     * @param  integer       $minute
+     * @param  integer       $second
+     * @param  integer       $month
+     * @param  integer       $day
+     * @param  integer       $year
+     * @param  boolean       $gmt    OPTIONAL true = other arguments are for UTC time, false = arguments are for local time/date
+     * @return integer|float timestamp (number of seconds elapsed relative to 1970/01/01 00:00:00 GMT/UTC)
      */
     protected function mktime($hour, $minute, $second, $month, $day, $year, $gmt = false)
     {
@@ -166,7 +167,7 @@ abstract class Zend_Date_DateObject {
         }
 
         if (isset(self::$_cache)) {
-            $id = strtr('Zend_DateObject_mkTime_' . $this->_offset . '_' . $year.$month.$day.'_'.$hour.$minute.$second . '_'.(int)$gmt, '-','_');
+            $id = strtr('Zend_DateObject_mkTime_' . $this->_offset . '_' . $year.$month.$day.'_'.$hour.$minute.$second . '_'.(int) $gmt, '-','_');
             if ($result = self::$_cache->load($id)) {
                 return unserialize($result);
             }
@@ -226,8 +227,7 @@ abstract class Zend_Date_DateObject {
             for ($count = 1969; $count >= $year; $count--) {
 
                 $leapyear = self::isYearLeapYear($count);
-                if ($count > $year)
-                {
+                if ($count > $year) {
                     $date += 365;
                     if ($leapyear === true)
                         $date++;
@@ -249,7 +249,7 @@ abstract class Zend_Date_DateObject {
             // gregorian correction for 5.Oct.1582
             if ($date < -12220185600) {
                 $date += 864000;
-            } else if ($date < -12219321600) {
+            } elseif ($date < -12219321600) {
                 $date  = -12219321600;
             }
         }
@@ -268,8 +268,8 @@ abstract class Zend_Date_DateObject {
     /**
      * Returns true, if given $year is a leap year.
      *
-     * @param  integer  $year
-     * @return boolean  true, if year is leap year
+     * @param  integer $year
+     * @return boolean true, if year is leap year
      */
     protected static function isYearLeapYear($year)
     {
@@ -281,7 +281,7 @@ abstract class Zend_Date_DateObject {
         // all leapyears can be divided through 400
         if ($year % 400 == 0) {
             return true;
-        } else if (($year > 1582) and ($year % 100 == 0)) {
+        } elseif (($year > 1582) and ($year % 100 == 0)) {
             return false;
         }
 
@@ -293,9 +293,9 @@ abstract class Zend_Date_DateObject {
      *
      * Returns a formatted date for a given timestamp.
      *
-     * @param  string   $format     format for output
-     * @param  mixed    $timestamp
-     * @param  boolean  $gmt        OPTIONAL true = other arguments are for UTC time, false = arguments are for local time/date
+     * @param  string  $format    format for output
+     * @param  mixed   $timestamp
+     * @param  boolean $gmt       OPTIONAL true = other arguments are for UTC time, false = arguments are for local time/date
      * @return string
      */
     protected function date($format, $timestamp = null, $gmt = false)
@@ -308,19 +308,21 @@ abstract class Zend_Date_DateObject {
         if ($timestamp === null) {
             $result = ($gmt) ? @gmdate($format) : @date($format);
             date_default_timezone_set($oldzone);
+
             return $result;
         }
 
         if (abs($timestamp) <= 0x7FFFFFFF) {
             $result = ($gmt) ? @gmdate($format, $timestamp) : @date($format, $timestamp);
             date_default_timezone_set($oldzone);
+
             return $result;
         }
 
         $jump      = false;
         $origstamp = $timestamp;
         if (isset(self::$_cache)) {
-            $idstamp = strtr('Zend_DateObject_date_' . $this->_offset . '_'. $timestamp . '_'.(int)$gmt, '-','_');
+            $idstamp = strtr('Zend_DateObject_date_' . $this->_offset . '_'. $timestamp . '_'.(int) $gmt, '-','_');
             if ($result2 = self::$_cache->load($idstamp)) {
                 $timestamp = unserialize($result2);
                 $jump = true;
@@ -363,7 +365,7 @@ abstract class Zend_Date_DateObject {
         $output = '';
 
         for ($i = 0; $i < $length; $i++) {
-            switch($format[$i]) {
+            switch ($format[$i]) {
                 // day formats
                 case 'd':  // day of month, 2 digits, with leading zero, 01 - 31
                     $output .= (($date['mday'] < 10) ? '0' . $date['mday'] : $date['mday']);
@@ -392,9 +394,9 @@ abstract class Zend_Date_DateObject {
                 case 'S':  // english suffix for day of month, st nd rd th
                     if (($date['mday'] % 10) == 1) {
                         $output .= 'st';
-                    } else if ((($date['mday'] % 10) == 2) and ($date['mday'] != 12)) {
+                    } elseif ((($date['mday'] % 10) == 2) and ($date['mday'] != 12)) {
                         $output .= 'nd';
-                    } else if (($date['mday'] % 10) == 3) {
+                    } elseif (($date['mday'] % 10) == 3) {
                         $output .= 'rd';
                     } else {
                         $output .= 'th';
@@ -621,10 +623,10 @@ abstract class Zend_Date_DateObject {
      * Returns the day of week for a Gregorian calendar date.
      * 0 = sunday, 6 = saturday
      *
-     * @param  integer  $year
-     * @param  integer  $month
-     * @param  integer  $day
-     * @return integer  dayOfWeek
+     * @param  integer $year
+     * @param  integer $month
+     * @param  integer $day
+     * @return integer dayOfWeek
      */
     protected static function dayOfWeek($year, $month, $day)
     {
@@ -660,9 +662,9 @@ abstract class Zend_Date_DateObject {
      * $fast specifies ALL date parts should be returned (slower)
      * Default is false, and excludes $dayofweek, weekday, month and timestamp from parts returned.
      *
-     * @param   mixed    $timestamp
-     * @param   boolean  $fast   OPTIONAL defaults to fast (false), resulting in fewer date parts
-     * @return  array
+     * @param  mixed   $timestamp
+     * @param  boolean $fast      OPTIONAL defaults to fast (false), resulting in fewer date parts
+     * @return array
      */
     protected function getDateParts($timestamp = null, $fast = null)
     {
@@ -678,7 +680,7 @@ abstract class Zend_Date_DateObject {
         }
 
         if (isset(self::$_cache)) {
-            $id = strtr('Zend_DateObject_getDateParts_' . $timestamp.'_'.(int)$fast, '-','_');
+            $id = strtr('Zend_DateObject_getDateParts_' . $timestamp.'_'.(int) $fast, '-','_');
             if ($result = self::$_cache->load($id)) {
                 return unserialize($result);
             }
@@ -698,7 +700,7 @@ abstract class Zend_Date_DateObject {
             $act = 1970;
 
             // iterate through 10 years table, increasing speed
-            foreach(self::$_yearTable as $year => $seconds) {
+            foreach (self::$_yearTable as $year => $seconds) {
                 if ($timestamp >= $seconds) {
                     $i = $act;
                     break;
@@ -852,9 +854,9 @@ abstract class Zend_Date_DateObject {
      *
      * Returns the ISO 8601 week number of a given date
      *
-     * @param  integer  $year
-     * @param  integer  $month
-     * @param  integer  $day
+     * @param  integer $year
+     * @param  integer $month
+     * @param  integer $day
      * @return integer
      */
     protected function weekNumber($year, $month, $day)
@@ -870,7 +872,7 @@ abstract class Zend_Date_DateObject {
             $month     = 12;
             $day       = 31;
 
-        } else if (($month == 12) and ((self::dayOfWeek($year + 1, 1, 1) < 5) and
+        } elseif (($month == 12) and ((self::dayOfWeek($year + 1, 1, 1) < 5) and
                    (self::dayOfWeek($year + 1, 1, 1) > 0))) {
             return 1;
         }
@@ -886,22 +888,23 @@ abstract class Zend_Date_DateObject {
      * @param float $a - value to correct
      * @param float $b - maximum range to set
      */
-    private function _range($a, $b) {
+    private function _range($a, $b)
+    {
         while ($a < 0) {
             $a += $b;
-        }
-        while ($a >= $b) {
+        } while ($a >= $b) {
             $a -= $b;
         }
+
         return $a;
     }
 
     /**
      * Calculates the sunrise or sunset based on a location
      *
-     * @param  array  $location  Location for calculation MUST include 'latitude', 'longitude', 'horizon'
-     * @param  bool   $horizon   true: sunrise; false: sunset
-     * @return mixed  - false: midnight sun, integer:
+     * @param  array $location Location for calculation MUST include 'latitude', 'longitude', 'horizon'
+     * @param  bool  $horizon  true: sunrise; false: sunset
+     * @return mixed - false: midnight sun, integer:
      */
     protected function calcSun($location, $horizon, $rise = false)
     {
@@ -911,6 +914,7 @@ abstract class Zend_Date_DateObject {
                 return date_sunset($this->_unixTimestamp, SUNFUNCS_RET_TIMESTAMP, $location['latitude'],
                                    $location['longitude'], 90 + $horizon, $this->getGmtOffset() / 3600);
             }
+
             return date_sunrise($this->_unixTimestamp, SUNFUNCS_RET_TIMESTAMP, $location['latitude'],
                                 $location['longitude'], 90 + $horizon, $this->getGmtOffset() / 3600);
         }
@@ -949,7 +953,7 @@ abstract class Zend_Date_DateObject {
         // adjust quadrant
         if ($solLongitude > $threeQuarterCircle) {
             $solAscension += $fullCircle;
-        } else if ($solLongitude > $quarterCircle) {
+        } elseif ($solLongitude > $quarterCircle) {
             $solAscension += $halfCircle;
         }
 
@@ -1000,7 +1004,7 @@ abstract class Zend_Date_DateObject {
      * For a list of supported timezones look here: http://php.net/timezones
      * If no timezone can be detected or the given timezone is wrong UTC will be set.
      *
-     * @param  string  $zone      OPTIONAL timezone for date calculation; defaults to date_default_timezone_get()
+     * @param  string               $zone OPTIONAL timezone for date calculation; defaults to date_default_timezone_get()
      * @return Zend_Date_DateObject Provides fluent interface
      * @throws Zend_Date_Exception
      */
@@ -1039,7 +1043,7 @@ abstract class Zend_Date_DateObject {
      * Return the timezone of $this object.
      * The timezone is initially set when the object is instantiated.
      *
-     * @return  string  actual set timezone string
+     * @return string actual set timezone string
      */
     public function getTimezone()
     {
@@ -1051,7 +1055,7 @@ abstract class Zend_Date_DateObject {
      * The offset to GMT is initially set when the object is instantiated using the currently,
      * in effect, default timezone for PHP functions.
      *
-     * @return  integer  seconds difference between GMT timezone and timezone when object was instantiated
+     * @return integer seconds difference between GMT timezone and timezone when object was instantiated
      */
     public function getGmtOffset()
     {

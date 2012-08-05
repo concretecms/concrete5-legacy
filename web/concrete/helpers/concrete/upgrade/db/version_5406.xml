@@ -53,7 +53,7 @@
       <KEY/>
       <AUTOINCREMENT/>
       <UNSIGNED/>
-    </field> 
+    </field>
     <field name="fID" type="I" size="10">
       <NOTNULL/>
       <UNSIGNED />
@@ -73,9 +73,9 @@
     <field name="timestamp" type="T">
       <NOTNULL/>
       <DEFTIMESTAMP/>
-    </field>		
+    </field>
   </table>
-  
+
     <table name="PageSearchIndex">
     <opt platform="MYSQL">ENGINE=MYISAM</opt>
     <field name="cID" type="I" size="10">

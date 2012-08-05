@@ -20,7 +20,6 @@
  * @version    $Id: TermInfo.php 23775 2011-03-01 17:25:24Z ralph $
  */
 
-
 /**
  * A Zend_Search_Lucene_Index_TermInfo represents a record of information stored for a term.
  *
@@ -77,4 +76,3 @@ class Zend_Search_Lucene_Index_TermInfo
         $this->indexPointer = $indexPointer;
     }
 }
-

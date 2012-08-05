@@ -322,10 +322,10 @@ class Zend_Validate_Hostname extends Zend_Validate_Abstract
     /**
      * Sets validator options
      *
-     * @param integer          $allow       OPTIONAL Set what types of hostname to allow (default ALLOW_DNS)
-     * @param boolean          $validateIdn OPTIONAL Set whether IDN domains are validated (default true)
-     * @param boolean          $validateTld OPTIONAL Set whether the TLD element of a hostname is validated (default true)
-     * @param Zend_Validate_Ip $ipValidator OPTIONAL
+     * @param  integer          $allow       OPTIONAL Set what types of hostname to allow (default ALLOW_DNS)
+     * @param  boolean          $validateIdn OPTIONAL Set whether IDN domains are validated (default true)
+     * @param  boolean          $validateTld OPTIONAL Set whether the TLD element of a hostname is validated (default true)
+     * @param  Zend_Validate_Ip $ipValidator OPTIONAL
      * @return void
      * @see http://www.iana.org/cctld/specifications-policies-cctlds-01apr02.htm  Technical Specifications for ccTLDs
      */
@@ -333,7 +333,7 @@ class Zend_Validate_Hostname extends Zend_Validate_Abstract
     {
         if ($options instanceof Zend_Config) {
             $options = $options->toArray();
-        } else if (!is_array($options)) {
+        } elseif (!is_array($options)) {
             $options = func_get_args();
             $temp['allow'] = array_shift($options);
             if (!empty($options)) {
@@ -368,7 +368,7 @@ class Zend_Validate_Hostname extends Zend_Validate_Abstract
     /**
      * Sets the options for this validator
      *
-     * @param array $options
+     * @param  array                  $options
      * @return Zend_Validate_Hostname
      */
     public function setOptions($options)
@@ -403,7 +403,7 @@ class Zend_Validate_Hostname extends Zend_Validate_Abstract
     }
 
     /**
-     * @param Zend_Validate_Ip $ipValidator OPTIONAL
+     * @param  Zend_Validate_Ip $ipValidator OPTIONAL
      * @return void;
      */
     public function setIpValidator(Zend_Validate_Ip $ipValidator = null)
@@ -413,6 +413,7 @@ class Zend_Validate_Hostname extends Zend_Validate_Abstract
         }
 
         $this->_options['ip'] = $ipValidator;
+
         return $this;
     }
 
@@ -429,12 +430,13 @@ class Zend_Validate_Hostname extends Zend_Validate_Abstract
     /**
      * Sets the allow option
      *
-     * @param  integer $allow
+     * @param  integer                $allow
      * @return Zend_Validate_Hostname Provides a fluent interface
      */
     public function setAllow($allow)
     {
         $this->_options['allow'] = $allow;
+
         return $this;
     }
 
@@ -458,6 +460,7 @@ class Zend_Validate_Hostname extends Zend_Validate_Abstract
     public function setValidateIdn ($allowed)
     {
         $this->_options['idn'] = (bool) $allowed;
+
         return $this;
     }
 
@@ -481,6 +484,7 @@ class Zend_Validate_Hostname extends Zend_Validate_Abstract
     public function setValidateTld ($allowed)
     {
         $this->_options['tld'] = (bool) $allowed;
+
         return $this;
     }
 
@@ -489,7 +493,7 @@ class Zend_Validate_Hostname extends Zend_Validate_Abstract
      *
      * Returns true if and only if the $value is a valid hostname with respect to the current allow option
      *
-     * @param  string $value
+     * @param  string                  $value
      * @throws Zend_Validate_Exception if a fatal error occurs for validation process
      * @return boolean
      */
@@ -498,16 +502,18 @@ class Zend_Validate_Hostname extends Zend_Validate_Abstract
 
         if (!is_string($value)) {
             $this->_error(self::INVALID);
+
             return false;
         }
 
         $this->_setValue($value);
         // Check input against IP address schema
-        
+
         if (preg_match('/^[0-9a-f:.]*$/i', $value) &&
             $this->_options['ip']->setTranslator($this->getTranslator())->isValid($value)) {
             if (!($this->_options['allow'] & self::ALLOW_IP)) {
                 $this->_error(self::IP_ADDRESS_NOT_ALLOWED);
+
                 return false;
             } else {
                 return true;
@@ -515,12 +521,12 @@ class Zend_Validate_Hostname extends Zend_Validate_Abstract
         }
 
         // RFC3986 3.2.2 states:
-        // 
+        //
         //     The rightmost domain label of a fully qualified domain name
-        //     in DNS may be followed by a single "." and should be if it is 
+        //     in DNS may be followed by a single "." and should be if it is
         //     necessary to distinguish between the complete domain name and
         //     some local domain.
-        //     
+        //
         // Strip trailing '.' since it is not necessary to validate a non-IP
         // hostname.
         //
@@ -528,7 +534,7 @@ class Zend_Validate_Hostname extends Zend_Validate_Abstract
         if (substr($value, -1) === '.') {
             $value = substr($value, 0, strlen($value)-1);
         }
-        
+
         // Check input against DNS hostname schema
         $domainParts = explode('.', $value);
         if ((count($domainParts) > 1) && (strlen($value) >= 4) && (strlen($value) <= 254)) {
@@ -596,7 +602,7 @@ class Zend_Validate_Hostname extends Zend_Validate_Abstract
 
                         // Check each domain part
                         $checked = false;
-                        foreach($regexChars as $regexKey => $regexChar) {
+                        foreach ($regexChars as $regexKey => $regexChar) {
                             $status = @preg_match($regexChar, $domainPart);
                             if ($status > 0) {
                                 $length = 63;
@@ -637,7 +643,7 @@ class Zend_Validate_Hostname extends Zend_Validate_Abstract
             if ($status && ($this->_options['allow'] & self::ALLOW_DNS)) {
                 return true;
             }
-        } else if ($this->_options['allow'] & self::ALLOW_DNS) {
+        } elseif ($this->_options['allow'] & self::ALLOW_DNS) {
             $this->_error(self::INVALID_HOSTNAME);
         }
 
@@ -687,6 +693,7 @@ class Zend_Validate_Hostname extends Zend_Validate_Abstract
         if (empty($encoded) || ($found > 0)) {
             // no punycode encoded string, return as is
             $this->_error(self::CANNOT_DECODE_PUNYCODE);
+
             return false;
         }
 
@@ -698,6 +705,7 @@ class Zend_Validate_Hostname extends Zend_Validate_Abstract
             }
         } else {
             $this->_error(self::CANNOT_DECODE_PUNYCODE);
+
             return false;
         }
 
@@ -764,6 +772,7 @@ class Zend_Validate_Hostname extends Zend_Validate_Abstract
                 $decoded[$key] .= chr(128 + ($value & 63));
             } else {
                 $this->_error(self::CANNOT_DECODE_PUNYCODE);
+
                 return false;
             }
         }

@@ -19,7 +19,6 @@
  * @version    $Id: File.php 23775 2011-03-01 17:25:24Z ralph $
  */
 
-
 /**
  * @see Zend_Mime_Decode
  */
@@ -29,7 +28,6 @@ require_once 'Zend/Mime/Decode.php';
  * @see Zend_Mail_Part
  */
 require_once 'Zend/Mail/Part.php';
-
 
 /**
  * @category   Zend
@@ -51,8 +49,8 @@ class Zend_Mail_Part_File extends Zend_Mail_Part
      * - startPos start position of message or part in file (default: current position)
      * - endPos   end position of message or part in file (default: end of file)
      *
-     * @param   array $params  full message with or without headers
-     * @throws  Zend_Mail_Exception
+     * @param  array               $params full message with or without headers
+     * @throws Zend_Mail_Exception
      */
     public function __construct(array $params)
     {
@@ -134,7 +132,7 @@ class Zend_Mail_Part_File extends Zend_Mail_Part
                     $this->_partPos[] = $part;
                 }
                 $part = array($pos);
-            } else if ($line == '--' . $boundary . '--') {
+            } elseif ($line == '--' . $boundary . '--') {
                 $part[1] = $lastPos;
                 $this->_partPos[] = $part;
                 break;
@@ -144,13 +142,12 @@ class Zend_Mail_Part_File extends Zend_Mail_Part
 
     }
 
-
     /**
      * Body of part
      *
      * If part is multipart the raw content of this part with all sub parts is returned
      *
-     * @return string body
+     * @return string              body
      * @throws Zend_Mail_Exception
      */
     public function getContent($stream = null)
@@ -160,6 +157,7 @@ class Zend_Mail_Part_File extends Zend_Mail_Part
             return stream_copy_to_stream($this->_fh, $stream, $this->_contentPos[1] - $this->_contentPos[0]);
         }
         $length = $this->_contentPos[1] - $this->_contentPos[0];
+
         return $length < 1 ? '' : fread($this->_fh, $length);
     }
 
@@ -170,15 +168,16 @@ class Zend_Mail_Part_File extends Zend_Mail_Part
      *
      * @return int size
      */
-    public function getSize() {
+    public function getSize()
+    {
         return $this->_contentPos[1] - $this->_contentPos[0];
     }
 
     /**
      * Get part of multipart message
      *
-     * @param  int $num number of part starting with 1 for first part
-     * @return Zend_Mail_Part wanted part
+     * @param  int                 $num number of part starting with 1 for first part
+     * @return Zend_Mail_Part      wanted part
      * @throws Zend_Mail_Exception
      */
     public function getPart($num)

@@ -38,10 +38,10 @@ class Zend_Translate_Adapter_Ini extends Zend_Translate_Adapter
     /**
      * Load translation data
      *
-     * @param  string|array  $data
-     * @param  string        $locale  Locale/Language to add data for, identical with locale identifier,
+     * @param string|array $data
+     * @param string       $locale Locale/Language to add data for, identical with locale identifier,
      *                                see Zend_Locale for more information
-     * @param  array         $options OPTIONAL Options to use
+     * @param  array                    $options OPTIONAL Options to use
      * @throws Zend_Translate_Exception Ini file not found
      * @return array
      */
@@ -59,6 +59,7 @@ class Zend_Translate_Adapter_Ini extends Zend_Translate_Adapter
         }
 
         $this->_data[$locale] = array_merge($this->_data[$locale], $inidata);
+
         return $this->_data;
     }
 

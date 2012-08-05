@@ -79,7 +79,7 @@ class Zend_Validate_Barcode_Code93 extends Zend_Validate_Barcode_AdapterAbstract
     /**
      * Validates the checksum (Modulo CK)
      *
-     * @param  string $value The barcode to validate
+     * @param  string  $value The barcode to validate
      * @return boolean
      */
     protected function _code93($value)
@@ -88,7 +88,7 @@ class Zend_Validate_Barcode_Code93 extends Zend_Validate_Barcode_AdapterAbstract
         $value    = str_split(substr($value, 0, -2));
         $count    = 0;
         $length   = count($value) % 20;
-        foreach($value as $char) {
+        foreach ($value as $char) {
             if ($length == 0) {
                 $length = 20;
             }
@@ -101,7 +101,7 @@ class Zend_Validate_Barcode_Code93 extends Zend_Validate_Barcode_AdapterAbstract
         $value[] = $check;
         $count   = 0;
         $length  = count($value) % 15;
-        foreach($value as $char) {
+        foreach ($value as $char) {
             if ($length == 0) {
                 $length = 15;
             }

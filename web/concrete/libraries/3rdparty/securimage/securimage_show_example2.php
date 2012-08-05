@@ -52,4 +52,3 @@ $img->text_color = new Securimage_Color("#000000");
 $img->line_color = new Securimage_Color("#cccccc");
 
 $img->show(''); // alternate use:  $img->show('/path/to/background_image.jpg');
-

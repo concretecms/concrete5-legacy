@@ -3,7 +3,7 @@
 // Encode by GB2312
 // Simplified Chinese
 $ADODB_LANG_ARRAY = array (
-			'LANG'                      => 'cn',
+            'LANG'                      => 'cn',
             DB_ERROR                    => '未知错误',
             DB_ERROR_ALREADY_EXISTS     => '已经存在',
             DB_ERROR_CANNOT_CREATE      => '不能创建',
@@ -32,4 +32,3 @@ $ADODB_LANG_ARRAY = array (
             DB_ERROR_NOSUCHDB           => '没有相应的数据库',
             DB_ERROR_ACCESS_VIOLATION   => '没有合适的权限'
 );
-?>

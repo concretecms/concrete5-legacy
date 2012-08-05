@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 
 $u = new User();
@@ -8,44 +8,43 @@ $form = Loader::helper('form');
 
 $fp = FilePermissions::getGlobal();
 if (!$fp->canRead()) {
-	die(t("Access Denied."));
+    die(t("Access Denied."));
 }
 
 $ci = Loader::helper('file');
 
-
 if (isset($_REQUEST['fID']) && is_array($_REQUEST['fID'])) {
 
-	// zipem up
-	
-	$filename = $fh->getTemporaryDirectory() . '/' . $vh->getString() . '.zip';
-	$files = '';
-	$filenames = array();
-	foreach($_REQUEST['fID'] as $fID) {
-		$f = File::getByID($fID);
-		$fp = new Permissions($f);
-		if ($fp->canRead()) {
-			if (!in_array(basename($f->getPath()), $filenames)) {
-				$files .= "'" . addslashes($f->getPath()) . "' ";
-			}
-			$f->trackDownload();
-			$filenames[] = basename($f->getPath());
-		}
-	}
-	exec(DIR_FILES_BIN_ZIP . ' -j \'' . addslashes($filename) . '\' ' . $files);
-	$ci->forceDownload($filename);	
+    // zipem up
+
+    $filename = $fh->getTemporaryDirectory() . '/' . $vh->getString() . '.zip';
+    $files = '';
+    $filenames = array();
+    foreach ($_REQUEST['fID'] as $fID) {
+        $f = File::getByID($fID);
+        $fp = new Permissions($f);
+        if ($fp->canRead()) {
+            if (!in_array(basename($f->getPath()), $filenames)) {
+                $files .= "'" . addslashes($f->getPath()) . "' ";
+            }
+            $f->trackDownload();
+            $filenames[] = basename($f->getPath());
+        }
+    }
+    exec(DIR_FILES_BIN_ZIP . ' -j \'' . addslashes($filename) . '\' ' . $files);
+    $ci->forceDownload($filename);
 
 } else {
-	
-	$f = File::getByID($_REQUEST['fID']);
-	$fp = new Permissions($f);
-	if ($fp->canRead()) {
-		if (isset($_REQUEST['fvID'])) {
-			$fv = $f->getVersion($_REQUEST['fvID']);
-		} else {
-			$fv = $f->getApprovedVersion();
-		}
-		$f->trackDownload();
-		$ci->forceDownload($fv->getPath());
-	}
+
+    $f = File::getByID($_REQUEST['fID']);
+    $fp = new Permissions($f);
+    if ($fp->canRead()) {
+        if (isset($_REQUEST['fvID'])) {
+            $fv = $f->getVersion($_REQUEST['fvID']);
+        } else {
+            $fv = $f->getApprovedVersion();
+        }
+        $f->trackDownload();
+        $ci->forceDownload($fv->getPath());
+    }
 }

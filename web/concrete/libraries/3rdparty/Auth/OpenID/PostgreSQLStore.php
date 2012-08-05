@@ -9,18 +9,19 @@
 /**
  * Require the base class file.
  */
-require_once "Auth/OpenID/SQLStore.php";
+require_once 'Auth/OpenID/SQLStore.php';
 
 /**
  * An SQL store that uses PostgreSQL as its backend.
  *
  * @package OpenID
  */
-class Auth_OpenID_PostgreSQLStore extends Auth_OpenID_SQLStore {
+class Auth_OpenID_PostgreSQLStore extends Auth_OpenID_SQLStore
+{
     /**
      * @access private
      */
-    function setSQL()
+    public function setSQL()
     {
         $this->sql['nonce_table'] =
             "CREATE TABLE %s (server_url VARCHAR(2047) NOT NULL, ".
@@ -29,7 +30,7 @@ class Auth_OpenID_PostgreSQLStore extends Auth_OpenID_SQLStore {
                 "UNIQUE (server_url, timestamp, salt))";
 
         $this->sql['assoc_table'] =
-            "CREATE TABLE %s (server_url VARCHAR(2047) NOT NULL, ". 
+            "CREATE TABLE %s (server_url VARCHAR(2047) NOT NULL, ".
                              "handle VARCHAR(255) NOT NULL, ".
                              "secret BYTEA NOT NULL, ".
                              "issued INTEGER NOT NULL, ".
@@ -75,7 +76,7 @@ class Auth_OpenID_PostgreSQLStore extends Auth_OpenID_SQLStore {
     /**
      * @access private
      */
-    function _set_assoc($server_url, $handle, $secret, $issued, $lifetime,
+    public function _set_assoc($server_url, $handle, $secret, $issued, $lifetime,
                         $assoc_type)
     {
         $result = $this->_get_assoc($server_url, $handle);
@@ -96,7 +97,7 @@ class Auth_OpenID_PostgreSQLStore extends Auth_OpenID_SQLStore {
     /**
      * @access private
      */
-    function blobEncode($blob)
+    public function blobEncode($blob)
     {
         return $this->_octify($blob);
     }
@@ -104,10 +105,8 @@ class Auth_OpenID_PostgreSQLStore extends Auth_OpenID_SQLStore {
     /**
      * @access private
      */
-    function blobDecode($blob)
+    public function blobDecode($blob)
     {
         return $this->_unoctify($blob);
     }
 }
-
-?>

@@ -1,4 +1,4 @@
-<?
+<?php
 
 defined('C5_EXECUTE') or die("Access Denied.");
 
@@ -12,14 +12,13 @@ defined('C5_EXECUTE') or die("Access Denied.");
 * @license http://www.opensource.org/licenses/mit-license.php MIT
 *
 */
-class Model extends ADOdb_Active_Record {
-
-
-	public function __construct() {
-	 	$db = Loader::db();
-	 	parent::__construct();
-	}		 
-
+class model extends ADOdb_Active_Record
+{
+    public function __construct()
+    {
+         $db = Loader::db();
+         parent::__construct();
+    }
 
 }
 

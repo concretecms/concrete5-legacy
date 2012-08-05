@@ -19,7 +19,6 @@
  * @version    $Id: FSMAction.php 23775 2011-03-01 17:25:24Z ralph $
  */
 
-
 /**
  * Abstract Finite State Machine
  *
@@ -63,4 +62,3 @@ class Zend_Search_Lucene_FSMAction
         $this->_object->$methodName();
     }
 }
-

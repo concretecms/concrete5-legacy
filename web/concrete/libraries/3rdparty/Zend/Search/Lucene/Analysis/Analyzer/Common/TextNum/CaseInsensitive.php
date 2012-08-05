@@ -20,13 +20,11 @@
  * @version    $Id: CaseInsensitive.php 23775 2011-03-01 17:25:24Z ralph $
  */
 
-
 /** Zend_Search_Lucene_Analysis_Analyzer_Common_TextNum */
 require_once 'Zend/Search/Lucene/Analysis/Analyzer/Common/TextNum.php';
 
 /** Zend_Search_Lucene_Analysis_TokenFilter_LowerCase */
 require_once 'Zend/Search/Lucene/Analysis/TokenFilter/LowerCase.php';
-
 
 /**
  * @category   Zend
@@ -36,7 +34,6 @@ require_once 'Zend/Search/Lucene/Analysis/TokenFilter/LowerCase.php';
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
-
 class Zend_Search_Lucene_Analysis_Analyzer_Common_TextNum_CaseInsensitive extends Zend_Search_Lucene_Analysis_Analyzer_Common_TextNum
 {
     public function __construct()
@@ -44,4 +41,3 @@ class Zend_Search_Lucene_Analysis_Analyzer_Common_TextNum_CaseInsensitive extend
         $this->addFilter(new Zend_Search_Lucene_Analysis_TokenFilter_LowerCase());
     }
 }
-

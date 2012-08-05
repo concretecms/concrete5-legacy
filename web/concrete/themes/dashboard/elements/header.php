@@ -1,19 +1,19 @@
-<? defined('C5_EXECUTE') or die("Access Denied."); ?>
-<? 
+<?php defined('C5_EXECUTE') or die("Access Denied."); ?>
+<?php
 if ($_GET['_ccm_dashboard_external']) {
-	return;
+    return;
 }
 
 if (!defined('WHITE_LABEL_DASHBOARD_BACKGROUND_SRC')) {
-	Config::getOrDefine('WHITE_LABEL_DASHBOARD_BACKGROUND_SRC', false);
+    Config::getOrDefine('WHITE_LABEL_DASHBOARD_BACKGROUND_SRC', false);
 }
 
 if (!defined('WHITE_LABEL_DASHBOARD_BACKGROUND_CAPTION')) {
-	Config::getOrDefine('WHITE_LABEL_DASHBOARD_BACKGROUND_CAPTION', false);
+    Config::getOrDefine('WHITE_LABEL_DASHBOARD_BACKGROUND_CAPTION', false);
 }
 
 if (!defined('WHITE_LABEL_DASHBOARD_BACKGROUND_FEED')) {
-	Config::getOrDefine('WHITE_LABEL_DASHBOARD_BACKGROUND_FEED', false);
+    Config::getOrDefine('WHITE_LABEL_DASHBOARD_BACKGROUND_FEED', false);
 }
 
 Loader::block('autonav');
@@ -24,11 +24,11 @@ $dashboard = Page::getByPath("/dashboard");
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<?
+<?php
 $html = Loader::helper('html');
 $v = View::getInstance();
 if (!isset($enableEditing) || $enableEditing == false) {
-	$v->disableEditing();
+    $v->disableEditing();
 }
 
 // Required JavaScript
@@ -37,12 +37,12 @@ $v->addFooterItem($html->javascript('jquery.backstretch.js'));
 $v->addFooterItem($html->javascript('jquery.ui.js'));
 $v->addFooterItem($html->javascript('jquery.form.js'));
 $v->addFooterItem($html->javascript('jquery.rating.js'));
-$v->addFooterItem('<script type="text/javascript" src="' . REL_DIR_FILES_TOOLS_REQUIRED . '/i18n_js"></script>'); 
+$v->addFooterItem('<script type="text/javascript" src="' . REL_DIR_FILES_TOOLS_REQUIRED . '/i18n_js"></script>');
 $v->addFooterItem($html->javascript('ccm.app.js'));
 $v->addFooterItem(Loader::helper('html')->javascript('tiny_mce/tiny_mce.js'));
 
 if (LANGUAGE != 'en') {
-	$v->addHeaderItem($html->javascript('i18n/ui.datepicker-'.LANGUAGE.'.js'));
+    $v->addHeaderItem($html->javascript('i18n/ui.datepicker-'.LANGUAGE.'.js'));
 }
 
 // Require CSS
@@ -54,33 +54,33 @@ $valt = Loader::helper('validation/token');
 $disp = '<script type="text/javascript">'."\n";
 $disp .=  "var CCM_SECURITY_TOKEN = '" . $valt->generate() . "';"."\n";
 $disp .= "</script>"."\n";
-//require(DIR_FILES_ELEMENTS_CORE . '/header_required.php'); 
+//require(DIR_FILES_ELEMENTS_CORE . '/header_required.php');
 $v->addHeaderItem($disp);
 Loader::element('header_required', array('disableTrackingCode' => true));
 $backgroundImage = Loader::helper('concrete/dashboard')->getDashboardBackgroundImage();
 ?>
 
 <script type="text/javascript">
-	$(function() {
-		<? if ($backgroundImage->image) { ?>
-		    $.backstretch("<?=$backgroundImage->image?>" <? if (!$_SESSION['dashboardHasSeenImage']) { ?>,  {speed: 750}<? } ?>);
-	    <? } ?>
-	    <? if ($backgroundImage->checkData) { ?>
-		    ccm_getDashboardBackgroundImageData('<?=$backgroundImage->filename?>', <? if ($backgroundImage->displayCaption) { ?> true <? } else { ?> false <? } ?>);
-		<? } ?>
-	});
+    $(function() {
+        <?php if ($backgroundImage->image) { ?>
+            $.backstretch("<?=$backgroundImage->image?>" <?php if (!$_SESSION['dashboardHasSeenImage']) { ?>,  {speed: 750}<?php } ?>);
+        <?php } ?>
+        <?php if ($backgroundImage->checkData) { ?>
+            ccm_getDashboardBackgroundImageData('<?=$backgroundImage->filename?>', <?php if ($backgroundImage->displayCaption) { ?> true <?php } else { ?> false <?php } ?>);
+        <?php } ?>
+    });
 </script>
 
 </head>
 <body>
 
-<? if (!$_SESSION['dashboardHasSeenImage']) { 
-	$_SESSION['dashboardHasSeenImage'] = true;
+<?php if (!$_SESSION['dashboardHasSeenImage']) {
+    $_SESSION['dashboardHasSeenImage'] = true;
 } ?>
 
-<? if (isset($backgroundImage->caption) && $backgroundImage->caption) { ?>
-	<div id="ccm-dashboard-background-caption" class="ccm-ui"><div id="ccm-dashboard-background-caption-inner"><? if ($backgroundImage->url) { ?><a target="_blank" href="<?=$backgroundImage->url?>"><? } ?><?=$backgroundImage->caption?><? if ($backgroundImage->url) { ?></a><? } ?></div></div>
-<? } ?>
+<?php if (isset($backgroundImage->caption) && $backgroundImage->caption) { ?>
+    <div id="ccm-dashboard-background-caption" class="ccm-ui"><div id="ccm-dashboard-background-caption-inner"><?php if ($backgroundImage->url) { ?><a target="_blank" href="<?=$backgroundImage->url?>"><?php } ?><?=$backgroundImage->caption?><?php if ($backgroundImage->url) { ?></a><?php } ?></div></div>
+<?php } ?>
 
 <div class="ccm-ui">
 
@@ -88,9 +88,9 @@ $backgroundImage = Loader::helper('concrete/dashboard')->getDashboardBackgroundI
 <ul id="ccm-main-nav">
 <li id="ccm-logo-wrapper"><?=Loader::helper('concrete/interface')->getToolbarLogoSRC()?></li>
 <li><a class="ccm-icon-back ccm-menu-icon" href="<?=$this->url('/')?>"><?=t('Return to Website')?></a></li>
-<? if (Loader::helper('concrete/interface')->showWhiteLabelMessage()) { ?>
-	<li id="ccm-white-label-message"><?=t('Powered by <a href="%s">concrete5</a>.', CONCRETE5_ORG_URL)?></li>
-<? } ?>
+<?php if (Loader::helper('concrete/interface')->showWhiteLabelMessage()) { ?>
+    <li id="ccm-white-label-message"><?=t('Powered by <a href="%s">concrete5</a>.', CONCRETE5_ORG_URL)?></li>
+<?php } ?>
 </ul>
 
 <ul id="ccm-system-nav">
@@ -100,7 +100,7 @@ $backgroundImage = Loader::helper('concrete/dashboard')->getDashboardBackgroundI
 </ul>
 
 </div>
-<?
+<?php
 $_ih = Loader::helper('concrete/interface');
 print $_ih->getQuickNavigationBar();
 
@@ -112,33 +112,32 @@ print $dh->getDashboardAndSearchMenus();
 
 <div id="ccm-dashboard-content">
 
-	<div class="ccm-dashboard-page-container">
+    <div class="ccm-dashboard-page-container">
 
+    <?php if (isset($error)) { ?>
+        <?php
+        if ($error instanceof Exception) {
+            $_error[] = $error->getMessage();
+        } elseif ($error instanceof ValidationErrorHelper) {
+            $_error = array();
+            if ($error->has()) {
+                $_error = $error->getList();
+            }
+        } else {
+            $_error = $error;
+        }
 
-	<? if (isset($error)) { ?>
-		<? 
-		if ($error instanceof Exception) {
-			$_error[] = $error->getMessage();
-		} else if ($error instanceof ValidationErrorHelper) {
-			$_error = array();
-			if ($error->has()) {
-				$_error = $error->getList();
-			}
-		} else {
-			$_error = $error;
-		}
-		
-		if (count($_error) > 0) {
-			?>
-			<div class="ccm-ui"  id="ccm-dashboard-result-message">
-				<?php Loader::element('system_errors', array('format' => 'block', 'error' => $_error)); ?>
-			</div>
-		<? 
-		}
-	}
-	
-	if (isset($message)) { ?>
-		<div class="ccm-ui" id="ccm-dashboard-result-message">
-			<div class="message alert-message info success"><?=nl2br(Loader::helper('text')->entities($message))?></div>
-		</div>
-	<? } ?>
+        if (count($_error) > 0) {
+            ?>
+            <div class="ccm-ui"  id="ccm-dashboard-result-message">
+                <?php Loader::element('system_errors', array('format' => 'block', 'error' => $_error)); ?>
+            </div>
+        <?php
+        }
+    }
+
+    if (isset($message)) { ?>
+        <div class="ccm-ui" id="ccm-dashboard-result-message">
+            <div class="message alert-message info success"><?=nl2br(Loader::helper('text')->entities($message))?></div>
+        </div>
+    <?php } ?>

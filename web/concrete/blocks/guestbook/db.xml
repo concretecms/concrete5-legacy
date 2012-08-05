@@ -23,21 +23,21 @@
 			<default value="0"/>
 		</field>
 		<field name="notifyEmail" type="C" size="100">
-		</field>				
+		</field>
 	</table>
 	<table name="btGuestBookEntries">
 		<field name="bID" type="I">
 		</field>
 		<field name="cID" type="I">
 			<default value="1"/>
-		</field>	
+		</field>
 		<field name="entryID" type="I">
 			<key/>
 			<autoincrement/>
 		</field>
 		<field name="uID" type="I">
 			<default value="0"/>
-		</field>		
+		</field>
 		<field name="commentText" type="X2">
 		</field>
 		<field name="user_name" type="C" size="100">

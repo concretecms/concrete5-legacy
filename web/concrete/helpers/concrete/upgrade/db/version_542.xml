@@ -130,11 +130,11 @@
 			<key />
 			<unsigned />
 		</field>
-		<field name="title" type="C" size="255"></field>		
-		<field name="location" type="C" size="255"></field>	
+		<field name="title" type="C" size="255"></field>
+		<field name="location" type="C" size="255"></field>
 		<field name="latitude" type="F"></field>
-		<field name="longitude" type="F"></field>	
-		<field name="zoom" type="I" size="8"></field>	
+		<field name="longitude" type="F"></field>
+		<field name="zoom" type="I" size="8"></field>
 	</table>
 
 	<!-- in case the table wasn't created properly //-->
@@ -143,7 +143,7 @@
 			<key />
 			<unsigned />
 		</field>
-		
+
 		<field name="linkStyle"  type="C" size="32"></field>
 		<field name="nextLabel"  type="C" size="128"></field>
 		<field name="previousLabel"  type="C" size="128"></field>
@@ -152,9 +152,9 @@
 		<field name="loopSequence" type="i"><default value="1"/></field>
 		<field name="excludeSystemPages" type="i"><default value="1"/></field>
 		<field name="orderBy" type="C" size="20"><default value="display_asc"/></field>
-		
+
 	</table>
-	
+
 	<table name="btTags">
 		<field name="bID" type="I">
 			<key />
@@ -169,6 +169,6 @@
 			<default value="10"/>
 		</field>
 	</table>
-	
+
 
 </schema>

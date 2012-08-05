@@ -56,14 +56,14 @@ class Zend_Validate_Ip extends Zend_Validate_Abstract
     /**
      * Sets validator options
      *
-     * @param array $options OPTIONAL Options to set, see the manual for all available options
+     * @param  array $options OPTIONAL Options to set, see the manual for all available options
      * @return void
      */
     public function __construct($options = array())
     {
         if ($options instanceof Zend_Config) {
             $options = $options->toArray();
-        } else if (!is_array($options)) {
+        } elseif (!is_array($options)) {
             $options = func_get_args();
             $temp['allowipv6'] = array_shift($options);
             if (!empty($options)) {
@@ -90,7 +90,7 @@ class Zend_Validate_Ip extends Zend_Validate_Abstract
     /**
      * Sets the options for this validator
      *
-     * @param array $options
+     * @param  array            $options
      * @return Zend_Validate_Ip
      */
     public function setOptions($options)
@@ -116,13 +116,14 @@ class Zend_Validate_Ip extends Zend_Validate_Abstract
      *
      * Returns true if and only if $value is a valid IP address
      *
-     * @param  mixed $value
+     * @param  mixed   $value
      * @return boolean
      */
     public function isValid($value)
     {
         if (!is_string($value)) {
             $this->_error(self::INVALID);
+
             return false;
         }
 
@@ -131,6 +132,7 @@ class Zend_Validate_Ip extends Zend_Validate_Abstract
             (!$this->_options['allowipv4'] && $this->_options['allowipv6'] && !$this->_validateIPv6($value)) ||
             ($this->_options['allowipv4'] && $this->_options['allowipv6'] && !$this->_validateIPv4($value) && !$this->_validateIPv6($value))) {
             $this->_error(self::NOT_IP_ADDRESS);
+
             return false;
         }
 
@@ -142,9 +144,10 @@ class Zend_Validate_Ip extends Zend_Validate_Abstract
      *
      * @param string $value
      */
-    protected function _validateIPv4($value) {
+    protected function _validateIPv4($value)
+    {
         $ip2long = ip2long($value);
-        if($ip2long === false) {
+        if ($ip2long === false) {
             return false;
         }
 
@@ -154,11 +157,12 @@ class Zend_Validate_Ip extends Zend_Validate_Abstract
     /**
      * Validates an IPv6 address
      *
-     * @param  string $value Value to check against
+     * @param  string  $value Value to check against
      * @return boolean True when $value is a valid ipv6 address
      *                 False otherwise
      */
-    protected function _validateIPv6($value) {
+    protected function _validateIPv6($value)
+    {
         if (strlen($value) < 3) {
             return $value == '::';
         }

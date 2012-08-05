@@ -20,10 +20,8 @@
  * @version    $Id: Html.php 23775 2011-03-01 17:25:24Z ralph $
  */
 
-
 /** Zend_Search_Lucene_Document */
 require_once 'Zend/Search/Lucene/Document.php';
-
 
 /**
  * HTML document.
@@ -81,10 +79,10 @@ class Zend_Search_Lucene_Document_Html extends Zend_Search_Lucene_Document
     /**
      * Object constructor
      *
-     * @param string  $data         HTML string (may be HTML fragment, )
+     * @param string  $data            HTML string (may be HTML fragment, )
      * @param boolean $isFile
      * @param boolean $storeContent
-     * @param string  $defaultEncoding   HTML encoding, is used if it's not specified using Content-type HTTP-EQUIV meta tag.
+     * @param string  $defaultEncoding HTML encoding, is used if it's not specified using Content-type HTTP-EQUIV meta tag.
      */
     private function __construct($data, $isFile, $storeContent, $defaultEncoding = '')
     {
@@ -217,10 +215,10 @@ class Zend_Search_Lucene_Document_Html extends Zend_Search_Lucene_Document
     {
         if ($node->nodeType == XML_TEXT_NODE) {
             $text .= $node->nodeValue;
-            if(!in_array($node->parentNode->tagName, $this->_inlineTags)) {
+            if (!in_array($node->parentNode->tagName, $this->_inlineTags)) {
                 $text .= ' ';
             }
-        } else if ($node->nodeType == XML_ELEMENT_NODE  &&  $node->nodeName != 'script') {
+        } elseif ($node->nodeType == XML_ELEMENT_NODE  &&  $node->nodeName != 'script') {
             foreach ($node->childNodes as $childNode) {
                 $this->_retrieveNodeText($childNode, $text);
             }
@@ -250,9 +248,9 @@ class Zend_Search_Lucene_Document_Html extends Zend_Search_Lucene_Document
     /**
      * Load HTML document from a string
      *
-     * @param string  $data
-     * @param boolean $storeContent
-     * @param string  $defaultEncoding   HTML encoding, is used if it's not specified using Content-type HTTP-EQUIV meta tag.
+     * @param  string                           $data
+     * @param  boolean                          $storeContent
+     * @param  string                           $defaultEncoding HTML encoding, is used if it's not specified using Content-type HTTP-EQUIV meta tag.
      * @return Zend_Search_Lucene_Document_Html
      */
     public static function loadHTML($data, $storeContent = false, $defaultEncoding = '')
@@ -263,9 +261,9 @@ class Zend_Search_Lucene_Document_Html extends Zend_Search_Lucene_Document
     /**
      * Load HTML document from a file
      *
-     * @param string  $file
-     * @param boolean $storeContent
-     * @param string  $defaultEncoding   HTML encoding, is used if it's not specified using Content-type HTTP-EQUIV meta tag.
+     * @param  string                           $file
+     * @param  boolean                          $storeContent
+     * @param  string                           $defaultEncoding HTML encoding, is used if it's not specified using Content-type HTTP-EQUIV meta tag.
      * @return Zend_Search_Lucene_Document_Html
      */
     public static function loadHTMLFile($file, $storeContent = false, $defaultEncoding = '')
@@ -277,10 +275,10 @@ class Zend_Search_Lucene_Document_Html extends Zend_Search_Lucene_Document
     /**
      * Highlight text in text node
      *
-     * @param DOMText $node
-     * @param array   $wordsToHighlight
-     * @param callback $callback   Callback method, used to transform (highlighting) text.
-     * @param array    $params     Array of additionall callback parameters (first non-optional parameter is a text to transform)
+     * @param  DOMText                      $node
+     * @param  array                        $wordsToHighlight
+     * @param  callback                     $callback         Callback method, used to transform (highlighting) text.
+     * @param  array                        $params           Array of additionall callback parameters (first non-optional parameter is a text to transform)
      * @throws Zend_Search_Lucene_Exception
      */
     protected function _highlightTextNode(DOMText $node, $wordsToHighlight, $callback, $params)
@@ -341,14 +339,13 @@ class Zend_Search_Lucene_Document_Html extends Zend_Search_Lucene_Document
         }
     }
 
-
     /**
      * highlight words in content of the specified node
      *
-     * @param DOMNode $contextNode
-     * @param array $wordsToHighlight
-     * @param callback $callback   Callback method, used to transform (highlighting) text.
-     * @param array    $params     Array of additionall callback parameters (first non-optional parameter is a text to transform)
+     * @param DOMNode  $contextNode
+     * @param array    $wordsToHighlight
+     * @param callback $callback         Callback method, used to transform (highlighting) text.
+     * @param array    $params           Array of additionall callback parameters (first non-optional parameter is a text to transform)
      */
     protected function _highlightNodeRecursive(DOMNode $contextNode, $wordsToHighlight, $callback, $params)
     {
@@ -378,7 +375,7 @@ class Zend_Search_Lucene_Document_Html extends Zend_Search_Lucene_Document
     /**
      * Standard callback method used to highlight words.
      *
-     * @param  string  $stringToHighlight
+     * @param  string $stringToHighlight
      * @return string
      * @internal
      */
@@ -390,8 +387,8 @@ class Zend_Search_Lucene_Document_Html extends Zend_Search_Lucene_Document
     /**
      * Highlight text with specified color
      *
-     * @param string|array $words
-     * @param string $colour
+     * @param  string|array $words
+     * @param  string       $colour
      * @return string
      */
     public function highlight($words, $colour = '#66ffff')
@@ -404,9 +401,9 @@ class Zend_Search_Lucene_Document_Html extends Zend_Search_Lucene_Document
     /**
      * Highlight text using specified View helper or callback function.
      *
-     * @param string|array $words  Words to highlight. Words could be organized using the array or string.
-     * @param callback $callback   Callback method, used to transform (highlighting) text.
-     * @param array    $params     Array of additionall callback parameters passed through into it
+     * @param string|array $words    Words to highlight. Words could be organized using the array or string.
+     * @param callback     $callback Callback method, used to transform (highlighting) text.
+     * @param array        $params   Array of additionall callback parameters passed through into it
      *                             (first non-optional parameter is an HTML fragment for highlighting)
      * @return string
      * @throws Zend_Search_Lucene_Exception
@@ -478,4 +475,3 @@ class Zend_Search_Lucene_Document_Html extends Zend_Search_Lucene_Document
         return implode($outputFragments);
     }
 }
-

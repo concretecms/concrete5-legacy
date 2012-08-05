@@ -46,7 +46,8 @@ define('Auth_OpenID___HostSegmentRe',
 /**
  * A wrapper for trust-root related functions
  */
-class Auth_OpenID_TrustRoot {
+class Auth_OpenID_TrustRoot
+{
     /*
      * Return a discovery URL for this realm.
      *
@@ -58,7 +59,7 @@ class Auth_OpenID_TrustRoot {
      * @return The URL upon which relying party discovery should be
      * run in order to verify the return_to URL
      */
-    function buildDiscoveryURL($realm)
+    public function buildDiscoveryURL($realm)
     {
         $parsed = Auth_OpenID_TrustRoot::_parse($realm);
 
@@ -93,7 +94,7 @@ class Auth_OpenID_TrustRoot {
      * @return mixed $parsed Either an associative array of trust root
      * parts or false if parsing failed.
      */
-    function _parse($trust_root)
+    public function _parse($trust_root)
     {
         $trust_root = Auth_OpenID_urinorm($trust_root);
         if ($trust_root === null) {
@@ -168,7 +169,6 @@ class Auth_OpenID_TrustRoot {
             $parts['port'] = false;
         }
 
-
         $parts['unparsed'] = $trust_root;
 
         return $parts;
@@ -196,10 +196,10 @@ class Auth_OpenID_TrustRoot {
      * the user to accept a suspicious trust root.
      *
      * @static
-     * @param string $trust_root The trust root to check
-     * @return bool $sanity Whether the trust root looks OK
+     * @param  string $trust_root The trust root to check
+     * @return bool   $sanity Whether the trust root looks OK
      */
-    function isSane($trust_root)
+    public function isSane($trust_root)
     {
         $parts = Auth_OpenID_TrustRoot::_parse($trust_root);
         if ($parts === false) {
@@ -210,7 +210,7 @@ class Auth_OpenID_TrustRoot {
         if ($parts['host'] == 'localhost') {
             return true;
         }
-        
+
         $host_parts = explode('.', $parts['host']);
         if ($parts['wildcard']) {
             // Remove the empty string from the beginning of the array
@@ -269,7 +269,7 @@ class Auth_OpenID_TrustRoot {
      * @return bool $matches Whether the URL matches against the
      * trust root
      */
-    function match($trust_root, $url)
+    public function match($trust_root, $url)
     {
         $trust_root_parsed = Auth_OpenID_TrustRoot::_parse($trust_root);
         $url_parsed = Auth_OpenID_TrustRoot::_parse($url);
@@ -458,5 +458,3 @@ function Auth_OpenID_verifyReturnTo($realm_str, $return_to, &$fetcher,
         return false;
     }
 }
-
-?>

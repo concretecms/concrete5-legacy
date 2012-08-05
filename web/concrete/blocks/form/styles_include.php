@@ -4,7 +4,7 @@ div#miniSurvey{ padding:8px; margin-top:24px; margin-bottom:8px }
 div#miniSurvey table{width:95%}
 div#miniSurvey td{ padding:2px; padding-left:0px; padding-right:4px; }
 div#miniSurvey td.question{ }
-.spacer{ clear:both; font-size:1px } 
+.spacer{ clear:both; font-size:1px }
 #answerOptionsArea, #answerOptionsAreaEdit{display:none}
 #answerSettings, #answerSettingsEdit{display:none}
 #editQuestionForm .formBlockSubmitButton{display:none}

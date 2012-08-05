@@ -19,13 +19,11 @@
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
-
 /** Zend_Locale */
 require_once 'Zend/Locale.php';
 
 /** Zend_Translate_Adapter */
 require_once 'Zend/Translate/Adapter.php';
-
 
 /**
  * @category   Zend
@@ -33,7 +31,8 @@ require_once 'Zend/Translate/Adapter.php';
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Translate_Adapter_Tmx extends Zend_Translate_Adapter {
+class Zend_Translate_Adapter_Tmx extends Zend_Translate_Adapter
+{
     // Internal variables
     private $_file    = false;
     private $_useId   = true;
@@ -47,10 +46,10 @@ class Zend_Translate_Adapter_Tmx extends Zend_Translate_Adapter {
     /**
      * Load translation data (TMX file reader)
      *
-     * @param  string  $filename  TMX file to add, full path must be given for access
-     * @param  string  $locale    Locale has no effect for TMX because TMX defines all languages within
+     * @param string $filename TMX file to add, full path must be given for access
+     * @param string $locale   Locale has no effect for TMX because TMX defines all languages within
      *                            the source file
-     * @param  array   $option    OPTIONAL Options to use
+     * @param  array                      $option OPTIONAL Options to use
      * @throws Zend_Translation_Exception
      * @return array
      */
@@ -96,12 +95,12 @@ class Zend_Translate_Adapter_Tmx extends Zend_Translate_Adapter {
     {
         if ($this->_seg !== null) {
             $this->_content .= "<".$name;
-            foreach($attrib as $key => $value) {
+            foreach ($attrib as $key => $value) {
                 $this->_content .= " $key=\"$value\"";
             }
             $this->_content .= ">";
         } else {
-            switch(strtolower($name)) {
+            switch (strtolower($name)) {
                 case 'header':
                     if (empty($this->_useId) && isset($attrib['srclang'])) {
                         if (Zend_Locale::isLocale($attrib['srclang'])) {
@@ -155,12 +154,11 @@ class Zend_Translate_Adapter_Tmx extends Zend_Translate_Adapter {
         }
     }
 
-
     /**
      * Internal method, called by xml element handler at end
      *
-     * @param resource $file   File handler
-     * @param string   $name   Elements name
+     * @param resource $file File handler
+     * @param string   $name Elements name
      */
     protected function _endElement($file, $name)
     {
@@ -203,11 +201,10 @@ class Zend_Translate_Adapter_Tmx extends Zend_Translate_Adapter {
         }
     }
 
-
     /**
      * Internal method, detects the encoding of the xml file
      *
-     * @param string $name Filename
+     * @param  string $name Filename
      * @return string Encoding
      */
     protected function _findEncoding($filename)
@@ -216,8 +213,10 @@ class Zend_Translate_Adapter_Tmx extends Zend_Translate_Adapter {
         if (strpos($file, "encoding") !== false) {
             $encoding = substr($file, strpos($file, "encoding") + 9);
             $encoding = substr($encoding, 1, strpos($encoding, $encoding[0], 1) - 1);
+
             return $encoding;
         }
+
         return 'UTF-8';
     }
 

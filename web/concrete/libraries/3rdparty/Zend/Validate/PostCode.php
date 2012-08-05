@@ -68,8 +68,8 @@ class Zend_Validate_PostCode extends Zend_Validate_Abstract
      * Accepts either a string locale, a Zend_Locale object, or an array or
      * Zend_Config object containing the keys "locale" and/or "format".
      *
-     * @param string|Zend_Locale|array|Zend_Config $options
-     * @throws Zend_Validate_Exception On empty format
+     * @param  string|Zend_Locale|array|Zend_Config $options
+     * @throws Zend_Validate_Exception              On empty format
      */
     public function __construct($options = null)
     {
@@ -116,7 +116,7 @@ class Zend_Validate_PostCode extends Zend_Validate_Abstract
     /**
      * Sets the locale to use
      *
-     * @param string|Zend_Locale $locale
+     * @param  string|Zend_Locale      $locale
      * @throws Zend_Validate_Exception On unrecognised region
      * @throws Zend_Validate_Exception On not detected format
      * @return Zend_Validate_PostCode  Provides fluid interface
@@ -144,6 +144,7 @@ class Zend_Validate_PostCode extends Zend_Validate_Abstract
         }
 
         $this->setFormat($format);
+
         return $this;
     }
 
@@ -160,7 +161,7 @@ class Zend_Validate_PostCode extends Zend_Validate_Abstract
     /**
      * Sets a self defined postal format as regex
      *
-     * @param string $format
+     * @param  string                  $format
      * @throws Zend_Validate_Exception On empty format
      * @return Zend_Validate_PostCode  Provides fluid interface
      */
@@ -180,6 +181,7 @@ class Zend_Validate_PostCode extends Zend_Validate_Abstract
         }
 
         $this->_format = $format;
+
         return $this;
     }
 
@@ -188,7 +190,7 @@ class Zend_Validate_PostCode extends Zend_Validate_Abstract
      *
      * Returns true if and only if $value is a valid postalcode
      *
-     * @param  string $value
+     * @param  string  $value
      * @return boolean
      */
     public function isValid($value)
@@ -196,12 +198,14 @@ class Zend_Validate_PostCode extends Zend_Validate_Abstract
         $this->_setValue($value);
         if (!is_string($value) && !is_int($value)) {
             $this->_error(self::INVALID);
+
             return false;
         }
 
         $format = $this->getFormat();
         if (!preg_match($format, $value)) {
             $this->_error(self::NO_MATCH);
+
             return false;
         }
 

@@ -116,12 +116,9 @@ class Zend_Search_Lucene_Search_QueryLexer extends Zend_Search_Lucene_FSM
                                    self::IN_ASCII_DIGIT,
                                    self::IN_CHAR));
 
-
         $lexemeModifierErrorAction    = new Zend_Search_Lucene_FSMAction($this, 'lexModifierErrException');
         $quoteWithinLexemeErrorAction = new Zend_Search_Lucene_FSMAction($this, 'quoteWithinLexemeErrException');
         $wrongNumberErrorAction       = new Zend_Search_Lucene_FSMAction($this, 'wrongNumberErrException');
-
-
 
         $this->addRules(array( array(self::ST_WHITE_SPACE,   self::IN_WHITE_SPACE,     self::ST_WHITE_SPACE),
                                array(self::ST_WHITE_SPACE,   self::IN_SYNT_CHAR,       self::ST_SYNT_LEXEME),
@@ -197,7 +194,6 @@ class Zend_Search_Lucene_Search_QueryLexer extends Zend_Search_Lucene_FSM
                                // IN_QUOTE             not allowed
                                array(self::ST_LEXEME_MODIFIER, self::IN_QUOTE,           self::ST_ERROR, $lexemeModifierErrorAction),
 
-
                                array(self::ST_LEXEME_MODIFIER, self::IN_DECIMAL_POINT,   self::ST_MANTISSA),
                                array(self::ST_LEXEME_MODIFIER, self::IN_ASCII_DIGIT,     self::ST_NUMBER),
 
@@ -241,7 +237,6 @@ class Zend_Search_Lucene_Search_QueryLexer extends Zend_Search_Lucene_FSM
                                array(self::ST_MANTISSA, self::IN_CHAR,            self::ST_ERROR, $wrongNumberErrorAction),
                              ));
 
-
         /** Actions */
         $syntaxLexemeAction    = new Zend_Search_Lucene_FSMAction($this, 'addQuerySyntaxLexeme');
         $lexemeModifierAction  = new Zend_Search_Lucene_FSMAction($this, 'addLexemeModifier');
@@ -250,12 +245,10 @@ class Zend_Search_Lucene_Search_QueryLexer extends Zend_Search_Lucene_FSM
         $addNumberLexemeAction = new Zend_Search_Lucene_FSMAction($this, 'addNumberLexeme');
         $addLexemeCharAction   = new Zend_Search_Lucene_FSMAction($this, 'addLexemeChar');
 
-
         /** Syntax lexeme */
         $this->addEntryAction(self::ST_SYNT_LEXEME,  $syntaxLexemeAction);
         // Two lexemes in succession
         $this->addTransitionAction(self::ST_SYNT_LEXEME, self::ST_SYNT_LEXEME, $syntaxLexemeAction);
-
 
         /** Lexeme */
         $this->addEntryAction(self::ST_LEXEME,                       $addLexemeCharAction);
@@ -268,7 +261,6 @@ class Zend_Search_Lucene_Search_QueryLexer extends Zend_Search_Lucene_FSM
         $this->addTransitionAction(self::ST_LEXEME, self::ST_LEXEME_MODIFIER, $addLexemeAction);
         $this->addTransitionAction(self::ST_LEXEME, self::ST_NUMBER,          $addLexemeAction);
         $this->addTransitionAction(self::ST_LEXEME, self::ST_MANTISSA,        $addLexemeAction);
-
 
         /** Quoted lexeme */
         // We don't need entry action (skeep quote)
@@ -303,20 +295,20 @@ class Zend_Search_Lucene_Search_QueryLexer extends Zend_Search_Lucene_FSM
     /**
      * Translate input char to an input symbol of state machine
      *
-     * @param string $char
+     * @param  string  $char
      * @return integer
      */
     private function _translateInput($char)
     {
-        if        (strpos(self::QUERY_WHITE_SPACE_CHARS,    $char) !== false) { return self::IN_WHITE_SPACE;
-        } else if (strpos(self::QUERY_SYNT_CHARS,           $char) !== false) { return self::IN_SYNT_CHAR;
-        } else if (strpos(self::QUERY_MUTABLE_CHARS,        $char) !== false) { return self::IN_MUTABLE_CHAR;
-        } else if (strpos(self::QUERY_LEXEMEMODIFIER_CHARS, $char) !== false) { return self::IN_LEXEME_MODIFIER;
-        } else if (strpos(self::QUERY_ASCIIDIGITS_CHARS,    $char) !== false) { return self::IN_ASCII_DIGIT;
-        } else if ($char === '"' )                                            { return self::IN_QUOTE;
-        } else if ($char === '.' )                                            { return self::IN_DECIMAL_POINT;
-        } else if ($char === '\\')                                            { return self::IN_ESCAPE_CHAR;
-        } else                                                                { return self::IN_CHAR;
+        if (strpos(self::QUERY_WHITE_SPACE_CHARS,    $char) !== false) { return self::IN_WHITE_SPACE;
+        } elseif (strpos(self::QUERY_SYNT_CHARS,           $char) !== false) { return self::IN_SYNT_CHAR;
+        } elseif (strpos(self::QUERY_MUTABLE_CHARS,        $char) !== false) { return self::IN_MUTABLE_CHAR;
+        } elseif (strpos(self::QUERY_LEXEMEMODIFIER_CHARS, $char) !== false) { return self::IN_LEXEME_MODIFIER;
+        } elseif (strpos(self::QUERY_ASCIIDIGITS_CHARS,    $char) !== false) { return self::IN_ASCII_DIGIT;
+        } elseif ($char === '"') { return self::IN_QUOTE;
+        } elseif ($char === '.') { return self::IN_DECIMAL_POINT;
+        } elseif ($char === '\\') { return self::IN_ESCAPE_CHAR;
+        } else { return self::IN_CHAR;
         }
     }
 
@@ -324,8 +316,8 @@ class Zend_Search_Lucene_Search_QueryLexer extends Zend_Search_Lucene_FSM
     /**
      * This method is used to tokenize query string into lexemes
      *
-     * @param string $inputString
-     * @param string $encoding
+     * @param  string                                         $inputString
+     * @param  string                                         $encoding
      * @return array
      * @throws Zend_Search_Lucene_Search_QueryParserException
      */
@@ -429,7 +421,6 @@ class Zend_Search_Lucene_Search_QueryLexer extends Zend_Search_Lucene_FSM
                                     $this->_queryStringPosition);
     }
 
-
     /**
      * Add lexeme
      */
@@ -476,7 +467,6 @@ class Zend_Search_Lucene_Search_QueryLexer extends Zend_Search_Lucene_FSM
         $this->_currentLexeme .= $this->_queryString[$this->_queryStringPosition];
     }
 
-
     /**
      * Position message
      *
@@ -486,7 +476,6 @@ class Zend_Search_Lucene_Search_QueryLexer extends Zend_Search_Lucene_FSM
     {
         return 'Position is ' . $this->_queryStringPosition . '.';
     }
-
 
     /*********************************************************************
      * Syntax errors actions
@@ -507,4 +496,3 @@ class Zend_Search_Lucene_Search_QueryLexer extends Zend_Search_Lucene_FSM
         throw new Zend_Search_Lucene_Search_QueryParserException('Wrong number syntax.' . $this->_positionMsg());
     }
 }
-

@@ -69,9 +69,9 @@ class Zend_Validate_File_Exists extends Zend_Validate_Abstract
     {
         if ($directory instanceof Zend_Config) {
             $directory = $directory->toArray();
-        } else if (is_string($directory)) {
+        } elseif (is_string($directory)) {
             $directory = explode(',', $directory);
-        } else if (!is_array($directory)) {
+        } elseif (!is_array($directory)) {
             require_once 'Zend/Validate/Exception.php';
             throw new Zend_Validate_Exception ('Invalid options to validator provided');
         }
@@ -99,20 +99,21 @@ class Zend_Validate_File_Exists extends Zend_Validate_Abstract
     /**
      * Sets the file directory which will be checked
      *
-     * @param  string|array $directory The directories to validate
+     * @param  string|array                 $directory The directories to validate
      * @return Zend_Validate_File_Extension Provides a fluent interface
      */
     public function setDirectory($directory)
     {
         $this->_directory = null;
         $this->addDirectory($directory);
+
         return $this;
     }
 
     /**
      * Adds the file directory which will be checked
      *
-     * @param  string|array $directory The directory to add for validation
+     * @param  string|array                 $directory The directory to add for validation
      * @return Zend_Validate_File_Extension Provides a fluent interface
      */
     public function addDirectory($directory)
@@ -121,7 +122,7 @@ class Zend_Validate_File_Exists extends Zend_Validate_Abstract
 
         if (is_string($directory)) {
             $directory = explode(',', $directory);
-        } else if (!is_array($directory)) {
+        } elseif (!is_array($directory)) {
             require_once 'Zend/Validate/Exception.php';
             throw new Zend_Validate_Exception ('Invalid options to validator provided');
         }
@@ -161,7 +162,7 @@ class Zend_Validate_File_Exists extends Zend_Validate_Abstract
         $directories = $this->getDirectory(true);
         if (($file !== null) and (!empty($file['destination']))) {
             $directories[] = $file['destination'];
-        } else if (!isset($file['name'])) {
+        } elseif (!isset($file['name'])) {
             $file['name'] = $value;
         }
 
@@ -198,6 +199,7 @@ class Zend_Validate_File_Exists extends Zend_Validate_Abstract
         }
 
         $this->_error($errorType);
+
         return false;
     }
 }

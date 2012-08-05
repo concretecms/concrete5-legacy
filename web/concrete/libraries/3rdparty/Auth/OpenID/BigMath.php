@@ -30,7 +30,8 @@ require_once 'Auth/OpenID.php';
  * @access private
  * @package OpenID
  */
-class Auth_OpenID_MathLibrary {
+class Auth_OpenID_MathLibrary
+{
     /**
      * Given a long integer, returns the number converted to a binary
      * string.  This function accepts long integer values of arbitrary
@@ -42,12 +43,13 @@ class Auth_OpenID_MathLibrary {
      * libraries)
      * @return string $binary The binary version of $long
      */
-    function longToBinary($long)
+    public function longToBinary($long)
     {
         $cmp = $this->cmp($long, 0);
         if ($cmp < 0) {
             $msg = __FUNCTION__ . " takes only positive integers.";
             trigger_error($msg, E_USER_ERROR);
+
             return null;
         }
 
@@ -83,7 +85,7 @@ class Auth_OpenID_MathLibrary {
      * @return integer $long The long number equivalent of the binary
      * string $str
      */
-    function binaryToLong($str)
+    public function binaryToLong($str)
     {
         if ($str === null) {
             return null;
@@ -98,6 +100,7 @@ class Auth_OpenID_MathLibrary {
         if ($bytes && ($bytes[0] > 127)) {
             trigger_error("bytesToNum works only for positive integers.",
                           E_USER_WARNING);
+
             return null;
         }
 
@@ -109,7 +112,7 @@ class Auth_OpenID_MathLibrary {
         return $n;
     }
 
-    function base64ToLong($str)
+    public function base64ToLong($str)
     {
         $b64 = base64_decode($str);
 
@@ -120,7 +123,7 @@ class Auth_OpenID_MathLibrary {
         return $this->binaryToLong($b64);
     }
 
-    function longToBase64($str)
+    public function longToBase64($str)
     {
         return base64_encode($this->longToBinary($str));
     }
@@ -139,7 +142,7 @@ class Auth_OpenID_MathLibrary {
      * * N) = $start for some N
      * @return integer $result The resulting randomly-generated number
      */
-    function rand($stop)
+    public function rand($stop)
     {
         static $duplicate_cache = array();
 
@@ -187,45 +190,46 @@ class Auth_OpenID_MathLibrary {
  * @access private
  * @package OpenID
  */
-class Auth_OpenID_BcMathWrapper extends Auth_OpenID_MathLibrary{
-    var $type = 'bcmath';
+class Auth_OpenID_BcMathWrapper extends Auth_OpenID_MathLibrary
+{
+    public $type = 'bcmath';
 
-    function add($x, $y)
+    public function add($x, $y)
     {
         return bcadd($x, $y);
     }
 
-    function sub($x, $y)
+    public function sub($x, $y)
     {
         return bcsub($x, $y);
     }
 
-    function pow($base, $exponent)
+    public function pow($base, $exponent)
     {
         return bcpow($base, $exponent);
     }
 
-    function cmp($x, $y)
+    public function cmp($x, $y)
     {
         return bccomp($x, $y);
     }
 
-    function init($number, $base = 10)
+    public function init($number, $base = 10)
     {
         return $number;
     }
 
-    function mod($base, $modulus)
+    public function mod($base, $modulus)
     {
         return bcmod($base, $modulus);
     }
 
-    function mul($x, $y)
+    public function mul($x, $y)
     {
         return bcmul($x, $y);
     }
 
-    function div($x, $y)
+    public function div($x, $y)
     {
         return bcdiv($x, $y);
     }
@@ -235,21 +239,22 @@ class Auth_OpenID_BcMathWrapper extends Auth_OpenID_MathLibrary{
      *
      * @access private
      */
-    function _powmod($base, $exponent, $modulus)
+    public function _powmod($base, $exponent, $modulus)
     {
         $square = $this->mod($base, $modulus);
         $result = 1;
-        while($this->cmp($exponent, 0) > 0) {
+        while ($this->cmp($exponent, 0) > 0) {
             if ($this->mod($exponent, 2)) {
                 $result = $this->mod($this->mul($result, $square), $modulus);
             }
             $square = $this->mod($this->mul($square, $square), $modulus);
             $exponent = $this->div($exponent, 2);
         }
+
         return $result;
     }
 
-    function powmod($base, $exponent, $modulus)
+    public function powmod($base, $exponent, $modulus)
     {
         if (function_exists('bcpowmod')) {
             return bcpowmod($base, $exponent, $modulus);
@@ -258,7 +263,7 @@ class Auth_OpenID_BcMathWrapper extends Auth_OpenID_MathLibrary{
         }
     }
 
-    function toString($num)
+    public function toString($num)
     {
         return $num;
     }
@@ -273,55 +278,56 @@ class Auth_OpenID_BcMathWrapper extends Auth_OpenID_MathLibrary{
  * @access private
  * @package OpenID
  */
-class Auth_OpenID_GmpMathWrapper extends Auth_OpenID_MathLibrary{
-    var $type = 'gmp';
+class Auth_OpenID_GmpMathWrapper extends Auth_OpenID_MathLibrary
+{
+    public $type = 'gmp';
 
-    function add($x, $y)
+    public function add($x, $y)
     {
         return gmp_add($x, $y);
     }
 
-    function sub($x, $y)
+    public function sub($x, $y)
     {
         return gmp_sub($x, $y);
     }
 
-    function pow($base, $exponent)
+    public function pow($base, $exponent)
     {
         return gmp_pow($base, $exponent);
     }
 
-    function cmp($x, $y)
+    public function cmp($x, $y)
     {
         return gmp_cmp($x, $y);
     }
 
-    function init($number, $base = 10)
+    public function init($number, $base = 10)
     {
         return gmp_init($number, $base);
     }
 
-    function mod($base, $modulus)
+    public function mod($base, $modulus)
     {
         return gmp_mod($base, $modulus);
     }
 
-    function mul($x, $y)
+    public function mul($x, $y)
     {
         return gmp_mul($x, $y);
     }
 
-    function div($x, $y)
+    public function div($x, $y)
     {
         return gmp_div_q($x, $y);
     }
 
-    function powmod($base, $exponent, $modulus)
+    public function powmod($base, $exponent, $modulus)
     {
         return gmp_powm($base, $exponent, $modulus);
     }
 
-    function toString($num)
+    public function toString($num)
     {
         return gmp_strval($num);
     }
@@ -421,7 +427,7 @@ function &Auth_OpenID_getMathLib()
     // The instance of Auth_OpenID_MathWrapper that we choose to
     // supply will be stored here, so that subseqent calls to this
     // method will return a reference to the same object.
-    static $lib = null;
+    public static $lib = null;
 
     if (isset($lib)) {
         return $lib;
@@ -429,6 +435,7 @@ function &Auth_OpenID_getMathLib()
 
     if (Auth_OpenID_noMathSupport()) {
         $null = null;
+
         return $null;
     }
 
@@ -446,6 +453,7 @@ function &Auth_OpenID_getMathLib()
         Auth_OpenID_setNoMathSupport();
 
         $result = null;
+
         return $result;
     }
 
@@ -467,5 +475,3 @@ function Auth_OpenID_noMathSupport()
 {
     return defined('Auth_OpenID_NO_MATH_SUPPORT');
 }
-
-?>

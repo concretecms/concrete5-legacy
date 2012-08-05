@@ -25,10 +25,10 @@ define('Auth_OpenID_VERSION', '2.1.2');
 /**
  * Require the fetcher code.
  */
-require_once "Auth/Yadis/PlainHTTPFetcher.php";
-require_once "Auth/Yadis/ParanoidHTTPFetcher.php";
-require_once "Auth/OpenID/BigMath.php";
-require_once "Auth/OpenID/URINorm.php";
+require_once 'Auth/Yadis/PlainHTTPFetcher.php';
+require_once 'Auth/Yadis/ParanoidHTTPFetcher.php';
+require_once 'Auth/OpenID/BigMath.php';
+require_once 'Auth/OpenID/URINorm.php';
 
 /**
  * Status code returned by the server when the only option is to show
@@ -112,15 +112,15 @@ if (Auth_OpenID_getMathLib() === null) {
  * @package OpenID
  * @access private
  */
-class Auth_OpenID {
-
+class Auth_OpenID
+{
     /**
      * Return true if $thing is an Auth_OpenID_FailureResponse object;
      * false if not.
      *
      * @access private
      */
-    function isFailure($thing)
+    public function isFailure($thing)
     {
         return is_a($thing, 'Auth_OpenID_FailureResponse');
     }
@@ -141,13 +141,13 @@ class Auth_OpenID {
      *
      * @access private
      */
-    function getQuery($query_str=null)
+    public function getQuery($query_str=null)
     {
         $data = array();
 
         if ($query_str !== null) {
             $data = Auth_OpenID::params_from_string($query_str);
-        } else if (!array_key_exists('REQUEST_METHOD', $_SERVER)) {
+        } elseif (!array_key_exists('REQUEST_METHOD', $_SERVER)) {
             // Do nothing.
         } else {
           // XXX HACK FIXME HORRIBLE.
@@ -177,7 +177,7 @@ class Auth_OpenID {
         return $data;
     }
 
-    function params_from_string($str)
+    public function params_from_string($str)
     {
         $chunks = explode("&", $str);
 
@@ -203,7 +203,7 @@ class Auth_OpenID {
      *
      * @access private
      */
-    function ensureDir($dir_name)
+    public function ensureDir($dir_name)
     {
         if (is_dir($dir_name) || @mkdir($dir_name)) {
             return true;
@@ -225,12 +225,13 @@ class Auth_OpenID {
      *
      * @access private
      */
-    function addPrefix($values, $prefix)
+    public function addPrefix($values, $prefix)
     {
         $new_values = array();
         foreach ($values as $s) {
             $new_values[] = $prefix . $s;
         }
+
         return $new_values;
     }
 
@@ -241,7 +242,7 @@ class Auth_OpenID {
      *
      * @access private
      */
-    function arrayGet($arr, $key, $fallback = null)
+    public function arrayGet($arr, $key, $fallback = null)
     {
         if (is_array($arr)) {
             if (array_key_exists($key, $arr)) {
@@ -261,7 +262,7 @@ class Auth_OpenID {
     /**
      * Replacement for PHP's broken parse_str.
      */
-    function parse_str($query)
+    public function parse_str($query)
     {
         if ($query === null) {
             return null;
@@ -295,7 +296,7 @@ class Auth_OpenID {
      * pairs from $data into a URL query string
      * (e.g. "username=bob&id=56").
      */
-    function httpBuildQuery($data)
+    public function httpBuildQuery($data)
     {
         $pairs = array();
         foreach ($data as $key => $value) {
@@ -305,6 +306,7 @@ class Auth_OpenID {
                 $pairs[] = urlencode($key)."=".urlencode($value);
             }
         }
+
         return implode("&", $pairs);
     }
 
@@ -323,7 +325,7 @@ class Auth_OpenID {
      * @return string $url The original URL with the new parameters added.
      *
      */
-    function appendArgs($url, $args)
+    public function appendArgs($url, $args)
     {
         if (count($args) == 0) {
             return $url;
@@ -358,16 +360,16 @@ class Auth_OpenID {
      * and returns the URL.
      *
      * @access private
-     * @param string $scheme The scheme (e.g. 'http').  Defaults to 'http'.
-     * @param string $host The host.  Required.
-     * @param string $port The port.
-     * @param string $path The path.
-     * @param string $query The query.
-     * @param string $fragment The fragment.
+     * @param  string $scheme   The scheme (e.g. 'http').  Defaults to 'http'.
+     * @param  string $host     The host.  Required.
+     * @param  string $port     The port.
+     * @param  string $path     The path.
+     * @param  string $query    The query.
+     * @param  string $fragment The fragment.
      * @return string $url The URL resulting from assembling the
      * specified components.
      */
-    function urlunparse($scheme, $host, $port = null, $path = '/',
+    public function urlunparse($scheme, $host, $port = null, $path = '/',
                         $query = '', $fragment = '')
     {
 
@@ -408,11 +410,11 @@ class Auth_OpenID {
      * null if the original URL is malformed and cannot be normalized.
      *
      * @access private
-     * @param string $url The URL to be normalized.
-     * @return mixed $new_url The URL after normalization, or null if
+     * @param  string $url The URL to be normalized.
+     * @return mixed  $new_url The URL after normalization, or null if
      * $url was malformed.
      */
-    function normalizeUrl($url)
+    public function normalizeUrl($url)
     {
         @$parsed = parse_url($url);
 
@@ -435,6 +437,7 @@ class Auth_OpenID {
             return null;
         }
         list($defragged, $frag) = Auth_OpenID::urldefrag($normalized);
+
         return $defragged;
     }
 
@@ -443,7 +446,7 @@ class Auth_OpenID {
      *
      * @access private
      */
-    function intval($value)
+    public function intval($value)
     {
         $re = "/^\\d+$/";
 
@@ -458,10 +461,10 @@ class Auth_OpenID {
      * Count the number of bytes in a string independently of
      * multibyte support conditions.
      *
-     * @param string $str The string of bytes to count.
-     * @return int The number of bytes in $str.
+     * @param  string $str The string of bytes to count.
+     * @return int    The number of bytes in $str.
      */
-    function bytes($str)
+    public function bytes($str)
     {
         return strlen(bin2hex($str)) / 2;
     }
@@ -470,7 +473,7 @@ class Auth_OpenID {
      * Get the bytes in a string independently of multibyte support
      * conditions.
      */
-    function toBytes($str)
+    public function toBytes($str)
     {
         $hex = bin2hex($str);
 
@@ -486,7 +489,7 @@ class Auth_OpenID {
         return $b;
     }
 
-    function urldefrag($url)
+    public function urldefrag($url)
     {
         $parts = explode("#", $url, 2);
 
@@ -497,7 +500,7 @@ class Auth_OpenID {
         }
     }
 
-    function filter($callback, &$sequence)
+    public function filter($callback, &$sequence)
     {
         $result = array();
 
@@ -510,7 +513,7 @@ class Auth_OpenID {
         return $result;
     }
 
-    function update(&$dest, &$src)
+    public function update(&$dest, &$src)
     {
         foreach ($src as $k => $v) {
             $dest[$k] = $v;
@@ -524,14 +527,14 @@ class Auth_OpenID {
      *
      * @param string $format_string The sprintf format for the message
      */
-    function log($format_string)
+    public function log($format_string)
     {
         $args = func_get_args();
         $message = call_user_func_array('sprintf', $args);
         error_log($message);
     }
 
-    function autoSubmitHTML($form, $title="OpenId transaction in progress")
+    public function autoSubmitHTML($form, $title="OpenId transaction in progress")
     {
         return("<html>".
                "<head><title>".
@@ -549,4 +552,3 @@ class Auth_OpenID {
                "</html>");
     }
 }
-?>

@@ -25,7 +25,6 @@
  */
 require_once 'Zend/Cache/Core.php';
 
-
 /**
  * @package    Zend_Cache
  * @subpackage Zend_Cache_Frontend
@@ -101,7 +100,7 @@ class Zend_Cache_Frontend_Class extends Zend_Cache_Core
     /**
      * Constructor
      *
-     * @param  array $options Associative array of options
+     * @param  array                $options Associative array of options
      * @throws Zend_Cache_Exception
      * @return void
      */
@@ -120,7 +119,7 @@ class Zend_Cache_Frontend_Class extends Zend_Cache_Core
     /**
      * Set a specific life time
      *
-     * @param  int $specificLifetime
+     * @param  int  $specificLifetime
      * @return void
      */
     public function setSpecificLifetime($specificLifetime = false)
@@ -143,8 +142,8 @@ class Zend_Cache_Frontend_Class extends Zend_Cache_Core
      *
      * Just a wrapper to get a specific behaviour for cached_entity
      *
-     * @param  string $name  Name of the option
-     * @param  mixed  $value Value of the option
+     * @param  string               $name  Name of the option
+     * @param  mixed                $value Value of the option
      * @throws Zend_Cache_Exception
      * @return void
      */
@@ -172,7 +171,7 @@ class Zend_Cache_Frontend_Class extends Zend_Cache_Core
         }
         $this->_cachedEntity = $cachedEntity;
         $this->_specificOptions['cached_entity'] = $cachedEntity;
-        if (is_string($this->_cachedEntity)){
+        if (is_string($this->_cachedEntity)) {
             $this->_cachedEntityLabel = $this->_cachedEntity;
         } else {
             $ro = new ReflectionObject($this->_cachedEntity);
@@ -196,7 +195,7 @@ class Zend_Cache_Frontend_Class extends Zend_Cache_Core
      *
      * @param  string $name       Method name
      * @param  array  $parameters Method parameters
-     * @return mixed Result
+     * @return mixed  Result
      */
     public function __call($name, $parameters)
     {
@@ -231,6 +230,7 @@ class Zend_Cache_Frontend_Class extends Zend_Cache_Core
         }
 
         echo $output;
+
         return $return;
     }
 

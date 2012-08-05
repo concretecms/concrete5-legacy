@@ -125,7 +125,7 @@ class Zend_Validate_Barcode extends Zend_Validate_Abstract
      * Sets a new barcode adapter
      *
      * @param  string|Zend_Validate_Barcode $adapter Barcode adapter to use
-     * @param  array  $options Options for this adapter
+     * @param  array                        $options Options for this adapter
      * @return void
      * @throws Zend_Validate_Exception
      */
@@ -165,12 +165,13 @@ class Zend_Validate_Barcode extends Zend_Validate_Abstract
     /**
      * Sets the checksum option
      *
-     * @param  boolean $checksum
+     * @param  boolean               $checksum
      * @return Zend_Validate_Barcode
      */
     public function setChecksum($checksum)
     {
         $this->getAdapter()->setCheck($checksum);
+
         return $this;
     }
 
@@ -179,13 +180,14 @@ class Zend_Validate_Barcode extends Zend_Validate_Abstract
      *
      * Returns true if and only if $value contains a valid barcode
      *
-     * @param  string $value
+     * @param  string  $value
      * @return boolean
      */
     public function isValid($value)
     {
         if (!is_string($value)) {
             $this->_error(self::INVALID);
+
             return false;
         }
 
@@ -197,7 +199,7 @@ class Zend_Validate_Barcode extends Zend_Validate_Abstract
             if (is_array($this->_length)) {
                 $temp = $this->_length;
                 $this->_length = "";
-                foreach($temp as $length) {
+                foreach ($temp as $length) {
                     $this->_length .= "/";
                     $this->_length .= $length;
                 }
@@ -206,12 +208,14 @@ class Zend_Validate_Barcode extends Zend_Validate_Abstract
             }
 
             $this->_error(self::INVALID_LENGTH);
+
             return false;
         }
 
         $result = $adapter->checkChars($value);
         if (!$result) {
             $this->_error(self::INVALID_CHARS);
+
             return false;
         }
 
@@ -219,6 +223,7 @@ class Zend_Validate_Barcode extends Zend_Validate_Abstract
             $result = $adapter->checksum($value);
             if (!$result) {
                 $this->_error(self::FAILED);
+
                 return false;
             }
         }

@@ -3,7 +3,7 @@
 /* Farsi - by "Peyman Hooshmandi Raad" <phooshmand#gmail.com> */
 
 $ADODB_LANG_ARRAY = array (
-			'LANG'                      => 'fa',
+            'LANG'                      => 'fa',
             DB_ERROR                    => 'خطای ناشناخته',
             DB_ERROR_ALREADY_EXISTS     => 'وجود دارد',
             DB_ERROR_CANNOT_CREATE      => 'امکان create وجود ندارد',
@@ -32,4 +32,3 @@ $ADODB_LANG_ARRAY = array (
             DB_ERROR_NOSUCHDB           => 'چنین بانک اطلاعاتی وجود ندارد',
             DB_ERROR_ACCESS_VIOLATION   => 'حق دسترسی ناکافی'
 );
-?>

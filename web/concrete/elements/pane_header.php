@@ -1,9 +1,9 @@
-<? defined('C5_EXECUTE') or die("Access Denied."); ?>
+<?php defined('C5_EXECUTE') or die("Access Denied."); ?>
 <div class="ccm-pane-header">
-<?
-	if (!isset($close)) {
-		$close = 'jQuery.fn.dialog.closeTop();';
-	}
+<?php
+    if (!isset($close)) {
+        $close = 'jQuery.fn.dialog.closeTop();';
+    }
 ?>
 
 <a class="ccm-button" href="javascript:void(0)" onclick="<?=$close?>()"><span><em class="ccm-button-close"><?=t('Close')?></em></span></a>

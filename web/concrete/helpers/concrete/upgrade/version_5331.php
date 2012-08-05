@@ -1,4 +1,4 @@
-<?
+<?php
 /**
  * @access private
  * @package Helpers
@@ -18,15 +18,12 @@
  */
 
 defined('C5_EXECUTE') or die("Access Denied.");
-class ConcreteUpgradeVersion5331Helper {
+class ConcreteUpgradeVersion5331Helper
+{
+    public function prepare()
+    {
+        $db = Loader::db();
+        Package::installDB(dirname(__FILE__) . '/db/version_5331.xml');
+    }
 
-	public function prepare() {
-		$db = Loader::db();
-		Package::installDB(dirname(__FILE__) . '/db/version_5331.xml');
-	}
-	
-
-		
 }
-		
-	

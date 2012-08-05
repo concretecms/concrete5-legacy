@@ -53,7 +53,7 @@ class Zend_Validate_Barcode_Upce extends Zend_Validate_Barcode_AdapterAbstract
     /**
      * Overrides parent checkLength
      *
-     * @param string $value Value
+     * @param  string  $value Value
      * @return boolean
      */
     public function checkLength($value)

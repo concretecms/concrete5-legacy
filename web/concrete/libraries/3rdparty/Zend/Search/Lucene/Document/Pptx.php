@@ -20,7 +20,6 @@
  * @version    $Id: Pptx.php 23775 2011-03-01 17:25:24Z ralph $
  */
 
-
 /** Zend_Search_Lucene_Document_OpenXml */
 require_once 'Zend/Search/Lucene/Document/OpenXml.php';
 
@@ -66,8 +65,8 @@ class Zend_Search_Lucene_Document_Pptx extends Zend_Search_Lucene_Document_OpenX
     /**
      * Object constructor
      *
-     * @param string  $fileName
-     * @param boolean $storeContent
+     * @param  string                       $fileName
+     * @param  boolean                      $storeContent
      * @throws Zend_Search_Lucene_Exception
      */
     private function __construct($fileName, $storeContent)
@@ -101,7 +100,7 @@ class Zend_Search_Lucene_Document_Pptx extends Zend_Search_Lucene_Document_OpenX
                 foreach ($slideRelations->Relationship as $slideRel) {
                     if ($slideRel["Type"] == Zend_Search_Lucene_Document_Pptx::SCHEMA_SLIDERELATION) {
                         // Found slide!
-                        $slides[ str_replace( 'rId', '', (string)$slideRel["Id"] ) ] = simplexml_load_string(
+                        $slides[ str_replace( 'rId', '', (string) $slideRel["Id"] ) ] = simplexml_load_string(
                             $package->getFromName( $this->absoluteZipPath(dirname($rel["Target"]) . "/" . dirname($slideRel["Target"]) . "/" . basename($slideRel["Target"])) )
                         );
 
@@ -110,7 +109,7 @@ class Zend_Search_Lucene_Document_Pptx extends Zend_Search_Lucene_Document_OpenX
                         foreach ($slideNotesRelations->Relationship as $slideNoteRel) {
                             if ($slideNoteRel["Type"] == Zend_Search_Lucene_Document_Pptx::SCHEMA_SLIDENOTESRELATION) {
                                 // Found slide notes!
-                                $slideNotes[ str_replace( 'rId', '', (string)$slideRel["Id"] ) ] = simplexml_load_string(
+                                $slideNotes[ str_replace( 'rId', '', (string) $slideRel["Id"] ) ] = simplexml_load_string(
                                     $package->getFromName( $this->absoluteZipPath(dirname($rel["Target"]) . "/" . dirname($slideRel["Target"]) . "/" . dirname($slideNoteRel["Target"]) . "/" . basename($slideNoteRel["Target"])) )
                                 );
 
@@ -137,7 +136,7 @@ class Zend_Search_Lucene_Document_Pptx extends Zend_Search_Lucene_Document_OpenX
             // Fetch all text
             $textElements = $slide->xpath('//a:t');
             foreach ($textElements as $textElement) {
-                $documentBody[] = (string)$textElement;
+                $documentBody[] = (string) $textElement;
             }
 
             // Extract contents from slide notes
@@ -152,7 +151,7 @@ class Zend_Search_Lucene_Document_Pptx extends Zend_Search_Lucene_Document_OpenX
                 // Fetch all text
                 $textElements = $slideNote->xpath('//a:t');
                 foreach ($textElements as $textElement) {
-                    $documentBody[] = (string)$textElement;
+                    $documentBody[] = (string) $textElement;
                 }
             }
         }
@@ -174,14 +173,12 @@ class Zend_Search_Lucene_Document_Pptx extends Zend_Search_Lucene_Document_OpenX
         }
 
         // Store meta data properties
-        foreach ($coreProperties as $key => $value)
-        {
+        foreach ($coreProperties as $key => $value) {
             $this->addField(Zend_Search_Lucene_Field::Text($key, $value, 'UTF-8'));
         }
 
         // Store title (if not present in meta data)
-        if (!isset($coreProperties['title']))
-        {
+        if (!isset($coreProperties['title'])) {
             $this->addField(Zend_Search_Lucene_Field::Text('title', $fileName, 'UTF-8'));
         }
     }
@@ -189,8 +186,8 @@ class Zend_Search_Lucene_Document_Pptx extends Zend_Search_Lucene_Document_OpenX
     /**
      * Load Pptx document from a file
      *
-     * @param string  $fileName
-     * @param boolean $storeContent
+     * @param  string                           $fileName
+     * @param  boolean                          $storeContent
      * @return Zend_Search_Lucene_Document_Pptx
      */
     public static function loadPptxFile($fileName, $storeContent = false)

@@ -8,7 +8,7 @@
 		<field name="filename" type="C" size="255">
 		</field>
 		<field name="origfilename" type="C" size="255">
-		</field>		
+		</field>
 		<field name="url" type="C" size="255">
 		</field>
 		<field name="type" type="C" size="32">

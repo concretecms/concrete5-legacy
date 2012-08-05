@@ -29,7 +29,7 @@
  * identity check.
  *
  * LIBRARY DESIGN
- * 
+ *
  * This consumer library is designed with that flow in mind.  The goal
  * is to make it as easy as possible to perform the above steps
  * securely.
@@ -160,18 +160,18 @@
 /**
  * Require utility classes and functions for the consumer.
  */
-require_once "Auth/OpenID.php";
-require_once "Auth/OpenID/Message.php";
-require_once "Auth/OpenID/HMAC.php";
-require_once "Auth/OpenID/Association.php";
-require_once "Auth/OpenID/CryptUtil.php";
-require_once "Auth/OpenID/DiffieHellman.php";
-require_once "Auth/OpenID/KVForm.php";
-require_once "Auth/OpenID/Nonce.php";
-require_once "Auth/OpenID/Discover.php";
-require_once "Auth/OpenID/URINorm.php";
-require_once "Auth/Yadis/Manager.php";
-require_once "Auth/Yadis/XRI.php";
+require_once 'Auth/OpenID.php';
+require_once 'Auth/OpenID/Message.php';
+require_once 'Auth/OpenID/HMAC.php';
+require_once 'Auth/OpenID/Association.php';
+require_once 'Auth/OpenID/CryptUtil.php';
+require_once 'Auth/OpenID/DiffieHellman.php';
+require_once 'Auth/OpenID/KVForm.php';
+require_once 'Auth/OpenID/Nonce.php';
+require_once 'Auth/OpenID/Discover.php';
+require_once 'Auth/OpenID/URINorm.php';
+require_once 'Auth/Yadis/Manager.php';
+require_once 'Auth/Yadis/XRI.php';
 
 /**
  * This is the status code returned when the complete method returns
@@ -212,22 +212,22 @@ define('Auth_OpenID_PARSE_ERROR', 'parse error');
  *
  * @package OpenID
  */
-class Auth_OpenID_Consumer {
+class Auth_OpenID_Consumer
+{
+    /**
+     * @access private
+     */
+    public $discoverMethod = 'Auth_OpenID_discover';
 
     /**
      * @access private
      */
-    var $discoverMethod = 'Auth_OpenID_discover';
+    public $session_key_prefix = "_openid_consumer_";
 
     /**
      * @access private
      */
-    var $session_key_prefix = "_openid_consumer_";
-
-    /**
-     * @access private
-     */
-    var $_token_suffix = "last_token";
+    public $_token_suffix = "last_token";
 
     /**
      * Initialize a Consumer instance.
@@ -258,7 +258,7 @@ class Auth_OpenID_Consumer {
      * when creating the internal consumer object.  This is used for
      * testing.
      */
-    function Auth_OpenID_Consumer(&$store, $session = null,
+    public function Auth_OpenID_Consumer(&$store, $session = null,
                                   $consumer_cls = null)
     {
         if ($session === null) {
@@ -281,7 +281,7 @@ class Auth_OpenID_Consumer {
      *
      * @access private
      */
-    function getDiscoveryObject(&$session, $openid_url,
+    public function getDiscoveryObject(&$session, $openid_url,
                                 $session_key_prefix)
     {
         return new Auth_Yadis_Discovery($session, $openid_url,
@@ -310,7 +310,7 @@ class Auth_OpenID_Consumer {
      * extension arguments to the request, using its 'addExtensionArg'
      * method.
      */
-    function begin($user_url, $anonymous=false)
+    public function begin($user_url, $anonymous=false)
     {
         $openid_url = $user_url;
 
@@ -381,6 +381,7 @@ class Auth_OpenID_Consumer {
               "OpenID 1 requests MUST include the identifier " .
               "in the request.");
         }
+
         return $auth_req;
     }
 
@@ -407,7 +408,7 @@ class Auth_OpenID_Consumer {
      * indicated by the status attribute, which will be one of
      * SUCCESS, CANCEL, FAILURE, or SETUP_NEEDED.
      */
-    function complete($current_url, $query=null)
+    public function complete($current_url, $query=null)
     {
         if ($current_url && !is_string($current_url)) {
             // This is ugly, but we need to complain loudly when
@@ -427,7 +428,7 @@ class Auth_OpenID_Consumer {
             $loader->fromSession($endpoint_data);
 
         $message = Auth_OpenID_Message::fromPostArgs($query);
-        $response = $this->consumer->complete($message, $endpoint, 
+        $response = $this->consumer->complete($message, $endpoint,
                                               $current_url);
         $this->session->del($this->_token_key);
 
@@ -450,13 +451,14 @@ class Auth_OpenID_Consumer {
  *
  * @package OpenID
  */
-class Auth_OpenID_DiffieHellmanSHA1ConsumerSession {
-    var $session_type = 'DH-SHA1';
-    var $hash_func = 'Auth_OpenID_SHA1';
-    var $secret_size = 20;
-    var $allowed_assoc_types = array('HMAC-SHA1');
+class Auth_OpenID_DiffieHellmanSHA1ConsumerSession
+{
+    public $session_type = 'DH-SHA1';
+    public $hash_func = 'Auth_OpenID_SHA1';
+    public $secret_size = 20;
+    public $allowed_assoc_types = array('HMAC-SHA1');
 
-    function Auth_OpenID_DiffieHellmanSHA1ConsumerSession($dh = null)
+    public function Auth_OpenID_DiffieHellmanSHA1ConsumerSession($dh = null)
     {
         if ($dh === null) {
             $dh = new Auth_OpenID_DiffieHellman();
@@ -465,7 +467,7 @@ class Auth_OpenID_DiffieHellmanSHA1ConsumerSession {
         $this->dh = $dh;
     }
 
-    function getRequest()
+    public function getRequest()
     {
         $math =& Auth_OpenID_getMathLib();
 
@@ -484,7 +486,7 @@ class Auth_OpenID_DiffieHellmanSHA1ConsumerSession {
         return $args;
     }
 
-    function extractSecret($response)
+    public function extractSecret($response)
     {
         if (!$response->hasKey(Auth_OpenID_OPENID_NS,
                                'dh_server_public')) {
@@ -514,10 +516,10 @@ class Auth_OpenID_DiffieHellmanSHA1ConsumerSession {
  */
 class Auth_OpenID_DiffieHellmanSHA256ConsumerSession extends
       Auth_OpenID_DiffieHellmanSHA1ConsumerSession {
-    var $session_type = 'DH-SHA256';
-    var $hash_func = 'Auth_OpenID_SHA256';
-    var $secret_size = 32;
-    var $allowed_assoc_types = array('HMAC-SHA256');
+    public $session_type = 'DH-SHA256';
+    public $hash_func = 'Auth_OpenID_SHA256';
+    public $secret_size = 32;
+    public $allowed_assoc_types = array('HMAC-SHA256');
 }
 
 /**
@@ -525,16 +527,17 @@ class Auth_OpenID_DiffieHellmanSHA256ConsumerSession extends
  *
  * @package OpenID
  */
-class Auth_OpenID_PlainTextConsumerSession {
-    var $session_type = 'no-encryption';
-    var $allowed_assoc_types =  array('HMAC-SHA1', 'HMAC-SHA256');
+class Auth_OpenID_PlainTextConsumerSession
+{
+    public $session_type = 'no-encryption';
+    public $allowed_assoc_types =  array('HMAC-SHA1', 'HMAC-SHA256');
 
-    function getRequest()
+    public function getRequest()
     {
         return array();
     }
 
-    function extractSecret($response)
+    public function extractSecret($response)
     {
         if (!$response->hasKey(Auth_OpenID_OPENID_NS, 'mac_key')) {
             return null;
@@ -565,33 +568,34 @@ function Auth_OpenID_getAvailableSessionTypes()
  *
  * @package OpenID
  */
-class Auth_OpenID_GenericConsumer {
+class Auth_OpenID_GenericConsumer
+{
     /**
      * @access private
      */
-    var $discoverMethod = 'Auth_OpenID_discover';
+    public $discoverMethod = 'Auth_OpenID_discover';
 
     /**
      * This consumer's store object.
      */
-    var $store;
+    public $store;
 
     /**
      * @access private
      */
-    var $_use_assocs;
+    public $_use_assocs;
 
     /**
      * @access private
      */
-    var $openid1_nonce_query_arg_name = 'janrain_nonce';
+    public $openid1_nonce_query_arg_name = 'janrain_nonce';
 
     /**
      * Another query parameter that gets added to the return_to for
      * OpenID 1; if the user's session state is lost, use this claimed
      * identifier to do discovery when verifying the response.
      */
-    var $openid1_return_to_identifier_name = 'openid1_claimed_id';
+    public $openid1_return_to_identifier_name = 'openid1_claimed_id';
 
     /**
      * This method initializes a new {@link Auth_OpenID_Consumer}
@@ -611,7 +615,7 @@ class Auth_OpenID_GenericConsumer {
      * in the module description.  The default value is False, which
      * disables immediate mode.
      */
-    function Auth_OpenID_GenericConsumer(&$store)
+    public function Auth_OpenID_GenericConsumer(&$store)
     {
         $this->store =& $store;
         $this->negotiator =& Auth_OpenID_getDefaultNegotiator();
@@ -628,7 +632,7 @@ class Auth_OpenID_GenericConsumer {
      *
      * @access private
      */
-    function begin($service_endpoint)
+    public function begin($service_endpoint)
     {
         $assoc = $this->_getAssociation($service_endpoint);
         $r = new Auth_OpenID_AuthRequest($service_endpoint, $assoc);
@@ -650,7 +654,7 @@ class Auth_OpenID_GenericConsumer {
      *
      * @access private
      */
-    function complete($message, $endpoint, $return_to)
+    public function complete($message, $endpoint, $return_to)
     {
         $mode = $message->getArg(Auth_OpenID_OPENID_NS, 'mode',
                                  '<no mode set>');
@@ -672,7 +676,7 @@ class Auth_OpenID_GenericConsumer {
     /**
      * @access private
      */
-    function _completeInvalid($message, &$endpoint, $unused)
+    public function _completeInvalid($message, &$endpoint, $unused)
     {
         $mode = $message->getArg(Auth_OpenID_OPENID_NS, 'mode',
                                  '<No mode set>');
@@ -684,7 +688,7 @@ class Auth_OpenID_GenericConsumer {
     /**
      * @access private
      */
-    function _complete_cancel($message, &$endpoint, $unused)
+    public function _complete_cancel($message, &$endpoint, $unused)
     {
         return new Auth_OpenID_CancelResponse($endpoint);
     }
@@ -692,7 +696,7 @@ class Auth_OpenID_GenericConsumer {
     /**
      * @access private
      */
-    function _complete_error($message, &$endpoint, $unused)
+    public function _complete_error($message, &$endpoint, $unused)
     {
         $error = $message->getArg(Auth_OpenID_OPENID_NS, 'error');
         $contact = $message->getArg(Auth_OpenID_OPENID_NS, 'contact');
@@ -705,7 +709,7 @@ class Auth_OpenID_GenericConsumer {
     /**
      * @access private
      */
-    function _complete_setup_needed($message, &$endpoint, $unused)
+    public function _complete_setup_needed($message, &$endpoint, $unused)
     {
         if (!$message->isOpenID2()) {
             return $this->_completeInvalid($message, $endpoint);
@@ -713,13 +717,14 @@ class Auth_OpenID_GenericConsumer {
 
         $user_setup_url = $message->getArg(Auth_OpenID_OPENID2_NS,
                                            'user_setup_url');
+
         return new Auth_OpenID_SetupNeededResponse($endpoint, $user_setup_url);
     }
 
     /**
      * @access private
      */
-    function _complete_id_res($message, &$endpoint, $return_to)
+    public function _complete_id_res($message, &$endpoint, $return_to)
     {
         $user_setup_url = $message->getArg(Auth_OpenID_OPENID1_NS,
                                            'user_setup_url');
@@ -735,7 +740,7 @@ class Auth_OpenID_GenericConsumer {
     /**
      * @access private
      */
-    function _checkSetupNeeded($message)
+    public function _checkSetupNeeded($message)
     {
         // In OpenID 1, we check to see if this is a cancel from
         // immediate mode by the presence of the user_setup_url
@@ -754,7 +759,7 @@ class Auth_OpenID_GenericConsumer {
     /**
      * @access private
      */
-    function _doIdRes($message, $endpoint, $return_to)
+    public function _doIdRes($message, $endpoint, $return_to)
     {
         // Checks for presence of appropriate fields (and checks
         // signed list fields)
@@ -810,7 +815,7 @@ class Auth_OpenID_GenericConsumer {
     /**
      * @access private
      */
-    function _checkReturnTo($message, $return_to)
+    public function _checkReturnTo($message, $return_to)
     {
         // Check an OpenID message and its openid.return_to value
         // against a return_to URL from an application.  Return True
@@ -877,7 +882,7 @@ class Auth_OpenID_GenericConsumer {
     /**
      * @access private
      */
-    function _verifyReturnToArgs($query)
+    public function _verifyReturnToArgs($query)
     {
         // Verify that the arguments in the return_to URL are present in this
         // response.
@@ -934,7 +939,7 @@ class Auth_OpenID_GenericConsumer {
     /**
      * @access private
      */
-    function _idResCheckSignature($message, $server_url)
+    public function _idResCheckSignature($message, $server_url)
     {
         $assoc_handle = $message->getArg(Auth_OpenID_OPENID_NS,
                                          'assoc_handle');
@@ -977,7 +982,7 @@ class Auth_OpenID_GenericConsumer {
     /**
      * @access private
      */
-    function _verifyDiscoveryResults($message, $endpoint=null)
+    public function _verifyDiscoveryResults($message, $endpoint=null)
     {
         if ($message->getOpenIDNamespace() == Auth_OpenID_OPENID2_NS) {
             return $this->_verifyDiscoveryResultsOpenID2($message,
@@ -991,7 +996,7 @@ class Auth_OpenID_GenericConsumer {
     /**
      * @access private
      */
-    function _verifyDiscoveryResultsOpenID1($message, $endpoint)
+    public function _verifyDiscoveryResultsOpenID1($message, $endpoint)
     {
         $claimed_id = $message->getArg(Auth_OpenID_BARE_NS,
                                 $this->openid1_return_to_identifier_name);
@@ -1002,7 +1007,7 @@ class Auth_OpenID_GenericConsumer {
               'either by passing it through as a return_to parameter ' .
               'or by using a session, and supplied to the GenericConsumer ' .
               'as the argument to complete()');
-        } else if (($endpoint !== null) && ($claimed_id === null)) {
+        } elseif (($endpoint !== null) && ($claimed_id === null)) {
             $claimed_id = $endpoint->claimed_id;
         }
 
@@ -1048,7 +1053,7 @@ class Auth_OpenID_GenericConsumer {
     /**
      * @access private
      */
-    function _verifyDiscoverySingle($endpoint, $to_match)
+    public function _verifyDiscoverySingle($endpoint, $to_match)
     {
         // Every type URI that's in the to_match endpoint has to be
         // present in the discovered endpoint.
@@ -1088,7 +1093,7 @@ class Auth_OpenID_GenericConsumer {
                 return new Auth_OpenID_FailureResponse($endpoint,
                              "Preferred namespace mismatch (bug)");
             }
-        } else if ($to_match->server_url != $endpoint->server_url) {
+        } elseif ($to_match->server_url != $endpoint->server_url) {
             return new Auth_OpenID_FailureResponse($endpoint,
               sprintf('OP Endpoint mismatch. Expected %s, got %s',
                       $to_match->server_url, $endpoint->server_url));
@@ -1100,7 +1105,7 @@ class Auth_OpenID_GenericConsumer {
     /**
      * @access private
      */
-    function _verifyDiscoveryResultsOpenID2($message, $endpoint)
+    public function _verifyDiscoveryResultsOpenID2($message, $endpoint)
     {
         $to_match = new Auth_OpenID_ServiceEndpoint();
         $to_match->type_uris = array(Auth_OpenID_TYPE_2_0);
@@ -1176,7 +1181,7 @@ class Auth_OpenID_GenericConsumer {
     /**
      * @access private
      */
-    function _discoverAndVerify($claimed_id, $to_match_endpoints)
+    public function _discoverAndVerify($claimed_id, $to_match_endpoints)
     {
         // oidutil.log('Performing discovery on %s' % (claimed_id,))
         list($unused, $services) = call_user_func($this->discoverMethod,
@@ -1196,7 +1201,7 @@ class Auth_OpenID_GenericConsumer {
     /**
      * @access private
      */
-    function _verifyDiscoveryServices($claimed_id, 
+    public function _verifyDiscoveryServices($claimed_id,
                                       &$services, &$to_match_endpoints)
     {
         // Search the services resulting from discovery to find one
@@ -1204,7 +1209,7 @@ class Auth_OpenID_GenericConsumer {
 
         foreach ($services as $endpoint) {
             foreach ($to_match_endpoints as $to_match_endpoint) {
-                $result = $this->_verifyDiscoverySingle($endpoint, 
+                $result = $this->_verifyDiscoverySingle($endpoint,
                                                         $to_match_endpoint);
 
                 if (!Auth_OpenID::isFailure($result)) {
@@ -1231,7 +1236,7 @@ class Auth_OpenID_GenericConsumer {
      *
      * @access private
      */
-    function _idResGetNonceOpenID1($message, $endpoint)
+    public function _idResGetNonceOpenID1($message, $endpoint)
     {
         return $message->getArg(Auth_OpenID_BARE_NS,
                                 $this->openid1_nonce_query_arg_name);
@@ -1240,7 +1245,7 @@ class Auth_OpenID_GenericConsumer {
     /**
      * @access private
      */
-    function _idResCheckNonce($message, $endpoint)
+    public function _idResCheckNonce($message, $endpoint)
     {
         if ($message->isOpenID1()) {
             // This indicates that the nonce was generated by the consumer
@@ -1278,7 +1283,7 @@ class Auth_OpenID_GenericConsumer {
     /**
      * @access private
      */
-    function _idResCheckForFields($message)
+    public function _idResCheckForFields($message)
     {
         $basic_fields = array('return_to', 'assoc_handle', 'sig', 'signed');
         $basic_sig_fields = array('return_to', 'identity');
@@ -1330,7 +1335,7 @@ class Auth_OpenID_GenericConsumer {
     /**
      * @access private
      */
-    function _checkAuth($message, $server_url)
+    public function _checkAuth($message, $server_url)
     {
         $request = $this->_createCheckAuthRequest($message);
         if ($request === null) {
@@ -1349,7 +1354,7 @@ class Auth_OpenID_GenericConsumer {
     /**
      * @access private
      */
-    function _createCheckAuthRequest($message)
+    public function _createCheckAuthRequest($message)
     {
         $signed = $message->getArg(Auth_OpenID_OPENID_NS, 'signed');
         if ($signed) {
@@ -1361,15 +1366,16 @@ class Auth_OpenID_GenericConsumer {
             }
         }
         $ca_message = $message->copy();
-        $ca_message->setArg(Auth_OpenID_OPENID_NS, 'mode', 
+        $ca_message->setArg(Auth_OpenID_OPENID_NS, 'mode',
                             'check_authentication');
+
         return $ca_message;
     }
 
     /**
      * @access private
      */
-    function _processCheckAuthResponse($response, $server_url)
+    public function _processCheckAuthResponse($response, $server_url)
     {
         $is_valid = $response->getArg(Auth_OpenID_OPENID_NS, 'is_valid',
                                       'false');
@@ -1396,7 +1402,7 @@ class Auth_OpenID_GenericConsumer {
      *
      * @access private
      */
-    function _httpResponseToMessage($response, $server_url)
+    public function _httpResponseToMessage($response, $server_url)
     {
         // Should this function be named Message.fromHTTPResponse instead?
         $response_message = Auth_OpenID_Message::fromKVForm($response->body);
@@ -1404,7 +1410,7 @@ class Auth_OpenID_GenericConsumer {
         if ($response->status == 400) {
             return Auth_OpenID_ServerErrorContainer::fromMessage(
                         $response_message);
-        } else if ($response->status != 200 and $response->status != 206) {
+        } elseif ($response->status != 200 and $response->status != 206) {
             return null;
         }
 
@@ -1414,7 +1420,7 @@ class Auth_OpenID_GenericConsumer {
     /**
      * @access private
      */
-    function _makeKVPost($message, $server_url)
+    public function _makeKVPost($message, $server_url)
     {
         $body = $message->toURLEncoded();
         $resp = $this->fetcher->post($server_url, $body);
@@ -1429,7 +1435,7 @@ class Auth_OpenID_GenericConsumer {
     /**
      * @access private
      */
-    function _getAssociation($endpoint)
+    public function _getAssociation($endpoint)
     {
         if (!$this->_use_assocs) {
             return null;
@@ -1460,7 +1466,7 @@ class Auth_OpenID_GenericConsumer {
      *
      * @access private
      */
-    function _extractSupportedAssociationType(&$server_error, &$endpoint,
+    public function _extractSupportedAssociationType(&$server_error, &$endpoint,
                                               $assoc_type)
     {
         // Any error message whose code is not 'unsupported-type'
@@ -1484,7 +1490,7 @@ class Auth_OpenID_GenericConsumer {
 
         if (($assoc_type === null) || ($session_type === null)) {
             return null;
-        } else if (!$this->negotiator->isAllowed($assoc_type,
+        } elseif (!$this->negotiator->isAllowed($assoc_type,
                                                  $session_type)) {
             return null;
         } else {
@@ -1495,7 +1501,7 @@ class Auth_OpenID_GenericConsumer {
     /**
      * @access private
      */
-    function _negotiateAssociation($endpoint)
+    public function _negotiateAssociation($endpoint)
     {
         // Get our preferred session/association type from the negotiatior.
         list($assoc_type, $session_type) = $this->negotiator->getAllowedType();
@@ -1544,7 +1550,7 @@ class Auth_OpenID_GenericConsumer {
     /**
      * @access private
      */
-    function _requestAssociation($endpoint, $assoc_type, $session_type)
+    public function _requestAssociation($endpoint, $assoc_type, $session_type)
     {
         list($assoc_session, $args) = $this->_createAssociateRequest(
                                       $endpoint, $assoc_type, $session_type);
@@ -1554,7 +1560,7 @@ class Auth_OpenID_GenericConsumer {
         if ($response_message === null) {
             // oidutil.log('openid.associate request failed: %s' % (why[0],))
             return null;
-        } else if (is_a($response_message,
+        } elseif (is_a($response_message,
                         'Auth_OpenID_ServerErrorContainer')) {
             return $response_message;
         }
@@ -1565,7 +1571,7 @@ class Auth_OpenID_GenericConsumer {
     /**
      * @access private
      */
-    function _extractAssociation(&$assoc_response, &$assoc_session)
+    public function _extractAssociation(&$assoc_response, &$assoc_session)
     {
         // Extract the common fields from the response, raising an
         // exception if they are not found
@@ -1599,9 +1605,10 @@ class Auth_OpenID_GenericConsumer {
 
         $expires_in = Auth_OpenID::intval($expires_in_str);
         if ($expires_in === false) {
-            
+
             $err = sprintf("Could not parse expires_in from association ".
                            "response %s", print_r($assoc_response, true));
+
             return new Auth_OpenID_FailureResponse(null, $err);
         }
 
@@ -1657,7 +1664,7 @@ class Auth_OpenID_GenericConsumer {
     /**
      * @access private
      */
-    function _createAssociateRequest($endpoint, $assoc_type, $session_type)
+    public function _createAssociateRequest($endpoint, $assoc_type, $session_type)
     {
         if (array_key_exists($session_type, $this->session_types)) {
             $session_type_class = $this->session_types[$session_type];
@@ -1688,6 +1695,7 @@ class Auth_OpenID_GenericConsumer {
 
         $args = array_merge($args, $assoc_session->getRequest());
         $message = Auth_OpenID_Message::fromOpenIDArgs($args);
+
         return array($assoc_session, $message);
     }
 
@@ -1704,7 +1712,7 @@ class Auth_OpenID_GenericConsumer {
      * @access private
      * @return $typ The association type for this message
      */
-    function _getOpenID1SessionType($assoc_response)
+    public function _getOpenID1SessionType($assoc_response)
     {
         // If it's an OpenID 1 message, allow session_type to default
         // to None (which signifies "no-encryption")
@@ -1719,7 +1727,7 @@ class Auth_OpenID_GenericConsumer {
         if ($session_type == 'no-encryption') {
             // oidutil.log('WARNING: OpenID server sent "no-encryption"'
             //             'for OpenID 1.X')
-        } else if (($session_type == '') || ($session_type === null)) {
+        } elseif (($session_type == '') || ($session_type === null)) {
             // Missing or empty session type is the way to flag a
             // 'no-encryption' response. Change the session type to
             // 'no-encryption' so that it can be handled in the same
@@ -1737,8 +1745,8 @@ class Auth_OpenID_GenericConsumer {
  *
  * @package OpenID
  */
-class Auth_OpenID_AuthRequest {
-
+class Auth_OpenID_AuthRequest
+{
     /**
      * Initialize an authentication request with the specified token,
      * association, and endpoint.
@@ -1747,7 +1755,7 @@ class Auth_OpenID_AuthRequest {
      * class.  Instances of this class are created by the library when
      * needed.
      */
-    function Auth_OpenID_AuthRequest(&$endpoint, $assoc)
+    public function Auth_OpenID_AuthRequest(&$endpoint, $assoc)
     {
         $this->assoc = $assoc;
         $this->endpoint =& $endpoint;
@@ -1763,7 +1771,7 @@ class Auth_OpenID_AuthRequest {
      * $extension_request: An object that implements the extension
      * request interface for adding arguments to an OpenID message.
      */
-    function addExtension(&$extension_request)
+    public function addExtension(&$extension_request)
     {
         $extension_request->toMessage($this->message);
     }
@@ -1787,7 +1795,7 @@ class Auth_OpenID_AuthRequest {
      * @param string $value The value to provide to the server for
      * this argument.
      */
-    function addExtensionArg($namespace, $key, $value)
+    public function addExtensionArg($namespace, $key, $value)
     {
         return $this->message->setArg($namespace, $key, $value);
     }
@@ -1801,12 +1809,13 @@ class Auth_OpenID_AuthRequest {
      * Anonymous requests are not allowed when the request is made
      * with OpenID 1.
      */
-    function setAnonymous($is_anonymous)
+    public function setAnonymous($is_anonymous)
     {
         if ($is_anonymous && $this->message->isOpenID1()) {
             return false;
         } else {
             $this->_anonymous = $is_anonymous;
+
             return true;
         }
     }
@@ -1831,23 +1840,23 @@ class Auth_OpenID_AuthRequest {
      * default case, as the user may need to provide credentials or
      * approve the request before a positive response can be sent.
      */
-    function getMessage($realm, $return_to=null, $immediate=false)
+    public function getMessage($realm, $return_to=null, $immediate=false)
     {
         if ($return_to) {
             $return_to = Auth_OpenID::appendArgs($return_to,
                                                  $this->return_to_args);
-        } else if ($immediate) {
+        } elseif ($immediate) {
             // raise ValueError(
             //     '"return_to" is mandatory when
             //using "checkid_immediate"')
             return new Auth_OpenID_FailureResponse(null,
               "'return_to' is mandatory when using checkid_immediate");
-        } else if ($this->message->isOpenID1()) {
+        } elseif ($this->message->isOpenID1()) {
             // raise ValueError('"return_to" is
             // mandatory for OpenID 1 requests')
             return new Auth_OpenID_FailureResponse(null,
               "'return_to' is mandatory for OpenID 1 requests");
-        } else if ($this->return_to_args) {
+        } elseif ($this->return_to_args) {
             // raise ValueError('extra "return_to" arguments
             // were specified, but no return_to was specified')
             return new Auth_OpenID_FailureResponse(null,
@@ -1904,7 +1913,7 @@ class Auth_OpenID_AuthRequest {
         return $message;
     }
 
-    function redirectURL($realm, $return_to = null,
+    public function redirectURL($realm, $return_to = null,
                          $immediate = false)
     {
         $message = $this->getMessage($realm, $return_to, $immediate);
@@ -1924,7 +1933,7 @@ class Auth_OpenID_AuthRequest {
      * overridden. If a value is supplied for 'action' or 'method', it
      * will be replaced.
      */
-    function formMarkup($realm, $return_to=null, $immediate=false,
+    public function formMarkup($realm, $return_to=null, $immediate=false,
                         $form_tag_attrs=null)
     {
         $message = $this->getMessage($realm, $return_to, $immediate);
@@ -1943,19 +1952,20 @@ class Auth_OpenID_AuthRequest {
      *
      * Wraps formMarkup.  See the documentation for that function.
      */
-    function htmlMarkup($realm, $return_to=null, $immediate=false,
+    public function htmlMarkup($realm, $return_to=null, $immediate=false,
                         $form_tag_attrs=null)
     {
-        $form = $this->formMarkup($realm, $return_to, $immediate, 
+        $form = $this->formMarkup($realm, $return_to, $immediate,
                                   $form_tag_attrs);
 
         if (Auth_OpenID::isFailure($form)) {
             return $form;
         }
+
         return Auth_OpenID::autoSubmitHTML($form);
     }
 
-    function shouldSendRedirect()
+    public function shouldSendRedirect()
     {
         return $this->endpoint->compatibilityMode();
     }
@@ -1966,10 +1976,11 @@ class Auth_OpenID_AuthRequest {
  *
  * @package OpenID
  */
-class Auth_OpenID_ConsumerResponse {
-    var $status = null;
+class Auth_OpenID_ConsumerResponse
+{
+    public $status = null;
 
-    function setEndpoint($endpoint)
+    public function setEndpoint($endpoint)
     {
         $this->endpoint = $endpoint;
         if ($endpoint === null) {
@@ -1996,11 +2007,12 @@ class Auth_OpenID_ConsumerResponse {
      * identity_url for querying your database or authorization server.
      *
      */
-    function getDisplayIdentifier()
+    public function getDisplayIdentifier()
     {
         if ($this->endpoint !== null) {
             return $this->endpoint->getDisplayIdentifier();
         }
+
         return null;
     }
 }
@@ -2020,13 +2032,14 @@ class Auth_OpenID_ConsumerResponse {
  *
  * @package OpenID
  */
-class Auth_OpenID_SuccessResponse extends Auth_OpenID_ConsumerResponse {
-    var $status = Auth_OpenID_SUCCESS;
+class Auth_OpenID_SuccessResponse extends Auth_OpenID_ConsumerResponse
+{
+    public $status = Auth_OpenID_SUCCESS;
 
     /**
      * @access private
      */
-    function Auth_OpenID_SuccessResponse($endpoint, $message, $signed_args=null)
+    public function Auth_OpenID_SuccessResponse($endpoint, $message, $signed_args=null)
     {
         $this->endpoint = $endpoint;
         $this->identity_url = $endpoint->claimed_id;
@@ -2044,7 +2057,7 @@ class Auth_OpenID_SuccessResponse extends Auth_OpenID_ConsumerResponse {
      * @param string $prefix The extension namespace from which to
      * extract the extension data.
      */
-    function extensionResponse($namespace_uri, $require_signed)
+    public function extensionResponse($namespace_uri, $require_signed)
     {
         if ($require_signed) {
             return $this->getSignedNS($namespace_uri);
@@ -2053,12 +2066,12 @@ class Auth_OpenID_SuccessResponse extends Auth_OpenID_ConsumerResponse {
         }
     }
 
-    function isOpenID1()
+    public function isOpenID1()
     {
         return $this->message->isOpenID1();
     }
 
-    function isSigned($ns_uri, $ns_key)
+    public function isSigned($ns_uri, $ns_key)
     {
         // Return whether a particular key is signed, regardless of
         // its namespace alias
@@ -2066,7 +2079,7 @@ class Auth_OpenID_SuccessResponse extends Auth_OpenID_ConsumerResponse {
                         $this->signed_args);
     }
 
-    function getSigned($ns_uri, $ns_key, $default = null)
+    public function getSigned($ns_uri, $ns_key, $default = null)
     {
         // Return the specified signed field if available, otherwise
         // return default
@@ -2077,7 +2090,7 @@ class Auth_OpenID_SuccessResponse extends Auth_OpenID_ConsumerResponse {
         }
     }
 
-    function getSignedNS($ns_uri)
+    public function getSignedNS($ns_uri)
     {
         $args = array();
 
@@ -2105,7 +2118,7 @@ class Auth_OpenID_SuccessResponse extends Auth_OpenID_ConsumerResponse {
      * server on the initial request, or null if the response did not
      * contain an 'openid.return_to' argument.
     */
-    function getReturnTo()
+    public function getReturnTo()
     {
         return $this->getSigned(Auth_OpenID_OPENID_NS, 'return_to');
     }
@@ -2126,10 +2139,11 @@ class Auth_OpenID_SuccessResponse extends Auth_OpenID_ConsumerResponse {
  *
  * @package OpenID
  */
-class Auth_OpenID_FailureResponse extends Auth_OpenID_ConsumerResponse {
-    var $status = Auth_OpenID_FAILURE;
+class Auth_OpenID_FailureResponse extends Auth_OpenID_ConsumerResponse
+{
+    public $status = Auth_OpenID_FAILURE;
 
-    function Auth_OpenID_FailureResponse($endpoint, $message = null,
+    public function Auth_OpenID_FailureResponse($endpoint, $message = null,
                                          $contact = null, $reference = null)
     {
         $this->setEndpoint($endpoint);
@@ -2144,7 +2158,8 @@ class Auth_OpenID_FailureResponse extends Auth_OpenID_ConsumerResponse {
  *
  * @package OpenID
  */
-class Auth_OpenID_TypeURIMismatch extends Auth_OpenID_FailureResponse {
+class Auth_OpenID_TypeURIMismatch extends Auth_OpenID_FailureResponse
+{
 }
 
 /**
@@ -2153,8 +2168,9 @@ class Auth_OpenID_TypeURIMismatch extends Auth_OpenID_FailureResponse {
  *
  * @package OpenID
  */
-class Auth_OpenID_ServerErrorContainer {
-    function Auth_OpenID_ServerErrorContainer($error_text,
+class Auth_OpenID_ServerErrorContainer
+{
+    public function Auth_OpenID_ServerErrorContainer($error_text,
                                               $error_code,
                                               $message)
     {
@@ -2166,11 +2182,12 @@ class Auth_OpenID_ServerErrorContainer {
     /**
      * @access private
      */
-    function fromMessage($message)
+    public function fromMessage($message)
     {
         $error_text = $message->getArg(
            Auth_OpenID_OPENID_NS, 'error', '<no error message supplied>');
         $error_code = $message->getArg(Auth_OpenID_OPENID_NS, 'error_code');
+
         return new Auth_OpenID_ServerErrorContainer($error_text,
                                                     $error_code,
                                                     $message);
@@ -2189,10 +2206,11 @@ class Auth_OpenID_ServerErrorContainer {
  *
  * @package OpenID
  */
-class Auth_OpenID_CancelResponse extends Auth_OpenID_ConsumerResponse {
-    var $status = Auth_OpenID_CANCEL;
+class Auth_OpenID_CancelResponse extends Auth_OpenID_ConsumerResponse
+{
+    public $status = Auth_OpenID_CANCEL;
 
-    function Auth_OpenID_CancelResponse($endpoint)
+    public function Auth_OpenID_CancelResponse($endpoint)
     {
         $this->setEndpoint($endpoint);
     }
@@ -2215,15 +2233,14 @@ class Auth_OpenID_CancelResponse extends Auth_OpenID_ConsumerResponse {
  *
  * @package OpenID
  */
-class Auth_OpenID_SetupNeededResponse extends Auth_OpenID_ConsumerResponse {
-    var $status = Auth_OpenID_SETUP_NEEDED;
+class Auth_OpenID_SetupNeededResponse extends Auth_OpenID_ConsumerResponse
+{
+    public $status = Auth_OpenID_SETUP_NEEDED;
 
-    function Auth_OpenID_SetupNeededResponse($endpoint,
+    public function Auth_OpenID_SetupNeededResponse($endpoint,
                                              $setup_url = null)
     {
         $this->setEndpoint($endpoint);
         $this->setup_url = $setup_url;
     }
 }
-
-?>

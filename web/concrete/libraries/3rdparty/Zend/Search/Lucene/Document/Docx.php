@@ -32,7 +32,8 @@ require_once 'Zend/Search/Lucene/Document/OpenXml.php';
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Search_Lucene_Document_Docx extends Zend_Search_Lucene_Document_OpenXml {
+class Zend_Search_Lucene_Document_Docx extends Zend_Search_Lucene_Document_OpenXml
+{
     /**
      * Xml Schema - WordprocessingML
      *
@@ -43,11 +44,12 @@ class Zend_Search_Lucene_Document_Docx extends Zend_Search_Lucene_Document_OpenX
     /**
      * Object constructor
      *
-     * @param string  $fileName
-     * @param boolean $storeContent
+     * @param  string                       $fileName
+     * @param  boolean                      $storeContent
      * @throws Zend_Search_Lucene_Exception
      */
-    private function __construct($fileName, $storeContent) {
+    private function __construct($fileName, $storeContent)
+    {
         if (!class_exists('ZipArchive', false)) {
             require_once 'Zend/Search/Lucene/Exception.php';
             throw new Zend_Search_Lucene_Exception('MS Office documents processing functionality requires Zip extension to be loaded');
@@ -68,7 +70,7 @@ class Zend_Search_Lucene_Document_Docx extends Zend_Search_Lucene_Document_OpenX
             throw new Zend_Search_Lucene_Exception('Invalid archive or corrupted .docx file.');
         }
         $relations = simplexml_load_string($relationsXml);
-        foreach($relations->Relationship as $rel) {
+        foreach ($relations->Relationship as $rel) {
             if ($rel ["Type"] == Zend_Search_Lucene_Document_OpenXml::SCHEMA_OFFICEDOCUMENT) {
                 // Found office document! Read in contents...
                 $contents = simplexml_load_string($package->getFromName(
@@ -93,7 +95,7 @@ class Zend_Search_Lucene_Document_Docx extends Zend_Search_Lucene_Document_OpenX
                          // Break element
                          $documentBody[] = ' ';
                      } else {
-                         $documentBody[] = (string)$run;
+                         $documentBody[] = (string) $run;
                      }
                     }
 
@@ -135,12 +137,13 @@ class Zend_Search_Lucene_Document_Docx extends Zend_Search_Lucene_Document_OpenX
     /**
      * Load Docx document from a file
      *
-     * @param string  $fileName
-     * @param boolean $storeContent
+     * @param  string                                $fileName
+     * @param  boolean                               $storeContent
      * @return Zend_Search_Lucene_Document_Docx
      * @throws Zend_Search_Lucene_Document_Exception
      */
-    public static function loadDocxFile($fileName, $storeContent = false) {
+    public static function loadDocxFile($fileName, $storeContent = false)
+    {
         if (!is_readable($fileName)) {
             require_once 'Zend/Search/Lucene/Document/Exception.php';
             throw new Zend_Search_Lucene_Document_Exception('Provided file \'' . $fileName . '\' is not readable.');

@@ -98,12 +98,13 @@ class Zend_Validate_Alpha extends Zend_Validate_Abstract
     /**
      * Sets the allowWhiteSpace option
      *
-     * @param boolean $allowWhiteSpace
+     * @param  boolean           $allowWhiteSpace
      * @return Zend_Filter_Alpha Provides a fluent interface
      */
     public function setAllowWhiteSpace($allowWhiteSpace)
     {
         $this->allowWhiteSpace = (boolean) $allowWhiteSpace;
+
         return $this;
     }
 
@@ -112,13 +113,14 @@ class Zend_Validate_Alpha extends Zend_Validate_Abstract
      *
      * Returns true if and only if $value contains only alphabetic characters
      *
-     * @param  string $value
+     * @param  string  $value
      * @return boolean
      */
     public function isValid($value)
     {
         if (!is_string($value)) {
             $this->_error(self::INVALID);
+
             return false;
         }
 
@@ -126,6 +128,7 @@ class Zend_Validate_Alpha extends Zend_Validate_Abstract
 
         if ('' === $value) {
             $this->_error(self::STRING_EMPTY);
+
             return false;
         }
 
@@ -141,6 +144,7 @@ class Zend_Validate_Alpha extends Zend_Validate_Abstract
 
         if ($value !== self::$_filter->filter($value)) {
             $this->_error(self::NOT_ALPHA);
+
             return false;
         }
 

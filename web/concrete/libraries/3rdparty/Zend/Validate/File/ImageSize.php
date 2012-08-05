@@ -139,7 +139,7 @@ class Zend_Validate_File_ImageSize extends Zend_Validate_Abstract
                     $options['maxheight'] = array_shift($argv);
                 }
             }
-        } else if (!is_array($options)) {
+        } elseif (!is_array($options)) {
             require_once 'Zend/Validate/Exception.php';
             throw new Zend_Validate_Exception ('Invalid options to validator provided');
         }
@@ -196,7 +196,7 @@ class Zend_Validate_File_ImageSize extends Zend_Validate_Abstract
     /**
      * Sets the minimum image size
      *
-     * @param  array $options               The minimum image dimensions
+     * @param  array                        $options The minimum image dimensions
      * @throws Zend_Validate_Exception      When minwidth is greater than maxwidth
      * @throws Zend_Validate_Exception      When minheight is greater than maxheight
      * @return Zend_Validate_File_ImageSize Provides a fluent interface
@@ -233,9 +233,9 @@ class Zend_Validate_File_ImageSize extends Zend_Validate_Abstract
     /**
      * Sets the maximum image size
      *
-     * @param  array $options          The maximum image dimensions
-     * @throws Zend_Validate_Exception When maxwidth is smaller than minwidth
-     * @throws Zend_Validate_Exception When maxheight is smaller than minheight
+     * @param  array                      $options The maximum image dimensions
+     * @throws Zend_Validate_Exception    When maxwidth is smaller than minwidth
+     * @throws Zend_Validate_Exception    When maxheight is smaller than minheight
      * @return Zend_Validate_StringLength Provides a fluent interface
      */
     public function setImageMax($options)
@@ -270,7 +270,7 @@ class Zend_Validate_File_ImageSize extends Zend_Validate_Abstract
     /**
      * Sets the mimimum and maximum image width
      *
-     * @param  array $options               The image width dimensions
+     * @param  array                        $options The image width dimensions
      * @return Zend_Validate_File_ImageSize Provides a fluent interface
      */
     public function setImageWidth($options)
@@ -284,7 +284,7 @@ class Zend_Validate_File_ImageSize extends Zend_Validate_Abstract
     /**
      * Sets the mimimum and maximum image height
      *
-     * @param  array $options               The image height dimensions
+     * @param  array                        $options The image height dimensions
      * @return Zend_Validate_File_ImageSize Provides a fluent interface
      */
     public function setImageHeight($options)
@@ -301,8 +301,8 @@ class Zend_Validate_File_ImageSize extends Zend_Validate_Abstract
      * Returns true if and only if the imagesize of $value is at least min and
      * not bigger than max
      *
-     * @param  string $value Real file to check for image size
-     * @param  array  $file  File data from Zend_File_Transfer
+     * @param  string  $value Real file to check for image size
+     * @param  array   $file  File data from Zend_File_Transfer
      * @return boolean
      */
     public function isValid($value, $file = null)
@@ -359,6 +359,7 @@ class Zend_Validate_File_ImageSize extends Zend_Validate_Abstract
         }
 
         $this->_error($errorType);
+
         return false;
     }
 }

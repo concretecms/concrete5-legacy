@@ -20,12 +20,10 @@
  * @version    $Id: Abstract.php 23775 2011-03-01 17:25:24Z ralph $
  */
 
-
 /**
  * @see Zend_Mime
  */
 require_once 'Zend/Mime.php';
-
 
 /**
  * Abstract for sending eMails through different
@@ -121,7 +119,7 @@ abstract class Zend_Mail_Transport_Abstract
      * Content-Type of either multipart/alternative or multipart/mixed depending
      * on the mail parts present in the {@link $_mail Zend_Mail object} present.
      *
-     * @param string $boundary
+     * @param  string $boundary
      * @return array
      */
     protected function _getHeaders($boundary)
@@ -266,6 +264,7 @@ abstract class Zend_Mail_Transport_Abstract
 
             // Get headers
             $this->_headers = $this->_mail->getHeaders();
+
             return;
         }
 
@@ -297,7 +296,7 @@ abstract class Zend_Mail_Transport_Abstract
     /**
      * Send a mail using this transport
      *
-     * @param  Zend_Mail $mail
+     * @param Zend_Mail $mail
      * @access public
      * @return void
      * @throws Zend_Mail_Transport_Exception if mail is empty

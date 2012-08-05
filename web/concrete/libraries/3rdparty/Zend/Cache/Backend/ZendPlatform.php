@@ -30,7 +30,6 @@ require_once 'Zend/Cache/Backend.php';
  */
 require_once 'Zend/Cache/Backend/Interface.php';
 
-
 /**
  * Impementation of Zend Cache Backend using the Zend Platform (Output Content Caching)
  *
@@ -50,7 +49,7 @@ class Zend_Cache_Backend_ZendPlatform extends Zend_Cache_Backend implements Zend
      * Constructor
      * Validate that the Zend Platform is loaded and licensed
      *
-     * @param  array $options Associative array of options
+     * @param  array                $options Associative array of options
      * @throws Zend_Cache_Exception
      * @return void
      */
@@ -81,7 +80,7 @@ class Zend_Cache_Backend_ZendPlatform extends Zend_Cache_Backend implements Zend
      *
      * @param  string  $id                     Cache id
      * @param  boolean $doNotTestCacheValidity If set to true, the cache validity won't be tested
-     * @return string Cached data (or false)
+     * @return string  Cached data (or false)
      */
     public function load($id, $doNotTestCacheValidity = false)
     {
@@ -92,7 +91,7 @@ class Zend_Cache_Backend_ZendPlatform extends Zend_Cache_Backend implements Zend
             $lifetime = $this->_directives['lifetime'];
         }
         $res = output_cache_get($id, $lifetime);
-        if($res) {
+        if ($res) {
             return $res[0];
         } else {
             return false;
@@ -103,7 +102,7 @@ class Zend_Cache_Backend_ZendPlatform extends Zend_Cache_Backend implements Zend
     /**
      * Test if a cache is available or not (for the given id)
      *
-     * @param  string $id Cache id
+     * @param  string      $id Cache id
      * @return mixed|false false (a cache is not available) or "last modified" timestamp (int) of the available cache record
      */
     public function test($id)
@@ -112,6 +111,7 @@ class Zend_Cache_Backend_ZendPlatform extends Zend_Cache_Backend implements Zend
         if ($result) {
             return $result[1];
         }
+
         return false;
     }
 
@@ -121,10 +121,10 @@ class Zend_Cache_Backend_ZendPlatform extends Zend_Cache_Backend implements Zend
      * Note : $data is always "string" (serialization is done by the
      * core not by the backend)
      *
-     * @param  string $data             Data to cache
-     * @param  string $id               Cache id
-     * @param  array  $tags             Array of strings, the cache record will be tagged by each string entry
-     * @param  int    $specificLifetime If != false, set a specific lifetime for this cache record (null => infinite lifetime)
+     * @param  string  $data             Data to cache
+     * @param  string  $id               Cache id
+     * @param  array   $tags             Array of strings, the cache record will be tagged by each string entry
+     * @param  int     $specificLifetime If != false, set a specific lifetime for this cache record (null => infinite lifetime)
      * @return boolean true if no problem
      */
     public function save($data, $id, $tags = array(), $specificLifetime = false)
@@ -155,7 +155,7 @@ class Zend_Cache_Backend_ZendPlatform extends Zend_Cache_Backend implements Zend
     /**
      * Remove a cache record
      *
-     * @param  string $id Cache id
+     * @param  string  $id Cache id
      * @return boolean True if no problem
      */
     public function remove($id)
@@ -177,10 +177,10 @@ class Zend_Cache_Backend_ZendPlatform extends Zend_Cache_Backend implements Zend
      * Zend_Cache::CLEANING_MODE_MATCHING_ANY_TAG => remove cache entries matching any given tags
      *                                               ($tags can be an array of strings or a single string)
      *
-     * @param  string $mode Clean mode
-     * @param  array  $tags Array of tags
+     * @param  string               $mode Clean mode
+     * @param  array                $tags Array of tags
      * @throws Zend_Cache_Exception
-     * @return boolean True if no problem
+     * @return boolean              True if no problem
      */
     public function clean($mode = Zend_Cache::CLEANING_MODE_ALL, $tags = array())
     {
@@ -192,6 +192,7 @@ class Zend_Cache_Backend_ZendPlatform extends Zend_Cache_Backend implements Zend
                     return false;
                 }
                 $cache_dir .= '/.php_cache_api/';
+
                 return $this->_clean($cache_dir, $mode);
                 break;
             case Zend_Cache::CLEANING_MODE_MATCHING_TAG:
@@ -214,10 +215,12 @@ class Zend_Cache_Backend_ZendPlatform extends Zend_Cache_Backend implements Zend
                         output_cache_remove_key($id);
                     }
                 }
+
                 return true;
                 break;
             case Zend_Cache::CLEANING_MODE_NOT_MATCHING_TAG:
                 $this->_log("Zend_Cache_Backend_ZendPlatform::clean() : CLEANING_MODE_NOT_MATCHING_TAG is not supported by the Zend Platform backend");
+
                 return false;
                 break;
             case Zend_Cache::CLEANING_MODE_MATCHING_ANY_TAG:
@@ -240,6 +243,7 @@ class Zend_Cache_Backend_ZendPlatform extends Zend_Cache_Backend implements Zend
                         output_cache_remove_key($id);
                     }
                 }
+
                 return true;
                 break;
             default:
@@ -253,8 +257,8 @@ class Zend_Cache_Backend_ZendPlatform extends Zend_Cache_Backend implements Zend
      *
      * Remove all the cached files that need to be cleaned (according to mode and files mtime)
      *
-     * @param  string $dir  Path of directory ot clean
-     * @param  string $mode The same parameter as in Zend_Cache_Backend_ZendPlatform::clean()
+     * @param  string  $dir  Path of directory ot clean
+     * @param  string  $mode The same parameter as in Zend_Cache_Backend_ZendPlatform::clean()
      * @return boolean True if ok
      */
     private function _clean($dir, $mode)
@@ -274,7 +278,7 @@ class Zend_Cache_Backend_ZendPlatform extends Zend_Cache_Backend implements Zend
             } else {
                 if ($mode == Zend_Cache::CLEANING_MODE_ALL) {
                     $result = ($this->_remove($file)) && ($result);
-                } else if ($mode == Zend_Cache::CLEANING_MODE_OLD) {
+                } elseif ($mode == Zend_Cache::CLEANING_MODE_OLD) {
                     // Files older than lifetime get deleted from cache
                     if ($this->_directives['lifetime'] !== null) {
                         if ((time() - @filemtime($file)) > $this->_directives['lifetime']) {
@@ -285,6 +289,7 @@ class Zend_Cache_Backend_ZendPlatform extends Zend_Cache_Backend implements Zend
             }
         }
         $d->close();
+
         return $result;
     }
 
@@ -294,7 +299,7 @@ class Zend_Cache_Backend_ZendPlatform extends Zend_Cache_Backend implements Zend
      * If we can't remove the file (because of locks or any problem), we will touch
      * the file to invalidate it
      *
-     * @param  string $file Complete file path
+     * @param  string  $file Complete file path
      * @return boolean True if ok
      */
     private function _remove($file)
@@ -309,8 +314,10 @@ class Zend_Cache_Backend_ZendPlatform extends Zend_Cache_Backend implements Zend
             if (!file_exists($file)) {
                 return false;
             }
+
             return @touch($file, time() - 2*abs($this->_directives['lifetime']));
         }
+
         return true;
     }
 

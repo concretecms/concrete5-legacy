@@ -141,9 +141,9 @@ class Zend_Validate_File_Count extends Zend_Validate_Abstract
     /**
      * Sets the minimum file count
      *
-     * @param  integer|array $min The minimum file count
+     * @param  integer|array            $min The minimum file count
      * @return Zend_Validate_File_Count Provides a fluent interface
-     * @throws Zend_Validate_Exception When min is greater than max
+     * @throws Zend_Validate_Exception  When min is greater than max
      */
     public function setMin($min)
     {
@@ -164,6 +164,7 @@ class Zend_Validate_File_Count extends Zend_Validate_Abstract
         }
 
         $this->_min = $min;
+
         return $this;
     }
 
@@ -180,9 +181,9 @@ class Zend_Validate_File_Count extends Zend_Validate_Abstract
     /**
      * Sets the maximum file count
      *
-     * @param  integer|array $max The maximum file count
+     * @param  integer|array              $max The maximum file count
      * @return Zend_Validate_StringLength Provides a fluent interface
-     * @throws Zend_Validate_Exception When max is smaller than min
+     * @throws Zend_Validate_Exception    When max is smaller than min
      */
     public function setMax($max)
     {
@@ -203,6 +204,7 @@ class Zend_Validate_File_Count extends Zend_Validate_Abstract
         }
 
         $this->_max = $max;
+
         return $this;
     }
 
@@ -279,6 +281,7 @@ class Zend_Validate_File_Count extends Zend_Validate_Abstract
         }
 
         $this->_error($errorType);
+
         return false;
     }
 }

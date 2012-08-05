@@ -9,15 +9,16 @@
 /**
  * Require the base class file.
  */
-require_once "Auth/OpenID/SQLStore.php";
+require_once 'Auth/OpenID/SQLStore.php';
 
 /**
  * An SQL store that uses SQLite as its backend.
  *
  * @package OpenID
  */
-class Auth_OpenID_SQLiteStore extends Auth_OpenID_SQLStore {
-    function setSQL()
+class Auth_OpenID_SQLiteStore extends Auth_OpenID_SQLStore
+{
+    public function setSQL()
     {
         $this->sql['nonce_table'] =
             "CREATE TABLE %s (server_url VARCHAR(2047), timestamp INTEGER, ".
@@ -55,7 +56,7 @@ class Auth_OpenID_SQLiteStore extends Auth_OpenID_SQLStore {
     /**
      * @access private
      */
-    function _add_nonce($server_url, $timestamp, $salt)
+    public function _add_nonce($server_url, $timestamp, $salt)
     {
         // PECL SQLite extensions 1.0.3 and older (1.0.3 is the
         // current release at the time of this writing) have a broken
@@ -67,5 +68,3 @@ class Auth_OpenID_SQLiteStore extends Auth_OpenID_SQLStore {
         return parent::_add_nonce('x' . $server_url, $timestamp, $salt);
     }
 }
-
-?>

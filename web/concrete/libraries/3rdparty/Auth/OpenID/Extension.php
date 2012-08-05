@@ -17,19 +17,20 @@ require_once 'Auth/OpenID/Message.php';
  *
  * @package OpenID
  */
-class Auth_OpenID_Extension {
+class Auth_OpenID_Extension
+{
     /**
      * ns_uri: The namespace to which to add the arguments for this
      * extension
      */
-    var $ns_uri = null;
-    var $ns_alias = null;
+    public $ns_uri = null;
+    public $ns_alias = null;
 
     /**
      * Get the string arguments that should be added to an OpenID
      * message for this extension.
      */
-    function getExtensionArgs()
+    public function getExtensionArgs()
     {
         return null;
     }
@@ -39,7 +40,7 @@ class Auth_OpenID_Extension {
      *
      * Returns the message with the extension arguments added.
      */
-    function toMessage(&$message)
+    public function toMessage(&$message)
     {
         $implicit = $message->isOpenID1();
         $added = $message->namespaces->addAlias($this->ns_uri,
@@ -55,8 +56,7 @@ class Auth_OpenID_Extension {
 
         $message->updateArgs($this->ns_uri,
                              $this->getExtensionArgs());
+
         return $message;
     }
 }
-
-?>

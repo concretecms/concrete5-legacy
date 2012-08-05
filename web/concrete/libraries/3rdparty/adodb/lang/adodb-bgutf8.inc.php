@@ -1,7 +1,7 @@
 ﻿<?php
 /*
-	Bulgarian language, v1.0, 25.03.2004, encoding by UTF-8 charset
-	contributed by Valentin Sheiretsky <valio#valio.eu.org>
+    Bulgarian language, v1.0, 25.03.2004, encoding by UTF-8 charset
+    contributed by Valentin Sheiretsky <valio#valio.eu.org>
 */
 
 $ADODB_LANG_ARRAY = array (

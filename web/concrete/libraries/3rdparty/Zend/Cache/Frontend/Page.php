@@ -20,12 +20,10 @@
  * @version    $Id: Page.php 23775 2011-03-01 17:25:24Z ralph $
  */
 
-
 /**
  * @see Zend_Cache_Core
  */
 require_once 'Zend/Cache/Core.php';
-
 
 /**
  * @package    Zend_Cache
@@ -122,8 +120,8 @@ class Zend_Cache_Frontend_Page extends Zend_Cache_Core
     /**
      * Constructor
      *
-     * @param  array   $options                Associative array of options
-     * @param  boolean $doNotTestCacheValidity If set to true, the cache validity won't be tested
+     * @param  array                $options                Associative array of options
+     * @param  boolean              $doNotTestCacheValidity If set to true, the cache validity won't be tested
      * @throws Zend_Cache_Exception
      * @return void
      */
@@ -156,7 +154,7 @@ class Zend_Cache_Frontend_Page extends Zend_Cache_Core
     /**
      * Specific setter for the 'default_options' option (with some additional tests)
      *
-     * @param  array $options Associative array
+     * @param  array                $options Associative array
      * @throws Zend_Cache_Exception
      * @return void
      */
@@ -179,7 +177,7 @@ class Zend_Cache_Frontend_Page extends Zend_Cache_Core
     /**
      * Set the deprecated contentTypeMemorization option
      *
-     * @param boolean $value value
+     * @param  boolean $value value
      * @return void
      * @deprecated
      */
@@ -205,7 +203,7 @@ class Zend_Cache_Frontend_Page extends Zend_Cache_Core
     /**
      * Specific setter for the 'regexps' option (with some additional tests)
      *
-     * @param  array $options Associative array
+     * @param  array                $options Associative array
      * @throws Zend_Cache_Exception
      * @return void
      */
@@ -288,6 +286,7 @@ class Zend_Cache_Frontend_Page extends Zend_Cache_Core
         }
         ob_start(array($this, '_flush'));
         ob_implicit_flush(false);
+
         return false;
     }
 
@@ -314,7 +313,7 @@ class Zend_Cache_Frontend_Page extends Zend_Cache_Core
         $contentType = null;
         $storedHeaders = array();
         $headersList = headers_list();
-        foreach($this->_specificOptions['memorize_headers'] as $key=>$headerName) {
+        foreach ($this->_specificOptions['memorize_headers'] as $key=>$headerName) {
             foreach ($headersList as $headerSent) {
                 $tmp = explode(':', $headerSent);
                 $headerSentName = trim(array_shift($tmp));
@@ -329,13 +328,14 @@ class Zend_Cache_Frontend_Page extends Zend_Cache_Core
             'headers' => $storedHeaders
         );
         $this->save($array, null, $this->_activeOptions['tags'], $this->_activeOptions['specific_lifetime'], $this->_activeOptions['priority']);
+
         return $data;
     }
 
     /**
      * Make an id depending on REQUEST_URI and superglobal arrays (depending on options)
      *
-     * @return mixed|false a cache id (string), false if the cache should have not to be used
+     * @return mixed|false a cache id (string) , false if the cache should have not to be used
      */
     protected function _makeId()
     {
@@ -349,15 +349,16 @@ class Zend_Cache_Frontend_Page extends Zend_Cache_Core
             }
             $tmp = $tmp . $tmp2;
         }
+
         return md5($tmp);
     }
 
     /**
      * Make a partial id depending on options
      *
-     * @param  string $arrayName Superglobal array name
-     * @param  bool   $bool1     If true, cache is still on even if there are some variables in the superglobal array
-     * @param  bool   $bool2     If true, we have to use the content of the superglobal array to make a partial id
+     * @param  string      $arrayName Superglobal array name
+     * @param  bool        $bool1     If true, cache is still on even if there are some variables in the superglobal array
+     * @param  bool        $bool2     If true, we have to use the content of the superglobal array to make a partial id
      * @return mixed|false Partial id (string) or false if the cache should have not to be used
      */
     protected function _makePartialId($arrayName, $bool1, $bool2)
@@ -393,11 +394,13 @@ class Zend_Cache_Frontend_Page extends Zend_Cache_Core
             if ($bool2) {
                 return serialize($var);
             }
+
             return '';
         }
         if (count($var) > 0) {
             return false;
         }
+
         return '';
     }
 

@@ -179,19 +179,19 @@ class Zend_Validate_File_MimeType extends Zend_Validate_Abstract
      * if null, the MAGIC constant from php is used
      * if the MAGIC file is errorous, no file will be set
      *
-     * @param  string $file
-     * @throws Zend_Validate_Exception When finfo can not read the magicfile
+     * @param  string                      $file
+     * @throws Zend_Validate_Exception     When finfo can not read the magicfile
      * @return Zend_Validate_File_MimeType Provides fluid interface
      */
     public function setMagicFile($file)
     {
         if (empty($file)) {
             $this->_magicfile = null;
-        } else if (!(class_exists('finfo', false))) {
+        } elseif (!(class_exists('finfo', false))) {
             $this->_magicfile = null;
             require_once 'Zend/Validate/Exception.php';
             throw new Zend_Validate_Exception('Magicfile can not be set. There is no finfo extension installed');
-        } else if (!is_file($file) || !is_readable($file)) {
+        } elseif (!is_file($file) || !is_readable($file)) {
             require_once 'Zend/Validate/Exception.php';
             throw new Zend_Validate_Exception('The given magicfile can not be read');
         } else {
@@ -223,19 +223,20 @@ class Zend_Validate_File_MimeType extends Zend_Validate_Abstract
      * Defines if the http header should be used
      * Note that this is unsave and therefor the default value is false
      *
-     * @param  boolean $checkHeader
+     * @param  boolean                     $checkHeader
      * @return Zend_Validate_File_MimeType Provides fluid interface
      */
     public function enableHeaderCheck($headerCheck = true)
     {
         $this->_headerCheck = (boolean) $headerCheck;
+
         return $this;
     }
 
     /**
      * Returns the set mimetypes
      *
-     * @param  boolean $asArray Returns the values as array, when false an concated string is returned
+     * @param  boolean      $asArray Returns the values as array, when false an concated string is returned
      * @return string|array
      */
     public function getMimeType($asArray = false)
@@ -252,20 +253,21 @@ class Zend_Validate_File_MimeType extends Zend_Validate_Abstract
     /**
      * Sets the mimetypes
      *
-     * @param  string|array $mimetype The mimetypes to validate
+     * @param  string|array                 $mimetype The mimetypes to validate
      * @return Zend_Validate_File_Extension Provides a fluent interface
      */
     public function setMimeType($mimetype)
     {
         $this->_mimetype = null;
         $this->addMimeType($mimetype);
+
         return $this;
     }
 
     /**
      * Adds the mimetypes
      *
-     * @param  string|array $mimetype The mimetypes to add for validation
+     * @param  string|array                 $mimetype The mimetypes to add for validation
      * @return Zend_Validate_File_Extension Provides a fluent interface
      */
     public function addMimeType($mimetype)
@@ -310,8 +312,8 @@ class Zend_Validate_File_MimeType extends Zend_Validate_Abstract
      * of mimetypes can be checked. If you give for example "image" all image
      * mime types will be accepted like "image/gif", "image/jpeg" and so on.
      *
-     * @param  string $value Real file to check for mimetype
-     * @param  array  $file  File data from Zend_File_Transfer
+     * @param  string  $value Real file to check for mimetype
+     * @param  array   $file  File data from Zend_File_Transfer
      * @return boolean
      */
     public function isValid($value, $file = null)
@@ -367,7 +369,7 @@ class Zend_Validate_File_MimeType extends Zend_Validate_Abstract
         $types = explode('/', $this->_type);
         $types = array_merge($types, explode('-', $this->_type));
         $types = array_merge($types, explode(';', $this->_type));
-        foreach($mimetype as $mime) {
+        foreach ($mimetype as $mime) {
             if (in_array($mime, $types)) {
                 return true;
             }
@@ -387,6 +389,7 @@ class Zend_Validate_File_MimeType extends Zend_Validate_Abstract
     {
         $this->_value = $file['name'];
         $this->_error($errorType);
+
         return false;
     }
 }

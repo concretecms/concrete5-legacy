@@ -20,7 +20,6 @@
  * @version    $Id: Abstract.php 23775 2011-03-01 17:25:24Z ralph $
  */
 
-
 /**
  * @category   Zend
  * @package    Zend_Mail
@@ -68,14 +67,15 @@ abstract class Zend_Mail_Storage_Abstract implements Countable, ArrayAccess, See
      *   - false if a feature is not supported
      *   - null is it's not yet known or it can't be know if a feature is supported
      *
-     * @param  string $var  property name
-     * @return bool         supported or not
+     * @param  string                      $var property name
+     * @return bool                        supported or not
      * @throws Zend_Mail_Storage_Exception
      */
     public function __get($var)
     {
         if (strpos($var, 'has') === 0) {
             $var = strtolower(substr($var, 3));
+
             return isset($this->_has[$var]) ? $this->_has[$var] : null;
         }
 
@@ -85,7 +85,6 @@ abstract class Zend_Mail_Storage_Abstract implements Countable, ArrayAccess, See
         require_once 'Zend/Mail/Storage/Exception.php';
         throw new Zend_Mail_Storage_Exception($var . ' not found');
     }
-
 
     /**
      * Get a full list of features supported by the specific mail lib and the server
@@ -97,33 +96,29 @@ abstract class Zend_Mail_Storage_Abstract implements Countable, ArrayAccess, See
         return $this->_has;
     }
 
-
     /**
      * Count messages messages in current box/folder
      *
-     * @return int number of messages
+     * @return int                         number of messages
      * @throws Zend_Mail_Storage_Exception
      */
     abstract public function countMessages();
 
-
     /**
      * Get a list of messages with number and size
      *
-     * @param  int $id  number of message
+     * @param  int       $id number of message
      * @return int|array size of given message of list with all messages as array(num => size)
      */
     abstract public function getSize($id = 0);
 
-
     /**
      * Get a message with headers and body
      *
-     * @param int $id number of message
+     * @param  int               $id number of message
      * @return Zend_Mail_Message
      */
     abstract public function getMessage($id);
-
 
     /**
      * Get raw header of message or part
@@ -131,7 +126,7 @@ abstract class Zend_Mail_Storage_Abstract implements Countable, ArrayAccess, See
      * @param  int               $id       number of message
      * @param  null|array|string $part     path to part or null for messsage header
      * @param  int               $topLines include this many lines with header (after an empty line)
-     * @return string raw header
+     * @return string            raw header
      */
     abstract public function getRawHeader($id, $part = null, $topLines = 0);
 
@@ -140,18 +135,17 @@ abstract class Zend_Mail_Storage_Abstract implements Countable, ArrayAccess, See
      *
      * @param  int               $id   number of message
      * @param  null|array|string $part path to part or null for messsage content
-     * @return string raw content
+     * @return string            raw content
      */
     abstract public function getRawContent($id, $part = null);
 
     /**
      * Create instance with parameters
      *
-     * @param  array $params mail reader specific parameters
+     * @param  array                       $params mail reader specific parameters
      * @throws Zend_Mail_Storage_Exception
      */
     abstract public function __construct($params);
-
 
     /**
      * Destructor calls close() and therefore closes the resource.
@@ -161,7 +155,6 @@ abstract class Zend_Mail_Storage_Abstract implements Countable, ArrayAccess, See
         $this->close();
     }
 
-
     /**
      * Close resource for mail lib. If you need to control, when the resource
      * is closed. Otherwise the destructor would call this.
@@ -169,7 +162,6 @@ abstract class Zend_Mail_Storage_Abstract implements Countable, ArrayAccess, See
      * @return null
      */
     abstract public function close();
-
 
     /**
      * Keep the resource alive.
@@ -190,8 +182,8 @@ abstract class Zend_Mail_Storage_Abstract implements Countable, ArrayAccess, See
      *
      * if storage does not support unique ids it's the same as the message number
      *
-     * @param int|null $id message number
-     * @return array|string message number for given message or all messages as array
+     * @param  int|null                    $id message number
+     * @return array|string                message number for given message or all messages as array
      * @throws Zend_Mail_Storage_Exception
      */
     abstract public function getUniqueId($id = null);
@@ -202,8 +194,8 @@ abstract class Zend_Mail_Storage_Abstract implements Countable, ArrayAccess, See
      * I.e. if you have a webmailer that supports deleting messages you should use unique ids
      * as parameter and use this method to translate it to message number right before calling removeMessage()
      *
-     * @param string $id unique id
-     * @return int message number
+     * @param  string                      $id unique id
+     * @return int                         message number
      * @throws Zend_Mail_Storage_Exception
      */
     abstract public function getNumberByUniqueId($id);
@@ -213,7 +205,7 @@ abstract class Zend_Mail_Storage_Abstract implements Countable, ArrayAccess, See
     /**
      * Countable::count()
      *
-     * @return   int
+     * @return int
      */
      public function count()
      {
@@ -233,7 +225,7 @@ abstract class Zend_Mail_Storage_Abstract implements Countable, ArrayAccess, See
             if ($this->getMessage($id)) {
                 return true;
             }
-        } catch(Zend_Mail_Storage_Exception $e) {}
+        } catch (Zend_Mail_Storage_Exception $e) {}
 
         return false;
      }
@@ -340,6 +332,7 @@ abstract class Zend_Mail_Storage_Abstract implements Countable, ArrayAccess, See
         if ($this->_iterationMax === null) {
           $this->_iterationMax = $this->countMessages();
         }
+
         return $this->_iterationPos && $this->_iterationPos <= $this->_iterationMax;
      }
 

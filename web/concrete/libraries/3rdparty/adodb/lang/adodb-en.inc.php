@@ -1,7 +1,7 @@
 <?php
 
 $ADODB_LANG_ARRAY = array (
-			'LANG'                      => 'en',
+            'LANG'                      => 'en',
             DB_ERROR                    => 'unknown error',
             DB_ERROR_ALREADY_EXISTS     => 'already exists',
             DB_ERROR_CANNOT_CREATE      => 'can not create',
@@ -30,4 +30,3 @@ $ADODB_LANG_ARRAY = array (
             DB_ERROR_NOSUCHDB           => 'no such database',
             DB_ERROR_ACCESS_VIOLATION   => 'insufficient permissions'
 );
-?>

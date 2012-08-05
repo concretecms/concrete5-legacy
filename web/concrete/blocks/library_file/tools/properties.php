@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 $b = Block::getByID($_REQUEST['bID']);
 $bc = $b->getInstance();
@@ -14,7 +14,7 @@ $bc = $b->getInstance();
 <br/>
 <h2><?=t('Added By')?></h2>
 <div>
-<?
+<?php
 $uID = $b->getBlockUserID();
 $ui = UserInfo::getByID($uID);
 print $ui->getUserName();
@@ -22,18 +22,18 @@ print $ui->getUserName();
 </div>
 <br/>
 
-<? 
+<?php
 $d = $bc->getDimensions();
 if ($d) { ?>
 
 <h2><?=t('Dimensions')?></h2>
 <div><?=$d[0]?>x<?=$d[1]?></div>
 <br/>
-<? } ?>
+<?php } ?>
 
-<h2><?=t('Date Added:')?></h2> 
+<h2><?=t('Date Added:')?></h2>
 <div><?=date('F d, Y', strtotime($b->getBlockDateAdded()))?></div>
 <br/>
 
-<h2><?=t('Date Modified:')?></h2> 
+<h2><?=t('Date Modified:')?></h2>
 <div><?=date('F d, Y', strtotime($b->getBlockDateLastModified()))?></div>

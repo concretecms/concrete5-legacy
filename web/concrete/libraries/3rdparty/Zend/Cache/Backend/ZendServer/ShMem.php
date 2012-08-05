@@ -20,13 +20,11 @@
  * @version    $Id: ShMem.php 23775 2011-03-01 17:25:24Z ralph $
  */
 
-
 /** @see Zend_Cache_Backend_Interface */
 require_once 'Zend/Cache/Backend/Interface.php';
 
 /** @see Zend_Cache_Backend_ZendServer */
 require_once 'Zend/Cache/Backend/ZendServer.php';
-
 
 /**
  * @package    Zend_Cache
@@ -39,7 +37,7 @@ class Zend_Cache_Backend_ZendServer_ShMem extends Zend_Cache_Backend_ZendServer 
     /**
      * Constructor
      *
-     * @param  array $options associative array of options
+     * @param  array                $options associative array of options
      * @throws Zend_Cache_Exception
      */
     public function __construct(array $options = array())
@@ -53,9 +51,9 @@ class Zend_Cache_Backend_ZendServer_ShMem extends Zend_Cache_Backend_ZendServer 
     /**
      * Store data
      *
-     * @param mixed  $data        Object to store
-     * @param string $id          Cache id
-     * @param int    $timeToLive  Time to live in seconds
+     * @param mixed  $data       Object to store
+     * @param string $id         Cache id
+     * @param int    $timeToLive Time to live in seconds
      *
      */
     protected function _store($data, $id, $timeToLive)
@@ -64,15 +62,17 @@ class Zend_Cache_Backend_ZendServer_ShMem extends Zend_Cache_Backend_ZendServer 
                                   $data,
                                   $timeToLive) === false) {
             $this->_log('Store operation failed.');
+
             return false;
         }
+
         return true;
     }
 
     /**
      * Fetch data
      *
-     * @param string $id          Cache id
+     * @param string $id Cache id
      */
     protected function _fetch($id)
     {
@@ -82,7 +82,7 @@ class Zend_Cache_Backend_ZendServer_ShMem extends Zend_Cache_Backend_ZendServer 
     /**
      * Unset data
      *
-     * @param string $id          Cache id
+     * @param  string  $id Cache id
      * @return boolean true if no problem
      */
     protected function _unset($id)

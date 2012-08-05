@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 global $c;
 Loader::model('collection_types');
@@ -6,185 +6,179 @@ Loader::model('collection_attributes');
 $dt = Loader::helper('form/date_time');
 $uh = Loader::helper('form/user_selector');
 
-
 if ($cp->canAdminPage()) {
-	$ctArray = CollectionType::getList();
+    $ctArray = CollectionType::getList();
 }
 
 $approveImmediately = false;
 if ($_REQUEST['approveImmediately'] == 1) {
-	$approveImmediately = 1;
+    $approveImmediately = 1;
 }
 ?>
 <div class="ccm-pane-controls ccm-ui">
-<? if ($approveImmediately) { ?>
-	<div class="alert-message block-message notice">
-		<?=t("Note: Since you haven't checked this page out for editing, these changes will immediately be approved.")?>
-	</div>
-<? } ?>
+<?php if ($approveImmediately) { ?>
+    <div class="alert-message block-message notice">
+        <?=t("Note: Since you haven't checked this page out for editing, these changes will immediately be approved.")?>
+    </div>
+<?php } ?>
 
 <form method="post" name="permissionForm" id="ccmMetadataForm" action="<?=$c->getCollectionAction()?>">
 <input type="hidden" name="approveImmediately" value="<?=$approveImmediately?>" />
 <input type="hidden" name="rel" value="<?=$_REQUEST['rel']?>" />
 
-	<script type="text/javascript"> 
-		
-		function ccm_triggerSelectUser(uID, uName) {
-			$('#ccm-uID').val(uID);
-			$('#ccm-uName').html(uName);
-		}
-		
-		
-		var ccm_activePropertiesTab = "ccm-properties-standard";
-		
-		$("#ccm-properties-tabs a").click(function() {
-			$("li.active").removeClass('active');
-			$("#" + ccm_activePropertiesTab + "-tab").hide();
-			ccm_activePropertiesTab = $(this).attr('id');
-			$(this).parent().addClass("active");
-			$("#" + ccm_activePropertiesTab + "-tab").show();
-			
-			if (ccm_activePropertiesTab == 'ccm-properties-custom') {
-				<? if ($approveImmediately) { ?>
-					$('#ccm-dialog-content1').dialog('option','height','620');
-				<? } else { ?>
-					$('#ccm-dialog-content1').dialog('option','height','570');
-				<? } ?>
-			} else {
-				<? if ($approveImmediately) { ?>
-					$('#ccm-dialog-content1').dialog('option','height','540');
-				<? } else { ?>
-					$('#ccm-dialog-content1').dialog('option','height','490');
-				<? } ?>
-			}
-			$('#ccm-dialog-content1').dialog('option','position','center');
+    <script type="text/javascript">
 
-		});
-		
-		$(function() {
-			$("#ccmMetadataForm").ajaxForm({
-				type: 'POST',
-				iframe: true,
-				beforeSubmit: function() {
-					jQuery.fn.dialog.showLoader();
-				},
-				success: function(r) {
-					try {
-						var r = eval('(' + r + ')');
-						jQuery.fn.dialog.hideLoader();
-						jQuery.fn.dialog.closeTop();
-						if (r != null && r.rel == 'SITEMAP') {
-							ccmSitemapHighlightPageLabel(r.cID, r.name);
-						}
-						ccmAlert.hud(ccmi18n.savePropertiesMsg, 2000, 'success', ccmi18n.properties);
-					} catch(e) {
-						alert(r);
-					}
-				}
-			});
-		});
-	</script>
-	
+        function ccm_triggerSelectUser(uID, uName)
+        {
+            $('#ccm-uID').val(uID);
+            $('#ccm-uName').html(uName);
+        }
 
-	<div id="ccm-required-meta">
-	
-	
-	<? if (!$c->isMasterCollection()) { ?>
-	<ul class="tabs" id="ccm-properties-tabs">
-		<li class="active"><a href="javascript:void(0)" id="ccm-properties-standard"><?=t('Standard Properties')?></a></li>
-		<li><a href="javascript:void(0)" id="ccm-properties-custom"><?=t('Custom Attributes')?></a></li>
-		<li <? if ($c->isMasterCollection()) { ?>style="display: none"<? } ?>><a href="javascript:void(0)" id="ccm-page-paths"><?=t('Page Paths and Location')?></a></li>
-	</ul>
-	<? } ?>
+        var ccm_activePropertiesTab = "ccm-properties-standard";
 
-	<div id="ccm-properties-standard-tab" <? if ($c->isMasterCollection()) { ?>style="display: none" <? } ?>>
-	
-	<div class="clearfix">
-		<label for="cName"><?=t('Name')?></label>
-		<div class="input"><input type="text" id="cName" name="cName" value="<?=htmlentities( $c->getCollectionName(), ENT_QUOTES, APP_CHARSET) ?>" />
-			<span class="help-inline"><?=t("Page ID: %s", $c->getCollectionID())?></span>
-		</div>
-	</div>
+        $("#ccm-properties-tabs a").click(function() {
+            $("li.active").removeClass('active');
+            $("#" + ccm_activePropertiesTab + "-tab").hide();
+            ccm_activePropertiesTab = $(this).attr('id');
+            $(this).parent().addClass("active");
+            $("#" + ccm_activePropertiesTab + "-tab").show();
 
-	<div class="clearfix">
-		<label for="cDatePublic"><?=t('Public Date/Time')?></label>
-		<div class="input"><? print $dt->datetime('cDatePublic', $c->getCollectionDatePublic(null, 'user')); ?></div>
-	</div>
+            if (ccm_activePropertiesTab == 'ccm-properties-custom') {
+                <?php if ($approveImmediately) { ?>
+                    $('#ccm-dialog-content1').dialog('option','height','620');
+                <?php } else { ?>
+                    $('#ccm-dialog-content1').dialog('option','height','570');
+                <?php } ?>
+            } else {
+                <?php if ($approveImmediately) { ?>
+                    $('#ccm-dialog-content1').dialog('option','height','540');
+                <?php } else { ?>
+                    $('#ccm-dialog-content1').dialog('option','height','490');
+                <?php } ?>
+            }
+            $('#ccm-dialog-content1').dialog('option','position','center');
 
+        });
 
-	<div class="clearfix">
-	<label><?=t('Owner')?></label>
-	<div class="input">
-		<? 
-		print $uh->selectUser('uID', $c->getCollectionUserID());
-		?>
-	</div>
-	</div>
-		
-	
-	<div class="clearfix">
-	<label for="cDescription"><?=t('Description')?></label>
-	<div class="input"><textarea id="cDescription" name="cDescription" class="ccm-input-text" style="width: 495px; height: 50px"><?=$c->getCollectionDescription()?></textarea></div>
-	</div>
-	
-	</div>
-	
-	<div id="ccm-page-paths-tab" style="display: none">
-		
-		<div class="clearfix">
-		<label for="cHandle"><?= t('Canonical URL')?></label>
-		<div class="input">
-		<?php if (!$c->isGeneratedCollection()) { ?>
-			<?=BASE_URL . DIR_REL;?><? if (URL_REWRITING == false) { ?>/<?=DISPATCHER_FILENAME?><? } ?><?
-			$cPath = substr($c->getCollectionPath(), strrpos($c->getCollectionPath(), '/') + 1);
-			print substr($c->getCollectionPath(), 0, strrpos($c->getCollectionPath(), '/'))?>/<input type="text" name="cHandle" value="<?php echo $cPath?>" id="cHandle"><input type="hidden" name="oldCHandle" id="oldCHandle" value="<?php echo $c->getCollectionHandle()?>"><br /><br />
-		<?php  } else { ?>
-			<?php echo $c->getCollectionHandle()?><br /><br />
-		<?php  } ?>
-			<span class="help-block"><?=t('This page must always be available from at least one URL. That URL is listed above.')?></span>
-		</div>
-		</div>
-		
-		<?php if (!$c->isGeneratedCollection()) { ?>
-		<div class="clearfix" id="ccm-more-page-paths">
-			<label><?= t('More URLs') ?></label>
+        $(function() {
+            $("#ccmMetadataForm").ajaxForm({
+                type: 'POST',
+                iframe: true,
+                beforeSubmit: function() {
+                    jQuery.fn.dialog.showLoader();
+                },
+                success: function(r) {
+                    try {
+                        var r = eval('(' + r + ')');
+                        jQuery.fn.dialog.hideLoader();
+                        jQuery.fn.dialog.closeTop();
+                        if (r != null && r.rel == 'SITEMAP') {
+                            ccmSitemapHighlightPageLabel(r.cID, r.name);
+                        }
+                        ccmAlert.hud(ccmi18n.savePropertiesMsg, 2000, 'success', ccmi18n.properties);
+                    } catch (e) {
+                        alert(r);
+                    }
+                }
+            });
+        });
+    </script>
 
-			<?php
-				$paths = $c->getPagePaths();
-				foreach ($paths as $path) {
-					if (!$path['ppIsCanonical']) {
-						$ppID = $path['ppID'];
-						$cPath = $path['cPath'];
-						echo '<div class="input ccm-meta-path">' .
-			     			'<input type="text" name="ppURL-' . $ppID . '" class="ccm-input-text" value="' . $cPath . '" id="ppID-'. $ppID . '"> ' .
-			     			'<a href="javascript:void(0)" class="ccm-meta-path-del">' . t('Remove Path') . '</a></div>'."\n";
-					}
-				}
-			?>
-		    <div class="input ccm-meta-path">
-	     		<input type="text" name="ppURL-add-0" class="ccm-input-text" value="" id="ppID-add-0">
-		 		<a href="javascript:void(0)" class="ccm-meta-path-add"><?=t('Add Path')?></a>
-			</div>
-		</div>
-		<?php } ?>
-	
-	</div>
-	
-	<style type="text/css">
-	#ccm-more-page-paths div.input {margin-bottom: 10px;}
-	</style>
-	
-	<div id="ccm-properties-custom-tab" <? if (!$c->isMasterCollection()) { ?>style="display: none" <? } ?>>
-		<? Loader::element('collection_metadata_fields', array('c'=>$c ) ); ?>
-	</div>
+    <div id="ccm-required-meta">
 
-	
-	<input type="hidden" name="update_metadata" value="1" />
-	<input type="hidden" name="processCollection" value="1">
-	<div class="ccm-spacer">&nbsp;</div>
+    <?php if (!$c->isMasterCollection()) { ?>
+    <ul class="tabs" id="ccm-properties-tabs">
+        <li class="active"><a href="javascript:void(0)" id="ccm-properties-standard"><?=t('Standard Properties')?></a></li>
+        <li><a href="javascript:void(0)" id="ccm-properties-custom"><?=t('Custom Attributes')?></a></li>
+        <li <?php if ($c->isMasterCollection()) { ?>style="display: none"<?php } ?>><a href="javascript:void(0)" id="ccm-page-paths"><?=t('Page Paths and Location')?></a></li>
+    </ul>
+    <?php } ?>
+
+    <div id="ccm-properties-standard-tab" <?php if ($c->isMasterCollection()) { ?>style="display: none" <?php } ?>>
+
+    <div class="clearfix">
+        <label for="cName"><?=t('Name')?></label>
+        <div class="input"><input type="text" id="cName" name="cName" value="<?=htmlentities( $c->getCollectionName(), ENT_QUOTES, APP_CHARSET) ?>" />
+            <span class="help-inline"><?=t("Page ID: %s", $c->getCollectionID())?></span>
+        </div>
+    </div>
+
+    <div class="clearfix">
+        <label for="cDatePublic"><?=t('Public Date/Time')?></label>
+        <div class="input"><?php print $dt->datetime('cDatePublic', $c->getCollectionDatePublic(null, 'user')); ?></div>
+    </div>
+
+    <div class="clearfix">
+    <label><?=t('Owner')?></label>
+    <div class="input">
+        <?php
+        print $uh->selectUser('uID', $c->getCollectionUserID());
+        ?>
+    </div>
+    </div>
+
+    <div class="clearfix">
+    <label for="cDescription"><?=t('Description')?></label>
+    <div class="input"><textarea id="cDescription" name="cDescription" class="ccm-input-text" style="width: 495px; height: 50px"><?=$c->getCollectionDescription()?></textarea></div>
+    </div>
+
+    </div>
+
+    <div id="ccm-page-paths-tab" style="display: none">
+
+        <div class="clearfix">
+        <label for="cHandle"><?= t('Canonical URL')?></label>
+        <div class="input">
+        <?php if (!$c->isGeneratedCollection()) { ?>
+            <?=BASE_URL . DIR_REL;?><?php if (URL_REWRITING == false) { ?>/<?=DISPATCHER_FILENAME?><?php } ?><?php
+            $cPath = substr($c->getCollectionPath(), strrpos($c->getCollectionPath(), '/') + 1);
+            print substr($c->getCollectionPath(), 0, strrpos($c->getCollectionPath(), '/'))?>/<input type="text" name="cHandle" value="<?php echo $cPath?>" id="cHandle"><input type="hidden" name="oldCHandle" id="oldCHandle" value="<?php echo $c->getCollectionHandle()?>"><br /><br />
+        <?php  } else { ?>
+            <?php echo $c->getCollectionHandle()?><br /><br />
+        <?php  } ?>
+            <span class="help-block"><?=t('This page must always be available from at least one URL. That URL is listed above.')?></span>
+        </div>
+        </div>
+
+        <?php if (!$c->isGeneratedCollection()) { ?>
+        <div class="clearfix" id="ccm-more-page-paths">
+            <label><?= t('More URLs') ?></label>
+
+            <?php
+                $paths = $c->getPagePaths();
+                foreach ($paths as $path) {
+                    if (!$path['ppIsCanonical']) {
+                        $ppID = $path['ppID'];
+                        $cPath = $path['cPath'];
+                        echo '<div class="input ccm-meta-path">' .
+                             '<input type="text" name="ppURL-' . $ppID . '" class="ccm-input-text" value="' . $cPath . '" id="ppID-'. $ppID . '"> ' .
+                             '<a href="javascript:void(0)" class="ccm-meta-path-del">' . t('Remove Path') . '</a></div>'."\n";
+                    }
+                }
+            ?>
+            <div class="input ccm-meta-path">
+                 <input type="text" name="ppURL-add-0" class="ccm-input-text" value="" id="ppID-add-0">
+                 <a href="javascript:void(0)" class="ccm-meta-path-add"><?=t('Add Path')?></a>
+            </div>
+        </div>
+        <?php } ?>
+
+    </div>
+
+    <style type="text/css">
+    #ccm-more-page-paths div.input {margin-bottom: 10px;}
+    </style>
+
+    <div id="ccm-properties-custom-tab" <?php if (!$c->isMasterCollection()) { ?>style="display: none" <?php } ?>>
+        <?php Loader::element('collection_metadata_fields', array('c'=>$c ) ); ?>
+    </div>
+
+    <input type="hidden" name="update_metadata" value="1" />
+    <input type="hidden" name="processCollection" value="1">
+    <div class="ccm-spacer">&nbsp;</div>
 </form>
 </div>
-	<div class="dialog-buttons">
-	<a href="javascript:void(0)" onclick="jQuery.fn.dialog.closeTop();" class="ccm-button-left btn"><?=t('Cancel')?></a>
-	<a href="javascript:void(0)" class="btn primary ccm-button-right" onclick="$('#ccmMetadataForm').submit()"><?=t('Save')?></a>
-	</div>
+    <div class="dialog-buttons">
+    <a href="javascript:void(0)" onclick="jQuery.fn.dialog.closeTop();" class="ccm-button-left btn"><?=t('Cancel')?></a>
+    <a href="javascript:void(0)" class="btn primary ccm-button-right" onclick="$('#ccmMetadataForm').submit()"><?=t('Save')?></a>
+    </div>

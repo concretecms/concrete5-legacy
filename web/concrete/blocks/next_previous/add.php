@@ -1,5 +1,5 @@
-<?php  
-defined('C5_EXECUTE') or die("Access Denied."); 
+<?php
+defined('C5_EXECUTE') or die("Access Denied.");
 
 $controller->nextLabel=t('Next');
 $controller->previousLabel=t('Previous');
@@ -9,4 +9,3 @@ $controller->loopSequence=1;
 $controller->orderBy='display_asc';
 
 $this->inc('/form_setup_html.php', array('controller'=>$controller));
-?>

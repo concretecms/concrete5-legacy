@@ -57,8 +57,8 @@ class Zend_Validate_File_WordCount extends Zend_Validate_File_Count
      * Returns true if and only if the counted words are at least min and
      * not bigger than max (when max is not null).
      *
-     * @param  string $value Filename to check for word count
-     * @param  array  $file  File data from Zend_File_Transfer
+     * @param  string  $value Filename to check for word count
+     * @param  array   $file  File data from Zend_File_Transfer
      * @return boolean
      */
     public function isValid($value, $file = null)
@@ -96,6 +96,7 @@ class Zend_Validate_File_WordCount extends Zend_Validate_File_Count
         }
 
         $this->_error($errorType);
+
         return false;
     }
 }

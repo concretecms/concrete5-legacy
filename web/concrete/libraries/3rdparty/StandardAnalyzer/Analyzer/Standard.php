@@ -6,7 +6,7 @@
  * in this standard analyzer package, provide a method for indexing documents with word Stemming,
  * lower-casing, and number handling. The lower-case and number handling is provided by the pre-
  * existing filters from Zend.
- * 
+ *
  * License: see License.txt for a copy of the Zend License.
  *
  *Ref:
@@ -14,7 +14,6 @@
  *
  * @category   PHP_Analyzer_Standard
  */
-
 
 /** Zend_Search_Lucene_Analysis_Analyzer */
 require_once 'Zend/Search/Lucene/Analysis/Analyzer.php';
@@ -39,7 +38,7 @@ abstract class StandardAnalyzer_Analyzer_Standard extends Zend_Search_Lucene_Ana
         $this->_filters[] = $filter;
     }
 
-	/**
+    /**
      * Current position in a stream
      *
      * @var integer
@@ -61,11 +60,11 @@ abstract class StandardAnalyzer_Analyzer_Standard extends Zend_Search_Lucene_Ana
         $this->_input = iconv($this->_encoding, 'ASCII//TRANSLIT', $this->_input);
         $this->_encoding = 'ASCII';
     }
-	
+
     /**
      * Apply filters to the token. Can return null when the token was removed.
      *
-     * @param Zend_Search_Lucene_Analysis_Token $token
+     * @param  Zend_Search_Lucene_Analysis_Token $token
      * @return Zend_Search_Lucene_Analysis_Token
      */
     public function normalize(Zend_Search_Lucene_Analysis_Token $token)
@@ -81,11 +80,11 @@ abstract class StandardAnalyzer_Analyzer_Standard extends Zend_Search_Lucene_Ana
 
         return $token;
     }
-	
-	    public function nextToken()
-		{
-			if ($this->_input === null) {
-				return null;
+
+        public function nextToken()
+        {
+            if ($this->_input === null) {
+                return null;
         }
 
         do {
@@ -107,4 +106,3 @@ abstract class StandardAnalyzer_Analyzer_Standard extends Zend_Search_Lucene_Ana
         return $token;
     }
 }
-

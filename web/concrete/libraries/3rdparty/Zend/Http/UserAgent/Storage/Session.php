@@ -75,7 +75,7 @@ class Zend_Http_UserAgent_Storage_Session implements Zend_Http_UserAgent_Storage
      * - browser_type -- maps to "namespace" internally
      * - member
      *
-     * @param  null|array|object $options
+     * @param  null|array|object                     $options
      * @return void
      * @throws Zend_Http_UserAgent_Storage_Exception on invalid $options argument
      */

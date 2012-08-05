@@ -1,7 +1,7 @@
 <?php
 // Arne Eckmann bananstat#users.sourceforge.net
 $ADODB_LANG_ARRAY = array (
-  	    'LANG'                      => 'da',
+          'LANG'                      => 'da',
             DB_ERROR                    => 'ukendt fejl',
             DB_ERROR_ALREADY_EXISTS     => 'eksisterer allerede',
             DB_ERROR_CANNOT_CREATE      => 'kan ikke oprette',
@@ -30,4 +30,3 @@ $ADODB_LANG_ARRAY = array (
             DB_ERROR_NOSUCHDB           => 'database ikke fundet',
             DB_ERROR_ACCESS_VIOLATION   => 'utilstr&aelig;kkelige rettigheder'
 );
-?>

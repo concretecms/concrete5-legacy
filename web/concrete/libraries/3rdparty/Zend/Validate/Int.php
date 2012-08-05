@@ -98,6 +98,7 @@ class Zend_Validate_Int extends Zend_Validate_Abstract
     {
         require_once 'Zend/Locale.php';
         $this->_locale = Zend_Locale::findLocale($locale);
+
         return $this;
     }
 
@@ -113,6 +114,7 @@ class Zend_Validate_Int extends Zend_Validate_Abstract
     {
         if (!is_string($value) && !is_int($value) && !is_float($value)) {
             $this->_error(self::INVALID);
+
             return false;
         }
 
@@ -128,6 +130,7 @@ class Zend_Validate_Int extends Zend_Validate_Abstract
 
             if (strval(intval($valueFiltered)) != $valueFiltered) {
                 $this->_error(self::NOT_INT);
+
                 return false;
             }
 
@@ -135,10 +138,12 @@ class Zend_Validate_Int extends Zend_Validate_Abstract
             try {
                 if (!Zend_Locale_Format::isInteger($value, array('locale' => $this->_locale))) {
                     $this->_error(self::NOT_INT);
+
                     return false;
                 }
             } catch (Zend_Locale_Exception $e) {
                 $this->_error(self::NOT_INT);
+
                 return false;
             }
         }

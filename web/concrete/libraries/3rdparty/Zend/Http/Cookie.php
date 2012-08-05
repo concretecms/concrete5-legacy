@@ -26,7 +26,6 @@
  */
 require_once 'Zend/Uri/Http.php';
 
-
 /**
  * Zend_Http_Cookie is a class describing an HTTP cookie and all it's parameters.
  *
@@ -103,9 +102,9 @@ class Zend_Http_Cookie
      * @param string $name
      * @param string $value
      * @param string $domain
-     * @param int $expires
+     * @param int    $expires
      * @param string $path
-     * @param bool $secure
+     * @param bool   $secure
      */
     public function __construct($name, $value, $domain, $expires = null, $path = null, $secure = false)
     {
@@ -195,7 +194,7 @@ class Zend_Http_Cookie
      *
      * Always returns false if the cookie is a session cookie (has no expiry time)
      *
-     * @param int $now Timestamp to consider as "now"
+     * @param  int     $now Timestamp to consider as "now"
      * @return boolean
      */
     public function isExpired($now = null)
@@ -221,9 +220,9 @@ class Zend_Http_Cookie
     /**
      * Checks whether the cookie should be sent or not in a specific scenario
      *
-     * @param string|Zend_Uri_Http $uri URI to check against (secure, domain, path)
-     * @param boolean $matchSessionCookies Whether to send session cookies
-     * @param int $now Override the current time when checking for expiry time
+     * @param  string|Zend_Uri_Http $uri                 URI to check against (secure, domain, path)
+     * @param  boolean              $matchSessionCookies Whether to send session cookies
+     * @param  int                  $now                 Override the current time when checking for expiry time
      * @return boolean
      */
     public function match($uri, $matchSessionCookies = true, $now = null)
@@ -268,6 +267,7 @@ class Zend_Http_Cookie
         if ($this->encodeValue) {
             return $this->name . '=' . urlencode($this->value) . ';';
         }
+
         return $this->name . '=' . $this->value . ';';
     }
 
@@ -275,9 +275,9 @@ class Zend_Http_Cookie
      * Generate a new Cookie object from a cookie string
      * (for example the value of the Set-Cookie HTTP header)
      *
-     * @param string $cookieStr
-     * @param Zend_Uri_Http|string $refUri Reference URI for default values (domain, path)
-     * @param boolean $encodeValue Whether or not the cookie's value should be
+     * @param string               $cookieStr
+     * @param Zend_Uri_Http|string $refUri      Reference URI for default values (domain, path)
+     * @param boolean              $encodeValue Whether or not the cookie's value should be
      *                             passed through urlencode/urldecode
      * @return Zend_Http_Cookie A new Zend_Http_Cookie object or false on failure.
      */
@@ -324,9 +324,9 @@ class Zend_Http_Cookie
             $keyValue = explode('=', $part, 2);
             if (count($keyValue) == 2) {
                 list($k, $v) = $keyValue;
-                switch (strtolower($k))    {
+                switch (strtolower($k)) {
                     case 'expires':
-                        if(($expires = strtotime($v)) === false) {
+                        if (($expires = strtotime($v)) === false) {
                             /**
                              * The expiration is past Tue, 19 Jan 2038 03:14:07 UTC
                              * the maximum for 32-bit signed integer. Zend_Date
@@ -358,6 +358,7 @@ class Zend_Http_Cookie
         if ($name !== '') {
             $ret = new self($name, $value, $domain, $expires, $path, $secure);
             $ret->encodeValue = ($encodeValue) ? true : false;
+
             return $ret;
         } else {
             return false;
@@ -369,8 +370,8 @@ class Zend_Http_Cookie
      *
      * Used by Zend_Http_Cookie and Zend_Http_CookieJar for cookie matching
      *
-     * @param  string $cookieDomain
-     * @param  string $host
+     * @param string $cookieDomain
+     * @param string $host
      *
      * @return boolean
      */
@@ -403,8 +404,8 @@ class Zend_Http_Cookie
      *
      * Used by Zend_Http_Cookie and Zend_Http_CookieJar for cookie matching
      *
-     * @param  string $cookiePath
-     * @param  string $path
+     * @param  string  $cookiePath
+     * @param  string  $path
      * @return boolean
      */
     public static function matchCookiePath($cookiePath, $path)

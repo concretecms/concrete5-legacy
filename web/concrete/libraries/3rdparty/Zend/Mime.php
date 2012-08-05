@@ -19,7 +19,6 @@
  * @version    $Id: Mime.php 23775 2011-03-01 17:25:24Z ralph $
  */
 
-
 /**
  * Support class for MultiPart Mime Messages
  *
@@ -106,7 +105,7 @@ class Zend_Mime
      * Checks that a string contains no unprintable characters. If this returns
      * false, encode the string for secure delivery.
      *
-     * @param string $str
+     * @param  string  $str
      * @return boolean
      */
     public static function isPrintable($str)
@@ -117,9 +116,9 @@ class Zend_Mime
     /**
      * Encode a given string with the QUOTED_PRINTABLE mechanism and wrap the lines.
      *
-     * @param string $str
-     * @param int $lineLength Defaults to {@link LINELENGTH}
-     * @param int $lineEnd Defaults to {@link LINEEND}
+     * @param  string $str
+     * @param  int    $lineLength Defaults to {@link LINELENGTH}
+     * @param  int    $lineEnd    Defaults to {@link LINEEND}
      * @return string
      */
     public static function encodeQuotedPrintable($str,
@@ -154,6 +153,7 @@ class Zend_Mime
 
         $out = rtrim($out, $lineEnd);
         $out = rtrim($out, '=');
+
         return $out;
     }
 
@@ -168,6 +168,7 @@ class Zend_Mime
         $str = str_replace('=', '=3D', $str);
         $str = str_replace(self::$qpKeys, self::$qpReplaceValues, $str);
         $str = rtrim($str);
+
         return $str;
     }
 
@@ -177,10 +178,10 @@ class Zend_Mime
      * Mail headers depend on an extended quoted printable algorithm otherwise
      * a range of bugs can occur.
      *
-     * @param string $str
-     * @param string $charset
-     * @param int $lineLength Defaults to {@link LINELENGTH}
-     * @param int $lineEnd Defaults to {@link LINEEND}
+     * @param  string $str
+     * @param  string $charset
+     * @param  int    $lineLength Defaults to {@link LINELENGTH}
+     * @param  int    $lineEnd    Defaults to {@link LINEEND}
      * @return string
      */
     public static function encodeQuotedPrintableHeader($str, $charset,
@@ -201,16 +202,16 @@ class Zend_Mime
 
         // Split encoded text into separate lines
         $tmp = "";
-        while(strlen($str) > 0) {
+        while (strlen($str) > 0) {
             $currentLine = max(count($lines)-1, 0);
             $token       = self::getNextQuotedPrintableToken($str);
             $str         = substr($str, strlen($token));
 
             $tmp .= $token;
-            if($token == '=20') {
+            if ($token == '=20') {
                 // only if we have a single char token or space, we can append the
                 // tempstring it to the current line or start a new line if necessary.
-                if(strlen($lines[$currentLine].$tmp) > $lineLength) {
+                if (strlen($lines[$currentLine].$tmp) > $lineLength) {
                     $lines[$currentLine+1] = $tmp;
                 } else {
                     $lines[$currentLine] .= $tmp;
@@ -218,16 +219,17 @@ class Zend_Mime
                 $tmp = "";
             }
             // don't forget to append the rest to the last line
-            if(strlen($str) == 0) {
+            if (strlen($str) == 0) {
                 $lines[$currentLine] .= $tmp;
             }
         }
 
         // assemble the lines together by pre- and appending delimiters, charset, encoding.
-        for($i = 0; $i < count($lines); $i++) {
+        for ($i = 0; $i < count($lines); $i++) {
             $lines[$i] = " ".$prefix.$lines[$i]."?=";
         }
         $str = trim(implode($lineEnd, $lines));
+
         return $str;
     }
 
@@ -239,21 +241,22 @@ class Zend_Mime
      */
     private static function getNextQuotedPrintableToken($str)
     {
-        if(substr($str, 0, 1) == "=") {
+        if (substr($str, 0, 1) == "=") {
             $token = substr($str, 0, 3);
         } else {
             $token = substr($str, 0, 1);
         }
+
         return $token;
     }
 
     /**
      * Encode a given string in mail header compatible base64 encoding.
      *
-     * @param string $str
-     * @param string $charset
-     * @param int $lineLength Defaults to {@link LINELENGTH}
-     * @param int $lineEnd Defaults to {@link LINEEND}
+     * @param  string $str
+     * @param  string $charset
+     * @param  int    $lineLength Defaults to {@link LINELENGTH}
+     * @param  int    $lineEnd    Defaults to {@link LINEEND}
      * @return string
      */
     public static function encodeBase64Header($str,
@@ -268,6 +271,7 @@ class Zend_Mime
         $encodedValue = self::encodeBase64($str, $remainingLength, $lineEnd);
         $encodedValue = str_replace($lineEnd, $suffix . $lineEnd . ' ' . $prefix, $encodedValue);
         $encodedValue = $prefix . $encodedValue . $suffix;
+
         return $encodedValue;
     }
 
@@ -275,9 +279,9 @@ class Zend_Mime
      * Encode a given string in base64 encoding and break lines
      * according to the maximum linelength.
      *
-     * @param string $str
-     * @param int $lineLength Defaults to {@link LINELENGTH}
-     * @param int $lineEnd Defaults to {@link LINEEND}
+     * @param  string $str
+     * @param  int    $lineLength Defaults to {@link LINELENGTH}
+     * @param  int    $lineEnd    Defaults to {@link LINEEND}
      * @return string
      */
     public static function encodeBase64($str,
@@ -307,9 +311,9 @@ class Zend_Mime
     /**
      * Encode the given string with the given encoding.
      *
-     * @param string $str
-     * @param string $encoding
-     * @param string $EOL EOL string; defaults to {@link Zend_Mime::LINEEND}
+     * @param  string $str
+     * @param  string $encoding
+     * @param  string $EOL      EOL string; defaults to {@link Zend_Mime::LINEEND}
      * @return string
      */
     public static function encode($str, $encoding, $EOL = self::LINEEND)
@@ -325,6 +329,7 @@ class Zend_Mime
                 /**
                  * @todo 7Bit and 8Bit is currently handled the same way.
                  */
+
                 return $str;
         }
     }

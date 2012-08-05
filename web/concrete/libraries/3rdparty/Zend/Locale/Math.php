@@ -19,7 +19,6 @@
  * @version    $Id: Math.php 23775 2011-03-01 17:25:24Z ralph $
  */
 
-
 /**
  * Utility class for proxying math function to bcmath functions, if present,
  * otherwise to PHP builtin math operators, with limited detection of overflow conditions.
@@ -121,11 +120,13 @@ class Zend_Locale_Math
                 if (self::$_bcmathDisabled) {
                     return Zend_Locale_Math_PhpMath::Add($op1, $roundUp, $precision);
                 }
+
                 return self::Add($op1, $roundUp, $precision);
             } else {
                 if (self::$_bcmathDisabled) {
                     return Zend_Locale_Math_PhpMath::Sub($op1, $roundUp, $precision);
                 }
+
                 return self::Sub($op1, $roundUp, $precision);
             }
         } elseif ($precision >= 0) {
@@ -168,8 +169,8 @@ class Zend_Locale_Math
      * Normalizes an input to standard english notation
      * Fixes a problem of BCMath with setLocale which is PHP related
      *
-     * @param   integer  $value  Value to normalize
-     * @return  string           Normalized string without BCMath problems
+     * @param  integer $value Value to normalize
+     * @return string  Normalized string without BCMath problems
      */
     public static function normalize($value)
     {
@@ -189,8 +190,8 @@ class Zend_Locale_Math
      * Localizes an input from standard english notation
      * Fixes a problem of BCMath with setLocale which is PHP related
      *
-     * @param   integer  $value  Value to normalize
-     * @return  string           Normalized string without BCMath problems
+     * @param  integer $value Value to normalize
+     * @return string  Normalized string without BCMath problems
      */
     public static function localize($value)
     {
@@ -199,6 +200,7 @@ class Zend_Locale_Math
         if (!empty($convert['negative_sign']) and (strpos($value, "-"))) {
             $value = str_replace("-", $convert['negative_sign'], $value);
         }
+
         return $value;
     }
 
@@ -206,8 +208,8 @@ class Zend_Locale_Math
      * Changes exponential numbers to plain string numbers
      * Fixes a problem of BCMath with numbers containing exponents
      *
-     * @param integer $value Value to erase the exponent
-     * @param integer $scale (Optional) Scale to use
+     * @param  integer $value Value to erase the exponent
+     * @param  integer $scale (Optional) Scale to use
      * @return string
      */
     public static function exponent($value, $scale = null)
@@ -256,6 +258,7 @@ class Zend_Locale_Math
     {
         $op1 = self::exponent($op1, $scale);
         $op2 = self::exponent($op2, $scale);
+
         return bcsub($op1, $op2, $scale);
     }
 
@@ -271,6 +274,7 @@ class Zend_Locale_Math
     {
         $op1 = self::exponent($op1, $scale);
         $op2 = self::exponent($op2, $scale);
+
         return bcpow($op1, $op2, $scale);
     }
 
@@ -286,6 +290,7 @@ class Zend_Locale_Math
     {
         $op1 = self::exponent($op1, $scale);
         $op2 = self::exponent($op2, $scale);
+
         return bcmul($op1, $op2, $scale);
     }
 
@@ -301,6 +306,7 @@ class Zend_Locale_Math
     {
         $op1 = self::exponent($op1, $scale);
         $op2 = self::exponent($op2, $scale);
+
         return bcdiv($op1, $op2, $scale);
     }
 
@@ -314,20 +320,22 @@ class Zend_Locale_Math
     public static function Sqrt($op1, $scale = null)
     {
         $op1 = self::exponent($op1, $scale);
+
         return bcsqrt($op1, $scale);
     }
 
     /**
      * BCMod - fixes a problem of BCMath and exponential numbers
      *
-     * @param  string  $op1
-     * @param  string  $op2
+     * @param  string $op1
+     * @param  string $op2
      * @return string
      */
     public static function Mod($op1, $op2)
     {
         $op1 = self::exponent($op1);
         $op2 = self::exponent($op2);
+
         return bcmod($op1, $op2);
     }
 
@@ -343,6 +351,7 @@ class Zend_Locale_Math
     {
         $op1 = self::exponent($op1, $scale);
         $op2 = self::exponent($op2, $scale);
+
         return bccomp($op1, $op2, $scale);
     }
 }

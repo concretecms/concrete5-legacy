@@ -92,8 +92,8 @@ class Zend_Validate_File_Md5 extends Zend_Validate_File_Hash
     /**
      * Sets the md5 hash for one or multiple files
      *
-     * @param  string|array $options
-     * @param  string       $algorithm (Deprecated) Algorithm to use, fixed to md5
+     * @param  string|array            $options
+     * @param  string                  $algorithm (Deprecated) Algorithm to use, fixed to md5
      * @return Zend_Validate_File_Hash Provides a fluent interface
      */
     public function setHash($options)
@@ -104,26 +104,28 @@ class Zend_Validate_File_Md5 extends Zend_Validate_File_Hash
 
         $options['algorithm'] = 'md5';
         parent::setHash($options);
+
         return $this;
     }
 
     /**
      * Sets the md5 hash for one or multiple files
      *
-     * @param  string|array $options
+     * @param  string|array            $options
      * @return Zend_Validate_File_Hash Provides a fluent interface
      */
     public function setMd5($options)
     {
         $this->setHash($options);
+
         return $this;
     }
 
     /**
      * Adds the md5 hash for one or multiple files
      *
-     * @param  string|array $options
-     * @param  string       $algorithm (Deprecated) Algorithm to use, fixed to md5
+     * @param  string|array            $options
+     * @param  string                  $algorithm (Deprecated) Algorithm to use, fixed to md5
      * @return Zend_Validate_File_Hash Provides a fluent interface
      */
     public function addHash($options)
@@ -134,18 +136,20 @@ class Zend_Validate_File_Md5 extends Zend_Validate_File_Hash
 
         $options['algorithm'] = 'md5';
         parent::addHash($options);
+
         return $this;
     }
 
     /**
      * Adds the md5 hash for one or multiple files
      *
-     * @param  string|array $options
+     * @param  string|array            $options
      * @return Zend_Validate_File_Hash Provides a fluent interface
      */
     public function addMd5($options)
     {
         $this->addHash($options);
+
         return $this;
     }
 
@@ -154,8 +158,8 @@ class Zend_Validate_File_Md5 extends Zend_Validate_File_Hash
      *
      * Returns true if and only if the given file confirms the set hash
      *
-     * @param  string $value Filename to check for hash
-     * @param  array  $file  File data from Zend_File_Transfer
+     * @param  string  $value Filename to check for hash
+     * @param  array   $file  File data from Zend_File_Transfer
      * @return boolean
      */
     public function isValid($value, $file = null)
@@ -172,7 +176,7 @@ class Zend_Validate_File_Md5 extends Zend_Validate_File_Hash
             return $this->_throw($file, self::NOT_DETECTED);
         }
 
-        foreach($hashes as $hash) {
+        foreach ($hashes as $hash) {
             if ($filehash === $hash) {
                 return true;
             }

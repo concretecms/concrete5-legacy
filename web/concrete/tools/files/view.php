@@ -1,28 +1,28 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 $u = new User();
 $form = Loader::helper('form');
 
 $f = File::getByID($_REQUEST['fID']);
 if (isset($_REQUEST['fvID'])) {
-	$fv = $f->getVersion($_REQUEST['fvID']);
+    $fv = $f->getVersion($_REQUEST['fvID']);
 } else {
-	$fv = $f->getApprovedVersion();
+    $fv = $f->getApprovedVersion();
 }
 
 $fp = new Permissions($f);
 if (!$fp->canRead()) {
-	die(t("Access Denied."));
+    die(t("Access Denied."));
 }
 ?>
 <div style="text-align: center">
 
-<?
+<?php
 $to = $fv->getTypeObject();
 if ($to->getPackageHandle() != '') {
-	Loader::packageElement('files/view/' . $to->getView(), $to->getPackageHandle(), array('fv' => $fv));
+    Loader::packageElement('files/view/' . $to->getView(), $to->getPackageHandle(), array('fv' => $fv));
 } else {
-	Loader::element('files/view/' . $to->getView(), array('fv' => $fv));
+    Loader::element('files/view/' . $to->getView(), array('fv' => $fv));
 }
 ?>
 </div>
@@ -37,6 +37,6 @@ if ($to->getPackageHandle() != '') {
 
 <script type="text/javascript">
 $(function() {
-	$("#ccm-file-manager-download-form").attr('target', ccm_alProcessorTarget);
+    $("#ccm-file-manager-download-form").attr('target', ccm_alProcessorTarget);
 });
 </script>

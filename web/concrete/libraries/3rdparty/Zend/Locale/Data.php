@@ -92,10 +92,10 @@ class Zend_Locale_Data
      * Case 3: _readFile('ar','/ldml/delimiter',,'right')    -> returns [right] = test
      * Case 4: _readFile('ar','/ldml/third','type','myone')  -> returns [myone] = mythird
      *
-     * @param  string $locale
-     * @param  string $path
-     * @param  string $attribute
-     * @param  string $value
+     * @param string $locale
+     * @param string $path
+     * @param string $attribute
+     * @param string $value
      * @access private
      * @return array
      */
@@ -114,12 +114,12 @@ class Zend_Locale_Data
                         if (empty($attribute)) {
                             // Case 1
                             $temp[] = (string) $found;
-                        } else if (empty($temp[(string) $found[$attribute]])){
+                        } elseif (empty($temp[(string) $found[$attribute]])) {
                             // Case 2
                             $temp[(string) $found[$attribute]] = (string) $found;
                         }
 
-                    } else if (empty ($temp[$value])) {
+                    } elseif (empty ($temp[$value])) {
 
                         if (empty($attribute)) {
                             // Case 3
@@ -133,17 +133,18 @@ class Zend_Locale_Data
                 }
             }
         }
+
         return $temp;
     }
 
     /**
      * Find possible routing to other path or locale
      *
-     * @param  string $locale
-     * @param  string $path
-     * @param  string $attribute
-     * @param  string $value
-     * @param  array  $temp
+     * @param  string                $locale
+     * @param  string                $path
+     * @param  string                $attribute
+     * @param  string                $value
+     * @param  array                 $temp
      * @throws Zend_Locale_Exception
      * @access private
      */
@@ -208,22 +209,24 @@ class Zend_Locale_Data
                     }
 
                     $temp = self::_getFile($locale, $path, $attribute, $value, $temp);
+
                     return false;
                 }
 
                 $tok = strtok('/');
             }
         }
+
         return true;
     }
 
     /**
      * Read the right LDML file
      *
-     * @param  string $locale
-     * @param  string $path
-     * @param  string $attribute
-     * @param  string $value
+     * @param string $locale
+     * @param string $path
+     * @param string $attribute
+     * @param string $value
      * @access private
      */
     private static function _getFile($locale, $path, $attribute = false, $value = false, $temp = array())
@@ -247,6 +250,7 @@ class Zend_Locale_Data
                 $temp = self::_getFile('root', $path, $attribute, $value, $temp);
             }
         }
+
         return $temp;
     }
 
@@ -255,7 +259,7 @@ class Zend_Locale_Data
      *
      * @param  string $locale Locale for Detaildata
      * @param  array  $list   List to search
-     * @return string         Key for Detaildata
+     * @return string Key for Detaildata
      */
     private static function _calendarDetail($locale, $list)
     {
@@ -269,13 +273,14 @@ class Zend_Locale_Data
                 break;
             }
         }
+
         return $ret;
     }
 
     /**
      * Internal function for checking the locale
      *
-     * @param string|Zend_Locale $locale Locale to check
+     * @param  string|Zend_Locale $locale Locale to check
      * @return string
      */
     private static function _checkLocale($locale)
@@ -326,7 +331,7 @@ class Zend_Locale_Data
         }
 
         $temp = array();
-        switch(strtolower($path)) {
+        switch (strtolower($path)) {
             case 'language':
                 $temp = self::_getFile($locale, '/ldml/localeDisplayNames/languages/language', 'type');
                 break;
@@ -338,13 +343,13 @@ class Zend_Locale_Data
             case 'territory':
                 $temp = self::_getFile($locale, '/ldml/localeDisplayNames/territories/territory', 'type');
                 if ($value === 1) {
-                    foreach($temp as $key => $value) {
+                    foreach ($temp as $key => $value) {
                         if ((is_numeric($key) === false) and ($key != 'QO') and ($key != 'QU')) {
                             unset($temp[$key]);
                         }
                     }
-                } else if ($value === 2) {
-                    foreach($temp as $key => $value) {
+                } elseif ($value === 2) {
+                    foreach ($temp as $key => $value) {
                         if (is_numeric($key) or ($key == 'QO') or ($key == 'QU')) {
                             unset($temp[$key]);
                         }
@@ -553,7 +558,7 @@ class Zend_Locale_Data
                     $value = "gregorian";
                 }
                 $_temp = self::_getFile($locale, '/ldml/dates/calendars/calendar[@type=\'' . $value . '\']/dateTimeFormats/availableFormats/dateFormatItem', 'id');
-                foreach($_temp as $key => $found) {
+                foreach ($_temp as $key => $found) {
                     $temp += self::_getFile($locale, '/ldml/dates/calendars/calendar[@type=\'' . $value . '\']/dateTimeFormats/availableFormats/dateFormatItem[@id=\'' . $key . '\']', '', $key);
                 }
                 break;
@@ -563,7 +568,7 @@ class Zend_Locale_Data
                     $value = "gregorian";
                 }
                 $_temp = self::_getFile($locale, '/ldml/dates/calendars/calendar[@type=\'' . $value . '\']/dateTimeFormats/intervalFormats/intervalFormatItem', 'id');
-                foreach($_temp as $key => $found) {
+                foreach ($_temp as $key => $found) {
                     $temp[$key] = self::_getFile($locale, '/ldml/dates/calendars/calendar[@type=\'' . $value . '\']/dateTimeFormats/intervalFormats/intervalFormatItem[@id=\'' . $key . '\']/greatestDifference', 'id');
                 }
                 break;
@@ -683,9 +688,9 @@ class Zend_Locale_Data
                 foreach ($_temp2 as $key => $found) {
                     $_temp += self::_getFile('supplementalData', '/supplementalData/territoryContainment/group[@type=\'' . $key . '\']', 'contains', $key);
                 }
-                foreach($_temp as $key => $found) {
+                foreach ($_temp as $key => $found) {
                     $_temp3 = explode(" ", $found);
-                    foreach($_temp3 as $found3) {
+                    foreach ($_temp3 as $found3) {
                         if (!isset($temp[$found3])) {
                             $temp[$found3] = (string) $key;
                         } else {
@@ -711,9 +716,9 @@ class Zend_Locale_Data
                 foreach ($_temp2 as $key => $found) {
                     $_temp += self::_getFile('supplementalData', '/supplementalData/languageData/language[@type=\'' . $key . '\']', 'scripts', $key);
                 }
-                foreach($_temp as $key => $found) {
+                foreach ($_temp as $key => $found) {
                     $_temp3 = explode(" ", $found);
-                    foreach($_temp3 as $found3) {
+                    foreach ($_temp3 as $found3) {
                         if (empty($found3)) {
                             continue;
                         }
@@ -742,9 +747,9 @@ class Zend_Locale_Data
                 foreach ($_temp2 as $key => $found) {
                     $_temp += self::_getFile('supplementalData', '/supplementalData/languageData/language[@type=\'' . $key . '\']', 'territories', $key);
                 }
-                foreach($_temp as $key => $found) {
+                foreach ($_temp as $key => $found) {
                     $_temp3 = explode(" ", $found);
-                    foreach($_temp3 as $found3) {
+                    foreach ($_temp3 as $found3) {
                         if (empty($found3)) {
                             continue;
                         }
@@ -787,7 +792,7 @@ class Zend_Locale_Data
 
             case 'citytotimezone':
                 $_temp = self::_getFile($locale, '/ldml/dates/timeZoneNames/zone', 'type');
-                foreach($_temp as $key => $found) {
+                foreach ($_temp as $key => $found) {
                     $temp += self::_getFile($locale, '/ldml/dates/timeZoneNames/zone[@type=\'' . $key . '\']/exemplarCity', '', $key);
                 }
                 break;
@@ -795,7 +800,7 @@ class Zend_Locale_Data
             case 'timezonetocity':
                 $_temp  = self::_getFile($locale, '/ldml/dates/timeZoneNames/zone', 'type');
                 $temp = array();
-                foreach($_temp as $key => $found) {
+                foreach ($_temp as $key => $found) {
                     $temp += self::_getFile($locale, '/ldml/dates/timeZoneNames/zone[@type=\'' . $key . '\']/exemplarCity', '', $key);
                     if (!empty($temp[$key])) {
                         $temp[$temp[$key]] = $key;
@@ -895,7 +900,7 @@ class Zend_Locale_Data
 
             case 'unit':
                 $_temp = self::_getFile($locale, '/ldml/units/unit', 'type');
-                foreach($_temp as $key => $keyvalue) {
+                foreach ($_temp as $key => $keyvalue) {
                     $_temp2 = self::_getFile($locale, '/ldml/units/unit[@type=\'' . $key . '\']/unitPattern', 'count');
                     $temp[$key] = $_temp2;
                 }
@@ -950,7 +955,7 @@ class Zend_Locale_Data
             return unserialize($result);
         }
 
-        switch(strtolower($path)) {
+        switch (strtolower($path)) {
             case 'language':
                 $temp = self::_getFile($locale, '/ldml/localeDisplayNames/languages/language[@type=\'' . $value . '\']', 'type');
                 break;
@@ -1229,9 +1234,9 @@ class Zend_Locale_Data
                     $_temp += self::_getFile('supplementalData', '/supplementalData/territoryContainment/group[@type=\'' . $key . '\']', 'contains', $key);
                 }
                 $temp = array();
-                foreach($_temp as $key => $found) {
+                foreach ($_temp as $key => $found) {
                     $_temp3 = explode(" ", $found);
-                    foreach($_temp3 as $found3) {
+                    foreach ($_temp3 as $found3) {
                         if ($found3 !== $value) {
                             continue;
                         }
@@ -1255,9 +1260,9 @@ class Zend_Locale_Data
                     $_temp += self::_getFile('supplementalData', '/supplementalData/languageData/language[@type=\'' . $key . '\']', 'scripts', $key);
                 }
                 $temp = array();
-                foreach($_temp as $key => $found) {
+                foreach ($_temp as $key => $found) {
                     $_temp3 = explode(" ", $found);
-                    foreach($_temp3 as $found3) {
+                    foreach ($_temp3 as $found3) {
                         if ($found3 !== $value) {
                             continue;
                         }
@@ -1281,9 +1286,9 @@ class Zend_Locale_Data
                     $_temp += self::_getFile('supplementalData', '/supplementalData/languageData/language[@type=\'' . $key . '\']', 'territories', $key);
                 }
                 $temp = array();
-                foreach($_temp as $key => $found) {
+                foreach ($_temp as $key => $found) {
                     $_temp3 = explode(" ", $found);
-                    foreach($_temp3 as $found3) {
+                    foreach ($_temp3 as $found3) {
                         if ($found3 !== $value) {
                             continue;
                         }
@@ -1319,7 +1324,7 @@ class Zend_Locale_Data
             case 'timezonetocity':
                 $_temp  = self::_getFile($locale, '/ldml/dates/timeZoneNames/zone', 'type');
                 $temp = array();
-                foreach($_temp as $key => $found) {
+                foreach ($_temp as $key => $found) {
                     $temp += self::_getFile($locale, '/ldml/dates/timeZoneNames/zone[@type=\'' . $key . '\']/exemplarCity', '', $key);
                     if (!empty($temp[$key])) {
                         if ($temp[$key] == $value) {
@@ -1341,9 +1346,9 @@ class Zend_Locale_Data
                     $_temp += self::_getFile('telephoneCodeData', '/supplementalData/telephoneCodeData/codesByTerritory[@territory=\'' . $key . '\']/telephoneCountryCode', 'code', $key);
                 }
                 $temp = array();
-                foreach($_temp as $key => $found) {
+                foreach ($_temp as $key => $found) {
                     $_temp3 = explode(" ", $found);
-                    foreach($_temp3 as $found3) {
+                    foreach ($_temp3 as $found3) {
                         if ($found3 !== $value) {
                             continue;
                         }

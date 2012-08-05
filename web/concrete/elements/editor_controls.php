@@ -1,12 +1,12 @@
-<? defined('C5_EXECUTE') or die("Access Denied."); ?> 
-<div class="ccm-editor-controls-left-cap" <? if (isset($editor_width)) { ?>style="width: <?=$editor_width?>px"<? } ?>>
+<?php defined('C5_EXECUTE') or die("Access Denied."); ?>
+<div class="ccm-editor-controls-left-cap" <?php if (isset($editor_width)) { ?>style="width: <?=$editor_width?>px"<?php } ?>>
 <div class="ccm-editor-controls-right-cap">
 <div class="ccm-editor-controls">
 <ul>
 <li ccm-file-manager-field="rich-text-editor-image"><a class="ccm-file-manager-launch" onclick="ccm_editorSetupImagePicker(); return false" href="#"><?=t('Add Image')?></a></li>
 <li><a class="ccm-file-manager-launch" onclick="ccm_editorSetupFilePicker(); return false;" href="#"><?=t('Add File')?></a></li>
-<? // I don't know why I need this ?>
-<? /*
+<?php // I don't know why I need this ?>
+<?php /*
 <?php if (isset($mode) && $mode == 'full') {?>
 <li><a href="#" onclick="setBookMark();ccmEditorSitemapOverlay();"><?=t('Insert Link to Page')?></a></li>
 <?php } else {?>
@@ -17,8 +17,8 @@
 <?php
 $path = Page::getByPath('/dashboard/settings');
 $cp = new Permissions($path);
-if($cp->canRead()) { ?>
-	<li><a style="float: right" href="<?php echo View::url('/dashboard/system/basics/editor')?>" target="_blank"><?php echo t('Customize Toolbar')?></a></li>
+if ($cp->canRead()) { ?>
+    <li><a style="float: right" href="<?php echo View::url('/dashboard/system/basics/editor')?>" target="_blank"><?php echo t('Customize Toolbar')?></a></li>
 <?php } ?>
 </ul>
 </div>
@@ -31,6 +31,6 @@ if($cp->canRead()) { ?>
 <div class="ccm-spacer">&nbsp;</div>
 <script type="text/javascript">
 $(function() {
-	ccm_activateFileSelectors();
+    ccm_activateFileSelectors();
 });
 </script>

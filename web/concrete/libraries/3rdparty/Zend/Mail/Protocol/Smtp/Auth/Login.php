@@ -20,12 +20,10 @@
  * @version    $Id: Login.php 23775 2011-03-01 17:25:24Z ralph $
  */
 
-
 /**
  * @see Zend_Mail_Protocol_Smtp
  */
 require_once 'Zend/Mail/Protocol/Smtp.php';
-
 
 /**
  * Performs LOGIN authentication
@@ -45,14 +43,12 @@ class Zend_Mail_Protocol_Smtp_Auth_Login extends Zend_Mail_Protocol_Smtp
      */
     protected $_username;
 
-
     /**
      * LOGIN password
      *
      * @var string
      */
     protected $_password;
-
 
     /**
      * Constructor.
@@ -75,7 +71,6 @@ class Zend_Mail_Protocol_Smtp_Auth_Login extends Zend_Mail_Protocol_Smtp
 
         parent::__construct($host, $port, $config);
     }
-
 
     /**
      * Perform LOGIN authentication with supplied credentials

@@ -1,4 +1,4 @@
-<? 
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 $includeAssetLibrary = true;
 $al = Loader::helper('concrete/asset_library');
@@ -16,7 +16,7 @@ $al = Loader::helper('concrete/asset_library');
 <?=$form->label('quality', t('Quality'))?>
 <div class="input">
 <select name="quality" class="span2">
-	<option value="low"><?=t('low')?></option>
+    <option value="low"><?=t('low')?></option>
     <option value="autolow"><?=t('autolow')?></option>
     <option value="autohigh"><?=t('autohigh')?></option>
     <option value="medium"><?=t('medium')?></option>
@@ -29,6 +29,6 @@ $al = Loader::helper('concrete/asset_library');
 <div class="clearfix">
 <?=$form->label('minVersion', t('Minimum Version'))?>
 <div class="input">
-	<input type="text" name="minVersion" value="8.0" class="span3"/>
+    <input type="text" name="minVersion" value="8.0" class="span3"/>
 </div>
 </div>

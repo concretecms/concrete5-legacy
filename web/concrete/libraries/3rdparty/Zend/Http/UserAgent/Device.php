@@ -38,8 +38,8 @@ interface Zend_Http_UserAgent_Device extends Serializable
      * the device object is being seeded with cached values from serialization.
      *
      * @param  null|string|array $userAgent
-     * @param  array $server
-     * @param  array $config
+     * @param  array             $server
+     * @param  array             $config
      * @return void
      */
     public function __construct($userAgent = null, array $server = array(), array $config = array());
@@ -49,8 +49,8 @@ interface Zend_Http_UserAgent_Device extends Serializable
      *
      * Return either an array of browser signature strings, or a boolean.
      *
-     * @param  string $userAgent
-     * @param  array $server
+     * @param  string     $userAgent
+     * @param  array      $server
      * @return bool|array
      */
     public static function match($userAgent, $server);

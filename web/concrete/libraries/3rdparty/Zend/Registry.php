@@ -89,7 +89,7 @@ class Zend_Registry extends ArrayObject
      * Does not affect the currently initialized instance, it only applies
      * for the next time you instantiate.
      *
-     * @param string $registryClassName
+     * @param  string         $registryClassName
      * @return void
      * @throws Zend_Exception if the registry is initialized or if the
      *   class name is not valid.
@@ -134,7 +134,7 @@ class Zend_Registry extends ArrayObject
      * can be called statically.  In the latter case, it uses the default
      * static instance stored in the class.
      *
-     * @param string $index - get the value associated with $index
+     * @param  string         $index - get the value associated with $index
      * @return mixed
      * @throws Zend_Exception if no entry is registerd for $index.
      */
@@ -159,7 +159,7 @@ class Zend_Registry extends ArrayObject
      *
      * @param string $index The location in the ArrayObject in which to store
      *   the value.
-     * @param mixed $value The object to store in the ArrayObject.
+     * @param  mixed $value The object to store in the ArrayObject.
      * @return void
      */
     public static function set($index, $value)
@@ -172,7 +172,7 @@ class Zend_Registry extends ArrayObject
      * Returns TRUE if the $index is a named value in the registry,
      * or FALSE if $index was not found in the registry.
      *
-     * @param  string $index
+     * @param  string  $index
      * @return boolean
      */
     public static function isRegistered($index)
@@ -180,6 +180,7 @@ class Zend_Registry extends ArrayObject
         if (self::$_registry === null) {
             return false;
         }
+
         return self::$_registry->offsetExists($index);
     }
 
@@ -187,7 +188,7 @@ class Zend_Registry extends ArrayObject
      * Constructs a parent ArrayObject with default
      * ARRAY_AS_PROPS to allow acces as an object
      *
-     * @param array $array data array
+     * @param array   $array data array
      * @param integer $flags ArrayObject flags
      */
     public function __construct($array = array(), $flags = parent::ARRAY_AS_PROPS)

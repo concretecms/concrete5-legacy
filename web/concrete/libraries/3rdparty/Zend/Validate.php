@@ -69,7 +69,7 @@ class Zend_Validate implements Zend_Validate_Interface
      *
      * @param  Zend_Validate_Interface $validator
      * @param  boolean                 $breakChainOnFailure
-     * @return Zend_Validate Provides a fluent interface
+     * @return Zend_Validate           Provides a fluent interface
      */
     public function addValidator(Zend_Validate_Interface $validator, $breakChainOnFailure = false)
     {
@@ -77,6 +77,7 @@ class Zend_Validate implements Zend_Validate_Interface
             'instance' => $validator,
             'breakChainOnFailure' => (boolean) $breakChainOnFailure
             );
+
         return $this;
     }
 
@@ -85,7 +86,7 @@ class Zend_Validate implements Zend_Validate_Interface
      *
      * Validators are run in the order in which they were added to the chain (FIFO).
      *
-     * @param  mixed $value
+     * @param  mixed   $value
      * @return boolean
      */
     public function isValid($value)
@@ -106,6 +107,7 @@ class Zend_Validate implements Zend_Validate_Interface
                 break;
             }
         }
+
         return $result;
     }
 
@@ -147,7 +149,7 @@ class Zend_Validate implements Zend_Validate_Interface
     /**
      * Sets new default namespaces
      *
-     * @param array|string $namespace
+     * @param  array|string $namespace
      * @return null
      */
     public static function setDefaultNamespaces($namespace)
@@ -162,7 +164,7 @@ class Zend_Validate implements Zend_Validate_Interface
     /**
      * Adds a new default namespace
      *
-     * @param array|string $namespace
+     * @param  array|string $namespace
      * @return null
      */
     public static function addDefaultNamespaces($namespace)
@@ -185,10 +187,10 @@ class Zend_Validate implements Zend_Validate_Interface
     }
 
     /**
-     * @param  mixed    $value
-     * @param  string   $classBaseName
-     * @param  array    $args          OPTIONAL
-     * @param  mixed    $namespaces    OPTIONAL
+     * @param  mixed                   $value
+     * @param  string                  $classBaseName
+     * @param  array                   $args          OPTIONAL
+     * @param  mixed                   $namespaces    OPTIONAL
      * @return boolean
      * @throws Zend_Validate_Exception
      */
@@ -199,7 +201,7 @@ class Zend_Validate implements Zend_Validate_Interface
         try {
             if (!class_exists($className, false)) {
                 require_once 'Zend/Loader.php';
-                foreach($namespaces as $namespace) {
+                foreach ($namespaces as $namespace) {
                     $class = $namespace . '_' . $className;
                     $file  = str_replace('_', DIRECTORY_SEPARATOR, $class) . '.php';
                     if (Zend_Loader::isReadable($file)) {
@@ -215,7 +217,7 @@ class Zend_Validate implements Zend_Validate_Interface
                 if ($class->hasMethod('__construct')) {
                     $keys    = array_keys($args);
                     $numeric = false;
-                    foreach($keys as $key) {
+                    foreach ($keys as $key) {
                         if (is_numeric($key)) {
                             $numeric = true;
                             break;
@@ -252,6 +254,7 @@ class Zend_Validate implements Zend_Validate_Interface
     public static function getMessageLength()
     {
         require_once 'Zend/Validate/Abstract.php';
+
         return Zend_Validate_Abstract::getMessageLength();
     }
 
@@ -274,6 +277,7 @@ class Zend_Validate implements Zend_Validate_Interface
     public static function getDefaultTranslator($translator = null)
     {
         require_once 'Zend/Validate/Abstract.php';
+
         return Zend_Validate_Abstract::getDefaultTranslator();
     }
 

@@ -20,7 +20,6 @@
  * @version    $Id: Folder.php 23775 2011-03-01 17:25:24Z ralph $
  */
 
-
 /**
  * @category   Zend
  * @package    Zend_Mail
@@ -78,6 +77,7 @@ class Zend_Mail_Storage_Folder implements RecursiveIterator
     public function hasChildren()
     {
         $current = $this->current();
+
         return $current && $current instanceof Zend_Mail_Storage_Folder && !$current->isLeaf();
     }
 
@@ -144,8 +144,8 @@ class Zend_Mail_Storage_Folder implements RecursiveIterator
     /**
      * get subfolder named $name
      *
-     * @param  string $name wanted subfolder
-     * @return Zend_Mail_Storage_Folder folder named $folder
+     * @param  string                      $name wanted subfolder
+     * @return Zend_Mail_Storage_Folder    folder named $folder
      * @throws Zend_Mail_Storage_Exception
      */
     public function __get($name)
@@ -164,8 +164,8 @@ class Zend_Mail_Storage_Folder implements RecursiveIterator
     /**
      * add or replace subfolder named $name
      *
-     * @param string $name local name of subfolder
-     * @param Zend_Mail_Storage_Folder $folder instance for new subfolder
+     * @param  string                   $name   local name of subfolder
+     * @param  Zend_Mail_Storage_Folder $folder instance for new subfolder
      * @return null
      */
     public function __set($name, Zend_Mail_Storage_Folder $folder)
@@ -176,7 +176,7 @@ class Zend_Mail_Storage_Folder implements RecursiveIterator
     /**
      * remove subfolder named $name
      *
-     * @param string $name local name of subfolder
+     * @param  string $name local name of subfolder
      * @return null
      */
     public function __unset($name)
@@ -191,7 +191,7 @@ class Zend_Mail_Storage_Folder implements RecursiveIterator
      */
     public function __toString()
     {
-        return (string)$this->getGlobalName();
+        return (string) $this->getGlobalName();
     }
 
     /**

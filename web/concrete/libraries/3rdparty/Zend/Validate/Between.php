@@ -100,7 +100,7 @@ class Zend_Validate_Between extends Zend_Validate_Abstract
     {
         if ($options instanceof Zend_Config) {
             $options = $options->toArray();
-        } else if (!is_array($options)) {
+        } elseif (!is_array($options)) {
             $options = func_get_args();
             $temp['min'] = array_shift($options);
             if (!empty($options)) {
@@ -141,12 +141,13 @@ class Zend_Validate_Between extends Zend_Validate_Abstract
     /**
      * Sets the min option
      *
-     * @param  mixed $min
+     * @param  mixed                 $min
      * @return Zend_Validate_Between Provides a fluent interface
      */
     public function setMin($min)
     {
         $this->_min = $min;
+
         return $this;
     }
 
@@ -163,12 +164,13 @@ class Zend_Validate_Between extends Zend_Validate_Abstract
     /**
      * Sets the max option
      *
-     * @param  mixed $max
+     * @param  mixed                 $max
      * @return Zend_Validate_Between Provides a fluent interface
      */
     public function setMax($max)
     {
         $this->_max = $max;
+
         return $this;
     }
 
@@ -185,12 +187,13 @@ class Zend_Validate_Between extends Zend_Validate_Abstract
     /**
      * Sets the inclusive option
      *
-     * @param  boolean $inclusive
+     * @param  boolean               $inclusive
      * @return Zend_Validate_Between Provides a fluent interface
      */
     public function setInclusive($inclusive)
     {
         $this->_inclusive = $inclusive;
+
         return $this;
     }
 
@@ -200,7 +203,7 @@ class Zend_Validate_Between extends Zend_Validate_Abstract
      * Returns true if and only if $value is between min and max options, inclusively
      * if inclusive option is true.
      *
-     * @param  mixed $value
+     * @param  mixed   $value
      * @return boolean
      */
     public function isValid($value)
@@ -210,14 +213,17 @@ class Zend_Validate_Between extends Zend_Validate_Abstract
         if ($this->_inclusive) {
             if ($this->_min > $value || $value > $this->_max) {
                 $this->_error(self::NOT_BETWEEN);
+
                 return false;
             }
         } else {
             if ($this->_min >= $value || $value >= $this->_max) {
                 $this->_error(self::NOT_BETWEEN_STRICT);
+
                 return false;
             }
         }
+
         return true;
     }
 

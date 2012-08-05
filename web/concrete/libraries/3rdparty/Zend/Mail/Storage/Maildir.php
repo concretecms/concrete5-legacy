@@ -20,7 +20,6 @@
  * @version    $Id: Maildir.php 23775 2011-03-01 17:25:24Z ralph $
  */
 
-
 /**
  * @see Zend_Mail_Storage_Abstract
  */
@@ -35,7 +34,6 @@ require_once 'Zend/Mail/Message/File.php';
  * @see Zend_Mail_Storage
  */
 require_once 'Zend/Mail/Storage.php';
-
 
 /**
  * @category   Zend
@@ -77,7 +75,7 @@ class Zend_Mail_Storage_Maildir extends Zend_Mail_Storage_Abstract
     /**
      * Count messages all messages in current box
      *
-     * @return int number of messages
+     * @return int                         number of messages
      * @throws Zend_Mail_Storage_Exception
      */
     public function countMessages($flags = null)
@@ -93,6 +91,7 @@ class Zend_Mail_Storage_Maildir extends Zend_Mail_Storage_Abstract
                     ++$count;
                 }
             }
+
             return $count;
         }
 
@@ -105,15 +104,16 @@ class Zend_Mail_Storage_Maildir extends Zend_Mail_Storage_Abstract
                }
                ++$count;
            }
+
            return $count;
     }
 
     /**
      * Get one or all fields from file structure. Also checks if message is valid
      *
-     * @param  int         $id    message number
-     * @param  string|null $field wanted field
-     * @return string|array wanted field or all fields as array
+     * @param  int                         $id    message number
+     * @param  string|null                 $field wanted field
+     * @return string|array                wanted field or all fields as array
      * @throws Zend_Mail_Storage_Exception
      */
     protected function _getFileData($id, $field = null)
@@ -144,14 +144,15 @@ class Zend_Mail_Storage_Maildir extends Zend_Mail_Storage_Abstract
     /**
      * Get a list of messages with number and size
      *
-     * @param  int|null $id number of message or null for all messages
-     * @return int|array size of given message of list with all messages as array(num => size)
+     * @param  int|null                    $id number of message or null for all messages
+     * @return int|array                   size of given message of list with all messages as array(num => size)
      * @throws Zend_Mail_Storage_Exception
      */
     public function getSize($id = null)
     {
         if ($id !== null) {
             $filedata = $this->_getFileData($id);
+
             return isset($filedata['size']) ? $filedata['size'] : filesize($filedata['filename']);
         }
 
@@ -163,12 +164,10 @@ class Zend_Mail_Storage_Maildir extends Zend_Mail_Storage_Abstract
         return $result;
     }
 
-
-
     /**
      * Fetch a message
      *
-     * @param  int $id number of message
+     * @param  int                         $id number of message
      * @return Zend_Mail_Message_File
      * @throws Zend_Mail_Storage_Exception
      */
@@ -187,10 +186,10 @@ class Zend_Mail_Storage_Maildir extends Zend_Mail_Storage_Abstract
     /*
      * Get raw header of message or part
      *
-     * @param  int               $id       number of message
-     * @param  null|array|string $part     path to part or null for messsage header
-     * @param  int               $topLines include this many lines with header (after an empty line)
-     * @return string raw header
+     * @param  int                         $id       number of message
+     * @param  null|array|string           $part     path to part or null for messsage header
+     * @param  int                         $topLines include this many lines with header (after an empty line)
+     * @return string                      raw header
      * @throws Zend_Mail_Storage_Exception
      */
     public function getRawHeader($id, $part = null, $topLines = 0)
@@ -216,15 +215,16 @@ class Zend_Mail_Storage_Maildir extends Zend_Mail_Storage_Abstract
         }
 
         fclose($fh);
+
         return $content;
     }
 
     /*
      * Get raw content of message or part
      *
-     * @param  int               $id   number of message
-     * @param  null|array|string $part path to part or null for messsage content
-     * @return string raw content
+     * @param  int                         $id   number of message
+     * @param  null|array|string           $part path to part or null for messsage content
+     * @return string                      raw content
      * @throws Zend_Mail_Storage_Exception
      */
     public function getRawContent($id, $part = null)
@@ -249,6 +249,7 @@ class Zend_Mail_Storage_Maildir extends Zend_Mail_Storage_Abstract
 
         $content = stream_get_contents($fh);
         fclose($fh);
+
         return $content;
     }
 
@@ -257,13 +258,13 @@ class Zend_Mail_Storage_Maildir extends Zend_Mail_Storage_Abstract
      * Supported parameters are:
      *   - dirname dirname of mbox file
      *
-     * @param array $params mail reader specific parameters
+     * @param  array                       $params mail reader specific parameters
      * @throws Zend_Mail_Storage_Exception
      */
     public function __construct($params)
     {
         if (is_array($params)) {
-            $params = (object)$params;
+            $params = (object) $params;
         }
 
         if (!isset($params->dirname) || !is_dir($params->dirname)) {
@@ -290,8 +291,8 @@ class Zend_Mail_Storage_Maildir extends Zend_Mail_Storage_Abstract
     /**
      * check if a given dir is a valid maildir
      *
-     * @param string $dirname name of dir
-     * @return bool dir is valid maildir
+     * @param  string $dirname name of dir
+     * @return bool   dir is valid maildir
      */
     protected function _isMaildir($dirname)
     {
@@ -301,13 +302,14 @@ class Zend_Mail_Storage_Maildir extends Zend_Mail_Storage_Abstract
         if (file_exists($dirname . '/tmp') && !is_dir($dirname . '/tmp')) {
             return false;
         }
+
         return is_dir($dirname . '/cur');
     }
 
     /**
      * open given dir as current maildir
      *
-     * @param string $dirname name of maildir
+     * @param  string                      $dirname name of maildir
      * @return null
      * @throws Zend_Mail_Storage_Exception
      */
@@ -332,7 +334,7 @@ class Zend_Mail_Storage_Maildir extends Zend_Mail_Storage_Abstract
         if ($dh) {
             $this->_getMaildirFiles($dh, $dirname . '/new/', array(Zend_Mail_Storage::FLAG_RECENT));
             closedir($dh);
-        } else if (file_exists($dirname . '/new/')) {
+        } elseif (file_exists($dirname . '/new/')) {
             /**
              * @see Zend_Mail_Storage_Exception
              */
@@ -344,9 +346,9 @@ class Zend_Mail_Storage_Maildir extends Zend_Mail_Storage_Abstract
     /**
      * find all files in opened dir handle and add to maildir files
      *
-     * @param resource $dh            dir handle used for search
-     * @param string   $dirname       dirname of dir in $dh
-     * @param array    $default_flags default flags for given dir
+     * @param  resource $dh            dir handle used for search
+     * @param  string   $dirname       dirname of dir in $dh
+     * @param  array    $default_flags default flags for given dir
      * @return null
      */
     protected function _getMaildirFiles($dh, $dirname, $default_flags = array())
@@ -381,7 +383,7 @@ class Zend_Mail_Storage_Maildir extends Zend_Mail_Storage_Abstract
                           'flaglookup' => array_flip($named_flags),
                           'filename'   => $dirname . $entry);
             if ($size !== null) {
-                $data['size'] = (int)$size;
+                $data['size'] = (int) $size;
             }
             $this->_files[] = $data;
         }
@@ -431,8 +433,8 @@ class Zend_Mail_Storage_Maildir extends Zend_Mail_Storage_Abstract
      *
      * if storage does not support unique ids it's the same as the message number
      *
-     * @param int|null $id message number
-     * @return array|string message number for given message or all messages as array
+     * @param  int|null                    $id message number
+     * @return array|string                message number for given message or all messages as array
      * @throws Zend_Mail_Storage_Exception
      */
     public function getUniqueId($id = null)
@@ -445,6 +447,7 @@ class Zend_Mail_Storage_Maildir extends Zend_Mail_Storage_Abstract
         foreach ($this->_files as $num => $file) {
             $ids[$num + 1] = $file['uniq'];
         }
+
         return $ids;
     }
 
@@ -454,8 +457,8 @@ class Zend_Mail_Storage_Maildir extends Zend_Mail_Storage_Abstract
      * I.e. if you have a webmailer that supports deleting messages you should use unique ids
      * as parameter and use this method to translate it to message number right before calling removeMessage()
      *
-     * @param string $id unique id
-     * @return int message number
+     * @param  string                      $id unique id
+     * @return int                         message number
      * @throws Zend_Mail_Storage_Exception
      */
     public function getNumberByUniqueId($id)

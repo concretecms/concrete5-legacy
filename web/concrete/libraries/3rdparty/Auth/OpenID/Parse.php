@@ -82,33 +82,33 @@
 /**
  * Require Auth_OpenID::arrayGet().
  */
-require_once "Auth/OpenID.php";
+require_once 'Auth/OpenID.php';
 
-class Auth_OpenID_Parse {
-
+class Auth_OpenID_Parse
+{
     /**
      * Specify some flags for use with regex matching.
      */
-    var $_re_flags = "si";
+    public $_re_flags = "si";
 
     /**
      * Stuff to remove before we start looking for tags
      */
-    var $_removed_re =
+    public $_removed_re =
            "<!--.*?-->|<!\[CDATA\[.*?\]\]>|<script\b(?!:)[^>]*>.*?<\/script>";
 
     /**
      * Starts with the tag name at a word boundary, where the tag name
      * is not a namespace
      */
-    var $_tag_expr = "<%s\b(?!:)([^>]*?)(?:\/>|>(.*?)(?:<\/?%s\s*>|\Z))";
+    public $_tag_expr = "<%s\b(?!:)([^>]*?)(?:\/>|>(.*?)(?:<\/?%s\s*>|\Z))";
 
-    var $_attr_find = '\b(\w+)=("[^"]*"|\'[^\']*\'|[^\'"\s\/<>]+)';
+    public $_attr_find = '\b(\w+)=("[^"]*"|\'[^\']*\'|[^\'"\s\/<>]+)';
 
-    var $_open_tag_expr = "<%s\b";
-    var $_close_tag_expr = "<((\/%s\b)|(%s[^>\/]*\/))>";
+    public $_open_tag_expr = "<%s\b";
+    public $_close_tag_expr = "<((\/%s\b)|(%s[^>\/]*\/))>";
 
-    function Auth_OpenID_Parse()
+    public function Auth_OpenID_Parse()
     {
         $this->_link_find = sprintf("/<link\b(?!:)([^>]*)(?!<)>/%s",
                                     $this->_re_flags);
@@ -137,7 +137,7 @@ class Auth_OpenID_Parse {
      * Returns a regular expression that will match a given tag in an
      * SGML string.
      */
-    function tagMatcher($tag_name, $close_tags = null)
+    public function tagMatcher($tag_name, $close_tags = null)
     {
         $expr = $this->_tag_expr;
 
@@ -149,22 +149,25 @@ class Auth_OpenID_Parse {
         }
 
         $expr = sprintf($expr, $tag_name, $closer);
+
         return sprintf("/%s/%s", $expr, $this->_re_flags);
     }
 
-    function openTag($tag_name)
+    public function openTag($tag_name)
     {
         $expr = sprintf($this->_open_tag_expr, $tag_name);
+
         return sprintf("/%s/%s", $expr, $this->_re_flags);
     }
 
-    function closeTag($tag_name)
+    public function closeTag($tag_name)
     {
         $expr = sprintf($this->_close_tag_expr, $tag_name, $tag_name);
+
         return sprintf("/%s/%s", $expr, $this->_re_flags);
     }
 
-    function htmlBegin($s)
+    public function htmlBegin($s)
     {
         $matches = array();
         $result = preg_match($this->openTag('html'), $s,
@@ -176,7 +179,7 @@ class Auth_OpenID_Parse {
         return $matches[0][1];
     }
 
-    function htmlEnd($s)
+    public function htmlEnd($s)
     {
         $matches = array();
         $result = preg_match($this->closeTag('html'), $s,
@@ -188,20 +191,21 @@ class Auth_OpenID_Parse {
         return $matches[count($matches) - 1][1];
     }
 
-    function headFind()
+    public function headFind()
     {
         return $this->tagMatcher('head', array('body', 'html'));
     }
 
-    function replaceEntities($str)
+    public function replaceEntities($str)
     {
         foreach ($this->_entity_replacements as $old => $new) {
             $str = preg_replace(sprintf("/&%s;/", $old), $new, $str);
         }
+
         return $str;
     }
 
-    function removeQuotes($str)
+    public function removeQuotes($str)
     {
         $matches = array();
         $double = '/^"(.*)"$/';
@@ -209,7 +213,7 @@ class Auth_OpenID_Parse {
 
         if (preg_match($double, $str, $matches)) {
             return $matches[1];
-        } else if (preg_match($single, $str, $matches)) {
+        } elseif (preg_match($single, $str, $matches)) {
             return $matches[1];
         } else {
             return $str;
@@ -220,11 +224,11 @@ class Auth_OpenID_Parse {
      * Find all link tags in a string representing a HTML document and
      * return a list of their attributes.
      *
-     * @param string $html The text to parse
-     * @return array $list An array of arrays of attributes, one for each
+     * @param  string $html The text to parse
+     * @return array  $list An array of arrays of attributes, one for each
      * link tag
      */
-    function parseLinkAttrs($html)
+    public function parseLinkAttrs($html)
     {
         $stripped = preg_replace($this->_removed_re,
                                  "",
@@ -276,7 +280,7 @@ class Auth_OpenID_Parse {
         return $link_data;
     }
 
-    function relMatches($rel_attr, $target_rel)
+    public function relMatches($rel_attr, $target_rel)
     {
         // Does this target_rel appear in the rel_str?
         // XXX: TESTME
@@ -291,16 +295,17 @@ class Auth_OpenID_Parse {
         return 0;
     }
 
-    function linkHasRel($link_attrs, $target_rel)
+    public function linkHasRel($link_attrs, $target_rel)
     {
         // Does this link have target_rel as a relationship?
         // XXX: TESTME
         $rel_attr = Auth_OpeniD::arrayGet($link_attrs, 'rel', null);
+
         return ($rel_attr && $this->relMatches($rel_attr,
                                                $target_rel));
     }
 
-    function findLinksRel($link_attrs_list, $target_rel)
+    public function findLinksRel($link_attrs_list, $target_rel)
     {
         // Filter the list of link attributes on whether it has
         // target_rel as a relationship.
@@ -315,7 +320,7 @@ class Auth_OpenID_Parse {
         return $result;
     }
 
-    function findFirstHref($link_attrs_list, $target_rel)
+    public function findFirstHref($link_attrs_list, $target_rel)
     {
         // Return the value of the href attribute for the first link
         // tag in the list that has target_rel as a relationship.
@@ -326,6 +331,7 @@ class Auth_OpenID_Parse {
             return null;
         }
         $first = $matches[0];
+
         return Auth_OpenID::arrayGet($first, 'href', null);
     }
 }
@@ -345,8 +351,7 @@ function Auth_OpenID_legacy_discover($html_text, $server_rel,
     } else {
         $delegate_url = $p->findFirstHref($link_attrs,
                                           $delegate_rel);
+
         return array($delegate_url, $server_url);
     }
 }
-
-?>

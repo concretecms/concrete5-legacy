@@ -9,18 +9,19 @@
 /**
  * Require the base class file.
  */
-require_once "Auth/OpenID/SQLStore.php";
+require_once 'Auth/OpenID/SQLStore.php';
 
 /**
  * An SQL store that uses MySQL as its backend.
  *
  * @package OpenID
  */
-class Auth_OpenID_MySQLStore extends Auth_OpenID_SQLStore {
+class Auth_OpenID_MySQLStore extends Auth_OpenID_SQLStore
+{
     /**
      * @access private
      */
-    function setSQL()
+    public function setSQL()
     {
         $this->sql['nonce_table'] =
             "CREATE TABLE %s (\n".
@@ -69,10 +70,8 @@ class Auth_OpenID_MySQLStore extends Auth_OpenID_SQLStore {
     /**
      * @access private
      */
-    function blobEncode($blob)
+    public function blobEncode($blob)
     {
         return "0x" . bin2hex($blob);
     }
 }
-
-?>

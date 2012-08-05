@@ -20,7 +20,6 @@
  * @version    $Id: Libmemcached.php 23775 2011-03-01 17:25:24Z ralph $
  */
 
-
 /**
  * @see Zend_Cache_Backend_Interface
  */
@@ -30,7 +29,6 @@ require_once 'Zend/Cache/Backend/ExtendedInterface.php';
  * @see Zend_Cache_Backend
  */
 require_once 'Zend/Cache/Backend.php';
-
 
 /**
  * @package    Zend_Cache
@@ -90,7 +88,7 @@ class Zend_Cache_Backend_Libmemcached extends Zend_Cache_Backend implements Zend
     /**
      * Constructor
      *
-     * @param array $options associative array of options
+     * @param  array                $options associative array of options
      * @throws Zend_Cache_Exception
      * @return void
      */
@@ -157,8 +155,8 @@ class Zend_Cache_Backend_Libmemcached extends Zend_Cache_Backend implements Zend
     /**
      * Test if a cache is available for the given id and (if yes) return it (false else)
      *
-     * @param  string  $id                     Cache id
-     * @param  boolean $doNotTestCacheValidity If set to true, the cache validity won't be tested
+     * @param  string       $id                     Cache id
+     * @param  boolean      $doNotTestCacheValidity If set to true, the cache validity won't be tested
      * @return string|false cached datas
      */
     public function load($id, $doNotTestCacheValidity = false)
@@ -167,21 +165,23 @@ class Zend_Cache_Backend_Libmemcached extends Zend_Cache_Backend implements Zend
         if (isset($tmp[0])) {
             return $tmp[0];
         }
+
         return false;
     }
 
     /**
      * Test if a cache is available or not (for the given id)
      *
-     * @param  string $id Cache id
+     * @param  string    $id Cache id
      * @return int|false (a cache is not available) or "last modified" timestamp (int) of the available cache record
      */
     public function test($id)
     {
         $tmp = $this->_memcache->get($id);
         if (isset($tmp[0], $tmp[1])) {
-            return (int)$tmp[1];
+            return (int) $tmp[1];
         }
+
         return false;
     }
 
@@ -191,10 +191,10 @@ class Zend_Cache_Backend_Libmemcached extends Zend_Cache_Backend implements Zend
      * Note : $data is always "string" (serialization is done by the
      * core not by the backend)
      *
-     * @param  string $data             Datas to cache
-     * @param  string $id               Cache id
-     * @param  array  $tags             Array of strings, the cache record will be tagged by each string entry
-     * @param  int    $specificLifetime If != false, set a specific lifetime for this cache record (null => infinite lifetime)
+     * @param  string  $data             Datas to cache
+     * @param  string  $id               Cache id
+     * @param  array   $tags             Array of strings, the cache record will be tagged by each string entry
+     * @param  int     $specificLifetime If != false, set a specific lifetime for this cache record (null => infinite lifetime)
      * @return boolean True if no problem
      */
     public function save($data, $id, $tags = array(), $specificLifetime = false)
@@ -219,7 +219,7 @@ class Zend_Cache_Backend_Libmemcached extends Zend_Cache_Backend implements Zend
     /**
      * Remove a cache record
      *
-     * @param  string $id Cache id
+     * @param  string  $id Cache id
      * @return boolean True if no problem
      */
     public function remove($id)
@@ -237,10 +237,10 @@ class Zend_Cache_Backend_Libmemcached extends Zend_Cache_Backend implements Zend
      * 'notMatchingTag' => unsupported
      * 'matchingAnyTag' => unsupported
      *
-     * @param  string $mode Clean mode
-     * @param  array  $tags Array of tags
+     * @param  string               $mode Clean mode
+     * @param  array                $tags Array of tags
      * @throws Zend_Cache_Exception
-     * @return boolean True if no problem
+     * @return boolean              True if no problem
      */
     public function clean($mode = Zend_Cache::CLEANING_MODE_ALL, $tags = array())
     {
@@ -275,7 +275,7 @@ class Zend_Cache_Backend_Libmemcached extends Zend_Cache_Backend implements Zend
     /**
      * Set the frontend directives
      *
-     * @param  array $directives Assoc of directives
+     * @param  array                $directives Assoc of directives
      * @throws Zend_Cache_Exception
      * @return void
      */
@@ -301,6 +301,7 @@ class Zend_Cache_Backend_Libmemcached extends Zend_Cache_Backend implements Zend
     public function getIds()
     {
         $this->_log("Zend_Cache_Backend_Libmemcached::save() : getting the list of cache ids is unsupported by the Libmemcached backend");
+
         return array();
     }
 
@@ -312,6 +313,7 @@ class Zend_Cache_Backend_Libmemcached extends Zend_Cache_Backend implements Zend
     public function getTags()
     {
         $this->_log(self::TAGS_UNSUPPORTED_BY_SAVE_OF_LIBMEMCACHED_BACKEND);
+
         return array();
     }
 
@@ -320,12 +322,13 @@ class Zend_Cache_Backend_Libmemcached extends Zend_Cache_Backend implements Zend
      *
      * In case of multiple tags, a logical AND is made between tags
      *
-     * @param array $tags array of tags
+     * @param  array $tags array of tags
      * @return array array of matching cache ids (string)
      */
     public function getIdsMatchingTags($tags = array())
     {
         $this->_log(self::TAGS_UNSUPPORTED_BY_SAVE_OF_LIBMEMCACHED_BACKEND);
+
         return array();
     }
 
@@ -334,12 +337,13 @@ class Zend_Cache_Backend_Libmemcached extends Zend_Cache_Backend implements Zend
      *
      * In case of multiple tags, a logical OR is made between tags
      *
-     * @param array $tags array of tags
+     * @param  array $tags array of tags
      * @return array array of not matching cache ids (string)
      */
     public function getIdsNotMatchingTags($tags = array())
     {
         $this->_log(self::TAGS_UNSUPPORTED_BY_SAVE_OF_LIBMEMCACHED_BACKEND);
+
         return array();
     }
 
@@ -348,12 +352,13 @@ class Zend_Cache_Backend_Libmemcached extends Zend_Cache_Backend implements Zend
      *
      * In case of multiple tags, a logical AND is made between tags
      *
-     * @param array $tags array of tags
+     * @param  array $tags array of tags
      * @return array array of any matching cache ids (string)
      */
     public function getIdsMatchingAnyTags($tags = array())
     {
         $this->_log(self::TAGS_UNSUPPORTED_BY_SAVE_OF_LIBMEMCACHED_BACKEND);
+
         return array();
     }
 
@@ -361,7 +366,7 @@ class Zend_Cache_Backend_Libmemcached extends Zend_Cache_Backend implements Zend
      * Return the filling percentage of the backend storage
      *
      * @throws Zend_Cache_Exception
-     * @return int integer between 0 and 100
+     * @return int                  integer between 0 and 100
      */
     public function getFillingPercentage()
     {
@@ -403,8 +408,8 @@ class Zend_Cache_Backend_Libmemcached extends Zend_Cache_Backend implements Zend
      * - tags : a string array of tags
      * - mtime : timestamp of last modification time
      *
-     * @param string $id cache id
-     * @return array array of metadatas (false if the cache id is not found)
+     * @param  string $id cache id
+     * @return array  array of metadatas (false if the cache id is not found)
      */
     public function getMetadatas($id)
     {
@@ -413,6 +418,7 @@ class Zend_Cache_Backend_Libmemcached extends Zend_Cache_Backend implements Zend
             $data     = $tmp[0];
             $mtime    = $tmp[1];
             $lifetime = $tmp[2];
+
             return array(
                 'expire' => $mtime + $lifetime,
                 'tags' => array(),
@@ -426,8 +432,8 @@ class Zend_Cache_Backend_Libmemcached extends Zend_Cache_Backend implements Zend
     /**
      * Give (if possible) an extra lifetime to the given cache id
      *
-     * @param string $id cache id
-     * @param int $extraLifetime
+     * @param  string  $id            cache id
+     * @param  int     $extraLifetime
      * @return boolean true if ok
      */
     public function touch($id, $extraLifetime)
@@ -450,8 +456,10 @@ class Zend_Cache_Backend_Libmemcached extends Zend_Cache_Backend implements Zend
                     $this->_log("Memcached::set() failed: [{$rsCode}] {$rsMsg}");
                 }
             }
+
             return $result;
         }
+
         return false;
     }
 

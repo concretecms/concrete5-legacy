@@ -28,7 +28,7 @@
       <NOTNULL/>
       <DEFAULT value="0"/>
       <UNSIGNED/>
-    </field>  
+    </field>
     <index name="arIsGlobal">
       <col>arIsGlobal</col>
     </index>
@@ -40,7 +40,7 @@
       <col>arHandle</col>
     </index>
    </table>
-   
+
 
   <table name="AttributeSets">
     <field name="asID" type="I" size="10">
@@ -238,7 +238,7 @@
 			<notnull />
 			<default value="1" />
 		</field>
-		
+
 		<field name="ctID" type="I2">
 			<unsigned />
 		</field>
@@ -248,7 +248,7 @@
 		<field name="rssTitle" type="C" size="255">
 		</field>
 		<field name="rssDescription" type="X2">
-		</field>		
+		</field>
 		<field name="truncateSummaries" type="I">
 			<default value="0"/>
 		</field>
@@ -257,7 +257,7 @@
 		</field>
 		<field name="truncateChars" type="I">
 			<default value="128"/>
-		</field>		
+		</field>
 	</table>
 
 <table name="MailImporters">
@@ -320,7 +320,7 @@
       <DEFAULT value="0"/>
       <UNSIGNED/>
     </field>
-  </table>	
+  </table>
 	<table name="btFormAnswerSet">
 		<field name="asID" type="I">
 			<key />
@@ -342,7 +342,7 @@
 			<col>questionSetId</col>
 		</index>
 	</table>
-	
+
 	<table name="btContentImage">
 		<field name="bID" type="I">
 			<key />

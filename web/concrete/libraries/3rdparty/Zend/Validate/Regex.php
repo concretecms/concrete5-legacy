@@ -62,7 +62,7 @@ class Zend_Validate_Regex extends Zend_Validate_Abstract
     /**
      * Sets validator options
      *
-     * @param  string|Zend_Config $pattern
+     * @param  string|Zend_Config      $pattern
      * @throws Zend_Validate_Exception On missing 'pattern' parameter
      * @return void
      */
@@ -97,9 +97,9 @@ class Zend_Validate_Regex extends Zend_Validate_Abstract
     /**
      * Sets the pattern option
      *
-     * @param  string $pattern
+     * @param  string                  $pattern
      * @throws Zend_Validate_Exception if there is a fatal error in pattern matching
-     * @return Zend_Validate_Regex Provides a fluent interface
+     * @return Zend_Validate_Regex     Provides a fluent interface
      */
     public function setPattern($pattern)
     {
@@ -119,13 +119,14 @@ class Zend_Validate_Regex extends Zend_Validate_Abstract
      *
      * Returns true if and only if $value matches against the pattern option
      *
-     * @param  string $value
+     * @param  string  $value
      * @return boolean
      */
     public function isValid($value)
     {
         if (!is_string($value) && !is_int($value) && !is_float($value)) {
             $this->_error(self::INVALID);
+
             return false;
         }
 
@@ -134,11 +135,13 @@ class Zend_Validate_Regex extends Zend_Validate_Abstract
         $status = @preg_match($this->_pattern, $value);
         if (false === $status) {
             $this->_error(self::ERROROUS);
+
             return false;
         }
 
         if (!$status) {
             $this->_error(self::NOT_MATCH);
+
             return false;
         }
 

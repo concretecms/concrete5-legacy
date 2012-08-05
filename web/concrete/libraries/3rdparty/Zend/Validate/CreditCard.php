@@ -142,7 +142,7 @@ class Zend_Validate_CreditCard extends Zend_Validate_Abstract
     {
         if ($options instanceof Zend_Config) {
             $options = $options->toArray();
-        } else if (!is_array($options)) {
+        } elseif (!is_array($options)) {
             $options = func_get_args();
             $temp['type'] = array_shift($options);
             if (!empty($options)) {
@@ -175,19 +175,20 @@ class Zend_Validate_CreditCard extends Zend_Validate_Abstract
     /**
      * Sets CCIs which are accepted by validation
      *
-     * @param string|array $type Type to allow for validation
+     * @param  string|array             $type Type to allow for validation
      * @return Zend_Validate_CreditCard Provides a fluid interface
      */
     public function setType($type)
     {
         $this->_type = array();
+
         return $this->addType($type);
     }
 
     /**
      * Adds a CCI to be accepted by validation
      *
-     * @param string|array $type Type to allow for validation
+     * @param  string|array             $type Type to allow for validation
      * @return Zend_Validate_CreditCard Provides a fluid interface
      */
     public function addType($type)
@@ -196,7 +197,7 @@ class Zend_Validate_CreditCard extends Zend_Validate_Abstract
             $type = array($type);
         }
 
-        foreach($type as $typ) {
+        foreach ($type as $typ) {
             if (defined('self::' . strtoupper($typ)) && !in_array($typ, $this->_type)) {
                 $this->_type[] = $typ;
             }
@@ -232,6 +233,7 @@ class Zend_Validate_CreditCard extends Zend_Validate_Abstract
         }
 
         $this->_service = $service;
+
         return $this;
     }
 
@@ -240,7 +242,7 @@ class Zend_Validate_CreditCard extends Zend_Validate_Abstract
      *
      * Returns true if and only if $value follows the Luhn algorithm (mod-10 checksum)
      *
-     * @param  string $value
+     * @param  string  $value
      * @return boolean
      */
     public function isValid($value)
@@ -249,11 +251,13 @@ class Zend_Validate_CreditCard extends Zend_Validate_Abstract
 
         if (!is_string($value)) {
             $this->_error(self::INVALID, $value);
+
             return false;
         }
 
         if (!ctype_digit($value)) {
             $this->_error(self::CONTENT, $value);
+
             return false;
         }
 
@@ -273,13 +277,15 @@ class Zend_Validate_CreditCard extends Zend_Validate_Abstract
             }
         }
 
-        if ($foundp == false){
+        if ($foundp == false) {
             $this->_error(self::PREFIX, $value);
+
             return false;
         }
 
         if ($foundl == false) {
             $this->_error(self::LENGTH, $value);
+
             return false;
         }
 
@@ -294,6 +300,7 @@ class Zend_Validate_CreditCard extends Zend_Validate_Abstract
 
         if ((10 - $sum % 10) % 10 != $value[$length - 1]) {
             $this->_error(self::CHECKSUM, $value);
+
             return false;
         }
 
@@ -304,10 +311,12 @@ class Zend_Validate_CreditCard extends Zend_Validate_Abstract
                 $callback->setOptions($this->_type);
                 if (!$callback->isValid($value)) {
                     $this->_error(self::SERVICE, $value);
+
                     return false;
                 }
             } catch (Zend_Exception $e) {
                 $this->_error(self::SERVICEFAILURE, $value);
+
                 return false;
             }
         }
