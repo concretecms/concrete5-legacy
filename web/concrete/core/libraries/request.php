@@ -266,6 +266,16 @@ class Concrete5_Library_Request {
 			
 			if($exploded[1] == 'packages') {
 				$this->pkgHandle = $exploded[2];
+				if (count($exploded) == 6 && $exploded[3] == DIRNAME_BLOCKS) {
+					// tool within block within package
+					$this->btHandle = $exploded[4];
+					unset($exploded[3]);
+					unset($exploded[4]);
+					$this->includeType = 'BLOCK_TOOL';
+				} else {
+					// tool within package
+					$this->includeType = 'PACKAGE_TOOL';
+				}
 				unset($exploded[0]);
 				unset($exploded[1]);
 				unset($exploded[2]);
@@ -275,7 +285,6 @@ class Concrete5_Library_Request {
 				} else {
 					$this->filename = $imploded . '.php';
 				}
-				$this->includeType = 'PACKAGE_TOOL';
 				return;
 			}
 			
