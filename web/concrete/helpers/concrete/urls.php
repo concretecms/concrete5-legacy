@@ -107,7 +107,12 @@ class ConcreteUrlsHelper {
 	 * @return string $url
 	 */
 	public function getBlockTypeToolsURL($bt) {
-		return REL_DIR_FILES_TOOLS_BLOCKS . '/' . $bt->getBlockTypeHandle();
+		if ($bt->getPackageID()) {
+			$url = REL_DIR_FILES_TOOLS_PACKAGES . '/' . $bt->getPackageHandle() . '/' . DIRNAME_BLOCKS . '/' . $bt->getBlockTypeHandle();
+		} else {
+			$url = REL_DIR_FILES_TOOLS_BLOCKS . '/' . $bt->getBlockTypeHandle();
+		}
+		return $url;
 	}
 
 	
