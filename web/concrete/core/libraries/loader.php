@@ -446,5 +446,94 @@
 			
 			return $controller;
 		}
+		
+		/**
+		 * Get the current instance for custom loaders
+		 * @access private
+		 * @return Loader
+		 */	
+		public static function getCustomLoaderInstance() {
+			static $clinstance;
+			if (!isset($clinstance)) {
+				$v = __CLASS__;
+				$clinstance = new $v;
+			}
+			return $clinstance;
+		}
+		
+		/**
+		 * @access private
+		 * @var array
+		 */
+		private $customLoaders = array();
+
+		/**
+		 * In PHP 5.3+ this is going to be called instead of __call
+		 * See __call() below
+		 * @access private
+		 * @see Loader::__call()
+		 */
+		public static function __callStatic($name, $args) {
+			$self = self::getCustomLoaderInstance();
+			return $self->__call($name, $args);
+		}
+		
+		/**
+		 * Used for custom loaders
+		 * @access private
+		 * @param string $name Method name called
+		 * @param array $args Arguments passed to the method
+		 */
+		public function __call($name, $args) {
+			$cl = self::getCustomLoaderInstance();
+			if(isset($cl->customLoaders[$name])) {
+				$ev = $cl->customLoaders[$name];
+				if($ev['class'] instanceof Closure) {
+					return call_user_func_array($ev['class'], $args);
+				}
+				if (substr($ev['file'], 0, 1) == '/' || substr($ev['file'], 1, 1) == ':') {
+					// then this means that our path is a full one
+					require_once($ev['file']);
+				} else {
+					require_once(DIR_BASE . '/' . $ev['file']);
+				}
+
+				if(method_exists($ev['class'], $ev['method'])) {
+					return call_user_func_array(array($ev['class'], $ev['method']), $args);
+				}
+			}
+			$dbg = debug_backtrace();
+			$class = '<Unknown>';
+			if(isset($dbg[1])) {
+				$class = $dbg[1]['class'];
+			}
+			trigger_error(sprintf('Call to undefined function: %s::%s().', $class, $name), E_USER_ERROR);
+		}
+		
+		/**
+		 * Add a custom loader method, returns false if the method already exists.
+		 * <code>
+		 * Loader::addCustomLoader('testing', 'CustomLoaderModel', 'testmethod', $pathToFile.'/model.php');
+		 * Loader::testing('this is a test!');
+		 * </code>
+		 * @param string $custommethod Name of the custom method used in Loader, eg 'testing' = Loader::testing();
+		 * @param string | Closure $class Class or Closure for the custom loader method
+		 * @param string $method Method called with the above class when the custom loader is invoked
+		 * @param string $file Path to the file that contains the class
+		 * @return bool
+		 */
+		public static function addCustomLoader($custommethod, $class, $method = false, $file = false) {
+			$cl = self::getCustomLoaderInstance();
+			
+			if(isset($cl->customLoaders[$custommethod])) { //if this loader is already set we return false
+				return false;
+			}
+			$cl->customLoaders[$custommethod] = array(
+				'class' => $class,
+				'method' => $method,
+				'file' => $file
+			);
+			return true;
+		}
 
 	}
