@@ -101,35 +101,24 @@ class MailHelper {
 		$this->data[$key] = $val;
 	}
 	
-	/** 
+	/**
 	 * Loads an email template from the /mail/ directory
-	 * @param string $template 
-	 * @param string $pkgHandle 
+	 * @param string $template
+	 * @param string $pkgHandle
 	 * @return void
 	 */
 	public function load($template, $pkgHandle = null) {
-		extract($this->data);
-
-		// loads template from mail templates directory
-		if (file_exists(DIR_FILES_EMAIL_TEMPLATES . "/{$template}.php")) {			
-			include(DIR_FILES_EMAIL_TEMPLATES . "/{$template}.php");
-		} else if ($pkgHandle != null) {
-			if (is_dir(DIR_PACKAGES . '/' . $pkgHandle)) {
-				include(DIR_PACKAGES . '/' . $pkgHandle . '/' . DIRNAME_MAIL_TEMPLATES . "/{$template}.php");
-			} else {
-				include(DIR_PACKAGES_CORE . '/' . $pkgHandle . '/' . DIRNAME_MAIL_TEMPLATES . "/{$template}.php");
-			}
-		} else {
-			include(DIR_FILES_EMAIL_TEMPLATES_CORE . "/{$template}.php");
-		}
+		Loader::library("mail_template");
+		$mv = new MailTemplate();
+		$mv->load($template, $this->data, $pkgHandle);
 		
-		if (isset($from)) {
-			$this->from($from[0], $from[1]);
+		if ($from = $mv->getFrom()) {
+			$this->from($from['email'], $from['name']);
 		}
 		$this->template = $template;
-		$this->subject = $subject;
-		$this->body = $body;
-		$this->bodyHTML = $bodyHTML;
+		$this->subject = $mv->getSubject();
+		$this->body = $mv->getBody();
+		$this->bodyHTML = $mv->getBodyHTML();
 	}
 	
 	/**
@@ -139,6 +128,15 @@ class MailHelper {
 	 */
 	public function setBody($body){
 		$this->body = $body;
+	}
+	
+	/**
+	 * manually set the HTML portion of a MIME encoded message, can also be done by setting $bodyHTML in a mail template
+	 * @param string $html
+	 * @return void
+	 */
+	public function setBodyHTML($html) {
+		$this->bodyHTML = $html;
 	}
 	
 	/**
@@ -162,15 +160,11 @@ class MailHelper {
 	 */
 	public function getBody() {return $this->body;}
 	
-	
 	/**
-	 * manually set the HTML portion of a MIME encoded message, can also be done by setting $bodyHTML in a mail template
-	 * @param string $html
-	 * @return void
+	 * Returns the message's HTML body
+	 * @return string
 	 */
-	public function setBodyHTML($html) {
-		$this->bodyHTML = $html;
-	}
+	public function getBodyHTML() {return $this->bodyHTML;}
 	
 	/**
 	 * @param MailImporter $importer

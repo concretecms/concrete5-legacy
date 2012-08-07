@@ -565,6 +565,9 @@ class AttributeKey extends Object {
 		if ($this->getIndexedSearchTable() != false) {
 			$db = Loader::db();
 			$dba = NewDataDictionary($db, DB_TYPE);
+			// $dba->DropTableSQL() would return "IF EXISTS" only for MySQL
+			// This also works the same way in PostgreSQL (but not in MSSQL, Oracle, etc.)
+			$db->Execute("DROP TABLE IF EXISTS ".$this->getIndexedSearchTable());
 			$sqa = $dba->CreateTableSQL($this->getIndexedSearchTable(), $this->searchIndexFieldDefinition);
 			$dba->ExecuteSQLArray($sqa);
 		}
