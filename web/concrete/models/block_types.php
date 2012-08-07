@@ -728,6 +728,12 @@ defined('C5_EXECUTE') or die("Access Denied.");
 					return $message;
 				}
 				
+				$currentLocale = Localization::activeLocale();
+				if ($currentLocale != 'en_US') {
+					// Prevent the database records being stored in wrong language
+					Localization::changeLocale('en_US');
+				}
+
 				//Install the block
 				$btd = new BlockTypeDB();
 				$btd->btHandle = $btHandle;
@@ -740,6 +746,9 @@ defined('C5_EXECUTE') or die("Access Denied.");
 				$btd->btInterfaceHeight = $bta->getInterfaceHeight();
 				$btd->btInterfaceWidth = $bta->getInterfaceWidth();
 				$btd->pkgID = $bt->getPackageID();
+				if ($currentLocale != 'en_US') {
+					Localization::changeLocale($currentLocale);
+				}
 				
 				if ($btID > 0) {
 					$btd->btID = $btID;
