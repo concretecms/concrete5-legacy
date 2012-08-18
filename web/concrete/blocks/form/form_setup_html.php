@@ -49,7 +49,7 @@ $ih = Loader::helper('concrete/interface');
 						<label class="add-on" style="z-index: 2000">
 							<?=$form->checkbox('notifyMeOnSubmission', 1, $miniSurveyInfo['notifyMeOnSubmission'] == 1, array('onclick' => "$('input[name=recipientEmail]').focus()"))?>
 						</label>
-						<?=$form->text('recipientEmail', $miniSurveyInfo['recipientEmail'])?>
+						<?=$form->text('recipientEmail', $miniSurveyInfo['recipientEmail'], array('style' => 'z-index:5000;' ))?>
 					</div>
 
 					<span class="help-block"><?=t('(Seperate multiple emails with a comma)')?></span>
