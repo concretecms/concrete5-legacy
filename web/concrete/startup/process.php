@@ -689,6 +689,9 @@
 						$cnt = $b->getController();
 						$ob = Block::getByID($cnt->getOriginalBlockID());
 						$ob->loadNewCollection($nvc);
+						if (!is_object($ax)) {
+							$ax = Area::getOrCreate($cx, $ax);
+						}
 						$ob->setBlockAreaObject($ax);
 						$nb = $ob->duplicate($nvc);
 						$nb->setAbsoluteBlockDisplayOrder($originalDisplayOrder);
@@ -783,11 +786,18 @@
 					}
 					
 					$obj = new stdClass;
-					$obj->aID = $a->getAreaID();
-					$obj->arHandle = $a->getAreaHandle();
-					$obj->cID = $c->getCollectionID();
-					$obj->bID = $nb->getBlockID();
-					$obj->error = false;
+					if (is_object($nb)) {
+						$obj->aID = $a->getAreaID();
+						$obj->arHandle = $a->getAreaHandle();
+						$obj->cID = $c->getCollectionID();
+						$obj->bID = $nb->getBlockID();
+						$obj->error = false;
+					} else {
+						$e = Loader::helper('validation/error');
+						$e->add(t('Invalid block.'));
+						$obj->error = true;
+						$obj->response = $e->getList();
+					}
 					print Loader::helper('json')->encode($obj);
 					exit;
 				} else { 
