@@ -12,6 +12,10 @@ defined('C5_EXECUTE') or die("Access Denied.");
 if (!defined('ENABLE_CACHE')) {
 	Config::getOrDefine('ENABLE_CACHE', true); 
 }
+if (!defined('ENABLE_OVERRIDE_CACHE')) {
+	Config::getOrDefine('ENABLE_OVERRIDE_CACHE', false); 
+}
+
 if (!ENABLE_CACHE) {
 	Cache::disableCache();
 }
@@ -109,6 +113,10 @@ if (!defined('ENABLE_PROGRESSIVE_PAGE_REINDEX')) {
 
 if (!defined('ENABLE_APP_NEWS')) {
 	Config::getOrDefine('ENABLE_APP_NEWS', true);
+}
+
+if (!defined('FORBIDDEN_SHOW_LOGIN')) {
+	Config::getOrDefine('FORBIDDEN_SHOW_LOGIN', true); //show the login page instead of forbidden for non-logged in users
 }
 
 if (URL_REWRITING_ALL == true) {

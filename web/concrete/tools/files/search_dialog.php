@@ -2,17 +2,17 @@
 defined('C5_EXECUTE') or die("Access Denied.");
 
 $cp = FilePermissions::getGlobal();
-if (!$cp->canAccessFileManager()) {
+if ((!$cp->canAddFile()) && (!$cp->canSearchFiles())) {
 	die(t("Unable to access the file manager."));
 }
 Loader::model('file_list');
 
 if (isset($_REQUEST['searchInstance'])) {
-	$searchInstance = $_REQUEST['searchInstance'];
+	$searchInstance = Loader::helper('text')->entities($_REQUEST['searchInstance']);
 } else {
 	$searchInstance = $page . time();
 }
-$ocID = $_REQUEST['ocID'];
+$ocID = Loader::helper('text')->entities($_REQUEST['ocID']);
 
 $cnt = Loader::controller('/dashboard/files/search');
 $fileList = $cnt->getRequestedSearchResults();
@@ -27,7 +27,7 @@ if (isset($_REQUEST['disable_choose']) && $_REQUEST['disable_choose'] == 1) {
 }
 
 ob_start();
-Loader::element('files/search_results', array('searchInstance' => $searchInstance, 'searchRequest' => $searchRequest, 'columns' => $columns, 'searchType' => 'DIALOG', 'files' => $files, 'fileList' => $fileList)); $searchForm = ob_get_contents();
+Loader::element('files/search_results', array('ocID' => $ocID, 'searchInstance' => $searchInstance, 'searchRequest' => $searchRequest, 'columns' => $columns, 'searchType' => 'DIALOG', 'files' => $files, 'fileList' => $fileList)); $searchForm = ob_get_contents();
 ob_end_clean();
 
 $v = View::getInstance();

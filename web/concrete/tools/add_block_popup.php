@@ -2,6 +2,14 @@
 
 defined('C5_EXECUTE') or die("Access Denied.");
 
+if (!Loader::helper('validation/numbers')->integer($_REQUEST['cID'])) {
+	die(t('Access Denied'));
+}
+
+if (!Loader::helper('validation/numbers')->integer($_REQUEST['btID'])) {
+	die(t('Access Denied'));
+}
+
 $c = Page::getByID($_REQUEST['cID']);
 $cp = new Permissions($c);
 $bt = BlockType::getByID($_REQUEST['btID']);
@@ -13,6 +21,7 @@ $ap = new Permissions($a);
 $canContinue = ($_REQUEST['btask'] == 'alias') ? $ap->canAddBlocks() : $ap->canAddBlock($bt);
 
 if (!$canContinue) {
+	print t('Access Denied');
 	exit;
 }
 	

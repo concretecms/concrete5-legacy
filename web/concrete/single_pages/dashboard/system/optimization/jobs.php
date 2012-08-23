@@ -97,7 +97,7 @@ jQuery(function($) {
 <?if ($jobList->numRows() == 0):?>
 <?=t('You currently have no jobs installed.')?>
 <?else:?>
-<table class="zebra-striped">
+<table class="table table-striped">
 <thead>
 <tr>
 	<th><a class="run-all" href="<?=BASE_URL.$this->url('/tools/required/jobs?auth='.$auth.'&debug=1')?>" title="<?=t('Run all')?>"></a><span class="run-indicator"></span></th>
@@ -115,10 +115,10 @@ jQuery(function($) {
 <tr <? if ($job['jStatus'] == 'RUNNING') {
 	
 	$jobrunning = true;?>class="running" <? } ?>>
-	<td><a class="run-task" title="<?=t('Run')?>" href="<?=BASE_URL.$this->url('/tools/required/jobs?auth='.$auth.'&jobId='.$job['jID'])?>" data-jobId="<?=$job['jID']?>"></a><span class="run-indicator"></span></td>
+	<td><a class="run-task" title="<?=t('Run')?>" href="<?=BASE_URL.$this->url('/tools/required/jobs?auth='.$auth.'&jID='.$job['jID'])?>" data-jobId="<?=$job['jID']?>"></a><span class="run-indicator"></span></td>
 	<td><?=$job['jID']?></td>
-	<td><?=$job['jName']?></td>
-	<td><?=$job['jDescription']?></td>
+	<td><?=t($job['jName'])?></td>
+	<td><?=t($job['jDescription'])?></td>
 	<td class="jDateLastRun"><?
 	if ($job['jStatus'] == 'RUNNING') {
 		$runtime = date(DATE_APP_GENERIC_TS, strtotime($job['jDateLastRun']));
@@ -132,7 +132,7 @@ jQuery(function($) {
 		echo $runtime;
 	}
 ?></td>
-	<td class="jLastStatusText"><?=$job['jLastStatusText']?></td>
+	<td class="jLastStatusText"><?=t($job['jLastStatusText'])?></td>
 	<td><?if(!$job['jNotUninstallable']):?>
 		<?=$ih->button(t('Remove'), $this->action('uninstall', $job['jID']), null, 'remove')?>
 	<?endif?></td>
@@ -144,7 +144,7 @@ jQuery(function($) {
 
 <?if($availableJobs):?>
 <h2><?=t('Jobs Available for Installation')?></h2>
-<table class="zebra-striped">
+<table class="table table-striped">
 <thead>
 	<tr> 
 		<th><?=t('Name')?></th>
