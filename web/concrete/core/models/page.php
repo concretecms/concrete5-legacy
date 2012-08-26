@@ -22,7 +22,7 @@ class Concrete5_Model_Page extends Collection {
 		$path = rtrim($path, '/'); // if the path ends in a / remove it.
 
 		if ($path == '') { 
-			return Page::getByID(HOME_CID); 
+			return Page::getByID(HOME_CID, $version); 
 		}
 
 		$cID = Cache::get('page_id_from_path', $path);
