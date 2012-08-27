@@ -21,6 +21,10 @@ class Concrete5_Model_Page extends Collection {
 	public static function getByPath($path, $version = 'RECENT') {
 		$path = rtrim($path, '/'); // if the path ends in a / remove it.
 
+		if ($path == '') { 
+			return Page::getByID(HOME_CID, $version); 
+		}
+
 		$cID = Cache::get('page_id_from_path', $path);
 		if ($cID == false) {
 			$db = Loader::db();
