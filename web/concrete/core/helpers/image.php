@@ -20,38 +20,130 @@
 defined('C5_EXECUTE') or die("Access Denied.");
 class Concrete5_Helper_Image {
 
-		
 	/**
 	 * Creates a new image given an original path, a new path, a target width and height.
 	 * Optionally crops image to exactly match given width and height.
 	 * @params string $originalPath, string $newpath, int $width, int $height, bool $crop
 	 * @return void
-	 */		
+	 */
+	 
+	public $fileobj = null;
+	
 	public function create($originalPath, $newPath, $width, $height, $crop = false) {
-		// first, we grab the original image. We shouldn't ever get to this function unless the image is valid
-		$imageSize = @getimagesize($originalPath);
-		$oWidth = $imageSize[0];
-		$oHeight = $imageSize[1];
+	
+		$imageSize = getimagesize($originalPath);
+		
+		$res = $this->process($originalPath);
+		if($crop){
+			$res = $this->crop($res, $imageSize[2], $maxWidth, $maxHeight);
+		}
+		
+		$this->cache($res, $imageSize[2]);
+		
+	}
+	
+	/**
+	 * Generates a cached version of the image resource
+	 * Optionally crops image to exactly match given width and height.
+	 * @params resource $res, int $type, string $fID
+	 * @return bool
+	 */
+	
+	private function cache($res, $type, $fID = false) {
+	
+		//take the file object and convert it to an MD5
+		$filename = md5(serialize($this->fileobj));
+		
+		if ($fID) {
+			$filename = $filename . '_f' . $fID . image_type_to_extension($type);
+		} else {
+			$filename = $filename . image_type_to_extension($type);
+		}
+		
+		$filepath = DIR_FILES_CACHE . '/' . $filename;
+		
+		$file = false;
+		
+		if (!file_exists($filepath)) {
+			switch($type) {
+				case IMAGETYPE_GIF:
+					$file = imagegif($res, $filepath);
+					break;
+				case IMAGETYPE_JPEG:
+					$compression = defined('AL_THUMBNAIL_JPEG_COMPRESSION') ? AL_THUMBNAIL_JPEG_COMPRESSION : 80;
+					$file = imagejpeg($res, $filepath, $compression);
+					break;
+				case IMAGETYPE_PNG:
+					$file = imagepng($res, $filepath);
+					break;
+			}
+			@chmod($filepath, FILE_PERMISSIONS_MODE);
+		}
+		
+		return ( file_exists($filepath) ) ? $filename : $file;
+		
+	}
+	
+	/**
+	 * Create a image resource from an image path.
+	 * @param string $path
+	 * @return resource $res
+	 */
+	private function process($path) {
+	
+		$imageSize = getimagesize($path);
+
+		switch($imageSize[2]) {
+			case IMAGETYPE_GIF:
+				$res = @imagecreatefromgif($path);
+				break;
+			case IMAGETYPE_JPEG:
+				$res = @imagecreatefromjpeg($path);
+				break;
+			case IMAGETYPE_PNG:
+				$res = imagecreatefrompng($path);
+				break;
+		}
+		
+		$this->fileobj = new stdClass();
+		
+		$this->fileobj->width = imagesx($res);
+		$this->fileobj->height = imagesy($res);
+		$this->fileobj->type = $imageSize[2];
+		$this->fileobj->path = $path;
+		
+		return $res;
+		
+	}
+		
+	/**
+	 * Crops an image
+	 * @params resource $res, int $type, int $width, int $height
+	 * @return resource $image
+	 */
+	private function crop($res, $type, $width, $height) {
+	
+		$oWidth = imagesx($res);
+		$oHeight = imagesy($res);
 		$finalWidth = 0; //For cropping, this is really "scale to width before chopping extra height"
 		$finalHeight = 0; //For cropping, this is really "scale to height before chopping extra width"
 		$do_crop_x = false;
 		$do_crop_y = false;
 		$crop_src_x = 0;
 		$crop_src_y = 0;
-
-		// first, if what we're uploading is actually smaller than width and height, we do nothing
+		
 		if ($oWidth < $width && $oHeight < $height) {
 			$finalWidth = $oWidth;
 			$finalHeight = $oHeight;
 			$width = $oWidth;
 			$height = $oHeight;
-		} else if ($crop && ($height >= $oHeight && $width <= $oWidth)) {
+		} else if ($height >= $oHeight && $width <= $oWidth) {
 			//crop to width only -- don't scale anything
 			$finalWidth = $oWidth;
 			$finalHeight = $oHeight;
 			$height = $oHeight;
 			$do_crop_x = true;
-		} else if ($crop && ($width >= $oWidth && $height <= $oHeight)) {
+		} else if ($width >= $oWidth && $height <= $oHeight) {
 			//crop to height only -- don't scale anything
 			$finalHeight = $oHeight;
 			$finalWidth = $oWidth;
@@ -63,20 +155,12 @@ class Concrete5_Helper_Image {
 			$wDiff = $oWidth / $width;
 			$hDiff = ($height != 0 ? $oHeight / $height : 0);
 			
-			if (!$crop && ($wDiff > $hDiff)) {
-				//no cropping, just resize down based on target width
-				$finalWidth = $width;
-				$finalHeight = ($wDiff != 0 ? $oHeight / $wDiff : 0);
-			} else if (!$crop) {
-				//no cropping, just resize down based on target height
-				$finalWidth = ($hDiff != 0 ? $oWidth / $hDiff : 0);
-				$finalHeight = $height;
-			} else if ($crop && ($wDiff > $hDiff)) {
+			if ($wDiff > $hDiff) {
 				//resize down to target height, THEN crop off extra width
 				$finalWidth = ($hDiff != 0 ? $oWidth / $hDiff : 0);
 				$finalHeight = $height;
 				$do_crop_x = true;
-			} else if ($crop) {
+			} else {
 				//resize down to target width, THEN crop off extra height
 				$finalWidth = $width;
 				$finalHeight = ($wDiff != 0 ? $oHeight / $wDiff : 0);
@@ -105,82 +189,53 @@ class Concrete5_Helper_Image {
 		}
 		
 		//create "canvas" to put new resized and/or cropped image into
-		if ($crop) {
-			$image = @imageCreateTrueColor($width, $height);
-		} else {
-			$image = @imageCreateTrueColor($finalWidth, $finalHeight);
-		}
+		$image = imagecreatetruecolor($width, $height);
 		
-		$im = false;		
-		switch($imageSize[2]) {
-			case IMAGETYPE_GIF:
-				$im = @imageCreateFromGIF($originalPath);
-				break;
-			case IMAGETYPE_JPEG:
-				$im = @imageCreateFromJPEG($originalPath);
-				break;
-			case IMAGETYPE_PNG:
-				$im = @imageCreateFromPNG($originalPath);
-				break;
-		}
+		// Better transparency - thanks for the ideas and some code from mediumexposure.com
+		if (($type == IMAGETYPE_GIF) || ($type == IMAGETYPE_PNG)) {
+			$trnprt_indx = imagecolortransparent($res);
+			
+			// If we have a specific transparent color
+			if ($trnprt_indx >= 0 && $trnprt_indx < imagecolorstotal($im)) {
 		
-		if ($im) {
-			// Better transparency - thanks for the ideas and some code from mediumexposure.com
-			if (($imageSize[2] == IMAGETYPE_GIF) || ($imageSize[2] == IMAGETYPE_PNG)) {
-				$trnprt_indx = imagecolortransparent($im);
+				// Get the original image's transparent color's RGB values
+				$trnprt_color = imagecolorsforindex($image, $trnprt_indx);
 				
-				// If we have a specific transparent color
-				if ($trnprt_indx >= 0 && $trnprt_indx < imagecolorstotal($im)) {
-			
-					// Get the original image's transparent color's RGB values
-					$trnprt_color = imagecolorsforindex($im, $trnprt_indx);
-					
-					// Allocate the same color in the new image resource
-					$trnprt_indx = imagecolorallocate($image, $trnprt_color['red'], $trnprt_color['green'], $trnprt_color['blue']);
-					
-					// Completely fill the background of the new image with allocated color.
-					imagefill($image, 0, 0, $trnprt_indx);
-					
-					// Set the background color for new image to transparent
-					imagecolortransparent($image, $trnprt_indx);
-					
+				// Allocate the same color in the new image resource
+				$trnprt_indx = imagecolorallocate($image, $trnprt_color['red'], $trnprt_color['green'], $trnprt_color['blue']);
 				
-				} else if ($imageSize[2] == IMAGETYPE_PNG) {
+				// Completely fill the background of the new image with allocated color.
+				imagefill($image, 0, 0, $trnprt_indx);
 				
-					// Turn off transparency blending (temporarily)
-					imagealphablending($image, false);
-					
-					// Create a new transparent color for image
-					$color = imagecolorallocatealpha($image, 0, 0, 0, 127);
-					
-					// Completely fill the background of the new image with allocated color.
-					imagefill($image, 0, 0, $color);
-					
-					// Restore transparency blending
-					imagesavealpha($image, true);
+				// Set the background color for new image to transparent
+				imagecolortransparent($image, $trnprt_indx);
+				
 			
-				}
-			}
-			
-			$res = @imageCopyResampled($image, $im, 0, 0, $crop_src_x, $crop_src_y, $finalWidth, $finalHeight, $oWidth, $oHeight);
-			if ($res) {
-				switch($imageSize[2]) {
-					case IMAGETYPE_GIF:
-						$res2 = imageGIF($image, $newPath);
-						break;
-					case IMAGETYPE_JPEG:
-						$compression = defined('AL_THUMBNAIL_JPEG_COMPRESSION') ? AL_THUMBNAIL_JPEG_COMPRESSION : 80;
-						$res2 = imageJPEG($image, $newPath, $compression);
-						break;
-					case IMAGETYPE_PNG:
-						$res2 = imagePNG($image, $newPath);
-						break;
-				}
+			} else if ($type == IMAGETYPE_PNG) {
+				
+				// Turn off transparency blending (temporarily)
+				imagealphablending($image, false);
+				
+				// Create a new transparent color for image
+				$color = imagecolorallocatealpha($image, 0, 0, 0, 127);
+				
+				// Completely fill the background of the new image with allocated color.
+				imagefill($image, 0, 0, $color);
+				
+				// Restore transparency blending
+				imagesavealpha($image, true);
+				
 			}
 		}
 		
-		@chmod($newPath, FILE_PERMISSIONS_MODE);
-	}
+		imagecopyresampled($image, $res, 0, 0, $crop_src_x, $crop_src_y, $finalWidth, $finalHeight, $oWidth, $oHeight);
+		
+		$this->fileobj->width = imagesx($image);
+		$this->fileobj->height = imagesy($image);
+		$this->fileobj->cropped = true;
+		
+		return $image;
+	} 
 	
 	/** 
 	 * Returns a path to the specified item, resized and/or cropped to meet max width and height. $obj can either be
@@ -193,41 +248,38 @@ class Concrete5_Helper_Image {
 	 */
 	public function getThumbnail($obj, $maxWidth, $maxHeight, $crop = false) {
 		$fID = false;
+		
 		if ($obj instanceof File) {
 			$path = $obj->getPath();
 			$fID = $obj->getFileID();
 		} else {
 			$path = $obj;
-		}		
-		
-		$fh = Loader::helper('file');
-		$prefix = ($crop ? 'cropped:' : ''); //Name cropped images different from resized images so they don't get mixed up in the cache
-		if (file_exists($path) && $fID) {
-			$filename = md5($prefix . $path . ':' . $maxWidth . ':' . $maxHeight . ':' . filemtime($path)) . '_f' . $fID . '.' . $fh->getExtension($path);
-		} else if (file_exists($path)){
-			$filename = md5($prefix . $path . ':' . $maxWidth . ':' . $maxHeight . ':' . filemtime($path)) . '.' . $fh->getExtension($path);
-		} else if ($fID){
-			// This may be redundant - don't know it can actually ever occur
-			$filename = md5($prefix . $path . ':' . $maxWidth . ':' . $maxHeight . ':') . '_f' . $fID . '.' . $fh->getExtension($path);
-		} else {
-			$filename = md5($prefix . $path . ':' . $maxWidth . ':' . $maxHeight . ':') . '.' . $fh->getExtension($path);
 		}
-
-		if (!file_exists(DIR_FILES_CACHE . '/' . $filename)) {
-			// create image there
-			$this->create($path, DIR_FILES_CACHE . '/' . $filename, $maxWidth, $maxHeight, $crop);
+				
+		$imageSize = getimagesize($path);
+		$res = $this->process($path);
+		
+		if($crop){
+			$res = $this->crop($res, $imageSize[2], $maxWidth, $maxHeight);
 		}
 		
-		$src = REL_DIR_FILES_CACHE . '/' . $filename;
-		$abspath = DIR_FILES_CACHE . '/' . $filename;
-		$thumb = new stdClass;
-		if (isset($abspath) && file_exists($abspath)) {			
+		$image = $this->cache($res, $imageSize[2], $fID);
+		
+		if ($image) {
+			$src = REL_DIR_FILES_CACHE . '/' . $image;
+			$abspath = DIR_FILES_CACHE . '/' . $image;
+			
+			$thumb = new stdClass;
 			$thumb->src = $src;
 			$dimensions = getimagesize($abspath);
 			$thumb->width = $dimensions[0];
 			$thumb->height = $dimensions[1];
+			
 			return $thumb;
-		}					
+				
+		} else {
+			return $image;
+		}
 	}
 	
 	/** 
