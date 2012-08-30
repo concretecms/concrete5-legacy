@@ -21,6 +21,9 @@ class Concrete5_Model_PermissionAccessEntityType extends Object {
 	
 	public function __call($method, $args) {
 		$obj = $this->getAccessEntityTypeClass();
+		if (!class_exists($ojb)) {
+			Loader::model('permission/access/entity/types/' . $this->petHandle , $this->getPackageHandle());
+		}
 		$o = new $obj();
 		return call_user_func_array(array($obj, $method), $args);
 	}
