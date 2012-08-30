@@ -19,15 +19,15 @@
 
 defined('C5_EXECUTE') or die("Access Denied.");
 class Concrete5_Helper_Image {
-
+	
+	public $fileobj = null;
+	
 	/**
 	 * Creates a new image given an original path, a new path, a target width and height.
 	 * Optionally crops image to exactly match given width and height.
 	 * @params string $originalPath, string $newpath, int $width, int $height, bool $crop
 	 * @return void
 	 */
-	 
-	public $fileobj = null;
 	
 	public function create($originalPath, $newPath, $width, $height, $crop = false) {
 	
@@ -43,10 +43,9 @@ class Concrete5_Helper_Image {
 	}
 	
 	/**
-	 * Generates a cached version of the image resource
-	 * Optionally crops image to exactly match given width and height.
+	 * Generates a cached version of the image resource, optionally with an fID associated.
 	 * @params resource $res, int $type, string $fID
-	 * @return bool
+	 * @return bool|string
 	 */
 	
 	private function cache($res, $type, $fID = false) {
@@ -85,7 +84,7 @@ class Concrete5_Helper_Image {
 	}
 	
 	/**
-	 * Create a image resource from an image path.
+	 * Create a image resource from a file path.
 	 * @param string $path
 	 * @return resource $res
 	 */
