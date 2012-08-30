@@ -34,6 +34,7 @@ class Concrete5_Helper_Image {
 		$imageSize = getimagesize($originalPath);
 		
 		$res = $this->process($originalPath);
+		$res = $this->resize($res, $imageSize[2], $maxWidth, $maxHeight);
 		if($crop){
 			$res = $this->crop($res, $imageSize[2], $maxWidth, $maxHeight);
 		}
@@ -79,6 +80,8 @@ class Concrete5_Helper_Image {
 			@chmod($filepath, FILE_PERMISSIONS_MODE);
 		}
 		
+		imagedestroy($res);
+		
 		return ( file_exists($filepath) ) ? $filename : $file;
 		
 	}
@@ -112,6 +115,98 @@ class Concrete5_Helper_Image {
 		$this->fileobj->path = $path;
 		
 		return $res;
+		
+	}
+	
+	/**
+	 * Resizes an image, defaults to the maximum length
+	 * @params resource $res, int $type, int $width, int $height, bool $max
+	 * @return resource $image
+	 */
+	private function resize($res, $type, $width, $height, $max = true) {
+		
+		$oWidth = imagesx($res);
+		$oHeight = imagesy($res);
+		
+		$width = min($oWidth, $width);
+		$height = min($oHeight, $height);
+		
+		$finalWidth = 0;
+		$finalHeight = 0;
+		
+		$x_ratio = $oWidth / $oHeight; 
+		$y_ratio = $oHeight / $oWidth;
+		
+		if ($oWidth == $width && $oHeight == $height) {
+			$finalWidth = $oWidth;
+			$finalHeight = $oHeight;
+		} else {
+			if ($max) {
+				if ( $width < $height ) {
+					$finalHeight = $height;
+					$finalWidth = round($height * $x_ratio);
+				} else {
+					$finalWidth = $width;
+					$finalHeight = round($width * $y_ratio);
+				}
+			} else {
+				if ( $width < $height ) {
+					$finalWidth = $width;
+					$finalHeight = round($width * $y_ratio);
+				} else {
+					$finalHeight = $height;
+					$finalWidth = round($height * $x_ratio);
+				}
+			}
+		}
+		
+		//create "canvas" to put new resized image into
+		$image = imagecreatetruecolor($finalWidth, $finalHeight);
+		
+		// Better transparency - thanks for the ideas and some code from mediumexposure.com
+		if (($type == IMAGETYPE_GIF) || ($type == IMAGETYPE_PNG)) {
+			$trnprt_indx = imagecolortransparent($res);
+			
+			// If we have a specific transparent color
+			if ($trnprt_indx >= 0 && $trnprt_indx < imagecolorstotal($im)) {
+		
+				// Get the original image's transparent color's RGB values
+				$trnprt_color = imagecolorsforindex($image, $trnprt_indx);
+				
+				// Allocate the same color in the new image resource
+				$trnprt_indx = imagecolorallocate($image, $trnprt_color['red'], $trnprt_color['green'], $trnprt_color['blue']);
+				
+				// Completely fill the background of the new image with allocated color.
+				imagefill($image, 0, 0, $trnprt_indx);
+				
+				// Set the background color for new image to transparent
+				imagecolortransparent($image, $trnprt_indx);
+				
+			
+			} else if ($type == IMAGETYPE_PNG) {
+				
+				// Turn off transparency blending (temporarily)
+				imagealphablending($image, false);
+				
+				// Create a new transparent color for image
+				$color = imagecolorallocatealpha($image, 0, 0, 0, 127);
+				
+				// Completely fill the background of the new image with allocated color.
+				imagefill($image, 0, 0, $color);
+				
+				// Restore transparency blending
+				imagesavealpha($image, true);
+				
+			}
+		}
+		
+		imagecopyresampled($image, $res, 0, 0, 0, 0, $finalWidth, $finalHeight, $oWidth, $oHeight);
+		
+		$this->fileobj->width = imagesx($image);
+		$this->fileobj->height = imagesy($image);
+		$this->fileobj->resized = 10;
+		
+		return $image;
 		
 	}
 		
@@ -149,22 +244,12 @@ class Concrete5_Helper_Image {
 			$width = $oWidth;
 			$do_crop_y = true;
 		} else {
-			// otherwise, we do some complicated stuff
-			// first, we divide original width and height by new width and height, and find which difference is greater
-			$wDiff = $oWidth / $width;
-			$hDiff = ($height != 0 ? $oHeight / $height : 0);
-			
-			if ($wDiff > $hDiff) {
-				//resize down to target height, THEN crop off extra width
-				$finalWidth = ($hDiff != 0 ? $oWidth / $hDiff : 0);
-				$finalHeight = $height;
-				$do_crop_x = true;
-			} else {
-				//resize down to target width, THEN crop off extra height
-				$finalWidth = $width;
-				$finalHeight = ($wDiff != 0 ? $oHeight / $wDiff : 0);
-				$do_crop_y = true;
-			}
+			$finalWidth = $oWidth;
+			$finalHeight = $oHeight;
+			$width = $oWidth;
+			$height = $oHeight;
+			$do_crop_x = true;
+			$do_crop_y = true;
 		}
 		
 		//Calculate cropping to center image
@@ -257,6 +342,7 @@ class Concrete5_Helper_Image {
 				
 		$imageSize = getimagesize($path);
 		$res = $this->process($path);
+		$res = $this->resize($res, $imageSize[2], $maxWidth, $maxHeight);
 		
 		if($crop){
 			$res = $this->crop($res, $imageSize[2], $maxWidth, $maxHeight);
