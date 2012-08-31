@@ -1,5 +1,5 @@
 
-<? 
+<?php 
 //Used on both page and file attributes
 $c = Page::getCurrentPage();
 
@@ -13,20 +13,20 @@ if (is_object($category) && $category->allowAttributeSets()) {
 <form class="form-horizontal">
 <div class="ccm-pane-options-permanent-search">
 
-	<? $form = Loader::helper('form'); ?>
+	<?php $form = Loader::helper('form'); ?>
 
-	<? if (count($sets) > 0) { ?>
+	<?php if (count($sets) > 0) { ?>
 	<div class="span6">
 	<?=$form->label('asGroupAttributes', t('View'))?>
 	<div class="controls">
 	<select class="span3" onchange="window.location.href='<?=Loader::helper('navigation')->getLinkToCollection($c)?>?asGroupAttributes=' + this.value" id="asGroupAttributes" name="asGroupAttributes">
-		<option value="1" <? if ($_REQUEST['asGroupAttributes'] !== '0') { ?> selected <? } ?>><?=t('Grouped by set')?></option>
-		<option value="0" <? if ($_REQUEST['asGroupAttributes'] === '0') { ?> selected <? } ?>><?=t('In one list')?></option>
+		<option value="1" <?php if ($_REQUEST['asGroupAttributes'] !== '0') { ?> selected <?php } ?>><?=t('Grouped by set')?></option>
+		<option value="0" <?php if ($_REQUEST['asGroupAttributes'] === '0') { ?> selected <?php } ?>><?=t('In one list')?></option>
 	</select>
 	</div>
 	</div>
 	
-	<? } ?>
+	<?php } ?>
 	<a href="<?=$this->url('/dashboard/system/attributes/sets', 'category', $category->getAttributeKeyCategoryID())?>" id="ccm-list-view-customize-top"><span class="ccm-menu-icon ccm-icon-properties"></span><?=t('Manage Sets')?></a>
 </div>
 </form>
@@ -34,11 +34,11 @@ if (is_object($category) && $category->allowAttributeSets()) {
 
 <div class="ccm-pane-body">
 
-<?
+<?php
 if (count($attribs) > 0) { ?>
 
 
-	<?
+	<?php
 	$ih = Loader::helper('concrete/interface');
 	$valt = Loader::helper('validation/token');
 
@@ -46,25 +46,25 @@ if (count($attribs) > 0) { ?>
 	if (count($sets) > 0 && ($_REQUEST['asGroupAttributes'] !== '0')) { ?>
 	
 	
-		<?
+		<?php
 	
 		foreach($sets as $as) { ?>
 	
 		
 		<h3><?=$as->getAttributeSetName()?></h3>
 	
-		<?
+		<?php
 		
 		$setattribs = $as->getAttributeKeys();
 		if (count($setattribs) == 0) { ?>
 		
 			<div class="ccm-attribute-list-wrapper"><?=t('No attributes defined.')?></div>
 		
-		<? } else { ?>
+		<?php } else { ?>
 			
 			<div class="ccm-attribute-sortable-set-list ccm-attribute-list-wrapper" attribute-set-id="<?=$as->getAttributeSetID()?>" id="asID_<?=$as->getAttributeSetID()?>">			
 			
-			<?
+			<?php
 			
 			foreach($setattribs as $ak) { ?>
 			
@@ -73,21 +73,21 @@ if (count($attribs) > 0) { ?>
 			</div>
 	
 
-			<? } ?>
+			<?php } ?>
 			
 			</div>
 			
-			<? } ?>
+			<?php } ?>
 			
 			
-		<? } 
+		<?php } 
 		
 		$unsetattribs = $category->getUnassignedAttributeKeys();
 		if (count($unsetattribs) > 0) { ?>
 		
 			<h3><?=t('Other')?></h3>
 			<div class="ccm-attribute-list-wrapper">
-			<?
+			<?php
 			foreach($unsetattribs as $ak) { ?>
 	
 			<div class="ccm-attribute" id="akID_<?=$as->getAttributeSetID()?>_<?=$ak->getAttributeKeyID()?>">
@@ -95,10 +95,10 @@ if (count($attribs) > 0) { ?>
 			</div>
 	
 
-			<? } ?>
+			<?php } ?>
 			</div>
 		
-		<?
+		<?php
 		
 		}
 	
@@ -106,27 +106,27 @@ if (count($attribs) > 0) { ?>
 		
 		<div class="ccm-attributes-list">
 		
-		<?
+		<?php
 		foreach($attribs as $ak) { ?>
 		<div class="ccm-attribute" id="akID_<?=$ak->getAttributeKeyID()?>">
 			<img class="ccm-attribute-icon" src="<?=$ak->getAttributeKeyIconSRC()?>" width="16" height="16" /><a href="<?=$this->url($editURL, 'edit', $ak->getAttributeKeyID())?>"><?=$ak->getAttributeKeyName()?></a>
 		</div>
 		
-		<? } ?>
+		<?php } ?>
 	
 		</div>
 	
-	<? } ?>
+	<?php } ?>
 	
-<? } else { ?>
+<?php } else { ?>
 	
 	<p>
-		<?
+		<?php
 	 echo t('No attributes defined.');
 		?>
 	</p>
 	
-<? } ?>
+<?php } ?>
 
 </div>
 

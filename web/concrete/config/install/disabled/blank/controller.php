@@ -1,4 +1,4 @@
-<?
+<?php
 
 class BlankStartingPointPackage extends StartingPointPackage {
 

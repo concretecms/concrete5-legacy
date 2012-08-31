@@ -1,4 +1,4 @@
-<?
+<?php
 $co = Loader::helper('lists/countries');
 $countries = array_merge(array('' => t('Choose Country')), $co->getCountries());
 
@@ -29,10 +29,10 @@ if (isset($_POST['akHasCustomCountries'])) {
 <label></label>
 <div class="input">
 	<select id="akCustomCountries" name="akCustomCountries[]" multiple size="7" disabled="disabled">
-		<? foreach ($countries as $key=>$val) { ?>
-			<? if (empty($key) || empty($val)) continue; ?>
+		<?php foreach ($countries as $key=>$val) { ?>
+			<?php if (empty($key) || empty($val)) continue; ?>
 			<option <?=(in_array($key, $akCustomCountries) || $akHasCustomCountries == 0 ?'selected ':'')?>value="<?=$key?>"><?=$val?></option>
-		<? } ?>
+		<?php } ?>
 	</select>
 </div>
 </div>

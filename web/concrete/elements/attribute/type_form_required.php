@@ -1,4 +1,4 @@
-<? 
+<?php 
 $form = Loader::helper('form'); 
 $ih = Loader::helper("concrete/interface");
 $valt = Loader::helper('validation/token');
@@ -23,8 +23,8 @@ if (is_object($key)) {
 
 <div class="ccm-pane-body">
 
-<? if (is_object($key)) { ?>
-	<?
+<?php if (is_object($key)) { ?>
+	<?php
 	$valt = Loader::helper('validation/token');
 	$ih = Loader::helper('concrete/interface');
 	$delConfirmJS = t('Are you sure you want to remove this attribute?');
@@ -37,8 +37,8 @@ if (is_object($key)) {
 	}
 	</script>
 	
-	<? print $ih->button_js(t('Delete Attribute'), "deleteAttribute()", 'right', 'error');?>
-<? } ?>
+	<?php print $ih->button_js(t('Delete Attribute'), "deleteAttribute()", 'right', 'error');?>
+<?php } ?>
 
 
 <fieldset>
@@ -60,11 +60,11 @@ if (is_object($key)) {
 </div>
 </div>
 
-<? if ($category->allowAttributeSets() == AttributeKeyCategory::ASET_ALLOW_SINGLE) { ?>
+<?php if ($category->allowAttributeSets() == AttributeKeyCategory::ASET_ALLOW_SINGLE) { ?>
 <div class="clearfix">
 <?=$form->label('asID', t('Set'))?>
 <div class="input">
-	<?
+	<?php
 		$sel = array('0' => t('** None'));
 		$sets = $category->getAttributeSets();
 		foreach($sets as $as) {
@@ -74,7 +74,7 @@ if (is_object($key)) {
 		?>
 </div>
 </div>
-<? } ?>
+<?php } ?>
 
 <div class="clearfix">
 <label><?=t('Searchable')?></label>
@@ -110,21 +110,21 @@ if (is_object($key)) {
 <?=$form->hidden('atID', $type->getAttributeTypeID())?>
 <?=$form->hidden('akCategoryID', $category->getAttributeKeyCategoryID()); ?>
 <?=$valt->output('add_or_update_attribute')?>
-<? 
+<?php 
 if ($category->getPackageID() > 0) { 
 	@Loader::packageElement('attribute/categories/' . $category->getAttributeKeyCategoryHandle(), $category->getPackageHandle(), array('key' => $key));
 } else {
 	@Loader::element('attribute/categories/' . $category->getAttributeKeyCategoryHandle(), array('key' => $key));
 }
 ?>
-<? $type->render('type_form', $key); ?>
+<?php $type->render('type_form', $key); ?>
 
 </div>
 <div class="ccm-pane-footer">
 
-<? if (is_object($key)) { ?>
+<?php if (is_object($key)) { ?>
 	<?=$ih->submit(t('Save'), 'ccm-attribute-key-form', 'right', 'primary')?>
-<? } else { ?>
+<?php } else { ?>
 	<?=$ih->submit(t('Add'), 'ccm-attribute-key-form', 'right', 'primary')?>
-<? } ?>
+<?php } ?>
 </div>

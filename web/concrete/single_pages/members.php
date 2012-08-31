@@ -1,4 +1,4 @@
-<? defined('C5_EXECUTE') or die("Access Denied."); ?>
+<?php defined('C5_EXECUTE') or die("Access Denied."); ?>
 <div id="ccm-profile-wrapper">
 	<form method="get" action="<?=DIR_REL?>/<?=DISPATCHER_FILENAME?>">
 			<?php echo t('Search');?>  		
@@ -10,14 +10,14 @@
 	
 	<h1><?php echo t('Members');?></h1> 	
 	
-	<? if ($userList->getTotal() == 0) { ?>
+	<?php if ($userList->getTotal() == 0) { ?>
 	
 		<div><?=t('No users found.')?></div>
 	
-	<? } else { ?>
+	<?php } else { ?>
 	
 		<div class="ccm-profile-member-list">
-		<?  
+		<?php  
 		$av = Loader::helper('concrete/avatar');
 		$u = new User();
 		
@@ -29,12 +29,12 @@
 				<div class="ccm-profile-member-detail">
 					<div class="ccm-profile-member-username"><a href="<?=$this->url('/profile','view', $user->getUserID())?>"><?=$user->getUserName()?></a></div>
 					<div class="ccm-profile-member-fields">
-					<?
+					<?php
 					foreach($attribs as $ak) { ?>
 						<div>
 							<?=$user->getAttribute($ak, 'displaySanitized', 'display'); ?>
 						</div>
-					<? } ?>
+					<?php } ?>
 					</div>					
 				</div>
 				<div class="ccm-spacer"></div>
@@ -42,13 +42,13 @@
 		
 		
 	
-	<? } ?>
+	<?php } ?>
 		
 		</div>
 		
 		<?=$userList->displayPagingV2()?>
 		
-	<? 
+	<?php 
 	
 	} ?>
 </div>

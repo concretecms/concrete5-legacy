@@ -1,13 +1,13 @@
-<? defined('C5_EXECUTE') or die("Access Denied.");?>
+<?php defined('C5_EXECUTE') or die("Access Denied.");?>
 
 <?=Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Multilingual Setup'), false, 'span8 offset2', false)?>
-<? 
+<?php 
 
 if (count($languages) == 0) { ?>
 <div class="ccm-pane-body ccm-pane-body-footer">
 	<?=t("You don't have any interface languages installed. You must run concrete5 in English.");?>
 </div>
-<? } else { ?>
+<?php } else { ?>
 
 <form method="post" class="form-horizontal" action="<?=$this->action('save_interface_language')?>">
 <div class="ccm-pane-body">
@@ -19,7 +19,7 @@ if (count($languages) == 0) { ?>
 	</div>
 	</div>
 	
-	<?
+	<?php
 	$args = array();
 	if (defined("LOCALE")) {
 		$args['disabled'] = 'disabled';
@@ -41,6 +41,6 @@ if (count($languages) == 0) { ?>
 </div>
 </form>
 	
-<? } ?>
+<?php } ?>
 
 <?=Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper(false)?>

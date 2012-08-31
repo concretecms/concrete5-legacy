@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 global $c;
 
@@ -68,11 +68,11 @@ global $c;
 
 	<div id="ccm-properties-cache-tab">
 		
-		<? if (!ENABLE_CACHE) {
+		<?php if (!ENABLE_CACHE) {
 			print t('The cache has been disabled. Full page caching is not available.');
 		} else { ?>
-			<? $form = Loader::helper('form');?>
-			<?
+			<?php $form = Loader::helper('form');?>
+			<?php
 			switch(FULL_PAGE_CACHE_GLOBAL) {
 				case 'blocks':
 					$globalSetting = t('cache page if all blocks support it.');
@@ -126,8 +126,8 @@ global $c;
 			
 			<div class="ccm-properties-cache-lifetime input">
 			<ul class="inputs-list">
-				<? $val = ($c->getCollectionFullPageCachingLifetimeCustomValue() > 0 && $c->getCollectionFullPageCachingLifetime()) ? $c->getCollectionFullPageCachingLifetimeCustomValue() : ''; ?>
-				<li><label><span><input type="radio" name="cCacheFullPageContentOverrideLifetime" value="0" <? if ($c->getCollectionFullPageCachingLifetime() == '0') { ?> checked="checked" <? } ?> /> 
+				<?php $val = ($c->getCollectionFullPageCachingLifetimeCustomValue() > 0 && $c->getCollectionFullPageCachingLifetime()) ? $c->getCollectionFullPageCachingLifetimeCustomValue() : ''; ?>
+				<li><label><span><input type="radio" name="cCacheFullPageContentOverrideLifetime" value="0" <?php if ($c->getCollectionFullPageCachingLifetime() == '0') { ?> checked="checked" <?php } ?> /> 
 				<?=t('Use global setting - %s', $globalSettingLifetime)?>
 				</span></label></li>
 				<li><label><span><?=$form->radio('cCacheFullPageContentOverrideLifetime', 'default', $c->getCollectionFullPageCachingLifetime())?> 
@@ -145,7 +145,7 @@ global $c;
 				</li>
 			</ul>
 			</div>
-		<? } ?>
+		<?php } ?>
 	</div>	
 	
 	<input type="hidden" name="update_speed_settings" value="1" />

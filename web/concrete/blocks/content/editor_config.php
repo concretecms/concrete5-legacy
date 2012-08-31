@@ -17,14 +17,14 @@ tinyMCE.init({
 	document_base_url: '<?=BASE_URL . DIR_REL?>/',
 	convert_urls: false,
 	entity_encoding: 'raw',
-	<? if (is_object($theme)) { ?>
+	<?php if (is_object($theme)) { ?>
 		content_css : "<?=$theme->getThemeEditorCSS()?>",
-	<? } ?>
-	<?
+	<?php } ?>
+	<?php
 	$txtEditorMode=Config::get('CONTENTS_TXT_EDITOR_MODE');
 	if( $txtEditorMode=='CUSTOM' ){ ?>
 		//theme : "concrete",
-		<?
+		<?php
 		echo Config::get('CONTENTS_TXT_EDITOR_CUSTOM_CODE').'';
 	}elseif($txtEditorMode=='ADVANCED'){ ?>
 		plugins: "inlinepopups,spellchecker,safari,advlink,table,advhr,advimage,xhtmlxtras,emotions,insertdatetime,paste,visualchars,nonbreaking,pagebreak,style",
@@ -41,7 +41,7 @@ tinyMCE.init({
 		//theme_advanced_styles: "Note=ccm-note",		
 		theme_advanced_toolbar_align : "left",
 		spellchecker_languages : "+English=en"
- 	<? }elseif($txtEditorMode=='OFFICE'){ ?> 
+ 	<?php }elseif($txtEditorMode=='OFFICE'){ ?> 
 		editor_selector : "ccm-advanced-editor",		
 		spellchecker_languages : "+English=en",
 		theme : "advanced",
@@ -59,11 +59,11 @@ tinyMCE.init({
 		theme_advanced_statusbar_location : "bottom",
 		//theme_advanced_styles: "Note=ccm-note",		
 		theme_advanced_resizing : true				
-	<? }else{ //simple ?>
+	<?php }else{ //simple ?>
 		theme : "concrete", 
 		plugins: "paste,inlinepopups,spellchecker,safari,advlink,advimage,advhr",
 		editor_selector : "ccm-advanced-editor",
 		spellchecker_languages : "+English=en"		
-	<? } ?>
+	<?php } ?>
 });
 </script>

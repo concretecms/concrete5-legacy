@@ -1,6 +1,6 @@
-<? defined('C5_EXECUTE') or die("Access Denied."); ?>
+<?php defined('C5_EXECUTE') or die("Access Denied."); ?>
 
-<?
+<?php
 
 $repeats = array(
 	'' => t('** Options'), 
@@ -149,13 +149,13 @@ $dt = Loader::helper('form/date_time');
 <div class="control-group">
 <label class="control-label"><?=t('On')?></label>
 <div class="controls">
-<? 
+<?php 
 $x = 0;
 foreach($list['format']['wide'] as $key => $value) { ?>
-	<label><input <? if (in_array($x, $pdRepeatPeriodWeekDays)) { ?>checked="checked" <? } ?>
+	<label><input <?php if (in_array($x, $pdRepeatPeriodWeekDays)) { ?>checked="checked" <?php } ?>
 	type="checkbox" name="pdRepeatPeriodWeeksDays[]" value="<?=$x?>" /> <span><?=$value?></span></label>
 	
-<?
+<?php
 	$x++;
 } ?>
 </div>

@@ -1,41 +1,41 @@
-<? defined('C5_EXECUTE') or die("Access Denied."); ?>
+<?php defined('C5_EXECUTE') or die("Access Denied."); ?>
 
 <div class="ccm-ui">
-<?
+<?php
 $assignments = $cp->getAllTimedAssignmentsForPage();
 if (count($assignments) > 0) { ?>
 
 <table class="ccm-permission-grid">
-<?
+<?php
 foreach($assignments as $ppc) {
 	$pk = $ppc->getPermissionKeyObject();
 	?>
 	<tr>
 	<td>
 	<strong><?=$pk->getPermissionKeyName()?></strong>
-	<?=t('Permission on ')?><?
+	<?=t('Permission on ')?><?php
 		if ($pk instanceof AreaPermissionKey) {  ?>
 			<strong><?=$pk->getPermissionObject()->getAreaHandle() ?></strong>.
-		<? } else if ($pk instanceof BlockPermissionKey) { 
+		<?php } else if ($pk instanceof BlockPermissionKey) { 
 			$bt = BlockType::getByID($pk->getPermissionObject()->getBlockTypeID());
 			$obj = $pk->getPermissionObject();
 			if ($obj->getBlockName() != '') { ?>
 
 			<?=t('the %s block named <strong>%s</strong> in <strong>%s</strong> Area. ', $bt->getBlockTypeName(), $obj->getBlockName(), $pk->getPermissionObject()->getAreaHandle())?>
 			
-			<? } else { ?>
+			<?php } else { ?>
 			
 			<?=t('<strong>%s Block</strong> in <strong>%s</strong> Area. ', $bt->getBlockTypeName(), $pk->getPermissionObject()->getAreaHandle())?>
 			
-			<? } ?>		
-		<? } else { ?>
+			<?php } ?>		
+		<?php } else { ?>
 			<strong><?=t('Entire Page')?></strong>.
-		<? } ?>
-		<?
+		<?php } ?>
+		<?php
 		$pd = $ppc->getDurationObject();
 		?>
 		<div>
-		<? 
+		<?php 
 		$assignee = t('Nobody');
 		$pae = $ppc->getAccessEntityObject();
 		if (is_object($pae)) {
@@ -46,12 +46,12 @@ foreach($assignments as $ppc) {
 		</div>
 	</td>
 	</tr>
-<? } ?>
+<?php } ?>
 </table>
 </div>
 
-<? } else { ?>
+<?php } else { ?>
 	<p><?=t('No timed permission assignments')?></p>
-<? } ?>
+<?php } ?>
 
 </div>

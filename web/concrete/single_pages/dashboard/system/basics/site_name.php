@@ -1,4 +1,4 @@
-<? defined('C5_EXECUTE') or die("Access Denied.");?>
+<?php defined('C5_EXECUTE') or die("Access Denied.");?>
 <?=Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Site Name'), false, 'span10 offset1', false)?>
 <form method="post" class="form-horizontal" id="site-form" action="<?=$this->action('update_sitename')?>">
 <div class="ccm-pane-body">
@@ -11,7 +11,7 @@
 	</div>
 </div>
 <div class="ccm-pane-footer">
-	<?
+	<?php
 	print $interface->submit(t('Save'), 'site-form', 'right','primary');
 	?>
 </div>

@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 $u = new User();
 $form = Loader::helper('form');
@@ -17,7 +17,7 @@ if (!$fp->canViewFile()) {
 ?>
 <div style="text-align: center">
 
-<?
+<?php
 $to = $fv->getTypeObject();
 if ($to->getPackageHandle() != '') {
 	Loader::packageElement('files/view/' . $to->getView(), $to->getPackageHandle(), array('fv' => $fv));

@@ -1,4 +1,4 @@
-<? defined('C5_EXECUTE') or die("Access Denied.");?>
+<?php defined('C5_EXECUTE') or die("Access Denied.");?>
 
 <?php if ($this->controller->getTask() == 'export_database_schema') { ?>
 
@@ -28,7 +28,7 @@
 	<p><?php echo t('Click below to view your database schema in a format that can imported into concrete5 later.')?></p>
     
     <div class="well">
-        <?
+        <?php
         print $interface->submit(t('Export Database Tables'), 'export-db-form', 'left');
         ?>
     </div>
@@ -78,7 +78,7 @@
     </div>
     
     <div class="well">
-            <?
+            <?php
         print $interface->submit(t('Refresh Databases'), 'refresh-schema-form', 'left');
         ?>
     

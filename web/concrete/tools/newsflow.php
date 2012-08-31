@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 Loader::library('newsflow');
 if (Loader::helper('validation/numbers')->integer($_REQUEST['cID'])) {

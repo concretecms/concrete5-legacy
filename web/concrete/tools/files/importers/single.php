@@ -1,4 +1,4 @@
-<?
+<?php
 
 defined('C5_EXECUTE') or die("Access Denied.");
 $u = new User();
@@ -57,23 +57,23 @@ if ($errorCode > -1 && $error == '') {
 <html>
 <head>
 <script language="javascript">
-	<? if(strlen($error)) { ?>
+	<?php if(strlen($error)) { ?>
 		window.parent.ccmAlert.notice("<?=t('Upload Error')?>", "<?=str_replace("\n", '', nl2br($error))?>");
 		window.parent.ccm_alResetSingle();
-	<? } else { ?>
+	<?php } else { ?>
 		highlight = new Array();
 		highlight.push(<?=$resp->getFileID()?>);
 		
-		<? if (is_object($fr)) { ?>
+		<?php if (is_object($fr)) { ?>
 			window.parent.jQuery.fn.dialog.closeTop();
-		<? } ?>
+		<?php } ?>
 		
 		window.parent.ccm_uploadedFiles.push(<?=intval($resp->getFileID())?>);
 		setTimeout(function() { 
 			window.parent.ccm_filesUploadedDialog('<?=$searchInstance?>');
 			window.parent.ccm_alResetSingle();
 		}, 100);
-	<? } ?>
+	<?php } ?>
 </script>
 </head>
 <body>

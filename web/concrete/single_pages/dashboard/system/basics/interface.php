@@ -1,10 +1,10 @@
-<? defined('C5_EXECUTE') or die("Access Denied.");?>
+<?php defined('C5_EXECUTE') or die("Access Denied.");?>
 <?=Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Interface Settings'), false, 'span10 offset1', false)?>
 <form method="post" action="<?=$this->action('save_interface_settings')?>" enctype="multipart/form-data" >
 <div class="ccm-pane-body">
 <?=Loader::helper('validation/token')->output('save_interface_settings')?>
 
-<? if (!defined('WHITE_LABEL_DASHBOARD_BACKGROUND_FEED') && !defined('WHITE_LABEL_DASHBOARD_BACKGROUND_SRC')) { ?>
+<?php if (!defined('WHITE_LABEL_DASHBOARD_BACKGROUND_FEED') && !defined('WHITE_LABEL_DASHBOARD_BACKGROUND_SRC')) { ?>
 
 <fieldset>
 
@@ -17,7 +17,7 @@
 	<li><label><?=$form->radio('DASHBOARD_BACKGROUND_IMAGE', 'none', $DASHBOARD_BACKGROUND_IMAGE)?> <span><?=t('None')?></span></label></li>
 	<li><label><?=$form->radio('DASHBOARD_BACKGROUND_IMAGE', 'custom', $DASHBOARD_BACKGROUND_IMAGE)?> <span><?=t('Specify Custom Image')?></span></label>
 	
-	<div id="custom-background-image" <? if ($DASHBOARD_BACKGROUND_IMAGE != 'custom') { ?>style="display: none" <? } ?>>
+	<div id="custom-background-image" <?php if ($DASHBOARD_BACKGROUND_IMAGE != 'custom') { ?>style="display: none" <?php } ?>>
 		<br/>
 		<?=Loader::helper('concrete/asset_library')->image('DASHBOARD_BACKGROUND_IMAGE_CUSTOM_FILE_ID', DASHBOARD_BACKGROUND_IMAGE_CUSTOM_FILE_ID, t('Choose Image'), $imageObject)?>
 	</div>
@@ -39,7 +39,7 @@ $(function() {
 });
 </script>
 
-<? } ?>
+<?php } ?>
 
 </div>
 <div class="ccm-pane-footer">

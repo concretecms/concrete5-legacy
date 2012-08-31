@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 $sh = Loader::helper('concrete/dashboard/sitemap');
 if (!$sh->canRead()) {
@@ -25,11 +25,11 @@ if ($callback) {
 ));
 ?>
 
-<div id="ccm-tab-content-sitemap" <? if (!$sitemapSelected) { ?>style="display: none"<? } ?>></div>
+<div id="ccm-tab-content-sitemap" <?php if (!$sitemapSelected) { ?>style="display: none"<?php } ?>></div>
 
-<div id="ccm-tab-content-explore" <? if (!$flatSelected) { ?>style="display: none"<? } ?>></div>
+<div id="ccm-tab-content-explore" <?php if (!$flatSelected) { ?>style="display: none"<?php } ?>></div>
 
-<div id="ccm-tab-content-search" <? if (!$searchSelected) { ?>style="display: none"<? } ?>></div>
+<div id="ccm-tab-content-search" <?php if (!$searchSelected) { ?>style="display: none"<?php } ?>></div>
 
 </div>
 

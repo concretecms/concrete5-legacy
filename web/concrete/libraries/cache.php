@@ -1,4 +1,4 @@
-<?
+<?php
 
 final class CacheLocal extends Concrete5_Library_CacheLocal {}
 

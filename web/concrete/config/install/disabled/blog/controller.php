@@ -1,4 +1,4 @@
-<?
+<?php
 
 class BlogStartingPointPackage extends StartingPointPackage {
 

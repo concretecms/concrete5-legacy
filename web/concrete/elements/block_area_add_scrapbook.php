@@ -1,4 +1,4 @@
-<? 
+<?php 
 defined('C5_EXECUTE') or die("Access Denied.");
 ?>
 
@@ -36,5 +36,5 @@ $(function(){ ccmPrepareScrapbookItemsDelete(); });
 
 
 <div id="ccm-scrapbookListsWrap">
-<? Loader::element('scrapbook_lists', array( 'c'=>$c, 'a'=>$a, 'scrapbookName'=>'userScrapbook', 'token'=>$token ) );  ?>
+<?php Loader::element('scrapbook_lists', array( 'c'=>$c, 'a'=>$a, 'scrapbookName'=>'userScrapbook', 'token'=>$token ) );  ?>
 </div>

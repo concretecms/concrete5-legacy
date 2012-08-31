@@ -14,7 +14,7 @@ if ($controller->getFileOnstateID() > 0) {
 ?>
 <div class="ccm-block-field-group">
 <h4><?=t('Image to Display')?></h4><br/>
-<?
+<?php
 $args = array();
 if ($forceImageToMatchDimensions && $maxWidth && $maxHeight) {
 	$args['maxWidth'] = $maxWidth;
@@ -78,7 +78,7 @@ if ($forceImageToMatchDimensions && $maxWidth && $maxHeight) {
 
 <div>
 <h4><?=t('Constrain Image Dimensions')?></h4>
-<? if ($maxWidth == 0) { 
+<?php if ($maxWidth == 0) { 
 	$maxWidth = '';
 } 
 if ($maxHeight == 0) {
@@ -105,8 +105,8 @@ if ($maxHeight == 0) {
 	<?=$form->label('forceImageToMatchDimensions', t('Scale Image'))?>
 	<div class="input">	
 		<select name="forceImageToMatchDimensions" id="forceImageToMatchDimensions">
-			<option value="0" <? if (!$forceImageToMatchDimensions) { ?> selected="selected" <? } ?>><?=t('Automatically')?></option>
-			<option value="1" <? if ($forceImageToMatchDimensions == 1) { ?> selected="selected" <? } ?>><?=t('Force Exact Image Match')?></option>
+			<option value="0" <?php if (!$forceImageToMatchDimensions) { ?> selected="selected" <?php } ?>><?=t('Automatically')?></option>
+			<option value="1" <?php if ($forceImageToMatchDimensions == 1) { ?> selected="selected" <?php } ?>><?=t('Force Exact Image Match')?></option>
 		</select>
 	</div>
 </div>

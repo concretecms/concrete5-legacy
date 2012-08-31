@@ -1,6 +1,6 @@
-<? defined('C5_EXECUTE') or die("Access Denied."); ?>
+<?php defined('C5_EXECUTE') or die("Access Denied."); ?>
 
-<? if ($this->controller->getTask() == 'view_details') { ?>
+<?php if ($this->controller->getTask() == 'view_details') { ?>
 
 	<script type="text/javascript">
 	
@@ -32,27 +32,27 @@
 		<a href="javascript:void(0)" onclick="ccm_stacksAddBlock()" class="btn small ccm-main-nav-edit-option"><?=t('Add Block')?></a>
 		<a class="btn small ccm-main-nav-edit-option" dialog-width="640" dialog-height="340" id="stackVersions" dialog-title="<?=t('Version History')?>" href="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/versions.php?rel=SITEMAP&cID=<?=$stack->getCollectionID()?>"><?=t('Version History')?></a>
 
-		<? $cpc = new Permissions($stack); ?>
+		<?php $cpc = new Permissions($stack); ?>
 		
-		<? if ($cpc->canEditPagePermissions() && PERMISSIONS_MODEL == 'advanced') { ?>
+		<?php if ($cpc->canEditPagePermissions() && PERMISSIONS_MODEL == 'advanced') { ?>
 			<a class="btn small ccm-main-nav-edit-option" dialog-width="580" dialog-append-buttons="true" dialog-height="420" dialog-title="<?=t('Stack Permissions')?>" id="stackPermissions" href="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/edit_area_popup.php?cID=<?=$stack->getCollectionID()?>&arHandle=Main&atask=groups"><?=t('Permissions')?></a>
-		<? } ?>
+		<?php } ?>
 
-		<? if ($cpc->canDeletePage()) { ?>
+		<?php if ($cpc->canDeletePage()) { ?>
 			<a class="btn ccm-button-v2-right small ccm-main-nav-edit-option error" href="javascript:void(0)" onclick="if (confirm('<?=t('Are you sure you want to remove this stack?')?>')) { window.location.href='<?=$this->url('/dashboard/blocks/stacks/', 'delete', $stack->getCollectionID(), Loader::helper('validation/token')->generate('delete'))?>' }"><?=t('Delete Stack')?></a>
-		<? } ?>
+		<?php } ?>
 
-		<?
+		<?php
 		$vo = $stack->getVersionObject();
 		if ($cp->canApprovePageVersions()) {
 			$token = '&' . Loader::helper('validation/token')->getParameter(); ?>
-			<a style="margin-right: 8px; <? if ($vo->isApproved()) { ?> display: none; <? } ?> href="javascript:void(0)" onclick="window.location.href='<?=DIR_REL . "/" . DISPATCHER_FILENAME . "?cID=" . $stack->getCollectionID() . "&ctask=approve-recent" . $token?>'" class="btn small ccm-main-nav-edit-option ccm-button-v2-right"><?=t('Approve Changes')?></a>
-		<?
+			<a style="margin-right: 8px; <?php if ($vo->isApproved()) { ?> display: none; <?php } ?> href="javascript:void(0)" onclick="window.location.href='<?=DIR_REL . "/" . DISPATCHER_FILENAME . "?cID=" . $stack->getCollectionID() . "&ctask=approve-recent" . $token?>'" class="btn small ccm-main-nav-edit-option ccm-button-v2-right"><?=t('Approve Changes')?></a>
+		<?php
 		}		
 		?>
 	</div>
 	<div class="ccm-pane-body ccm-pane-body-footer clearfix" id="ccm-stack-container">
-	<?
+	<?php
 		$a = Area::get($stack, 'Main');
 		$bv = new BlockView();
 		$bv->renderElement('block_area_header', array('a' => $a));	
@@ -75,14 +75,14 @@
 	</div>
 	<?=Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper(false); ?>
 
-<? } else { ?>
+<?php } else { ?>
 
 	<?=Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Stacks'), t('Stacks give you a central place to stash blocks, where you can control their order, permissions, and even version them.<br><br>Add stacks to your site and you can update them in one place.'), 'span10 offset1');?>
 		
 	<h4><?=t('Global Areas')?></h4>
 	<div class="ccm-stack-content-wrapper">
 	
-	<?
+	<?php
 	if (count($globalareas) > 0) { 
 		foreach($globalareas as $st) { ?>
 
@@ -90,7 +90,7 @@
 				<a href="<?=$this->url('/dashboard/blocks/stacks/view_details', $st->getCollectionID())?>"><?=$st->getCollectionName()?></a>
 			</div>
 		
-		<?
+		<?php
 		}
 	} else {
 		print '<p>';
@@ -103,7 +103,7 @@
 		
 	<h4><?=t('Other Stacks')?></h4>
 	<div class="ccm-stack-content-wrapper">
-	<?
+	<?php
 	if (count($useradded) > 0) { 
 		foreach($useradded as $st) { ?>
 
@@ -111,7 +111,7 @@
 				<a href="<?=$this->url('/dashboard/blocks/stacks/view_details', $st->getCollectionID())?>"><?=$st->getCollectionName()?></a>
 			</div>
 		
-		<?
+		<?php
 		}
 	} else {
 		print '<p>';
@@ -135,4 +135,4 @@
 		
 	<?=Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper()?>
 
-<? } ?>
+<?php } ?>

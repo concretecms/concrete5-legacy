@@ -1,9 +1,9 @@
-<?  defined('C5_EXECUTE') or die("Access Denied.");
+<?php  defined('C5_EXECUTE') or die("Access Denied.");
 
 $tp = new TaskPermission();
 if (!$tp->canInstallPackages()) { ?>
 	<p><?=t('You do not have permission to download packages from the marketplace.')?></p>
-	<? exit;
+	<?php exit;
 
 }
 
@@ -55,7 +55,7 @@ if (!$error->has() && $install) {
 
 if (!$error->has()) { ?>
 	<p>
-	<? if ($install) {
+	<?php if ($install) {
 		$_pkg = Package::getByHandle($p->getPackageHandle());
 		if ($_pkg->hasInstallPostScreen()) { 
 			Loader::element('dashboard/install_post', false, $_pkg->getPackageHandle());
@@ -70,13 +70,13 @@ if (!$error->has()) { ?>
 	print '</div>';
 	?>
 	</p>
-<? } else { ?>
+<?php } else { ?>
 	<p><?= t("The package could not be installed:") ?></p>
 
-	<? $error->output(); ?>
+	<?php $error->output(); ?>
 
     <hr/>
-    <? if (is_object($mri)) { ?>
+    <?php if (is_object($mri)) { ?>
 	<p><?= t("To install the package manually:") ?></p>
 	<ol>
 		<li><?=t('Download the package from <a href="%s">here</a>.', $mri->getRemoteURL())?></li>
@@ -85,5 +85,5 @@ if (!$error->has()) { ?>
         <li><?=t('Click the Install button next to the package name.')?></li>
 	</ol>
 	<div class="dialog-buttons"></div>
-	<? } ?>
-<? } ?>
+	<?php } ?>
+<?php } ?>

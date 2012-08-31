@@ -1,4 +1,4 @@
-<?
+<?php
 
 /**
  * Users in Concrete can be grouped together, and entire groups can be given permissions to do certain things.

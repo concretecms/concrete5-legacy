@@ -1,4 +1,4 @@
-<? defined('C5_EXECUTE') or die("Access Denied.");?>
+<?php defined('C5_EXECUTE') or die("Access Denied.");?>
 <?=Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Bookmark Icons'), false, 'span10 offset1')?>
 
 
@@ -10,7 +10,7 @@
 	<fieldset>
 		<legend><?=t('Favicon')?></legend>
 
-	<?
+	<?php
 	$favIconFID=intval(Config::get('FAVICON_FID'));
 	if($favIconFID){
 		$f = File::getByID($favIconFID);
@@ -34,7 +34,7 @@
 			$('#favicon-form').get(0).submit();
 		}
 		</script>
-	<? }else{ ?>
+	<?php }else{ ?>
 	
 
 	
@@ -50,14 +50,14 @@
 		<div class="control-group">
 			<label class="control-label"></label>
 			<div class="controls">
-				<?
+				<?php
 				print $interface->submit(t('Upload'), 'favicon-form', 'left');
 				?>
 			
 			</div>
 		</div>
 
-	<? } ?>
+	<?php } ?>
 	</fieldset>
 
 	</form>
@@ -74,7 +74,7 @@
 		<legend><?=t('iPhone Thumbnail')?></legend>
 	
 	
-	<?
+	<?php
 	$favIconFID=intval(Config::get('IPHONE_HOME_SCREEN_THUMBNAIL_FID'));
 	if($favIconFID){
 		$f = File::getByID($favIconFID);
@@ -99,7 +99,7 @@
 		}
 		</script>
 		
-	<? } else { ?>
+	<?php } else { ?>
 
 		<div class="control-group">
 			<label for="favicon_upload" class="control-label"><?=t('Upload File')?></label>
@@ -113,13 +113,13 @@
 		<div class="control-group">
 			<label class="control-label"></label>
 			<div class="controls">
-				<?
+				<?php
 				print $interface->submit(t('Upload'), 'favicon-form', 'left');
 				?>
 			
 			</div>
 		</div>
-	<? } ?>
+	<?php } ?>
 		
 	</fieldset>
 	

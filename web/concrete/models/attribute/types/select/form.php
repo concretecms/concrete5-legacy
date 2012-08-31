@@ -19,7 +19,7 @@ if ($akSelectAllowMultipleValues && $akSelectAllowOtherValues) { // display auto
 				<?=$opt->getSelectAttributeOptionValue()?>
 				<a href="javascript:void(0);" onclick="$(this).parent().remove()">x</a>	
 			</div>
-		<? } 
+		<?php } 
 		
 		// now we get items from the post
 		$vals = $this->post('atSelectNewOption');
@@ -30,7 +30,7 @@ if ($akSelectAllowMultipleValues && $akSelectAllowOtherValues) { // display auto
 					<?=$v?>
 					<a onclick="ccmAttributeTypeSelectTagHelper<?php echo $attrKeyID?>.remove(this)" href="javascript:void(0)">x</a>
 				</div>
-			<? 
+			<?php 
 			}
 		}
 		
@@ -99,12 +99,12 @@ if ($akSelectAllowMultipleValues && $akSelectAllowOtherValues) { // display auto
 
 	if ($akSelectAllowMultipleValues) { ?>
 			
-		<? foreach($options as $opt) { ?>
+		<?php foreach($options as $opt) { ?>
 			<div>
 				<?=$form->checkbox($this->field('atSelectOptionID') . '[]', $opt->getSelectAttributeOptionID(), in_array($opt->getSelectAttributeOptionID(), $selectedOptions)); ?>
 				<?=$opt->getSelectAttributeOptionValue()?></div>
-		<? } ?>
-	<? } else { 
+		<?php } ?>
+	<?php } else { 
 		$opts = array('' => t('** None'));
 		foreach($options as $opt) { 
 			$opts[$opt->getSelectAttributeOptionID()] = $opt->getSelectAttributeOptionValue();
@@ -112,14 +112,14 @@ if ($akSelectAllowMultipleValues && $akSelectAllowOtherValues) { // display auto
 		?>
 		<?=$form->select($this->field('atSelectOptionID') . '[]', $opts, $selectedOptions[0]); ?>
 	
-	<? } 
+	<?php } 
 	
 	if ($akSelectAllowOtherValues) { ?>
 		<div id="newAttrValueRows<?=$this->attributeKey->getAttributeKeyID()?>" class="newAttrValueRows"></div>
 		<div><a href="javascript:void(0)" onclick="ccmAttributeTypeSelectHelper.add(<?=$this->attributeKey->getAttributeKeyID()?>, '<?=$this->field('atSelectNewOption')?>[]')">
 			<?=t('Add Another Option')?></a>
 		</div>
-	<? } ?>
+	<?php } ?>
 	
 	<script type="text/javascript">
 	//<![CDATA[

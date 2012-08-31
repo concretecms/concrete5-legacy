@@ -1,4 +1,4 @@
-<? defined('C5_EXECUTE') or die("Access Denied."); ?>
+<?php defined('C5_EXECUTE') or die("Access Denied."); ?>
 <h1><span><?=t('Add a Template')?></span></h1>
 <div class="ccm-dashboard-inner">
 

@@ -1,4 +1,4 @@
-<? 
+<?php 
 defined('C5_EXECUTE') or die("Access Denied.");
 Loader::model('stack/list');
 $sl = new StackList();
@@ -135,7 +135,7 @@ $(function() {
 	</div>
 	
 	<ul id="ccm-stack-list" class="item-select-list item-select-list-groups">
-	<? if (count($stacks) > 0) { 
+	<?php if (count($stacks) > 0) { 
 		foreach($stacks as $s) { 
 			$as = Area::get($s, STACKS_AREA_NAME);
 			$asp = new Permissions($as);
@@ -145,12 +145,12 @@ $(function() {
 				<a onclick="ccmStackSearchResetKeys()" dialog-on-destroy="ccmStackSearchMapKeys()" class="dialog-launch ccm-block-type-inner" dialog-on-close="ccm_blockWindowAfterClose()" dialog-append-buttons="true" dialog-modal="false" dialog-width="620" dialog-height="400" dialog-title="<?=$s->getCollectionName()?> <?=t('Contents')?>" href="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/edit_area_popup.php?atask=add_stack_contents&cID=<?=$c->getCollectionID()?>&stackID=<?=$s->getCollectionID()?>&arHandle=<?=Loader::helper('text')->entities($a->getAreaHandle())?>"><?=$s->getCollectionName()?></a>
 			</li>
 			
-			<? } ?>
+			<?php } ?>
 			
-		<? }
+		<?php }
 	} else { ?>
 		<br/>
 		<p><?=t('No stacks can be added to this area.')?></p>
-	<? } ?>
+	<?php } ?>
 	</ul>
 </div>

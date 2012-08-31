@@ -1,4 +1,4 @@
-<?
+<?php
 	defined('C5_EXECUTE') or die("Access Denied.");
 /**
  * The controller for the core scrapbook display block. This block is automatically used when a block is copied into a page from a clipboard. It is a proxy block.

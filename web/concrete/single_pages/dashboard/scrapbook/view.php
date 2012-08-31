@@ -1,4 +1,4 @@
-<?
+<?php
 $ih = Loader::helper('concrete/interface'); 
 $ci = Loader::helper('concrete/urls');
 $valt = Loader::helper('validation/token');
@@ -62,11 +62,11 @@ var GlobalScrapbook = {
 		});
 	},
 	addBlock:function(e){
-		<? if(!$globalScrapbookArea){ ?>
+		<?php if(!$globalScrapbookArea){ ?>
 		return false;
-		<? }else{ ?>
+		<?php }else{ ?>
 		ccm_openAreaAddBlock("<?=urlencode($globalScrapbookArea->getAreaHandle()) ?>", true);
-		<? } ?>
+		<?php } ?>
 	},
 	editBlock:function(bID,w,h){ 
 		if(!w) w=550;
@@ -146,7 +146,7 @@ $(function(){ GlobalScrapbook.init(); });
 
 
 
-<? if(!$scrapbookName){ ?>
+<?php if(!$scrapbookName){ ?>
 
 	<h1><span><?=t('Choose a Scrapbook')?></span></h1>
 	<div class="ccm-dashboard-inner ccm-ui"> 
@@ -160,7 +160,7 @@ $(function(){ GlobalScrapbook.init(); });
 					<?=t('Options')?>
 				</td>
 			</tr>		
-			<? if(is_array($availableScrapbooks)) 
+			<?php if(is_array($availableScrapbooks)) 
 				foreach($availableScrapbooks as $availableScrapbook){ ?>
 			<tr>
 				<td>		
@@ -189,7 +189,7 @@ $(function(){ GlobalScrapbook.init(); });
 						   href="<?php echo $this->action('delete_scrapbook', urlencode($availableScrapbook['arHandle']), $valt->generate('delete_scrapbook') ) ?>"><?=t('Delete')?></a>
 				</td>
 			</tr> 
-			<? } 
+			<?php } 
 			
 			$form = Loader::helper('form'); ?>
 			
@@ -222,7 +222,7 @@ $(function(){ GlobalScrapbook.init(); });
 
 
 
-<? }else{ ?>
+<?php }else{ ?>
 
 	<h1><span><?=htmlentities($scrapbookName, ENT_QUOTES, APP_CHARSET) ?></span></h1>
 	
@@ -235,7 +235,7 @@ $(function(){ GlobalScrapbook.init(); });
 		<div class="ccm-spacer"></div>	
 		
 		<div id="ccm-scrapbook-list" class="ui-sortable">			
-			<? 		 			
+			<?php 		 			
 			if( !count($globalScrapbookBlocks) ){
 				echo t('You have no items in this scrapbook.');
 			}else foreach($globalScrapbookBlocks as $b) {
@@ -253,33 +253,33 @@ $(function(){ GlobalScrapbook.init(); });
 				 <div class="ccm-scrapbook-list-item" id="ccm-scrapbook-list-item-<?=intval($b->bID)?>"> 
 					 <div class="ccm-block-type">  
 						<div class="options"> 
-							<? if ($bp->canWrite()) { ?>
+							<?php if ($bp->canWrite()) { ?>
 							<a href="javascript:void(0)" onclick="GlobalScrapbook.toggleRename(<?=intval($b->bID) ?>)"><?=t('Rename')?></a>
 							&nbsp;|&nbsp; 
 							<a href="javascript:void(0)" onclick="GlobalScrapbook.editBlockTemplate(<?=intval($b->bID) ?>)" ><?=t('Custom Template')?></a> 
 							&nbsp;|&nbsp; 
-							<? if (ENABLE_CUSTOM_DESIGN == true) { ?>
+							<?php if (ENABLE_CUSTOM_DESIGN == true) { ?>
 							<a href="javascript:void(0)" onclick="GlobalScrapbook.editBlockDesign(<?=intval($b->bID) ?>)" ><?=t('Design')?></a> 
 							&nbsp;|&nbsp; 
-							<? } ?>
+							<?php } ?>
 							<a href="javascript:void(0)" onclick="GlobalScrapbook.editBlock(<?=intval($b->bID) ?>,<?=$bt->getBlockTypeInterfaceWidth()?> , <?=$bt->getBlockTypeInterfaceHeight()?> )" ><?=t('Edit')?></a> 
 							&nbsp;|&nbsp; 
 							
-							<? } ?>
+							<?php } ?>
 							
-							<? if (PERMISSIONS_MODEL != 'simple' && $bp->canEditBlockPermissions()) { ?>
+							<?php if (PERMISSIONS_MODEL != 'simple' && $bp->canEditBlockPermissions()) { ?>
 								<a href="javascript:void(0)" onclick="GlobalScrapbook.editBlockPermissions(<?=$b->getBlockID()?>)" ><?=t('Permissions')?></a> 
-								<? if ($bp->canDeleteBlock()) { ?>
+								<?php if ($bp->canDeleteBlock()) { ?>
 									&nbsp;|&nbsp;
-								<? } ?>
-							<? } ?>
+								<?php } ?>
+							<?php } ?>
 							
-							<? if ($bp->canDeleteBlock()) { ?>
+							<?php if ($bp->canDeleteBlock()) { ?>
 							<a href="<?php echo $this->action('deleteBlock', Loader::helper('text')->entities($scrapbookName), 0, intval($b->bID), $valt->generate('delete_scrapbook_block'))?>" onclick="return GlobalScrapbook.confirmDelete()">
 								<?=t('Delete')?>
 							</a> 
 							
-							<? } ?>
+							<?php } ?>
 						</div>  
 						<div id="ccm-block-type-inner<?=intval($b->bID)?>" class="ccm-block-type-inner">
 							<div class="ccm-block-type-inner-icon ccm-scrapbook-item-handle" style="background: url(<?=$btIcon?>) no-repeat center left;">
@@ -307,11 +307,11 @@ $(function(){ GlobalScrapbook.init(); });
 						</div>
 					</div>
 				</div>
-			<? } ?>	
+			<?php } ?>	
 			
 		</div> 	
 		
 	
 	</div>
 
-<? } ?>
+<?php } ?>

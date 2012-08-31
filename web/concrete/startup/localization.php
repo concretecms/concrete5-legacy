@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 function t($text) {
 	$zt = Localization::getTranslate();

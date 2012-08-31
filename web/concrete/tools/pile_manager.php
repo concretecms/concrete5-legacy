@@ -1,4 +1,4 @@
-<?
+<?php
 
 defined('C5_EXECUTE') or die("Access Denied.");
 
@@ -236,12 +236,12 @@ if($_REQUEST['btask']=='add'){
 			<option value="userScrapbook" <?=($defaultScrapbook==$scrapbookHelper->getPersonalScrapbookName())?'selected':''?>>
 				<?=t("%s's Personal Scrapbook", $u->getUserName()) ?> 
 			</option>
-			<? foreach($scrapBookAreasData as $scrapBookAreaData){ ?>
+			<?php foreach($scrapBookAreasData as $scrapBookAreaData){ ?>
 				<option value="<?=addslashes($scrapBookAreaData['arHandle'])?>" 
 				<?=($defaultScrapbook==$scrapBookAreaData['arHandle'])?'selected':''?> >
 					<?=$scrapBookAreaData['arHandle'] ?>
 				</option>
-			<? } ?>
+			<?php } ?>
 		</select> 
 		</div>
 		
@@ -255,7 +255,7 @@ if($_REQUEST['btask']=='add'){
 		
 		<div class="sillyIE7"><?= $ih->button_js( t('Add Block to Scrapbook'), 'ccmSaveToScrapbook()','left'); ?></div>
 		
-	<? }elseif($added){ ?>
+	<?php }elseif($added){ ?>
 		
 		<br/> 
 		
@@ -266,8 +266,8 @@ if($_REQUEST['btask']=='add'){
 		<img src="<?=ASSETS_URL_IMAGES?>/throbber_white_32.gif" width="32" height="32" />
 		</div>
 		
-		<? /*<a href="javascript:void(0)" class="ccm-dialog-close ccm-button-left cancel"><span><em class="ccm-button-close"><?=t('Close Window')?></em></span></a>*/ ?>
+		<?php /*<a href="javascript:void(0)" class="ccm-dialog-close ccm-button-left cancel"><span><em class="ccm-button-close"><?=t('Close Window')?></em></span></a>*/ ?>
 		
-	<? }
+	<?php }
 }	
 ?>

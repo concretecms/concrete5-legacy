@@ -39,7 +39,7 @@ $form = Loader::helper('form');
 	
 </div>
 <div class="ccm-pane-footer">
-<?
+<?php
 	$submit = $ih->submit( t('Save'), 'tracking-code-form', 'right', 'primary');
 	print $submit;
 ?>

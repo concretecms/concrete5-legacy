@@ -1,4 +1,4 @@
-<?
+<?php
 $textEditorHeight=intval(Config::get('CONTENTS_TXT_EDITOR_HEIGHT'));
 $textEditorWidth = '100%';
 //else $textEditorWidth=  $textEditorWidth;
@@ -38,10 +38,10 @@ $(function() {
 		document_base_url: '<?=BASE_URL . DIR_REL?>/',
 		convert_urls: false,
 		content_css : "<?=$theme->getThemeEditorCSS()?>",
-		<?
+		<?php
 		if( $txtEditorMode=='CUSTOM' ){ ?>
 			//theme : "concrete",
-			<?
+			<?php
 			$code = Config::get('CONTENTS_TXT_EDITOR_CUSTOM_CODE').'';
 			if ($editor_selector != 'ccm-advanced-editor') {
 				$code = str_replace('ccm-advanced-editor', $editor_selector, $code);
@@ -62,7 +62,7 @@ $(function() {
 			//theme_advanced_styles: "Note=ccm-note",		
 			theme_advanced_toolbar_align : "left",
 			spellchecker_languages : "+English=en"
-		<? }elseif($txtEditorMode=='OFFICE'){ ?> 
+		<?php }elseif($txtEditorMode=='OFFICE'){ ?> 
 			editor_selector : "<?=$editor_selector?>",
 			spellchecker_languages : "+English=en",
 			theme : "advanced",
@@ -80,17 +80,17 @@ $(function() {
 			theme_advanced_statusbar_location : "bottom",
 			//theme_advanced_styles: "Note=ccm-note",		
 			theme_advanced_resizing : true				
-		<? }elseif($txtEditorMode=='BASIC'){ ?> 
+		<?php }elseif($txtEditorMode=='BASIC'){ ?> 
 			editor_selector : "<?=$editor_selector?>",
 			spellchecker_languages : "+English=en",
 			theme : "simple",
 			plugins: "paste,inlinepopups,spellchecker,safari,advlink",
-		<? }else{ //simple ?>
+		<?php }else{ //simple ?>
 			theme : "concrete", 
 			plugins: "paste,inlinepopups,spellchecker,safari,advlink,advimage,advhr",
 			editor_selector : "<?=$editor_selector?>",
 			spellchecker_languages : "+English=en"		
-		<? } ?>
+		<?php } ?>
 	});
 });
 </script>

@@ -1,9 +1,9 @@
-<? 
+<?php 
 defined('C5_EXECUTE') or die("Access Denied.");
 ?>
 </div>
 
-<? 
+<?php 
 
 // simple file that controls the adding of blocks.
 
@@ -29,12 +29,12 @@ if (!$c->isArrangeMode()) { ?>
 	ccm_areaMenuObj<?=$a->getAreaID()?>.aID = <?=$a->getAreaID()?>;
 	ccm_areaMenuObj<?=$a->getAreaID()?>.arHandle = "<?=$arHandle?>";
 	ccm_areaMenuObj<?=$a->getAreaID()?>.maximumBlocks = <?=$a->maximumBlocks?>;
-    <? Loader::element('block_area_permissions_js', array('a' => $a, 'ap' => $ap, 'c' => $c, 'cp' => $cp)); ?> 
+    <?php Loader::element('block_area_permissions_js', array('a' => $a, 'ap' => $ap, 'c' => $c, 'cp' => $cp)); ?> 
 	$(function() {ccm_menuInit(ccm_areaMenuObj<?=$a->getAreaID()?>)});
 	</script>
-	<? if ($a->isGlobalArea()) { ?>
+	<?php if ($a->isGlobalArea()) { ?>
 		<div id="a<?=$a->getAreaID()?>controls" class="ccm-add-block"><?=t('Add To Sitewide %s', $arHandle)?></div>
-	<? } else { ?>
+	<?php } else { ?>
 		<div id="a<?=$a->getAreaID()?>controls" class="ccm-add-block"><?=t('Add To %s', $arHandle)?></div>
-	<? } ?>
-<? } ?>
+	<?php } ?>
+<?php } ?>

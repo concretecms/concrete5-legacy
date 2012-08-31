@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 $wp = WorkflowProgress::getByID($_REQUEST['wpID']);
 $ih = Loader::helper('concrete/interface');
@@ -36,16 +36,16 @@ if ($wf->canApproveWorkflowProgressObject($wp)) {
 		<iframe border="0" id="v<?=time()?>l" frameborder="0" height="100%" width="100%" src="<?=BASE_URL . DIR_REL?>/<?=DISPATCHER_FILENAME?>?cvID=<?=$liveCVID?>&cID=<?=$req->getRequestedPageID()?>&vtask=view_versions" />
 	</div>
 
-<?	if ($liveCVID != $rvr->getVersionID()) { ?>
+<?php	if ($liveCVID != $rvr->getVersionID()) { ?>
 
 	<div style="display: none" id="ccm-tab-content-recent-version">
 		<iframe border="0" id="v<?=time()?>rec" frameborder="0" height="100%" width="100%" src="<?=BASE_URL . DIR_REL?>/<?=DISPATCHER_FILENAME?>?cvID=<?=$recentCVID?>&cID=<?=$req->getRequestedPageID()?>&vtask=view_versions" />
 	</div>
 	
-<? } ?>
+<?php } ?>
 	
 	</div>
 	
-	<? } ?>
+	<?php } ?>
 	
-<? } ?>
+<?php } ?>

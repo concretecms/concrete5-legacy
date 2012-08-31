@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 
 // HELPERS
@@ -9,9 +9,9 @@ $alreadyActiveMessage = t('This theme is currently active on your site.');
 
 ?>
 	
-	<? if (isset($activate_confirm)) { ?>
+	<?php if (isset($activate_confirm)) { ?>
     
-    <?
+    <?php
 	
 	// Confirmation Dialogue.
 	// Separate inclusion of dashboard header and footer helpers to allow for more UI-consistant 'cancel' button in pane footer, rather than alongside activation confirm button in alert-box.
@@ -40,9 +40,9 @@ $alreadyActiveMessage = t('This theme is currently active on your site.');
     <?=Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper(false)?>
     	
     
-	<? } else { ?>
+	<?php } else { ?>
     
-    <?
+    <?php
 	
 	// Themes listing / Themes landing page.
 	// Separate inclusion of dashboard header and footer helpers - no pane footer.
@@ -54,7 +54,7 @@ $alreadyActiveMessage = t('This theme is currently active on your site.');
 	<h3><?=t('Currently Installed')?></h3>
 	
 	<table width="100%" border="0" cellspacing="0" cellpadding="0" class="table">
-	<?
+	<?php
 	if (count($tArray) == 0) { ?>
 		
         <tbody>
@@ -63,13 +63,13 @@ $alreadyActiveMessage = t('This theme is currently active on your site.');
             </tr>        
 		</tbody>
     
-	<? } else { ?>
+	<?php } else { ?>
     
     	<tbody>
 		
-		<? foreach ($tArray as $t) { ?>        
+		<?php foreach ($tArray as $t) { ?>        
         
-            <tr <? if ($siteThemeID == $t->getThemeID()) { ?> class="ccm-theme-active" <? } ?>>
+            <tr <?php if ($siteThemeID == $t->getThemeID()) { ?> class="ccm-theme-active" <?php } ?>>
                 
                 <td>
 					<div class="ccm-themes-thumbnail" style="padding:4px;background-color:#FFF;border-radius:3px;border:1px solid #DDD;">
@@ -83,11 +83,11 @@ $alreadyActiveMessage = t('This theme is currently active on your site.');
                     <p class="ccm-themes-description"><em><?=$t->getThemeDescription()?></em></p>
                     
                     <div class="ccm-themes-button-row clearfix">
-                    <? if ($siteThemeID == $t->getThemeID()) { ?>
+                    <?php if ($siteThemeID == $t->getThemeID()) { ?>
                         <?=$bt->button_js(t("Activate"), "alert('" . $alreadyActiveMessage . "')", 'left', 'primary ccm-button-inactive', array('disabled'=>'disabled'));?>
-                    <? } else { ?>
+                    <?php } else { ?>
                         <?=$bt->button(t("Activate"), $this->url('/dashboard/pages/themes','activate', $t->getThemeID()), 'left', 'primary');?>
-                    <? } ?>
+                    <?php } ?>
                         <?=$bt->button_js(t("Preview"), "ccm_previewInternalTheme(1, " . intval($t->getThemeID()) . ",'" . addslashes(str_replace(array("\r","\n",'\n'),'',$t->getThemeName())) . "')", 'left');?>
                         <?=$bt->button(t("Inspect"), $this->url('/dashboard/pages/themes/inspect', $t->getThemeID()), 'left');?>
                         <?=$bt->button(t("Customize"), $this->url('/dashboard/pages/themes/customize', $t->getThemeID()), 'left');?>
@@ -98,11 +98,11 @@ $alreadyActiveMessage = t('This theme is currently active on your site.');
                 </td>
             </tr>
             
-		<? } ?>
+		<?php } ?>
         
         </tbody>
         
-	<? } ?>
+	<?php } ?>
     
     </table>
     
@@ -114,8 +114,8 @@ $alreadyActiveMessage = t('This theme is currently active on your site.');
     <div class="control-group">
     <?=$form->label('MOBILE_THEME_ID', t('Mobile Theme'))?>
     <div class="controls">
-    	<? $themes[0] = t('** Same as website (default)'); ?>
-    	<? foreach($tArray as $pt) {
+    	<?php $themes[0] = t('** Same as website (default)'); ?>
+    	<?php foreach($tArray as $pt) {
     		$themes[$pt->getThemeID()] = $pt->getThemeName();
     	} ?>
     	<?=$form->select('MOBILE_THEME_ID', $themes, Config::get('MOBILE_THEME_ID'))?>
@@ -126,7 +126,7 @@ $alreadyActiveMessage = t('This theme is currently active on your site.');
     <br/><br/>
     
     
-	<? 
+	<?php 
 	if (count($tArray2) > 0) { ?>
 
 	<h3><?=t('Themes Available to Install')?></h3>
@@ -134,7 +134,7 @@ $alreadyActiveMessage = t('This theme is currently active on your site.');
 
 	<table class="table">
 		<tbody>
-		<? foreach ($tArray2 as $t) { ?>
+		<?php foreach ($tArray2 as $t) { ?>
             <tr>
                 
                 <td>
@@ -153,16 +153,16 @@ $alreadyActiveMessage = t('This theme is currently active on your site.');
                 </td>
                 
             </tr>
-        <? } // END FOREACH ?>
+        <?php } // END FOREACH ?>
         
         </tbody>
 	</table>
     
     <!-- END AVAILABLE TO INSTALL -->
 			
-	<? } // END 'IF AVAILABLE' CHECK ?>
+	<?php } // END 'IF AVAILABLE' CHECK ?>
     
-    <? if (ENABLE_MARKETPLACE_SUPPORT == true) { ?>
+    <?php if (ENABLE_MARKETPLACE_SUPPORT == true) { ?>
 
 	<div class="well" style="padding:10px 20px;">
         <h3><?=t('Want more themes?')?></h3>
@@ -170,8 +170,8 @@ $alreadyActiveMessage = t('This theme is currently active on your site.');
         <p><a class="btn success" href="<?=$this->url('/dashboard/extend/themes')?>"><?=t("Get More Themes")?></a></p>
     </div>
     
-    <? } ?>
+    <?php } ?>
 
 	<?=Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper()?>
 	
-	<? } // END 'ELSE' DEFAULT LISTING ?>	
+	<?php } // END 'ELSE' DEFAULT LISTING ?>	

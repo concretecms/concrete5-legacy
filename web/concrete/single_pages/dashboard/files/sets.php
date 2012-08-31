@@ -1,6 +1,6 @@
 <?php defined('C5_EXECUTE') or die("Access Denied."); ?>
-<? $ih = Loader::helper('concrete/interface'); ?>
-<? if ($this->controller->getTask() == 'view_detail') { ?>
+<?php $ih = Loader::helper('concrete/interface'); ?>
+<?php if ($this->controller->getTask() == 'view_detail') { ?>
 
 
 	<?=Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('File Set'), false, 'span10 offset1', false)?>
@@ -19,7 +19,7 @@
 
 	<div id="ccm-tab-details" class="ccm-tab">
 
-		<?
+		<?php
 		$u=new User();
 
 		$delConfirmJS = t('Are you sure you want to permanently remove this file set?');
@@ -40,7 +40,7 @@
 		</div>
 		</div>
 
-		<? 
+		<?php 
 		$fsp = new Permissions($fs);
 
 		if (PERMISSIONS_MODEL != 'simple') { 
@@ -58,12 +58,12 @@
 		
 		
 
-		<div id="ccm-file-set-permissions-wrapper" <? if (!$fs->overrideGlobalPermissions()) { ?> style="display: none" <? } ?>>
+		<div id="ccm-file-set-permissions-wrapper" <?php if (!$fs->overrideGlobalPermissions()) { ?> style="display: none" <?php } ?>>
 
-		<? Loader::element('permission/lists/file_set', array("fs" => $fs)); ?>
+		<?php Loader::element('permission/lists/file_set', array("fs" => $fs)); ?>
 		
 		</div>
-		<? } 
+		<?php } 
 		
 		}
 		?>
@@ -76,7 +76,7 @@
 		</div>
 
 	<div style="display: none" class="ccm-tab" id="ccm-tab-files">
-		<?
+		<?php
 		Loader::model("file_list");
 		$fl = new FileList();
 		$fl->filterBySet($fs);
@@ -90,7 +90,7 @@
 		
 		<ul class="ccm-file-set-file-list">
 		
-		<?
+		<?php
 
 		foreach($files as $f) { ?>
 			
@@ -101,20 +101,20 @@
 			</div>
 		</li>
 			
-		<? } ?>
+		<?php } ?>
 
 			
 		</ul>
-		<? } else { ?>
+		<?php } else { ?>
 			<p><?=t('There are no files in this set.')?></p>
-		<? } ?>
+		<?php } ?>
 	</div>
 	</div>
 	<div class="ccm-pane-footer">
 		<input type="submit" value="<?=t('Save')?>" class="btn primary ccm-button-v2-right" />
-		<? if ($fsp->canDeleteFileSet()) { ?>
-			<? print $ih->button_js(t('Delete'), "deleteFileSet()", 'right','error');?>
-		<? } ?>
+		<?php if ($fsp->canDeleteFileSet()) { ?>
+			<?php print $ih->button_js(t('Delete'), "deleteFileSet()", 'right','error');?>
+		<?php } ?>
 	</div>
 
 	<?=Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper(false)?>
@@ -164,8 +164,8 @@
 		<?=$form->label('fsType', t('Type'))?>
 		<div class="controls">
 		<select id="fsType" name="fsType" style="width: 130px">
-		<option value="<?=FileSet::TYPE_PUBLIC?>" <? if ($fsType != FileSet::TYPE_PRIVATE) { ?> selected <? } ?>><?=t('Public Sets')?></option>
-		<option value="<?=FileSet::TYPE_PRIVATE?>" <? if ($fsType == FileSet::TYPE_PRIVATE) { ?> selected <? } ?>><?=t('My Sets')?></option>
+		<option value="<?=FileSet::TYPE_PUBLIC?>" <?php if ($fsType != FileSet::TYPE_PRIVATE) { ?> selected <?php } ?>><?=t('Public Sets')?></option>
+		<option value="<?=FileSet::TYPE_PRIVATE?>" <?php if ($fsType == FileSet::TYPE_PRIVATE) { ?> selected <?php } ?>><?=t('My Sets')?></option>
 		</select>
 		<input type="submit" class="btn" value="<?=t('Search')?>" />
 		</div>
@@ -176,40 +176,40 @@
 	</div>
 		</form>
 	</div>
-	<div class="ccm-pane-body <? if (!$fsl->requiresPaging()) { ?> ccm-pane-body-footer <? } ?> ">
+	<div class="ccm-pane-body <?php if (!$fsl->requiresPaging()) { ?> ccm-pane-body-footer <?php } ?> ">
 
 		<a href="<?=View::url('/dashboard/files/add_set')?>" style="float: right;z-index:999;position:relative;top:-5px" class="btn primary"><?=t("Add File Set")?></a>
 
 		<?=$fsl->displaySummary()?>
 	
-		<? if (count($fileSets) > 0) { ?>
+		<?php if (count($fileSets) > 0) { ?>
 			
 			<style type="text/css">
 				div.ccm-paging-top {padding-bottom:10px;}
 			</style>
 		
-		<? foreach ($fileSets as $fs) { ?>
+		<?php foreach ($fileSets as $fs) { ?>
 		
 			<div class="ccm-group">
 				<a class="ccm-group-inner" href="<?=$this->url('/dashboard/files/sets/', 'view_detail', $fs->getFileSetID())?>" style="background-image: url(<?=ASSETS_URL_IMAGES?>/icons/group.png)"><?=$fs->getFileSetName()?></a>
 			</div>
 		
 		
-		<? }
+		<?php }
 		
 		
 		} else { ?>
 		
 			<p><?=t('No file sets found.')?></p>
 		
-		<? } ?>
+		<?php } ?>
 	
 	</div>
-	<? if ($fsl->requiresPaging()) { ?>
+	<?php if ($fsl->requiresPaging()) { ?>
 		<div class="ccm-pane-footer">
-		<? $fsl->displayPagingV2(); ?>
+		<?php $fsl->displayPagingV2(); ?>
 		</div>
-	<? } ?>
+	<?php } ?>
 	<?=Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper($fsl->requiresPaging())?>
 	
 	<script type="text/javascript">

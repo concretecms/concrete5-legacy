@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 $u = new User();
 $form = Loader::helper('form');
@@ -122,19 +122,19 @@ $searchInstance = Loader::helper('text')->entities($_REQUEST['searchInstance']);
 ?>
 <div class="ccm-ui">
 
-<? if ($pcnt == 0) { ?>
+<?php if ($pcnt == 0) { ?>
 	<?=t("You do not have permission to modify the page type or theme on any of the selected pages."); ?>
-<? } else { ?>
+<?php } else { ?>
 	<form id="ccm-<?=$searchInstance?>-design-form" method="post" action="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/pages/design">
 	<input type="hidden" name="plID" value="<?=$plID?>" />
 	<input type="hidden" name="ctID" value="<?=$ctID?>" />
-	<? foreach($pages as $c) { ?>
+	<?php foreach($pages as $c) { ?>
 		<input type="hidden" name="cID[]" value="<?=$c->getCollectionID()?>" />
-	<? } ?>
+	<?php } ?>
 	
 	<?=$form->hidden('task', 'design_pages')?>
 
-	<? 
+	<?php 
 	if ($isMasterCollection) { ?>
 		<h3><?=t('Choose a Page Type')?></h3>
 	
@@ -142,14 +142,14 @@ $searchInstance = Loader::helper('text')->entities($_REQUEST['searchInstance']);
 		<?=t("This is the defaults page for the %s page type. You cannot change it.", $c->getCollectionTypeName()); ?>
 		</p>
 		
-	<? } else if ($isSinglePage) { ?>
+	<?php } else if ($isSinglePage) { ?>
 	<h3><?=t('Choose a Page Type')?></h3>
 
 	<p>
 	<?=t("This page is a single page, which means it doesn't have a page type associated with it."); ?>
 	</p>
 
-	<? } else if ($cnt > 0) { ?>
+	<?php } else if ($cnt > 0) { ?>
 	
 	<h3><?=t('Choose a Page Type')?></h3>
 
@@ -159,23 +159,23 @@ $searchInstance = Loader::helper('text')->entities($_REQUEST['searchInstance']);
 
 		<div class="ccm-scroller-inner">
 			<ul id="ccm-select-page-type" style="width: <?=$cnt * 132?>px">
-				<? 
+				<?php 
 				foreach($allowedPageTypes as $ct) { ?>		
-					<? $class = ($ct->getCollectionTypeID() == $ctID) ? 'ccm-item-selected' : ''; ?>
+					<?php $class = ($ct->getCollectionTypeID() == $ctID) ? 'ccm-item-selected' : ''; ?>
 			
 					<li class="<?=$class?>"><a href="javascript:void(0)" ccm-page-type-id="<?=$ct->getCollectionTypeID()?>"><?=$ct->getCollectionTypeIconImage();?></a><span><?=$ct->getCollectionTypeName()?></span>
 					</li>
-				<?
+				<?php
 				}?>
 			</ul>
 		</div>
 	</div>
-	<? } ?>
+	<?php } ?>
 	
 	
-	<? if(ENABLE_MARKETPLACE_SUPPORT){ ?>
+	<?php if(ENABLE_MARKETPLACE_SUPPORT){ ?>
 		<a href="javascript:void(0)" class="btn ccm-button-right"><?=t("Get more themes.")?></a>
-	<? } ?>
+	<?php } ?>
 
 	<h3 ><?=t('Themes')?></h3>
 
@@ -185,18 +185,18 @@ $searchInstance = Loader::helper('text')->entities($_REQUEST['searchInstance']);
 		
 		<div class="ccm-scroller-inner">
 			<ul id="ccm-select-theme" style="width: <?=count($tArray) * 132?>px">
-			<? foreach($tArray as $t) { ?>
+			<?php foreach($tArray as $t) { ?>
 			
-				<? $class = ($t->getThemeID() == $plID) ? 'ccm-item-selected' : ''; ?>
+				<?php $class = ($t->getThemeID() == $plID) ? 'ccm-item-selected' : ''; ?>
 				<li class="<?=$class?> themeWrap">
 				
 					<a href="javascript:void(0)" ccm-theme-id="<?=$t->getThemeID()?>"><?=$t->getThemeThumbnail()?></a>
-						<? if ($t->getThemeID() != $plID) { ?><a title="<?=t('Preview')?>" onclick="ccm_previewInternalTheme(<?=$c->getCollectionID()?>, <?=intval($t->getThemeID())?>,'<?=addslashes(str_replace(array("\r","\n",'\n'),'',$t->getThemeName())) ?>')" href="javascript:void(0)" class="preview">
-						<img src="<?=ASSETS_URL_IMAGES?>/icons/magnifying.png" alt="<?=t('Preview')?>" class="ccm-preview" /></a><? } ?>
+						<?php if ($t->getThemeID() != $plID) { ?><a title="<?=t('Preview')?>" onclick="ccm_previewInternalTheme(<?=$c->getCollectionID()?>, <?=intval($t->getThemeID())?>,'<?=addslashes(str_replace(array("\r","\n",'\n'),'',$t->getThemeName())) ?>')" href="javascript:void(0)" class="preview">
+						<img src="<?=ASSETS_URL_IMAGES?>/icons/magnifying.png" alt="<?=t('Preview')?>" class="ccm-preview" /></a><?php } ?>
 					<div class="ccm-theme-name" ><?=$t->getThemeName()?></div>
 			
 				</li>
-			<? } ?>
+			<?php } ?>
 			</ul>
 		</div>
 	</div>
@@ -204,12 +204,12 @@ $searchInstance = Loader::helper('text')->entities($_REQUEST['searchInstance']);
 	
 	</form>
 	<div class="dialog-buttons">
-	<? $ih = Loader::helper('concrete/interface')?>
+	<?php $ih = Loader::helper('concrete/interface')?>
 	<?=$ih->button_js(t('Cancel'), 'jQuery.fn.dialog.closeTop()', 'left', 'btn')?>	
 	<?=$ih->button_js(t('Update'), 'ccm_sitemapUpdateDesign(\'' . $searchInstance . '\')', 'right', 'btn primary')?>
 	</div>		
 		
-	<?
+	<?php
 	
 }
 ?>

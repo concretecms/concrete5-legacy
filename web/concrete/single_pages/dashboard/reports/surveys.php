@@ -25,7 +25,7 @@ if ($this->controller->getTask() == 'viewDetail') { ?>
                 </tr>
               </thead>
               <tbody>
-                <? 
+                <?php 
                 foreach($survey_details as $detail) { ?>
                 <tr>
                     <td><?=$detail['option'] ?></td>
@@ -33,7 +33,7 @@ if ($this->controller->getTask() == 'viewDetail') { ?>
                     <td><?=$detail['date'] ?></td>
                     <td><?=$detail['user'] ?></td>
                 </tr>
-              <? } ?>
+              <?php } ?>
               </tbody>
             </table>
         
@@ -53,18 +53,18 @@ if ($this->controller->getTask() == 'viewDetail') { ?>
 	</div>
     
     <div class="ccm-pane-footer">
-        <? print $ih->button(t('Back to List'), $this->action('view'), 'left'); ?>
+        <?php print $ih->button(t('Back to List'), $this->action('view'), 'left'); ?>
     </div>
     
     <?=Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper(false)?>
 
-<? } else { ?>
+<?php } else { ?>
 
 	<?=Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Surveys'), false, false);?>
 	
-	<? if (count($surveys) == 0) { ?>
+	<?php if (count($surveys) == 0) { ?>
 	<?= "<p>".t('You have not created any surveys.')."</p>" ?>
-	<? } else { ?>
+	<?php } else { ?>
 
 		<table class="table table-striped">
         	<thead>
@@ -76,20 +76,20 @@ if ($this->controller->getTask() == 'viewDetail') { ?>
                 </tr>
             </thead>
             <tbody>
-			<? foreach($surveys as $survey) { ?>
+			<?php foreach($surveys as $survey) { ?>
 					<tr>
 						<td><strong><a href="<?=$this->action('viewDetail', $survey['bID'], $survey['cID'])?>"><?=$survey['question'] ?></a></strong></td>
 						<td><?=$survey['cvName'] ?></td>
 						<td><?=formatDate($survey['lastResponse']) ?></td>
 						<td><?=$survey['numberOfResponses'] ?></td>
 					</tr>
-				<? }
+				<?php }
 			} ?>
             </tbody>
 		</table>
 		
-		<? $surveyList->displayPagingV2(); ?>
+		<?php $surveyList->displayPagingV2(); ?>
     
     <?=Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper()?>
 
-<? } ?>
+<?php } ?>

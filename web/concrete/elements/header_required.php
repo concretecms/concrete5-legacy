@@ -28,7 +28,7 @@ if ($akt) {
 <?php } else { 
 	$pageTitle = htmlspecialchars($pageTitle, ENT_COMPAT, APP_CHARSET);
 	?><title><?php echo sprintf(PAGE_TITLE_FORMAT, SITE, $pageTitle)?></title>
-<? } 
+<?php } 
 
 if ($akd) { ?>
 <meta name="description" content="<?=htmlspecialchars($akd, ENT_COMPAT, APP_CHARSET)?>" />

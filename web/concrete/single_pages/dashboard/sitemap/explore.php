@@ -1,4 +1,4 @@
-<? defined('C5_EXECUTE') or die("Access Denied."); ?>
+<?php defined('C5_EXECUTE') or die("Access Denied."); ?>
 
 <style type="text/css">
 div.ccm-sitemap-explore ul li.ccm-sitemap-explore-paging {display: none;}
@@ -16,7 +16,7 @@ $(function() {
 <?=Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Sitemap'), t('Sitemap flat view lets you page through particular long lists of pages.'), 'span10 offset1', false);?>
 <div class="ccm-pane-body">
 
-<? if ($dh->canRead()) { ?>	
+<?php if ($dh->canRead()) { ?>	
 	<div id="ccm-sitemap-message"></div>
 
 	<div id="tree" class="ccm-sitemap-explore">
@@ -24,9 +24,9 @@ $(function() {
 		<?=$listHTML?>
 		</ul>
 	</div>
-<? } else { ?>
+<?php } else { ?>
 	<p><?=t('You do not have access to the dashboard sitemap.')?></p>
-<? } ?>
+<?php } ?>
 
 </div>	
 <div class="ccm-pane-footer" id="ccm-explore-paging-footer">

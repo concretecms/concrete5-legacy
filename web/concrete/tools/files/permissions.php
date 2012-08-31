@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 $u = new User();
 $form = Loader::helper('form');
@@ -35,25 +35,25 @@ if ($_POST['task'] == 'set_location') {
 <div class="ccm-ui" id="ccm-file-permissions-dialog-wrapper">
 
 <ul class="tabs" id="ccm-file-permissions-tabs">
-	<? if (PERMISSIONS_MODEL != 'simple') { ?>
+	<?php if (PERMISSIONS_MODEL != 'simple') { ?>
 		<li class="active"><a href="javascript:void(0)" id="ccm-file-permissions-advanced"><?=t('Permissions')?></a></li>
-	<? } ?>
-	<li <? if (PERMISSIONS_MODEL == 'simple') { ?> class="active" <? } ?>><a href="javascript:void(0)" id="ccm-file-password"><?=t('Protect with Password')?></a></li>
+	<?php } ?>
+	<li <?php if (PERMISSIONS_MODEL == 'simple') { ?> class="active" <?php } ?>><a href="javascript:void(0)" id="ccm-file-password"><?=t('Protect with Password')?></a></li>
 	<li><a href="javascript:void(0)" id="ccm-file-storage"><?=t('Storage Location')?></a></li>
 </ul>
 
 <div class="clearfix"></div>
 
-<? if (PERMISSIONS_MODEL != 'simple') { ?>
+<?php if (PERMISSIONS_MODEL != 'simple') { ?>
 
 <div id="ccm-file-permissions-advanced-tab">
 
-	<? Loader::element('permission/lists/file', array('f' => $f)); ?>
+	<?php Loader::element('permission/lists/file', array('f' => $f)); ?>
 
 </div>
-<? } ?>
+<?php } ?>
 
-<div id="ccm-file-password-tab" <? if (PERMISSIONS_MODEL != 'simple') { ?> style="display: none" <? } ?>>
+<div id="ccm-file-password-tab" <?php if (PERMISSIONS_MODEL != 'simple') { ?> style="display: none" <?php } ?>>
 <br/>
 
 <h4><?=t('Requires Password to Access')?></h4>
@@ -88,11 +88,11 @@ if ($_POST['task'] == 'set_location') {
 <?=$form->hidden('fID', $f->getFileID())?>
 <div><?=$form->radio('fslID', 0, $f->getStorageLocationID()) ?> <?=t('Default Location')?> (<?=DIR_FILES_UPLOADED?>)</div>
 
-<?
+<?php
 $fsl = FileStorageLocation::getByID(FileStorageLocation::ALTERNATE_ID);
 if (is_object($fsl)) { ?>
 	<div><?=$form->radio('fslID', FileStorageLocation::ALTERNATE_ID, $f->getStorageLocationID()) ?> <?=$fsl->getName()?> (<?=$fsl->getDirectory()?>)</div>
-<? } ?>
+<?php } ?>
 </form>
 
 <div id="ccm-file-storage-buttons" style="display: none">
@@ -129,11 +129,11 @@ ccm_filePermissionsSetupButtons = function() {
 var ccm_fpActiveTab;
 
 $(function() {
-<? if (PERMISSIONS_MODEL == 'simple') { ?>
+<?php if (PERMISSIONS_MODEL == 'simple') { ?>
 	ccm_fpActiveTab = "ccm-file-password";
-<? } else { ?>
+<?php } else { ?>
 	ccm_fpActiveTab = "ccm-file-permissions-advanced";
-<? } ?>
+<?php } ?>
 
 	ccm_filePermissionsSetupButtons();
 	ccm_setupGridStriping('ccmPermissionsTable');

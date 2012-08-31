@@ -1,6 +1,6 @@
 <?php defined('C5_EXECUTE') or die("Access Denied."); ?>
 
-<?
+<?php
 $records = WorkflowProgressHistory::getList($wp);
 foreach($records as $r) { ?>
 	
@@ -9,4 +9,4 @@ foreach($records as $r) { ?>
 		<?=$r->getWorkflowProgressHistoryDescription();?>
 	</div>	
 	
-<? } ?>
+<?php } ?>

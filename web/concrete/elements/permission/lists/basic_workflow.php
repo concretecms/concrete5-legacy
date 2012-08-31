@@ -1,30 +1,30 @@
-<? defined('C5_EXECUTE') or die("Access Denied."); ?>
+<?php defined('C5_EXECUTE') or die("Access Denied."); ?>
 
-<? $cat = PermissionKeyCategory::getByHandle('basic_workflow');?>
+<?php $cat = PermissionKeyCategory::getByHandle('basic_workflow');?>
 
 <table class="ccm-permission-grid">
-<?
+<?php
 $permissions = PermissionKey::getList('basic_workflow');
 
 foreach($permissions as $pk) { 
 	$pk->setPermissionObject($workflow);
 	?>
 	<tr>
-	<td class="ccm-permission-grid-name" id="ccm-permission-grid-name-<?=$pk->getPermissionKeyID()?>"><strong><? if ($enablePermissions) { ?><a dialog-title="<?=$pk->getPermissionKeyName()?>" data-pkID="<?=$pk->getPermissionKeyID()?>" data-paID="<?=$pk->getPermissionAccessID()?>" onclick="ccm_permissionLaunchDialog(this)" href="javascript:void(0)"><? } ?><?=$pk->getPermissionKeyName()?><? if ($enablePermissions) { ?></a><? } ?></td>
-	<td id="ccm-permission-grid-cell-<?=$pk->getPermissionKeyID()?>" <? if ($enablePermissions) { ?>class="ccm-permission-grid-cell"<? } ?>><?=Loader::element('permission/labels', array('pk' => $pk))?></td>
+	<td class="ccm-permission-grid-name" id="ccm-permission-grid-name-<?=$pk->getPermissionKeyID()?>"><strong><?php if ($enablePermissions) { ?><a dialog-title="<?=$pk->getPermissionKeyName()?>" data-pkID="<?=$pk->getPermissionKeyID()?>" data-paID="<?=$pk->getPermissionAccessID()?>" onclick="ccm_permissionLaunchDialog(this)" href="javascript:void(0)"><?php } ?><?=$pk->getPermissionKeyName()?><?php if ($enablePermissions) { ?></a><?php } ?></td>
+	<td id="ccm-permission-grid-cell-<?=$pk->getPermissionKeyID()?>" <?php if ($enablePermissions) { ?>class="ccm-permission-grid-cell"<?php } ?>><?=Loader::element('permission/labels', array('pk' => $pk))?></td>
 </tr>
-<? } ?>
-<? if ($enablePermissions) { ?>
+<?php } ?>
+<?php if ($enablePermissions) { ?>
 <tr>
 	<td class="ccm-permission-grid-name" ></td>
 	<td>
 	<?=Loader::element('permission/clipboard', array('pkCategory' => $cat))?>
 	</td>
 </tr>
-<? } ?>
+<?php } ?>
 
 </table>
-<? if ($enablePermissions) { ?>
+<?php if ($enablePermissions) { ?>
 
 	<script type="text/javascript">
 	ccm_permissionLaunchDialog = function(link) {
@@ -38,4 +38,4 @@ foreach($permissions as $pk) {
 	}
 	</script>
 	
-<? } ?>
+<?php } ?>

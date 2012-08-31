@@ -1,4 +1,4 @@
-<?
+<?php
 
 defined('C5_EXECUTE') or die("Access Denied.");
 
@@ -16,9 +16,9 @@ if (!$tp->canAccessGroupSearch()) {
 	
 	if (!$_REQUEST['group_submit_search']) { ?>
 	<div id="ccm-group-search-wrapper">
-	<? } ?>
+	<?php } ?>
 	
-	<? 
+	<?php 
 	Loader::model('search/group');
 	$gl = new GroupSearch();
 	if ($_REQUEST['include_core_groups'] == 1) {
@@ -53,7 +53,7 @@ if (!$tp->canAccessGroupSearch()) {
 	
 	<div id="ccm-list-wrapper">
 	
-	<? if (count($gResults) > 0) { 
+	<?php if (count($gResults) > 0) { 
 	
 		print $gl->displaySummary();
 	
@@ -66,35 +66,35 @@ if (!$tp->canAccessGroupSearch()) {
 			</div>
 		</div>
 	
-	<? } ?>
+	<?php } ?>
 	
 	<div id="ccm-group-paging" class="ccm-pane-dialog-pagination">
-	<?
+	<?php
 	$url = REL_DIR_FILES_TOOLS_REQUIRED . '/select_group?gKeywords=' . $_REQUEST['gKeywords'] . '&include_core_groups=' . $_REQUEST['include_core_groups'] . '&' . PAGING_STRING . '=%pageNum%';
 	$gl->displayPagingV2($url);
 	?>
 	</div>
 	
-	<?
+	<?php
 	
 	} else { ?>
 	
 		<p><?=t('No groups found.')?></p>
 		
-	<? } ?>
+	<?php } ?>
 	
 	</div>
 	
-	<? if (!$_REQUEST['group_submit_search']) { ?>
+	<?php if (!$_REQUEST['group_submit_search']) { ?>
 	
 	</div>
 	
 	
-	<? } ?>
+	<?php } ?>
 	
 	<script type="text/javascript">
 	$(function() {
 		ccm_setupGroupSearch('<?=Loader::helper('text')->entities($_REQUEST['callback'])?>');
 	});
 	</script>
-<? } ?>
+<?php } ?>

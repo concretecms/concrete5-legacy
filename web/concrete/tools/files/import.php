@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 $u = new User();
 $ch = Loader::helper('concrete/file');
@@ -72,7 +72,7 @@ $("#ccm-file-import-tabs a").click(function() {
 
 <h3><?php echo t('Upload Multiple Files')?></h3>
 
-<?
+<?php
 $umf = ini_get('upload_max_filesize');
 $umf = str_ireplace(array('M', 'K', 'G'), array(' MB', 'KB', ' GB'), $umf);
 ?>
@@ -215,7 +215,7 @@ $(function() {
 		</div>
 		<br style="clear:left;"/> //-->
 		<div class="dialog-buttons">
-			<?
+			<?php
 			
 			print $h->button_js(t('Start Uploads'), 'swfu.startUpload()', 'right', 'primary');
 			print $h->button_js(t('Cancel'), 'swfu.cancelQueue()', 'left', null,array('id'=>'ccm-file-add-multiple-btnCancel', 'disabled' => 1));
@@ -223,9 +223,9 @@ $(function() {
 			?>
 		</div>
 		
-		<? // don't ask why we have to this. it's because we're swapping out buttons with the tabs. Ugh. ?>
+		<?php // don't ask why we have to this. it's because we're swapping out buttons with the tabs. Ugh. ?>
 		<div style="display: none" id="dialog-buttons-multiple">
-			<?
+			<?php
 			
 			print $h->button_js(t('Start Uploads'), 'swfu.startUpload()', 'right', 'primary');
 			print $h->button_js(t('Cancel'), 'swfu.cancelQueue()', 'left', null,array('id'=>'ccm-file-add-multiple-btnCancel', 'disabled' => 1));
@@ -234,13 +234,13 @@ $(function() {
 		</div>
 		
 		<div style="display: none" id="dialog-buttons-incoming">
-			<?
+			<?php
 				print $form->submit('submit', t('Import Files'), array('onclick' => "jQuery.fn.dialog.showLoader();$('#ccm-file-manager-multiple-incoming').submit()", 'class' => 'primary ccm-button-right'));
 			?>
 		</div>
 		
 		<div id="dialog-buttons-remote" style="display: none">
-			<?
+			<?php
 				print $form->submit('submit', t('Import Files'), array('onclick' => "jQuery.fn.dialog.showLoader();$('#ccm-file-manager-multiple-remote').submit()", 'class' => 'primary ccm-button-right'));
 			?>
 		</div>

@@ -20,16 +20,16 @@ $ah = Loader::helper('concrete/interface');
 	<td>
 	<strong><?=t('Type')?></strong>
 	<select name="type" style="vertical-align: middle">
-		<option value="CUSTOM"<? if ($type == 'CUSTOM') { ?> selected<? } ?>><?=t('Custom Slideshow')?></option>
-		<option value="FILESET"<? if ($type == 'FILESET') { ?> selected<? } ?>><?=t('Pictures from File Set')?></option>
+		<option value="CUSTOM"<?php if ($type == 'CUSTOM') { ?> selected<?php } ?>><?=t('Custom Slideshow')?></option>
+		<option value="FILESET"<?php if ($type == 'FILESET') { ?> selected<?php } ?>><?=t('Pictures from File Set')?></option>
 	</select>
 	</td>
 	<td>
 	<strong><?=t('Playback')?></strong>
 	<select name="playback" style="vertical-align: middle">
-		<option value="ORDER"<? if ($playback == 'ORDER') { ?> selected<? } ?>><?=t('Display Order')?></option>
-		<option value="RANDOM-SET"<? if ($playback == 'RANDOM-SET') { ?> selected<? } ?>><?=t('Random (But keep sets together)')?></option>
-		<option value="RANDOM"<? if ($playback == 'RANDOM') { ?> selected<? } ?>><?=t('Completely Random')?></option>
+		<option value="ORDER"<?php if ($playback == 'ORDER') { ?> selected<?php } ?>><?=t('Display Order')?></option>
+		<option value="RANDOM-SET"<?php if ($playback == 'RANDOM-SET') { ?> selected<?php } ?>><?=t('Random (But keep sets together)')?></option>
+		<option value="RANDOM"<?php if ($playback == 'RANDOM') { ?> selected<?php } ?>><?=t('Completely Random')?></option>
 	</select>
 	</td>
 	</tr>
@@ -44,7 +44,7 @@ $ah = Loader::helper('concrete/interface');
 <br/>
 
 <div id="ccm-slideshowBlock-imgRows">
-<? if ($fsID <= 0) {
+<?php if ($fsID <= 0) {
 	foreach($images as $imgInfo){ 
 		$f = File::getByID($imgInfo['fID']);
 		$fp = new Permissions($f);
@@ -57,7 +57,7 @@ $ah = Loader::helper('concrete/interface');
 } ?>
 </div>
 
-<?
+<?php
 Loader::model('file_set');
 $s1 = FileSet::getMySets();
 $sets = array();
@@ -78,7 +78,7 @@ if ($fsID > 0) {
 $this->inc('fileset_row_include.php', array('fsInfo' => $fsInfo)); ?> 
 
 <div id="imgRowTemplateWrap" style="display:none">
-<?
+<?php
 $imgInfo['slideshowImgId']='tempSlideshowImgId';
 $imgInfo['fID']='tempFID';
 $imgInfo['fileName']='tempFilename';
@@ -91,5 +91,5 @@ $imgInfo['imgHeight']=tempHeight;
 $imgInfo['url']='';
 $imgInfo['class']='ccm-slideshowBlock-imgRow';
 ?>
-<? $this->inc('image_row_include.php', array('imgInfo' => $imgInfo)); ?> 
+<?php $this->inc('image_row_include.php', array('imgInfo' => $imgInfo)); ?> 
 </div>

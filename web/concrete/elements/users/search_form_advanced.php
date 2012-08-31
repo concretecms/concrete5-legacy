@@ -1,5 +1,5 @@
-<? defined('C5_EXECUTE') or die("Access Denied."); ?> 
-<?
+<?php defined('C5_EXECUTE') or die("Access Denied."); ?> 
+<?php
 $searchFields = array(
 	'' => '** ' . t('Fields'),
 	'date_added' => t('Registered Between'),
@@ -19,7 +19,7 @@ foreach($searchFieldAttributes as $ak) {
 
 ?>
 
-<? $form = Loader::helper('form'); ?>
+<?php $form = Loader::helper('form'); ?>
 
 	
 	<div id="ccm-user-search-field-base-elements" style="display: none">
@@ -34,7 +34,7 @@ foreach($searchFieldAttributes as $ak) {
 		<?=$form->select('active', array('0' => t('Inactive Users'), '1' => t('Active Users')), array('style' => 'vertical-align: middle'))?>
 		</span>
 		
-		<? if (PERMISSIONS_MODEL == 'advanced') { 
+		<?php if (PERMISSIONS_MODEL == 'advanced') { 
 			$gsl = new GroupSetList();
 			$groupsets = array();
 			foreach($gsl->get() as $gs) { 
@@ -44,11 +44,11 @@ foreach($searchFieldAttributes as $ak) {
 		<span class="ccm-search-option"  search-field="group_set">
 		<?=$form->select('gsID', $groupsets)?>
 		</span>
-		<? } ?>
+		<?php } ?>
 		
-		<? foreach($searchFieldAttributes as $sfa) { 
+		<?php foreach($searchFieldAttributes as $sfa) { 
 			$sfa->render('search'); ?>
-		<? } ?>
+		<?php } ?>
 		
 	</div>
 	
@@ -66,7 +66,7 @@ foreach($searchFieldAttributes as $ak) {
 		</div>
 		</div>
 				
-		<? 
+		<?php 
 		$pk = PermissionKey::getByHandle('access_user_search');
 		Loader::model('search/group');
 		$gl = new GroupSearch();
@@ -78,10 +78,10 @@ foreach($searchFieldAttributes as $ak) {
 			<?=$form->label('gID', t('Group(s)'))?>
 			<div class="controls">
 				<select multiple name="gID[]" class="chosen-select" style="width: 200px">
-					<? foreach($g1 as $g) {
+					<?php foreach($g1 as $g) {
 						if ($pk->validate($g['gID'])) { ?>
-						<option value="<?=$g['gID']?>"  <? if (is_array($_REQUEST['gID']) && in_array($g['gID'], $_REQUEST['gID'])) { ?> selected="selected" <? } ?>><?=$g['gName']?></option>
-					<? 
+						<option value="<?=$g['gID']?>"  <?php if (is_array($_REQUEST['gID']) && in_array($g['gID'], $_REQUEST['gID'])) { ?> selected="selected" <?php } ?>><?=$g['gName']?></option>
+					<?php 
 						}
 					} ?>
 				</select>

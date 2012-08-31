@@ -1,4 +1,4 @@
-<? defined('C5_EXECUTE') or die("Access Denied.");
+<?php defined('C5_EXECUTE') or die("Access Denied.");
 /* @var $h ConcreteDashboardHelper */
 $h = Loader::helper('concrete/dashboard');?>
 <form method="post" id="ipblacklist-form" action="<?php echo $this->action('update_ipblacklist')?>">

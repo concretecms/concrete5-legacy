@@ -1,15 +1,15 @@
-<? defined('C5_EXECUTE') or die("Access Denied."); ?>
+<?php defined('C5_EXECUTE') or die("Access Denied."); ?>
 <div id="ccm-profile-wrapper">
-   <? Loader::element('profile/sidebar', array('profile'=> $profile)); ?>    
+   <?php Loader::element('profile/sidebar', array('profile'=> $profile)); ?>    
     <div id="ccm-profile-body">	
         <h1><?=t('My Friends') ?></h1>
-        <?
+        <?php
 		$friendsData = UsersFriends::getUsersFriendsData( $profile->getUserID() );
 		if( !$friendsData ){ ?>
 			<div style="padding:16px 0px;">
 				<?=t('No results found.')?>
 			</div>
-		<? 
+		<?php 
 		}else foreach($friendsData as $friendsData){ 
 			$friendUID=$friendsData['friendUID'];
 			$friendUI = UserInfo::getById( $friendUID );
@@ -25,7 +25,7 @@
 				<div class="ccm-spacer"></div>
 			</div>			
 			
-			<? } else { ?>
+			<?php } else { ?>
 			<div class="ccm-users-friend" style="margin-bottom:16px;">
 				<div style="float:left; width:100px;">
 					<a href="<?=View::url('/profile',$friendUID)?>"><?= $av->outputUserAvatar($friendUI)?></a>
@@ -38,8 +38,8 @@
 				</div>
 				<div class="ccm-spacer"></div>
 			</div>			
-			<? } ?>
-		<? } ?>	
+			<?php } ?>
+		<?php } ?>	
     </div>
 	
 	<div class="ccm-spacer"></div>

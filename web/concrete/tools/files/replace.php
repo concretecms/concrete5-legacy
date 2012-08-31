@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 $u = new User();
 $ch = Loader::helper('concrete/file');
@@ -17,7 +17,7 @@ $searchInstance = Loader::helper('text')->entities($_REQUEST['searchInstance']);
 
 <div class="ccm-ui">
 
-<?
+<?php
 
 Loader::element('files/upload_single', array('searchInstance' => $searchInstance, 'mode' => 'replace', 'fID' => $f->getFileID())); 
 
@@ -27,7 +27,7 @@ Loader::element('files/upload_single', array('searchInstance' => $searchInstance
 
 <h3><?=t('Add from Incoming Directory')?></h3>
 <div>
-<?
+<?php
 $contents = array();
 $con1 = $ch->getIncomingDirectoryContents();
 foreach($con1 as $con) {
@@ -42,9 +42,9 @@ if (count($contents) > 0) { ?>
 	<?= $form->hidden('fID', $f->getFileID()); ?>
 	<?=$valt->output('import_incoming');?>
 </form>
-<? } else { ?>
+<?php } else { ?>
 	<?=t('No files found in %s', DIR_FILES_INCOMING)?>
-<? } ?>
+<?php } ?>
 </div>
 
 <hr />

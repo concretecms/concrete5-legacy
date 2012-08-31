@@ -1,6 +1,6 @@
-<? defined('C5_EXECUTE') or die("Access Denied."); ?>
+<?php defined('C5_EXECUTE') or die("Access Denied."); ?>
 <div class="ccm-ui">
-	<? 
+	<?php 
 $enablePermissions = false;
 if ($a->getAreaCollectionInheritID() != $c->getCollectionID() && $a->getAreaCollectionInheritID() > 0) {
 		$pc = $c->getPermissionsCollectionObject(); 
@@ -17,7 +17,7 @@ if ($a->getAreaCollectionInheritID() != $c->getCollectionID() && $a->getAreaColl
 		<a href="javascript:void(0)" class="btn small" onclick="ccm_setAreaPermissionsToOverride()"><?=t('Override Permissions')?></a>
 		</div>
 		
-<? 	} else if (!$a->overrideCollectionPermissions()) { ?>
+<?php 	} else if (!$a->overrideCollectionPermissions()) { ?>
 
 	<div class="block-message alert-message notice">
 	<p>
@@ -27,7 +27,7 @@ if ($a->getAreaCollectionInheritID() != $c->getCollectionID() && $a->getAreaColl
 	<a href="javascript:void(0)" class="btn small" onclick="ccm_setAreaPermissionsToOverride()"><?=t('Override Permissions')?></a>
 	</div>
 	
-<? } else { 
+<?php } else { 
 	$enablePermissions = true;
 	?>
 
@@ -37,16 +37,16 @@ if ($a->getAreaCollectionInheritID() != $c->getCollectionID() && $a->getAreaColl
 	<a href="javascript:void(0)" class="btn small" onclick="ccm_revertToPagePermissions()"><?=t('Revert to Page Permissions')?></a>
 	</div>
 
-<? } ?>
+<?php } ?>
 
 <?=Loader::element('permission/help');?>
 
-<? $cat = PermissionKeyCategory::getByHandle('area');?>
+<?php $cat = PermissionKeyCategory::getByHandle('area');?>
 
 <form method="post" id="ccm-permission-list-form" action="<?=$cat->getToolsURL("save_permission_assignments")?>&cID=<?=$c->getCollectionID()?>&arHandle=<?=$a->getAreaHandle()?>">
 <table class="ccm-permission-grid">
 
-<?
+<?php
 $permissions = PermissionKey::getList('area');
 foreach($permissions as $pk) { 
 	$pk->setPermissionObject($a);
@@ -54,29 +54,29 @@ foreach($permissions as $pk) {
 ?>
 	<tr>
 
-	<td class="ccm-permission-grid-name" id="ccm-permission-grid-name-<?=$pk->getPermissionKeyID()?>"><strong><? if ($enablePermissions) { ?><a dialog-title="<?=$pk->getPermissionKeyName()?>" data-pkID="<?=$pk->getPermissionKeyID()?>" data-paID="<?=$pk->getPermissionAccessID()?>" onclick="ccm_permissionLaunchDialog(this)" href="javascript:void(0)"><? } ?><?=$pk->getPermissionKeyName()?><? if ($enablePermissions) { ?></a><? } ?></strong></td>
-	<td id="ccm-permission-grid-cell-<?=$pk->getPermissionKeyID()?>" <? if ($enablePermissions) { ?>class="ccm-permission-grid-cell"<? } ?>><?=Loader::element('permission/labels', array('pk' => $pk))?></td>
+	<td class="ccm-permission-grid-name" id="ccm-permission-grid-name-<?=$pk->getPermissionKeyID()?>"><strong><?php if ($enablePermissions) { ?><a dialog-title="<?=$pk->getPermissionKeyName()?>" data-pkID="<?=$pk->getPermissionKeyID()?>" data-paID="<?=$pk->getPermissionAccessID()?>" onclick="ccm_permissionLaunchDialog(this)" href="javascript:void(0)"><?php } ?><?=$pk->getPermissionKeyName()?><?php if ($enablePermissions) { ?></a><?php } ?></strong></td>
+	<td id="ccm-permission-grid-cell-<?=$pk->getPermissionKeyID()?>" <?php if ($enablePermissions) { ?>class="ccm-permission-grid-cell"<?php } ?>><?=Loader::element('permission/labels', array('pk' => $pk))?></td>
 </tr>
-<? } ?>
+<?php } ?>
 
-<? if ($enablePermissions) { ?>
+<?php if ($enablePermissions) { ?>
 <tr>
 	<td class="ccm-permission-grid-name" ></td>
 	<td>
 	<?=Loader::element('permission/clipboard', array('pkCategory' => $cat))?>
 	</td>
 </tr>
-<? } ?>
+<?php } ?>
 
 </table>
 </form>
 
-<? if ($enablePermissions) { ?>
+<?php if ($enablePermissions) { ?>
 <div class="dialog-buttons">
 	<a href="javascript:void(0)" onclick="jQuery.fn.dialog.closeTop()" class="btn"><?=t('Cancel')?></a>
 	<button onclick="$('#ccm-permission-list-form').submit()" class="btn primary ccm-button-right"><?=t('Save')?> <i class="icon-ok-sign icon-white"></i></button>
 </div>
-<? } ?>
+<?php } ?>
 
 </div>
 

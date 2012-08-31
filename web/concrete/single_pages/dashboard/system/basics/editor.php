@@ -47,7 +47,7 @@ $h = Loader::helper('concrete/interface');
 
 			<div class="clearfix">
 				<label for="xlInput"><?php echo t('Width ')?></label>
-				<div class="input"><?
+				<div class="input"><?php
 					if (!$textEditorWidth) { 
 						$textEditorWidth = 580;
 					}
@@ -58,7 +58,7 @@ $h = Loader::helper('concrete/interface');
 			
 			<div class="clearfix">
 				<label for="xlInput"><?php echo t('Height ')?></label>
-				<div class="input"><?
+				<div class="input"><?php
 					if (!$textEditorHeight) { 
 						$textEditorHeight = 380;
 					}
