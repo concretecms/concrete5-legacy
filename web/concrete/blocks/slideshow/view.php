@@ -1,4 +1,4 @@
-<? defined('C5_EXECUTE') or die("Access Denied."); ?>
+<?php defined('C5_EXECUTE') or die("Access Denied."); ?>
 
 <script type="text/javascript">
 //<![CDATA[
@@ -75,7 +75,7 @@ var ccmSlideShowHelper<?=intval($bID)?> = {
 		//override for custom behavior
 	},
 	imgInfos:[
-	<? 
+	<?php 
 	$notFirst=1;
 	foreach($images as $imgInfo) {
 		$f = File::getByID($imgInfo['fID']);
@@ -93,7 +93,7 @@ var ccmSlideShowHelper<?=intval($bID)?> = {
 				groupSet:<?=intval($imgInfo['groupSet'])?>,
 				imgHeight:<?=intval($imgInfo['imgHeight'])?>
 			}
-		<? }
+		<?php }
 		} ?>
 	]
 }

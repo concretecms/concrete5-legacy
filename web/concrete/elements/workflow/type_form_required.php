@@ -1,5 +1,5 @@
 <?php defined('C5_EXECUTE') or die("Access Denied."); ?>
-<? 
+<?php 
 $form = Loader::helper('form'); 
 $ih = Loader::helper("concrete/interface");
 $valt = Loader::helper('validation/token');
@@ -13,9 +13,9 @@ $type = $workflow->getWorkflowTypeObject();
 
 <div class="ccm-pane-body">
 
-<? if (is_object($workflow)) { ?>
+<?php if (is_object($workflow)) { ?>
 
-	<?
+	<?php
 	$valt = Loader::helper('validation/token');
 	$ih = Loader::helper('concrete/interface');
 	$delConfirmJS = t('Are you sure you want to remove this workflow?');
@@ -28,14 +28,14 @@ $type = $workflow->getWorkflowTypeObject();
 	}
 	</script>
 	
-	<? print $ih->button_js(t('Delete Workflow'), "deleteWorkflow()", 'right', 'error');?>
-<? } ?>
+	<?php print $ih->button_js(t('Delete Workflow'), "deleteWorkflow()", 'right', 'error');?>
+<?php } ?>
 
 
 <h3><?=t('Type')?></h3>
 <p><?=$type->getWorkflowTypeName()?></p>
 
-<? 
+<?php 
 if ($type->getPackageID() > 0) { 
 	Loader::packageElement('workflow/types/' . $type->getWorkflowTypeHandle()  . '/type_form', $type->getPackageHandle(), array('type' => $type, 'workflow' => $workflow));
 } else {
@@ -47,7 +47,7 @@ if ($type->getPackageID() > 0) {
 <div class="ccm-pane-footer">
 	<a href="<?=$this->url('/dashboard/workflow/list')?>" class="btn"><?=t('Back to List')?></a>
 	<div style="float: right">
-<? 
+<?php 
 if ($type->getPackageID() > 0) {
 	Loader::packageElement('workflow/types/' . $type->getWorkflowTypeHandle() . '/type_form_buttons', $type->getPackageHandle(), array('type' => $type, 'workflow' => $workflow));
 } ?>

@@ -1,6 +1,6 @@
-<? defined('C5_EXECUTE') or die("Access Denied."); ?>
-<? Loader::library('authentication/open_id');?>
-<? $form = Loader::helper('form'); ?>
+<?php defined('C5_EXECUTE') or die("Access Denied."); ?>
+<?php Loader::library('authentication/open_id');?>
+<?php $form = Loader::helper('form'); ?>
 
 <script type="text/javascript">
 $(function() {
@@ -8,9 +8,9 @@ $(function() {
 });
 </script>
 
-<? if (isset($intro_msg)) { ?>
+<?php if (isset($intro_msg)) { ?>
 <div class="alert-message block-message success"><p><?=$intro_msg?></p></div>
-<? } ?>
+<?php } ?>
 
 <div class="row">
 <div class="span10 offset1">
@@ -20,13 +20,13 @@ $(function() {
 </div>
 </div>
 
-<? if( $passwordChanged ){ ?>
+<?php if( $passwordChanged ){ ?>
 
 	<div class="block-message info alert-message"><p><?=t('Password changed.  Please login to continue. ') ?></p></div>
 
-<? } ?> 
+<?php } ?> 
 
-<? if($changePasswordForm){ ?>
+<?php if($changePasswordForm){ ?>
 
 	<p><?=t('Enter your new password below.') ?></p>
 
@@ -54,7 +54,7 @@ $(function() {
 	
 	</div>
 
-<? }elseif($validated) { ?>
+<?php }elseif($validated) { ?>
 
 <h3><?=t('Email Address Verified')?></h3>
 
@@ -66,11 +66,11 @@ $(function() {
 </div>
 
 
-<? } else if (isset($_SESSION['uOpenIDError']) && isset($_SESSION['uOpenIDRequested'])) { ?>
+<?php } else if (isset($_SESSION['uOpenIDError']) && isset($_SESSION['uOpenIDRequested'])) { ?>
 
 <div class="ccm-form">
 
-<? switch($_SESSION['uOpenIDError']) {
+<?php switch($_SESSION['uOpenIDError']) {
 	case OpenIDAuth::E_REGISTRATION_EMAIL_INCOMPLETE: ?>
 
 		<form method="post" action="<?=$this->url('/login', 'complete_openid_email')?>">
@@ -83,7 +83,7 @@ $(function() {
 			</div>
 		</form>
 
-	<? break;
+	<?php break;
 	case OpenIDAuth::E_REGISTRATION_EMAIL_EXISTS:
 	
 	$ui = UserInfo::getByID($_SESSION['uOpenIDExistingUser']);
@@ -97,11 +97,11 @@ $(function() {
 			<br/>
 			
 			<div>
-			<label for="uName"><? if (USER_REGISTRATION_WITH_EMAIL_ADDRESS == true) { ?>
+			<label for="uName"><?php if (USER_REGISTRATION_WITH_EMAIL_ADDRESS == true) { ?>
 				<?=t('Email Address')?>
-			<? } else { ?>
+			<?php } else { ?>
 				<?=t('Username')?>
-			<? } ?></label><br/>
+			<?php } ?></label><br/>
 			<input type="text" name="uName" id="uName" <?= (isset($uName)?'value="'.$uName.'"':'');?> class="ccm-input-text">
 			</div>			<div>
 
@@ -114,21 +114,21 @@ $(function() {
 			</div>
 		</form>
 
-	<? break;
+	<?php break;
 
 	}
 ?>
 
 </div>
 
-<? } else if ($invalidRegistrationFields == true) { ?>
+<?php } else if ($invalidRegistrationFields == true) { ?>
 
 <div class="ccm-form">
 
 	<p><?=t('You must provide the following information before you may login.')?></p>
 	
 <form method="post" action="<?=$this->url('/login', 'do_login')?>">
-	<? 
+	<?php 
 	$attribs = UserAttributeKey::getRegistrationList();
 	$af = Loader::helper('form/attribute');
 	
@@ -155,7 +155,7 @@ $(function() {
 </form>
 </div>	
 
-<? } else { ?>
+<?php } else { ?>
 
 <form method="post" action="<?=$this->url('/login', 'do_login')?>" class="form-horizontal">
 
@@ -170,11 +170,11 @@ $(function() {
 
 	<div class="control-group">
 	
-	<label for="uName" class="control-label"><? if (USER_REGISTRATION_WITH_EMAIL_ADDRESS == true) { ?>
+	<label for="uName" class="control-label"><?php if (USER_REGISTRATION_WITH_EMAIL_ADDRESS == true) { ?>
 		<?=t('Email Address')?>
-	<? } else { ?>
+	<?php } else { ?>
 		<?=t('Username')?>
-	<? } ?></label>
+	<?php } ?></label>
 	<div class="controls">
 		<input type="text" name="uName" id="uName" <?= (isset($uName)?'value="'.$uName.'"':'');?> class="ccm-input-text">
 	</div>
@@ -191,7 +191,7 @@ $(function() {
 	</div>
 </fieldset>
 
-<? if (OpenIDAuth::isEnabled()) { ?>
+<?php if (OpenIDAuth::isEnabled()) { ?>
 	<fieldset>
 
 	<legend><?=t('OpenID')?></legend>
@@ -203,7 +203,7 @@ $(function() {
 		</div>
 	</div>
 	</fieldset>
-<? } ?>
+<?php } ?>
 
 </div>
 <div class="span4 offset1">
@@ -212,17 +212,17 @@ $(function() {
 
 	<legend><?=t('Options')?></legend>
 
-	<? if (isset($locales) && is_array($locales) && count($locales) > 0) { ?>
+	<?php if (isset($locales) && is_array($locales) && count($locales) > 0) { ?>
 		<div class="control-group">
 			<label for="USER_LOCALE" class="control-label"><?=t('Language')?></label>
 			<div class="controls"><?=$form->select('USER_LOCALE', $locales)?></div>
 		</div>
-	<? } ?>
+	<?php } ?>
 	
 	<div class="control-group">
 		<label class="checkbox"><?=$form->checkbox('uMaintainLogin', 1)?> <span><?=t('Remain logged in to website.')?></span></label>
 	</div>
-	<? $rcID = isset($_REQUEST['rcID']) ? Loader::helper('text')->entities($_REQUEST['rcID']) : $rcID; ?>
+	<?php $rcID = isset($_REQUEST['rcID']) ? Loader::helper('text')->entities($_REQUEST['rcID']) : $rcID; ?>
 	<input type="hidden" name="rcID" value="<?=$rcID?>" />
 	
 	</fieldset>
@@ -265,7 +265,7 @@ $(function() {
 </form>
 
 
-<? if (ENABLE_REGISTRATION == 1) { ?>
+<?php if (ENABLE_REGISTRATION == 1) { ?>
 <div class="row">
 <div class="span10 offset1">
 <div class="control-group">
@@ -277,6 +277,6 @@ $(function() {
 </div>
 </div>
 </div>
-<? } ?>
+<?php } ?>
 
-<? } ?>
+<?php } ?>

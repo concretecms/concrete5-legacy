@@ -1,6 +1,6 @@
 
-<? $ih = Loader::helper('concrete/interface'); ?>
-<?
+<?php $ih = Loader::helper('concrete/interface'); ?>
+<?php
 $enabledVals = array('0' => t('No'), '1' => t('Yes'));
 $secureVals = array('' => t('None'), 'SSL' => 'SSL', 'TLS' => 'TLS');
 $form = Loader::helper('form');

@@ -1,5 +1,5 @@
-<? defined('C5_EXECUTE') or die("Access Denied."); ?> 
-<?
+<?php defined('C5_EXECUTE') or die("Access Denied."); ?> 
+<?php
 if (isset($_REQUEST['searchInstance'])) {
 	$searchInstance = Loader::helper('text')->entities($_REQUEST['searchInstance']);
 }
@@ -14,14 +14,14 @@ if (isset($_REQUEST['searchInstance'])) {
 
 <div id="ccm-<?=$searchInstance?>-search-results" class="ccm-file-list">
 
-<? if ($searchType == 'DASHBOARD') { ?>
+<?php if ($searchType == 'DASHBOARD') { ?>
 
 <div class="ccm-pane-body">
 
-<? } ?>
+<?php } ?>
 
 <div id="ccm-list-wrapper"><a name="ccm-<?=$searchInstance?>-list-wrapper-anchor"></a>
-		<? $form = Loader::helper('form'); ?>
+		<?php $form = Loader::helper('form'); ?>
 	<div style="float: left; width: 200px; margin-bottom: 10px">
 		<select id="ccm-<?=$searchInstance?>-list-multiple-operations" class="" disabled>
 			<option value="">** <?=t('With Selected')?></option>
@@ -35,11 +35,11 @@ if (isset($_REQUEST['searchInstance'])) {
 		
 	</div>
 	<div style="float: right">
-		<? Loader::element('files/upload_single', array('searchInstance' => $searchInstance, 'ocID' => $ocID)); ?>
+		<?php Loader::element('files/upload_single', array('searchInstance' => $searchInstance, 'ocID' => $ocID)); ?>
 	</div>
 	<div class="clearfix" style="height: 1px"></div>
 
-<?
+<?php
 	$txt = Loader::helper('text');
 	$keywords = $searchRequest['fKeywords'];
 	$soargs = array();
@@ -54,15 +54,15 @@ if (isset($_REQUEST['searchInstance'])) {
 			<th class="ccm-file-list-thumbnail-wrapper"><?=t('Thumbnail')?></th>
 
 			<th class="ccm-file-list-starred">&nbsp;</th>
-			<? foreach($columns->getColumns() as $col) { ?>
-				<? if ($col->isColumnSortable()) { ?>
+			<?php foreach($columns->getColumns() as $col) { ?>
+				<?php if ($col->isColumnSortable()) { ?>
 					<th class="<?=$fileList->getSearchResultsClass($col->getColumnKey())?>"><a href="<?=$fileList->getSortByURL($col->getColumnKey(), $col->getColumnDefaultSortDirection(), $bu, $soargs)?>"><?=$col->getColumnName()?></a></th>
-				<? } else { ?>
+				<?php } else { ?>
 					<th><?=$col->getColumnName()?></th>
-				<? } ?>
-			<? } ?>
+				<?php } ?>
+			<?php } ?>
 		</tr>
-	<?
+	<?php
 		foreach($files as $f) {
 			$pf = new Permissions($f);
 			if (!isset($striped) || $striped == 'ccm-list-record-alt') {
@@ -80,23 +80,23 @@ if (isset($_REQUEST['searchInstance'])) {
 			<td class="ccm-file-list-cb" style="vertical-align: middle !important"><input type="checkbox" value="<?=$f->getFileID()?>" /></td>
 			<td class="ccm-file-list-thumbnail-wrapper"><ul class="thumbnails"><li class="ccm-file-list-thumbnail" fID="<?=$f->getFileID()?>"><a href="javascript:void(0)" class="thumbnail"><?=$fv->getThumbnail(1)?></a></li></ul>
 			
-			<? if ($fv->hasThumbnail(2)) { ?>
+			<?php if ($fv->hasThumbnail(2)) { ?>
 				<div class="ccm-file-list-thumbnail-hover" id="fID<?=$f->getFileID()?>hoverThumbnail"><div><?=$fv->getThumbnail(2)?></div></div>
-			<? } ?>
+			<?php } ?>
 
 				</td>
 			<td class="ccm-file-list-starred"><img src="<?=ASSETS_URL_IMAGES?>/icons/<?=$star_icon?>" height="16" width="16" border="0" class="ccm-star" /></td>
-			<? foreach($columns->getColumns() as $col) { ?>
-				<? // special one for keywords ?>				
-				<? if ($col->getColumnKey() == 'fvTitle') { ?>
+			<?php foreach($columns->getColumns() as $col) { ?>
+				<?php // special one for keywords ?>				
+				<?php if ($col->getColumnKey() == 'fvTitle') { ?>
 					<td class="ccm-file-list-filename"><?=$txt->highlightSearch($fv->getTitle(), $keywords)?></td>		
-				<? } else { ?>
+				<?php } else { ?>
 					<td><?=$col->getColumnValue($f)?></td>
-				<? } ?>
-			<? } ?>
+				<?php } ?>
+			<?php } ?>
 						
 			</tr>
-			<?
+			<?php
 		}
 
 	?>
@@ -105,27 +105,27 @@ if (isset($_REQUEST['searchInstance'])) {
 	
 	
 
-	<? } else { ?>
+	<?php } else { ?>
 		
 		<div class="ccm-results-list-none"><?=t('No files found.')?></div>
 		
 	
-	<? } ?>
+	<?php } ?>
 	
 </div>
-<?
+<?php
 	$fileList->displaySummary();
 ?>
 </div>
-<? if ($searchType == 'DASHBOARD') { ?>
+<?php if ($searchType == 'DASHBOARD') { ?>
 <div class="ccm-pane-footer">
-	<? 	$fileList->displayPagingV2($bu, false, $soargs); ?>
+	<?php 	$fileList->displayPagingV2($bu, false, $soargs); ?>
 </div>
 
-<? } else { ?>
+<?php } else { ?>
 	<div class="ccm-pane-dialog-pagination">
-		<? 	$fileList->displayPagingV2($bu, false, $soargs); ?>
+		<?php 	$fileList->displayPagingV2($bu, false, $soargs); ?>
 	</div>
-<? } ?>
+<?php } ?>
 
 </div>

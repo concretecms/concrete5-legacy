@@ -12,7 +12,7 @@ if (isset($error) && $error != '') {
 		$_error[] = $error;
 	}
 	?>
-	<? if ($format == 'block') { ?>
+	<?php if ($format == 'block') { ?>
 	
 	<div class="alert alert-error"><button type="button" class="close" data-dismiss="alert">×</button>
 	<?php foreach($_error as $e): ?>
@@ -20,14 +20,14 @@ if (isset($error) && $error != '') {
 	<?php endforeach; ?>
 	</div>
 
-	<? } else { ?>
+	<?php } else { ?>
 	
 	<ul class="ccm-error">
 	<?php foreach($_error as $e): ?>
 		<li><?php echo $e?></li>
 	<?php endforeach; ?>
 	</ul>
-	<? } ?>
+	<?php } ?>
 	
 
 <?php } ?>

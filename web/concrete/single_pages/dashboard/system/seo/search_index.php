@@ -7,7 +7,7 @@ echo Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Sear
 			<fieldset>
 			<legend><?=t('Indexing Method')?></legend>
 			<div class="control-group">
-			<? $methods = array(
+			<?php $methods = array(
 				'whitelist' => t('Whitelist: Selected areas are only areas indexed.'),
 				'blacklist' => t('Blacklist: Every area but the selected areas are indexed.')
 			);
@@ -19,9 +19,9 @@ echo Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Sear
 			<legend><?=t('Areas')?></legend>
 			<div class="control-group">	
 
-			<? foreach($areas as $a) { ?>
+			<?php foreach($areas as $a) { ?>
 				<label class="checkbox"><?=$form->checkbox('arHandle[]', $a, in_array($a, $selectedAreas))?> <?=$a?></label>
-			<? } ?>
+			<?php } ?>
 			</div>
 			</fieldset>
 

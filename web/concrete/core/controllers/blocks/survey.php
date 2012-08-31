@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 /**
  * Controller for the survey block, which allows site owners to add surveys and uses Google's graphing web service to display results.

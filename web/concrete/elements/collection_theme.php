@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 
 Loader::model('collection_types');
@@ -46,7 +46,7 @@ if ($plID == 0) {
 	<input type="hidden" name="rel" value="<?=$_REQUEST['rel']?>" />
 
 
-	<? 
+	<?php 
 	if (!$cp->canEditPageType()) { ?>
 
 		<h3><?=t('Choose a Page Type')?></h3>
@@ -55,7 +55,7 @@ if ($plID == 0) {
 		</p>
 		<br/><br/>
 
-	<?	
+	<?php	
 	
 	} else if ($c->isMasterCollection()) { ?>
 		<h3><?=t('Choose a Page Type')?></h3>
@@ -64,11 +64,11 @@ if ($plID == 0) {
 		</p>
 		<br/><br/>
 	
-	<? } else if ($c->isGeneratedCollection()) { ?>
+	<?php } else if ($c->isGeneratedCollection()) { ?>
 	<h3><?=t('Choose a Page Type')?></h3>
 	<p><?=t("This page is a single page, which means it doesn't have a page type associated with it."); ?></p>
 
-	<? } else if ($cnt > 0) { ?>
+	<?php } else if ($cnt > 0) { ?>
 
 	<h3><?=t('Choose a Page Type')?></h3>
 
@@ -78,30 +78,30 @@ if ($plID == 0) {
 
 		<div class="ccm-scroller-inner">
 			<ul id="ccm-select-page-type" style="width: <?=$cnt * 132?>px">
-				<? 
+				<?php 
 				foreach($ctArray as $ct) { 
 					if ($c->getCollectionID() == 1 || $parentCP->canAddSubCollection($ct)) { 
 					?>		
-					<? $class = ($ct->getCollectionTypeID() == $ctID) ? 'ccm-item-selected' : ''; ?>
+					<?php $class = ($ct->getCollectionTypeID() == $ctID) ? 'ccm-item-selected' : ''; ?>
 			
 					<li class="<?=$class?>"><a href="javascript:void(0)" ccm-page-type-id="<?=$ct->getCollectionTypeID()?>"><?=$ct->getCollectionTypeIconImage();?></a><span><?=$ct->getCollectionTypeName()?></span>
 					</li>
-				<? } 
+				<?php } 
 				
 				}?>
 			</ul>
 		</div>
 	</div>
 
-	<? } ?>
+	<?php } ?>
 	
-	<? if(ENABLE_MARKETPLACE_SUPPORT){ ?>
+	<?php if(ENABLE_MARKETPLACE_SUPPORT){ ?>
 		<a href="javascript:void(0)" onclick="ccm_openThemeLauncher()" class="btn ccm-button-right success"><?=t("Get More Themes")?></a>
-	<? } ?>
+	<?php } ?>
 
 	<h3 ><?=t('Themes')?></h3>
 	
-	<? if ($cp->canEditPageTheme()) { ?>
+	<?php if ($cp->canEditPageTheme()) { ?>
 
 	<div class="ccm-scroller" current-page="1" current-pos="0" num-pages="<?=ceil(count($tArray)/4)?>">
 		<a href="javascript:void(0)" class="ccm-scroller-l"><img src="<?=ASSETS_URL_IMAGES?>/button_scroller_l.png" width="28" height="79" alt="l" /></a>
@@ -109,26 +109,26 @@ if ($plID == 0) {
 		
 		<div class="ccm-scroller-inner">
 			<ul id="ccm-select-theme" style="width: <?=count($tArray) * 132?>px">
-			<? foreach($tArray as $t) { ?>
+			<?php foreach($tArray as $t) { ?>
 			
-				<? $class = ($t->getThemeID() == $plID) ? 'ccm-item-selected' : ''; ?>
+				<?php $class = ($t->getThemeID() == $plID) ? 'ccm-item-selected' : ''; ?>
 				<li class="<?=$class?> themeWrap">
 				
 					<a href="javascript:void(0)" ccm-theme-id="<?=$t->getThemeID()?>"><?=$t->getThemeThumbnail()?></a>
-						<? if ($t->getThemeID() != $plID) { ?><a title="<?=t('Preview')?>" onclick="ccm_previewInternalTheme(<?=$c->getCollectionID()?>, <?=intval($t->getThemeID())?>,'<?=addslashes(str_replace(array("\r","\n",'\n'),'',$t->getThemeName())) ?>')" href="javascript:void(0)" class="preview">
-						<img src="<?=ASSETS_URL_IMAGES?>/icons/magnifying.png" alt="<?=t('Preview')?>" class="ccm-preview" /></a><? } ?>
+						<?php if ($t->getThemeID() != $plID) { ?><a title="<?=t('Preview')?>" onclick="ccm_previewInternalTheme(<?=$c->getCollectionID()?>, <?=intval($t->getThemeID())?>,'<?=addslashes(str_replace(array("\r","\n",'\n'),'',$t->getThemeName())) ?>')" href="javascript:void(0)" class="preview">
+						<img src="<?=ASSETS_URL_IMAGES?>/icons/magnifying.png" alt="<?=t('Preview')?>" class="ccm-preview" /></a><?php } ?>
 					<div class="ccm-theme-name" ><?=$t->getThemeName()?></div>
 			
 				</li>
-			<? } ?>
+			<?php } ?>
 			</ul>
 		</div>
 	</div>
-	<? } else { ?>
+	<?php } else { ?>
 	
 	<p><?=t("You do not have access to change this page's theme."); ?></p>
 
-	<? } ?>
+	<?php } ?>
 	
 	<div class="dialog-buttons">
 		<a href="javascript:void(0)" onclick="jQuery.fn.dialog.closeTop()" class="ccm-button-left btn"><?=t('Cancel')?></a>
@@ -146,7 +146,7 @@ if ($plID == 0) {
 
 $(function() {
 	ccm_enableDesignScrollers();
-	<? if ($_REQUEST['rel'] == 'SITEMAP') { ?>
+	<?php if ($_REQUEST['rel'] == 'SITEMAP') { ?>
 		$("form[name=ccmThemeForm]").ajaxForm({
 		type: 'POST',
 		iframe: true,
@@ -166,11 +166,11 @@ $(function() {
 		}
 	});
 
-	<? } else { ?>
+	<?php } else { ?>
 		$('form[name=ccmThemeForm]').submit(function() {
 			jQuery.fn.dialog.showLoader();
 		});
-	<? } ?>
+	<?php } ?>
 
 
 });

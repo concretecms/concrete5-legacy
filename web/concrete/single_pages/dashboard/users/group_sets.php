@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 ?>
 
@@ -100,10 +100,10 @@ defined('C5_EXECUTE') or die("Access Denied.");
 
 	<?php echo Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper();?>
 
-<? } else { ?>
+<?php } else { ?>
  
 	<?php echo Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Group Sets'), false, 'span10 offset1');?>
-	<? if (PERMISSIONS_MODEL == 'advanced') { ?>
+	<?php if (PERMISSIONS_MODEL == 'advanced') { ?>
 	<form method="post" class="form-horizontal" action="<?php echo $this->action('add_set')?>">
 
 
@@ -138,10 +138,10 @@ defined('C5_EXECUTE') or die("Access Denied.");
 	<div class="control-group">
 		<label class="control-label"><?=t('Groups')?></label>
 		<div class="controls">
-		<? foreach($groups as $g) { ?>
+		<?php foreach($groups as $g) { ?>
 			<label class="checkbox"><?=$form->checkbox('gID[]', $g->getGroupID())?> <span><?=$g->getGroupName()?></span></label>
 			
-		<? } ?>
+		<?php } ?>
 		</div>
 	</div>
 	
@@ -153,10 +153,10 @@ defined('C5_EXECUTE') or die("Access Denied.");
 	</div>
 
 	</form>
-	<? } else { ?>
+	<?php } else { ?>
 		<p><?=t('You must enable <a href="%s">advanced permissions</a> to use group sets.', $this->url('/dashboard/system/permissions/advanced'))?></p>
-	<? } ?>
+	<?php } ?>
 	
 	<?php echo Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper();?>
 
-<? } ?>
+<?php } ?>

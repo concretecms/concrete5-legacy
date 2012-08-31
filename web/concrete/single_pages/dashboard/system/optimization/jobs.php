@@ -110,16 +110,16 @@ jQuery(function($) {
 </tr>
 </thead>
 <tbody>
-<? $jobrunning = false; ?>
+<?php $jobrunning = false; ?>
 <?foreach ($jobList as $job):?>
-<tr <? if ($job['jStatus'] == 'RUNNING') {
+<tr <?php if ($job['jStatus'] == 'RUNNING') {
 	
-	$jobrunning = true;?>class="running" <? } ?>>
+	$jobrunning = true;?>class="running" <?php } ?>>
 	<td><a class="run-task" title="<?=t('Run')?>" href="<?=BASE_URL.$this->url('/tools/required/jobs?auth='.$auth.'&jID='.$job['jID'])?>" data-jobId="<?=$job['jID']?>"></a><span class="run-indicator"></span></td>
 	<td><?=$job['jID']?></td>
 	<td><?=t($job['jName'])?></td>
 	<td><?=t($job['jDescription'])?></td>
-	<td class="jDateLastRun"><?
+	<td class="jDateLastRun"><?php
 	if ($job['jStatus'] == 'RUNNING') {
 		$runtime = date(DATE_APP_GENERIC_TS, strtotime($job['jDateLastRun']));
 		echo ("<strong>");
@@ -168,10 +168,10 @@ jQuery(function($) {
 <div><?=t('If you wish to run these jobs in the background, automate access to the following URL:')?></div>
 <div><a href="<?=BASE_URL.$this->url('/tools/required/jobs?auth='.$auth)?>"><?=BASE_URL . $this->url('/tools/required/jobs?auth=' . $auth)?></a></div>
 </div>
-<div class="ccm-pane-footer"><? if ($jobrunning == true) { ?>
+<div class="ccm-pane-footer"><?php if ($jobrunning == true) { ?>
 	<form method="post" style="display: inline" action="<?=$this->action('reset_running_jobs')?>">
 		<?=Loader::helper('validation/token')->output('reset_running_jobs')?>
 		<input type="submit" class="btn" value="<?=t('Reset all Running Jobs')?>" />
 	</form>
-<? } ?></div>
+<?php } ?></div>
 <?=$h->getDashboardPaneFooterWrapper(false);?>

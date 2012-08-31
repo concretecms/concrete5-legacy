@@ -1,4 +1,4 @@
-<? defined('C5_EXECUTE') or die(_("Access Denied."));
+<?php defined('C5_EXECUTE') or die(_("Access Denied."));
 
 $navItems = $controller->getNavItems();
 

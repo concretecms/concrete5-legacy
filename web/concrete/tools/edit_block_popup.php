@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");  
 
 $c = Page::getByID($_REQUEST['cID'], 'RECENT');
@@ -91,23 +91,23 @@ if (is_object($b)) {
 					<script type="text/javascript">
 						$('head').append('<style type="text/css"><?=addslashes($styleHeader)?></style>');
 					</script>
-				<?
+				<?php
 				}
 
 				if (count($items) > 0) { ?>
 				<script type="text/javascript">				
-				<?
+				<?php
 				foreach($items as $item) { 
 					if ($item instanceof CSSOutputObject) { ?>
 						// we only support CSS here
 						ccm_addHeaderItem("<?=$item->href?>", 'CSS');
-					<? } else if ($item instanceof JavaScriptOutputObject) { ?>
+					<?php } else if ($item instanceof JavaScriptOutputObject) { ?>
 						ccm_addHeaderItem("<?=$item->href?>", 'JAVASCRIPT');
-					<? }
+					<?php }
 				
 				} ?>
 				</script>
-				<? }
+				<?php }
 				
 				$bv->renderElement('block_controls', array(
 					'a' => $a,

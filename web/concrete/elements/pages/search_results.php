@@ -1,5 +1,5 @@
-<? defined('C5_EXECUTE') or die("Access Denied."); ?> 
-<?
+<?php defined('C5_EXECUTE') or die("Access Denied."); ?> 
+<?php
 if ($_REQUEST['searchDialog'] == 1) {
 	$searchDialog = true;
 }
@@ -21,30 +21,30 @@ if (isset($_REQUEST['searchInstance'])) {
 
 <div id="ccm-<?=$searchInstance?>-search-results" class="ccm-page-list">
 
-<? if (!$searchDialog) { ?>
+<?php if (!$searchDialog) { ?>
 
 <div class="ccm-pane-body">
 
-<? } ?>
+<?php } ?>
 
 <div id="ccm-list-wrapper"><a name="ccm-<?=$searchInstance?>-list-wrapper-anchor"></a>
 	<div style="margin-bottom: 10px">
-		<? $form = Loader::helper('form'); ?>
+		<?php $form = Loader::helper('form'); ?>
 
 		<select id="ccm-<?=$searchInstance?>-list-multiple-operations" class="span3" disabled>
 			<option value="">** <?=t('With Selected')?></option>
 			<option value="properties"><?=t('Edit Properties')?></option>
 			<option value="move_copy"><?=t('Move/Copy')?></option>
 			<option value="speed_settings"><?=t('Speed Settings')?></option>
-			<? if (PERMISSIONS_MODEL == 'advanced') { ?>
+			<?php if (PERMISSIONS_MODEL == 'advanced') { ?>
 				<option value="permissions"><?=t('Change Permissions')?></option>
-			<? } ?>
+			<?php } ?>
 			<option value="design"><?=t('Design')?></option>
 			<option value="delete"><?=t('Delete')?></option>
 		</select>	
 	</div>
 
-<?
+<?php
 	$txt = Loader::helper('text');
 	$keywords = $searchRequest['keywords'];
 	$soargs = array();
@@ -57,20 +57,20 @@ if (isset($_REQUEST['searchInstance'])) {
 	if (count($pages) > 0) { ?>	
 		<table border="0" cellspacing="0" cellpadding="0" id="ccm-<?=$searchInstance?>-list" class="ccm-results-list">
 		<tr class="ccm-results-list-header">
-			<? if (!$searchDialog) { ?><th><input id="ccm-<?=$searchInstance?>-list-cb-all" type="checkbox" /></th><? } ?>
-			<? if ($pageList->isIndexedSearch()) { ?>
+			<?php if (!$searchDialog) { ?><th><input id="ccm-<?=$searchInstance?>-list-cb-all" type="checkbox" /></th><?php } ?>
+			<?php if ($pageList->isIndexedSearch()) { ?>
 				<th class="<?=$pageList->getSearchResultsClass('cIndexScore')?>"><a href="<?=$pageList->getSortByURL('cIndexScore', 'desc', $bu, $soargs)?>"><?=t('Score')?></a></th>
-			<? } ?>
-			<? foreach($columns->getColumns() as $col) { ?>
-				<? if ($col->isColumnSortable()) { ?>
+			<?php } ?>
+			<?php foreach($columns->getColumns() as $col) { ?>
+				<?php if ($col->isColumnSortable()) { ?>
 					<th class="<?=$pageList->getSearchResultsClass($col->getColumnKey())?>"><a href="<?=$pageList->getSortByURL($col->getColumnKey(), $col->getColumnDefaultSortDirection(), $bu, $soargs)?>"><?=$col->getColumnName()?></a></th>
-				<? } else { ?>
+				<?php } else { ?>
 					<th><?=$col->getColumnName()?></th>
-				<? } ?>
-			<? } ?>
+				<?php } ?>
+			<?php } ?>
 
 		</tr>
-	<?
+	<?php
 		$h = Loader::helper('concrete/dashboard');
 		$dsh = Loader::helper('concrete/dashboard/sitemap');
 		foreach($pages as $cobj) {
@@ -124,18 +124,18 @@ if (isset($_REQUEST['searchInstance'])) {
 				
 				cAlias="false"
 				<?=$dsh->getPermissionsNodes($permissionArray);?>>
-			<? if (!$searchDialog) { ?><td class="ccm-<?=$searchInstance?>-list-cb" style="vertical-align: middle !important"><input type="checkbox" value="<?=$cobj->getCollectionID()?>" /></td><? } ?>
+			<?php if (!$searchDialog) { ?><td class="ccm-<?=$searchInstance?>-list-cb" style="vertical-align: middle !important"><input type="checkbox" value="<?=$cobj->getCollectionID()?>" /></td><?php } ?>
 
-			<? foreach($columns->getColumns() as $col) { ?>
-				<? if ($col->getColumnKey() == 'cvName') { ?>
+			<?php foreach($columns->getColumns() as $col) { ?>
+				<?php if ($col->getColumnKey() == 'cvName') { ?>
 					<td class="ccm-page-list-name"><?=$txt->highlightSearch($cobj->getCollectionName(), $keywords)?></td>		
-				<? } else { ?>
+				<?php } else { ?>
 					<td><?=$col->getColumnValue($cobj)?></td>
-				<? } ?>
-			<? } ?>
+				<?php } ?>
+			<?php } ?>
 
 			</tr>
-			<?
+			<?php
 		}
 	?>
 	
@@ -143,28 +143,28 @@ if (isset($_REQUEST['searchInstance'])) {
 	
 	
 
-	<? } else { ?>
+	<?php } else { ?>
 		
 		<div class="ccm-results-list-none"><?=t('No pages found.')?></div>
 		
 	
-	<? } ?>
+	<?php } ?>
 	
 </div>
-<?
+<?php
 	$pageList->displaySummary();
 ?>
-<? if (!$searchDialog) { ?>
+<?php if (!$searchDialog) { ?>
 </div>
 
 <div class="ccm-pane-footer">
-	<? 	$pageList->displayPagingV2($bu, false, $soargs); ?>
+	<?php 	$pageList->displayPagingV2($bu, false, $soargs); ?>
 </div>
 
-<? } else { ?>
+<?php } else { ?>
 	<div class="ccm-pane-dialog-pagination">
-		<? 	$pageList->displayPagingV2($bu, false, $soargs); ?>
+		<?php 	$pageList->displayPagingV2($bu, false, $soargs); ?>
 	</div>
-<? } ?>
+<?php } ?>
 
 </div>

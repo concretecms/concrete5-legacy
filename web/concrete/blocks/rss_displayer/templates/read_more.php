@@ -1,12 +1,12 @@
-<? defined('C5_EXECUTE') or die("Access Denied."); ?>
+<?php defined('C5_EXECUTE') or die("Access Denied."); ?>
 
 <div id="rssSummaryList<?=intval($bID)?>" class="rssSummaryList">
 
-<? if( strlen($title)>0 ){ ?>
+<?php if( strlen($title)>0 ){ ?>
 	<div class="rssSummaryListTitle" style="margin-bottom:8px"><?=$title?></div>
-<? } ?>
+<?php } ?>
 
-<? 
+<?php 
 $rssObj=$controller;
 $textHelper = Loader::helper("text"); 
 
@@ -27,7 +27,7 @@ if( strlen($errorMsg)>0 ){
 		<h3><?= $item->get_title(); ?></h3>
 		<h5><?= $item->get_date($dateFormat); ?></h5>
 			<div class="rssItemSummary"><p>
-				<?
+				<?php
 				if( $rssObj->showSummary ){
 					echo $textHelper->shortText( strip_tags($item->get_description()), 190 );
 				}
@@ -37,7 +37,7 @@ if( strlen($errorMsg)>0 ){
 			</div>
 		</div>
 	
-<?  }  
+<?php  }  
 }
 ?>
 </div>

@@ -1,4 +1,4 @@
-<?
+<?php
 	defined('C5_EXECUTE') or die("Access Denied.");
 
 	if (!Loader::helper('validation/numbers')->integer($_GET['cID'])) {
@@ -24,7 +24,7 @@
 		
 		<div class="ccm-ui">
 		
-		<? 
+		<?php 
 		$ih = Loader::helper('concrete/interface');
 		$display = 'block';
 		$i = 0;
@@ -44,7 +44,7 @@
 		<iframe border="0" id="v<?=time()?>" frameborder="0" height="100%" width="100%" src="<?=BASE_URL . DIR_REL?>/<?=DISPATCHER_FILENAME?>?cvID=<?=$cvID?>&cID=<?=$_REQUEST['cID']?>&vtask=view_versions" />
 		</div>
 		
-		<? if ($display == 'block') {
+		<?php if ($display == 'block') {
 			$display = 'none';
 		}
 		
@@ -54,7 +54,7 @@
 		</div>
 		
 	
-	<? 
+	<?php 
 		exit;
 	}
 	
@@ -124,12 +124,12 @@
 
 if (!$_GET['versions_reloaded']) { ?>
 	<div id="ccm-versions-container">
-	<? if ($_REQUEST['deferred']) { ?>
+	<?php if ($_REQUEST['deferred']) { ?>
 		<div class="alert alert-info">
 			<?=t('<strong>Request Saved.</strong> You must complete the workflow before this change is active.')?>
 		</div>
-	<? } ?>
-<? } ?>
+	<?php } ?>
+<?php } ?>
 
 <div class="ccm-pane-controls ccm-ui">
 
@@ -158,9 +158,9 @@ $(function() {
 		
 	});
 	
-	<? if ($_REQUEST['forcereload']) { ?>
+	<?php if ($_REQUEST['forcereload']) { ?>
 		ccm_versionsMustReload = true;
-	<? } ?>
+	<?php } ?>
 
 });
 
@@ -328,9 +328,9 @@ $("button[name=vRemove]").click(function() {
 
 
 
-	<? if ($isCheckedOut) { ?> 
+	<?php if ($isCheckedOut) { ?> 
 		<?=t('Someone has already checked out this page for editing.')?>
-	<? } else { ?>
+	<?php } else { ?>
 
 	<table border="0" cellspacing="0" width="100%" class="table table-striped" cellpadding="0" id="ccm-versions-list">
 	<tr>
@@ -351,18 +351,18 @@ $("button[name=vRemove]").click(function() {
 		<th style="vertical-align: middle"><?=t('Created')?></th>
 		<th style="white-space: nowrap">
 	<div class="btn-group" style="float: right; white-space: nowrap">
-	<?
+	<?php
 	$ih = Loader::helper("concrete/dashboard");
-	if (!$ih->inDashboard($c)) { ?><button class="btn" name="vCompare" title="<?=t('Compare')?>" disabled><i class="icon-zoom-in"></i></button><? } ?>
+	if (!$ih->inDashboard($c)) { ?><button class="btn" name="vCompare" title="<?=t('Compare')?>" disabled><i class="icon-zoom-in"></i></button><?php } ?>
 	<button class="btn" name="vApprove" title="<?=t('Approve')?>" disabled><i class="icon-thumbs-up"></i></button>
 	<button class="btn" name="vCopy" value="<?=t('Copy')?>" title="<?=t('Copy Version')?>" disabled><i class="icon-plus-sign"></i></button>
-	<? if ($cp->canDeletePageVersions()) { ?>
+	<?php if ($cp->canDeletePageVersions()) { ?>
 		<button class="btn" name="vRemove" value="<?=t('Remove')?>" disabled><i class="icon-trash"></i></button>
-	<? } ?>
+	<?php } ?>
 	</div>
 		</th>
 	</tr>
-	<? 
+	<?php 
 	$vIsPending = true;
 	foreach ($vArray as $v) { 
 		if ($v->isApproved()) {
@@ -385,22 +385,22 @@ $("button[name=vRemove]").click(function() {
 		
 	?> 
 	<tr id="ccm-version-row<?=$v->getVersionID()?>" class="<?=$class?>">
-		<td style="text-align: center"><input type="checkbox" <? if ($vIsPending) { ?> class="cb-version-pending"<? } else if ($v->isApproved()) { ?> class="cb-version-active"<? } else { ?> class="cb-version-old" <? } ?> id="cb<?=$v->getVersionID()?>" name="vID[]" value="<?=$v->getVersionID()?>" /></td>
+		<td style="text-align: center"><input type="checkbox" <?php if ($vIsPending) { ?> class="cb-version-pending"<?php } else if ($v->isApproved()) { ?> class="cb-version-active"<?php } else { ?> class="cb-version-old" <?php } ?> id="cb<?=$v->getVersionID()?>" name="vID[]" value="<?=$v->getVersionID()?>" /></td>
 		<td><?=$v->getVersionID()?></td>
 		<td><a dialog-width="85%" dialog-height="80%" title="<?=t('View Versions')?>" class="ccm-version" dialog-title="<?=t('View Versions')?>" dialog-modal="false" href="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/versions.php?cID=<?=$cID?>&cvID[]=<?=$v->getVersionID()?>&vtask=view_versions"><?=$v->getVersionComments()?></a></td>
-		<td><?
+		<td><?php
 			print $v->getVersionAuthorUserName();
 			
 			?></td>
-		<td><?
+		<td><?php
 			print $v->getVersionApproverUserName();
 			
 			?></td>
 		<td colspan="2"><?=date(DATE_APP_PAGE_VERSIONS, strtotime($v->getVersionDateCreated('user')))?></td>
 	</tr>	
-	<? } ?>
+	<?php } ?>
 	</table>
-	<? if ($total > 20 ) { ?>
+	<?php if ($total > 20 ) { ?>
 	<div class="ccm-ui">
 		<div class="pagination ccm-pagination">
 		<ul>
@@ -410,15 +410,15 @@ $("button[name=vRemove]").click(function() {
 		</ul>
 		</div>
 	</div>
-	<? } ?>
+	<?php } ?>
 	<br>
 	
-<? 	}
+<?php 	}
 
 ?>
 
 </div>
 
-<? if (!$_GET['versions_reloaded']) { ?>
+<?php if (!$_GET['versions_reloaded']) { ?>
 </div>
-<? } ?>
+<?php } ?>

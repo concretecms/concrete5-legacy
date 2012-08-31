@@ -1,31 +1,31 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 $this->inc('elements/header.php'); ?>
 <div id="page" class="no-sidebar">
 	<div id="headerSpacer"></div>
 	<div id="header">		
 		<h1 id="logo"><!--
-			--><a href="<?=DIR_REL?>/"><?
+			--><a href="<?=DIR_REL?>/"><?php
 				$block = Block::getByName('My_Site_Name');
 				if( $block && $block->bID ) $block->display();  
 				else echo SITE;
 			?></a><!--
 		--></h1>
-		<?
+		<?php
 		// we use the "is edit mode" check because, in edit mode, the bottom of the area overlaps the item below it, because
 		// we're using absolute positioning. So in edit mode we add a bit of space so everything looks nice.
 		if (!$c->isEditMode()) { ?>
 			<div class="spacer"></div>
-		<? } ?>		
+		<?php } ?>		
 		<div id="header-area">
-			<?
+			<?php
 			$a = new Area('Header Nav');
 			$a->display($c);
 			?>
 		</div>
 	</div>
     <div id="pageHeader">
-		<?			
+		<?php			
         $ahh = new Area('Header');
         $ahh->display($c);			
         ?>	
@@ -33,7 +33,7 @@ $this->inc('elements/header.php'); ?>
 
     <div id="central">
 		<div id="body">	
-			<?
+			<?php
 			$a = new Area('Main');
 			$a->display($c);
 			?>
@@ -45,10 +45,10 @@ $this->inc('elements/header.php'); ?>
 			&copy; <?=date('Y')?> <a href="<?=DIR_REL?>/"><?=SITE?></a>.
 			&nbsp;&nbsp;
 			<?=t('All rights reserved.')?>	
-			<?
+			<?php
 			$u = new User();
 			if ($u->isRegistered()) { ?>
-				<? 
+				<?php 
 				if (Config::get("ENABLE_USER_PROFILES")) {
 					$userName = '<a href="' . $this->url('/profile') . '">' . $u->getUserName() . '</a>';
 				} else {
@@ -56,9 +56,9 @@ $this->inc('elements/header.php'); ?>
 				}
 				?>
 				<span class="sign-in"><?=t('Currently logged in as <b>%s</b>.', $userName)?> <a href="<?=$this->url('/login', 'logout')?>"><?=t('Sign Out')?></a></span>
-			<? } else { ?>
+			<?php } else { ?>
 				<span class="sign-in"><a href="<?=$this->url('/login')?>"><?=t('Sign In to Edit this Site')?></a></span>
-			<? } ?>
+			<?php } ?>
 	</div>
 </div>
-<? $this->inc('elements/footer.php'); ?>
+<?php $this->inc('elements/footer.php'); ?>

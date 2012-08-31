@@ -1,6 +1,6 @@
-<? defined('C5_EXECUTE') or die("Access Denied."); ?>
+<?php defined('C5_EXECUTE') or die("Access Denied."); ?>
 
-<?
+<?php
 
 if (isset($entry)) { ?>
 
@@ -32,7 +32,7 @@ if (isset($entry)) { ?>
 
 	<div class="control-group">
 		<?=$form->label('cDatePublic', t('Date Posted'))?>
-		<div class="controls"><? 
+		<div class="controls"><?php 
 		if ($this->controller->isPost()) { 	
 			$cDatePublic = Loader::helper('form/date_time')->translate('cDatePublic');
 		}
@@ -41,30 +41,30 @@ if (isset($entry)) { ?>
 	
 	</fieldset>
 	
-	<? if ($entry->isComposerDraft()) { ?>
+	<?php if ($entry->isComposerDraft()) { ?>
 	<fieldset>
 	<legend><?=t('Publish Location')?></legend>
 	<div class="control-group">
-		<span id="ccm-composer-publish-location"><?
+		<span id="ccm-composer-publish-location"><?php
 		print $this->controller->getComposerDraftPublishText($entry);
 		?>
 		</span>
 		
-		<? 
+		<?php 
 	
 	if ($ct->getCollectionTypeComposerPublishMethod() == 'PAGE_TYPE' || $ct->getCollectionTypeComposerPublishMethod() == 'CHOOSE') { ?>
 		
 		<a href="javascript:void(0)" onclick="ccm_openComposerPublishTargetWindow(false)"><?=t('Choose publish location.')?></a>
 	
-	<? } 
+	<?php } 
 	
 	?></div>
 	</fieldset>
-	<? } ?>
+	<?php } ?>
 	
 	<fieldset>
 	<legend><?=t('Attributes &amp; Content')?></legend>
-	<? 
+	<?php 
 	foreach($contentitems as $ci) {
 		if ($ci instanceof AttributeKey) { 
 			$ak = $ci;
@@ -79,13 +79,13 @@ if (isset($entry)) { ?>
 				</div>
 			</div>
 		
-		<? } else { 
+		<?php } else { 
 			$b = $ci; 
 			$b = $entry->getComposerBlockInstance($b);
 			?>
 		
 		<div class="control-group">
-		<?
+		<?php
 		if (is_object($b)) {
 			$bv = new BlockView();
 			$bv->render($b, 'composer');
@@ -96,39 +96,39 @@ if (isset($entry)) { ?>
 		
 		</div>
 		
-		<?
+		<?php
 		} ?>
-	<? }  ?>
+	<?php }  ?>
 	</fieldset>
 	
 
 	</div>
 	<div class="ccm-pane-footer">
-	<?
+	<?php
 	$v = $entry->getVersionObject();
 	
 	?>
 	
 
-	<? if ($entry->isComposerDraft()) { 
+	<?php if ($entry->isComposerDraft()) { 
 	$pp = new Permissions($entry);
 	?>
 		<?=Loader::helper('concrete/interface')->submit(t('Publish Page'), 'publish', 'right', 'primary')?>
-		<? if (PERMISSIONS_MODEL != 'simple' && $pp->canAdmin()) { ?>
+		<?php if (PERMISSIONS_MODEL != 'simple' && $pp->canAdmin()) { ?>
 			<?=Loader::helper('concrete/interface')->button_js(t('Permissions'), 'javascript:ccm_composerLaunchPermissions()', 'left', 'primary ccm-composer-hide-on-no-target')?>
-		<? } ?>
-	<? } else { ?>
+		<?php } ?>
+	<?php } else { ?>
 		<?=Loader::helper('concrete/interface')->submit(t('Publish Changes'), 'publish', 'right', 'primary')?>
-	<? } ?>
+	<?php } ?>
 
 	<?=Loader::helper('concrete/interface')->button_js(t('Preview'), 'javascript:ccm_composerLaunchPreview()', 'right', 'ccm-composer-hide-on-approved')?>
 	<?=Loader::helper('concrete/interface')->submit(t('Save'), 'save', 'right')?>
 	<?=Loader::helper('concrete/interface')->submit(t('Discard'), 'discard', 'left', 'error ccm-composer-hide-on-approved')?>
 	
 	<?=$form->hidden('entryID', $entry->getCollectionID())?>
-	<? if ($entry->isComposerDraft()) { ?>
+	<?php if ($entry->isComposerDraft()) { ?>
 		<input type="hidden" name="cPublishParentID" value="<?=$entry->getComposerDraftPublishParentID()?>" />
-	<? } ?>
+	<?php } ?>
 	<?=$form->hidden('autosave', 0)?>
 	<?=Loader::helper('validation/token')->output('composer')?>
 	</div>
@@ -182,7 +182,7 @@ if (isset($entry)) { ?>
 	
 	ccm_composerLaunchPreview = function() {
 		jQuery.fn.dialog.showLoader();
-		<? $t = PageTheme::getSiteTheme(); ?>
+		<?php $t = PageTheme::getSiteTheme(); ?>
 		ccm_composerDoAutoSave(function() {
 			ccm_previewInternalTheme(<?=$entry->getCollectionID()?>, <?=$t->getThemeID()?>, '<?=addslashes(str_replace(array("\r","\n","\n"),'',$t->getThemeName()))?>');
 		});
@@ -243,9 +243,9 @@ if (isset($entry)) { ?>
 	}
 	
 	$(function() {
-		<? if (is_object($v) && $v->isApproved()) { ?>
+		<?php if (is_object($v) && $v->isApproved()) { ?>
 			$(".ccm-composer-hide-on-approved").hide();
-		<? } ?>
+		<?php } ?>
 
 		if ($("input[name=cPublishParentID]").val() < 1) {
 			$(".ccm-composer-hide-on-no-target").hide();
@@ -266,7 +266,7 @@ if (isset($entry)) { ?>
 			ccm_composerDoAutoSaveAllowed = false;
 		});
 		
-		<? if ($entry->isComposerDraft()) { ?>
+		<?php if ($entry->isComposerDraft()) { ?>
 			$("#ccm-dashboard-composer-form").submit(function() {
 				if ($("input[name=cPublishParentID]").val() > 0) {
 					return true;
@@ -274,17 +274,17 @@ if (isset($entry)) { ?>
 				if (ccm_composerIsPublishClicked) {
 					ccm_composerIsPublishClicked = false;			
 	
-					<? if ($ct->getCollectionTypeComposerPublishMethod() == 'PAGE_TYPE' || $ct->getCollectionTypeComposerPublishMethod() == 'CHOOSE') { ?>
+					<?php if ($ct->getCollectionTypeComposerPublishMethod() == 'PAGE_TYPE' || $ct->getCollectionTypeComposerPublishMethod() == 'CHOOSE') { ?>
 						ccm_openComposerPublishTargetWindow(true);
 						return false;
-					<? } else if ($ct->getCollectionTypeComposerPublishMethod() == 'PARENT') { ?>
+					<?php } else if ($ct->getCollectionTypeComposerPublishMethod() == 'PARENT') { ?>
 						return true;				
-					<? } else { ?>
+					<?php } else { ?>
 						return false;
-					<? } ?>
+					<?php } ?>
 				}
 			});
-		<? } ?>
+		<?php } ?>
 		ccm_composerAutoSaveInterval = setInterval(function() {
 			ccm_composerDoAutoSave();
 		}, 
@@ -294,23 +294,23 @@ if (isset($entry)) { ?>
 	</script>
 	
 	
-<? } else { ?>
+<?php } else { ?>
 
 	<?=Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Composer'), false, 'span10 offset1')?>
 	
-	<? if (count($ctArray) > 0) { ?>
+	<?php if (count($ctArray) > 0) { ?>
 	<h3><?=t('What type of page would you like to write?')?></h3>
 	<ul class="item-select-list">
-	<? foreach($ctArray as $ct) { ?>
+	<?php foreach($ctArray as $ct) { ?>
 		<li class="item-select-page"><a href="<?=$this->url('/dashboard/composer/write', $ct->getCollectionTypeID())?>"><?=$ct->getCollectionTypeName()?></a></li>
-	<? } ?>
+	<?php } ?>
 	</ul>
-	<? } else { ?>
+	<?php } else { ?>
 		<p><?=t('You have not setup any page types for Composer.')?></p>
-	<? } ?>
+	<?php } ?>
 
 	
 	<?=Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper()?>
 	
-<? } ?>
+<?php } ?>
 

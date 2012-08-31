@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 
 $ih = Loader::helper('concrete/interface');
@@ -47,7 +47,7 @@ $pageTypeIconsFS = FileSet::getByName("Page Type Icons");
                     <th class="subheader">
 					
 					<?=t('Icon')?>
-                    <?
+                    <?php
                         if (!is_object($pageTypeIconsFS)) {
                             print '<span style="margin-left: 4px; color: #aaa">';
                             print t('(To add your own page type icons, create a file set named "%s" and add files to that set)', 'Page Type Icons');
@@ -65,7 +65,7 @@ $pageTypeIconsFS = FileSet::getByName("Page Type Icons");
             <tbody>
                 <tr>
                     <td>
-                    <? 
+                    <?php 
                     $first = true;
                     foreach($icons as $ic) { 
                         if(is_object($ic)) {
@@ -84,7 +84,7 @@ $pageTypeIconsFS = FileSet::getByName("Page Type Icons");
                             <input type="radio" name="ctIcon" value="<?= $ic->getFileID() ?>" style="vertical-align: middle" <?=$checked?> />
                             <img src="<?= $fv->getRelativePath(); ?>" width="<?=COLLECTION_TYPE_ICON_WIDTH?>" height="<?=COLLECTION_TYPE_ICON_HEIGHT?>" style="vertical-align: middle" />
                             </label>
-                        <? 
+                        <?php 
                         } else {
                             $checked = false;
                             if (isset($_POST['ctIcon']) && $_POST['ctIcon'] == $ic) {
@@ -100,7 +100,7 @@ $pageTypeIconsFS = FileSet::getByName("Page Type Icons");
                             <input type="radio" name="ctIcon" value="<?= $ic ?>" style="vertical-align: middle" <?=$checked?> />
                                 <img src="<?=REL_DIR_FILES_COLLECTION_TYPE_ICONS.'/'.$ic;?>" width="<?=COLLECTION_TYPE_ICON_WIDTH?>" height="<?=COLLECTION_TYPE_ICON_HEIGHT?>" style="vertical-align: middle" />
                             </label>
-                        <?
+                        <?php
                         }
                     
                     } ?>
@@ -116,13 +116,13 @@ $pageTypeIconsFS = FileSet::getByName("Page Type Icons");
                 </tr>
 			</thead>
             <tbody>
-                <?
+                <?php
                     $attribs = CollectionAttributeKey::getList();
                     $i = 0;
                     foreach($attribs as $ak) { 
                     if ($i == 0) { ?>
                         <tr class="inputs-list">
-                    <? } ?>
+                    <?php } ?>
                     
                         <td width="33%">
                             <label class="">
@@ -131,11 +131,11 @@ $pageTypeIconsFS = FileSet::getByName("Page Type Icons");
                             </label>
                         </td>
                     
-                    <? $i++;
+                    <?php $i++;
                     
                     if ($i == 3) { ?>
                     </tr>
-                    <? 
+                    <?php 
                     $i = 0;
                     }
                     
@@ -144,17 +144,17 @@ $pageTypeIconsFS = FileSet::getByName("Page Type Icons");
                 if ($i < 3 && $i > 0) {
                     for ($j = $i; $j < 3; $j++) { ?>
                         <td>&nbsp;</td>
-                    <? }
+                    <?php }
                 ?></tr>
-        	<? } ?>
+        	<?php } ?>
         	</tbody>
         </table>
 	
 	</div>
     
     <div class="ccm-pane-footer">
-        <? print $ih->submit(t('Add'), 'add_page_type', 'right', 'primary'); ?>
-        <? print $ih->button(t('Cancel'), $this->url('/dashboard/pages/types'), 'left'); ?>
+        <?php print $ih->submit(t('Add'), 'add_page_type', 'right', 'primary'); ?>
+        <?php print $ih->button(t('Cancel'), $this->url('/dashboard/pages/types'), 'left'); ?>
     </div>
     
     </form>

@@ -1,5 +1,5 @@
-<? defined('C5_EXECUTE') or die("Access Denied."); ?>
-<? 
+<?php defined('C5_EXECUTE') or die("Access Denied."); ?>
+<?php 
 
 Loader::model('collection_attributes');
 Loader::model('collection_types');
@@ -9,7 +9,7 @@ $dh = Loader::helper('date');
 	
 <div class="ccm-ui">
 
-<? if ($_REQUEST['ctID']) { ?>
+<?php if ($_REQUEST['ctID']) { ?>
 
 	<form method="post" action="<?=$c->getCollectionAction()?>" id="ccmAddPage" onsubmit="jQuery.fn.dialog.showLoader()" class="dialog-form">		
 	<input type="hidden" name="rel" value="<?=$_REQUEST['rel']?>" />
@@ -18,7 +18,7 @@ $dh = Loader::helper('date');
 	<div id="ccm-add-page-information">
 		
 		<h4><?=t('Standard Properties')?></h4>
-		<? $form = Loader::helper('form'); ?>
+		<?php $form = Loader::helper('form'); ?>
 
 		<div class="clearfix">
 			<?=$form->label('cName', t('Name'))?>
@@ -36,7 +36,7 @@ $dh = Loader::helper('date');
 		<div class="clearfix">		
 			<?=$form->label('cDatePublic', t('Public Date/Time'))?>
 			<div class="input">
-			<?
+			<?php
 			$dt = Loader::helper('form/date_time');
 			echo $dt->datetime('cDatePublic' );
 			?> 
@@ -49,16 +49,16 @@ $dh = Loader::helper('date');
 			<textarea name="cDescription" rows="4" class="span6"></textarea>
 			</div>
 		</div>	
-		<?
+		<?php
 		$attribs = $ct->getAvailableAttributeKeys();
 		$mc = $ct->getMasterTemplate();
 		?>
 
-	<? if (count($attribs) > 0) { ?>
+	<?php if (count($attribs) > 0) { ?>
 		<h4><?=t('Custom Attributes')?></h4>
 		
 
-	<?	
+	<?php	
 	ob_start();
 
 	foreach($attribs as $ak) { 
@@ -76,12 +76,12 @@ $dh = Loader::helper('date');
 			</div>
 		</div>
 		
-	<? } 
+	<?php } 
 	$contents = ob_get_contents();
 	ob_end_clean(); ?>	
 	
 	<script type="text/javascript">
-	<? 
+	<?php 
 	$v = View::getInstance();
 	$headerItems = $v->getHeaderItems();
 	foreach($headerItems as $item) {
@@ -91,14 +91,14 @@ $dh = Loader::helper('date');
 			$type = 'JAVASCRIPT';
 		} ?>
 		 ccm_addHeaderItem("<?=$item->file?>", '<?=$type?>');
-		<? 
+		<?php 
 	} 
 	?>
 	</script>
 	
-	<? print $contents; ?>
+	<?php print $contents; ?>
 		
-		<? } ?>
+		<?php } ?>
 		
 	</div>
 	
@@ -158,7 +158,7 @@ $dh = Loader::helper('date');
 
 
 
-<? } else {
+<?php } else {
 
 
 $ctArray = CollectionType::getList();
@@ -176,7 +176,7 @@ for ($i = 0; $i < count($ctArray); $i++) {
 		<div id="ccm-choose-pg-type">
 			<h4 id="ccm-choose-pg-type-title"><?=t('Choose a Page Type')?></h4>
 			<ul id="ccm-select-page-type">
-				<? 
+				<?php 
 				foreach($ctArray as $ct) { 
 					if ($cp->canAddSubpage($ct)) { 
 					$requiredKeys=array();
@@ -192,19 +192,19 @@ for ($i = 0; $i < count($ctArray); $i++) {
 					$usedKeysCombined = array_merge($requiredKeys, $usedKeys);
 					?>
 					
-					<? $class = ($ct->getCollectionTypeID() == $ctID) ? 'ccm-item-selected' : ''; ?>
+					<?php $class = ($ct->getCollectionTypeID() == $ctID) ? 'ccm-item-selected' : ''; ?>
 			
 					<li class="<?=$class?>"><a class="dialog-launch" dialog-width="600" dialog-title="<?=t('Add %s', Loader::helper('text')->entities($ct->getCollectionTypeName()))?>" dialog-height="310" href="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/edit_collection_popup?cID=<?=$_REQUEST['cID']?>&ctask=add&rel=<?=$_REQUEST['rel']?>&ctID=<?=$ct->getCollectionTypeID()?>"><?= $ct->getCollectionTypeIconImage(); ?></a>
 					<span id="pgTypeName<?=$ct->getCollectionTypeID()?>"><?=$ct->getCollectionTypeName()?></span>
 					</li> 
 				
-				<? } 
+				<?php } 
 				
 				}?>
 			
 			</ul>
 	</div>
 	
-<? } ?>
+<?php } ?>
 
 </div>

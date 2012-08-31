@@ -1,6 +1,6 @@
-<? defined('C5_EXECUTE') or die("Access Denied."); ?>
+<?php defined('C5_EXECUTE') or die("Access Denied."); ?>
 
-<? 
+<?php 
 if ($_REQUEST['paID'] && $_REQUEST['paID'] > 0) { 
 	$pa = PermissionAccess::getByID($_REQUEST['paID'], $permissionKey);
 	if ($pa->isPermissionAccessInUse()) {
@@ -17,15 +17,15 @@ if ($_REQUEST['paID'] && $_REQUEST['paID'] > 0) {
 
 <input type="hidden" name="paID" value="<?=$pa->getPermissionAccessID()?>" />
 
-<? $workflows = Workflow::getList();?>
+<?php $workflows = Workflow::getList();?>
 
-<? Loader::element('permission/message_list'); ?>
+<?php Loader::element('permission/message_list'); ?>
 
-<?
+<?php
 $tabs = array();
 
  if ($permissionKey->hasCustomOptionsForm() || ($permissionKey->canPermissionKeyTriggerWorkflow() && count($workflows) > 0)) { ?>
-	<?
+	<?php
 	$tabs[] = array('access-types', t('Access'), true);
 	if ($permissionKey->canPermissionKeyTriggerWorkflow() && count($workflows) > 0) {
 		$tabs[] = array('workflow', t('Workflow'));
@@ -35,37 +35,37 @@ $tabs = array();
 	}
 	?>
 	<?=Loader::helper('concrete/interface')->tabs($tabs);?>
-<? } ?>
+<?php } ?>
 	
-<? if ($permissionKey->getPermissionKeyDescription()) { ?>
+<?php if ($permissionKey->getPermissionKeyDescription()) { ?>
 <div class="dialog-help">
 <?=$permissionKey->getPermissionKeyDescription()?>
 </div>
-<? } ?>
+<?php } ?>
 
 
-<div id="ccm-tab-content-access-types" <? if (count($tabs) > 0) { ?>class="ccm-tab-content"<? } ?>>
-<?
+<div id="ccm-tab-content-access-types" <?php if (count($tabs) > 0) { ?>class="ccm-tab-content"<?php } ?>>
+<?php
 $pkCategoryHandle = $permissionKey->getPermissionKeyCategoryHandle();
 $accessTypes = $permissionKey->getSupportedAccessTypes();
 Loader::element('permission/access/list', array('pkCategoryHandle' => $pkCategoryHandle, 'permissionAccess' => $pa, 'accessTypes' => $accessTypes)); ?>
 </div>
 
-<? if ($permissionKey->hasCustomOptionsForm()) { ?>
+<?php if ($permissionKey->hasCustomOptionsForm()) { ?>
 <div id="ccm-tab-content-custom-options" class="ccm-tab-content">
 
-<? if ($permissionKey->getPackageID() > 0) { ?>
-	<? Loader::packageElement('permission/keys/' . $permissionKey->getPermissionKeyHandle(), $permissionKey->getPackageHandle(), array('permissionAccess' => $pa)); ?>
-<? } else { ?>
-	<? Loader::element('permission/keys/' . $permissionKey->getPermissionKeyHandle(), array('permissionAccess' => $pa)); ?>
-<? } ?>
+<?php if ($permissionKey->getPackageID() > 0) { ?>
+	<?php Loader::packageElement('permission/keys/' . $permissionKey->getPermissionKeyHandle(), $permissionKey->getPackageHandle(), array('permissionAccess' => $pa)); ?>
+<?php } else { ?>
+	<?php Loader::element('permission/keys/' . $permissionKey->getPermissionKeyHandle(), array('permissionAccess' => $pa)); ?>
+<?php } ?>
 
 </div>
 
-<? } ?>
+<?php } ?>
 
-<? if ($permissionKey->canPermissionKeyTriggerWorkflow() && count($workflows) > 0) { ?>
-	<?
+<?php if ($permissionKey->canPermissionKeyTriggerWorkflow() && count($workflows) > 0) { ?>
+	<?php
 	$selectedWorkflows = $pa->getWorkflows();
 	$workflowIDs = array();
 	foreach($selectedWorkflows as $swf) {
@@ -79,15 +79,15 @@ Loader::element('permission/access/list', array('pkCategoryHandle' => $pkCategor
 			<label><?=t('Workflow')?></label>
 			<div class="input">
 			<ul class="inputs-list">
-				<? foreach($workflows as $wf) { ?>
-					<li><label><input type="checkbox" name="wfID[]" value="<?=$wf->getWorkflowID()?>" <? if (count($wf->getRestrictedToPermissionKeyHandles()) > 0 && (!in_array($permissionKey->getPermissionKeyHandle(), $wf->getRestrictedToPermissionKeyHandles()))) { ?> disabled="disabled" <? } ?>
-					<? if (in_array($wf->getWorkflowID(), $workflowIDs)) { ?> checked="checked" <? } ?> /> <span><?=$wf->getWorkflowName()?></span></label></li>
-				<? } ?>
+				<?php foreach($workflows as $wf) { ?>
+					<li><label><input type="checkbox" name="wfID[]" value="<?=$wf->getWorkflowID()?>" <?php if (count($wf->getRestrictedToPermissionKeyHandles()) > 0 && (!in_array($permissionKey->getPermissionKeyHandle(), $wf->getRestrictedToPermissionKeyHandles()))) { ?> disabled="disabled" <?php } ?>
+					<?php if (in_array($wf->getWorkflowID(), $workflowIDs)) { ?> checked="checked" <?php } ?> /> <span><?=$wf->getWorkflowName()?></span></label></li>
+				<?php } ?>
 			</ul>
 			</div>
 			</div>
 	</div>
-<? } ?>
+<?php } ?>
 
 	<div class="dialog-buttons">
 		<a href="javascript:void(0)" class="btn" onclick="jQuery.fn.dialog.closeTop()"><?=t('Cancel')?></a>
@@ -151,13 +151,13 @@ $(function() {
 	}
 	
 	
-	<? if (isset($_REQUEST['message']) && $_REQUEST['message'] == 'custom_options_saved') { ?>
+	<?php if (isset($_REQUEST['message']) && $_REQUEST['message'] == 'custom_options_saved') { ?>
 		$('a[data-tab=custom-options]').click();
-	<? } ?>
+	<?php } ?>
 
-	<? if (isset($_REQUEST['message']) && $_REQUEST['message'] == 'workflows_saved') { ?>
+	<?php if (isset($_REQUEST['message']) && $_REQUEST['message'] == 'workflows_saved') { ?>
 		$('a[data-tab=workflow]').click();
-	<? } ?>
+	<?php } ?>
 
 
 });

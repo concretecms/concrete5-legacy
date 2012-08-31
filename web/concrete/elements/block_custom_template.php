@@ -1,7 +1,7 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 global $c;?>
-<?
+<?php
 if ($b->getBlockTypeHandle() == BLOCK_HANDLE_SCRAPBOOK_PROXY) {
 	$bi = $b->getInstance();
 	$bx = Block::getByID($bi->getOriginalBlockID());
@@ -15,31 +15,31 @@ $txt = Loader::helper('text');
 <div class="ccm-ui" style="padding-top:10px;">
 <form method="post" id="ccmCustomTemplateForm" action="<?=$b->getBlockUpdateInformationAction()?>&amp;rcID=<?=intval($rcID) ?>" class="form-vertical">
 	
-	<? if (count($templates) == 0) { ?>
+	<?php if (count($templates) == 0) { ?>
 
 		<?=t('There are no custom templates available.')?>
 
-	<? } else { ?>
+	<?php } else { ?>
 		
     	<div class="control-group">
           <label for="bFilename" class="control-label"><?=t('Custom Template')?></label>
             <div class="controls">
                 <select id="bFilename" name="bFilename" class="xlarge">
                     <option value="">(<?=t('None selected')?>)</option>
-                    <? foreach($templates as $tpl) { ?>
-                        <option value="<?=$tpl?>" <? if ($b->getBlockFilename() == $tpl) { ?> selected <? } ?>><?	
+                    <?php foreach($templates as $tpl) { ?>
+                        <option value="<?=$tpl?>" <?php if ($b->getBlockFilename() == $tpl) { ?> selected <?php } ?>><?php	
                             if (strpos($tpl, '.') !== false) {
                                 print substr($txt->unhandle($tpl), 0, strrpos($tpl, '.'));
                             } else {
                                 print $txt->unhandle($tpl);
                             }
                             ?></option>		
-                    <? } ?>
+                    <?php } ?>
                 </select>
             </div>
 				</div>
 
-	<? } ?>
+	<?php } ?>
 
         <div class="control-group" style="padding-top:10px">
           <label for="bName" class="control-label"><?=t('Block Name')?></label>
@@ -53,7 +53,7 @@ $txt = Loader::helper('text');
 			<a href="javascript:void(0)" onclick="$('#ccmCustomTemplateForm').submit()" class="ccm-button-right accept primary btn"><span><?=t('Save')?></span></a>
 		</div>
 		
-<?
+<?php
 $valt = Loader::helper('validation/token');
 $valt->output();
 ?>

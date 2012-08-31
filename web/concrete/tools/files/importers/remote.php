@@ -1,4 +1,4 @@
-<?
+<?php
 
 defined('C5_EXECUTE') or die("Access Denied.");
 $u = new User();
@@ -140,23 +140,23 @@ if (count($errors) < 1) {
 <html>
 	<head>
 		<script language="javascript">
-<? 
+<?php 
 if(count($errors)) { 
 ?>
 	window.parent.ccmAlert.notice("<?=t('Upload Error')?>", "<?=str_replace("\n", '', nl2br(implode('\n', $errors)))?>");
 	window.parent.ccm_alResetSingle();
-<? } else { ?>
+<?php } else { ?>
 		highlight = new Array();
-	<? 	foreach ($import_responses as $r) { ?>
+	<?php 	foreach ($import_responses as $r) { ?>
 			highlight.push(<?=$r->getFileID()?>);
 			window.parent.ccm_uploadedFiles.push(<?=intval($r->getFileID())?>);
-	<?	} ?>		
+	<?php	} ?>		
 		window.parent.jQuery.fn.dialog.closeTop();
 		setTimeout(function() { 
 			window.parent.ccm_filesUploadedDialog('<?=$searchInstance?>');	
 		}, 100);
 		
-<? } ?>
+<?php } ?>
 		</script>
 	</head>
 	<body>

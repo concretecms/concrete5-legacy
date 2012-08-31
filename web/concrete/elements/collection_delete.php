@@ -1,6 +1,6 @@
-<? defined('C5_EXECUTE') or die("Access Denied."); ?>
+<?php defined('C5_EXECUTE') or die("Access Denied."); ?>
 <div class="ccm-ui">
-<?
+<?php
 $sh = Loader::helper('concrete/dashboard/sitemap');
 $numChildren = $c->getNumChildren();
 $u = new User();
@@ -23,11 +23,11 @@ $(function() {
 		 			ccmAlert.hud(ccmi18n_sitemap.deletePageSuccessDeferredMsg, 2000, 'delete_small', ccmi18n_sitemap.deletePage);
 				} else {
 		 			ccmAlert.hud(ccmi18n_sitemap.deletePageSuccessMsg, 2000, 'delete_small', ccmi18n_sitemap.deletePage);
-					<? if ($_REQUEST['display_mode'] == 'explore') { ?>
+					<?php if ($_REQUEST['display_mode'] == 'explore') { ?>
 						ccmSitemapExploreNode('<?=$_REQUEST['instance_id']?>', 'explore', '<?=$_REQUEST['select_mode']?>', resp.cParentID);
-					<? } else { ?>
+					<?php } else { ?>
 						deleteBranchFade(r.cID);
-					<? } ?>
+					<?php } ?>
 				}
 			} else {
 				window.location.href = '<?=DIR_REL?>/<?=DISPATCHER_FILENAME?>?cID=' + r.refreshCID;
@@ -37,14 +37,14 @@ $(function() {
 });
 </script>
 
-<? if ($c->getCollectionID() == 1) {  ?>
+<?php if ($c->getCollectionID() == 1) {  ?>
 	<div class="error alert-message"><?=t('You may not delete the home page.');?></div>
 	<div class="dialog-buttons"><input type="button" class="btn" value="<?=t('Cancel')?>" onclick="jQuery.fn.dialog.closeTop()" /></div>
-<? }  else if ($numChildren > 0 && !$u->isSuperUser()) { ?>
+<?php }  else if ($numChildren > 0 && !$u->isSuperUser()) { ?>
 		<div class="error alert-message"><?=t('Before you can delete this page, you must delete all of its child pages.')?></div>
 		<div class="dialog-buttons"><input type="button" class="btn" value="<?=t('Cancel')?>" onclick="jQuery.fn.dialog.closeTop()" /></div>
 		
-	<? } else { 
+	<?php } else { 
 		?>
 		
 		<div class="ccm-buttons">
@@ -56,15 +56,15 @@ $(function() {
 			<a href="javascript:void(0)" onclick="$('#ccmDeletePageForm').submit()" class="ccm-button-right btn error"><span><?=t('Delete')?></span></a>
 			</div>
 		<h3><?=t('Are you sure you wish to delete this page?')?></h3>
-		<? if ($u->isSuperUser() && $numChildren > 0) { ?>
+		<?php if ($u->isSuperUser() && $numChildren > 0) { ?>
 			<h4><?=t('This will remove %s child page(s).', $numChildren)?></h4>
-		<? } ?>
+		<?php } ?>
 		
-		<? if (ENABLE_TRASH_CAN) { ?>
+		<?php if (ENABLE_TRASH_CAN) { ?>
 			<p><?=t('Deleted pages are moved to the trash can in the sitemap.')?></p>
-		<? } else { ?>
+		<?php } else { ?>
 			<p><?=t('This cannot be undone.')?></p>
-		<? } ?>
+		<?php } ?>
 		
 			<input type="hidden" name="cID" value="<?=$c->getCollectionID()?>">
 			<input type="hidden" name="ctask" value="delete">
@@ -75,5 +75,5 @@ $(function() {
 		</form>
 		</div>
 		
-	<? }
+	<?php }
 ?>

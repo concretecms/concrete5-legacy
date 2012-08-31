@@ -1,4 +1,4 @@
-<?
+<?php
 
 Loader::model('file_version');
 

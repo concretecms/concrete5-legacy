@@ -1,6 +1,6 @@
 <?php defined('C5_EXECUTE') or die("Access Denied."); ?>
 
-<?
+<?php
 $list = $category->getPendingWorkflowProgressList();
 $items = $list->get();
 if (count($items) > 0) { ?>
@@ -14,7 +14,7 @@ if (count($items) > 0) { ?>
 	<th class="<?=$list->getSearchResultsClass('wpCurrentStatus')?>"><a href="<?=$list->getSortByURL('wpCurrentStatus', 'desc')?>"><?=t('Current Status')?></a></th>
 	<th>&nbsp;</th>
 </tr>
-<? 
+<?php 
 $noitems = true;
 	foreach($items as $it) { 
 	$p = $it->getPageObject();
@@ -30,8 +30,8 @@ $noitems = true;
 	<td><a href="javascript:void(0)" title="<?=t('Click for history.')?>" onclick="$(this).parentsUntil('tr').parent().next().show()"><?=$wf->getWorkflowProgressStatusDescription($wp)?></a></td>
 	<td class="ccm-workflow-progress-actions">
 	<form action="<?=$wp->getWorkflowProgressFormAction()?>" method="post">
-	<? $actions = $wp->getWorkflowProgressActions(); ?>
-	<? foreach($actions as $act) { 
+	<?php $actions = $wp->getWorkflowProgressActions(); ?>
+	<?php foreach($actions as $act) { 
 		$attribs = '';
 		$_attribs = $act->getWorkflowProgressActionExtraButtonParameters();
 		foreach($_attribs as $key => $value) {
@@ -60,14 +60,14 @@ $noitems = true;
 	</td>
 </tr>
 
-<? } 
+<?php } 
 
 } ?>
-<? if ($noitems) { ?>
+<?php if ($noitems) { ?>
 	<tr>
 		<td colspan="5"><?=t('There is nothing currently waiting for you.')?></td>
 	</tr>
-<? } ?>
+<?php } ?>
 </table>
 </div>
 
@@ -92,6 +92,6 @@ $(function() {
 });
 </script>
 
-<? } else { ?>
+<?php } else { ?>
 	<p><?=t('None.')?></p>
-<? } ?>
+<?php } ?>

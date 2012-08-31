@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 if ($cp->canEditPagePermissions()) {
 	$editAccess = array();
@@ -43,14 +43,14 @@ if ($cp->canEditPagePermissions()) {
 
 <ul class="inputs-list">
 
-<?
+<?php
 
 foreach ($gArray as $g) {
 ?>
 
-<li><label><input type="checkbox" name="readGID[]" value="<?=$g->getGroupID()?>" <? if (in_array($g->getGroupID(), $viewAccess)) { ?> checked <? } ?> /> <?=t($g->getGroupName())?></label></li>
+<li><label><input type="checkbox" name="readGID[]" value="<?=$g->getGroupID()?>" <?php if (in_array($g->getGroupID(), $viewAccess)) { ?> checked <?php } ?> /> <?=t($g->getGroupName())?></label></li>
 
-<? } ?>
+<?php } ?>
 
 </ul>
 </div>
@@ -61,14 +61,14 @@ foreach ($gArray as $g) {
 
 <ul class="inputs-list">
 
-<?
+<?php
 
 foreach ($gArray as $g) {
 ?>
 
-<li><label><input type="checkbox" name="editGID[]" value="<?=$g->getGroupID()?>" <? if (in_array($g->getGroupID(), $editAccess)) { ?> checked <? } ?> /> <?=t($g->getGroupName())?></label></li>
+<li><label><input type="checkbox" name="editGID[]" value="<?=$g->getGroupID()?>" <?php if (in_array($g->getGroupID(), $editAccess)) { ?> checked <?php } ?> /> <?=t($g->getGroupName())?></label></li>
 
-<? } ?>
+<?php } ?>
 
 </ul>
 </div>
@@ -105,4 +105,4 @@ $(function() {
 <div class="ccm-spacer">&nbsp;</div>
 </form>
 </div>
-<? } ?>
+<?php } ?>

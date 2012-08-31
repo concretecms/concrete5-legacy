@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 $debug_level = Config::get('SITE_DEBUG_LEVEL');
 switch($debug_level) {

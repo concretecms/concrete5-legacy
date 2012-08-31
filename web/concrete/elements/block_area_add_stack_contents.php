@@ -1,6 +1,6 @@
-<? defined('C5_EXECUTE') or die("Access Denied."); ?>
+<?php defined('C5_EXECUTE') or die("Access Denied."); ?>
 <div class="ccm-ui">
-<? 
+<?php 
 $ci = Loader::helper('concrete/urls'); 
 $st = Stack::getByID($_REQUEST['stackID']);
 $blocks = $st->getBlocks(STACKS_AREA_NAME);
@@ -12,7 +12,7 @@ if (count($blocks) == 0) { ?>
         <p><a class="btn primary" href="javascript:void(0)" onclick="ccmStackAddToArea(<?=$st->getCollectionID()?>, '<?=Loader::helper('text')->entities($a->getAreaHandle())?>')"><?=t("Add Stack")?></a></p>
     </div>
 
-<? } else { ?>
+<?php } else { ?>
 	
 	<?=Loader::helper('concrete/interface')->tabs(array(
 		array('add-stack', t('Full Stack'), true),
@@ -28,7 +28,7 @@ if (count($blocks) == 0) { ?>
 
 	<div id="ccm-tab-content-add-stack-block" style="display: none">
 	
-	<? foreach($blocks as $b) { 
+	<?php foreach($blocks as $b) { 
 		$bt = $b->getBlockTypeObject();
 		$btIcon = $ci->getBlockTypeIconURL($bt);
 		$name = $bt->getBlockTypeName();
@@ -40,7 +40,7 @@ if (count($blocks) == 0) { ?>
 			<div class="ccm-block-type">
 				<a class="ccm-block-type-inner" style="background-image: url(<?=$btIcon?>)" href="javascript:void(0)" onclick="jQuery.fn.dialog.showLoader();$.get('<?=DIR_REL?>/<?=DISPATCHER_FILENAME?>?bID=<?=$b->getBlockID()?>&add=1&processBlock=1&cID=<?=$c->getCollectionID()?>&arHandle=<?=$a->getAreaHandle()?>&btask=alias_existing_block&<?=$token?>', function(r) { ccm_parseBlockResponse(r, false, 'add'); })"><?=$name?></a>
 				<div class="ccm-scrapbook-list-item-detail">	
-					<?	
+					<?php	
 					try {
 						$bv = new BlockView();
 						$bv->render($b, 'scrapbook');
@@ -51,7 +51,7 @@ if (count($blocks) == 0) { ?>
 				</div>
 			</div>
 		</div>	
-		<?
+		<?php
 		}
 	} ?>
 	</div>

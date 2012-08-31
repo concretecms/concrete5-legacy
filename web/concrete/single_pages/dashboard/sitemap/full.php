@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 $sh = Loader::helper('concrete/dashboard/sitemap');
 
@@ -26,14 +26,14 @@ $listHTML = $sh->outputRequestHTML($instanceID, 'full', false, $nodes);
 </script>
 <?=Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Sitemap'), t('The sitemap allows you to view your site as a tree and easily organize its hierarchy.'), 'span10 offset1', false);?>
 <div class="ccm-pane-options">
-	<a href="javascript:void(0)" onclick="ccm_paneToggleOptions(this)" class="ccm-icon-option-<? if ($_SESSION['dsbSitemapShowSystem'] == 1) { ?>open<? } else { ?>closed<? } ?>"><?=t('Options')?></a>
-	<div class="ccm-pane-options-content" <? if ($_SESSION['dsbSitemapShowSystem'] == 1) { ?> style="display: block" <? } ?>>
+	<a href="javascript:void(0)" onclick="ccm_paneToggleOptions(this)" class="ccm-icon-option-<?php if ($_SESSION['dsbSitemapShowSystem'] == 1) { ?>open<?php } else { ?>closed<?php } ?>"><?=t('Options')?></a>
+	<div class="ccm-pane-options-content" <?php if ($_SESSION['dsbSitemapShowSystem'] == 1) { ?> style="display: block" <?php } ?>>
 		<form>
 		<div id="ccm-show-all-pages" class="clearfix">
 			<label for="ccm-show-all-pages-cb"><?=t('Show System Pages')?></label>
 			<div class="input">
 			<ul class="inputs-list">
-				<li><input type="checkbox" id="ccm-show-all-pages-cb" <? if ($_SESSION['dsbSitemapShowSystem'] == 1) { ?> checked <? } ?> /></li>
+				<li><input type="checkbox" id="ccm-show-all-pages-cb" <?php if ($_SESSION['dsbSitemapShowSystem'] == 1) { ?> checked <?php } ?> /></li>
 			</ul>		
 			</div>
 		</div>
@@ -41,7 +41,7 @@ $listHTML = $sh->outputRequestHTML($instanceID, 'full', false, $nodes);
 	</div>
 </div>
 <div class="ccm-pane-body ccm-pane-body-footer">
-	<? if ($sh->canRead()) { ?>
+	<?php if ($sh->canRead()) { ?>
 	
 		<div id="ccm-sitemap-message"></div>
 	
@@ -53,10 +53,10 @@ $listHTML = $sh->outputRequestHTML($instanceID, 'full', false, $nodes);
 		</div>
 		
 	
-	<? } else { ?>
+	<?php } else { ?>
 	
 		<p><?=t("You do not have access to the sitemap.");?></p>
 	
-	<? } ?>
+	<?php } ?>
 </div>
 <?=Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper()?>

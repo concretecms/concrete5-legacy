@@ -34,7 +34,7 @@ jQuery(function($) {
 </script>
 <?if(!isset($questionSet)):?>
 <?=$h->getDashboardPaneHeaderWrapper(t('Form Results'));?>
-<?
+<?php
 $showTable = false;
 foreach ($surveys as $qsid => $survey) {
 	$block = Block::getByID((int) $survey['bID']);
@@ -55,7 +55,7 @@ if ($showTable) { ?>
 		</tr>
 	</thead>
 	<tbody>
-		<? foreach ($surveys as $qsid => $survey):
+		<?php foreach ($surveys as $qsid => $survey):
 		$block = Block::getByID((int) $survey['bID']);
 		if (!is_object($block)) {
 			continue;
@@ -88,13 +88,13 @@ if ($showTable) { ?>
 		<?endforeach?>
 	</tbody>
 </table>
-<? } else { ?>
+<?php } else { ?>
 	<p><?=t('There are no available forms in your site.')?></p>
-<? } ?>
+<?php } ?>
 <?=$h->getDashboardPaneFooterWrapper();?>
 <?else:?>
 <?=$h->getDashboardPaneHeaderWrapper(t('Responses to %s', $surveys[$questionSet]['surveyName']), false, false, false);?>
-<div class="ccm-pane-body <? if(!$paginator || !strlen($paginator->getPages())>0){ ?> ccm-pane-body-footer <? } ?>">
+<div class="ccm-pane-body <?php if(!$paginator || !strlen($paginator->getPages())>0){ ?> ccm-pane-body-footer <?php } ?>">
 <?if(count($answerSets) == 0):?>
 <div><?=t('No one has yet submitted this form.')?></div>
 <?else:?>
@@ -106,13 +106,13 @@ if ($showTable) { ?>
 <table class="table table-striped">
 	<thead>
 		<tr>
-			<? if($_REQUEST['sortBy']=='chrono') { ?>
+			<?php if($_REQUEST['sortBy']=='chrono') { ?>
 			<th class="header headerSortDown">
 				<a href="<?=$text->entities($urlhelper->unsetVariable('sortBy'))?>">
-			<? } else { ?>
+			<?php } else { ?>
 			<th class="header headerSortUp">
 				<a href="<?=$text->entities($urlhelper->setVariable('sortBy', 'chrono'))?>">
-			<? } ?>		
+			<?php } ?>		
 				<?=t('Date')?>
 				</a>
 			</th>
@@ -128,7 +128,7 @@ if ($showTable) { ?>
 		<tr>
 			<td>
 <?=$dh->getSystemDateTime($answerSet['created'])?></td>
-			<td><?
+			<td><?php
 			if ($answerSet['uID'] > 0) { 
 				$ui = UserInfo::getByID($answerSet['uID']);
 				if (is_object($ui)) {
@@ -168,20 +168,20 @@ endforeach?>
 	</tbody>
 </table>
 </div>
-<? if($paginator && strlen($paginator->getPages())>0){ ?>	 
+<?php if($paginator && strlen($paginator->getPages())>0){ ?>	 
 <div class="ccm-pane-footer">
 	<div class="pagination">
 	  <ul>
 		  <li class="prev"><?=$paginator->getPrevious()?></li>
 		  
-		  <? // Call to pagination helper's 'getPages' method with new $wrapper var ?>
+		  <?php // Call to pagination helper's 'getPages' method with new $wrapper var ?>
 		  <?=$paginator->getPages('li')?>
 		  
 		  <li class="next"><?=$paginator->getNext()?></li>
 	  </ul>
 	</div>
 </div>
-<? } ?>		
+<?php } ?>		
 <?endif?>
 <?=$h->getDashboardPaneFooterWrapper(false);?>
 <?endif?>

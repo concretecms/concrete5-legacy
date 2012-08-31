@@ -30,7 +30,7 @@ if($_GET['bID'] && $_GET['cID'] && $nh->integer($_GET['bID']) && $nh->integer($_
 				<title><?=$controller->rssTitle?></title>
 				<link><?=BASE_URL.$rssUrl?></link>
 				<description><?=$controller->rssDescription?></description> 
-	<?
+	<?php
 			for ($i = 0; $i < count($cArray); $i++ ) {
 				$cobj = $cArray[$i]; 
 				$title = $cobj->getCollectionName(); ?>
@@ -47,15 +47,15 @@ if($_GET['bID'] && $_GET['cID'] && $nh->integer($_GET['bID']) && $nh->integer($_
 				  }
 				  ?>
 				  <description><?php echo $desc;?></description>
-				  <? /* <pubDate><?=$cobj->getCollectionDatePublic()?></pubDate>
+				  <?php /* <pubDate><?=$cobj->getCollectionDatePublic()?></pubDate>
 				  Wed, 23 Feb 2005 16:12:56 GMT  */ ?>
 				  <pubDate><?=date( 'D, d M Y H:i:s T',strtotime($cobj->getCollectionDatePublic())) ?></pubDate>
 				</item>
-			<? } ?>
+			<?php } ?>
 				 </channel>
 			</rss>
 			
-	<?	} else {  	
+	<?php	} else {  	
 			$v = View::getInstance();
 			$v->renderError(t('Permission Denied'), t("You don't have permission to access this RSS feed"));
 			exit;

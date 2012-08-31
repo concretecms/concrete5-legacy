@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 
 // HELPERS
@@ -37,7 +37,7 @@ $ci = Loader::helper('concrete/interface');
                     </thead>
                     <tbody>
                         
-                    <?
+                    <?php
                     $txt = Loader::helper('text');
                     $pf = 0;
                     
@@ -47,12 +47,12 @@ $ci = Loader::helper('concrete/interface');
                                 <?=t('There are no templates in this file.')?>
                             </td>
                         </tr>
-                        <? }
+                        <?php }
                     
                         foreach ($files as $f) { ?>
                         <tr class="inputs-list">
                             <td><?=$f->getFilename()?></td>
-                            <td><?
+                            <td><?php
                                 switch($f->getType()) {
                                     case PageThemeFile::TFTYPE_VIEW:
                                         print t("Wrapper for static pages.");
@@ -73,7 +73,7 @@ $ci = Loader::helper('concrete/interface');
                                 // END Switch
                             ?>
                             </td>
-                            <td><?
+                            <td><?php
                                 switch($f->getType()) {
                                     case PageThemeFile::TFTYPE_VIEW:
                                         print t('None. This file will automatically be used.');
@@ -96,7 +96,7 @@ $ci = Loader::helper('concrete/interface');
                             ?></td>
                         </tr>
                         
-                        <? } // END FOREACH ?>
+                        <?php } // END FOREACH ?>
                     
                     </tbody>
                 </table>        
@@ -107,11 +107,11 @@ $ci = Loader::helper('concrete/interface');
 	</div>
     
     <div class="ccm-pane-footer">
-        <?
+        <?php
         print $ci->button(t('Return to Themes'), $this->url('/dashboard/pages/themes'), 'left');
         if ($pf > 0) { 
             print $ci->submit(t('Ok'), 'ccm-inspect-form', 'right', 'primary'); ?>
-        <? }?>
+        <?php }?>
     </div>
     
     </form>

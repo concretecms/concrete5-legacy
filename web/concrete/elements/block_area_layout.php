@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 if (ENABLE_AREA_LAYOUTS == false) {
 	die(t('Area layouts have been disabled.'));
@@ -32,9 +32,9 @@ if(!$layout ){
 	?>
 
 
-<? if (!$_REQUEST['refresh']) { ?>
+<?php if (!$_REQUEST['refresh']) { ?>
 <div id="ccm-layout-edit-wrapper">
-<? } ?>
+<?php } ?>
 
 <style type="text/css">
 	#ccmLayoutConfigOptions { margin-top:12px; }
@@ -47,22 +47,22 @@ if(!$layout ){
 	<input id="ccmAreaLayoutForm_layoutID" name="layoutID" type="hidden" value="<?=intval( $layout->layoutID ) ?>" />  
 	<input id="ccmAreaLayoutForm_arHandle" name="arHandle" type="hidden" value="<?=htmlentities( $a->getAreaHandle(), ENT_COMPAT, APP_CHARSET) ?>" /> 
 
-	<? if (count($layoutPresets) > 0) { ?>
+	<?php if (count($layoutPresets) > 0) { ?>
 		<h2><?=t('Saved Presets')?></h2>
 		
 		<input type="hidden" id="ccm-layout-refresh-action" value="<?=$refreshAction?>" /> 
 		
 		<select id="ccmLayoutPresentIdSelector" name="lpID">
 			<option value="0"><?=t('** Custom (No Preset)') ?></option>
-			<? foreach($layoutPresets as $availablePreset){ ?>
+			<?php foreach($layoutPresets as $availablePreset){ ?>
 				<option value="<?=$availablePreset->getLayoutPresetID() ?>" <?=($availablePreset->getLayoutPresetID()==intval($layout->lpID))?'selected':''?>><?=$availablePreset->getLayoutPresetName() ?></option>
-			<? } ?>
+			<?php } ?>
 		</select> 
 		<a href="javascript:void(0)" id="ccm-layout-delete-preset" style="display: none" onclick="ccmLayoutEdit.deletePreset()"><img src="<?=ASSETS_URL_IMAGES?>/icons/delete_small.png" style="vertical-align: middle" width="16" height="16" border="0" /></a>
 		
 		<br/><br/>
 		
-	<? } ?>
+	<?php } ?>
 
 	<div id="ccmLayoutConfigOptions">
 	
@@ -100,10 +100,10 @@ if(!$layout ){
 	</div>	
 	
 	
-	<? 
+	<?php 
 	//To Do: only provide this option if there's 1) blocks in the main area, or 2) existing layouts 
 	if( !intval($layout->layoutID) ){ ?>
-	<? /*
+	<?php /*
 	<div style="margin:16px 0px"> 
 		<?= t('Add layout to: ') ?> 
 		<input name="add_to_position" type="radio" value="top" /> <?=t('top') ?>&nbsp; 
@@ -112,18 +112,18 @@ if(!$layout ){
 	*/ ?>
 	<input type="hidden" name="add_to_position" value="bottom" />
 	
-	<? } ?>
+	<?php } ?>
 	
 	
 	
 	
-	<? if ( is_object($layoutPreset) ) { ?>
+	<?php if ( is_object($layoutPreset) ) { ?>
 		<div id="layoutPresetActions" style="display: none">
 			<div><?=$form->radio('layoutPresetAction', 'update_existing_preset', true)?> <?=t('Update "%s" preset everywhere it is used?', $layoutPreset->getLayoutPresetName())?></div>
 			<div><?=$form->radio('layoutPresetAction', 'save_as_custom')?> <?=t('Use this layout here, and leave "%s" unchanged?', $layoutPreset->getLayoutPresetName())?></div>
 			<div><?=$form->radio('layoutPresetAction', 'create_new_preset')?> <?=t('Save this style as a new preset?')?><br/><span style="margin-left: 20px"><?=$form->text('layoutPresetNameAlt', array('style' => 'width:  127px', 'disabled' => true))?></span></div>
 		</div>
-	<? } ?>	
+	<?php } ?>	
 
 	<div id="layoutPresetActionNew" style="margin-bottom:16px;"> 
 		<?=$form->checkbox('layoutPresetAction', 'create_new_preset')?> 
@@ -145,8 +145,8 @@ if(!$layout ){
 $(function() { ccmLayoutEdit.init(); });
 </script>
 
-<? if (!$_REQUEST['refresh']) { ?>
+<?php if (!$_REQUEST['refresh']) { ?>
 </div>
-<? } ?>
+<?php } ?>
 
-<? } ?> 
+<?php } ?> 

@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 $u = new User();
 $js = Loader::helper('json');
@@ -77,16 +77,16 @@ if (!is_array($_REQUEST['fID'])) {
 	
 <div class="ccm-ui">
 
-	<? if ($fcnt == 0) { ?>
+	<?php if ($fcnt == 0) { ?>
 		<?=t("You do not have permission to copy any of the selected files."); ?>
-	<? } else { ?>
+	<?php } else { ?>
 		<?=t('Are you sure you want to copy the following files?')?><br/><br/>
 		
 		<form id="ccm-<?=$searchInstance?>-duplicate-form" method="post" action="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/files/duplicate">
 		<?=$form->hidden('task', 'duplicate_multiple_files')?>
 	<table border="0" cellspacing="0" cellpadding="0" width="100%" class="table table-bordered">
 		
-		<? foreach($files as $f) { 
+		<?php foreach($files as $f) { 
 			$fp = new Permissions($f);
 			if ($fp->canCopyFile()) {
 				$fv = $f->getApprovedVersion();
@@ -102,13 +102,13 @@ if (!is_array($_REQUEST['fID'])) {
 					<td><?=$fv->getAuthorName()?></td>
 				</tr>
 				
-				<? }
+				<?php }
 			}
 			
 		} ?>
 		</table>
 		</form>
-		<? $ih = Loader::helper('concrete/interface')?>
+		<?php $ih = Loader::helper('concrete/interface')?>
 		<div class="dialog-buttons">
 			<?=$ih->button_js(t('Copy'), 'ccm_alDuplicateFiles(\'' . $searchInstance . '\')', 'right', 'primary')?>
 			<?=$ih->button_js(t('Cancel'), 'jQuery.fn.dialog.closeTop()', 'left')?>	
@@ -116,7 +116,7 @@ if (!is_array($_REQUEST['fID'])) {
 		
 			
 			
-		<?
+		<?php
 		
 	}
 

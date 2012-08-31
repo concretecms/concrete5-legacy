@@ -1,4 +1,4 @@
-<?
+<?php
 	defined('C5_EXECUTE') or die("Access Denied.");
 	if (isset($_REQUEST['akID'])) {
 		$at = AttributeKey::getInstanceByID($_REQUEST['akID']);

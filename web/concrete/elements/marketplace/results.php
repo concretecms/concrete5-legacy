@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 ?>
 
@@ -21,13 +21,13 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			<h4><?=$item->getName()?></h4>
 			<h5><?=((float) $item->getPrice() == 0) ? t('Free') : $item->getPrice()?></h5>
 			<p><?php echo $item->getDescription() ?></p>
-			<? $thumb = $item->getLargeThumbnail(); ?>
-			<? if ($thumb && $type == 'themes') { ?>
+			<?php $thumb = $item->getLargeThumbnail(); ?>
+			<?php if ($thumb && $type == 'themes') { ?>
 				
 				<div class="ccm-marketplace-results-image-hover ccm-ui"><ul class="media-grid"><li><a href="javascript:void(0)"><img src="<?=$thumb->src?>" width="<?=$thumb->width?>" height="<?=$thumb->height?>" /></a></li></ul></div>
 				
 			
-			<?
+			<?php
 			} ?>
 		</div>
 			

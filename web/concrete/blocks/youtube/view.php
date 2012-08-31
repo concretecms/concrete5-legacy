@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 $url = parse_url($videoURL);
 parse_str($url['query'], $query);
@@ -16,7 +16,7 @@ if ($c->isEditMode()) { ?>
 	<div class="ccm-edit-mode-disabled-item" style="width:<?php echo $vWidth; ?>px; height:<?php echo $vHeight; ?>px;">
 		<div style="padding:8px 0px; padding-top: <?php echo round($vHeight/2)-10; ?>px;"><?php echo t('YouTube Video disabled in edit mode.'); ?></div>
 	</div>
-<? } elseif ($vPlayer==1) { ?>
+<?php } elseif ($vPlayer==1) { ?>
 	
 	<div id="youtube<?php echo $bID?>" class="youtubeBlock">
 	
@@ -26,7 +26,7 @@ if ($c->isEditMode()) { ?>
 		<iframe class="youtube-player" type="text/html" width="<?php  echo $vWidth; ?>" height="<?php  echo $vHeight; ?>" src="http://www.youtube.com/embed/<?php echo $query['v']?>/<?php echo (strpos($query['v'], '@')) ? '@' : '?'; ?>wmode=transparent" frameborder="0"></iframe>
 	<?php } ?>
 	</div>
-<? } else { ?>
+<?php } else { ?>
 	
 	<div id="youtube<?php echo $bID?>" class="youtubeBlock"><div id="youtube<?php echo $bID?>_video"><?php echo t('You must install Adobe Flash to view this content.')?></div></div>
 	
@@ -42,7 +42,7 @@ if ($c->isEditMode()) { ?>
 		swfobject.embedSWF('http://www.youtube.com/v<?=$url['path']?>&amp;hl=en', 'youtube<?php echo $bID?>_video', '<?php echo $vWidth; ?>', '<?php echo $vHeight; ?>', '8.0.0', false, flashvars, params);
 		//]]>
 		</script>
-	<? }else{ ?>
+	<?php }else{ ?>
 		<script type="text/javascript">
 		//<![CDATA[
 		params = {
@@ -52,5 +52,5 @@ if ($c->isEditMode()) { ?>
 		swfobject.embedSWF('http://www.youtube.com/v/<?=$query['v']?>&amp;hl=en', 'youtube<?php echo $bID?>_video', '<?php echo $vWidth; ?>', '<?php echo $vHeight; ?>', '8.0.0', false, flashvars, params);
 		//]]>
 		</script>
-	<? } ?>
-<? } ?>
+	<?php } ?>
+<?php } ?>

@@ -1,6 +1,6 @@
-<? defined('C5_EXECUTE') or die("Access Denied."); ?>
+<?php defined('C5_EXECUTE') or die("Access Denied."); ?>
 <div class="ccm-ui">
-<? 
+<?php 
 
 Loader::model('collection_attributes');
 Loader::model('collection_types');
@@ -25,7 +25,7 @@ if ($c->isAlias() && $c->getCollectionPointerExternalLink() != '') {
 
 	<div class="ccm-field">
 
-	<label for="cExternalLinkNewWindow"><input type="checkbox" value="1" <? if ($c->openCollectionPointerExternalLinkInNewWindow()) { ?> checked <? } ?> name="cExternalLinkNewWindow" id="cExternalLinkNewWindow" style="vertical-align: middle" /> <?=t('Open Link in New Window')?></label>
+	<label for="cExternalLinkNewWindow"><input type="checkbox" value="1" <?php if ($c->openCollectionPointerExternalLinkInNewWindow()) { ?> checked <?php } ?> name="cExternalLinkNewWindow" id="cExternalLinkNewWindow" style="vertical-align: middle" /> <?=t('Open Link in New Window')?></label>
 
 	</div>
 	
@@ -41,5 +41,5 @@ if ($c->isAlias() && $c->getCollectionPointerExternalLink() != '') {
 	<input type="hidden" name="processCollection" value="1">
 
 </form>
-<? } ?>
+<?php } ?>
 </div>

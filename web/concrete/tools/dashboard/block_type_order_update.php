@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die(_("Access Denied."));
 $canRead = false;
 $ch = Page::getByPath('/dashboard/blocks/types');

@@ -84,7 +84,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 <!-- End of Dialog //-->
 
 
-<?
+<?php
 $tp = new TaskPermission();
 if ($tp->canBackup()) {
 	?>
@@ -109,21 +109,21 @@ if ($tp->canBackup()) {
 							<td style="white-space: nowrap">
 								<?= $interface->button_js(t('Download'), 'window.location.href=\'' . $this->action('download', $arr_bkupInf['file']) . '\'', 'left', 'small'); ?>
 								
-								<? print $interface->button_js(t("Restore"), "confirmRestore('" . $arr_bkupInf['file'] . "')", 'left','small'); ?>
+								<?php print $interface->button_js(t("Restore"), "confirmRestore('" . $arr_bkupInf['file'] . "')", 'left','small'); ?>
 								
-								<? print $interface->button_js(t("Delete"), "confirmDelete('" . $arr_bkupInf['file'] . "')",'left','small'); ?>
+								<?php print $interface->button_js(t("Delete"), "confirmDelete('" . $arr_bkupInf['file'] . "')",'left','small'); ?>
 							</td>
 						</tr>
-					<? } ?>
+					<?php } ?>
 				</tbody>
 			</table>
 
 
 		<?php } else { ?>
 			<p><?= t('You have no backups available.') ?></p>
-		<? } ?>
+		<?php } ?>
 
-			<?
+			<?php
 				$crypt = Loader::helper('encryption');
 			?>
 			<h3><?=t('Create new Backup')?></h3>
@@ -132,13 +132,13 @@ if ($tp->canBackup()) {
 						<?= $interface->submit(t("Run Backup"), false, "left") ?>
 						<br/><br/>
 						<div>
-						<? if ($crypt->isAvailable()) { ?>
+						<?php if ($crypt->isAvailable()) { ?>
 						<label class="checkbox"><input type="checkbox" name="useEncryption" id="useEncryption" value="1" />
 									<span><?= t('Use Encryption') ?></span></label>
-								<? } else { ?>
+								<?php } else { ?>
 						<label class="checkbox"><input type="checkbox" value="0" disabled />
 									<span><?= t('Use Encryption') ?></span></label>
-								<? } ?>
+								<?php } ?>
 						</div>
 					</div>
 				</form>
@@ -149,9 +149,9 @@ if ($tp->canBackup()) {
 
 	<?= Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper(); ?>
 	
-<? } else { ?>
+<?php } else { ?>
 	<?= Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Backup'), false, 'span8 offset2') ?>
 	<p><?= t('You do not have permission to create or administer backups.') ?></p>
 	<?= Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper(); ?>
-<? } ?>
+<?php } ?>
 </div>

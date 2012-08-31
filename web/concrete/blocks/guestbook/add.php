@@ -1,4 +1,4 @@
-<? defined('C5_EXECUTE') or die("Access Denied."); ?> 
+<?php defined('C5_EXECUTE') or die("Access Denied."); ?> 
 
 <div class="clearfix">
 <?=$form->label('title', t('Title'))?>
@@ -6,7 +6,7 @@
 	<input type="text" name="title" value="" />
 </div>
 </div>
-<?
+<?php
 if (!$dateFormat) {
 	$dateFormat = t('M jS, Y');
 }

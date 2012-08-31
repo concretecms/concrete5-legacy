@@ -1,4 +1,4 @@
-<?
+<?php
 
 function getAttributeOptionHTML($v){ 
 	if ($v == 'TEMPLATE') {
@@ -27,17 +27,17 @@ function getAttributeOptionHTML($v){
 			</div>		
 			<span class="leftCol">
 				<input name="akSelectValueOriginal_<?=$akSelectValueID?>" type="hidden" value="<?=$akSelectValue?>" />
-				<? if (is_object($v) && $v->getSelectAttributeOptionTemporaryID() == false) { ?>
+				<?php if (is_object($v) && $v->getSelectAttributeOptionTemporaryID() == false) { ?>
 					<input id="akSelectValueExistingOption_<?=$akSelectValueID?>" name="akSelectValueExistingOption_<?=$akSelectValueID?>" type="hidden" value="<?=$akSelectValueID?>" />
-				<? } else { ?>
+				<?php } else { ?>
 					<input id="akSelectValueNewOption_<?=$akSelectValueID?>" name="akSelectValueNewOption_<?=$akSelectValueID?>" type="hidden" value="<?=$akSelectValueID?>" />
-				<? } ?>
+				<?php } ?>
 				<input id="akSelectValueField_<?=$akSelectValueID?>" name="akSelectValue_<?=$akSelectValueID?>" type="text" value="<?=$akSelectValue?>" size="20" 
 				  onkeypress="ccmAttributesHelper.addEnterClick(event,function(){ccmAttributesHelper.changeValue('<?=addslashes($akSelectValueID)?>')})" />
 			</span>		
 		</div>	
 		<div class="ccm-spacer">&nbsp;</div>
-<? } ?>
+<?php } ?>
 
 <fieldset>
 <legend><?=t('Select Options')?></legend>
@@ -63,7 +63,7 @@ function getAttributeOptionHTML($v){
 <div class="clearfix">
 <label for="akSelectOptionDisplayOrder"><?=t("Option Order")?></label>
 <div class="input">
-	<? 
+	<?php 
 	$displayOrderOptions = array(
 		'display_asc' => t('Display Order'),
 		'alpha_asc' => t('Alphabetical'),
@@ -80,7 +80,7 @@ function getAttributeOptionHTML($v){
 <div class="input">
 	<div id="attributeValuesInterface">
 	<div id="attributeValuesWrap">
-	<?
+	<?php
 	Loader::helper('text');
 	foreach($akSelectValues as $v) { 
 		if ($v->getSelectAttributeOptionTemporaryID() != false) {
@@ -89,10 +89,10 @@ function getAttributeOptionHTML($v){
 			$akSelectValueID = $v->getSelectAttributeOptionID();
 		}
 		?>
-		<div id="akSelectValueWrap_<?=$akSelectValueID?>" class="akSelectValueWrap <? if ($akSelectOptionDisplayOrder == 'display_asc') { ?> akSelectValueWrapSortable <? } ?>">
+		<div id="akSelectValueWrap_<?=$akSelectValueID?>" class="akSelectValueWrap <?php if ($akSelectOptionDisplayOrder == 'display_asc') { ?> akSelectValueWrapSortable <?php } ?>">
 			<?=getAttributeOptionHTML( $v )?>
 		</div>
-	<? } ?>
+	<?php } ?>
 	</div>
 	
 	<div id="akSelectValueWrapTemplate" class="akSelectValueWrap" style="display:none">
@@ -114,7 +114,7 @@ function getAttributeOptionHTML($v){
 
 
 </fieldset>
-<? if ($akSelectOptionDisplayOrder == 'display_asc') { ?>
+<?php if ($akSelectOptionDisplayOrder == 'display_asc') { ?>
 <script type="text/javascript">
 //<![CDATA[
 $(function() {
@@ -122,4 +122,4 @@ $(function() {
 });
 //]]>
 </script>
-<? } ?>
+<?php } ?>

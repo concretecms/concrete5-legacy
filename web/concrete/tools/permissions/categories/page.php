@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 $pages = array();
 if (is_array($_REQUEST['cID'])) {

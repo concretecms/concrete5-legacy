@@ -1,5 +1,5 @@
-<? defined('C5_EXECUTE') or die("Access Denied."); ?> 
-<?
+<?php defined('C5_EXECUTE') or die("Access Denied."); ?> 
+<?php
 
 $s1 = FileSet::getMySets();
 $form = Loader::helper('form');
@@ -26,19 +26,19 @@ if (count($s1) > 0) { ?>
 		
 	<div class="ccm-file-search-advanced-sets-results">
 	<ul id="ccm-file-search-advanced-sets-list">
-	<? foreach($s1 as $fs) { 
+	<?php foreach($s1 as $fs) { 
 		$pfs = new Permissions($fs);
 		
 		?>
 		<li class="ccm-<?=$searchInstance?>-search-advanced-sets-cb">
 		<div class="ccm-file-search-advanced-set-controls">
 			<a href="<?=View::url('/dashboard/files/sets', 'view_detail', $fs->getFileSetID())?>"><?=$html->image('icons/wrench.png')?></a>
-			<? if ($pfs->canDeleteFileSet()) { ?>
+			<?php if ($pfs->canDeleteFileSet()) { ?>
 				<a href="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/files/delete_set?fsID=<?=$fs->getFileSetID()?>&searchInstance=<?=$searchInstance?>" dialog-append-buttons="true" class="ccm-file-set-delete-window" dialog-title="<?=t('Delete File Set')?>" dialog-width="320" dialog-height="110" dialog-modal="false"><?=$html->image('icons/delete_small.png')?></a>
-			<? } ?>
+			<?php } ?>
 		</div>
 		<?=$form->checkbox('fsID[' . $fs->getFileSetID() . ']', $fs->getFileSetID(), (is_array($searchRequest['fsID']) && in_array($fs->getFileSetID(), $searchRequest['fsID'])))?> <?=$form->label('fsID[' . $fs->getFileSetID() . ']', $fs->getFileSetName())?></li>
-	<? } ?>
+	<?php } ?>
 	</ul>
 	</div>
 
@@ -51,4 +51,4 @@ if (count($s1) > 0) { ?>
 		$('a.ccm-file-set-delete-window').dialog();
 	});	
 	</script>
-<? } ?>
+<?php } ?>

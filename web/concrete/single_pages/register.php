@@ -1,4 +1,4 @@
-<? defined('C5_EXECUTE') or die("Access Denied."); ?>
+<?php defined('C5_EXECUTE') or die("Access Denied."); ?>
 <div class="row">
 <div class="span10 offset1">
 <div class="page-header">
@@ -9,51 +9,51 @@
 
 <div class="ccm-form">
 
-<? 
+<?php 
 $attribs = UserAttributeKey::getRegistrationList();
 
 if($success) { ?>
 <div class="row">
 <div class="span10 offset1">
-<?	switch($success) { 
+<?php	switch($success) { 
 		case "registered": 
 			?>
 			<p><strong><?=$successMsg ?></strong><br/><br/>
 			<a href="<?=$this->url('/')?>"><?=t('Return to Home')?></a></p>
-			<? 
+			<?php 
 		break;
 		case "validate": 
 			?>
 			<p><?=$successMsg[0] ?></p>
 			<p><?=$successMsg[1] ?></p>
 			<p><a href="<?=$this->url('/')?>"><?=t('Return to Home')?></a></p>
-			<?
+			<?php
 		break;
 		case "pending":
 			?>
 			<p><?=$successMsg ?></p>
 			<p><a href="<?=$this->url('/')?>"><?=t('Return to Home')?></a></p>
-            <?
+            <?php
 		break;
 	} ?>
 			</div>
 </div>
-<? 
+<?php 
 } else { ?>
 
 <form method="post" action="<?=$this->url('/register', 'do_register')?>" class="form-horizontal">
 <div class="row">
-<div class="<? if (count($attribs) > 0) {?>span5<? } else {?>span10<? } ?> offset1">
+<div class="<?php if (count($attribs) > 0) {?>span5<?php } else {?>span10<?php } ?> offset1">
 	<fieldset>
 		<legend><?=t('Your Details')?></legend>
-		<? if ($displayUserName) { ?>
+		<?php if ($displayUserName) { ?>
 				<div class="control-group">
 				<?= $form->label('uName',t('Username')); ?>
 				<div class="controls">
 					<?= $form->text('uName'); ?>
 				</div>
 			</div>
-		<? } ?>
+		<?php } ?>
 	
 		<div class="control-group">
 			<?php echo $form->label('uEmail',t('Email Address')); ?>
@@ -76,28 +76,28 @@ if($success) { ?>
 
 	</fieldset>
 </div>
-<? if (count($attribs) > 0) { ?>
+<?php if (count($attribs) > 0) { ?>
 <div class="span5">
 	<fieldset>
 		<legend><?=t('Options')?></legend>
-	<?
+	<?php
 	
 	$af = Loader::helper('form/attribute');
 	
 	foreach($attribs as $ak) { ?> 
 			<?= $af->display($ak, $ak->isAttributeKeyRequiredOnRegister());	?>
-	<? }?>
+	<?php }?>
 	</fieldset>
 </div>
-<? } ?>
+<?php } ?>
 <div class="span10 offset1 ">
-	<? if (ENABLE_REGISTRATION_CAPTCHA) { ?>
+	<?php if (ENABLE_REGISTRATION_CAPTCHA) { ?>
 	
 		<div class="control-group">
 			<?php $captcha = Loader::helper('validation/captcha'); ?>			
 			<?=$captcha->label()?>
 			<div class="controls">
-			<?
+			<?php
 		  	  $captcha->showInput(); 
 			  $captcha->display();
 		  	  ?>
@@ -105,7 +105,7 @@ if($success) { ?>
 		</div>
 	
 		
-	<? } ?>
+	<?php } ?>
 
 </div>
 <div class="span10 offset1">
@@ -117,6 +117,6 @@ if($success) { ?>
 	
 </div>
 </form>
-<? } ?>
+<?php } ?>
 
 </div>

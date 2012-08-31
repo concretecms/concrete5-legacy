@@ -3,7 +3,7 @@ $this->inc('elements/header.php'); ?>
 
 	<div id="central">
 		<div id="sidebar">
-			<?
+			<?php
 			$as = new Area('Sidebar');
 			$as->display($c);
 			?>		

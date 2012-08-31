@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 $form = Loader::helper('form');
 $tp = new TaskPermission();
@@ -121,7 +121,7 @@ function printAttributeRow($ak, $ek) {
 
 if (!isset($_REQUEST['reload'])) { ?>
 	<div id="ccm-user-properties-wrapper">
-<? } ?>
+<?php } ?>
 
 <div id="ccm-user-properties" class="ccm-ui">
 
@@ -132,7 +132,7 @@ if (!isset($_REQUEST['reload'])) { ?>
 </tr>
 </thead>
 <tbody>
-<?
+<?php
 
 foreach($attribs as $at) {
 
@@ -154,7 +154,7 @@ $(function() {
 });
 </script>
 
-<?
+<?php
 if (!isset($_REQUEST['reload'])) { ?>
 </div>
-<? }
+<?php }

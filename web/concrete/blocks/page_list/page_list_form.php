@@ -1,5 +1,5 @@
-<? defined('C5_EXECUTE') or die("Access Denied."); ?> 
-<? $c = Page::getCurrentPage(); ?>
+<?php defined('C5_EXECUTE') or die("Access Denied."); ?> 
+<?php $c = Page::getCurrentPage(); ?>
 <ul id="ccm-pagelist-tabs" class="ccm-dialog-tabs">
 	<li class="ccm-nav-active"><a id="ccm-pagelist-tab-add" href="javascript:void(0);"><?=($bID>0)? t('Edit') : t('Add') ?></a></li>
 	<li class=""><a id="ccm-pagelist-tab-preview"  href="javascript:void(0);"><?=t('Preview')?></a></li>
@@ -12,40 +12,40 @@
 	  <?=t('Display')?>
 	  <input type="text" name="num" value="<?=$num?>" style="width: 30px">
 	  <?=t('pages of type')?>
-	  <?
+	  <?php
 			$ctArray = CollectionType::getList();
 	
 			if (is_array($ctArray)) { ?>
 	  <select name="ctID" id="selectCTID">
 		<option value="0">** <?php echo t('All')?> **</option>
-		<? foreach ($ctArray as $ct) { ?>
-		<option value="<?=$ct->getCollectionTypeID()?>" <? if ($ctID == $ct->getCollectionTypeID()) { ?> selected <? } ?>>
+		<?php foreach ($ctArray as $ct) { ?>
+		<option value="<?=$ct->getCollectionTypeID()?>" <?php if ($ctID == $ct->getCollectionTypeID()) { ?> selected <?php } ?>>
 		<?=$ct->getCollectionTypeName()?>
 		</option>
-		<? } ?>
+		<?php } ?>
 	  </select>
-	  <? } ?>
+	  <?php } ?>
 	  
 	  <h2><?=t('Filter')?></h2>
 	  
-	  <?
+	  <?php
 	  Loader::model('attribute/categories/collection');
 	  $cadf = CollectionAttributeKey::getByHandle('is_featured');
 	  ?>
-	  <input <? if (!is_object($cadf)) { ?> disabled <? } ?> type="checkbox" name="displayFeaturedOnly" value="1" <? if ($displayFeaturedOnly == 1) { ?> checked <? } ?> style="vertical-align: middle" />
+	  <input <?php if (!is_object($cadf)) { ?> disabled <?php } ?> type="checkbox" name="displayFeaturedOnly" value="1" <?php if ($displayFeaturedOnly == 1) { ?> checked <?php } ?> style="vertical-align: middle" />
 	  <?=t('Featured pages only.')?>
-		<? if (!is_object($cadf)) { ?>
+		<?php if (!is_object($cadf)) { ?>
 			 <?=t('(<strong>Note</strong>: You must create the "is_featured" page attribute first.)');?></span>
-		<? } ?>
+		<?php } ?>
 		<br/>
-		<input type="checkbox" name="displayAliases" value="1" <? if ($displayAliases == 1) { ?> checked <? } ?> />
+		<input type="checkbox" name="displayAliases" value="1" <?php if ($displayAliases == 1) { ?> checked <?php } ?> />
 		<?=t('Display page aliases.')?>
 		<br/>
 		
 	</div>
 	<div class="ccm-block-field-group">
 		<h2><?=t('Pagination')?></h2>
-		<input type="checkbox" name="paginate" value="1" <? if ($paginate == 1) { ?> checked <? } ?> />
+		<input type="checkbox" name="paginate" value="1" <?php if ($paginate == 1) { ?> checked <?php } ?> />
 		<?=t('Display pagination interface if more items are available than are displayed.')?>
 	</div>
 	<div class="ccm-block-field-group">
@@ -53,20 +53,20 @@
 	  <?=t('Display pages that are located')?>:<br/>
 	  <br/>
 	  <div>
-			<input type="radio" name="cParentID" id="cEverywhereField" value="0" <? if ($cParentID == 0) { ?> checked<? } ?> />
+			<input type="radio" name="cParentID" id="cEverywhereField" value="0" <?php if ($cParentID == 0) { ?> checked<?php } ?> />
 			<?=t('everywhere')?>
 			
 			&nbsp;&nbsp; 
-			<input type="radio" name="cParentID" id="cThisPageField" value="<?=$c->getCollectionID()?>" <? if ($cParentID == $c->getCollectionID() || $cThis) { ?> checked<? } ?>>
+			<input type="radio" name="cParentID" id="cThisPageField" value="<?=$c->getCollectionID()?>" <?php if ($cParentID == $c->getCollectionID() || $cThis) { ?> checked<?php } ?>>
 			<?=t('beneath this page')?>
 			
 			&nbsp;&nbsp;
-			<input type="radio" name="cParentID" id="cOtherField" value="OTHER" <? if ($isOtherPage) { ?> checked<? } ?>>
+			<input type="radio" name="cParentID" id="cOtherField" value="OTHER" <?php if ($isOtherPage) { ?> checked<?php } ?>>
 			<?=t('beneath another page')?> </div>
 			
-			<div class="ccm-page-list-page-other" <? if (!$isOtherPage) { ?> style="display: none" <? } ?>>
+			<div class="ccm-page-list-page-other" <?php if (!$isOtherPage) { ?> style="display: none" <?php } ?>>
 			
-			<? $form = Loader::helper('form/page_selector');
+			<?php $form = Loader::helper('form/page_selector');
 			if ($isOtherPage) {
 				print $form->selectPage('cParentIDValue', $cParentID);
 			} else {
@@ -85,11 +85,11 @@
 	  <h2><?=t('Sort Pages')?></h2>
 	  <?=t('Pages should appear')?>
 	  <select name="orderBy">
-		<option value="display_asc" <? if ($orderBy == 'display_asc') { ?> selected <? } ?>><?=t('in their sitemap order')?></option>
-		<option value="chrono_desc" <? if ($orderBy == 'chrono_desc') { ?> selected <? } ?>><?=t('with the most recent first')?></option>
-		<option value="chrono_asc" <? if ($orderBy == 'chrono_asc') { ?> selected <? } ?>><?=t('with the earliest first')?></option>
-		<option value="alpha_asc" <? if ($orderBy == 'alpha_asc') { ?> selected <? } ?>><?=t('in alphabetical order')?></option>
-		<option value="alpha_desc" <? if ($orderBy == 'alpha_desc') { ?> selected <? } ?>><?=t('in reverse alphabetical order')?></option>
+		<option value="display_asc" <?php if ($orderBy == 'display_asc') { ?> selected <?php } ?>><?=t('in their sitemap order')?></option>
+		<option value="chrono_desc" <?php if ($orderBy == 'chrono_desc') { ?> selected <?php } ?>><?=t('with the most recent first')?></option>
+		<option value="chrono_asc" <?php if ($orderBy == 'chrono_asc') { ?> selected <?php } ?>><?=t('with the earliest first')?></option>
+		<option value="alpha_asc" <?php if ($orderBy == 'alpha_asc') { ?> selected <?php } ?>><?=t('in alphabetical order')?></option>
+		<option value="alpha_desc" <?php if ($orderBy == 'alpha_desc') { ?> selected <?php } ?>><?=t('in reverse alphabetical order')?></option>
 	  </select>
 	</div>
 	
@@ -109,7 +109,7 @@
 	
 	<style type="text/css">
 	#ccm-pagelist-truncateTxt.faintText{ color:#999; }
-	<? if(truncateChars==0 && !$truncateSummaries) $truncateChars=128; ?>
+	<?php if(truncateChars==0 && !$truncateSummaries) $truncateChars=128; ?>
 	</style>
 	<div class="ccm-block-field-group">
 	   <h2><?=t('Truncate Summaries')?></h2>	  
