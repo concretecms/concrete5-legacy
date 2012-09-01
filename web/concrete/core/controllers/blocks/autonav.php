@@ -114,6 +114,9 @@
 		 * Warning: this function has side-effects -- if this gets called twice, items will be duplicated in the nav structure!
 		 */
 		function generateNav() {
+			
+			$this->navArray = array();
+			
 			if (isset($this->displayPagesCID) && !Loader::helper('validation/numbers')->integer($this->displayPagesCID)) {
 				$this->displayPagesCID = 0;
 			}
