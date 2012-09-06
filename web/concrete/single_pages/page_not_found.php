@@ -1,4 +1,6 @@
-<? defined('C5_EXECUTE') or die("Access Denied."); ?>
+<? defined('C5_EXECUTE') or die("Access Denied."); 
+header("HTTP/1.0 404 Not Found");
+?>
 
 <h1 class="error"><?=t('Page Not Found')?></h1>
 
