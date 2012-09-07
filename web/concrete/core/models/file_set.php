@@ -150,7 +150,7 @@
 		}
 		public function overrideGlobalPermissions() {return $this->fsOverrideGlobalPermissions;}
 		
-		public function getFileSetName() {return $this->fsName;}	
+		public function getFileSetName() {return t($this->fsName);}
 		
 		/**
 		 * Creats a new fileset if set doesn't exists
@@ -343,5 +343,4 @@
 		}
 	
 	}
-	
 	

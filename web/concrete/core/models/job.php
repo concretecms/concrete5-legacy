@@ -34,8 +34,8 @@ class Concrete5_Model_Job extends Object {
 		throw new Exception(t('Error: The Job::run() method must be overridden by your child Job class.'));
 	}	
 	
-	public function getJobName() {return $this->jName;}
-	public function getJobDescription() {return $this->jDescription;}	
+	public function getJobName() {return t($this->jName);}
+	public function getJobDescription() {return t($this->jDescription);}
 	public function getJobHandle() {return $this->jHandle;}
 	public function getPackageHandle() {
 		return PackageList::getHandle($this->pkgID);

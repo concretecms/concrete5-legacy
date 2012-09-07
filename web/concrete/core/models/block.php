@@ -674,7 +674,7 @@ class Concrete5_Model_Block extends Object {
 	}
 
 	function getBlockTypeName() {
-		return $this->btName;
+		return t($this->btName);
 	}
 
 	function getBlockTypeHandle() {
@@ -733,7 +733,7 @@ class Concrete5_Model_Block extends Object {
 	}
 
 	function getBlockName() {
-		return $this->bName;
+		return t($this->bName);
 	}
 
 	/**
