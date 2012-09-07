@@ -643,8 +643,8 @@ defined('C5_EXECUTE') or die("Access Denied.");
 					$theme = $rec->file;
 				}
 				
-				$themeDir = str_replace(FILENAME_THEMES_DEFAULT, '', $env->getPath(DIRNAME_THEMES . '/' . $pl->getThemeHandle() . '/' . FILENAME_THEMES_DEFAULT, $this->pkgHandle));
-				$themePath = str_replace(FILENAME_THEMES_DEFAULT, '', $env->getURL(DIRNAME_THEMES . '/' . $pl->getThemeHandle() . '/' . FILENAME_THEMES_DEFAULT, $this->pkgHandle));
+				$themeDir = str_replace('/' . FILENAME_THEMES_DEFAULT, '', $env->getPath(DIRNAME_THEMES . '/' . $pl->getThemeHandle() . '/' . FILENAME_THEMES_DEFAULT, $this->pkgHandle));
+				$themePath = str_replace('/' . FILENAME_THEMES_DEFAULT, '', $env->getURL(DIRNAME_THEMES . '/' . $pl->getThemeHandle() . '/' . FILENAME_THEMES_DEFAULT, $this->pkgHandle));
 			} else {
 				$this->ptHandle = $pl;
 				if (file_exists(DIR_FILES_THEMES . '/' . $pl . '/' . $filename)) {
@@ -717,7 +717,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			
 			// Determine which inner item to load, load it, and stick it in $innerContent
 			$content = false;
-							
+
 			ob_start();			
 			if ($view instanceof Page) {
 
@@ -739,18 +739,6 @@ defined('C5_EXECUTE') or die("Access Denied.");
 							exit;
 						}
 						return;
-					}
-				}
-				
-				foreach($_pageBlocks as $b1) {
-					$b1p = new Permissions($b1);
-					if ($b1p->canRead()) { 
-						$btc = $b1->getInstance();
-						// now we inject any custom template CSS and JavaScript into the header
-						if('Controller' != get_class($btc)){
-							$btc->outputAutoHeaderItems();
-						}
-						$btc->runTask('on_page_view', array($view));
 					}
 				}
 				
@@ -851,8 +839,25 @@ defined('C5_EXECUTE') or die("Access Denied.");
 					$view = $c;
 					$req = Request::get();
 					$req->setCurrentPage($c);
+					$_pageBlocks = $view->getBlocks();
+					$_pageBlocksGlobal = $view->getGlobalBlocks();
+					$_pageBlocks = array_merge($_pageBlocks, $_pageBlocksGlobal);
 				}
 			}
+			
+			if (is_array($_pageBlocks)) {
+				foreach($_pageBlocks as $b1) {
+					$b1p = new Permissions($b1);
+					if ($b1p->canRead()) { 
+						$btc = $b1->getInstance();
+						// now we inject any custom template CSS and JavaScript into the header
+						if('Controller' != get_class($btc)){
+							$btc->outputAutoHeaderItems();
+						}
+						$btc->runTask('on_page_view', array($view));
+					}
+				}
+			}			
 			
 			// Determine which outer item/theme to load
 			// obtain theme information for this collection
