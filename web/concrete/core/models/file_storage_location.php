@@ -38,6 +38,6 @@ class Concrete5_Model_FileStorageLocation extends Object {
 	}
 	
 	public function getID() {return $this->fslID;}
-	public function getName() {return $this->fslName;}
+	public function getName() {return t($this->fslName);}
 	public function getDirectory() {return $this->fslDirectory;}
 }
