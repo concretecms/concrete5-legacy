@@ -733,7 +733,7 @@ class Concrete5_Model_Block extends Object {
 	}
 
 	function getBlockName() {
-		return t($this->bName);
+		return $this->bName;
 	}
 
 	/**
