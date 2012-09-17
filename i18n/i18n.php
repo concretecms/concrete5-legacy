@@ -141,14 +141,14 @@ class Options {
 				self::DownloadZip(
 					'http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies/gettext-runtime_0.18.1.1-2_win32.zip',
 					array(
-						'bin/intl.dll' => Enviro::MergePath(self::$I18N_WIN32TOOLS)
+						'bin/intl.dll' => self::$I18N_WIN32TOOLS
 					)
 				);
 				self::DownloadZip(
 					'http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies/gettext-tools-dev_0.18.1.1-2_win32.zip',
 					array(
 						'bin/libgettextlib-0-18-1.dll' => Enviro::MergePath(self::$I18N_WIN32TOOLS),
-						'bin/xgettext.exe' => Enviro::MergePath(self::$I18N_WIN32TOOLS)
+						'bin/xgettext.exe' => self::$I18N_WIN32TOOLS
 					)
 				);
 			}
