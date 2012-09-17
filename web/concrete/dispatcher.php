@@ -42,13 +42,13 @@
 	## Startup cache ##
 	Cache::startup();
 
+	## Autoload settings
+	require(dirname(__FILE__) . '/startup/autoload.php');
+	
 	## User level config ##	
 	if (!$config_check_failed) { 
 		require(dirname(__FILE__) . '/config/app.php');
 	}
-
-	## Autoload settings
-	require(dirname(__FILE__) . '/startup/autoload.php');
 
 	## Exception handler
 	require(dirname(__FILE__) . '/startup/exceptions.php');
