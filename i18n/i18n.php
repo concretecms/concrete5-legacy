@@ -10,6 +10,7 @@ SetupIni();
 Options::Initialize();
 
 try {
+	Options::CheckEnviro();
 	Options::ReadArguments();
 	foreach(Options::$packages as $package) {
 		if($package->createPot) {
@@ -44,7 +45,7 @@ function SetupIni() {
 * @param string $errstr the error message.
 * @param unknown $errfile The filename that the error was raised in.
 * @param unknown $errline The line number the error was raised at.
-* @throws Exception
+* @throws Exception Throws an Exception when an error is detected during the script execution.
 */
 function ErrorCatcher($errno, $errstr, $errfile, $errline)
 {
@@ -119,15 +120,42 @@ class Options {
 		self::$DEFAULT_INDENT = true;
 		self::$DEFAULT_EXCLUDEDIRSFROMPOT_CONCRETE5 = array('concrete/libraries/3rdparty');
 		self::$DEFAULT_EXCLUDEDIRSFROMPOT_PACKAGE = array('libraries/3rdparty');
+	}
+
+	/** Checks the environment state.
+	* @throws Exception Throws an Exception in case of errors.
+	*/
+	public static function CheckEnviro() {
 		try {
 			Enviro::RunTool('xgettext', '--version');
 		}
 		catch(Exception $x) {
+			Console::WriteLine('This tools require the gettext functions.', true);
 			if(Enviro::IsWin()) {
-				die("This tools require the executable programs in folder '" . self::$I18N_WIN32TOOLS . "'.");
+				Console::Write('There\'s a ready-to-use version on ftp.gnome.org. Would you like me to download it automatically? [Y/n] ', true);
+				if(!Console::AskYesNo(true, true)) {
+					Console::WriteLine('Please put gettext functions in the following folder:', true);
+					Console::WriteLine(self::$I18N_WIN32TOOLS, true);
+					die(1);
+				}
+				self::DownloadZip(
+					'http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies/gettext-runtime_0.18.1.1-2_win32.zip',
+					array(
+						'bin/intl.dll' => Enviro::MergePath(self::$I18N_WIN32TOOLS)
+					)
+				);
+				self::DownloadZip(
+					'http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies/gettext-tools-dev_0.18.1.1-2_win32.zip',
+					array(
+						'bin/libgettextlib-0-18-1.dll' => Enviro::MergePath(self::$I18N_WIN32TOOLS),
+						'bin/xgettext.exe' => Enviro::MergePath(self::$I18N_WIN32TOOLS)
+					)
+				);
 			}
 			else {
-				die("This tools require the gettext. Usually under *nix you can install it with\nsudo apt-get install gettext");
+				Console::WriteLine('Usually under *nix you can install it with:', true);
+				Console::WriteLine('sudo apt-get install gettext', true);
+				die(1);
 			}
 		}
 	}
@@ -246,6 +274,12 @@ class Options {
 		}
 	}
 
+	/** Return the boolean value of a command line option value.
+	* @param string $argumentName The argument name.
+	* @param string $argumentValue The argument value.
+	* @return boolean
+	* @throws Exception Throws an Exception if the argument value can't be converted to a boolean value.
+	*/
 	private static function ArgumentToBool($argumentName, $argumentValue) {
 		$v = @trim($argumentValue);
 		if(!strlen($v)) {
@@ -267,10 +301,99 @@ class Options {
 		}
 	}
 
+	/** Download a file and extract files to a local path.
+	* @param string $url
+	* @param array $filesToExtract Specify which files to extract (the array keys) and the folders where they should be saved (the values).
+	* @throws Exception Throws an Exception in case of errors.
+	*/
+	private static function DownloadZip($url, $filesToExtract) {
+		foreach(array_keys($filesToExtract) as $key) {
+			if(!is_dir($filesToExtract[$key])) {
+				if(!@mkdir($filesToExtract[$key], 0777, true)) {
+					throw new Exception('Error creating the directory \'' . $filesToExtract[$key] . '\'');
+				}
+			}
+			$fullFilename = Enviro::MergePath($filesToExtract[$key], basename($key));
+			if(file_exists($fullFilename)) {
+				unset($filesToExtract[$key]);
+			}
+			else {
+				if(!is_writable($filesToExtract[$key])) {
+					throw new Exception('The directory \'' . $filesToExtract[$key] . '\' is not writable');
+				}
+				$filesToExtract[$key] = $fullFilename;
+			}
+		}
+		if(empty($filesToExtract)) {
+			return;
+		}
+		Console::Write('Downloading ' . $url . '... ');
+		if(!($hUrl = fopen($url, 'rb'))) {
+			throw new Exception('fopen() failed!');
+		}
+		$bufferSize = 8 * 1024;
+		try {
+			$zipFile = Enviro::GetTemporaryFileName();
+			if(!($hZipFile = fopen($zipFile, 'wb'))) {
+				throw new Exception('Unable to write local temp file.');
+			}
+			try {
+				while(!feof($hUrl)) {
+					fwrite($hZipFile, fread($hUrl, $bufferSize));
+				}
+				@fflush($hZipFile);
+				@fclose($hZipFile);
+				@fclose($hUrl);
+			}
+			catch(Exception $x) {
+				@fclose($hZipFile);
+				@unlink($zipFile);
+				throw $x;
+			}
+		}
+		catch(Exception $x) {
+			@fclose($hUrl);
+			throw $x;
+		}
+		Console::WriteLine('done.');
+		Console::Write('Extracting files... ');
+		try {
+			$hZip = @zip_open($zipFile);
+			if(!is_resource($hZip)) {
+				throw new Exception('zip_open() failed (error code: ' . $hZip . ')!');
+			}
+			while($hEntry = zip_read($hZip)) {
+				if(!is_resource($hEntry)) {
+					throw new Exception('zip_read() failed (error code: ' . $hEntry . ')!');
+				}
+				$name = zip_entry_name($hEntry);
+				if(array_key_exists($name, $filesToExtract)) {
+					$size = zip_entry_filesize($hEntry);
+					if($size <= 0) {
+						throw new Exception('zip entry ' . $name . ' is empty!');
+					}
+					file_put_contents($filesToExtract[$name], zip_entry_read($hEntry, $size));
+					unset($filesToExtract[$name]);
+				}
+			}
+			@zip_close($hZip);
+			@unlink($zipFile);
+		}
+		catch(Exception $x) {
+			@zip_close($hZip);
+			@unlink($zipFile);
+			throw $x;
+		}
+		if(!empty($filesToExtract)) {
+			throw new Exception('Files not found in zip file: ' . implode(', ', array_keys($filesToExtract)));
+		}
+		Console::WriteLine('done.');
+	}
 }
 
-
+/** Holds the info about main concrete5 or about a package. */
 class PackageInfo {
+
 	/** The package name. Empty means we're going to potify concrete5 itself.
 	* @var string
 	*/
@@ -401,6 +524,11 @@ class PackageInfo {
 		}
 	}
 
+	/** Gets the content of a php file which may be passed to the eval() function.
+	* @param string $phpFilename The source php file.
+	* @throws Exception Throws an Exception in case of errors.
+	* @return string
+	*/
 	private static function GetEvaluableContent($phpFilename) {
 		$fc = @file_get_contents($phpFilename);
 		if($fc === false) {
@@ -432,6 +560,7 @@ class PackageInfo {
 
 /** Console-related functions. */
 class Console {
+
 	/** Echoes a string to the console.
 	* @param string $str The string to be printed.
 	* @param bool $isErr Set to true to echo to stderr, false to echo to stdout.
@@ -442,12 +571,47 @@ class Console {
 		fflush($hOut);
 		fclose($hOut);
 	}
+
 	/** Echoes a line to the console.
 	* @param string $str The string to be printed (a new-line will be appended to it).
 	* @param bool $isErr Set to true to echo to stderr, false to echo to stdout.
 	*/
 	public static function WriteLine($str = '', $isErr = false) {
 		self::Write($str . Enviro::EOL(), $isErr);
+	}
+
+	/** Reads a line from the command line.
+	* @return string
+	*/
+	public static function ReadLine() {
+		$hIn = fopen ('php://stdin', 'r');
+		$line = (string)@fgets($hIn);
+		fclose($hIn);
+		return $line;
+	}
+
+	/** Read a yes/no answer from the command line.
+	* @param bool|null $default What to return if user enter an empty string (if null: no default value).
+	* @param bool $isErr Set to true to echo to stderr, false to echo to stdout.
+	* @return bool
+	*/
+	public static function AskYesNo($default = null, $msgIsErr = false) {
+		for(;;) {
+			switch(strtolower(trim(self::ReadLine()))) {
+				case 'y':
+				case 'yes':
+					return true;
+				case 'n':
+				case 'no':
+					return false;
+				case '':
+					if(!is_null($default)) {
+						return $default;
+					}
+					break;
+			}
+			self::Write('Pleas answer with Y[es] or N[o]: ', $msgIsErr);
+		}
 	}
 }
 
