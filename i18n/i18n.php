@@ -1,7 +1,8 @@
 <?php
 
 if(version_compare(PHP_VERSION, '5.3', '<')) {
-	die('Minimum required php version: 5.3, your is ' . PHP_VERSION);
+	Console::WriteLine('Minimum required php version: 5.3, your is ' . PHP_VERSION, true);
+	die(1);
 }
 
 SetupIni();
