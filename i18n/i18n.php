@@ -12,13 +12,23 @@ Options::Initialize();
 try {
 	Options::CheckEnviro();
 	Options::ReadArguments();
-	foreach(Options::$packages as $package) {
-		if($package->createPot) {
-			POTFile::CreateNew($package);
-		}
-		if($package->createPo) {
-			foreach(Options::$languages as $language) {
-				POFile::CreateNew($package, $language);
+	if(Options::$interactive) {
+		Options::InteractiveMenu_Main();
+	}
+	else {
+		foreach(Options::$packages as $package) {
+			if($package->createPot) {
+				POTFile::CreateNew($package);
+			}
+			if($package->createPo) {
+				foreach(Options::$languages as $language) {
+					POFile::CreateNew($package, $language);
+				}
+			}
+			if($package->compile) {
+				foreach(Options::$languages as $language) {
+					POFile::Compile($package, $language);
+				}
 			}
 		}
 	}
@@ -119,6 +129,11 @@ class Options {
 	*/
 	public static $languages;
 
+	/** We're in an interactive session?
+	* @var bool
+	*/
+	public static $interactive;
+
 	/** Initializes constant/default values. */
 	public static function Initialize() {
 		self::$INITIAL_CD = getcwd();
@@ -138,6 +153,7 @@ class Options {
 		try {
 			Enviro::RunTool('xgettext', '--version');
 			Enviro::RunTool('msgmerge', '--version');
+			Enviro::RunTool('msgfmt', '--version');
 		}
 		catch(Exception $x) {
 			Console::WriteLine('This tools require the gettext functions.', true);
@@ -159,7 +175,8 @@ class Options {
 					array(
 						'bin/libgettextlib-0-18-1.dll' => self::$I18N_WIN32TOOLS,
 						'bin/xgettext.exe' => self::$I18N_WIN32TOOLS,
-						'bin/msgmerge.exe' => self::$I18N_WIN32TOOLS
+						'bin/msgmerge.exe' => self::$I18N_WIN32TOOLS,
+						'bin/msgfmt.exe' => self::$I18N_WIN32TOOLS
 					)
 				);
 			}
@@ -184,6 +201,7 @@ class Options {
 		Console::WriteLine('--help                      show this message');
 		Console::WriteLine('--list-languages            list all the usable languages');
 		Console::WriteLine('--list-countries            list all the usable countries');
+		Console::WriteLine('--interactive               start an interactive session');
 		Console::WriteLine('--webroot=<path>            set the web root of concrete5 (default: ' . self::$DEFAULT_WEBROOT . ')');
 		Console::WriteLine('--indent=<yes|no>           set to yes to generate indented .pot/.po files, false for not-indented generation (default: ' . (self::$DEFAULT_INDENT ? 'yes' : 'no') . ')');
 		Console::WriteLine('--languages=<LanguagesCode> list of comma-separated languages for which create the .po files (default: ' . implode(',', Language::GetStandardCodes()) . ')');
@@ -193,6 +211,7 @@ class Options {
 		Console::WriteLine('Available package options:');
 		Console::WriteLine('--createpot=<yes|no>        set to yes to generate the .pot file, no to skip it (defaults to yes, except for concrete5 when you\'ve specified a --package option)');
 		Console::WriteLine('--createpo=<yes|no>         set to yes to generate the .po files, no to skip it (defaults to yes, except for concrete5 when you\'ve specified a --package option)');
+		Console::WriteLine('--compile=<yes|no>          set to yes to generate the .mo files from .po files, no to skip it (defaults to yes, except for concrete5 when you\'ve specified a --package option)');
 		Console::WriteLine('--potname=<filename>        name of the .pot filename (just the name, without path: it\'ll be saved in the \'languages\' folder)');
 		Console::WriteLine('--excludedirfrompot=<dir>   folder which may not be parsed when creating a.pot file. To specify multiple values you can specify this argument more than once (default for concrete5: ' . implode(self::$DEFAULT_EXCLUDEDIRSFROMPOT_CONCRETE5), ', default for packages: ' . implode(self::$DEFAULT_EXCLUDEDIRSFROMPOT_CONCRETE5, ', ') . ')');
 		Console::WriteLine('--potcontact=<email>        email address to send bugs to (for c5 the default is ' . self::$DEFAULT_POTCONTACT_CONCRETE5 . ' when working on concrete5, empty when working on a package.');
@@ -215,8 +234,10 @@ class Options {
 		self::$webroot = self::$DEFAULT_WEBROOT;
 		self::$indent = self::$DEFAULT_INDENT;
 		self::$packages = array();
+		$packagesMap = array();
 		self::$packages[] = $packageInfo = new PackageInfo('');
 		self::$languages = null;
+		self::$interactive = false;
 		$list = '';
 		foreach($argv as $argi => $arg) {
 			if($argi == 0) {
@@ -243,6 +264,9 @@ class Options {
 					}
 					self::$webroot = $dir;
 					break;
+				case '--interactive':
+					self::$interactive = true;
+					break;
 				case '--indent':
 					self::$indent = self::ArgumentToBool($argument, $value);
 					break;
@@ -259,13 +283,25 @@ class Options {
 					if(is_null(self::$packages[0]->createPo)) {
 						self::$packages[0]->createPo = false;
 					}
-					self::$packages[] = $packageInfo = new PackageInfo($value);
+					if(is_null(self::$packages[0]->compile)) {
+						self::$packages[0]->compile = false;
+					}
+					if(array_key_exists($value, $packagesMap)) {
+						$packageInfo = self::$packages[$packagesMap[$value]];
+					}
+					else {
+						$packagesMap[$value] = count(self::$packages);
+						self::$packages[] = $packageInfo = new PackageInfo($value);
+					}
 					break;
 				case '--createpot':
 					$packageInfo->createPot = self::ArgumentToBool($argument, $value);
 					break;
 				case '--createpo':
 					$packageInfo->createPo = self::ArgumentToBool($argument, $value);
+					break;
+				case '--compile':
+					$packageInfo->compile = self::ArgumentToBool($argument, $value);
 					break;
 				case '--potname':
 					if(!strlen($value)) {
@@ -313,6 +349,13 @@ class Options {
 					die(1);
 			}
 		}
+		if(is_null(self::$languages)) {
+			self::$languages = Language::GetStandardCodes();
+		}
+		sort(self::$languages);
+		if(self::$interactive) {
+			return;
+		}
 		switch($list) {
 			case 'languages':
 				foreach(Language::GetLanguages() as $id => $info) {
@@ -324,9 +367,6 @@ class Options {
 					Console::WriteLine("$id\t{$info['name']}");
 				}
 				die(0);
-		}
-		if(is_null(self::$languages)) {
-			self::$languages = Language::GetStandardCodes();
 		}
 		foreach(self::$packages as $packageInfo) {
 			$packageInfo->postInitialize();
@@ -344,20 +384,34 @@ class Options {
 		if(!strlen($v)) {
 			throw new Exception("Argument '$argumentName' requires a boolean value (yes or no).");
 		}
-		switch(strtolower($v)) {
-			case 'yes':
-			case 'true':
-			case 'on':
-			case '1':
-				return true;
-			case 'no':
-			case 'false':
-			case 'off':
-			case '0':
-				return false;
-			default:
-				throw new Exception("Argument '$argumentName' requires a boolean value (yes or no), given '$argumentValue'.");
+		$bool = self::StringToBool($argumentValue);
+		if(is_null($bool)) {
+			throw new Exception("Argument '$argumentName' requires a boolean value (yes or no), given '$argumentValue'.");
 		}
+		return $bool;
+	}
+
+	/** Convert a string into boolean (return null in case of conversion error).
+	* @param string $value The value to be analyzed
+	* @return boolean|null
+	*/
+	private static function StringToBool($value) {
+		$v = @trim($value);
+		if(strlen($v)) {
+			switch(strtolower($v)) {
+				case 'yes':
+				case 'true':
+				case 'on':
+				case '1':
+					return true;
+				case 'no':
+				case 'false':
+				case 'off':
+				case '0':
+					return false;
+			}
+		}
+		return null;
 	}
 
 	/** Download a file and extract files to a local path.
@@ -448,6 +502,404 @@ class Options {
 		}
 		Console::WriteLine('done.');
 	}
+
+	/** Shows the main interactive menu. */
+	public static function InteractiveMenu_Main() {
+		for(;;) {
+			Console::WriteLine();
+			Console::WriteLine('##### MAIN MENU');
+			Console::WriteLine('C: Work on concrete5 core');
+			Console::WriteLine('P: Work on a concrete5 package');
+			Console::WriteLine('W: Change webroot');
+			Console::WriteLine('   Current value: ' . Options::$webroot);
+			Console::WriteLine('I: Change indentation');
+			Console::WriteLine('   Current value: ' . (Options::$indent ? 'yes' : 'no'));
+			Console::WriteLine('L: Change .po languages');
+			Console::WriteLine('   Current value: ' . count(Options::$languages) . ' language' . ((count(Options::$languages) == 1) ? '' : 's'));
+			Console::WriteLine('X: Exit');
+			Console::WriteLine();
+			$ask = true;
+			while($ask) {
+				$ask = false;
+				Console::Write('Option: ');
+				switch(strtoupper(trim(Console::ReadLine()))) {
+					case 'C':
+						try {
+							PackageInfo::GetVersionOfConcrete5(Options::$webroot);
+						}
+						catch(Exception $x) {
+							Console::Write('Please fix the webroot!');
+							break;
+						}
+						self::InteractiveMenu_Package('');
+						break;
+					case 'P':
+						try {
+							PackageInfo::GetVersionOfConcrete5(Options::$webroot);
+						}
+						catch(Exception $x) {
+							Console::Write('Please fix the webroot!');
+							break;
+						}
+						$available = array();
+						$parent = Enviro::MergePath(Options::$webroot, 'packages');
+						if(is_dir($parent)) {
+							if(!($hDir = @opendir($parent))) {
+								Console::WriteLine('Unable to read directory \'' . $parent . '\.');
+								break;
+							}
+							while($item = readdir($hDir)) {
+								switch($item) {
+									case '.':
+									case '..':
+										break;
+									default:
+										if(is_dir(Enviro::MergePath($parent, $item))) {
+											$available[] = $item;
+										}
+										break;
+								}
+							}
+							closedir($hDir);
+						}
+						if(empty($available)) {
+							Console::Write('No packages found in \'' . $parent . '\.');
+							break;
+						}
+						$package = '';
+						for(;;) {
+							Console::Write('Enter new package name [? for pick it]: ');
+							$s = trim(Console::ReadLine());
+							if(!strlen($s)) {
+								break;
+							}
+							if($s == '?') {
+								foreach($available as $index => $name) {
+									Console::WriteLine(($index + 1) . ": $name");
+								}
+								for(;;) {
+									Console::Write('Enter package index: ');
+									$i = trim(Console::ReadLine());
+									if(!strlen($i)) {
+										break;
+									}
+									if(!preg_match('/^[1-9][0-9]*$/', $i)) {
+										$i = -1;
+									}
+									else {
+										$i = intval($i) - 1;
+										if(!array_key_exists($i, $available)) {
+											$i = -1;
+										}
+									}
+									if($i < 0) {
+										Console::WriteLine('Invalid option!');
+										continue;
+									}
+									$package = $available[$i];
+									break;
+								}
+								break;
+							}
+							else {
+								if(Enviro::IsFilenameWithoutPath($s)) {
+									if(Enviro::FilesAreCaseInsensitive()) {
+										foreach($available as $a) {
+											if(strcasecmp($a, $s) === 0) {
+												$package = $a;
+												break;
+											}
+										}
+									} else {
+										if(array_search($s, $available) !== false) {
+											$package = $s;
+										}
+									}
+								}
+								if(!strlen($package)) {
+									Console::WriteLine('Invalid package name.');
+								}
+								else
+								{
+									break;
+								}
+							}
+						}
+						if(!strlen($package)) {
+							Console::WriteLine('Skipped.');
+						}
+						else {
+							try {
+								PackageInfo::GetVersionOfPackage(Options::$webroot, $package);
+							}
+							catch(Exception $x) {
+								Console::Write($x);
+								break;
+							}
+							self::InteractiveMenu_Package($package);
+						}
+						break;
+					case 'W':
+						for(;;) {
+							Console::Write('Enter new webroot path: ');
+							$s = str_replace('\\', '/', trim(Console::ReadLine()));
+							if(!strlen($s)) {
+								Console::WriteLine('Skipped.');
+								break;
+							}
+							if(preg_match('/^\\.\\.?\/?/', $s)) {
+								$s = Enviro::MergePath(Options::$INITIAL_CD, $s);
+							}
+							else {
+								$s = Enviro::MergePath($s);
+							}
+							$r = @realpath($s);
+							if(($r === false) || (!is_dir($r))) {
+								Console::WriteLine('The folder \'' . $s . '\' does not exist.');
+							}
+							else {
+								try {
+									PackageInfo::GetVersionOfConcrete5($r);
+								}
+								catch(Exception $x) {
+									Console::WriteLine($x->getMessage());
+									continue;
+								}
+								Options::$webroot = $r;
+								break;
+							}
+						}
+						break;
+					case 'I':
+						for(;;) {
+							Console::Write('Enter new intent value [Y/N]: ');
+							$s = trim(Console::ReadLine());
+							if(!strlen($s)) {
+								Console::WriteLine('Skipped.');
+								break;
+							}
+							else {
+								$b = self::StringToBool($s);
+								if(is_null($b)) {
+									Console::WriteLine('Invalid value!');
+								}
+								else {
+									self::$indent = $b;
+									break;
+								}
+							}
+						}
+						break;
+					case 'L':
+						self::InteractiveMenu_Languages();
+						break;
+					case 'X':
+						return;
+					default:
+						Console::WriteLine('Invalid option!');
+						$ask = true;
+						break;
+				}
+			}
+		}
+	}
+
+	/** Shows the interactive menu for working on concrete5 core or on a package.
+	 * @param string $package Empty string for working on concrete5 core, the package name for working on a package.
+	*/
+	private static function InteractiveMenu_Package($package) {
+		$packageInfo = new PackageInfo($package);
+		$packageInfo->createPo = false;
+		$packageInfo->createPot = false;
+		$packageInfo->compile = false;
+		$packageInfo->postInitialize();
+		for(;;) {
+			Console::WriteLine();
+			Console::WriteLine('##### WORK ON ' . (strlen($package) ? "PACKAGE $package" : 'concrete5 core'));
+			Console::WriteLine('T: create .pot template');
+			Console::WriteLine('P: create .po language files');
+			Console::WriteLine('C: compile .po language files into .mo files');
+			Console::WriteLine('X: back to main menu');
+			Console::WriteLine();
+			$ask = true;
+			$doReadline = true;
+			while($ask) {
+				$ask = false;
+				Console::Write('Option: ');
+				switch(strtoupper(trim(Console::ReadLine()))) {
+					case 'T':
+						try {
+							POTFile::CreateNew($packageInfo);
+						}
+						catch(Exception $x) {
+							Console::WriteLine();
+							Console::WriteLine( $x->getMessage());
+							Console::Write('Press [RETURN] to continue');
+							Console::ReadLine();
+							$doReadline = false;
+						}
+						break;
+					case 'P':
+						if(empty(Options::$languages)) {
+							Console::WriteLine('No languages to create/update .po files for!');
+						}
+						else {
+							foreach(Options::$languages as $language) {
+								$doReadline = true;
+								try {
+									POFile::CreateNew($packageInfo, $language);
+								}
+								catch(Exception $x) {
+									Console::WriteLine();
+									Console::WriteLine( $x->getMessage());
+									Console::Write('Press [RETURN] to continue');
+									Console::ReadLine();
+									$doReadline = false;
+								}
+							}
+						}
+						break;
+					case 'C':
+						if(empty(Options::$languages)) {
+							Console::WriteLine('No languages to create .mo files for!');
+						}
+						else {
+							foreach(Options::$languages as $language) {
+								$doReadline = true;
+								try {
+									POFile::Compile($packageInfo, $language);
+								}
+								catch(Exception $x) {
+									Console::WriteLine();
+									Console::WriteLine( $x->getMessage());
+									Console::Write('Press [RETURN] to continue');
+									Console::ReadLine();
+									$doReadline = false;
+								}
+							}
+						}
+						break;
+					case 'X':
+						return;
+					default:
+						Console::WriteLine('Invalid option!');
+						$ask = true;
+						break;
+				}
+			}
+			if($doReadline) {
+				Console::Write('Press [RETURN]');
+				Console::ReadLine();
+			}
+		}
+	}
+
+	/** Show the languages-management menu. */
+	private static function InteractiveMenu_Languages() {
+		for(;;) {
+			Console::WriteLine();
+			Console::WriteLine('##### LANGUAGES MENU');
+			Console::WriteLine('?: Show current language list');
+			Console::WriteLine('E: Empty current language list');
+			Console::WriteLine('A: Add a language to the list');
+			Console::WriteLine('R: Remove a language from list');
+			Console::WriteLine('L: Show all available languages');
+			Console::WriteLine('C: Show all available countries');
+			Console::WriteLine('X: back to main menu');
+			Console::WriteLine();
+			$ask = true;
+			while($ask) {
+				$ask = false;
+				Console::Write('Option: ');
+				switch(strtoupper(trim(Console::ReadLine()))) {
+					case '?':
+						if(empty(Options::$languages)) {
+							Console::WriteLine('No current languages');
+						}
+						else {
+							foreach(Options::$languages as $code) {
+								Console::WriteLine($code . "\t" . Language::DescribeCode($code));
+							}
+						}
+						break;
+					case 'E':
+						Options::$languages = array();
+						Console::WriteLine('List cleared.');
+						break;
+					case 'A':
+						Console::Write('Language code to add (LL or LL_CC): ');
+						$code = trim(Console::ReadLine());
+						if(!strlen($code)) {
+							Console::WriteLine('Skipped.');
+						}
+						else {
+							try {
+								$code = Language::NormalizeCode($code);
+							}
+							catch(Exception $x) {
+								Console::WriteLine('Invalid code. The language code format is LL or LL_CC, where LL is a language code and CC is a country code');
+								$code = '';
+							}
+							if(strlen($code)) {
+								$name = Language::DescribeCode($code);
+								if(array_search($code, Options::$languages) === false) {
+									Options::$languages[] = $code;
+									sort(self::$languages);
+									Console::WriteLine('Added language ' . $code . ' - ' . $name);
+								}
+								else {
+									Console::WriteLine($name . ' is already in the current list of languages.');
+								}
+							}
+						}
+						break;
+					case 'R':
+						Console::Write('Language code to remove (LL or LL_CC): ');
+						$code = trim(Console::ReadLine());
+						if(!strlen($code)) {
+							Console::WriteLine('Skipped.');
+						}
+						else {
+							try {
+								$code = Language::NormalizeCode($code);
+							}
+							catch(Exception $x) {
+								Console::WriteLine('Invalid code. The language code format is LL or LL_CC, where LL is a language code and CC is a country code');
+								$code = '';
+							}
+							if(strlen($code)) {
+								$name = Language::DescribeCode($code);
+								if(array_search($code, Options::$languages) === false) {
+									Console::WriteLine($name . ' is not in the current list of languages.');
+								}
+								else {
+									Console::WriteLine('Removed language ' . $code . ' - ' . $name);
+								}
+							}
+						}
+						break;
+					case 'L':
+						foreach(Language::GetLanguages() as $code => $info) {
+							Console::WriteLine($code . "\t" . $info['name']);
+						}
+						break;
+					case 'C':
+						foreach(Language::GetCountries() as $code => $info) {
+							Console::WriteLine($code . "\t" . $info['name']);
+						}
+						break;
+					case 'X':
+						return;
+					default:
+						Console::WriteLine('Invalid option!');
+						$ask = true;
+						break;
+				}
+			}
+			Console::Write('Press [RETURN]');
+			Console::ReadLine();
+		}
+	}
 }
 
 /** Holds the info about main concrete5 or about a package. */
@@ -482,6 +934,11 @@ class PackageInfo {
 	* @var bool
 	*/
 	public $createPo;
+
+	/** True if we have to compile the .po files into .mo files.
+	* @var bool
+	*/
+	public $compile;
 
 	/** The name of the .pot file.
 	* @var string
@@ -529,7 +986,73 @@ class PackageInfo {
 		$this->excludeDirsFromPot = null;
 		$this->createPot = null;
 		$this->createPo = null;
+		$this->compile = null;
 		$this->potName = 'messages.pot';
+	}
+
+	/** Retrieves the version of a concrete5 installation given its root folder.
+	* @param string $webroot The path of the webroot containing concrete5.
+	* @throws Exception Throws an Exception in case of errors.
+	* @return string
+	*/
+	public static function GetVersionOfConcrete5($webroot) {
+		if(!defined('C5_EXECUTE')) {
+			define('C5_EXECUTE', true);
+		}
+		if(!is_dir($webroot)) {
+			throw new Exception($webroot . ' is not the valid concrete5 web root directory (it does not exist).');
+		}
+		if(!is_file($fn = Enviro::MergePath($webroot, 'concrete/config/version.php'))) {
+			throw new Exception($webroot . ' is not the valid concrete5 web root directory (the version file does not exist).');
+		}
+		@include $fn;
+		if(empty($APP_VERSION)) {
+			throw new Exception("Unable to parse the concrete5 version file '$fn'.");
+		}
+		return $APP_VERSION;
+	}
+
+	/** Retrieves the version of a package given the concrete5 root folder and the package name.
+	* @param string $webroot The path of the webroot containing concrete5.
+	* @param string $package The package name.
+	* @throws Exception Throws an Exception in case of errors.
+	* @return string
+	*/
+	public static function GetVersionOfPackage($webroot, $package) {
+		if(!is_file($fn = Enviro::MergePath($webroot, 'packages', $package, 'controller.php'))) {
+			throw new Exception("'" . $package . "' is not a valid package name ('$fn' not found).");
+		}
+		$fc = "\n" . self::GetEvaluableContent($fn);
+		if(!preg_match('/[\r\n]\s*class[\r\n\s]+([^\s\r\n]+)[\r\n\s]+extends[\r\n\s]+Package\s*\{/i', $fc, $m)) {
+			throw new Exception("'" . self::$package . "' can't be parsed for a version.");
+		}
+		$packageClassOriginal = $m[1];
+		for($x = 0; ; $x++) {
+			$packageClassRenamed = $packageClassOriginal . $x;
+			if(!class_exists($packageClassRenamed)) {
+				if(stripos($fc, $packageClassRenamed) === false) {
+					break;
+				}
+			}
+		}
+		$fc = preg_replace('/\\b' . preg_quote($packageClassOriginal) . '\\b/i', $packageClassRenamed, $fc);
+		if(!class_exists('Package')) {
+			eval('class Package {}');
+		}
+		@ob_start();
+		$evalued = eval($fc);
+		@ob_end_clean();
+		if($evalued === false) {
+			throw new Exception("Unable to parse the version of package (file '$fn').");
+		}
+		if(!class_exists("VersionGetter_$packageClassRenamed")) {
+			eval("class VersionGetter_$packageClassRenamed extends $packageClassRenamed { public static function GV(){\$me = new VersionGetter_$packageClassRenamed(); return \$me->pkgVersion;} }");
+		}
+		$r = eval("return VersionGetter_$packageClassRenamed::GV();");
+		if(empty($r) && ($r !== '0')) {
+			throw new Exception("Unable to parse the version of package (file '$fn').");
+		}
+		return $r;
 	}
 
 	/** Fix the instance values once we've read all the command line arguments. */
@@ -544,17 +1067,13 @@ class PackageInfo {
 			if(is_null($this->createPo)) {
 				$this->createPo = (count(Options::$packages) == 1) ? true : false;
 			}
+			if(is_null($this->compile)) {
+				$this->compile = (count(Options::$packages) == 1) ? true : false;
+			}
 			if(is_null($this->excludeDirsFromPot)) {
 				$this->excludeDirsFromPot = Options::$DEFAULT_EXCLUDEDIRSFROMPOT_CONCRETE5;
 			}
-			if(!is_file($fn = Enviro::MergePath(Options::$webroot, 'concrete/config/version.php'))) {
-				throw new Exception(Options::$webroot . ' is not the valid concrete5 web root directory.');
-			}
-			@include $fn;
-			if(empty($APP_VERSION)) {
-				throw new Exception("Unable to parse the concrete5 version file '$fn'.");
-			}
-			$this->version = $APP_VERSION;
+			$this->version = self::GetVersionOfConcrete5(Options::$webroot);
 			$this->directoryToPotify = 'concrete';
 			$this->potFullname = Enviro::MergePath(Options::$webroot, 'languages/' . $this->potName);
 			$this->potfile2root = '..';
@@ -567,34 +1086,13 @@ class PackageInfo {
 			if(is_null($this->createPo)) {
 				$this->createPo = true;
 			}
+			if(is_null($this->compile)) {
+				$this->compile = true;
+			}
 			if(is_null($this->excludeDirsFromPot)) {
 				$this->excludeDirsFromPot = Options::$DEFAULT_EXCLUDEDIRSFROMPOT_PACKAGE;
 			}
-			if(!is_file($fn = Enviro::MergePath(Options::$webroot, 'packages', $this->package, 'controller.php'))) {
-				throw new Exception("'" . $this->package . "' is not a valid package name ('$fn' not found).");
-			}
-			$fc = "\n" . self::GetEvaluableContent($fn);
-			if(!preg_match('/[\r\n]\s*class[\r\n\s]+([^\s\r\n]+)[\r\n\s]+extends[\r\n\s]+Package\s*\{/i', $fc, $m)) {
-				throw new Exception("'" . self::$package . "' can't be parsed for a version.");
-			}
-			$packageClass = $m[1];
-			if(!class_exists('Package')) {
-				eval('class Package {}');
-			}
-			@ob_start();
-			$evalued = eval($fc);
-			@ob_end_clean();
-			if($evalued === false) {
-				throw new Exception("Unable to parse the version of package (file '$fn').");
-			}
-			if(!class_exists("VersionGetter_$packageClass")) {
-				eval("class VersionGetter_$packageClass extends $packageClass { public static function GV(){\$me = new VersionGetter_$packageClass(); return \$me->pkgVersion;} }");
-			}
-			$r = eval("return VersionGetter_$packageClass::GV();");
-			if(empty($r) && ($r !== '0')) {
-				throw new Exception("Unable to parse the version of package (file '$fn').");
-			}
-			$this->version = $r;
+			$this->version = self::GetVersionOfPackage(Options::$webroot, $this->package);
 			$this->directoryToPotify = 'packages/' . $this->package;
 			$this->potFullname = Enviro::MergePath(Options::$webroot, 'packages', $this->package, 'languages', $this->potName);
 			$this->potfile2root = '../../..';
@@ -733,6 +1231,13 @@ class Enviro {
 		return (stripos(PHP_OS , 'win') === 0) ? true : false;
 	}
 
+	/** File and folder names are case insensitive?
+	* @return boolean
+	*/
+	public static function FilesAreCaseInsensitive() {
+		return self::IsWin();
+	}
+
 	/** The end of line char sequence for the current operating system.
 	* @return string
 	*/
@@ -774,7 +1279,7 @@ class Enviro {
 			case 0:
 				throw new Exception(__CLASS__ . '::' . __METHOD__ . ': missing arguments');
 			case 1:
-				return $args[0];
+				return str_replace('/', DIRECTORY_SEPARATOR, $args[0]);
 			default:
 				$path = '';
 				foreach($args as $arg) {
@@ -1083,8 +1588,7 @@ class POTFile {
 				'Content-Type: text/plain; charset=UTF-8\\n',
 				'Content-Transfer-Encoding: 8bit\\n',
 				'Language: \\n'
-			),
-			array('#, fuzzy')
+			)
 		);
 	}
 
@@ -1179,7 +1683,9 @@ class POTFile {
 					throw new Exception("error deleting $filename: $php_errormsg");
 				}
 			}
-			rename($tempFilename, $filename);
+			if(!@rename($tempFilename, $filename)) {
+				throw new Exception("error renaming from '$tempFilename' to '$filename'!");
+			}
 		} catch(Exception $x) {
 			@unlink($tempFilename);
 			throw $x;
@@ -1299,8 +1805,7 @@ class POFile extends POTFile {
 		}
 		$this->Header = new POEntrySingle(
 			array(),
-			$finalHeaders,
-			array('#, fuzzy')
+			$finalHeaders
 		);
 	}
 
@@ -1380,6 +1885,49 @@ class POFile extends POTFile {
 		//$packageInfo->potFullname
 	}
 
+
+	/** Compile a language .po into a .mo file (which will be overwritten if existing).
+	* @param PackageInfo $packageInfo The info about the .po file to be compiled.
+	* @param string $language The language (and country) code (eg it or it_IT).
+	* @throws Exception Throws an Exception in case of errors.
+	*/
+	public static function Compile($packageInfo, $language) {
+		Console::WriteLine('* CREATING .MO FILE FOR ' . ($packageInfo->isConcrete5 ? 'concrete5 core' : $packageInfo->package));
+		$poFullFilename = $packageInfo->GetPoFullname($language);
+		if(!is_file($poFullFilename)) {
+			throw new Exception('The .po file name \'' . $poFullFilename . '\' does not exist.');
+		}
+		$moFullFilename = $packageInfo->GetMoFullname($language);
+		$tempMo = Enviro::GetTemporaryFileName();
+		try {
+			Console::Write('  Compiling .po into .po file... ');
+			$args = array();
+			$args[] = '--output-file=' . Enviro::EscapeArg($tempMo);
+			$args[] = '--check-format';
+			$args[] = '--check-header';
+			$args[] = '--check-domain';
+			$args[] = Enviro::EscapeArg($poFullFilename);
+			Enviro::RunTool('msgfmt', $args);
+			Console::WriteLine('done.');
+			Console::Write('  Moving to final location... ');
+			if(is_file($moFullFilename)) {
+				@unlink($moFullFilename);
+			}
+			if(!@rename($tempMo, $moFullFilename)) {
+				throw new Exception("error renaming from '$tempMo' to '$moFullFilename'!");
+			}
+			$tempMo = '';
+			Console::WriteLine('done.');
+			Console::WriteLine('  .mo file created: ' . $moFullFilename);
+		}
+		catch(Exception $x) {
+			if(strlen($tempMo)) {
+				@unlink($tempMo);
+			}
+			throw $x;
+		}
+	}
+
 	/** Create an epty .po file.
 	* @param PackageInfo $packageInfo The info about the .po file to be created.
 	* @param string $language The language (and country) code (eg it or it_IT).
@@ -1392,7 +1940,6 @@ class POFile extends POTFile {
 		}
 		try {
 			fwrite($hFile, str_replace(array("\r\n", "\r"), "\n", <<<EOT
-#, fuzzy
 msgid ""
 msgstr ""
 	"Project-Id-Version: \\n"
@@ -1513,16 +2060,6 @@ class POEntry {
 				}
 			}
 		}
-	}
-	public function isFuzzy() {
-		foreach($this->comments as $comment) {
-			if(strpos($comment, '#,') === 0) {
-				if(strpos($comment, 'fuzzy') !== 0) {
-					return true;
-				}
-			}
-		}
-		return false;
 	}
 
 	/** Fix slash from back to forward in location comments. */
@@ -2333,7 +2870,7 @@ class Language {
 	*/
 	public static function GetLanguages() {
 		if(empty(self::$_languages)) {
-			// From http://translate.sourceforge.net/wiki/l10n/pluralforms
+			// From http://translate.sourceforge.net/wiki/l10n/pluralforms (there's there a bug in 'lt': there's an 'or' instead of a '||')
 			self::$_languages = array(
 				'ach' => array('name' => 'Acholi', 'plural' => 'nplurals=2; plural=(n > 1)'),
 				'af' => array('name' => 'Afrikaans', 'plural' => 'nplurals=2; plural=(n != 1)'),
@@ -2405,7 +2942,7 @@ class Language {
 				'lb' => array('name' => 'Letzeburgesch', 'plural' => 'nplurals=2; plural=(n != 1)'),
 				'ln' => array('name' => 'Lingala', 'plural' => 'nplurals=2; plural=n>1;'),
 				'lo' => array('name' => 'Lao', 'plural' => 'nplurals=1; plural=0'),
-				'lt' => array('name' => 'Lithuanian', 'plural' => 'nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n%100<10 or n%100>=20) ? 1 : 2)'),
+				'lt' => array('name' => 'Lithuanian', 'plural' => 'nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n%100<10 || n%100>=20) ? 1 : 2)'),
 				'lv' => array('name' => 'Latvian', 'plural' => 'nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : 2)'),
 				'mai' => array('name' => 'Maithili', 'plural' => 'nplurals=2; plural=(n != 1)'),
 				'mfe' => array('name' => 'Mauritian Creole', 'plural' => 'nplurals=2; plural=(n > 1)'),
