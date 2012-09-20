@@ -32,6 +32,7 @@ try {
 			}
 		}
 	}
+	@chdir(Options::$INITIAL_CD);
 	die(0);
 } catch(Exception $x) {
 	@chdir(Options::$INITIAL_CD);
