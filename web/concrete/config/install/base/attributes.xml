@@ -73,10 +73,10 @@
         <attributekey handle="meta_keywords" name="Metaタグキーワード" package="" searchable="1" indexed="1" type="textarea" category="collection">
             <type mode=""/>
         </attributekey>
-        <attributekey handle="icon_dashboard" name="Dashboard Icon" package="" searchable="0" indexed="0" type="textarea" internal="1" category="collection">
+        <attributekey handle="icon_dashboard" name="管理画面アイコン" package="" searchable="0" indexed="0" type="textarea" internal="1" category="collection">
             <type mode=""/>
         </attributekey>
-        <attributekey handle="exclude_nav" name="Exclude From Nav" package="" searchable="1" indexed="1" type="boolean" category="collection">
+        <attributekey handle="exclude_nav" name="ナビから除く" package="" searchable="1" indexed="1" type="boolean" category="collection">
             <type checked=""/>
         </attributekey>
         <attributekey handle="exclude_page_list" name="ページリストから除く" package="" searchable="1" indexed="1" type="boolean" category="collection">
