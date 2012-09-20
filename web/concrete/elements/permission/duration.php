@@ -79,7 +79,7 @@ $dt = Loader::helper('form/date_time');
 </div>
 
 <div class="control-group">
-<?=$form->label('pdEndDate_activate', t('To'))?>
+<?=$form->label('pdEndDate_activate', t('Until'))?>
 <div class="controls">
 	<?=$dt->datetime('pdEndDate', $pdEndDate, true);?>
 	<label class="checkbox inline"><?=$form->checkbox('pdEndDateAllDayActivate', 1, $pdEndDateAllDay)?> <?=t("All Day")?></label>
