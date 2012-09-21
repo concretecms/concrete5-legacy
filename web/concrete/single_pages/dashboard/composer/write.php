@@ -15,7 +15,7 @@ if (isset($entry)) { ?>
 	<legend><?=t("Basic Information")?></legend>
 	<div class="control-group">
 		<?=$form->label('cName', t('Name'))?>
-		<div class="controls"><?=$form->text('cName', Loader::helper("text")->entities($name), array('class' => 'input-xlarge', 'onKeyUp' => "ccm_updateAddPageHandle()"))?></div>		
+		<div class="controls"><?=$form->text('cName', Loader::helper("text")->entities($name), array('class' => 'input-xlarge'))?></div>		
 	</div>
 
 	<div class="control-group">
