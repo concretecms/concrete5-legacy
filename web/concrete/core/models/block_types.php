@@ -985,7 +985,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		
 		
 		function getBlockTypeName() {
-			return $this->btName;
+			return t($this->btName);
 		}
 		
 		function isInstalled() {

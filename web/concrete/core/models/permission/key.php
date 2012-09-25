@@ -27,7 +27,7 @@ abstract class Concrete5_Model_PermissionKey extends Object {
 	/** 
 	 * Returns the name for this permission key
 	 */
-	public function getPermissionKeyName() { return $this->pkName;}
+	public function getPermissionKeyName() { return t($this->pkName);}
 
 	/** 
 	 * Returns the handle for this permission key
