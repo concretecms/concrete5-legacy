@@ -337,15 +337,16 @@ class Enviro {
 	}
 
 	/** Return the NPM package for the specified command.
-	* @param string $command
+	* @param string $command The command for which you want the package name.
+	* @param bool $apt true to return the packagename for apt-get install packagename
 	* @return string
 	*/
-	private static function GetNodePackageName($command) {
+	private static function GetNodePackageName($command, $apt = false) {
 		switch($command) {
 			case 'uglifyjs':
-				return self::IsWin() ? 'uglify-js' : 'node-uglify';
+				return $apt ? 'node-uglify' : 'uglify-js';
 			case 'lessc':
-				return self::IsWin() ? 'less' : 'node-less';
+				return $apt ? 'node-less' : 'less';
 			default:
 				return $command;
 		}
@@ -385,10 +386,13 @@ class Enviro {
 				self::Run($command, '/dev/null');
 			}
 			catch(Exception $x) {
+				$aptPackage = self::GetNodePackageName($command, true);
 				$npmPackage = self::GetNodePackageName($command);
 				Console::WriteLine("In order to use this script you need the $command command installed on your machine", true);
 				Console::WriteLine('Usually on *nix you can install it with the following command:', true);
-				Console::WriteLine("sudo apt-get install $npmPackage");
+				Console::WriteLine("sudo apt-get install $aptPackage", true);
+				Console::WriteLine('or', true);
+				Console::WriteLine("sudo apt-get install npm ; sudo npm install $npmPackage --global", true);
 				return false;
 			}
 		}
