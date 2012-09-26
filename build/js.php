@@ -19,7 +19,7 @@ class Options extends OptionsBase {
 	}
 	protected static function ParseArgument($name, $value) {
 		switch($name) {
-			case 'compress':
+			case '--compress':
 				self::$Compress = self::ArgumentToBool($name, $value);
 				return true;
 		}
