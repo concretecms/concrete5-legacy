@@ -9,18 +9,30 @@ if(version_compare(PHP_VERSION, '5.1', '<')) {
 require_once dirname(__FILE__) . '/base.php';
 
 class Options extends OptionsBase {
+	public static $Compress = true;
 	protected static function ShowIntro() {
 		global $argv;
 		Console::WriteLine($argv[0] . ' is a tool that generates an optimized version of JavaScripts used by the concrete5 core.');
+	}
+	protected static function ShowOptions() {
+		Console::WriteLine('--compress=<yes|no>         if yes (default) the output files will be compressed; use no for debugging');
+	}
+	protected static function ParseArgument($name, $value) {
+		switch($name) {
+			case 'compress':
+				self::$Compress = self::ArgumentToBool($name, $value);
+				return true;
+		}
+		return false;
 	}
 }
 
 try {
 	Options::Initialize();
-	if(!Enviro::CheckNodeJS('uglifyjs')) {
+	if(Options::$Compress && (!Enviro::CheckNodeJS('uglifyjs'))) {
 		die(1);
 	}
-	CompressJavascript(
+	MergeJavascript(
 		array(
 			'concrete/js/bootstrap/bootstrap.tooltip.js',
 			'concrete/js/bootstrap/bootstrap.popover.js',
@@ -30,11 +42,11 @@ try {
 		),
 		'concrete/js/bootstrap.js'
 	);
-	CompressJavascript(
+	MergeJavascript(
 		'concrete/js/ccm_app/jquery.cookie.js',
 		'concrete/js/jquery.cookie.js'
 	);
-	CompressJavascript(
+	MergeJavascript(
 		array(
 			'concrete/js/ccm_app/jquery.colorpicker.js',
 			'concrete/js/ccm_app/jquery.hoverIntent.js',
@@ -74,7 +86,7 @@ catch(Exception $x) {
 * @param bool $pathsAreRelativeToRoot Set to true (default) if all the input/output files are relative to Options::$WebrootFolder, false otherwise.
 * @throws Exception Throws an exception in case of errors.
 */
-function CompressJavascript($srcFiles, $dstFile, $options = '', $pathsAreRelativeToRoot = true) {
+function MergeJavascript($srcFiles, $dstFile, $options = '', $pathsAreRelativeToRoot = true) {
 	Console::Write("Generating $dstFile... ");
 	if(!is_array($srcFiles)) {
 		$srcFiles = array($srcFiles);
@@ -122,25 +134,29 @@ function CompressJavascript($srcFiles, $dstFile, $options = '', $pathsAreRelativ
 				$compressMe = $tempFileSrc;
 				break;
 		}
-		$tempFileDst = Enviro::GetTemporaryFileName();
-		if(!is_array($options)) {
-			if((!is_string($options)) || ($options === '')) {
-				$options = array();
+		if(Options::$Compress) {
+			$tempFileDst = Enviro::GetTemporaryFileName();
+			if(!is_array($options)) {
+				if((!is_string($options)) || ($options === '')) {
+					$options = array();
+				}
+				else {
+					$options = array($options);
+				}
 			}
-			else {
-				$options = array($options);
+			$options[] = '-o ' . escapeshellarg($tempFileDst);
+			$options[] = escapeshellarg($compressMe);
+			Enviro::RunNodeJS('uglifyjs', $options);
+			$dstLength = @filesize($tempFileDst);
+			if($dstLength === false) {
+				throw new Exception("Unable to check the size of the file '" . $tempFileDst . "'");
 			}
 		}
-		$options[] = '-o ' . escapeshellarg($tempFileDst);
-		$options[] = escapeshellarg($compressMe);
-		Enviro::RunNodeJS('uglifyjs', $options);
-		if(strlen($tempFileSrc)) {
-			@unlink($tempFileSrc);
-			$tempFileSrc = '';
-		}
-		$dstLength = @filesize($tempFileDst);
-		if($dstLength === false) {
-			throw new Exception("Unable to check the size of the file '" . $tempFileDst . "'");
+		else {
+			$dstLength = @filesize($compressMe);
+			if($dstLength === false) {
+				throw new Exception("Unable to check the size of the file '" . $compressMe . "'");
+			}
 		}
 		$dstDir = dirname($dstFileFull);
 		if(!is_dir($dstDir)) {
@@ -151,10 +167,21 @@ function CompressJavascript($srcFiles, $dstFile, $options = '', $pathsAreRelativ
 		if(is_file($dstFileFull)) {
 			@unlink($dstFileFull);
 		}
-		if(!@rename($tempFileDst, $dstFileFull)) {
-			throw new Exception("Unable to save the result to '$dstFileFull'");
+		if(Options::$Compress) {
+			if(!@rename($tempFileDst, $dstFileFull)) {
+				throw new Exception("Unable to save the result to '$dstFileFull'");
+			}
+			$tempFileDst = '';
 		}
-		$tempFileDst = '';
+		else {
+			if(!@copy($compressMe, $dstFileFull)) {
+				throw new Exception("Unable to save the result to '$dstFileFull'");
+			}
+		}
+		if(strlen($tempFileSrc)) {
+			@unlink($tempFileSrc);
+			$tempFileSrc = '';
+		}
 		$gain = round(100 * (1 - $dstLength/$srcLength), 1);
 		Console::WriteLine('ok.');
 		Console::WriteLine("   Number of source files: $numSrc");
