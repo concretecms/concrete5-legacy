@@ -74,6 +74,9 @@ try {
 		'concrete/js/ccm.app.js',
 		'--no-seqs'
 	);
+	if(is_string(Options::$InitialFolder)) {
+		@chdir(Options::$InitialFolder);
+	}
 }
 catch(Exception $x) {
 	DieForException($x);

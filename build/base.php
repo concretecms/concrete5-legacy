@@ -46,6 +46,7 @@ function DieForException($exception) {
 
 /** Static class holding options.
 * You can extend it with the following static methods:
+* - InitializeDefaults
 * - ShowIntro
 * - ShowOptions
 * - ShowExamples
@@ -118,6 +119,9 @@ class OptionsBase {
 		self::$Win32ToolsFolder = Enviro::MergePath(self::$BuildFolder, 'win32tools');
 		self::$WebrootDefaultFolder = dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . 'web';
 		self::$WebrootFolder = self::$WebrootDefaultFolder;
+		if(class_exists('Options') && method_exists('Options', 'InitializeDefaults')) {
+			Options::InitializeDefaults();
+		}
 		// Let's analyze the command line arguments
 		foreach($argv as $argi => $arg) {
 			if($argi == 0) {

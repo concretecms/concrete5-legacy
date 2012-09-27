@@ -52,6 +52,9 @@ try {
 		'concrete/css/ccm_app/build/ccm.app.less',
 		'concrete/css/ccm.app.css'
 	);
+	if(is_string(Options::$InitialFolder)) {
+		@chdir(Options::$InitialFolder);
+	}
 }
 catch(Exception $x) {
 	DieForException($x);
