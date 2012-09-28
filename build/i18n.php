@@ -1100,8 +1100,9 @@ class POTFile {
 				$args[] = '--from-code=UTF-8'; // Source files are in utf-8
 				$args[] = '--add-comments=i18n'; // Place comment blocks preceding keyword lines in output file if they start with '// i18n: '
 				$args[] = '--keyword'; // Don't use default keywords
-				$args[] = '--keyword=t'; // Look for the first argument of the "t" function for extracting translatable text in singular form
+				$args[] = '--keyword=t:1'; // Look for the first argument of the "t" function for extracting translatable text in singular form
 				$args[] = '--keyword=t2:1,2'; // Look for the first and second arguments of the "t2" function for extracting both the singular and plural forms
+				$args[] = '--keyword=tc:1c,2'; // Look for the first argument of the "tc" function for extracting translation context, and the second argument is the translatable text in singular form.
 				$args[] = '--no-escape'; // Do not use C escapes in output
 				$args[] = '--indent'; // Write using indented style
 				$args[] = '--add-location'; // Generate '#: filename:line' lines
