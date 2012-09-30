@@ -110,7 +110,6 @@ class Concrete5_Model_Page extends Collection {
 		
 		$this->cHasLayouts = $db->GetOne('select count(cvalID) from CollectionVersionAreaLayouts where cID = ?', array($this->cID));
 
-		$this->loadPermissionAssignments();
 		if ($cvID != false) {
 			// we don't do this on the front page
 			$this->loadVersionObject($cvID);
@@ -120,21 +119,7 @@ class Concrete5_Model_Page extends Collection {
 		
 	}	
 	
-	protected function loadPermissionAssignments() {
-		$db = Loader::db();
-		$r = $db->Execute('select pkID, paID from PagePermissionAssignments where cID = ?', array($this->getPermissionsCollectionID()));
-		while ($row =  $r->FetchRow()) {
-			$pk = PermissionKey::getByID($row['pkID']);
-			$pk->setPermissionObject($this);
-			$this->permissionAssignments[$row['pkID']] = PermissionAccess::getByID($row['paID'], $pk);
-		}
-	}
 
-	public function getPermissionAccessObject(PermissionKey $pk) {
-		$pa = $this->permissionAssignments[$pk->getPermissionKeyID()];
-		return $pa;
-	}
-	
 	public function getPermissionObjectIdentifier() {
 		return $this->getPermissionsCollectionID();
 	}
@@ -333,7 +318,6 @@ class Concrete5_Model_Page extends Collection {
 			$pa->addListItem($pe, false, $accessType);
 			$pt = $pk->getPermissionAssignmentObject();
 			$pt->assignPermissionAccess($pa);
-			$this->loadPermissionAssignments();
 		}
 		
 	}
