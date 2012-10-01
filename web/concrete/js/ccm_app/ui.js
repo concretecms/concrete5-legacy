@@ -62,7 +62,9 @@ ccm_showBlockMenu = function(obj, e) {
 
 		if (obj.canArrange) {
 			html += '<li><a class="ccm-menu-icon ccm-icon-move-menu" id="menuArrange' + obj.bID + '-' + obj.aID + '_1" href="javascript:ccm_arrangeInit(false)">' + ccmi18n.arrangeBlock + '</a></li>';
-			html += '<li><a class="ccm-menu-icon ccm-icon-move-menu" id="menuArrange' + obj.bID + '-' + obj.aID + '_2" href="javascript:ccm_arrangeInit(true)">' + ccmi18n.arrangeBlockMulti + '</a></li>';
+			if((typeof(ENABLE_MULTIMOVE_BLOCKS) != "undefined") && ENABLE_MULTIMOVE_BLOCKS) {
+				html += '<li><a class="ccm-menu-icon ccm-icon-move-menu" id="menuArrange' + obj.bID + '-' + obj.aID + '_2" href="javascript:ccm_arrangeInit(true)">' + ccmi18n.arrangeBlockMulti + '</a></li>';
+			}
 		}
 		if (obj.canDelete) {
 			html += '<li><a class="ccm-menu-icon ccm-icon-delete-menu" id="menuDelete' + obj.bID + '-' + obj.aID + '" href="#" onclick="javascript:ccm_deleteBlock(' + obj.cID + ',' + obj.bID + ',' + obj.aID + ', \'' + encodeURIComponent(obj.arHandle) + '\', \'' + obj.deleteMessage + '\');return false;">' + ccmi18n.deleteBlock + '</a></li>';

@@ -551,3 +551,9 @@ if(!defined('SITEMAPXML_DEFAULT_PRIORITY')) {
 	*/
 	define('SITEMAPXML_DEFAULT_PRIORITY', 0.5);
 }
+if(!defined('ENABLE_MULTIMOVE_BLOCKS')) {
+	/** Does the moving on many blocks at once is enabled during page editing?
+	* @var bool
+	*/
+	define('ENABLE_MULTIMOVE_BLOCKS', false);
+}

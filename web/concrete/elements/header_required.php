@@ -50,6 +50,9 @@ if($c->getCollectionAttributeValue('exclude_search_index')) { ?>
 	echo("var CCM_CID = ".($cID?$cID:0).";\r");
 	if (isset($isEditMode)) {
 		echo("var CCM_EDIT_MODE = {$isEditMode};\r");
+		if(defined('ENABLE_MULTIMOVE_BLOCKS') && ENABLE_MULTIMOVE_BLOCKS) {
+			echo "var ENABLE_MULTIMOVE_BLOCKS = true;\r";
+		}
 	}
 	if (isset($isEditMode)) {
 		echo("var CCM_ARRANGE_MODE = {$isArrangeMode};\r");
