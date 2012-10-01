@@ -6,108 +6,108 @@
         <category handle="file" allow-sets="1" package=""/>
     </attributecategories>
     <attributetypes>
-        <attributetype handle="text" name="テキスト" package="">
+        <attributetype handle="text" package="">
             <categories>
                 <category handle="collection"/>
                 <category handle="user"/>
                 <category handle="file"/>
             </categories>
         </attributetype>
-        <attributetype handle="textarea" name="テキストエリア" package="">
+        <attributetype handle="textarea" name="Text Area" package="">
             <categories>
                 <category handle="collection"/>
                 <category handle="user"/>
                 <category handle="file"/>
             </categories>
         </attributetype>
-        <attributetype handle="boolean" name="真偽値" package="">
+        <attributetype handle="boolean" name="Checkbox" package="">
             <categories>
                 <category handle="collection"/>
                 <category handle="user"/>
                 <category handle="file"/>
             </categories>
         </attributetype>
-        <attributetype handle="date_time" name="日付" package="">
+        <attributetype handle="date_time" name="Date/Time" package="">
             <categories>
                 <category handle="collection"/>
                 <category handle="user"/>
                 <category handle="file"/>
             </categories>
         </attributetype>
-        <attributetype handle="image_file" name="画像ファイル" package="">
+        <attributetype handle="image_file" name="Image/File" package="">
             <categories>
                 <category handle="collection"/>
             </categories>
         </attributetype>
-        <attributetype handle="number" name="数字" package="">
-            <categories>
-                <category handle="collection"/>
-                <category handle="user"/>
-                <category handle="file"/>
-            </categories>
-        </attributetype>
-        <attributetype handle="rating" name="評価" package="">
-            <categories>
-                <category handle="collection"/>
-                <category handle="file"/>
-            </categories>
-        </attributetype>
-        <attributetype handle="select" name="選択" package="">
+        <attributetype handle="number" package="">
             <categories>
                 <category handle="collection"/>
                 <category handle="user"/>
                 <category handle="file"/>
             </categories>
         </attributetype>
-        <attributetype handle="address" name="住所" package="">
+        <attributetype handle="rating" package="">
+            <categories>
+                <category handle="collection"/>
+                <category handle="file"/>
+            </categories>
+        </attributetype>
+        <attributetype handle="select" package="">
+            <categories>
+                <category handle="collection"/>
+                <category handle="user"/>
+                <category handle="file"/>
+            </categories>
+        </attributetype>
+        <attributetype handle="address" package="">
             <categories>
                 <category handle="user"/>
             </categories>
         </attributetype>
     </attributetypes>
     <attributekeys>
-        <attributekey handle="meta_title" name="Metaタグタイトル" package="" searchable="1" indexed="1" type="text" category="collection"/>
-        <attributekey handle="meta_description" name="Metaタグ説明" package="" searchable="1" indexed="1" type="textarea" category="collection">
+        <attributekey handle="meta_title" name="Meta Title" package="" searchable="1" indexed="1" type="text" category="collection"/>
+        <attributekey handle="meta_description" name="Meta Description" package="" searchable="1" indexed="1" type="textarea" category="collection">
             <type mode=""/>
         </attributekey>
-        <attributekey handle="meta_keywords" name="Metaタグキーワード" package="" searchable="1" indexed="1" type="textarea" category="collection">
+        <attributekey handle="meta_keywords" name="Meta Keywords" package="" searchable="1" indexed="1" type="textarea" category="collection">
             <type mode=""/>
         </attributekey>
-        <attributekey handle="icon_dashboard" name="管理画面アイコン" package="" searchable="0" indexed="0" type="textarea" internal="1" category="collection">
+        <attributekey handle="icon_dashboard" name="Dashboard Icon" package="" searchable="0" indexed="0" type="textarea" internal="1" category="collection">
             <type mode=""/>
         </attributekey>
-        <attributekey handle="exclude_nav" name="ナビから除く" package="" searchable="1" indexed="1" type="boolean" category="collection">
+        <attributekey handle="exclude_nav" name="Exclude From Nav" package="" searchable="1" indexed="1" type="boolean" category="collection">
             <type checked=""/>
         </attributekey>
-        <attributekey handle="exclude_page_list" name="ページリストから除く" package="" searchable="1" indexed="1" type="boolean" category="collection">
+        <attributekey handle="exclude_page_list" name="Exclude From Page List" package="" searchable="1" indexed="1" type="boolean" category="collection">
             <type checked=""/>
         </attributekey>
-        <attributekey handle="header_extra_content" name="追加ヘッダー要素" package="" searchable="1" indexed="1" type="textarea" category="collection">
+        <attributekey handle="header_extra_content" name="Header Extra Content" package="" searchable="1" indexed="1" type="textarea" category="collection">
             <type mode=""/>
         </attributekey>
-        <attributekey handle="exclude_search_index" name="検索インデックスから除く" package="" searchable="1" indexed="1" type="boolean" category="collection">
+        <attributekey handle="exclude_search_index" name="Exclude From Search Index" package="" searchable="1" indexed="1" type="boolean" category="collection">
             <type checked=""/>
         </attributekey>
-        <attributekey handle="exclude_sitemapxml" name="sitemap.xmlから除く" package="" searchable="1" indexed="1" type="boolean" category="collection">
+        <attributekey handle="exclude_sitemapxml" name="Exclude From sitemap.xml" package="" searchable="1" indexed="1" type="boolean" category="collection">
             <type checked=""/>
         </attributekey>
-        <attributekey handle="profile_private_messages_enabled" name="プライベートメッセージを受信する" package="" searchable="1" indexed="1" type="boolean" category="user" profile-displayed="0" profile-editable="1" profile-required="0" register-editable="1" register-required="0" member-list-displayed="0">
+        <attributekey handle="profile_private_messages_enabled" name="I would like to receive private messages." package="" searchable="1" indexed="1" type="boolean" category="user" profile-displayed="0" profile-editable="1" profile-required="0" register-editable="1" register-required="0" member-list-displayed="0">
             <type checked="1"/>
         </attributekey>
-        <attributekey handle="profile_private_messages_notification_enabled" name="プライベートメッセージを受信した際に通知をEメールで受け取る" package="" searchable="1" indexed="1" type="boolean" category="user" profile-displayed="0" profile-editable="1" profile-required="0" register-editable="1" register-required="0" member-list-displayed="0">
+        <attributekey handle="profile_private_messages_notification_enabled" name="Send me email notifications when I receive a private message." package="" searchable="1" indexed="1" type="boolean" category="user" profile-displayed="0" profile-editable="1" profile-required="0" register-editable="1" register-required="0" member-list-displayed="0">
             <type checked="1"/>
         </attributekey>
-        <attributekey handle="width" name="幅" package="" searchable="1" indexed="1" type="number" category="file"/>
-        <attributekey handle="height" name="高さ" package="" searchable="1" indexed="1" type="number" category="file"/>
+        <attributekey handle="width" name="Width" package="" searchable="1" indexed="1" type="number" category="file"/>
+        <attributekey handle="height" name="Height" package="" searchable="1" indexed="1" type="number" category="file"/>
     </attributekeys>
     <attributesets>
-        <attributeset handle="page_header" name="ページヘッダー" package="" locked="0" category="collection">
+        <attributeset handle="page_header" name="Page Header" package="" locked="0" category="collection">
             <attributekey handle="meta_title"/>
             <attributekey handle="meta_description"/>
             <attributekey handle="meta_keywords"/>
             <attributekey handle="header_extra_content"/>
         </attributeset>
-        <attributeset handle="navigation" name="ナビゲーション＆インデックス" package="" locked="0" category="collection">
+        <attributeset handle="navigation" name="Navigation and Indexing" package="" locked="0" category="collection">
             <attributekey handle="exclude_nav"/>
             <attributekey handle="exclude_page_list"/>
             <attributekey handle="exclude_search_index"/>
