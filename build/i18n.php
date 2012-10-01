@@ -1121,6 +1121,7 @@ class POTFile {
 				Console::Write('  Fixing .pot file... ');
 				$pot->FixHeader($packageInfo);
 				$pot->FixFilesSlash();
+				$pot->FixI18NComments();
 				if(!Enviro::IsWin()) {
 					$pot->Replace_CRLF_LF();
 				}
@@ -1279,6 +1280,13 @@ class POTFile {
 	public function FixFilesSlash() {
 		foreach($this->Entries as $entry) {
 			$entry->FixFilesSlash();
+		}
+	}
+
+	/** Remove the superfluous i18n at the beginning of comments. */
+	public function FixI18NComments() {
+		foreach($this->Entries as $entry) {
+			$entry->FixI18NComments();
 		}
 	}
 
@@ -1750,6 +1758,19 @@ class POEntry {
 		for($i = 0; $i < $n; $i++) {
 			if(strpos($this->Comments[$i], '#: ') === 0) {
 				$this->Comments[$i] = str_replace('\\', '/', $this->Comments[$i]);
+			}
+		}
+	}
+
+	/** Remove the superfluous i18n at the beginning of comments. */
+	public function FixI18NComments() {
+		$n = count($this->Comments);
+		for($i = 0; $i < $n; $i++) {
+			if(preg_match('/^#\\.\s/', $this->Comments[$i])) {
+				if(preg_match('/^#\\.\s+i18n\s*(:\s*)(.+)$/', $this->Comments[$i], $m)) {
+					$this->Comments[$i] = '#. ' . $m[2];
+				}
+				break;
 			}
 		}
 	}
