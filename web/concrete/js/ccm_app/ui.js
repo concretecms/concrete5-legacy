@@ -637,28 +637,25 @@ ccm_saveArrangement = function(cID) {
 	}
 
 	ccm_mainNavDisableDirectExit();
-	var map = {};
+	var serial = '';
 	$('div.ccm-area').each(function() {
-		var $area = $(this);
+		var area = this;
+		var $area = $(area);
+		var aID = $area.attr('id').substring(1);
 		$.each($area.sortable('toArray'), function(itemIndex, itemId) {
 			if(itemId != '' && itemId.substring(0, 1) == 'b') {
 				var $block = $('#' + itemId);
-				var bID = itemId.substring(1, itemId.indexOf('-'));
-				if(!map[bID] || $.contains(map[bID].$area, $area)) {
-					map[bID] = {$area: $area, $block: $block};
+				if($block.closest('div.ccm-area')[0] == area) {
+					var bID = itemId.substring(1, itemId.indexOf('-'));
+					serial += '&area[' + aID + '][]=' + bID;
+					var cs = $('#' + itemId).attr('custom-style');
+					if(cs) {
+						serial += '-' + cs;
+					}
 				}
 			}
 		});
 	});
-	var serial = '';
-	$.each(map, function(bID, ab) {
-		serial += '&area[' + ab.$area.attr('id').substring(1) + '][]=' + bID;
-		var cs = ab.$block.attr('custom-style');
-		if(cs) {
-			serial += '-' + cs;
-		}
-	});
-
  	$.ajax({
  		type: 'POST',
  		url: CCM_DISPATCHER_FILENAME,
