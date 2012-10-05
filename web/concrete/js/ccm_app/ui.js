@@ -648,7 +648,7 @@ ccm_saveArrangement = function(cID) {
 				if($block.closest('div.ccm-area')[0] == area) {
 					var bID = itemId.substring(1, itemId.indexOf('-'));
 					serial += '&area[' + aID + '][]=' + bID;
-					var cs = $('#' + itemId).attr('custom-style');
+					var cs = $block.attr('custom-style');
 					if(cs) {
 						serial += '-' + cs;
 					}
