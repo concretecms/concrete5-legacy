@@ -45,13 +45,12 @@ if (!defined('DATE_APP_GENERIC_MDYT')) {
 	define('DATE_APP_GENERIC_MDYT', t('n/j/Y \a\t g:i A'));
 }
 
-if (ACTIVE_LOCALE != 'en_US' && (!defined('DATE_APP_GENERIC_MDY'))) {
-	define('DATE_APP_GENERIC_MDY', 'Y-m-d');
-	define('DATE_APP_DATE_PICKER', 'yy-mm-dd');
+if (!defined('DATE_APP_GENERIC_MDY')) {
+	define('DATE_APP_GENERIC_MDY', t('Y-m-d'));
 }
 
-if (!defined('DATE_APP_GENERIC_MDY')) {
-	define('DATE_APP_GENERIC_MDY', t('n/j/Y'));
+if (!defined('DATE_APP_DATE_PICKER')) {
+	define('DATE_APP_DATE_PICKER', t('yy-mm-dd'));
 }
 
 if (!defined('DATE_APP_GENERIC_MDY_FULL')) {
