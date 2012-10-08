@@ -540,7 +540,6 @@ class Enviro {
 			Console::WriteLine("In order to use this script you need the '$package' package of nodejs installed on your machine", true);
 			if($hasNPM) {
 				Console::WriteLine('In order to install it simply open a command line shell and type:', true);
-				Console::WriteLine("npm install $package --global", true);
 			}
 			else {
 				Console::WriteLine("You first need to install nodejs and npm.", true);
@@ -561,7 +560,15 @@ class Enviro {
 						break;
 				}
 				Console::WriteLine('Once you installed nodejs and npm, simply open a command line shell and type:', true);
-				Console::WriteLine("npm install $package --global", true);
+			}
+			switch($os) {
+				case self::OS_LINUX:
+				case self::OS_MAC_OSX:
+					Console::WriteLine("sudo npm install $package --global", true);
+					break;
+				default;
+					Console::WriteLine("npm install $package --global", true);
+					break;
 			}
 			return false;
 		}

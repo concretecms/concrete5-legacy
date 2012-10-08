@@ -240,7 +240,7 @@ class Options extends OptionsBase {
 					Console::WriteLine('To install MacPorts please see this page: http://www.macports.org/install.php', true);
 					Console::WriteLine('Once MacPorts is installed, you may run this command:', true);
 					Console::WriteLine('sudo port install gettext', true);
-					break;
+					die(1);
 				case Enviro::OS_WIN:
 					Console::Write('There\'s a ready-to-use version on ftp.gnome.org. Would you like me to download it automatically? [Y/n] ', true);
 					if(!Console::AskYesNo(true, true)) {
@@ -893,7 +893,13 @@ class PackageInfo {
 		if(!is_file($fn = Enviro::MergePath($webroot, 'concrete/config/version.php'))) {
 			throw new Exception($webroot . ' is not the valid concrete5 web root directory (the version file does not exist).');
 		}
-		@include $fn;
+		$fc = self::GetEvaluableContent($fn);
+		@ob_start();
+		$evalued = eval($fc);
+		@ob_end_clean();
+		if($evalued === false) {
+			throw new Exception("Unable to parse the version of CONCRETE5 (file '$fn').");
+		}
 		if(empty($APP_VERSION)) {
 			throw new Exception("Unable to parse the concrete5 version file '$fn'.");
 		}
@@ -1037,26 +1043,11 @@ EOT
 			global $php_errormsg;
 			throw new Exception("Unable to read file '$phpFilename': $php_errormsg");
 		}
-		$p1 = strpos($fc, $s1 = '<?php');
-		$p2 = strpos($fc, $s2 = '<?');
-		if($p2 === false) {
-			if($p1 === false) {
-				throw new Exception("Unable to parse the file '$phpFilename'.");
-			}
-			$p = $p1;
-			$s = $s1;
-		}
-		elseif($p1 === false) {
-			$p = $p2;
-			$s = $s2;
-		}
-		elseif($p1 <= $p2) {
-			$p = $p1;
-			$s = $s1;
-		}
-		else {
-			$p = $p2;
-			$s = $s2;
+		$fc = str_replace('<?', '<?php', str_replace('<?php', '<?', $fc));
+		$fc = preg_replace('/<\?php\s*=s*/', '<?php echo ', $fc);
+		$p = strpos($fc, $s = '<?php');
+		if($p === false) {
+			throw new Exception("Unable to parse the file '$phpFilename'.");
 		}
 		return trim(substr($fc, $p + strlen($s)));
 	}
