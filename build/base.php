@@ -24,8 +24,8 @@ function SetupIni() {
 /** Catches a php error/warning and raises an exception.
 * @param int $errNo The level of the error raised.
 * @param string $errstr the error message.
-* @param unknown $errfile The filename that the error was raised in.
-* @param unknown $errline The line number the error was raised at.
+* @param string $errfile The filename that the error was raised in.
+* @param int $errline The line number the error was raised at.
 * @throws Exception Throws an Exception when an error is detected during the script execution.
 */
 function ErrorCatcher($errno, $errstr, $errfile, $errline) {
@@ -226,10 +226,10 @@ class Console {
 	* @return string
 	*/
 	public static function ReadLine() {
-		$hIn = fopen ('php://stdin', 'r');
-		$line = (string)@fgets($hIn);
-		fclose($hIn);
-		return $line;
+		$hIn = fopen('php://stdin', 'r');
+		$line = @fgets($hIn);
+		@fclose($hIn);
+		return ($line === false) ? '' : $line;
 	}
 
 	/** Read a yes/no answer from the command line.
@@ -259,19 +259,139 @@ class Console {
 
 /** Functions related to the current executing environment. */
 class Enviro {
-
-	/** We're in a Windows operating system?
-	* @return boolean
+	/** OS kind: Linux.
+	* @var int
 	*/
-	public static function IsWin() {
-		return (stripos(PHP_OS , 'win') === 0) ? true : false;
-	}
+	const OS_LINUX = 1;
 
-	/** File and folder names are case insensitive?
-	* @return boolean
+	/** OS kind: Mac OS X.
+	* @var int
 	*/
-	public static function FilesAreCaseInsensitive() {
-		return self::IsWin();
+	const OS_MAC_OSX = 2;
+
+	/** OS kind: Windows.
+	* @var int
+	*/
+	const OS_WIN = 3;
+
+	/** OS kind: FreeBSD.
+	* @var int
+	*/
+	const OS_FREEBSD = 4;
+
+	/** OS kind: NetWare.
+	* @var int
+	*/
+	const OS_NETWARE = 5;
+
+	/** OS kind: Sun Solaris.
+	* @var int
+	*/
+	const OS_SUN = 6;
+
+	/** OS kind: MacOS (old).
+	* @var int
+	*/
+	const OS_MAC_OLD = 7;
+
+	/** OS kind: HP-UX.
+	* @var int
+	*/
+	const OS_HPUX = 8;
+
+	/** OS kind: AIX.
+	* @var int
+	*/
+	const OS_AIX = 9;
+
+	/** OS kind: Cygwin.
+	* @var int
+	*/
+	const OS_CYGWIN = 10;
+
+	/** OS kind: MSYS.
+	* @var int
+	*/
+	const OS_MSYS = 11;
+
+	/** OS kind: UWIN.
+	* @var int
+	*/
+	const OS_UWIN = 12;
+
+	/** OS kind: IRIX.
+	* @var int
+	*/
+	const OS_IRIX = 13;
+
+	/** OS kind: MINIX.
+	* @var int
+	*/
+	const OS_MINIX = 14;
+
+	/** OS kind: DragonFlyBSD.
+	* @var int
+	*/
+	const OS_DRAGONFLYBSD = 15;
+
+	/** OS kind: unknown.
+	* @var int
+	*/
+	const OS_UNKNOWN = 0;
+
+	/** Return the OS kind (one of the Enviro::OS_… constants).
+	* Data has been taken from php source code and from http://en.wikipedia.org/wiki/Uname
+	* @return int
+	*/
+	public static function GetOS() {
+		if((stripos(PHP_OS , 'Linux') === 0) || (stripos(PHP_OS, 'kFreeBSD') !== false)) {
+			return self::OS_LINUX;
+		}
+		elseif((stripos(PHP_OS , 'Darwin') === 0) || (stripos(PHP_OS , 'OSX') === 0)) {
+			return self::OS_MAC_OSX;
+		}
+		elseif(stripos(PHP_OS , 'WIN') === 0) {
+			return self::OS_WIN;
+		}
+		elseif(stripos(PHP_OS , 'FreeBSD') === 0) {
+			return self::OS_FREEBSD;
+		}
+		elseif(stripos(PHP_OS , 'NetWare') === 0) {
+			return self::OS_NETWARE;
+		}
+		elseif((stripos(PHP_OS , 'Sun') === 0) || (stripos(PHP_OS , 'Solaris') === 0)) {
+			return self::OS_NETWARE;
+		}
+		elseif(stripos(PHP_OS , 'Mac') === 0) {
+			return self::OS_MAC_OLD;
+		}
+			elseif(stripos(PHP_OS , 'HP-UX') === 0) {
+			return self::OS_HPUX;
+		}
+			elseif(stripos(PHP_OS , 'AIX') === 0) {
+			return self::OS_AIX;
+		}
+			elseif(stripos(PHP_OS , 'CYGWIN') === 0) {
+			return self::OS_CYGWIN;
+		}
+		elseif(stripos(PHP_OS , 'MINGW') === 0) {
+			return self::OS_MSYS;
+		}
+			elseif(stripos(PHP_OS , 'UWIN') === 0) {
+			return self::OS_UWIN;
+		}
+		elseif(stripos(PHP_OS , 'IRIX') === 0) {
+			return self::OS_IRIX;
+		}
+			elseif(stripos(PHP_OS , 'Minix') === 0) {
+			return self::OS_MINIX;
+		}
+		elseif(stripos(PHP_OS , 'DragonFly') === 0) {
+			return self::OS_DRAGONFLYBSD;
+		}
+		else {
+			return self::OS_UNKNOWN;
+		}
 	}
 
 	/** Check if a string is a valid filename (without any path info).
@@ -279,7 +399,7 @@ class Enviro {
 	* @return boolean
 	*/
 	public static function IsFilenameWithoutPath($filename) {
-		$filename = is_null($filename) ? '' : (string)$filename;
+		$filename = is_null($filename) ? '' : strval($filename);
 		if(!strlen($filename)) {
 			return false;
 		}
@@ -291,7 +411,7 @@ class Enviro {
 			case '..':
 				return false;
 		}
-		if(!preg_match('/^[^\\\\\\/\?*:\|"<>]+$/', $filename)) {
+		if(strpbrk($filename, '\\/:?|"<>*') !== false) {
 			return false;
 		}
 		return true;
@@ -326,12 +446,35 @@ class Enviro {
 		}
 	}
 
+	/** Return the system temporary directory (or '' if it can't be found).
+	* @return string
+	* @throws Exception Throws an Exception in case the temporary directory can't be found.
+	*/
+	public static function GetTemporaryDirectory() {
+		$eligible = array();
+		if(function_exists('sys_get_temp_dir')) {
+			$eligible[] = @sys_get_temp_dir();
+		}
+		foreach(array('TMPDIR', 'TEMP', 'TMP') as $env) {
+			$eligible[] = @getenv($env);
+		}
+		foreach($eligible as $f) {
+			if(is_string($f) && strlen($f)) {
+				$f2 = @realpath($f);
+				if(($f2 !== false) && @is_dir($f2)) {
+					return $f2;
+				}
+			}
+		}
+		throw new Exception('The temporary directory cannot be found.');
+	}
+
 	/** Create a temporary file.
 	* @return string
 	* @throws Exception Throws an Exception in case the temporary file couldn't be created.
 	*/
 	public static function GetTemporaryFileName() {
-		$tempFolder = self::IsWin() ? '%TEMP%' : '/var/tmp';
+		$tempFolder = self::GetTemporaryDirectory();
 		$tempFile = @tempnam($tempFolder, 'c5-');
 		if($tempFile === false) {
 			global $php_errormsg;
@@ -340,17 +483,16 @@ class Enviro {
 		return $tempFile;
 	}
 
-	/** Return the NPM package for the specified command.
+	/** Return the NPM package name for the specified NodeJS command.
 	* @param string $command The command for which you want the package name.
-	* @param bool $apt true to return the packagename for apt-get install packagename
 	* @return string
 	*/
-	private static function GetNodePackageName($command, $apt = false) {
+	private static function GetNodeJSPackageName($command) {
 		switch($command) {
 			case 'uglifyjs':
-				return $apt ? 'node-uglify' : 'uglify-js';
+				return 'uglify-js';
 			case 'lessc':
-				return $apt ? 'node-less' : 'less';
+				return 'less';
 			default:
 				return $command;
 		}
@@ -361,79 +503,85 @@ class Enviro {
 	* @return bool Return false if the command is not available (the user has already been warned about it), true if all is ok.
 	*/
 	public static function CheckNodeJS($command) {
-		if(self::IsWin()) {
-			try {
-				self::Run('node.exe', '--version');
-			}
-			catch(Exception $x) {
-				Console::WriteLine('In order to use this script you need nodejs installed on your machine', true);
-				Console::WriteLine('You can download it from http://nodejs.org/download/ (please choose the Windows Installer).', true);
-				return false;
-			}
-			$found = false;
-			foreach(explode(';', getenv('PATH')) as $path) {
-				if(is_file(self::MergePath($path, "$command.cmd"))) {
-					$found = true;
-					break;
+		$os = self::GetOS();
+		$hasCommand = $hasNPM = false;
+		switch($os) {
+			case self::OS_WIN:
+				try {
+					self::Run('node.exe', '--version');
+					$hasNPM = true;
+					if(strlen(self::FindPathFor($command, 'cmd'))) {
+						$hasCommand = true;
+					}
 				}
-			}
-			if(!$found) {
-				$npmPackage = self::GetNodePackageName($command);
-				Console::WriteLine("In order to use this script you need to install the npm package '$npmPackage'.", true);
-				Console::WriteLine("To do that simply type the following command in a shell:", true);
-				Console::WriteLine("npm install $npmPackage --global", true);
-				return false;
-			}
+				catch(Exception $x) {
+				}
+				break;
+			default:
+				try {
+					self::Run($command, '/dev/null');
+					$hasCommand = $hasNPM = true;
+				}
+				catch(Exception $x) {
+					try {
+						self::Run('npm', '--version');
+						$hasNPM = true;
+					}
+					catch(Exception $x) {
+					}
+				}
+				break;
+		}
+		if($hasCommand) {
+			return true;
 		}
 		else {
-			try {
-				self::Run($command, '/dev/null');
+			$package = self::GetNodeJSPackageName($command);
+			Console::WriteLine("In order to use this script you need the '$package' package of nodejs installed on your machine", true);
+			if($hasNPM) {
+				Console::WriteLine('In order to install it simply open a command line shell and type:', true);
+				Console::WriteLine("npm install $package --global", true);
 			}
-			catch(Exception $x) {
-				$aptPackage = self::GetNodePackageName($command, true);
-				$npmPackage = self::GetNodePackageName($command);
-				Console::WriteLine("In order to use this script you need the $command command installed on your machine", true);
-				Console::WriteLine('Usually on *nix you can install it with the following command:', true);
-				Console::WriteLine("sudo apt-get install $aptPackage", true);
-				Console::WriteLine('or', true);
-				Console::WriteLine("sudo apt-get install npm ; sudo npm install $npmPackage --global", true);
-				return false;
+			else {
+				Console::WriteLine("You first need to install nodejs and npm.", true);
+				switch($os) {
+					case self::OS_LINUX:
+						Console::WriteLine('Depending on your Linux distro, you could install it with the following command:', true);
+						Console::WriteLine('sudo apt-get install npm', true);
+						Console::WriteLine('or you can get it from http://nodejs.org/download/', true);
+						break;
+					case self::OS_WIN:
+						Console::WriteLine('You can download it from http://nodejs.org/download/ (please choose the Windows Installer).', true);
+						break;
+					case self::OS_MAC_OSX:
+						Console::WriteLine('You can download it from http://nodejs.org/download/ (please choose the Mac OS X Installer).', true);
+						break;
+					default:
+						Console::WriteLine('You can download it from http://nodejs.org/download/', true);
+						break;
+				}
+				Console::WriteLine('Once you installed nodejs and npm, simply open a command line shell and type:', true);
+				Console::WriteLine("npm install $package --global", true);
 			}
+			return false;
 		}
-		return true;
 	}
 
-	/** Execute a shell command (build-in if *nix; an exe file under OptionsBase::$Win32ToolsFolder if we're in Windows).
-	* @param string $command The command to execute (assumes an exe in OptionsBase::$Win32ToolsFolder folder if OS is Windows).
-	* @param string|array $arguments If string, the arguments will be used as is, if array they will be escaped.
+	/** Execute a nodejs command.
+	* @param string $command The command to execute.
+	* @param string|array $arguments The argument(s) of the program.
 	* @param int|array $goodResult Valid return code(s) of the command (default: 0).
 	* @param out array $output The output from stdout/stderr of the command.
 	* @return int Return the command result code.
 	* @throws Exception Throws an exception in case of errors.
 	*/
-	public static function RunTool($command, $arguments = '', $goodResult = 0, &$output = null) {
-		if(self::IsWin()) {
-			$command = Enviro::MergePath(OptionsBase::$Win32ToolsFolder, "$command.exe");
-			if(!is_file($command)) {
-				throw new Exception('The executable file ' . $command . ' does not exists.');
-			}
-		}
-		return self::Run($command, $arguments, $goodResult, $output);
-	}
-
 	public static function RunNodeJS($command, $arguments = '', $goodResult = 0, &$output = null) {
-		if(self::IsWin()) {
-			$dir = '';
-			foreach(explode(';', getenv('PATH')) as $path) {
-				if(is_file(self::MergePath($path, "$command.cmd"))) {
-					$dir = $path;
-					break;
-				}
-			}
-			if(!strlen($dir)) {
+		if(self::GetOS() == self::OS_WIN) {
+			$cmdName = self::FindPathFor($command, 'cmd');
+			if(!strlen($cmdName)) {
 				throw new Exception("Unable to find npm command $command");
 			}
-			$fullCommandPath = self::MergePath($path, 'node_modules', self::GetNodePackageName($command), 'bin', $command);
+			$fullCommandPath = self::MergePath(dirname($cmdName), 'node_modules', self::GetNodeJSPackageName($command), 'bin', $command);
 			if(!is_file($fullCommandPath)) {
 				throw new Exception('The executable file ' . $fullCommandPath . ' does not exists.');
 			}
@@ -451,10 +599,28 @@ class Enviro {
 		return self::Run($command, $arguments, $goodResult, $output);
 	}
 
+	/** Execute a shell command (build-in if *nix; an exe file in the OptionsBase::$Win32ToolsFolder folder or under the PATH in the if we're in Windows).
+	* @param string $command The command to execute (assumes an exe in OptionsBase::$Win32ToolsFolder folder if OS is Windows).
+	* @param string|array $arguments The argument(s) of the program.
+	* @param int|array $goodResult Valid return code(s) of the command (default: 0).
+	* @param out array $output The output from stdout/stderr of the command.
+	* @return int Return the command result code.
+	* @throws Exception Throws an exception in case of errors.
+	*/
+	public static function RunTool($command, $arguments = '', $goodResult = 0, &$output = null) {
+		if(self::GetOS() == self::OS_WIN) {
+			$fullname = self::FindPathFor($command, 'exe', OptionsBase::$Win32ToolsFolder);
+			if(!is_file($fullname)) {
+				throw new Exception('The executable file ' . $fullname . ' does not exists.');
+			}
+			$command = $fullname;
+		}
+		return self::Run($command, $arguments, $goodResult, $output);
+	}
 
 	/** Execute a command.
-	* @param string $command The command to be executet.
-	* @param string|array $arguments If string, the arguments will be used as is, if array they will be escaped.
+	* @param string $command The command to execute.
+	* @param string|array $arguments The argument(s) of the program.
 	* @param int|array $goodResult Valid return code(s) of the command (default: 0).
 	* @param out array $output The output from stdout/stderr of the command.
 	* @return int Return the command result code.
@@ -490,5 +656,47 @@ class Enviro {
 			throw new Exception("$command failed: " . implode("\n", $output));
 		}
 		return $rc;
+	}
+
+	/** Find the path of a command in system paths.
+	* @param string $command The command to find.
+	* @param string $addExtensionForWindows The extension to be added if current OS is Windows (default: exe)
+	* @param string|array A directory (or a list of directories) where to search the program.
+	* @return Returns the full path of the command (or an empty string if not found).
+	*/
+	private static function FindPathFor($command, $addExtensionForWindows = 'exe', $additionalFolders = array()) {
+		$checkFolders = array();
+		if(is_array($additionalFolders)) {
+			$checkFolders = array_merge($checkFolders, $additionalFolders);
+		}
+		elseif(is_string($additionalFolders)) {
+			$checkFolders[] = $additionalFolders;
+		}
+		$path = @getenv('PATH');
+		if(($path !== false) && strlen($path)) {
+			$checkFolders = array_merge($checkFolders, explode(PATH_SEPARATOR, $path));
+		}
+		$folders = array();
+		foreach($checkFolders as $f) {
+			if(strlen($f) && @is_dir($f)) {
+				$f2 = @realpath($f);
+				if($f2 !== false) {
+					$folders[] = $f2;
+				}
+			}
+		}
+		if(self::GetOS() == self::OS_WIN) {
+			$addExtensionForWindows = is_string($addExtensionForWindows) ? ltrim($addExtensionForWindows, '.') : '';
+			if(strlen($addExtensionForWindows)) {
+				$command .= '.' . $addExtensionForWindows;
+			}
+		}
+		foreach($folders as $folder) {
+			$fullname = self::MergePath($folder, $command);
+			if(@is_file($fullname)) {
+				return $fullname;
+			}
+		}
+		return '';
 	}
 }

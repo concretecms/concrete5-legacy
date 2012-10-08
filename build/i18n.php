@@ -78,7 +78,7 @@ class Options extends OptionsBase {
 		Console::WriteLine('gettext uses mainly 3 kind of files for translations:');
 		Console::WriteLine('- .pot files (\'Portable Object Template\'): these files contains the base translations, extracted directly from the source files. There should be just one .pot file for the concrete5 core and one for each package.');
 		Console::WriteLine('- .po files (\'Portable Object\'): these files contains the translations, and can be generated/updated starting from .pot files. There should be one .po file for each language.');
-		Console::WriteLine('You can translate the files with Poedit (http://www.poedit.net/)' . (Enviro::IsWin() ? ' or with BetterPOEditor (http://sourceforge.net/projects/betterpoeditor)' : '') . '.');
+		Console::WriteLine('You can translate the files with Poedit (http://www.poedit.net/)' . ((Enviro::GetOS() == Enviro::OS_WIN) ? ' or with BetterPOEditor (http://sourceforge.net/projects/betterpoeditor)' : '') . '.');
 		Console::WriteLine('- .mo files (\'Machine Object\'): these files are a compiled version of the .po files, and are those used at runtime (when distributing concrete5 and/or packages you need to include just those files).');
 		Console::WriteLine('The translation process can be summarized as follows:');
 		Console::WriteLine('generate .pot -> generate .po for each language -> translate the .po files -> generate the .mo files');
@@ -107,7 +107,7 @@ class Options extends OptionsBase {
 		global $argv;
 		Console::WriteLine('The simplest: php ' . $argv[0] . ' --interactive');
 		Console::WriteLine('To create the .pot/.po/.mo files for concrete5: php ' . $argv[0]);
-		Console::WriteLine('To create the files for concrete5 (with path specification): php ' . $argv[0] . ' --webroot=' . (Enviro::IsWin() ? 'C:\\Inetpub\\wwwroot' : '/var/www'));
+		Console::WriteLine('To create the files for concrete5 (with path specification): php ' . $argv[0] . ' --webroot=' . ((Enviro::GetOS() == Enviro::OS_WIN) ? 'C:\\Inetpub\\wwwroot' : '/var/www'));
 		Console::WriteLine('To create the files for the package foobar: php ' . $argv[0] . ' --package=foobar');
 		Console::WriteLine('To create the .pot file for concrete5 AND all the files for the package foobar: php ' . $argv[0] . ' --createpot=yes --package=foobar');
 	}
@@ -221,42 +221,53 @@ class Options extends OptionsBase {
 				$packageInfo->PostInitialize();
 			}
 		}
+		$commands = array('xgettext', 'msgmerge', 'msgfmt');
 		try {
-			Enviro::RunTool('xgettext', '--version');
-			Enviro::RunTool('msgmerge', '--version');
-			Enviro::RunTool('msgfmt', '--version');
+			foreach($commands as $command) {
+				Enviro::RunTool($command, '--version');
+			}
 		}
 		catch(Exception $x) {
-			Console::WriteLine('This tools require the gettext functions.', true);
-			if(Enviro::IsWin()) {
-				Console::Write('There\'s a ready-to-use version on ftp.gnome.org. Would you like me to download it automatically? [Y/n] ', true);
-				if(!Console::AskYesNo(true, true)) {
-					Console::WriteLine('Please put gettext functions in the following folder:', true);
-					Console::WriteLine(self::$Win32ToolsFolder, true);
+			Console::WriteLine('This tools require the following gettext functions:', true);
+			Console::WriteLine(implode(' ', $commands), true);
+			switch(Enviro::GetOS()) {
+				case Enviro::OS_LINUX:
+					Console::WriteLine('Depending on your Linux distro, you could install it with the following command:', true);
+					Console::WriteLine('sudo apt-get install gettext', true);
 					die(1);
-				}
-				self::DownloadZip(
-					'http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies/gettext-runtime_0.18.1.1-1_win32.zip',
-					array(
-						'bin/intl.dll' => self::$Win32ToolsFolder
-					)
-				);
-				self::DownloadZip(
-					'http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies/gettext-tools-dev_0.18.1.1-1_win32.zip',
-					array(
-						'bin/libgettextlib-0-18-1.dll' => self::$Win32ToolsFolder,
-						'bin/libgettextsrc-0-18-1.dll' => self::$Win32ToolsFolder,
-						'bin/libgcc_s_dw2-1.dll' => self::$Win32ToolsFolder,
-						'bin/xgettext.exe' => self::$Win32ToolsFolder,
-						'bin/msgmerge.exe' => self::$Win32ToolsFolder,
-						'bin/msgfmt.exe' => self::$Win32ToolsFolder
-					)
-				);
-			}
-			else {
-				Console::WriteLine('Usually under *nix you can install it with:', true);
-				Console::WriteLine('sudo apt-get install gettext', true);
-				die(1);
+				case Enviro::OS_MAC_OSX:
+					Console::WriteLine('MacPorts has a version of them.', true);
+					Console::WriteLine('To install MacPorts please see this page: http://www.macports.org/install.php', true);
+					Console::WriteLine('Once MacPorts is installed, you may run this command:', true);
+					Console::WriteLine('sudo port install gettext', true);
+					break;
+				case Enviro::OS_WIN:
+					Console::Write('There\'s a ready-to-use version on ftp.gnome.org. Would you like me to download it automatically? [Y/n] ', true);
+					if(!Console::AskYesNo(true, true)) {
+						Console::WriteLine('Please put gettext functions in the following folder:', true);
+						Console::WriteLine(self::$Win32ToolsFolder, true);
+						die(1);
+					}
+					self::DownloadZip(
+						'http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies/gettext-runtime_0.18.1.1-1_win32.zip',
+						array(
+							'bin/intl.dll' => self::$Win32ToolsFolder
+						)
+					);
+					self::DownloadZip(
+						'http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies/gettext-tools-dev_0.18.1.1-1_win32.zip',
+						array(
+							'bin/libgettextlib-0-18-1.dll' => self::$Win32ToolsFolder,
+							'bin/libgettextsrc-0-18-1.dll' => self::$Win32ToolsFolder,
+							'bin/libgcc_s_dw2-1.dll' => self::$Win32ToolsFolder,
+							'bin/xgettext.exe' => self::$Win32ToolsFolder,
+							'bin/msgmerge.exe' => self::$Win32ToolsFolder,
+							'bin/msgfmt.exe' => self::$Win32ToolsFolder
+						)
+					);
+					break;
+				default:
+					die(1);
 			}
 		}
 		self::$InitializeData = null;
@@ -488,7 +499,7 @@ class Interactive {
 					}
 					$package = '';
 					for(;;) {
-						Console::Write('Enter new package name [? for pick it]: ');
+						Console::Write('Enter new package name [? to pick it]: ');
 						$s = trim(Console::ReadLine());
 						if(!strlen($s)) {
 							break;
@@ -523,16 +534,10 @@ class Interactive {
 						}
 						else {
 							if(Enviro::IsFilenameWithoutPath($s)) {
-								if(Enviro::FilesAreCaseInsensitive()) {
-									foreach($available as $a) {
-										if(strcasecmp($a, $s) === 0) {
-											$package = $a;
-											break;
-										}
-									}
-								} else {
-									if(array_search($s, $available) !== false) {
-										$package = $s;
+								foreach($available as $a) {
+									if(strcasecmp($a, $s) === 0) {
+										$package = $a;
+										break;
 									}
 								}
 							}
@@ -631,9 +636,9 @@ class Interactive {
 		for(;;) {
 			$validOptions = array();
 			self::ShowTitle('WORK ON ' . (strlen($package) ? "PACKAGE $package" : 'concrete5 core') . ' v' . $packageInfo->Version);
-			self::ShowEntry($validOptions[] = 'T', 'Create .pot template');
-			self::ShowEntry($validOptions[] = 'P', 'Create .po language files');
-			self::ShowEntry($validOptions[] = 'C', 'Compile .po language files into .mo files');
+			self::ShowEntry($validOptions[] = 'T', 'Create the language template (.pot file)');
+			self::ShowEntry($validOptions[] = 'P', 'Create/update the files to be translated (.po files)');
+			self::ShowEntry($validOptions[] = 'C', 'Compile the language files (generate the final .mo files');
 			self::ShowEntry($validOptions[] = 'X', 'Back to main menu');
 			switch(self::AskOption($validOptions)) {
 				case 'T':
@@ -1122,7 +1127,7 @@ class POTFile {
 				$pot->FixHeader($packageInfo);
 				$pot->FixFilesSlash();
 				$pot->FixI18NComments();
-				if(!Enviro::IsWin()) {
+				if(Enviro::GetOS() !== Enviro::OS_WIN) {
 					$pot->Replace_CRLF_LF();
 				}
 				Console::WriteLine('done.');
