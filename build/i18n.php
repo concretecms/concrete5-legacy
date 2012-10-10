@@ -2463,6 +2463,7 @@ class Language {
 				'cs_CZ',
 				'da_DK',
 				'de_DE',
+				'es',
 				'es_AR',
 				'es_ES',
 				'es_PE',
@@ -2489,6 +2490,7 @@ class Language {
 				'sv_SE',
 				'th_TH',
 				'tr',
+				'zh',
 				'zh_CN',
 		);
 	}
