@@ -129,7 +129,7 @@
 
 		
 		public function getPages($query = NULL) {
-			$pl = $this->getPageList();
+			$pl = $this->getPageList($query);
 			
 			if ($pl->getItemsPerPage() > 0) {
 				$pages = $pl->getPage();
@@ -255,5 +255,3 @@
 			return $rssUrl;
 		}
 	}
-
-?>
