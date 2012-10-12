@@ -62,6 +62,7 @@ class Concrete5_Controller_Install extends Controller {
 			define("ACTIVE_LOCALE", $_POST['locale']);
 			$this->set('locale', $_POST['locale']);
 		}
+		$this->set('keep_language_selection', !empty($_POST['keep_language_selection']));
 		require(DIR_BASE_CORE . '/config/file_types.php');
 		Cache::disableCache();
 		$this->setRequiredItems();
