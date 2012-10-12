@@ -210,7 +210,7 @@ if (isset($successMessage)) { ?>
 		</div>
 	</form>
 
-<? } else if ((isset($locale) || count($locales) == 0) && ((!isset($keep_language_selection) || !$keep_language_selection))) { ?>
+<? } else if ((isset($locale) || count($locales) == 0) && empty($keep_language_selection)) { ?>
 
 	<script type="text/javascript">
 	$(function() {
