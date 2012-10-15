@@ -255,11 +255,11 @@
 					return false;
 				}
 			}
-			/*
+/*
 			$_dba->LogSQL(true);
 			global $ADODB_PERF_MIN;
 			$ADODB_PERF_MIN = 0;
-			*/
+*/
 
 			return $_dba;
 		}
