@@ -289,6 +289,8 @@ ccm_deleteBlock = function(cID, bID, aID, arHandle, msg) {
 			type: 'POST',
 			url: CCM_DISPATCHER_FILENAME,
 			data: 'cID=' + cID + '&ccm_token=' + CCM_SECURITY_TOKEN + '&isAjax=true&btask=remove&bID=' + bID + '&arHandle=' + arHandle
+		}).done(function() { 
+		  (window.ccm_blockDeletedTriggerd || function(){}).call();
 		});
 		ccm_reloadAreaMenuPermissions(aID, cID);
 	}	
