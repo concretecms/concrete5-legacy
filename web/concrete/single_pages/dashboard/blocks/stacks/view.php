@@ -1,8 +1,15 @@
 <? defined('C5_EXECUTE') or die("Access Denied."); ?>
 <script type="text/javascript">
-//Will be called if block is deleted
+//Will be called if block is deleted triggerd from ccm.app.js / ui.js
 function ccm_blockDeletedTriggerd(){
-	$('#stackApproveBtn').css("display", "inline"); //Show approve button
+	//Check if Approve Changes button allready is displayed
+	if($('#stackApproveBtn').css("display") == "block"){
+		//If so reload page to get new versions loaded
+		window.location.reload();
+	} else {
+		//Else we display the Approve Changes button
+		$('#stackApproveBtn').css("display", "block"); 
+	}
 }
 </script>
 <? if ($this->controller->getTask() == 'view_details') { ?>
