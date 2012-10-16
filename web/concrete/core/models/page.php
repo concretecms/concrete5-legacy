@@ -297,7 +297,7 @@ class Concrete5_Model_Page extends Collection {
 			// group;
 			$pe = GroupPermissionAccessEntity::getOrCreate($userOrGroup);
 		}
-		
+
 		foreach($permissions as $pkHandle) { 
 			$pk = PagePermissionKey::getByHandle($pkHandle);
 			$pk->setPermissionObject($this);
