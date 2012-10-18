@@ -22,7 +22,7 @@ $akt = $c->getCollectionAttributeValue('meta_title');
 $akd = $c->getCollectionAttributeValue('meta_description');
 $akk = $c->getCollectionAttributeValue('meta_keywords');
 
-if (is_string($akt)) { 
+if (is_string($akt) && strlen($akt)) { 
 	$pageTitle = htmlspecialchars($akt, ENT_COMPAT, APP_CHARSET);
 	?><title><?php echo sprintf(PAGE_METATITLE_FORMAT, SITE, $pageTitle)?></title>
 <?php } else { 
