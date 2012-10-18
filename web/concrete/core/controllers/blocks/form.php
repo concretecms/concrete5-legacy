@@ -78,11 +78,6 @@ class Concrete5_Controller_Block_Form extends BlockController {
 		}
 	}
 	
-	public function on_page_view() {
-		$this->addFooterItem(Loader::helper('html')->css('jquery.ui.css'));
-		$this->addFooterItem(Loader::helper('html')->javascript('jquery.ui.js'));
-	}
-	
 	public function getDefaultThankYouMsg() {
 		return t("Thanks!");
 	}
