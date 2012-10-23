@@ -10,28 +10,33 @@
 		error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT);
 	}
 	
+	## PHP < 5.3 does not set the magic constant __DIR__ (http://php.net/manual/en/language.constants.predefined.php)
+	if(!defined('__DIR__')) {
+		define('__DIR__', __DIR__);
+	}
+	
 	## Startup check ##	
-	require(dirname(__FILE__) . '/config/base_pre.php');
+	require(__DIR__ . '/config/base_pre.php');
 
 	## Startup check ##	
-	require(dirname(__FILE__) . '/startup/config_check.php');
+	require(__DIR__ . '/startup/config_check.php');
 	
 	## Check to see if, based on a config variable, we need to point to an alternate core ##
-	require(dirname(__FILE__) . '/startup/updated_core_check.php');
+	require(__DIR__ . '/startup/updated_core_check.php');
 	
 	## Load the base config file ##
-	require(dirname(__FILE__) . '/config/base.php');
+	require(__DIR__ . '/config/base.php');
 
 	## Required Loading
-	require(dirname(__FILE__) . '/startup/required.php');
+	require(__DIR__ . '/startup/required.php');
 
 	## Setup timezone support
-	require(dirname(__FILE__) . '/startup/timezone.php'); // must be included before any date related functions are called (php 5.3 +)
+	require(__DIR__ . '/startup/timezone.php'); // must be included before any date related functions are called (php 5.3 +)
 
 	## First we ensure that dispatcher is not being called directly
-	require(dirname(__FILE__) . '/startup/file_access_check.php');
+	require(__DIR__ . '/startup/file_access_check.php');
 
-	require(dirname(__FILE__) . '/startup/localization.php');
+	require(__DIR__ . '/startup/localization.php');
 
 	## Autoload core classes
 	spl_autoload_register(array('Loader', 'autoloadCore'), true);
@@ -44,45 +49,45 @@
 
 	## User level config ##	
 	if (!$config_check_failed) { 
-		require(dirname(__FILE__) . '/config/app.php');
+		require(__DIR__ . '/config/app.php');
 	}
 
 	## Autoload settings
-	require(dirname(__FILE__) . '/startup/autoload.php');
+	require(__DIR__ . '/startup/autoload.php');
 
 	## Exception handler
-	require(dirname(__FILE__) . '/startup/exceptions.php');
+	require(__DIR__ . '/startup/exceptions.php');
 	
 	## Set default permissions for new files and directories ##
-	require(dirname(__FILE__) . '/startup/file_permission_config.php');
+	require(__DIR__ . '/startup/file_permission_config.php');
 	
 	## Startup check, install ##	
-	require(dirname(__FILE__) . '/startup/magic_quotes_gpc_check.php');
+	require(__DIR__ . '/startup/magic_quotes_gpc_check.php');
 
 	## Default routes for various content items ##
-	require(dirname(__FILE__) . '/config/theme_paths.php');
+	require(__DIR__ . '/config/theme_paths.php');
 
 	## Load session handlers
-	require(dirname(__FILE__) . '/startup/session.php');
+	require(__DIR__ . '/startup/session.php');
 
 	## Startup check ##	
-	require(dirname(__FILE__) . '/startup/encoding_check.php');
+	require(__DIR__ . '/startup/encoding_check.php');
 
 	# Startup check, install ##	
-	require(dirname(__FILE__) . '/startup/config_check_complete.php');
+	require(__DIR__ . '/startup/config_check_complete.php');
 
 	## Localization ##	
-	require(dirname(__FILE__) . '/config/localization.php');
+	require(__DIR__ . '/config/localization.php');
 
 	## File types ##
 	## Note: these have to come after config/localization.php ##
-	require(dirname(__FILE__) . '/config/file_types.php');
+	require(__DIR__ . '/config/file_types.php');
 	
 	## Check host for redirection ##	
-	require(dirname(__FILE__) . '/startup/url_check.php');
+	require(__DIR__ . '/startup/url_check.php');
 	
 	## Set debug-related and logging activities
-	require(dirname(__FILE__) . '/startup/debug_logging.php');
+	require(__DIR__ . '/startup/debug_logging.php');
 
 	## Site-level config POST user/app config ##
 	if (file_exists(DIR_CONFIG_SITE . '/site_post.php')) {
@@ -94,7 +99,7 @@
 		require(DIR_CONFIG_SITE . '/site_post_restricted.php');
 	}
 
-	require(dirname(__FILE__) . '/startup/tools_upgrade_check.php');
+	require(__DIR__ . '/startup/tools_upgrade_check.php');
 
 	## Specific site routes for various content items (if they exist) ##
     if (file_exists(DIR_CONFIG_SITE . '/site_theme_paths.php')) {
@@ -107,10 +112,10 @@
 	}
 
 	## Package events
-	require(dirname(__FILE__) . '/startup/packages.php');
+	require(__DIR__ . '/startup/packages.php');
 
 	## Add additional core menu options
-	require(dirname(__FILE__) . '/startup/optional_menu_buttons.php');
+	require(__DIR__ . '/startup/optional_menu_buttons.php');
 
 	# site events - we have to include before tools
 	if (defined('ENABLE_APPLICATION_EVENTS') && ENABLE_APPLICATION_EVENTS == true &&  file_exists(DIR_CONFIG_SITE . '/site_events.php')) {
@@ -119,10 +124,10 @@
 
 	// Now we check to see if we're including CSS, Javascript, etc...
 	// Include Tools. Format: index.php?task=include_frontend&fType=TOOL&filename=test.php
-	require(dirname(__FILE__) . '/startup/tools.php');
+	require(__DIR__ . '/startup/tools.php');
 	
 	## Check online, user-related startup routines
-	require(dirname(__FILE__) . '/startup/user.php');
+	require(__DIR__ . '/startup/user.php');
 
 	if (C5_ENVIRONMENT_ONLY == false) {
 	
@@ -153,10 +158,10 @@
 		}
 		
 		## Check maintenance mode
-		require(dirname(__FILE__) . '/startup/maintenance_mode_check.php');
+		require(__DIR__ . '/startup/maintenance_mode_check.php');
 		
 		## Check to see whether this is an external alias or a header 301 redirect. If so we go there.
-		include(dirname(__FILE__) . '/startup/external_link.php');
+		include(__DIR__ . '/startup/external_link.php');
 		
 		## Get a permissions object for this particular collection.
 		$cp = new Permissions($c);
@@ -224,7 +229,7 @@
 
 		## Make sure that any submitted forms, etc... are handled correctly
 		## This is legacy cms specific stuff, like adding pages
-		require(dirname(__FILE__) . '/startup/process.php');
+		require(__DIR__ . '/startup/process.php');
 
 		## Record the view
 		$u = new User();
