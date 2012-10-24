@@ -1,12 +1,12 @@
 <?
 
 defined('C5_EXECUTE') or die("Access Denied.");
-class ConcreteUpgradeVersion561Helper {
+class ConcreteUpgradeVersion570Helper {
 
 	
 	public $dbRefreshTables = array(
-		'atSocialLinks',
-		'UserRelationships'
+		'Blocks',
+		'CollectionVersionBlocksOutputCache'
 	);
 	
 	
