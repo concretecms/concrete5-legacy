@@ -83,16 +83,11 @@ class Concrete5_Helper_Text {
 	
 	/**
 	 * always use in place of htmlentites(), so it works with different langugages
-	 * @param string $v The string to be escaped
-	 * @param bool $newlinesToBR Set to true to add <br /> tags when new lines are encountered (default: false).
+	 * @param string $v
 	 * @return string
 	 */
-	public function entities($v, $newlinesToBR = false){
-		$s = htmlentities( $v, ENT_COMPAT, APP_CHARSET);
-		if($newlinesToBR) {
-			$s = str_replace("\n", "<br />\n", str_replace(array("\r\n", "\r"), "\n", $s));
-		} 
-		return $s;
+	public function entities($v){
+		return htmlentities( $v, ENT_COMPAT, APP_CHARSET); 
 	}
 	
 	/** 
