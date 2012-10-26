@@ -10,4 +10,4 @@ $class .= ($b->isAliasOfMasterCollection() || $b->getBlockTypeHandle() == BLOCK_
 if ($b->getBlockTypeHandle() == BLOCK_HANDLE_STACK_PROXY) {
 	$class .= ' ccm-block-stack ';
 }
-echo ('<div id="b' . $b->getBlockID() . '-' . $a->getAreaID() . '" custom-style="' . $b->getBlockCustomStyleRuleID() . '" class="' . $class . '">'); ?>
+echo ('<div id="b' . $b->getBlockID() . '" custom-style="' . $b->getBlockCustomStyleRuleID() . '" class="' . $class . '">'); ?>
