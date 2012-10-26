@@ -652,6 +652,11 @@ ccm_saveArrangement = function(cID) {
 					bID += '-' + bObj.attr('custom-style');
 				}
 				serial += areaStr + bID;
+				mObj = $("a#menuEdit" + bObj.attr("id").replace("b",""));
+				if(mObj.length){
+    				mObj.attr("href",mObj.attr("href").replace("&arHandle="+bObj.attr("arHandle")+"&","&arHandle="+$(this).attr('handle')+"&"));
+    				bObj.attr("arHandle",$(this).attr('handle'));
+				}
 			}
 		}
 	});
@@ -698,6 +703,9 @@ ccm_arrangeInit = function() {
 			opacity: 0.5,
 			stop: function() {
 				ccm_saveArrangement(cID);
+			},
+			start: function(){
+    			$(ccm_selectedDomID).attr("aHandle",$(ccm_selectedDomID).parent().attr("handle"));
 			}
 		});
 	});
