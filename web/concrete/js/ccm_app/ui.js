@@ -653,7 +653,7 @@ ccm_saveArrangement = function(cID) {
 				}
 				serial += areaStr + bID;
 				mObj = $("a#menuEdit" + bObj.attr("id").replace("b",""));
-				if( instanceof Object && Object.getPrototypeOf(mObj) === Object.prototype){
+				if( mObj.length){
     				mObj.attr("href",mObj.attr("href").replace("&arHandle="+bObj.attr("arHandle")+"&","&arHandle="+$(this).attr('handle')+"&"));
     				bObj.attr("arHandle",$(this).attr('handle'));
 				}
