@@ -21,6 +21,12 @@ class ConcreteUpgradeVersion561Helper {
 		if (is_object($akc)) {
 			$akc->associateAttributeKeyType($tt);
 		}
+		
+		$db = Loader::db();
+		$columns = $db->MetaColumns('Pages');
+		if (isset($columns['PTID'])) {
+			$db->Execute('alter table Pages drop column ptID');
+		}
 	}
 		
 }
