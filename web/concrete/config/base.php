@@ -551,3 +551,9 @@ if(!defined('SITEMAPXML_DEFAULT_PRIORITY')) {
 	*/
 	define('SITEMAPXML_DEFAULT_PRIORITY', 0.5);
 }
+if (!defined('INCLUDE_JQUERY')) { 
+	define('INCLUDE_JQUERY', true);
+}
+if (!defined('INCLUDE_CCM_BASE')) { 
+	define('INCLUDE_CCM_BASE', true);
+}
