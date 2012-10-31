@@ -449,14 +449,14 @@
 		<page name="Rich Text Editor" path="/dashboard/system/basics/editor" filename="/dashboard/system/basics/editor.php" pagetype="" description="" package="">
 			<attributes>
 				<attributekey handle="meta_keywords">
-					<value>tinymce, content block, fonts, editor, tinymce, content, overlay</value>
+					<value>tinymce, content block, fonts, editor, content, overlay</value>
 				</attributekey>
 			</attributes>
 		</page>
 		<page name="Languages" path="/dashboard/system/basics/multilingual" filename="/dashboard/system/basics/multilingual/view.php" pagetype="" description="" package="">
 			<attributes>
 				<attributekey handle="meta_keywords">
-					<value>translate, translation, internationalization, multilingual, translate</value>
+					<value>translate, translation, internationalization, multilingual</value>
 				</attributekey>
 			</attributes>
 		</page>
@@ -679,7 +679,7 @@
 		<page name="Logging Settings" path="/dashboard/system/environment/logging" filename="/dashboard/system/environment/logging.php" pagetype="" description="" package="">
 			<attributes>
 				<attributekey handle="meta_keywords">
-					<value>email, logging, logs, smtp, pop, errors, mysql, errors, log</value>
+					<value>email, logging, logs, smtp, pop, errors, mysql, log</value>
 				</attributekey>
 			</attributes>
 		</page>
