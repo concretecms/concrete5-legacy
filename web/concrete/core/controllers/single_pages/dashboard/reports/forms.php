@@ -13,7 +13,7 @@ class Concrete5_Controller_Dashboard_Reports_Forms extends Controller {
 		$this->loadSurveyResponses();
 	}
 	
-	public function excel(){ 
+	public function excel() {
 		$dateHelper = Loader::helper('date');
 		
 		$this->pageSize=0;
@@ -22,114 +22,129 @@ class Concrete5_Controller_Dashboard_Reports_Forms extends Controller {
 		
 		$questionSet=$this->get('questionSet');
 		$answerSets=$this->get('answerSets');
-		$questions=$this->get('questions');	
-		$surveys=$this->get('surveys');	 
-		 
+		$questions=$this->get('questions');
+		$surveys=$this->get('surveys');
+		
 		$fileName=$textHelper->filterNonAlphaNum($surveys[$questionSet]['surveyName']);
+		
+		$countries = null;
 		
 		header("Content-Type: application/vnd.ms-excel");
 		header("Cache-control: private");
 		header("Pragma: public");
 		$date = date('Ymd');
-		header("Content-Disposition: inline; filename=".$fileName."_form_data_{$date}.xls"); 
-		header("Content-Title: ".$surveys[$questionSet]['surveyName']." Form Data Output - Run on {$date}");		echo "<html>\r\n";
-		echo "<head><META http-equiv=Content-Type content=\"text/html; charset=".APP_CHARSET."\"></head>\r\n";
-		echo "<body>\r\n";
+		header("Content-Disposition: inline; filename=".$fileName."_form_data_{$date}.xls");
+		echo "<html>\r\n<head>\r\n";
+		echo "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=".APP_CHARSET."\">\r\n";
+		echo "<title>".$textHelper->entities(t(/*i18n: %1$s is the survey name, %2$s is the date. */ '%1$s Form Data Output - Run on %2$s', $surveys[$questionSet]['surveyName'], $date))."</title>\r\n";
+		echo "</head>\r\n<body>\r\n";
 		echo "<table>\r\n";
 		$hasCBRow = false;
-		foreach($questions as $questionId=>$question){ 
-            if ($question['inputType'] == 'checkboxlist') {
+		foreach($questions as $questionId=>$question) {
+			if ($question['inputType'] == 'checkboxlist') {
 				$hasCBRow = true;
 			}
 		}
 
-		echo "<tr>";
-		echo "\t\t<td ";
+		echo "<thead>\r\n\t<tr>\r\n";
+		echo "\t\t<th";
 		if ($hasCBRow) {
-			echo "rowspan=\"2\" valign='bottom'";
+			echo " rowspan=\"2\" valign='bottom'";
 		}
-		echo "><b>Submitted Date</b></td>\r\n";
+		echo ">".t('Submitted Date')."</th>\r\n";
 		
-		foreach($questions as $questionId=>$question){ 
-            if ($question['inputType'] == 'checkboxlist')
-            {
-                $options = explode('%%', $question['options']);
-			    echo "\t\t".'<td colspan="'.count($options).'"><b>'."\r\n";
-            }
-            else
-            {
-			    echo "\t\t<td ";
-			    if ($hasCBRow) {
-			    	echo "rowspan=\"2\" valign='bottom'>";
-			    }
-			    echo "<b>\r\n";
-            }
-			echo "\t\t\t".$questions[$questionId]['question']."\r\n";
-			echo "\t\t</b></td>\r\n";			
-		}	
-		echo "</tr>";
+		foreach($questions as $questionId=>$question) {
+			echo "\t\t<th";
+			if ($question['inputType'] == 'checkboxlist') {
+				$options = explode('%%', $question['options']);
+				echo ' colspan="'.count($options).'"';
+			}
+			else {
+				
+				if ($hasCBRow) {
+					echo ' rowspan="2" valign="bottom"';
+				}
+			}
+			echo ">",nl2br($textHelper->entities($questions[$questionId]['question']))."</th>\r\n";
+		}
+		echo "\t</tr>\r\n";
 
 		// checkbox row
 		if ($hasCBRow) {
-			echo "<tr>";
-			foreach($questions as $questionId=>$question){ 
+			echo "\t<tr>";
+			foreach($questions as $questionId=>$question) {
 				if ($question['inputType'] == 'checkboxlist')
 				{
 					$options = explode('%%', $question['options']);
 					foreach($options as $opt) {
-						echo "<td><b>{$opt}</b></td>";
+						echo "\t\t<th>".$textHelper->entities($opt)."</th>";
 					}
 				}
 			}
-			echo "</tr>";
+			echo "\t</tr>\r\n";
 		}
-		
-		foreach($answerSets as $answerSetId=>$answerSet){ 
+		echo "</thead>\r\n<tbody>\r\n";
+		foreach($answerSets as $answerSetId=>$answerSet) {
 			$questionNumber=0;
 			$numQuestionsToShow=2;
 			echo "\t<tr>\r\n";
 			echo "\t\t<td>". $dateHelper->getSystemDateTime($answerSet['created'])."</td>\r\n";
-			foreach($questions as $questionId=>$question){ 
+			foreach($questions as $questionId=>$question) {
 				$questionNumber++;
-                if ($question['inputType'] == 'checkboxlist'){
-                    $options = explode('%%', $question['options']);
-                    $subanswers = explode(',', $answerSet['answers'][$questionId]['answer']);
-                    for ($i = 1; $i <= count($options); $i++)
-                    {
-				        echo "\t\t<td align='center'>\r\n";
-                        if (in_array(trim($options[$i-1]), $subanswers)) {
-				           // echo "\t\t\t".$options[$i-1]."\r\n";
-				           echo "x";
-				        } else {
-				            echo "\t\t\t&nbsp;\r\n";
-				        }
-				        echo "\t\t</td>\r\n";
-                    }
-					
-                }elseif($question['inputType']=='fileupload'){ 
-					echo "\t\t<td>\r\n";
-					$fID=intval($answerSet['answers'][$questionId]['answer']);
-					$file=File::getByID($fID);
-					if($fID && $file){
-						$fileVersion=$file->getApprovedVersion();
-						echo "\t\t\t".'<a href="'. $fileVersion->getDownloadURL() .'">'.$fileVersion->getFileName().'</a>'."\r\n";
-					}else{
-						echo "\t\t\t".t('File not found')."\r\n";
-					} 	
-					echo "\t\t</td>\r\n";		
-				}else{					
-				    echo "\t\t<td>\r\n";
-				    echo "\t\t\t".$answerSet['answers'][$questionId]['answer'].$answerSet['answers'][$questionId]['answerLong']."\r\n";					
-				    echo "\t\t</td>\r\n";
-                }
+				switch($question['inputType']) {
+					case 'checkboxlist':
+						$options = explode('%%', $question['options']);
+						$subanswers = explode(',', $answerSet['answers'][$questionId]['answer']);
+						for ($i = 1; $i <= count($options); $i++) {
+							echo "\t\t<td align='center'>";
+							if (in_array(trim($options[$i-1]), $subanswers)) {
+								// echo "\t\t\t".$options[$i-1]."\r\n";
+								echo "x";
+							} else {
+								echo "&nbsp;";
+							}
+							echo "</td>\r\n";
+						}
+						break;
+					case 'fileupload':
+						echo "\t\t<td>";
+						$fID=intval($answerSet['answers'][$questionId]['answer']);
+						$file=File::getByID($fID);
+						if($fID && $file) {
+							$fileVersion=$file->getApprovedVersion();
+							echo '<a href="'. $fileVersion->getDownloadURL() .'">'.$fileVersion->getFileName().'</a>';
+						} else {
+							echo t('File not found');
+						}
+						echo "</td>\r\n";
+						break;
+					case 'country':
+						echo "\t\t<td>";
+						if(strlen($answerSet['answers'][$questionId]['answer'])) {
+							if(!$countries) {
+								$countries = Loader::helper('lists/countries')->getCountries();
+							}
+							if(array_key_exists($answerSet['answers'][$questionId]['answer'], $countries)) {
+								echo $textHelper->entities($countries[$answerSet['answers'][$questionId]['answer']]);
+							}
+							else {
+								echo $textHelper->entities($answerSet['answers'][$questionId]['answer']);
+							}
+						}
+						echo "</td>\r\n";
+						break;
+					default:
+						echo "\t\t<td>".nl2br($textHelper->entities($answerSet['answers'][$questionId]['answer'].$answerSet['answers'][$questionId]['answerLong']))."</td>\r\n";
+						break;
+				}
 			}
 			echo "\t</tr>\r\n";
 		}
-		echo "</table>\r\n";
+		echo "</tbody>\r\n</table>\r\n";
 		echo "</body>\r\n";
-		echo "</html>\r\n";		
+		echo "</html>\r\n";
 		die;
-	}	
+	}
 
 	private function loadSurveyResponses(){
 		$c=$this->getCollectionObject();

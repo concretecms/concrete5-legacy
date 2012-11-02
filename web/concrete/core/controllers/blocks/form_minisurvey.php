@@ -218,6 +218,7 @@ class Concrete5_Controller_Block_FormMinisurvey {
 			$options=explode('%%',$questionData['options']);
 			$msqID=intval($questionData['msqID']);
 			$datetime = loader::helper('form/date_time');
+			$textHelper = loader::helper('text');
 			switch($questionData['inputType']){			
 				case 'checkboxlist': 
 					// this is looking really crappy so i'm going to make it behave the same way all the time - andrew
@@ -262,7 +263,7 @@ class Concrete5_Controller_Block_FormMinisurvey {
 					return $html;
 					
 				case 'text':
-					$val=($_REQUEST['Question'.$msqID])?Loader::helper('text')->entities($_REQUEST['Question'.$msqID]):'';
+					$val=($_REQUEST['Question'.$msqID])?$textHelper->entities($_REQUEST['Question'.$msqID]):'';
 					return '<textarea name="Question'.$msqID.'" id="Question'.$msqID.'" cols="'.$questionData['width'].'" rows="'.$questionData['height'].'" style="width:95%">'.$val.'</textarea>';
 				case 'url':
 					$val=($_REQUEST['Question'.$msqID])?$_REQUEST['Question'.$msqID]:'';
@@ -279,6 +280,16 @@ class Concrete5_Controller_Block_FormMinisurvey {
 				case 'datetime':
 					$val=($_REQUEST['Question'.$msqID])?$_REQUEST['Question'.$msqID]:'';
 					return $datetime->datetime('Question'.$msqID,$val);
+				case 'country':
+					$countries = Loader::helper('lists/countries')->getCountries();
+					$current = isset($_REQUEST['Question'.$msqID]) && array_key_exists($_REQUEST['Question'.$msqID], $countries) ? $_REQUEST['Question'.$msqID] : '';
+					$html = '<select name="Question'.$msqID.'" id="Question'.$msqID.'">';
+					$html .= '<option value=""'.(strlen($current) ? ' selected="selected"' : '').'>----</option>';
+					foreach($countries as $countryId => $countryName) {
+						$html .= '<option value="'.$countryId.'"'.(($current == $countryId) ? ' selected="selected"' : '').'>'.$textHelper->entities($countryName).'</option>';
+					}
+					$html .= '</select>';
+					return $html;
 				case 'field':
 				default:
 					$val=($_REQUEST['Question'.$msqID])?$_REQUEST['Question'.$msqID]:'';

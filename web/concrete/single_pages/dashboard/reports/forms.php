@@ -137,21 +137,41 @@ if ($showTable) { ?>
 				print t('(User ID: %s)', $answerSet['uID']);
 			}
 			?></td>
-<?foreach($questions as $questionId => $question):
-			if ($question['inputType'] == 'fileupload') {
-				$fID = (int) $answerSet['answers'][$questionId]['answer'];
-				$file = File::getByID($fID);
-				if ($fID && $file) {
-					$fileVersion = $file->getApprovedVersion();
-					echo '<td><a href="' . $fileVersion->getRelativePath() .'">'.
-						$text->entities($fileVersion->getFileName()).'</a></td>';
-				} else {
-					echo '<td>'.t('File not found').'</td>';
-				}
-			} else if($question['inputType'] == 'text') {
-				echo '<td>'.$text->entities($answerSet['answers'][$questionId]['answerLong']).'</td>';
-			} else {
-				echo '<td>'.$text->entities($answerSet['answers'][$questionId]['answer']).'</td>';
+<?
+$countries = null;
+foreach($questions as $questionId => $question):
+			switch($question['inputType']) {
+				case 'fileupload':
+					$fID = (int) $answerSet['answers'][$questionId]['answer'];
+					$file = File::getByID($fID);
+					if ($fID && $file) {
+						$fileVersion = $file->getApprovedVersion();
+						echo '<td><a href="' . $fileVersion->getRelativePath() .'">'.$text->entities($fileVersion->getFileName()).'</a></td>';
+					} else {
+						echo '<td>'.t('File not found').'</td>';
+					}
+					break;
+				case 'text':
+					echo '<td>'.$text->entities($answerSet['answers'][$questionId]['answerLong']).'</td>';
+					break;
+				case 'country':
+					echo '<td>';
+					if(!empty($answerSet['answers'][$questionId]['answer'])) {
+						if(!$countries) {
+							$countries = Loader::helper('lists/countries')->getCountries();
+						}
+						if(array_key_exists($answerSet['answers'][$questionId]['answer'], $countries)) {
+							echo $text->entities($countries[$answerSet['answers'][$questionId]['answer']]);
+						}
+						else {
+							echo $text->entities($answerSet['answers'][$questionId]['answer']);
+						}
+						}
+					echo '</td>';
+					break;
+				default:
+					echo '<td>'.$text->entities($answerSet['answers'][$questionId]['answer']).'</td>';
+					break;
 			}
 			
 endforeach?>
