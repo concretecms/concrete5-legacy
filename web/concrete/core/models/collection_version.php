@@ -95,10 +95,12 @@
 			$cv->cID = $c->getCollectionID();			
 			$cv->cvIsMostRecent = $cv->_checkRecent();
 			
-			$r = $db->GetAll('select csrID, arHandle from CollectionVersionAreaStyles where cID = ? and cvID = ?', array($c->getCollectionID(), $cvID));
-			foreach($r as $styles) {
-				$cv->customAreaStyles[$styles['arHandle']] = $styles['csrID'];
-			}
+           		if (defined('ENABLE_CUSTOM_DESIGN') && ENABLE_CUSTOM_DESIGN) {
+                		$r = $db->GetAll('select csrID, arHandle from CollectionVersionAreaStyles where cID = ? and cvID = ?', array($c->getCollectionID(), $cvID));
+                		foreach($r as $styles) {
+                    			$cv->customAreaStyles[$styles['arHandle']] = $styles['csrID'];
+                		}
+            		}
 			
 			return $cv;
 		}
