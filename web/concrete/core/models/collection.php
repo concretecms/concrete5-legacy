@@ -91,15 +91,17 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			}
 			
 			// duplicate any area styles
-			$q = "select csrID, arHandle from CollectionVersionAreaStyles where cID = '$cID' and cvID = '$cvID'";
-			$r = $db->query($q);
-			while ($row = $r->FetchRow()) {
-				$db->Execute('insert into CollectionVersionAreaStyles (cID, cvID, arHandle, csrID) values (?, ?, ?, ?)', array(
-					$this->getCollectionID(),
-					$nvObj->getVersionID(),
-					$row['arHandle'],
-					$row['csrID']
-				));
+			if (defined('ENABLE_CUSTOM_DESIGN') && ENABLE_CUSTOM_DESIGN) {
+				$q = "select csrID, arHandle from CollectionVersionAreaStyles where cID = '$cID' and cvID = '$cvID'";
+				$r = $db->query($q);
+				while ($row = $r->FetchRow()) {
+					$db->Execute('insert into CollectionVersionAreaStyles (cID, cvID, arHandle, csrID) values (?, ?, ?, ?)', array(
+						$this->getCollectionID(),
+						$nvObj->getVersionID(),
+						$row['arHandle'],
+						$row['csrID']
+					));
+				}
 			}
 			
 			// duplicate any area layout joins
@@ -390,7 +392,10 @@ defined('C5_EXECUTE') or die("Access Denied.");
 	 * or blocks
 	 */
 	public function outputCustomStyleHeaderItems($return = false) {	
-		
+		if (!defined('ENABLE_CUSTOM_DESIGN') || !ENABLE_CUSTOM_DESIGN) {
+			return;
+		}
+
 		$db = Loader::db();
 		$csrs = array();
 		$txt = Loader::helper('text');
@@ -941,19 +946,21 @@ defined('C5_EXECUTE') or die("Access Denied.");
 					$db->query($ql, $vl);
 				}				
 
-				$ql = "select * from CollectionVersionBlockStyles where cID = '{$this->cID}'";
-				$rl = $db->query($ql);
-				while ($row = $rl->fetchRow()) { 
-					$vl = array( $newCID, $row['cvID'], $row['bID'], $row['arHandle'], $row['csrID'] );
-					$ql = "insert into CollectionVersionBlockStyles (cID, cvID, bID, arHandle, csrID) values (?, ?, ?, ?, ?)";
-					$db->query($ql, $vl);
-				}
-				$ql = "select * from CollectionVersionAreaStyles where cID = '{$this->cID}'";
-				$rl = $db->query($ql);
-				while ($row = $rl->fetchRow()) { 
-					$vl = array( $newCID, $row['cvID'], $row['arHandle'], $row['csrID'] );
-					$ql = "insert into CollectionVersionAreaStyles (cID, cvID, arHandle, csrID) values (?, ?, ?, ?)";
-					$db->query($ql, $vl);
+				if (defined('ENABLE_CUSTOM_DESIGN') && ENABLE_CUSTOM_DESIGN) {
+					$ql = "select * from CollectionVersionBlockStyles where cID = '{$this->cID}'";
+					$rl = $db->query($ql);
+					while ($row = $rl->fetchRow()) { 
+						$vl = array( $newCID, $row['cvID'], $row['bID'], $row['arHandle'], $row['csrID'] );
+						$ql = "insert into CollectionVersionBlockStyles (cID, cvID, bID, arHandle, csrID) values (?, ?, ?, ?, ?)";
+						$db->query($ql, $vl);
+					}
+					$ql = "select * from CollectionVersionAreaStyles where cID = '{$this->cID}'";
+					$rl = $db->query($ql);
+					while ($row = $rl->fetchRow()) { 
+						$vl = array( $newCID, $row['cvID'], $row['arHandle'], $row['csrID'] );
+						$ql = "insert into CollectionVersionAreaStyles (cID, cvID, arHandle, csrID) values (?, ?, ?, ?)";
+						$db->query($ql, $vl);
+					}
 				}
 	
 				// now we grab all the blocks we're going to need
