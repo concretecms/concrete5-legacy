@@ -551,3 +551,9 @@ if(!defined('SITEMAPXML_DEFAULT_PRIORITY')) {
 	*/
 	define('SITEMAPXML_DEFAULT_PRIORITY', 0.5);
 }
+if(!defined('FORM_EMAIL_CHECKMXRECORD')) {
+	/** Set to true if concrete5 should check the MX record for the email addresses specified in Forms.
+	* @var bool
+	*/
+	define('FORM_EMAIL_CHECKMXRECORD', false);
+}

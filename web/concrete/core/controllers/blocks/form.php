@@ -270,7 +270,7 @@ class Concrete5_Controller_Block_Form extends BlockController {
 			if( intval($row['required'])==1 ){
 				$notCompleted=0;
 				if ($row['inputType'] == 'email') {
-					if (!Loader::helper('validation/strings')->email($_POST['Question' . $row['msqID']])) {
+					if (!Loader::helper('validation/strings')->email($_POST['Question' . $row['msqID']], FORM_EMAIL_CHECKMXRECORD)) {
 						$errors['emails'] = t('You must enter a valid email address.');
 					}
 				}
