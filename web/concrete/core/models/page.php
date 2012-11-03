@@ -45,10 +45,9 @@ class Concrete5_Model_Page extends Collection {
 			}
 		}
 		
-		$version = CollectionVersion::getNumericalVersionID($cID, $versionOrig);
 		$where = "where Pages.cID = ?";
 		$c = new $class;
-		$c->populatePage($cID, $where, $version);
+		$c->populatePage($cID, $where, $versionOrig);
  
 		// must use cID instead of c->getCollectionID() because cID may be the pointer to another page		
 		if ($versionOrig == 'RECENT' || $versionOrig == 'ACTIVE') {
@@ -64,9 +63,73 @@ class Concrete5_Model_Page extends Collection {
 	protected function populatePage($cInfo, $where, $cvID) {
 		$db = Loader::db();
 		
-		$q0 = "select Pages.cID, Pages.pkgID, Pages.cPointerID, Pages.cPointerExternalLink, Pages.cIsActive, Pages.cIsSystemPage, Pages.cPointerExternalLinkNewWindow, Pages.cFilename, Collections.cDateAdded, Pages.cDisplayOrder, Collections.cDateModified, cInheritPermissionsFromCID, cInheritPermissionsFrom, cOverrideTemplatePermissions, cCheckedOutUID, cIsTemplate, uID, cPath, cParentID, cChildren, cCacheFullPageContent, cCacheFullPageContentOverrideLifetime, cCacheFullPageContentLifetimeCustom from Pages inner join Collections on Pages.cID = Collections.cID left join PagePaths on (Pages.cID = PagePaths.cID and PagePaths.ppIsCanonical = 1) ";
-		//$q2 = "select cParentID, cPointerID, cPath, Pages.cID from Pages left join PagePaths on (Pages.cID = PagePaths.cID and PagePaths.ppIsCanonical = 1) ";
-		
+        if (is_string($cvID)) {
+            switch($cvID) {
+                case 'RECENT':
+                    $q0 = "SELECT Pages.cID,
+                                 Pages.pkgID,
+                                 Pages.cPointerID,
+                                 Pages.cPointerExternalLink,
+                                 Pages.cIsActive,
+                                 Pages.cIsSystemPage, 
+                                 Pages.cPointerExternalLinkNewWindow, 
+                                 Pages.cFilename, 
+                                 Collections.cDateAdded, 
+                                 Pages.cDisplayOrder, 
+                                 Collections.cDateModified, 
+                                 cInheritPermissionsFromCID, 
+                                 cInheritPermissionsFrom, 
+                                 cOverrideTemplatePermissions, 
+                                 cCheckedOutUID,
+                                 cIsTemplate,
+                                 uID,
+                                 cPath,
+                                 cParentID,
+                                 cChildren,
+                                 cCacheFullPageContent,
+                                 cCacheFullPageContentOverrideLifetime,
+                                 cCacheFullPageContentLifetimeCustom,
+                                 (SELECT max(cvID) FROM CollectionVersions WHERE CollectionVersions.cID=if(Pages.cPointerID>0,Pages.cPointerID, Pages.cID)) cvID
+                        FROM Pages
+                        INNER JOIN Collections ON Pages.cID = Collections.cID
+                        LEFT JOIN PagePaths ON (Pages.cID = PagePaths.cID AND PagePaths.ppIsCanonical = 1) ";
+                    break;
+                case 'ACTIVE':
+                    $q0 = "SELECT Pages.cID,
+                                 Pages.pkgID,
+                                 Pages.cPointerID,
+                                 Pages.cPointerExternalLink,
+                                 Pages.cIsActive,
+                                 Pages.cIsSystemPage, 
+                                 Pages.cPointerExternalLinkNewWindow, 
+                                 Pages.cFilename, 
+                                 Collections.cDateAdded, 
+                                 Pages.cDisplayOrder, 
+                                 Collections.cDateModified, 
+                                 cInheritPermissionsFromCID, 
+                                 cInheritPermissionsFrom, 
+                                 cOverrideTemplatePermissions, 
+                                 cCheckedOutUID,
+                                 cIsTemplate,
+                                 uID,
+                                 cPath,
+                                 cParentID,
+                                 cChildren,
+                                 cCacheFullPageContent,
+                                 cCacheFullPageContentOverrideLifetime,
+                                 cCacheFullPageContentLifetimeCustom,
+                                 CollectionVersions.cvID
+                        FROM Pages
+                        INNER JOIN Collections ON Pages.cID = Collections.cID
+                        INNER JOIN CollectionVersions ON CollectionVersions.cID = if(Pages.cPointerID>0,Pages.cPointerID, Pages.cID) AND cvIsApproved = 1
+                        LEFT JOIN PagePaths ON (Pages.cID = PagePaths.cID AND PagePaths.ppIsCanonical = 1) ";                
+                    break;
+            }
+        }
+        else {
+            $q0 = "select Pages.cID, Pages.pkgID, Pages.cPointerID, Pages.cPointerExternalLink, Pages.cIsActive, Pages.cIsSystemPage, Pages.cPointerExternalLinkNewWindow, Pages.cFilename, Collections.cDateAdded, Pages.cDisplayOrder, Collections.cDateModified, cInheritPermissionsFromCID, cInheritPermissionsFrom, cOverrideTemplatePermissions, cCheckedOutUID, cIsTemplate, uID, cPath, cParentID, cChildren, cCacheFullPageContent, cCacheFullPageContentOverrideLifetime, cCacheFullPageContentLifetimeCustom from Pages inner join Collections on Pages.cID = Collections.cID left join PagePaths on (Pages.cID = PagePaths.cID and PagePaths.ppIsCanonical = 1) ";
+         }
+
 		$v = array($cInfo);
 		$r = $db->query($q0 . $where, $v);
 		$row = $r->fetchRow();
