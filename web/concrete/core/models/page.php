@@ -63,7 +63,7 @@ class Concrete5_Model_Page extends Collection {
 	protected function populatePage($cInfo, $where, $cvID) {
 		$db = Loader::db();
 		
-        if (is_string($cvID)) {
+        if (!is_numeric($cvID)) {
             switch($cvID) {
                 case 'RECENT':
                     $q0 = "SELECT Pages.cID,
