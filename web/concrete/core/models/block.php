@@ -105,12 +105,14 @@ class Concrete5_Model_Block extends Object {
 		
 		if (is_array($row)) {
 			$b->setPropertiesFromArray($row);
-			$b->csrID = $db->GetOne('select csrID from CollectionVersionBlockStyles where cID = ? and cvID = ? and arHandle = ? and bID = ?', array(
-				$cID, 
-				$cvID,
-				$b->arHandle,
-				$bID
-			));
+			if (defined('ENABLE_CUSTOM_DESIGN') && ENABLE_CUSTOM_DESIGN) {   
+				$b->csrID = $db->GetOne('select csrID from CollectionVersionBlockStyles where cID = ? and cvID = ? and arHandle = ? and bID = ?', array(
+					$cID, 
+					$cvID,
+					$b->arHandle,
+					$bID
+				));
+			}
 			$r->free();
 			
 			$bt = BlockType::getByID($b->getBlockTypeID());
