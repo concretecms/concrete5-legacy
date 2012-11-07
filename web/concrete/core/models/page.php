@@ -133,6 +133,11 @@ class Concrete5_Model_Page extends Collection {
 		$v = array($cInfo);
 		$r = $db->query($q0 . $where, $v);
 		$row = $r->fetchRow();
+
+        	if (!is_numeric($cvID)) {
+            		$cvID = $row['cvID'];
+        	}
+
 		if ($row['cPointerID'] > 0) {
 			$q1 = $q0 . "where Pages.cID = ?";
 			$cPointerOriginalID = $row['cID'];
