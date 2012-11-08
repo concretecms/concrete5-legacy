@@ -46,7 +46,7 @@ if ($_POST['update']) {
 	
 	if (!$ctName) {
 		$error[] = t("Name required.");
-	} else if (!$vs->alphanum($ctName, true)) {
+	} else if (!$vs->multiLingualName($ctName, true)) {
 		$error[] = t('Page type names can only contain letters, numbers and spaces.');
 	}
 	
