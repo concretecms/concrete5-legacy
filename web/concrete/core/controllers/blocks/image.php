@@ -88,7 +88,7 @@
 			parent::save($args);
 		}
 
-		function getContentAndGenerate($align = false, $style = false, $id = null) {
+		function getContentAndGenerate($align = false, $style = false, $id = null, $classes = null) {
 			$c = Page::getCurrentPage();
 			$bID = $this->bID;
 			
@@ -114,7 +114,7 @@
 				$sizeStr = $size[3];
 			}
 			
-			$img = "<img border=\"0\" class=\"ccm-image-block\" alt=\"{$this->altText}\" src=\"{$relPath}\" {$sizeStr} ";
+			$img = "<img border=\"0\" class=\"ccm-image-block".($classes?" ".$classes:"")."\" alt=\"{$this->altText}\" src=\"{$relPath}\" {$sizeStr} ";
 			$img .= ($align) ? "align=\"{$align}\" " : '';
 			
 			$img .= ($style) ? "style=\"{$style}\" " : '';
