@@ -132,21 +132,17 @@
 		}
 		
 		public static function autoloadCore($class) {
-			if (stripos($class, $m = 'Concrete5_Library_') === 0) {
-				$file = self::getFileFromCorePath(substr($class, strlen($m)));
-				require_once(DIR_BASE_CORE . '/' . DIRNAME_CORE_CLASSES . '/' . DIRNAME_LIBRARIES . '/' . $file . '.php');
-			}
-			elseif (stripos($class, $m = 'Concrete5_Model_') === 0) {
+			if (stripos($class, $m = 'Concrete5_Model_') === 0) {
 				$file = self::getFileFromCorePath(substr($class, strlen($m)));
 				require_once(DIR_BASE_CORE . '/' . DIRNAME_CORE_CLASSES . '/' . DIRNAME_MODELS . '/' . $file . '.php');
+			}
+			elseif (stripos($class, $m = 'Concrete5_Library_') === 0) {
+				$file = self::getFileFromCorePath(substr($class, strlen($m)));
+				require_once(DIR_BASE_CORE . '/' . DIRNAME_CORE_CLASSES . '/' . DIRNAME_LIBRARIES . '/' . $file . '.php');
 			}
 			elseif (stripos($class, $m = 'Concrete5_Helper_') === 0) {
 				$file = self::getFileFromCorePath(substr($class, strlen($m)));
 				require_once(DIR_BASE_CORE . '/' . DIRNAME_CORE_CLASSES . '/' . DIRNAME_HELPERS . '/' . $file . '.php');
-			}
-			elseif (stripos($class, $m = 'Concrete5_Job_') === 0) {
-				$file = self::getFileFromCorePath(substr($class, strlen($m)));
-				require_once(DIR_BASE_CORE . '/' . DIRNAME_CORE_CLASSES . '/' . DIRNAME_JOBS . '/' . $file . '.php');
 			}
 			elseif (stripos($class, $m = 'Concrete5_Controller_Block_') === 0) {
 				$file = self::getFileFromCorePath(substr($class, strlen($m)));
@@ -164,7 +160,10 @@
 				$file = self::getFileFromCorePath(substr($class, strlen($m)));
 				require_once(DIR_BASE_CORE . '/' . DIRNAME_CORE_CLASSES . '/' . DIRNAME_CONTROLLERS . '/' . DIRNAME_PAGES . '/' . $file . '.php');
 			}
-
+			elseif (stripos($class, $m = 'Concrete5_Job_') === 0) {
+				$file = self::getFileFromCorePath(substr($class, strlen($m)));
+				require_once(DIR_BASE_CORE . '/' . DIRNAME_CORE_CLASSES . '/' . DIRNAME_JOBS . '/' . $file . '.php');
+			}
 		}
 		
 		/** 
