@@ -31,7 +31,7 @@ if (!$b->overrideAreaPermissions()) { ?>
 <?=Loader::element('permission/help');?>
 
 <? $cat = PermissionKeyCategory::getByHandle('block');?>
-<form method="post" id="ccm-permission-list-form" action="<?=$cat->getToolsURL("save_permission_assignments")?>&cID=<?=$c->getCollectionID()?>&arHandle=<?=$b->getAreaHandle()?>&cvID=<?=$c->getVersionID()?>&bID=<?=$b->getBlockID()?>">
+<form method="post" id="ccm-permission-list-form" action="<?=$cat->getToolsURL("save_permission_assignments")?>&amp;cID=<?=$c->getCollectionID()?>&amp;arHandle=<?=$b->getAreaHandle()?>&amp;cvID=<?=$c->getVersionID()?>&amp;bID=<?=$b->getBlockID()?>">
 
 <table class="ccm-permission-grid">
 

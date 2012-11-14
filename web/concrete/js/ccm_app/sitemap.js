@@ -44,11 +44,11 @@ showPageMenu = function(obj, e) {
 		
 			html += '<li><a class="ccm-menu-icon ccm-icon-visit" id="menuVisit' + obj.cID + '" href="javascript:void(0)" onclick="window.location.href=\'' + CCM_DISPATCHER_FILENAME + '?cID=' + obj.cID + '\'">' + ccmi18n_sitemap.visitExternalLink + '<\/a><\/li>';
 			if (obj.cAlias == 'LINK' && obj.canEditProperties) {
-				html += '<li><a class="ccm-menu-icon ccm-icon-edit-external-link" dialog-width="350" dialog-height="170" dialog-title="' + ccmi18n_sitemap.editExternalLink + '" dialog-modal="false" dialog-append-buttons="true" id="menuLink' + obj.cID + '" href="' + CCM_TOOLS_PATH + '/edit_collection_popup.php?rel=SITEMAP&cID=' + obj.cID + '&ctask=edit_external">' + ccmi18n_sitemap.editExternalLink + '<\/a><\/li>';
+				html += '<li><a class="ccm-menu-icon ccm-icon-edit-external-link" dialog-width="350" dialog-height="170" dialog-title="' + ccmi18n_sitemap.editExternalLink + '" dialog-modal="false" dialog-append-buttons="true" id="menuLink' + obj.cID + '" href="' + CCM_TOOLS_PATH + '/edit_collection_popup.php?rel=SITEMAP&amp;cID=' + obj.cID + '&amp;ctask=edit_external">' + ccmi18n_sitemap.editExternalLink + '<\/a><\/li>';
 			}
 
 			if (obj.canDelete) { 
-				html += '<li><a class="ccm-menu-icon ccm-icon-delete-menu" dialog-append-buttons="true" id="menuDelete' + obj.cID + '" dialog-width="360" dialog-height="150" dialog-modal="false" dialog-append-buttons="true" dialog-title="' + ccmi18n_sitemap.deleteExternalLink + '" href="' + CCM_TOOLS_PATH + '/edit_collection_popup.php?rel=SITEMAP&cID=' + obj.cID + '&display_mode=' + obj.display_mode + '&instance_id=' + obj.instance_id + '&select_mode=' + obj.select_mode + '&ctask=delete_external">' + ccmi18n_sitemap.deleteExternalLink + '<\/a><\/li>';
+				html += '<li><a class="ccm-menu-icon ccm-icon-delete-menu" dialog-append-buttons="true" id="menuDelete' + obj.cID + '" dialog-width="360" dialog-height="150" dialog-modal="false" dialog-append-buttons="true" dialog-title="' + ccmi18n_sitemap.deleteExternalLink + '" href="' + CCM_TOOLS_PATH + '/edit_collection_popup.php?rel=SITEMAP&amp;cID=' + obj.cID + '&amp;display_mode=' + obj.display_mode + '&amp;instance_id=' + obj.instance_id + '&amp;select_mode=' + obj.select_mode + '&amp;ctask=delete_external">' + ccmi18n_sitemap.deleteExternalLink + '<\/a><\/li>';
 			}
 		
 		} else {
@@ -61,36 +61,36 @@ showPageMenu = function(obj, e) {
 				html += '<li class=\"ccm-menu-separator\"><\/li>';
 			}
 			if (obj.canEditProperties) { 
-				html += '<li><a class="ccm-menu-icon ccm-icon-properties-menu" dialog-on-close="ccm_sitemapExitEditMode(' + obj.cID + ')" dialog-width="670" dialog-height="360" dialog-append-buttons="true" dialog-modal="false" dialog-title="' + ccmi18n_sitemap.pagePropertiesTitle + '" id="menuProperties' + obj.cID + '" href="' + CCM_TOOLS_PATH + '/edit_collection_popup.php?rel=SITEMAP&cID=' + obj.cID + '&ctask=edit_metadata">' + ccmi18n_sitemap.pageProperties + '<\/a><\/li>';
+				html += '<li><a class="ccm-menu-icon ccm-icon-properties-menu" dialog-on-close="ccm_sitemapExitEditMode(' + obj.cID + ')" dialog-width="670" dialog-height="360" dialog-append-buttons="true" dialog-modal="false" dialog-title="' + ccmi18n_sitemap.pagePropertiesTitle + '" id="menuProperties' + obj.cID + '" href="' + CCM_TOOLS_PATH + '/edit_collection_popup.php?rel=SITEMAP&amp;cID=' + obj.cID + '&amp;ctask=edit_metadata">' + ccmi18n_sitemap.pageProperties + '<\/a><\/li>';
 			}
 			if (obj.canEditSpeedSettings) { 
-				html += '<li><a class="ccm-menu-icon ccm-icon-speed-settings-menu" dialog-on-close="ccm_sitemapExitEditMode(' + obj.cID + ')" dialog-width="550" dialog-height="280" dialog-append-buttons="true" dialog-modal="false" dialog-title="' + ccmi18n_sitemap.speedSettingsTitle + '" id="menuSpeedSettings' + obj.cID + '" href="' + CCM_TOOLS_PATH + '/edit_collection_popup.php?rel=SITEMAP&cID=' + obj.cID + '&ctask=edit_speed_settings">' + ccmi18n_sitemap.speedSettings + '<\/a><\/li>';
+				html += '<li><a class="ccm-menu-icon ccm-icon-speed-settings-menu" dialog-on-close="ccm_sitemapExitEditMode(' + obj.cID + ')" dialog-width="550" dialog-height="280" dialog-append-buttons="true" dialog-modal="false" dialog-title="' + ccmi18n_sitemap.speedSettingsTitle + '" id="menuSpeedSettings' + obj.cID + '" href="' + CCM_TOOLS_PATH + '/edit_collection_popup.php?rel=SITEMAP&amp;cID=' + obj.cID + '&amp;ctask=edit_speed_settings">' + ccmi18n_sitemap.speedSettings + '<\/a><\/li>';
 			}
 			if (obj.canEditPermissions) { 
-				html += '<li><a class="ccm-menu-icon ccm-icon-permissions-menu" dialog-on-close="ccm_sitemapExitEditMode(' + obj.cID + ')" dialog-width="420" dialog-height="630" dialog-append-buttons="true" dialog-modal="false" dialog-title="' + ccmi18n_sitemap.setPagePermissions + '" id="menuPermissions' + obj.cID + '" href="' + CCM_TOOLS_PATH + '/edit_collection_popup.php?rel=SITEMAP&cID=' + obj.cID + '&ctask=edit_permissions">' + ccmi18n_sitemap.setPagePermissions + '<\/a><\/li>';
+				html += '<li><a class="ccm-menu-icon ccm-icon-permissions-menu" dialog-on-close="ccm_sitemapExitEditMode(' + obj.cID + ')" dialog-width="420" dialog-height="630" dialog-append-buttons="true" dialog-modal="false" dialog-title="' + ccmi18n_sitemap.setPagePermissions + '" id="menuPermissions' + obj.cID + '" href="' + CCM_TOOLS_PATH + '/edit_collection_popup.php?rel=SITEMAP&amp;cID=' + obj.cID + '&amp;ctask=edit_permissions">' + ccmi18n_sitemap.setPagePermissions + '<\/a><\/li>';
 			}
 			if (obj.canEditDesign) { 
-				html += '<li><a class="ccm-menu-icon ccm-icon-design-menu" dialog-on-close="ccm_sitemapExitEditMode(' + obj.cID + ')" dialog-width="610" dialog-append-buttons="true" dialog-height="405" dialog-modal="false" dialog-title="' + ccmi18n_sitemap.pageDesign + '" id="menuDesign' + obj.cID + '" href="' + CCM_TOOLS_PATH + '/edit_collection_popup.php?rel=SITEMAP&cID=' + obj.cID + '&ctask=set_theme">' + ccmi18n_sitemap.pageDesign + '<\/a><\/li>';
+				html += '<li><a class="ccm-menu-icon ccm-icon-design-menu" dialog-on-close="ccm_sitemapExitEditMode(' + obj.cID + ')" dialog-width="610" dialog-append-buttons="true" dialog-height="405" dialog-modal="false" dialog-title="' + ccmi18n_sitemap.pageDesign + '" id="menuDesign' + obj.cID + '" href="' + CCM_TOOLS_PATH + '/edit_collection_popup.php?rel=SITEMAP&amp;cID=' + obj.cID + '&amp;ctask=set_theme">' + ccmi18n_sitemap.pageDesign + '<\/a><\/li>';
 			}
 			if (obj.canViewVersions) {
-				html += '<li><a class="ccm-menu-icon ccm-icon-versions-menu" dialog-on-close="ccm_sitemapExitEditMode(' + obj.cID + ')" dialog-width="640" dialog-height="340" dialog-modal="false" dialog-title="' + ccmi18n_sitemap.pageVersions + '" id="menuVersions' + obj.cID + '" href="' + CCM_TOOLS_PATH + '/versions.php?rel=SITEMAP&cID=' + obj.cID + '">' + ccmi18n_sitemap.pageVersions + '<\/a><\/li>';
+				html += '<li><a class="ccm-menu-icon ccm-icon-versions-menu" dialog-on-close="ccm_sitemapExitEditMode(' + obj.cID + ')" dialog-width="640" dialog-height="340" dialog-modal="false" dialog-title="' + ccmi18n_sitemap.pageVersions + '" id="menuVersions' + obj.cID + '" href="' + CCM_TOOLS_PATH + '/versions.php?rel=SITEMAP&amp;cID=' + obj.cID + '">' + ccmi18n_sitemap.pageVersions + '<\/a><\/li>';
 			}
 			if (obj.canDelete) { 
-				html += '<li><a class="ccm-menu-icon ccm-icon-delete-menu" dialog-on-close="ccm_sitemapExitEditMode(' + obj.cID + ')" dialog-append-buttons="true" id="menuDelete' + obj.cID + '" dialog-width="360" dialog-height="150" dialog-modal="false" dialog-title="' + ccmi18n_sitemap.deletePage + '" href="' + CCM_TOOLS_PATH + '/edit_collection_popup.php?rel=SITEMAP&cID=' + obj.cID + '&display_mode=' + obj.display_mode + '&instance_id=' + obj.instance_id + '&select_mode=' + obj.select_mode + '&ctask=delete">' + ccmi18n_sitemap.deletePage + '<\/a><\/li>';
+				html += '<li><a class="ccm-menu-icon ccm-icon-delete-menu" dialog-on-close="ccm_sitemapExitEditMode(' + obj.cID + ')" dialog-append-buttons="true" id="menuDelete' + obj.cID + '" dialog-width="360" dialog-height="150" dialog-modal="false" dialog-title="' + ccmi18n_sitemap.deletePage + '" href="' + CCM_TOOLS_PATH + '/edit_collection_popup.php?rel=SITEMAP&amp;cID=' + obj.cID + '&amp;display_mode=' + obj.display_mode + '&amp;instance_id=' + obj.instance_id + '&amp;select_mode=' + obj.select_mode + '&amp;ctask=delete">' + ccmi18n_sitemap.deletePage + '<\/a><\/li>';
 			}
 			if (obj.display_mode == 'explore' || obj.display_mode == 'search') {
 				html += '<li class=\"ccm-menu-separator\"><\/li>';
-				html += '<li><a class="ccm-menu-icon ccm-icon-move-copy-menu" dialog-width="90%" dialog-height="70%" dialog-modal="false" dialog-title="' + ccmi18n_sitemap.moveCopyPage + '" id="menuMoveCopy' + obj.cID + '" href="' + CCM_TOOLS_PATH + '/sitemap_search_selector?sitemap_select_mode=move_copy_delete&cID=' + obj.cID + '" id="menuMoveCopy' + obj.cID + '">' + ccmi18n_sitemap.moveCopyPage + '<\/a><\/li>';
+				html += '<li><a class="ccm-menu-icon ccm-icon-move-copy-menu" dialog-width="90%" dialog-height="70%" dialog-modal="false" dialog-title="' + ccmi18n_sitemap.moveCopyPage + '" id="menuMoveCopy' + obj.cID + '" href="' + CCM_TOOLS_PATH + '/sitemap_search_selector?sitemap_select_mode=move_copy_delete&amp;cID=' + obj.cID + '" id="menuMoveCopy' + obj.cID + '">' + ccmi18n_sitemap.moveCopyPage + '<\/a><\/li>';
 				if (obj.display_mode == 'explore') {
-					html += '<li><a class="ccm-menu-icon ccm-icon-move-up" id="menuSendToStop' + obj.cID + '" href="' + CCM_DISPATCHER_FILENAME + '/dashboard/sitemap/explore?cNodeID=' + obj.cID + '&task=send_to_top">' + ccmi18n_sitemap.sendToTop + '<\/a><\/li>';
-					html += '<li><a class="ccm-menu-icon ccm-icon-move-down" id="menuSendToBottom' + obj.cID + '" href="' + CCM_DISPATCHER_FILENAME + '/dashboard/sitemap/explore?cNodeID=' + obj.cID + '&task=send_to_bottom">' + ccmi18n_sitemap.sendToBottom + '<\/a><\/li>';
+					html += '<li><a class="ccm-menu-icon ccm-icon-move-up" id="menuSendToStop' + obj.cID + '" href="' + CCM_DISPATCHER_FILENAME + '/dashboard/sitemap/explore?cNodeID=' + obj.cID + '&amp;task=send_to_top">' + ccmi18n_sitemap.sendToTop + '<\/a><\/li>';
+					html += '<li><a class="ccm-menu-icon ccm-icon-move-down" id="menuSendToBottom' + obj.cID + '" href="' + CCM_DISPATCHER_FILENAME + '/dashboard/sitemap/explore?cNodeID=' + obj.cID + '&amp;task=send_to_bottom">' + ccmi18n_sitemap.sendToBottom + '<\/a><\/li>';
 				}
 			}
 			if (obj.cNumChildren > 0) {
 				html += '<li class=\"ccm-menu-separator\"><\/li>';
 
-				//var searchURL = (obj.display_mode == 'explore') ? CCM_REL + CCM_DISPATCHER_FILENAME + '/dashboard/sitemap/search/?selectedSearchField[]=parent&cParentAll=1&cParentIDSearchField=' + obj.cID : 'javascript:searchSubPages(' + obj.cID + ')';
-				var searchURL = CCM_DISPATCHER_FILENAME + '/dashboard/sitemap/search/?selectedSearchField[]=parent&cParentAll=1&cParentIDSearchField=' + obj.cID;
+				//var searchURL = (obj.display_mode == 'explore') ? CCM_REL + CCM_DISPATCHER_FILENAME + '/dashboard/sitemap/search/?selectedSearchField[]=parent&amp;cParentAll=1&amp;cParentIDSearchField=' + obj.cID : 'javascript:searchSubPages(' + obj.cID + ')';
+				var searchURL = CCM_DISPATCHER_FILENAME + '/dashboard/sitemap/search/?selectedSearchField[]=parent&amp;cParentAll=1&amp;cParentIDSearchField=' + obj.cID;
 				
 				if (obj.display_mode == 'full' || obj.display_mode == '' || obj.display_mode == 'explore') {
 					html += '<li><a class="ccm-menu-icon ccm-icon-search-pages" id="menuSearch' + obj.cID + '" href="' + searchURL + '">' + ccmi18n_sitemap.searchPages + '<\/a><\/li>';
@@ -104,10 +104,10 @@ showPageMenu = function(obj, e) {
 				html += '<li class=\"ccm-menu-separator\"><\/li>';
 			}
 			if (obj.canAddSubpages) {
-				html += '<li><a class="ccm-menu-icon ccm-icon-add-page-menu" dialog-append-buttons="true" dialog-width="645" dialog-modal="false" dialog-height="345" dialog-title="' + ccmi18n_sitemap.addPage + '" id="menuSubPage' + obj.cID + '" href="' + CCM_TOOLS_PATH + '/edit_collection_popup.php?rel=SITEMAP&mode=' + obj.display_mode + '&cID=' + obj.cID + '&ctask=add">' + ccmi18n_sitemap.addPage + '<\/a><\/li>';
+				html += '<li><a class="ccm-menu-icon ccm-icon-add-page-menu" dialog-append-buttons="true" dialog-width="645" dialog-modal="false" dialog-height="345" dialog-title="' + ccmi18n_sitemap.addPage + '" id="menuSubPage' + obj.cID + '" href="' + CCM_TOOLS_PATH + '/edit_collection_popup.php?rel=SITEMAP&amp;mode=' + obj.display_mode + '&amp;cID=' + obj.cID + '&amp;ctask=add">' + ccmi18n_sitemap.addPage + '<\/a><\/li>';
 			}
 			if (obj.display_mode != 'search' && obj.canAddExternalLinks) {
-				html += '<li><a class="ccm-menu-icon ccm-icon-add-external-link-menu" dialog-width="350" dialog-modal="false" dialog-height="170" dialog-title="' + ccmi18n_sitemap.addExternalLink + '" dialog-modal="false" dialog-append-buttons="true" id="menuLink' + obj.cID + '" href="' + CCM_TOOLS_PATH + '/edit_collection_popup.php?rel=SITEMAP&cID=' + obj.cID + '&ctask=add_external">' + ccmi18n_sitemap.addExternalLink + '<\/a><\/li>';
+				html += '<li><a class="ccm-menu-icon ccm-icon-add-external-link-menu" dialog-width="350" dialog-modal="false" dialog-height="170" dialog-title="' + ccmi18n_sitemap.addExternalLink + '" dialog-modal="false" dialog-append-buttons="true" id="menuLink' + obj.cID + '" href="' + CCM_TOOLS_PATH + '/edit_collection_popup.php?rel=SITEMAP&amp;cID=' + obj.cID + '&amp;ctask=add_external">' + ccmi18n_sitemap.addExternalLink + '<\/a><\/li>';
 			}
 		} 
 		

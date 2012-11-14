@@ -30,12 +30,12 @@
 	<?=Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper($stack->getCollectionName(), false, 'span10 offset1', false)?>
 	<div class="ccm-pane-options">
 		<a href="javascript:void(0)" onclick="ccm_stacksAddBlock()" class="btn small ccm-main-nav-edit-option"><?=t('Add Block')?></a>
-		<a class="btn small ccm-main-nav-edit-option" dialog-width="640" dialog-height="340" id="stackVersions" dialog-title="<?=t('Version History')?>" href="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/versions.php?rel=SITEMAP&cID=<?=$stack->getCollectionID()?>"><?=t('Version History')?></a>
+		<a class="btn small ccm-main-nav-edit-option" dialog-width="640" dialog-height="340" id="stackVersions" dialog-title="<?=t('Version History')?>" href="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/versions.php?rel=SITEMAP&amp;cID=<?=$stack->getCollectionID()?>"><?=t('Version History')?></a>
 
 		<? $cpc = new Permissions($stack); ?>
 		
 		<? if ($cpc->canEditPagePermissions() && PERMISSIONS_MODEL == 'advanced') { ?>
-			<a class="btn small ccm-main-nav-edit-option" dialog-width="580" dialog-append-buttons="true" dialog-height="420" dialog-title="<?=t('Stack Permissions')?>" id="stackPermissions" href="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/edit_area_popup.php?cID=<?=$stack->getCollectionID()?>&arHandle=Main&atask=groups"><?=t('Permissions')?></a>
+			<a class="btn small ccm-main-nav-edit-option" dialog-width="580" dialog-append-buttons="true" dialog-height="420" dialog-title="<?=t('Stack Permissions')?>" id="stackPermissions" href="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/edit_area_popup.php?cID=<?=$stack->getCollectionID()?>&amp;arHandle=Main&amp;atask=groups"><?=t('Permissions')?></a>
 		<? } ?>
 
 		<? if ($cpc->canDeletePage()) { ?>
@@ -46,7 +46,7 @@
 		$vo = $stack->getVersionObject();
 		if ($cp->canApprovePageVersions()) {
 			$token = '&' . Loader::helper('validation/token')->getParameter(); ?>
-			<a style="margin-right: 8px; <? if ($vo->isApproved()) { ?> display: none; <? } ?>" href="javascript:void(0)" onclick="window.location.href='<?=DIR_REL . "/" . DISPATCHER_FILENAME . "?cID=" . $stack->getCollectionID() . "&ctask=approve-recent" . $token?>'" class="btn small ccm-main-nav-edit-option ccm-button-v2-right"><?=t('Approve Changes')?></a>
+			<a style="margin-right: 8px; <? if ($vo->isApproved()) { ?> display: none; <? } ?>" href="javascript:void(0)" onclick="window.location.href='<?=DIR_REL . "/" . DISPATCHER_FILENAME . "?cID=" . $stack->getCollectionID() . "&amp;ctask=approve-recent" . $token?>'" class="btn small ccm-main-nav-edit-option ccm-button-v2-right"><?=t('Approve Changes')?></a>
 		<?
 		}		
 		?>

@@ -194,7 +194,7 @@ for ($i = 0; $i < count($ctArray); $i++) {
 					
 					<? $class = ($ct->getCollectionTypeID() == $ctID) ? 'ccm-item-selected' : ''; ?>
 			
-					<li class="<?=$class?>"><a class="dialog-launch" dialog-width="600" dialog-title="<?=t('Add %s', Loader::helper('text')->entities($ct->getCollectionTypeName()))?>" dialog-height="310" href="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/edit_collection_popup?cID=<?=$_REQUEST['cID']?>&ctask=add&rel=<?=$_REQUEST['rel']?>&ctID=<?=$ct->getCollectionTypeID()?>"><?= $ct->getCollectionTypeIconImage(); ?></a>
+					<li class="<?=$class?>"><a class="dialog-launch" dialog-width="600" dialog-title="<?=t('Add %s', Loader::helper('text')->entities($ct->getCollectionTypeName()))?>" dialog-height="310" href="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/edit_collection_popup?cID=<?=$_REQUEST['cID']?>&amp;ctask=add&amp;rel=<?=$_REQUEST['rel']?>&amp;ctID=<?=$ct->getCollectionTypeID()?>"><?= $ct->getCollectionTypeIconImage(); ?></a>
 					<span id="pgTypeName<?=$ct->getCollectionTypeID()?>"><?=$ct->getCollectionTypeName()?></span>
 					</li> 
 				

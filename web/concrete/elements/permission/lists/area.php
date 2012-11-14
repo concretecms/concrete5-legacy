@@ -43,7 +43,7 @@ if ($a->getAreaCollectionInheritID() != $c->getCollectionID() && $a->getAreaColl
 
 <? $cat = PermissionKeyCategory::getByHandle('area');?>
 
-<form method="post" id="ccm-permission-list-form" action="<?=$cat->getToolsURL("save_permission_assignments")?>&cID=<?=$c->getCollectionID()?>&arHandle=<?=$a->getAreaHandle()?>">
+<form method="post" id="ccm-permission-list-form" action="<?=$cat->getToolsURL("save_permission_assignments")?>&amp;cID=<?=$c->getCollectionID()?>&amp;arHandle=<?=$a->getAreaHandle()?>">
 <table class="ccm-permission-grid">
 
 <?
