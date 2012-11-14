@@ -1477,6 +1477,7 @@ class Concrete5_Model_Page extends Collection {
 		}
 		
 		$db->query("update Collections set cDateModified = ? where cID = ?", array($cDateModified, $cID));
+		Log::addEntry('prior to change old parent (right?) = ' . $this->getCollectionParentID());
 		$v = array($newCParentID, $cID);
 		$q = "update Pages set cParentID = ? where cID = ?";
 		$r = $db->prepare($q);
@@ -1504,11 +1505,12 @@ class Concrete5_Model_Page extends Collection {
 		// 3. new parent
 		
 		$oldParent = Page::getByID($this->getCollectionParentID(), 'RECENT');
+		Log::addEntry('official old parent (wrong) = ' . $oldParent->getCollectionID());
 		$newParent = Page::getByID($newCParentID, 'RECENT');
-		
+		Log::addEntry('new internal parent' . $newParent->getCollectionID());
 		$oldParent->refreshCache();
 		$newParent->refreshCache();
-
+	
 		$ret = Events::fire('on_page_move', $this, $oldParent, $newParent);
 
 		// now that we've moved the collection, we rescan its path
