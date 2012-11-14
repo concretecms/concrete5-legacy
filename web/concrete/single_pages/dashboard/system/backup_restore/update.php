@@ -30,38 +30,40 @@ if ($downloadableUpgradeAvailable) { ?>
 	<?=$h->getDashboardPaneFooterWrapper();?>
 <? } else if (count($updates)) { ?>
 	<?=$h->getDashboardPaneHeaderWrapper(t('Install Local Update'),false,'span8 offset2',false);?>
+	<?
+	$warning = '<strong>' . t('Make sure you <a href="%s">backup your database</a> before updating.', $this->url('/dashboard/system/backup_restore/backup')) . '</strong><br/>';
+	$ih = Loader::helper('concrete/interface');
+	if (count($updates) == -1) { ?>
 		<div class="ccm-pane-body">
-			<?print '<strong>' . t('Make sure you <a href="%s">backup your database</a> before updating.', $this->url('/dashboard/system/backup_restore/backup')) . '</strong><br/>';
-			$ih = Loader::helper('concrete/interface');
-
-			if (count($updates) == 1) { ?>
-					<p><?=t('An update is available. Click below to update to <strong>%s</strong>.', $updates[0]->getUpdateVersion())?></p>
-					<span class="label"><?=t('Current Version %s',config::get('SITE_APP_VERSION'))?></span>
-				</div>
-				<div class="ccm-pane-footer">
-					<form method="post" action="<?=$this->action('do_update')?>" id="ccm-update-form">
-						<input type="hidden" name="updateVersion" value="<?=$updates[0]->getUpdateVersion()?>" />
-						<?=$ih->submit(t('Update'), 'maintenance-mode-form', 'right', 'primary')?>
-					</form>
-				</div>
-			<? } else { ?>
-				<p><?=t('Several updates are available. Please choose the desired update from the list below.')?></p>
-					<span class="label"><?=t('Current Version')?> <?=config::get('SITE_APP_VERSION')?></span>
-				<form method="post" action="<?=$this->action('do_update')?>" id="ccm-update-form">
-				<?  $checked = true;
-					foreach($updates as $upd) { ?>
-						<div class="ccm-dashboard-radio"><input type="radio" name="updateVersion" value="<?=$upd->getUpdateVersion()?>" <?=(!$checked?'':"checked")?> />
-							<?=$upd->getUpdateVersion()?>
-						</div>
-						<? $checked = false;
-					} ?>
-					</div>
-					<div class="ccm-pane-footer">
-						<?=$ih->submit(t('Update'),false, 'right', 'primary')?>
-					</div>
-				</form>
-			<? } ?>
+			<?=$warning;?>
+			<p><?=t('An update is available. Click below to update to <strong>%s</strong>.', $updates[0]->getUpdateVersion())?></p>
+			<span class="label"><?=t('Current Version %s',config::get('SITE_APP_VERSION'))?></span>
 		</div>
+		<div class="ccm-pane-footer">
+			<form method="post" action="<?=$this->action('do_update')?>" id="ccm-update-form">
+				<input type="hidden" name="updateVersion" value="<?=$updates[0]->getUpdateVersion()?>" />
+				<?=$ih->submit(t('Update'), 'maintenance-mode-form', 'right', 'primary')?>
+			</form>
+		</div>
+	<? } else { ?>
+		<form method="post" action="<?=$this->action('do_update')?>" id="ccm-update-form">
+			<div class="ccm-pane-body">
+				<?=$warning;?>
+				<p><?=t('Several updates are available. Please choose the desired update from the list below.')?></p>
+				<span class="label"><?=t('Current Version')?> <?=config::get('SITE_APP_VERSION')?></span>
+				<?  $checked = true;
+				foreach($updates as $upd) { ?>
+					<div class="ccm-dashboard-radio"><input type="radio" name="updateVersion" value="<?=$upd->getUpdateVersion()?>" <?=(!$checked?'':"checked")?> />
+						<?=$upd->getUpdateVersion()?>
+					</div>
+					<? $checked = false;
+				} ?>
+			</div>
+			<div class="ccm-pane-footer">
+				<?=$ih->submit(t('Update'),false, 'right', 'primary')?>
+			</div>
+		</form>
+	<? } ?>
 	<?=$h->getDashboardPaneFooterWrapper(false);?>
 	<div class="clearfix">&nbsp;</div>
 <? } else { ?>

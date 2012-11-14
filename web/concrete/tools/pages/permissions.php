@@ -168,7 +168,6 @@ ccm_permissionLaunchDialog = function(link) {
 	</div>
 	
 	
-	</form>
 	<? $pk->setPermissionObject($pages[0]); ?>
 	<? $pk->setMultiplePageArray($pages); ?>
 
