@@ -97,14 +97,14 @@ $list = UserAttributeKey::getList();
 	
 	<? $ds = $fldc->getDefaultSortColumn(); ?>
 	
-	<select <? if (count($fldc->getSortableColumns()) == 0) { ?>disabled="true"<? } ?> id="ccm-<?=$searchInstance?>-sortable-column-default" name="fSearchDefaultSort">
+	<select <? if (count($fldc->getSortableColumns()) == 0) { ?>disabled="disabled"<? } ?> id="ccm-<?=$searchInstance?>-sortable-column-default" name="fSearchDefaultSort">
 	<? foreach($fldc->getSortableColumns() as $col) { ?>
-		<option id="opt_<?=$col->getColumnKey()?>" value="<?=$col->getColumnKey()?>" <? if ($col->getColumnKey() == $ds->getColumnKey()) { ?> selected="true" <? } ?>><?=$col->getColumnName()?></option>
+		<option id="opt_<?=$col->getColumnKey()?>" value="<?=$col->getColumnKey()?>" <? if ($col->getColumnKey() == $ds->getColumnKey()) { ?> selected="selected" <? } ?>><?=$col->getColumnName()?></option>
 	<? } ?>	
 	</select>
-	<select <? if (count($fldc->getSortableColumns()) == 0) { ?>disabled="true"<? } ?> id="ccm-<?=$searchInstance?>-sortable-column-default-direction" name="fSearchDefaultSortDirection">
-		<option value="asc" <? if ($ds->getColumnDefaultSortDirection() == 'asc') { ?> selected="true" <? } ?>><?=t('Ascending')?></option>
-		<option value="desc" <? if ($ds->getColumnDefaultSortDirection() == 'desc') { ?> selected="true" <? } ?>><?=t('Descending')?></option>	
+	<select <? if (count($fldc->getSortableColumns()) == 0) { ?>disabled="disabled"<? } ?> id="ccm-<?=$searchInstance?>-sortable-column-default-direction" name="fSearchDefaultSortDirection">
+		<option value="asc" <? if ($ds->getColumnDefaultSortDirection() == 'asc') { ?> selected="selected" <? } ?>><?=t('Ascending')?></option>
+		<option value="desc" <? if ($ds->getColumnDefaultSortDirection() == 'desc') { ?> selected="selected" <? } ?>><?=t('Descending')?></option>	
 	</select>	
 	</div>
 
