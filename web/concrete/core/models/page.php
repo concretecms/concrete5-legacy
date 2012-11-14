@@ -1476,6 +1476,7 @@ class Concrete5_Model_Page extends Collection {
 			}
 		}
 		
+		$oldParent = Page::getByID($this->getCollectionParentID(), 'RECENT'); // define old parent prior to page relocation
 		$db->query("update Collections set cDateModified = ? where cID = ?", array($cDateModified, $cID));
 		$v = array($newCParentID, $cID);
 		$q = "update Pages set cParentID = ? where cID = ?";
@@ -1503,7 +1504,6 @@ class Concrete5_Model_Page extends Collection {
 		// 2. former parent
 		// 3. new parent
 		
-		$oldParent = Page::getByID($this->getCollectionParentID(), 'RECENT');
 		$newParent = Page::getByID($newCParentID, 'RECENT');
 		$oldParent->refreshCache();
 		$newParent->refreshCache();
