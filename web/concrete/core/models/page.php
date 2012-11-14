@@ -1505,10 +1505,9 @@ class Concrete5_Model_Page extends Collection {
 		
 		$oldParent = Page::getByID($this->getCollectionParentID(), 'RECENT');
 		$newParent = Page::getByID($newCParentID, 'RECENT');
-		
 		$oldParent->refreshCache();
 		$newParent->refreshCache();
-
+	
 		$ret = Events::fire('on_page_move', $this, $oldParent, $newParent);
 
 		// now that we've moved the collection, we rescan its path
