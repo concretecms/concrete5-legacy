@@ -37,18 +37,35 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		*/
 		public static function getByHandle($ctHandle) {
 			$db = Loader::db();
-			$q = "SELECT ctID, ctHandle, ctIsInternal, ctName, ctIcon, pkgID from PageTypes where ctHandle = ?";
-			$r = $db->query($q, array($ctHandle));
+            $q = "SELECT pt.ctID, ctHandle, ctIsInternal, ctName, ctIcon, pt.pkgID, ct.ctID includedInComposer, p.cID mcID, ct.ctComposerPublishPageMethod, ct.ctComposerPublishPageTypeID, ct.ctComposerPublishPageParentID
+                FROM PageTypes pt
+                INNER JOIN CollectionVersions cv ON cv.ctID = pt.ctID aND cv.cvIsApproved=1
+                INNER JOIN Pages p ON p.cID = cv.cID
+                LEFT JOIN ComposerTypes ct ON ct.ctID=pt.ctID
+                WHERE cIsTemplate = 1
+                AND ctHandle=?";
+            $r = $db->query($q, array($ctHandle));
 			if ($r) {
 				$row = $r->fetchRow();
-				$r->free();
-				if (is_array($row)) {
+            
+                if (is_array($row)) {
 					$ct = new CollectionType; 
-					$row['mcID'] = $db->GetOne("select p.cID from Pages p inner join CollectionVersions cv on p.cID = cv.cID where cv.ctID = ? and cIsTemplate = 1", array($row['ctID']));
-					$ct->setPropertiesFromArray($row);
-					$ct->setComposerProperties();
-				}					
-			}
+                    
+                    if ($row['includedInComposer'] > 0) {
+                        $ct->ctIncludeInComposer = true;
+                        $row['ctIcon'] = $ct->ctIcon;
+                    }
+                    else {
+                        unset($row['ctComposerPublishPageMethod']);
+                        unset($row['ctComposerPublishPageTypeID']);
+                        unset($row['ctComposerPublishPageParentID']);
+                    }
+                    unset($row['includedInComposer']);
+                    
+                    $ct->setPropertiesFromArray($row);
+                }
+            }
+            
 			return $ct;
 		}
 		
