@@ -160,6 +160,19 @@
 			return $cnt;
 		}
 		
+		public function canRead($c) {
+			$groupPermissionEntity = GroupPermissionAccessEntity::getOrCreate($this);
+			$viewPageKey = PermissionKey::getByHandle('view_page');
+			$viewPageKey->setPermissionObject($c);
+			$pa = $viewPageKey->getPermissionAccessObject();
+			
+			if (is_object($pa) && $pa->validateAccessEntities(array($groupPermissionEntity))) {
+				return true;
+			} else {
+				return false;
+			} 
+		}
+		
 
 		/**
 		 * Deletes a group
