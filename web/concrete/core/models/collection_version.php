@@ -37,22 +37,15 @@
 		public static function getNumericalVersionID($cID, $cvID) {
 			if ($cvID == 'RECENT' || $cvID == 'ACTIVE') {
 
-				// first, we make sure that the cID is for an actual page. If we're pointing to another page (an alias)
-				// we need to use THAT cID
+				// If we're pointing to another page (an alias) we need to use THAT cID
 				$db = Loader::db();
-				$_cID = $cID;
-				$cPointerID = $db->GetOne("select cPointerID from Pages where cID = ?", array($cID));
-				if ($cPointerID > 0) {
-					$_cID = $cPointerID;
-				}
-				
-				$v = array($_cID);
+				$v = array($cID, $cID, $cID);
 				switch($cvID) {
 					case 'RECENT':
-						$cvIDa = $db->GetOne("select cvID from CollectionVersions where cID = ? order by cvID desc", $v);
+						$cvIDa = $db->GetOne("select cvID from CollectionVersions where cID = ifnull((select if(cPointerID>0,cPointerID, ?) from Pages where cID=?),?) order by cvID desc", $v);
 						break;
 					case 'ACTIVE':
-						$cvIDa = $db->GetOne("select cvID from CollectionVersions where cID = ? and cvIsApproved = 1", $v);
+						$cvIDa = $db->GetOne("select cvID from CollectionVersions where cID = ifnull((select if(cPointerID>0,cPointerID, ?) from Pages where cID=?),?) and cvIsApproved = 1", $v);
 						break;
 				}
 				
