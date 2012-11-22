@@ -231,7 +231,7 @@ class Concrete5_Model_Block extends Object {
 			$vo = $c->getVersionObject();
 			$cvID = $vo->getVersionID();
 			$q = "select bID from CollectionVersionBlocks where bID = ? and cID=? and isOriginal = 0 and cvID = ?";
-			$r = $db->query($q, array($this->bID, $cID, $cvID}));
+			$r = $db->query($q, array($this->bID, $cID, $cvID));
 			if ($r) {
 				return ($r->numRows() > 0);
 			}
