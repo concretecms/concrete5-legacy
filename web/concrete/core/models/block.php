@@ -490,8 +490,8 @@ class Concrete5_Model_Block extends Object {
 				$ocID = $oc->getCollectionID();
 				$ocvID = $oc->getVersionID();
 
-				$qa = "select paID, pkID from BlockPermissionAssignments where bID = '{$this->bID}' and cID = '$ocID' and cvID='{$ocvID}'";
-				$ra = $db->query($qa);
+				$qa = "select paID, pkID from BlockPermissionAssignments where bID = ? and cID = ? and cvID = ?";
+				$ra = $db->query($qa, array($this->bID, $ocID, $ocvID));
 
 				if ($ra) {
 					while ($row_a = $ra->fetchRow()) {
@@ -548,8 +548,8 @@ class Concrete5_Model_Block extends Object {
 		$ncID = $nc->getCollectionID();
 		$nvID = $nc->getVersionID();
 
-		$q = "select paID, pkID from BlockPermissionAssignments where cID = '$ocID' and bID = '{$this->bID}' and cvID = '{$ovID}'";
-		$r = $db->query($q);
+		$q = "select paID, pkID from BlockPermissionAssignments where cID = ? and bID = ? and cvID = ?";
+		$r = $db->query($q, array($ocID, $this->bID, $ovID));
 		if ($r) {
 			while ($row = $r->fetchRow()) {
 				$db->Replace('BlockPermissionAssignments', 
@@ -970,8 +970,8 @@ class Concrete5_Model_Block extends Object {
 		switch($i) {
 			case '1':
 				// we're moving the block up
-				$q = "select cbDisplayOrder from CollectionVersionBlocks where cID = '$cID' and (cvID = '{$cvID}' or cbIncludeAll=1) and bID = '$bID' and arHandle = '$arHandle'";
-				$origDisplayOrder = $db->getOne($q);
+				$q = "select cbDisplayOrder from CollectionVersionBlocks where cID = ? and (cvID = ? or cbIncludeAll=1) and bID = ? and arHandle = ?";
+				$origDisplayOrder = $db->getOne($q, array($cID, $cvID, $bID, $arHandle));
 
 				// So now we have the display order for the original element. If it's 0, we do nothing.
 
