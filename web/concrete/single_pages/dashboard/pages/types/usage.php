@@ -5,13 +5,13 @@ $dashboardHelper = Loader::helper('concrete/dashboard');
 echo $dashboardHelper->getDashboardPaneHeaderWrapper(/*i18n: %s is the name of a page type*/t('Usage of page type %s', $ct->ctName), false, false, false);
 	?><div class="ccm-pane-body"><?php
 		if(!count($pageVersions)) {
-			?>This page type is not in use.<?php
+			echo t('This page type is not in use.');
 		}
 		else {
 			?><table class="table table-bordered table-striped">
 				<thead><tr>
-					<th>Page</th>
-					<th>Path</th>
+					<th><?php echo t('Page'); ?></th>
+					<th><?php echo t('Path'); ?></th>
 					<th></th>
 				</tr></thead>
 				<tbody><?php
@@ -19,7 +19,7 @@ echo $dashboardHelper->getDashboardPaneHeaderWrapper(/*i18n: %s is the name of a
 						?><tr>
 							<td><?php echo htmlspecialchars($pageVersion['Page']->getCollectionName()); ?></td>
 							<td><?php echo htmlspecialchars($pageVersion['Page']->getCollectionPath()); ?></td>
-							<td><a href="<?php echo DIR_REL . '/' . DISPATCHER_FILENAME . '?cID=' . $pageVersion['cID'] . '&amp;cvID=' . $pageVersion['cvID']; ?>">view</a></td>
+							<td><a href="<?php echo DIR_REL . '/' . DISPATCHER_FILENAME . '?cID=' . $pageVersion['cID'] . '&amp;cvID=' . $pageVersion['cvID']; ?>"><?php echo t('view'); ?></a></td>
 						<tr><?php
 					}
 				?></tbody>
