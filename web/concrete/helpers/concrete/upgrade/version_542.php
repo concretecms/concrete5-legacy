@@ -53,6 +53,10 @@ class ConcreteUpgradeVersion542Helper {
 		if ($sp->isError()) {
 			$d5 = SinglePage::add('/dashboard/pages/types/composer');
 		}
+		$sp = Page::getByPath('/dashboard/pages/types/usage');
+		if ($sp->isError()) {
+			$d6 = SinglePage::add('/dashboard/pages/types/usage');
+		}
 	}
 	
 	public function prepare() {

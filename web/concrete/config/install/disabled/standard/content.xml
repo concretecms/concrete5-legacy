@@ -138,6 +138,7 @@
 		<page name="Download File" path="/download_file" filename="/download_file.php" pagetype="" description="" package=""/>
         <page name="Members" path="/members" filename="/members.php" pagetype="" description="" package=""/>
         <page name="Composer" path="/dashboard/pages/types/composer" filename="/dashboard/pages/types/composer.php" pagetype="" description="" package=""/>
+        <page name="Composer" path="/dashboard/pages/types/usage" filename="/dashboard/pages/types/usage.php" pagetype="" description="" package=""/>
     </singlepages>
     <stacks>
         <stack name="Header Nav" type="global_area">

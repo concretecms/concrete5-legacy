@@ -734,6 +734,7 @@
 	
 
         <page name="Composer" path="/dashboard/pages/types/composer" filename="/dashboard/pages/types/composer.php" pagetype="" description="" package=""/>
+        <page name="Usage" path="/dashboard/pages/types/usage" filename="/dashboard/pages/types/usage.php" pagetype="" description="" package=""/>
     </singlepages>
     <pagetypes>
         <pagetype handle="core_stack" name="Stack" internal="1" package="" />

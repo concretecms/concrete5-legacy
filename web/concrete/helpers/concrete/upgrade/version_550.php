@@ -149,6 +149,7 @@ class ConcreteUpgradeVersion550Helper {
 			'composer/write',
 			'composer/drafts',
 			'pages/types/composer',
+			'pages/types/usage',
 			'settings/multilingual',
 		);
 		Loader::model('page_list');
