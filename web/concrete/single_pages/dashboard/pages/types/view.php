@@ -254,7 +254,7 @@ if ($ctEditMode) {
                 <th width="100%"><?=t('Name')?></th>
                 <th><?=t('Handle')?></th>
                 <th><?=t('Package')?></th>
-                <th <? if ($cap->canAccessComposer()) { ?>colspan="3"<? } else { ?>colspan="2"<? } ?>></th>
+                <th <? if ($cap->canAccessComposer()) { ?>colspan="4"<? } else { ?>colspan="3"<? } ?>></th>
             </tr>
 		</thead>
 		<tbody>
@@ -292,6 +292,7 @@ if ($ctEditMode) {
                 <? if ($cap->canAccessComposer()) { ?>
                     <td><? print $ih->button(t('Composer'), $this->url('/dashboard/pages/types/composer', 'view', $ct->getCollectionTypeID()), 'left', 'small')?></td>
                 <? } ?>	
+                <td><? print $ih->button(t('Usage'), $this->url('/dashboard/pages/types', 'usage', $ct->getCollectionTypeID()), 'left', 'small')?></td>
             </tr>
             <? } ?>
 		</tbody>
