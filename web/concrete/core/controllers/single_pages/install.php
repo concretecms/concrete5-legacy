@@ -170,7 +170,9 @@ class Concrete5_Controller_Install extends Controller {
 		
 		$jsx = Loader::helper('json');
 		$js = new stdClass;
-		
+		if (!ini_get('safe_mode')) {
+			@set_time_limit(150);
+		}
 		try {
 			call_user_func(array($spl, $routine));
 			$js->error = false;
