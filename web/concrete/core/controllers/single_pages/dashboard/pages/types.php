@@ -11,7 +11,7 @@ class Concrete5_Controller_Dashboard_Pages_Types extends Controller {
 		$this->set('disableThirdLevelNav', true);
 	}
 	
-	public function delete($ctID, $token = '') {
+	public function delete($ctID, $token = '', $replace_existing_with = '') {
 		$db = Loader::db();
 		$valt = Loader::helper('validation/token');
 		if (!$valt->validate('delete_page_type', $token)) {
@@ -20,7 +20,7 @@ class Concrete5_Controller_Dashboard_Pages_Types extends Controller {
 			$ct = CollectionType::getByID($ctID);
 			$pageCount = $ct->getUsageCount();
 			if($pageCount > 0) {
-				$replaceExistingWith = empty($_GET['replace_existing_with']) ? 0 : @intval($_GET['replace_existing_with']);
+				$replaceExistingWith = is_numeric($replace_existing_with) ? @intval($replace_existing_with) : 0;
 				if($replaceExistingWith != 0) {
 					if(is_object(CollectionType::getByID($replaceExistingWith))) {
 						$db->query('UPDATE Pages INNER JOIN CollectionVersions ON Pages.cID = CollectionVersions.cID SET CollectionVersions.ctID = ? WHERE Pages.cIsTemplate = 0 and CollectionVersions.ctID = ?', array($replaceExistingWith, $ct->getCollectionTypeID()));
@@ -49,14 +49,21 @@ class Concrete5_Controller_Dashboard_Pages_Types extends Controller {
 				throw new Exception(t('Invalid ID.'));
 			}
 			$result['usage'] = $ct->getUsageCount();
-			$result['others'] = array();
+			$replace_existing_with = '';
 			if($result['usage'] > 0) {
+				$others = array();
 				foreach(CollectionType::getList() as $ctOther) {
 					if($ctOther->getCollectionTypeID() != $ctID) {
-						$result['others'][] = array('id' => $ctOther->getCollectionTypeID(), 'name' => $ctOther->getCollectionTypeName());
+						$others[View::url('/dashboard/pages/types/', 'delete',$ctID, $valt->generate('delete_page_type'), $ctOther->getCollectionTypeID())] = $ctOther->getCollectionTypeName();
 					}
 				}
+				if(count($others)) {
+					$form = Loader::helper('form');
+					$replace_existing_with .= $form->label('replace_existing_with', t('Re-assign pages to'));
+					$replace_existing_with .= $form->select('replace_existing_with', array_merge(array('' => t('Please select')), $others), '');
+				}
 			}
+			$result['replace_existing_with'] = $replace_existing_with;
 		}
 		catch(Exception $e) {
 			$result['error'] = $e->getMessage();
