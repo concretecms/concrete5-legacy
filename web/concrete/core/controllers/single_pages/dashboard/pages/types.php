@@ -18,21 +18,26 @@ class Concrete5_Controller_Dashboard_Pages_Types extends Controller {
 			$this->set('message', $valt->getErrorMessage());
 		} else {
 			$ct = CollectionType::getByID($ctID);
-			$pageCount = $ct->getUsageCount();
-			if($pageCount > 0) {
-				$replaceExistingWith = is_numeric($replace_existing_with) ? @intval($replace_existing_with) : 0;
-				if($replaceExistingWith != 0) {
-					if(is_object(CollectionType::getByID($replaceExistingWith))) {
-						$db->query('UPDATE Pages INNER JOIN CollectionVersions ON Pages.cID = CollectionVersions.cID SET CollectionVersions.ctID = ? WHERE Pages.cIsTemplate = 0 and CollectionVersions.ctID = ?', array($replaceExistingWith, $ct->getCollectionTypeID()));
-						$pageCount = $ct->getUsageCount();
+			if(!is_object($ct)) {
+				$this->set('message', t('Invalid ID.'));
+			}
+			else {
+				$pageCount = $ct->getUsageCount();
+				if($pageCount > 0) {
+					$replaceExistingWith = is_numeric($replace_existing_with) ? @intval($replace_existing_with) : 0;
+					if($replaceExistingWith != 0) {
+						if(is_object(CollectionType::getByID($replaceExistingWith))) {
+							$db->query('UPDATE Pages INNER JOIN CollectionVersions ON Pages.cID = CollectionVersions.cID SET CollectionVersions.ctID = ? WHERE Pages.cIsTemplate = 0 and CollectionVersions.ctID = ?', array($replaceExistingWith, $ct->getCollectionTypeID()));
+							$pageCount = $ct->getUsageCount();
+						}
 					}
 				}
-			}
-			if($pageCount == 0) {
-				$ct->delete();
-				$this->redirect("/dashboard/pages/types");
-			} else {
-				$this->set("error", array(t("You must delete all pages of this type, and remove all page versions that contain this page type before deleting this page type.")));
+				if($pageCount == 0) {
+					$ct->delete();
+					$this->redirect("/dashboard/pages/types");
+				} else {
+					$this->set("error", array(t("You must delete all pages of this type, and remove all page versions that contain this page type before deleting this page type.")));
+				}
 			}
 		}
 	}
