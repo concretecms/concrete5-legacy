@@ -11,7 +11,7 @@ class Concrete5_Controller_Dashboard_Pages_Types extends Controller {
 		$this->set('disableThirdLevelNav', true);
 	}
 	
-	public function delete($ctID, $token = '', $replace_existing_with = '') {
+	public function delete($ctID, $token = '', $replace_existing_with = 0) {
 		$db = Loader::db();
 		$valt = Loader::helper('validation/token');
 		if (!$valt->validate('delete_page_type', $token)) {
@@ -24,7 +24,7 @@ class Concrete5_Controller_Dashboard_Pages_Types extends Controller {
 			else {
 				$pageCount = $ct->getUsageCount();
 				if($pageCount > 0) {
-					$replaceExistingWith = is_numeric($replace_existing_with) ? @intval($replace_existing_with) : 0;
+					$replaceExistingWith = @intval($replace_existing_with);
 					if($replaceExistingWith != 0) {
 						if(is_object(CollectionType::getByID($replaceExistingWith))) {
 							$db->query('UPDATE Pages INNER JOIN CollectionVersions ON Pages.cID = CollectionVersions.cID SET CollectionVersions.ctID = ? WHERE Pages.cIsTemplate = 0 and CollectionVersions.ctID = ?', array($replaceExistingWith, $ct->getCollectionTypeID()));
