@@ -92,7 +92,7 @@ $th = Loader::helper('text');
 		</script>
 <form action="<?=$this->action('view')?>">
 	<div class="ccm-pane-options">
-			<label style="width: auto; margin-right: 1em; margin-left: 20px;">Keywords</label><?php echo $form->text('keywords', '', array('style' => 'width: 130px')); ?><span style="margin-left: 30px;"><?=t(' # Per Page'); ?></span>
+			<label style="width: auto; margin-right: 1em; margin-left: 20px;"><?=t('Keywords'); ?></label><?php echo $form->text('keywords', '', array('style' => 'width: 130px')); ?><span style="margin-left: 30px;"><?=t(' # Per Page'); ?></span>
 			<?=$form->select('numResults', array(
 				'10' => '10',
 				'25' => '25',
@@ -100,7 +100,7 @@ $th = Loader::helper('text');
 				'100' => '100',
 				'500' => '500'
 			), $searchRequest['numResults'], array('style' => 'width:65px; margin: 0px 10px 0px 10px;'))?>
-			<?php print $concrete_interface->submit('Search', $formID, $buttonAlign = 'left', 'searchSubmit'); ?><br />
+			<?php print $concrete_interface->submit(t('Search'), $formID, $buttonAlign = 'left', 'searchSubmit'); ?><br />
 			<a href="javascript:void(0)" class="ccm-icon-option-closed" id="searchUnderParent"><?php echo t('Advanced Search'); ?></a>
 			<div id="parentOptions" style="margin-left: 25px; display: <?php echo $parentDialogOpen ? 'block' : 'none'; ?>">
 			<div id="pageSelectorHolder" style="float: left; width: 400px; margin-top: 15px;">
@@ -231,7 +231,7 @@ if (count($pages) > 0) {
 							<div class="updateButton">
 								<br />
 								<br />
-								<?php print $concrete_interface->submit('Save', $formID, $buttonAlign = 'right', 'seoSubmit update' . $cID, array('title' => $cID)); ?>
+								<?php print $concrete_interface->submit(t('Save'), $formID, $buttonAlign = 'right', 'seoSubmit update' . $cID, array('title' => $cID)); ?>
 							</div>
 							<div>
 								<img style="display: none; position: absolute; top: 20px; right: 20px;" id="throbber<?php echo $cID ?>"  class="throbber<?php echo $cID ?>" src="<?php echo ASSETS_URL_IMAGES . '/throbber_white_32.gif' ?>" />
