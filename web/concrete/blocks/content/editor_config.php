@@ -20,7 +20,11 @@ tinyMCE.init({
 	<? if (is_object($theme)) { ?>
 		content_css : "<?=$theme->getThemeEditorCSS()?>",
 	<? } ?>
+	<? if(LANGUAGE != "en"){ ?>
+	translate_mode : true,
+	language : "<?=LANGUAGE?>",
 	<?
+	}
 	$txtEditorMode=Config::get('CONTENTS_TXT_EDITOR_MODE');
 	if( $txtEditorMode=='CUSTOM' ){ ?>
 		//theme : "concrete",
