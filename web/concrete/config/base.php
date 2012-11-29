@@ -494,13 +494,16 @@ if (!defined('CONCRETE5_ORG_URL_SECURE')) {
 if (!defined('NEWSFLOW_URL')) {
 	define('NEWSFLOW_URL', 'http://newsflow.concrete5.org');
 }
+if (!defined('NEWSFLOW_JP_URL')) {
+	define('NEWSFLOW_JP_URL', 'http://concrete5-japan.org');
+}
 
 if (!defined('ENABLE_TRASH_CAN')) { 
 	define('ENABLE_TRASH_CAN', true);
 }
 
 define('MARKETPLACE_BASE_URL_SITE_PAGE', CONCRETE5_ORG_URL.'/private/sites');
-define('NEWSFLOW_SLOT_CONTENT_URL', NEWSFLOW_URL . '/tools/slot_content/');
+define('NEWSFLOW_SLOT_CONTENT_URL', NEWSFLOW_JP_URL . '/tools/slot_content/');
 
 define('MARKETPLACE_URL_CONNECT', CONCRETE5_ORG_URL.'/marketplace/connect');
 define('MARKETPLACE_URL_CONNECT_SUCCESS', CONCRETE5_ORG_URL.'/marketplace/connect/-/connected');
