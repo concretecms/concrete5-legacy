@@ -140,7 +140,7 @@ if (isset($entry)) { ?>
 
 	<script type="text/javascript">
 	var ccm_composerAutoSaveInterval = false;
-	var ccm_composerDoAutoSaveAllowed = true;
+	var ccm_composerDoAutoSaveAllowed = <?php echo !defined("ENABLED_COMPOSER_AUTOSAVE") || !ENABLED_COMPOSER_AUTOSAVE ? 'false' : 'true' ?>;
 	var ccm_composerAddPageTimer = false;
 
 	ccm_updateAddPageHandle = function() {
