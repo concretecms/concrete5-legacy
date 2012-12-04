@@ -169,7 +169,7 @@ class Concrete5_Helper_Html {
 
 	/**
 	 * Lists symbols applicable to assets, used by assetMap (above) and public
-	 * so it could be used, fopr example, with a dashboard interface to help identify
+	 * so it could be used, for example, with a dashboard interface to help identify
 	 * symbols to a developer or site owner.
 	 *
 	 * @param string $file name of asset file
