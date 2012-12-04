@@ -149,11 +149,34 @@ class Concrete5_Helper_Html {
 	 *
 	 * Mapping can be global (ALL) or specific to a package handle (PKG)
 	 *
-	 * @param string $file name of javascript file
-	 * @param string $pkgHandle handle of the package that the javascript file is located in (if applicable)
+	 * @param string $file name of asset file
+	 * @param string $pkgHandle handle of the package that the asset file is located in (if applicable)
 	 * @return array($file, $pkgHandle)
 	 */
-	public function assetMap($file, $pkgHandle){
+	public function assetMap($file, $pkgHandle=null){		
+		// Use a symbol list to detect mapping constants for file or pkgHandle. 
+		// Last found overrides first found as later sybols are more specific.
+		foreach ($this->getAssetMapSymbols($file, $pkgHandle) as $ix=>$symbol_case){
+			if (defined($symbol_case['file'])){
+				$file = constant($symbol_case['file']);
+			}
+			if (defined($symbol_case['pkg'])){
+				$pkgHandle = constant($symbol_case['pkg']);
+			}
+		}
+		return array($file,$pkgHandle);
+	}
+
+	/**
+	 * Lists symbols applicable to assets, used by assetMap (above) and public
+	 * so it could be used, fopr example, with a dashboard interface to help identify
+	 * symbols to a developer or site owner.
+	 *
+	 * @param string $file name of asset file
+	 * @param string $pkgHandle handle of the package that the asset file is located in (if applicable)
+	 * @return array of arrays of symbols for file and pkg
+	 */
+	public function getAssetMapSymbols($file, $pkgHandle=null){
 		$th = Loader::helper('text');
 		$fsymbol = strtoupper($th->handle($file));
 
@@ -161,38 +184,26 @@ class Concrete5_Helper_Html {
 
 		// Build a table to drive symbol tests - for ease of future expansion
 
-		// look for 'ALL' as this overrides any package symbol
+		// symbols for 'ALL' as this overrides any package symbol
 		$symbol_list[] = array (
-			'file' => 'ASSET_MAP_ALL_FILE_'.$fsymbol,
-			'pkg' => 'ASSET_MAP_ALL_PKG_'.$fsymbol);
+				'file' => 'ASSET_MAP_ALL_FILE_'.$fsymbol,
+				'pkg' => 'ASSET_MAP_ALL_PKG_'.$fsymbol);
 
-		// look for case of 'PKG' where there is a package handle
+		// symbols for case of 'PKG' where there is a package handle
 		if($pkgHandle){
 			$psymbol = strtoupper($th->handle($pkgHandle));
 			$symbol_list[] = array (
 				'file' => 'ASSET_MAP_PKG_FILE_'.$psymbol.'_'.$fsymbol,
 				'pkg' => 'ASSET_MAP_PKG_PKG_'.$psymbol.'_'.$fsymbol);
 
-		// look for case of 'PKG' where there is no package handle
+		// symbols for case of 'PKG' where there is no package handle
 		}else{
 			$symbol_list[] = array (
 				'file' => 'ASSET_MAP_PKG_FILE_'.$fsymbol,
 				'pkg' => 'ASSET_MAP_PKG_PKG_'.$fsymbol);
 		}
 
-		// Use the above to detect mapping constants for file or pkgHandle. Last found overrides first found.
-		foreach ($symbol_list as $ix=>$symbol_case){
-			if (defined($symbol_case['file'])){
-				$file = constant($symbol_case['file']);
-			}
-		}
-		foreach ($symbol_list as $ix=>$symbol_case){
-			if (defined($symbol_case['pkg'])){
-				$pkgHandle = constant($symbol_case['pkg']);
-			}
-		}
-
-		return array($file,$pkgHandle);
+		return $symbol_list;
 	}
 
 	
