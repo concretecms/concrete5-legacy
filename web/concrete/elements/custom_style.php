@@ -39,6 +39,24 @@ if (!isset($_REQUEST['csrID'])) {
 if ($_REQUEST['subtask'] == 'delete_custom_style_preset') {
 	$cspID = 0;
 }
+
+$suggestCssClasses = array();
+if($c) {
+	$pt = $c->getCollectionThemeObject();
+	$sccFile = $pt->getThemeDirectory() . '/' . THEME_BLOCK_STYLES_FILE;
+	if(is_file($sccFile)) {
+		$sccLines = @file($sccFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+		if($sccLines !== false) {
+			foreach($sccLines as $sccLine) {
+				foreach(explode(' ', str_replace("\t", ' ', $sccLine)) as $sccChunk) {
+					if(strlen($sccChunk) && (array_search($sccChunk, $suggestCssClasses) === false)) {
+						$suggestCssClasses[] = $sccChunk;
+					}
+				}
+			}
+		}
+	} 
+}
 ?>
 
 <? if (!$_REQUEST['refresh']) { ?>
@@ -130,7 +148,7 @@ $valt->output();
 
 <script type="text/javascript">
 	$(function() {
-		ccmCustomStyle.initForm();
+		ccmCustomStyle.initForm(<?php echo Loader::helper('json')->encode($suggestCssClasses); ?>);
 	});
 </script>
 

@@ -1,4 +1,4 @@
-<?php defined('C5_EXECUTE') or die("Access Denied."); ?>	
+<?php defined('C5_EXECUTE') or die("Access Denied."); ?>
 <div id="ccm-styleEditPane-css" class="ccm-styleEditPane" style="display:none">	 
 	<div style="clear:both">
 		<table class="ccm-style-property-table table" border="0" cellspacing="0" cellpadding="0" width="100%">
@@ -12,7 +12,8 @@
 				</td>
 				<td valign="top" style="width: 50%">
 	 				<?php echo t('CSS Class Name(s)')?>:
-	  				<input name="css_class_name" type="text" value="<?=htmlentities(trim($style->getCustomStyleRuleClassName()), ENT_COMPAT, APP_CHARSET) ?>" style="width:99%" />		  		
+	 				<div style="float:right; visibility:hidden" id="css_class_name_pick"><a href="#" onclick="ccmCustomStyle.pickCssClasses(); return false"><?php echo t('Pick'); ?></a></div>
+	  				<input name="css_class_name" type="text" value="<?=htmlentities(trim($style->getCustomStyleRuleClassName()), ENT_COMPAT, APP_CHARSET) ?>" style="width:99%" />
 				</td>
 			</tr>
 		</table>

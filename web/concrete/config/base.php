@@ -551,3 +551,10 @@ if(!defined('SITEMAPXML_DEFAULT_PRIORITY')) {
 	*/
 	define('SITEMAPXML_DEFAULT_PRIORITY', 0.5);
 }
+
+if(!defined('THEME_BLOCK_STYLES_FILE')) {
+	/** The file name of the css classes suggested for block design.
+	* @var string
+	*/
+	define('THEME_BLOCK_STYLES_FILE', 'block-styles.txt');
+}

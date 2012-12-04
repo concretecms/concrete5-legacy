@@ -839,7 +839,9 @@ var ccmCustomStyle = {
 			});
 		}
 	},
-	initForm: function() {
+	initForm: function(suggestCssClasses) {
+		ccmCustomStyle.suggestCssClasses = [].concat((suggestCssClasses instanceof Array) ? suggestCssClasses : []);
+		$("#css_class_name_pick").css("visibility", ccmCustomStyle.suggestCssClasses.length ? "visible" : "hidden");
 		if ($("#cspFooterPreset").length > 0) {
 			$("#ccmCustomCssFormTabs input, #ccmCustomCssFormTabs select, #ccmCustomCssFormTabs textarea").bind('change click', function() {
 				$("#cspFooterPreset").show();
@@ -904,6 +906,74 @@ var ccmCustomStyle = {
 		}else{
 			$('#ccm-styles-invalid-id').css('display','none');
 		}
+	},
+	pickCssClasses: function() {
+		var pre = {}, $dialog, $ul, i, now;
+		now = $.trim($('input[name=css_class_name]').val().replace(/\s+/, ' '));
+		now = now.length ? now.split(' ') : [];
+		$.each(ccmCustomStyle.suggestCssClasses, function(foo, s) {
+			var i = $.inArray(s, now);
+			pre[s] = (i >= 0) ? true : false;
+			if(i >= 0) {
+				delete now[i];
+			}
+		});
+		now = now.join(' ');
+		$dialog = $('<div class="ccm-ui"></div>')
+			.append($ul = $('<ul></ul>'))
+			.append($('<div class="dialog-buttons"></div>')
+				.append($('<a href="#" class="ccm-button-left cancel btn"></a>')
+					.append($('<span></span>').text(ccmi18n.cancel))
+					.on("click", function() {
+						$dialog.dialog('close');
+						return false;
+					})
+				)
+				.append($('<a href="#" class="btn primary ccm-button-right accept"></a>')
+					.append($('<span></span>').text(ccmi18n.accept))
+					.on("click", function() {
+						var r = [], s;
+						$.each($dialog.find("input[type=checkbox]"), function() {
+							if(this.checked) {
+								r.push(this.value);
+							}
+						});
+						s = $.trim($dialog.find("input[type=text]").val());
+						if(s.length) {
+							r.push(s);
+						}
+						$('input[name=css_class_name]').val(r.join(' '));
+						$dialog.dialog('close');
+						return false;
+					})
+				)
+			)
+		;
+		i = 0;
+		$.each(pre, function(name, checked) {
+			$ul.append($('<li style="list-style-type:none"></li>')
+				.append($('<input type="checkbox" id="ccmCustomStyle_pickCssClasses_' + i + '" />').val(name).prop("checked", checked))
+				.append($('<label for="ccmCustomStyle_pickCssClasses_' + i + '" style="display:inline"></label>').text(' ' + name))
+			);
+			i++;
+		});
+		$ul.append($('<li style="list-style-type:none"></li>')
+			.append($('<label for="ccmCustomStyle_pickCssClasses_' + i + '"></label>').text(ccmi18n.otherClasses + ":"))
+			.append($('<input type="text" id="ccmCustomStyle_pickCssClasses_' + i + '" />').val(now))
+		);
+		$dialog.dialog({
+			title: ccmi18n.cssClassesSelection,
+			modal: true,
+			open: function() {
+				$(this).parent().find('.ui-dialog-buttonpane').addClass("ccm-ui").html('');
+				$(this).find('.dialog-buttons').appendTo($(this).parent().find('.ui-dialog-buttonpane'));
+				$(this).find('.dialog-buttons').remove();
+			},
+			close: function() {
+				$dialog.remove();
+			},
+			buttons: {foo: function() {}}
+		})
 	}
 };
 
