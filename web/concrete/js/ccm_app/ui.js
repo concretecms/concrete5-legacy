@@ -908,7 +908,7 @@ var ccmCustomStyle = {
 		}
 	},
 	pickCssClasses: function() {
-		var pre = {}, $dialog, $ul, i, now;
+		var pre = {}, $dialog, $list, i, now;
 		now = $.trim($('input[name=css_class_name]').val().replace(/\s+/, ' '));
 		now = now.length ? now.split(' ') : [];
 		$.each(ccmCustomStyle.suggestCssClasses, function(foo, s) {
@@ -920,7 +920,11 @@ var ccmCustomStyle = {
 		});
 		now = now.join(' ');
 		$dialog = $('<div class="ccm-ui"></div>')
-			.append($ul = $('<ul></ul>'))
+			.append($list = $('<div style="max-height:300px;overflow:auto;margin-bottom:10px"></div>'))
+			.append($('<div></div>')
+				.append($('<label for="ccmCustomStyle_pickCssClasses_' + i + '"></label>').text(ccmi18n.otherClasses + ":"))
+				.append($('<input type="text" id="ccmCustomStyle_pickCssClasses_' + i + '" />').val(now))
+			)
 			.append($('<div class="dialog-buttons"></div>')
 				.append($('<a href="#" class="ccm-button-left cancel btn"></a>')
 					.append($('<span></span>').text(ccmi18n.cancel))
@@ -933,7 +937,7 @@ var ccmCustomStyle = {
 					.append($('<span></span>').text(ccmi18n.accept))
 					.on("click", function() {
 						var r = [], s;
-						$.each($dialog.find("input[type=checkbox]"), function() {
+						$.each($list.find("input[type=checkbox]"), function() {
 							if(this.checked) {
 								r.push(this.value);
 							}
@@ -951,19 +955,16 @@ var ccmCustomStyle = {
 		;
 		i = 0;
 		$.each(pre, function(name, checked) {
-			$ul.append($('<li style="list-style-type:none"></li>')
+			$list.append($('<div></div>')
 				.append($('<input type="checkbox" id="ccmCustomStyle_pickCssClasses_' + i + '" />').val(name).prop("checked", checked))
 				.append($('<label for="ccmCustomStyle_pickCssClasses_' + i + '" style="display:inline"></label>').text(' ' + name))
 			);
 			i++;
 		});
-		$ul.append($('<li style="list-style-type:none"></li>')
-			.append($('<label for="ccmCustomStyle_pickCssClasses_' + i + '"></label>').text(ccmi18n.otherClasses + ":"))
-			.append($('<input type="text" id="ccmCustomStyle_pickCssClasses_' + i + '" />').val(now))
-		);
 		$dialog.dialog({
 			title: ccmi18n.cssClassesSelection,
 			modal: true,
+			resizable: false,
 			open: function() {
 				$(this).parent().find('.ui-dialog-buttonpane').addClass("ccm-ui").html('');
 				$(this).find('.dialog-buttons').appendTo($(this).parent().find('.ui-dialog-buttonpane'));
