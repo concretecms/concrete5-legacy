@@ -461,6 +461,28 @@ class Concrete5_Model_PageTheme extends Object {
 	}
 	
 	/**
+	* Retrieves a list of css classes defined in theme css files that may be proposed to users when assigning css classes to blocks. This is accomplished by locating all style sheets in the root of the theme, parsing all their contents looking for block-style comments
+	* @return array
+	*/
+	public function getBlockCssClasses() {
+		$classes = array();
+		foreach($this->getStyleSheets() as $cssFile) {
+			$cssContent = @file_get_contents($this->getThemeDirectory() . '/' . $cssFile);
+			if($cssContent !== false) {
+				$cssContent = str_replace(array("\r", "\n", "\t"), ' ', $cssContent);
+				if(@preg_match_all('=/\* *block-style *\*/( */\*.*?\*/)* *(div)?\.([\w\-]+)=i', $cssContent, $matches)) {
+					foreach($matches[3] as $catched) {
+						if(array_search($catched, $classes) === false) {
+							$classes[] = $catched;
+						}
+					}
+				}
+			}
+		}
+		return $classes;
+	}
+	
+	/**
 	 * @param string $ptHandle
 	 * @return PageTheme
 	 */

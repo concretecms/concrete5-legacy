@@ -43,19 +43,7 @@ if ($_REQUEST['subtask'] == 'delete_custom_style_preset') {
 $suggestCssClasses = array();
 if($c) {
 	$pt = $c->getCollectionThemeObject();
-	$sccFile = $pt->getThemeDirectory() . '/' . THEME_BLOCK_STYLES_FILE;
-	if(is_file($sccFile)) {
-		$sccLines = @file($sccFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
-		if($sccLines !== false) {
-			foreach($sccLines as $sccLine) {
-				foreach(explode(' ', str_replace("\t", ' ', $sccLine)) as $sccChunk) {
-					if(strlen($sccChunk) && (array_search($sccChunk, $suggestCssClasses) === false)) {
-						$suggestCssClasses[] = $sccChunk;
-					}
-				}
-			}
-		}
-	} 
+	$suggestCssClasses = $pt->getBlockCssClasses();
 }
 ?>
 
