@@ -816,13 +816,13 @@
 						$obj->cID = $c->getCollectionID();
 					
 						if ((!is_object($e)) || (($e instanceof ValidationErrorHelper) && (!$e->has()))) {
-							
+							$beforeBID = empty($_REQUEST['_beforeBID']) ? 0 : @intval($_REQUEST['_beforeBID']);
 							if (!$bt->includeAll()) {
 								$nvc = $cx->getVersionToModify();
-								$nb = $nvc->addBlock($bt, $ax, $data);
+								$nb = $nvc->addBlock($bt, $ax, $data, $beforeBID);
 							} else {
 								// if we apply to all, then we don't worry about a new version of the page
-								$nb = $cx->addBlock($bt, $ax, $data);
+								$nb = $cx->addBlock($bt, $ax, $data, $beforeBID);
 							}
 							
 							if ($a->isGlobalArea() && $nvc instanceof Collection) {
@@ -832,6 +832,7 @@
 
 							$obj->error = false;
 							$obj->bID = $nb->getBlockID();
+							$obj->beforeBID = $beforeBID;
 							
 						} else {
 							

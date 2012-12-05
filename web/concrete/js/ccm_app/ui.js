@@ -95,7 +95,8 @@ ccm_showBlockMenu = function(obj, e) {
 		if (obj.canSetupComposer) {
 			html += '<li><a class="ccm-menu-icon ccm-icon-setup-composer-menu" dialog-append-buttons="true" onclick="ccm_hideMenus()" dialog-width="300" dialog-modal="false" dialog-height="130" id="menuBlockSetupComposer' + obj.bID + '-' + obj.aID + '" href="' + CCM_TOOLS_PATH + '/edit_block_popup.php?cID=' + obj.cID + '&bID=' + obj.bID + '&arHandle=' + encodeURIComponent(obj.arHandle) + '&btask=composer" dialog-title="' + ccmi18n.setBlockComposerSettings + '">' + ccmi18n.setBlockComposerSettings + '</a></li>';
 		}
-		
+		html += '<li class="ccm-menu-separator ccm-menu-if-canAddBlocks"></li>';
+		html += '<li class="ccm-menu-if-canAddBlocks"><a onclick="ccm_hideMenus()" class="ccm-menu-icon ccm-icon-add-block-menu" dialog-title="' + ccmi18n.addBlock + '" dialog-modal="false" dialog-width="550" dialog-height="380" id="menuAddNewBlockBeforeThis' + obj.bID + '-' + obj.aID + '" href="' + CCM_TOOLS_PATH + '/edit_area_popup.php?cID=' + CCM_CID + '&amp;arHandle=' + encodeURIComponent(obj.arHandle) + '&amp;atask=add&amp;beforeBID=' + obj.bID + '">'+ ccmi18n.addBlockBeforeThis + '</a></li>';
 
 		html += '</ul>';
 		html += '</div></div></div>';
@@ -123,11 +124,14 @@ ccm_showBlockMenu = function(obj, e) {
 		if (obj.canScheduleGuestAccess) { 
 			$("#menuBlockViewClock" + obj.bID + '-' + obj.aID).dialog();
 		}
+		$("a#menuAddNewBlockBeforeThis" + obj.bID + '-' + obj.aID).dialog();
+
 				
 	} else {
 		bobj = $("#ccm-block-menu" + obj.bID + '-' + obj.aID);
 	}
-	
+	var area = window["ccm_areaMenuObj" + obj.aID];
+	bobj.find('li.ccm-menu-if-canAddBlocks')[(area && area.canAddBlocks) ? 'show' : 'hide']();
 	ccm_fadeInMenu(bobj, e);
 
 }
@@ -324,10 +328,25 @@ ccm_parseBlockResponse = function(r, currentBlockID, task) {
 			$.get(action, 		
 				function(r) { 
 					if (task == 'add') {
-						if ($("#a" + resp.aID + " div.ccm-area-styles-a"+ resp.aID).length > 0) {
-							$("#a" + resp.aID + " div.ccm-area-styles-a"+ resp.aID).append(r);
-						} else {
-							$("#a" + resp.aID).append(r);
+						var $a = $("#a" + resp.aID + " div.ccm-area-styles-a"+ resp.aID);
+						if(!$a.length) {
+							$a = $("#a" + resp.aID);
+						}
+						var $before = null;
+						if(resp.beforeBID) {
+							$.each($a.find('div.ccm-block'), function() {
+								var $b = $(this);
+								if($b.attr('id').indexOf('b' + resp.beforeBID + '-') === 0) {
+									$before = $b;
+									return false;
+								}
+							})
+						}
+						if($before) {
+							$before.before(r);
+						}
+						else {
+							$a.append(r);
 						}
 					} else {
 						$('#b' + currentBlockID + '-' + resp.aID).before(r).remove();

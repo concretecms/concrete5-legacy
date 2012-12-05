@@ -10,6 +10,7 @@
 	
 	<? if (!$disableSubmit) { ?>
 		<input type="hidden" name="_add" value="1">
+		<input type="hidden" name="_beforeBID" value="<?=empty($_REQUEST['beforeBID']) ? 0 : @intval($_REQUEST['beforeBID'])?>" />
 	<? } ?>
 
 	<div class="ccm-buttons dialog-buttons">

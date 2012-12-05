@@ -385,6 +385,25 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		}
 	}
 	
+	/**
+	 * This function queries CollectionBlocks to return all the collection blocks and their relative order.
+	 * @param string $arHandle The area handle
+	 * @param bool $ignoreVersions Ignore versions?
+	 * @return array|false Returns false in case of errors, a list of arrays with the keys bID, cbDisplayOrder otherwise.
+	 */
+	private function getCollectionAreaBlocksOrder($arHandle, $ignoreVersions = false) {
+		$db = Loader::db();
+		$q = 'select bID, cbDisplayOrder from CollectionVersionBlocks where cID = ? and arHandle = ?';
+		$v = array($this->cID, $arHandle);
+		if (!$ignoreVersions) {
+			$q .= ' and cvID = ?';
+			$v[] = $this->vObj->cvID;
+		}
+		$q .= ' order by cbDisplayOrder';
+		$result = $db->GetAll($q, $v);
+		return is_array($result) ? $result : false;
+	}
+
 	/** 
 	 * Retrieves all custom style rules that should be inserted into the header on a page, whether they are defined in areas
 	 * or blocks
@@ -790,31 +809,68 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			return $blocks;
 		}
 		
-		public function addBlock($bt, $a, $data) {
+		/**
+		 * Adds a new block to an area
+		 * @param BlockType $bt
+		 * @param Area|string $a An Area instance (or its handle)
+		 * @param array $data
+		 * @param int $beforeBID Put the new block before this block id
+		 * @return Block
+		 */
+		public function addBlock($bt, $a, $data, $beforeBID = 0) {
 			$db = Loader::db();
 			
 			// first we add the block to the system
 			$nb = $bt->add($data, $this, $a);
 			
 			// now that we have a block, we add it to the collectionversions table
-			
+
 			$arHandle = (is_object($a)) ? $a->getAreaHandle() : $a;
 			$cID = $this->getCollectionID();
 			$vObj = $this->getVersionObject();
-	
-			if ($bt->includeAll()) {
-				// normally, display order is dependant on a per area, per version basis. However, since this block
-				// is not aliased across versions, then we want to get display order simply based on area, NOT based 
-				// on area + version
-				$newBlockDisplayOrder = $this->getCollectionAreaDisplayOrder($arHandle, true); // second argument is "ignoreVersions"
-			} else {
-				$newBlockDisplayOrder = $this->getCollectionAreaDisplayOrder($arHandle);
+
+			$newBlockDisplayOrder = null;
+			$nextBlocksIds = array();
+			if($beforeBID) {
+				$allAreaBlocks = $this->getCollectionAreaBlocksOrder($arHandle, $bt->includeAll() ? true : false);
+				$n = count($allAreaBlocks);
+				for($i = 0; $i < $n; $i++) {
+					if($allAreaBlocks[$i]['bID'] == $beforeBID) {
+						$newBlockDisplayOrder = $allAreaBlocks[$i]['cbDisplayOrder'];
+						for($j = $i; $j < $n; $j++) {
+							$nextBlocksIds[] = $allAreaBlocks[$j]['bID'];
+						}
+						break;
+					}
+				}
+			}
+			if(is_null($newBlockDisplayOrder)) {
+				if ($bt->includeAll()) {
+					// normally, display order is dependant on a per area, per version basis. However, since this block
+					// is not aliased across versions, then we want to get display order simply based on area, NOT based 
+					// on area + version
+					$newBlockDisplayOrder = $this->getCollectionAreaDisplayOrder($arHandle, true); // second argument is "ignoreVersions"
+				} else {
+					$newBlockDisplayOrder = $this->getCollectionAreaDisplayOrder($arHandle);
+				}
 			}
 
 			$v = array($cID, $vObj->getVersionID(), $nb->getBlockID(), $arHandle, $newBlockDisplayOrder, 1, $bt->includeAll());
 			$q = "insert into CollectionVersionBlocks (cID, cvID, bID, arHandle, cbDisplayOrder, isOriginal, cbIncludeAll) values (?, ?, ?, ?, ?, ?, ?)";
 
 			$res = $db->Execute($q, $v);
+
+			if(count($nextBlocksIds)) {
+				$q = 'update CollectionVersionBlocks set cbDisplayOrder = cbDisplayOrder + 1 where cID = ? and arHandle = ?';
+				$v = array($this->cID, $arHandle);
+				if(!$bt->includeAll()) {
+					$q .= ' and cvID = ?';
+					$v[] = $this->vObj->cvID;
+				}
+				$q .= ' and bID in (' . ltrim(str_repeat(',?', count($nextBlocksIds)), ',') . ')';
+				$v = array_merge($v, $nextBlocksIds);
+				$db->Execute($q, $v);
+			}
 
 			Cache::delete('collection_blocks', $cID . ':' . $vObj->getVersionID());
 			

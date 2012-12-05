@@ -9,6 +9,7 @@ var ccmi18n = {
 	deleteBlock: "<?=t('Delete')?>",
 	deleteBlockMsg: "<?=t('The block has been removed successfully.')?>",
 	addBlock: "<?=t('Add Block')?>",
+	addBlockBeforeThis: "<?=t('Add Block before this')?>",
 	addBlockNew: "<?=t('Add Block')?>",
 	addBlockStack: "<?=t('Add Stack')?>",
 	addBlockPaste: "<?=t('Paste from Clipboard')?>",
