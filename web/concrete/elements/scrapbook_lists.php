@@ -11,6 +11,7 @@ $ap = new Permissions($a);
 	if (count($contents) == 0) { 
 		print t('You have no items in your Clipboard.');
 	}
+	$beforeBID = empty($_REQUEST['beforeBID']) ? 0 : @intval($_REQUEST['beforeBID']);
 	foreach($contents as $obj) { 
 		$item = $obj->getObject();
 		if (is_object($item)) {
@@ -23,7 +24,7 @@ $ap = new Permissions($a);
 			<div class="ccm-scrapbook-list-item" id="ccm-pc-<?=$obj->getPileContentID()?>">
 				<div class="ccm-block-type">
 					<a class="ccm-scrapbook-delete" title="Remove from Clipboard" href="javascript:void(0)" id="sb<?=$obj->getPileContentID()?>"><img src="<?=ASSETS_URL_IMAGES?>/icons/delete_small.png" width="16" height="16" /></a>
-					<a class="ccm-block-type-inner" style="background-image: url(<?=$btIcon?>)" href="javascript:void(0)" onclick="jQuery.fn.dialog.showLoader();$.get('<?=DIR_REL?>/<?=DISPATCHER_FILENAME?>?pcID[]=<?=$obj->getPileContentID()?>&add=1&processBlock=1&cID=<?=$c->getCollectionID()?>&arHandle=<?=$a->getAreaHandle()?>&btask=alias_existing_block&<?=$token?>', function(r) { ccm_parseBlockResponse(r, false, 'add'); })"><?=$bt->getBlockTypeName()?></a>
+					<a class="ccm-block-type-inner" style="background-image: url(<?=$btIcon?>)" href="javascript:void(0)" onclick="jQuery.fn.dialog.showLoader();$.get('<?=DIR_REL?>/<?=DISPATCHER_FILENAME?>?pcID[]=<?=$obj->getPileContentID()?>&amp;add=1&amp;processBlock=1&amp;cID=<?=$c->getCollectionID()?>&amp;arHandle=<?=$a->getAreaHandle()?>&amp;btask=alias_existing_block&amp;beforeBID=<?=$beforeBID?>&amp;<?=$token?>', function(r) { ccm_parseBlockResponse(r, false, 'add'); })"><?=$bt->getBlockTypeName()?></a>
 					<div class="ccm-scrapbook-list-item-detail">	
 						<?	
 						try {

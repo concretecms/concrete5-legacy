@@ -97,6 +97,7 @@ ccm_showBlockMenu = function(obj, e) {
 		}
 		html += '<li class="ccm-menu-separator ccm-menu-if-canAddBlocks"></li>';
 		html += '<li class="ccm-menu-if-canAddBlocks"><a onclick="ccm_hideMenus()" class="ccm-menu-icon ccm-icon-add-block-menu" dialog-title="' + ccmi18n.addBlock + '" dialog-modal="false" dialog-width="550" dialog-height="380" id="menuAddNewBlockBeforeThis' + obj.bID + '-' + obj.aID + '" href="' + CCM_TOOLS_PATH + '/edit_area_popup.php?cID=' + CCM_CID + '&amp;arHandle=' + encodeURIComponent(obj.arHandle) + '&amp;atask=add&amp;beforeBID=' + obj.bID + '">'+ ccmi18n.addBlockBeforeThis + '</a></li>';
+		html += '<li class="ccm-menu-if-canAddBlocks"><a onclick="ccm_hideMenus()" class="ccm-menu-icon ccm-icon-clipboard-menu" dialog-title="' + ccmi18n.addBlockPaste + '" dialog-modal="false" dialog-width="550" dialog-height="380" id="menuAddPasteBeforeThis' + obj.bID + '-' + obj.aID + '" href="' + CCM_TOOLS_PATH + '/edit_area_popup.php?cID=' + CCM_CID + '&amp;arHandle=' + encodeURIComponent(obj.arHandle) + '&amp;atask=paste&amp;beforeBID=' + obj.bID + '">' + ccmi18n.addBlockPasteBeforeThis + '</a></li>';
 
 		html += '</ul>';
 		html += '</div></div></div>';
@@ -125,8 +126,7 @@ ccm_showBlockMenu = function(obj, e) {
 			$("#menuBlockViewClock" + obj.bID + '-' + obj.aID).dialog();
 		}
 		$("a#menuAddNewBlockBeforeThis" + obj.bID + '-' + obj.aID).dialog();
-
-				
+		$("a#menuAddPasteBeforeThis" + obj.bID + '-' + obj.aID).dialog();
 	} else {
 		bobj = $("#ccm-block-menu" + obj.bID + '-' + obj.aID);
 	}

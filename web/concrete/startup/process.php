@@ -737,6 +737,7 @@
 				}
 				$ap = new Permissions($ax);	
 				if ($_REQUEST['btask'] == 'alias_existing_block') {
+					$beforeBID = 0;
 					if (is_array($_REQUEST['pcID'])) {		
 						Loader::model('pile');
 
@@ -762,7 +763,8 @@
 										$xvc->relateVersionEdits($nvc);
 									}
 									$data['bOriginalID'] = $bID;
-									$nb = $nvc->addBlock($btx, $ax, $data);
+									$beforeBID = empty($_REQUEST['beforeBID']) ? 0 : @intval($_REQUEST['beforeBID']);
+									$nb = $nvc->addBlock($btx, $ax, $data, $beforeBID);
 									$nb->refreshCache();
 								}
 							}
@@ -780,7 +782,8 @@
 								$xvc->relateVersionEdits($nvc);
 							}
 							$data['bOriginalID'] = $_REQUEST['bID'];
-							$nb = $nvc->addBlock($btx, $ax, $data);
+							$beforeBID = empty($_REQUEST['beforeBID']) ? 0 : @intval($_REQUEST['beforeBID']);
+							$nb = $nvc->addBlock($btx, $ax, $data, $beforeBID);
 							$nb->refreshCache();
 						}
 					}
@@ -791,6 +794,7 @@
 						$obj->arHandle = $a->getAreaHandle();
 						$obj->cID = $c->getCollectionID();
 						$obj->bID = $nb->getBlockID();
+						$obj->beforeBID = $beforeBID;
 						$obj->error = false;
 					} else {
 						$e = Loader::helper('validation/error');

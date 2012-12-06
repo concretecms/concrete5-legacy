@@ -13,6 +13,7 @@ var ccmi18n = {
 	addBlockNew: "<?=t('Add Block')?>",
 	addBlockStack: "<?=t('Add Stack')?>",
 	addBlockPaste: "<?=t('Paste from Clipboard')?>",
+	addBlockPasteBeforeThis: "<?=t('Paste above')?>",
 	changeAreaCSS: "<?=t('Design')?>",
 	editAreaLayout: "<?=t('Edit Layout')?>",
 	addAreaLayout: "<?=t('Add Layout')?>",
