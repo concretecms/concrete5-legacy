@@ -223,6 +223,7 @@ class Concrete5_Model_File extends Object {
 		foreach($fsIDs as $fsID) {
 			$filesets[] = FileSet::getByID($fsID);
 		}
+		$fsIDs->Close();
 		return $filesets;
 	}
 	
