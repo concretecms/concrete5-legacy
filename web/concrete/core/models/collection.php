@@ -830,16 +830,14 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			$vObj = $this->getVersionObject();
 
 			$newBlockDisplayOrder = null;
-			$nextBlocksIds = array();
+			$increaseOldBlocksOrder = false;
 			if($beforeBID) {
 				$allAreaBlocks = $this->getCollectionAreaBlocksOrder($arHandle, $bt->includeAll() ? true : false);
 				$n = count($allAreaBlocks);
 				for($i = 0; $i < $n; $i++) {
 					if($allAreaBlocks[$i]['bID'] == $beforeBID) {
 						$newBlockDisplayOrder = $allAreaBlocks[$i]['cbDisplayOrder'];
-						for($j = $i; $j < $n; $j++) {
-							$nextBlocksIds[] = $allAreaBlocks[$j]['bID'];
-						}
+						$increaseOldBlocksOrder = true;
 						break;
 					}
 				}
@@ -855,23 +853,21 @@ defined('C5_EXECUTE') or die("Access Denied.");
 				}
 			}
 
-			$v = array($cID, $vObj->getVersionID(), $nb->getBlockID(), $arHandle, $newBlockDisplayOrder, 1, $bt->includeAll());
-			$q = "insert into CollectionVersionBlocks (cID, cvID, bID, arHandle, cbDisplayOrder, isOriginal, cbIncludeAll) values (?, ?, ?, ?, ?, ?, ?)";
-
-			$res = $db->Execute($q, $v);
-
-			if(count($nextBlocksIds)) {
-				$q = 'update CollectionVersionBlocks set cbDisplayOrder = cbDisplayOrder + 1 where cID = ? and arHandle = ?';
-				$v = array($this->cID, $arHandle);
+			if($increaseOldBlocksOrder) {
+				$q = 'update CollectionVersionBlocks set cbDisplayOrder = cbDisplayOrder + 1 where cID = ? and arHandle = ? and cbDisplayOrder >= ?';
+				$v = array($this->cID, $arHandle, $newBlockDisplayOrder);
 				if(!$bt->includeAll()) {
 					$q .= ' and cvID = ?';
 					$v[] = $this->vObj->cvID;
 				}
-				$q .= ' and bID in (' . ltrim(str_repeat(',?', count($nextBlocksIds)), ',') . ')';
-				$v = array_merge($v, $nextBlocksIds);
 				$db->Execute($q, $v);
 			}
 
+			$v = array($cID, $vObj->getVersionID(), $nb->getBlockID(), $arHandle, $newBlockDisplayOrder, 1, $bt->includeAll());
+			$q = "insert into CollectionVersionBlocks (cID, cvID, bID, arHandle, cbDisplayOrder, isOriginal, cbIncludeAll) values (?, ?, ?, ?, ?, ?, ?)";
+
+			$db->Execute($q, $v);
+			
 			Cache::delete('collection_blocks', $cID . ':' . $vObj->getVersionID());
 			
 			return Block::getByID($nb->getBlockID(), $this, $a);
