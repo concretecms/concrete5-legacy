@@ -178,8 +178,9 @@ class Concrete5_Library_Request {
 			// Get the longest path (viz most specific match) that is contained
 			// within the request path
 			$db = Loader::db();
-			$r = $db->Execute("select cID,cPath from PagePaths where ? LIKE CONCAT(replace(cPath, '_','\_'),'%') ORDER BY LENGTH(cPath) DESC LIMIT 0,1", array($this->getRequestCollectionPath()));
-			$r = $r->FetchRow();
+			$rs = $db->Execute("select cID,cPath from PagePaths where ? LIKE CONCAT(replace(cPath, '_','\_'),'%') ORDER BY LENGTH(cPath) DESC LIMIT 0,1", array($this->getRequestCollectionPath()));
+			$r = $rs->FetchRow();
+			$rs->Close();
 			*/
 			if ($cID && $cPath) { 
 				$r['cID'] = $cID;

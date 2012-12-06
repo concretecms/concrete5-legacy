@@ -23,6 +23,7 @@ class Concrete5_Library_DatabaseItemList extends ItemList {
 			$arr = $this->executeBase(); // returns an associated array of query/placeholder values				
 			$r = $db->Execute($arr);
 			$this->total = $r->NumRows();
+			$r->Close();
 		}		
 		return $this->total;
 	}

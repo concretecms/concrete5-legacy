@@ -93,7 +93,8 @@ class Concrete5_Model_Job extends Object {
 				$ch->addAttribute('handle',$j->getJobHandle());
 				$ch->addAttribute('package',$j->getPackageHandle());
 			}
-		}	
+		}
+		$jl->Close();
 	}
 
 	// Job Retrieval 
@@ -176,7 +177,8 @@ class Concrete5_Model_Job extends Object {
 		$existingJobsRS = Job::getList();
 		while($existingJobsRow = $existingJobsRS->fetchRow() ) 
 			$existingJobHandles[]=$existingJobsRow['jHandle'];
-	
+		$existingJobsRS->Close();
+
 		if(!$includeConcreteDirJobs)
 			 $jobClassLocations = array( DIR_FILES_JOBS );
 		else $jobClassLocations = Job::jobClassLocations();
@@ -237,6 +239,7 @@ class Concrete5_Model_Job extends Object {
 			$jobObj = Job::getJobObjByHandle($jobItem['jHandle']);
 			$jobObj->executeJob();
 		}
+		$jobListRS->Close();
 	}
 	
 	public function executeJob(){
@@ -245,7 +248,7 @@ class Concrete5_Model_Job extends Object {
 		$timestampH =date('Y-m-d g:i:s A');
 		$timestamp=date('Y-m-d H:i:s');
 		$this->jDateLastRun = $timestampH; 
-		$rs = $db->query( "UPDATE Jobs SET jStatus='RUNNING', jDateLastRun=? WHERE jHandle=?", array( $timestamp, $this->jHandle ) );
+		$db->query( "UPDATE Jobs SET jStatus='RUNNING', jDateLastRun=? WHERE jHandle=?", array( $timestamp, $this->jHandle ) );
 		try{ 
 			$resultMsg=$this->run();
 			if(strlen($resultMsg)==0) 
@@ -257,13 +260,13 @@ class Concrete5_Model_Job extends Object {
 		
 		if( !$this->isError() ) $jStatus='ENABLED';
 		else $jStatus='DISABLED_ERROR';
-		$rs = $db->query( "UPDATE Jobs SET jStatus=?, jLastStatusText=? WHERE jHandle=?", array( $jStatus, $resultMsg, $this->jHandle ) );
+		$db->query( "UPDATE Jobs SET jStatus=?, jLastStatusText=? WHERE jHandle=?", array( $jStatus, $resultMsg, $this->jHandle ) );
 		
 		$enum = 0;
 		if ($this->getError() > 0) {
 			$enum = $this->getError();
 		}
-		$rs = $db->query( "INSERT INTO JobsLog (jID, jlMessage, jlTimestamp, jlError) VALUES(?,?,?,?)", array( $this->jID, $resultMsg, $timestamp, $enum ) );
+		$db->query( "INSERT INTO JobsLog (jID, jlMessage, jlTimestamp, jlError) VALUES(?,?,?,?)", array( $this->jID, $resultMsg, $timestamp, $enum ) );
 		Events::fire('on_job_execute', $this);
 		
 		return $resultMsg;
@@ -273,7 +276,7 @@ class Concrete5_Model_Job extends Object {
 		$db = Loader::db();
 		if( !in_array($jStatus,$this->availableJStatus) )
 			$jStatus='ENABLED';
-		$rs = $db->query( "UPDATE Jobs SET jStatus=? WHERE jHandle=?", array( $jStatus, $this->jHandle ) );
+		$db->query( "UPDATE Jobs SET jStatus=? WHERE jHandle=?", array( $jStatus, $this->jHandle ) );
 	}
  
  	 public function installByHandle($jHandle=''){

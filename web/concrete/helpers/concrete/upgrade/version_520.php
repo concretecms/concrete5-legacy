@@ -63,7 +63,7 @@ class ConcreteUpgradeVersion520Helper {
 			$questionsWithBIDs=$db->getAll('SELECT max(bID) AS bID, btForm.questionSetId AS qSetId FROM `btForm` GROUP BY questionSetId');
 			foreach($questionsWithBIDs as $questionsWithBID){
 				$vals=array( intval($questionsWithBID['bID']), intval($questionsWithBID['qSetId']) );
-				$rs=$db->query('UPDATE btFormQuestions SET bID=? WHERE questionSetId=? AND bID=0',$vals);  
+				$db->query('UPDATE btFormQuestions SET bID=? WHERE questionSetId=? AND bID=0',$vals);  
 			}
 		}
 		
@@ -76,6 +76,7 @@ class ConcreteUpgradeVersion520Helper {
 				$db->Execute("insert into FileVersions (fID, fvID, fvFilename, fvPrefix, fvExtension, fvTitle, fvDateAdded) values (?, ?, ?, ?, ?, ?, ?)", $v);	
 				$db->Execute("insert into Files (fID, fDateAdded) values (?, ?)", array($row['bID'], $row['bDateAdded']));
 			}
+			$r->Close();
 		}
 
 		Loader::model('single_page');

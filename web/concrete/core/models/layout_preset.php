@@ -29,6 +29,7 @@ class Concrete5_Model_LayoutPreset extends Object{
 			$layoutPreset->setPropertiesFromArray($row);
 			$presets[] = $layoutPreset;
 		}
+		$r->Close();
 		return $presets;
 	}
  	

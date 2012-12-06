@@ -68,8 +68,10 @@ class Concrete5_Controller_Dashboard_Reports_Surveys extends Controller {
 		// Set default information in case query returns nothing
 		$current_survey = 'Unknown Survey';
 		$details = array();
+		$row = $r->fetchRow();
+		$r->Close();
 		
-		if ($row = $r->fetchRow()) {
+		if ($row) {
 			// Build array of information we need
 			$i = 0;
 			foreach ($r as $row) {
@@ -87,6 +89,7 @@ class Concrete5_Controller_Dashboard_Reports_Surveys extends Controller {
 			if ($row = $r->fetchRow()) {
 				$current_survey = $row['question'];
 			}
+			$r->Close();
 		}
 		// Store local data in larger scope
 		$this->set('survey_details', $details);

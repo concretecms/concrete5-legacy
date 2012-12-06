@@ -50,7 +50,8 @@ class Concrete5_Controller_Block_FormStatistics {
 			//answer set id - question id
 			$answerSets[$answer['asID']]=$answer;
 			$answerSetIds[]=$answer['asID'];
-		}		
+		}
+		$answerSetsRS->Close();
 		
 		//get answers
 		$sql='SELECT * FROM btFormAnswers AS a WHERE a.asID IN ('.join(',',$answerSetIds).')';
@@ -61,6 +62,7 @@ class Concrete5_Controller_Block_FormStatistics {
 			//answer set id - question id
 			$answerSets[$answer['asID']]['answers'][$answer['msqID']]=$answer;
 		}
+		$answersRS->Close();
 		return $answerSets;
 	}
 }

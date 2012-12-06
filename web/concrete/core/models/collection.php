@@ -88,6 +88,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 						$b->alias($nc);
 					}
 				}
+				$r->Close();
 			}
 			
 			// duplicate any area styles
@@ -101,6 +102,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 					$row['csrID']
 				));
 			}
+			$r->Close();
 			
 			// duplicate any area layout joins
 			$q = "select * from CollectionVersionAreaLayouts where cID = '$cID' and cvID = '$cvID'";
@@ -114,7 +116,8 @@ defined('C5_EXECUTE') or die("Access Denied.");
 					$row['areaNameNumber'],
 					$row['position']
 				));
-			}			
+			}
+			$r->Close();
 
 			// now that we've duplicated all the blocks for the collection, we return the new
 			// collection
@@ -165,6 +168,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 				$pc->reindex($this, true);
 				$num++;
 			}
+			$r->Close();
 			Config::save('DO_PAGE_REINDEX_CHECK', false);
 			return $num;		
 		}
@@ -287,6 +291,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 				while ($row = $r->fetchRow()) {
 					$bIDArray[] = $row['bID'];
 				}
+				$r->Close();
 				if (count($bIDArray) > 0) {
 					$bIDList = implode(',', $bIDArray);
 					$v2 = array($bIDList, $this->cID);
@@ -374,14 +379,17 @@ defined('C5_EXECUTE') or die("Access Denied.");
 				$res = $r->fetchRow();
 				$displayOrder = $res['cbdis'];
 				if (is_null($displayOrder)) {
-					return 0;
+					$displayOrder = 0;
 				}
-				$displayOrder++;
-				return $displayOrder;
+				else {
+					$displayOrder++;
+				}
 			} else {
 				// we didn't get anything, so we return a zero
-				return 0;
+				$displayOrder = 0;
 			}
+			$r->Close();
+			return $displayOrder;
 		}
 	}
 	
@@ -629,7 +637,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			$displayOrder = 0;
 			while ($row = $r->fetchRow()) {
 				$q = "update CollectionVersionBlocks set cbDisplayOrder = '$displayOrder' where cID = '$cID' and cvID = '{$cvID}' and arHandle = '$arHandle' and bID = '{$row['bID']}'";
-				$r2 = $db->query($q);
+				$db->query($q);
 				$displayOrder++;
 			}
 			$r->free();
@@ -686,7 +694,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 					
 				}
 			}
-			
+			$r->Close();
 			if (isset($cObj)) {
 				return $cObj;
 			}
@@ -814,7 +822,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			$v = array($cID, $vObj->getVersionID(), $nb->getBlockID(), $arHandle, $newBlockDisplayOrder, 1, $bt->includeAll());
 			$q = "insert into CollectionVersionBlocks (cID, cvID, bID, arHandle, cbDisplayOrder, isOriginal, cbIncludeAll) values (?, ?, ?, ?, ?, ?, ?)";
 
-			$res = $db->Execute($q, $v);
+			$db->Execute($q, $v);
 
 			Cache::delete('collection_blocks', $cID . ':' . $vObj->getVersionID());
 			
@@ -857,7 +865,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 				$v2 = array($newCID, 1, $ctID, $data['name'], $data['handle'], $data['cDescription'], $cDatePublic, $cDate, VERSION_INITIAL_COMMENT, $data['uID'], $cvIsApproved, $cvIsNew, $ptID);
 				$q2 = "insert into CollectionVersions (cID, cvID, ctID, cvName, cvHandle, cvDescription, cvDatePublic, cvDateCreated, cvComments, cvAuthorUID, cvIsApproved, cvIsNew, ptID) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 				$r2 = $db->prepare($q2);
-				$res2 = $db->execute($r2, $v2);
+				$db->execute($r2, $v2);
 			}
 			
 			$nc = Collection::getByID($newCID);
@@ -873,7 +881,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			$v = array($cDateModified, $this->cID);
 			$q = "update Collections set cDateModified = ? where cID = ?";
 			$r = $db->prepare($q);
-			$res = $db->execute($r, $v);
+			$db->execute($r, $v);
 		}
 		
 		public function delete() {
@@ -894,7 +902,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 				$db->query($q);
 
 				$q = "delete from Collections where cID = '{$cID}'";
-				$r = $db->query($q);
+				$db->query($q);
 
 				$q = "delete from CollectionSearchIndexAttributes where cID = {$cID}";
 				$db->query($q);
@@ -931,6 +939,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 					$qv = "insert into CollectionVersions (cID, cvID, ctID, cvName, cvHandle, cvDescription, cvDatePublic, cvDateCreated, cvComments, cvAuthorUID, cvIsApproved, ptID) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 					$db->query($qv, $vv);
 				}
+				$rv->Close();
 				
 				// duplicate layout records 
 				$ql = "select * from CollectionVersionAreaLayouts where cID = '{$this->cID}' order by cvalID asc";
@@ -939,7 +948,8 @@ defined('C5_EXECUTE') or die("Access Denied.");
 					$vl = array( $newCID, $row['cvID'], $row['arHandle'], $row['layoutID'], $row['position'], $row['areaNameNumber'] );
 					$ql = "insert into CollectionVersionAreaLayouts (cID, cvID, arHandle, layoutID, position, areaNameNumber) values ( ?, ?, ?, ?, ?, ?)";
 					$db->query($ql, $vl);
-				}				
+				}
+				$rl->Close();
 
 				$ql = "select * from CollectionVersionBlockStyles where cID = '{$this->cID}'";
 				$rl = $db->query($ql);
@@ -948,6 +958,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 					$ql = "insert into CollectionVersionBlockStyles (cID, cvID, bID, arHandle, csrID) values (?, ?, ?, ?, ?)";
 					$db->query($ql, $vl);
 				}
+				$rl->Close();
 				$ql = "select * from CollectionVersionAreaStyles where cID = '{$this->cID}'";
 				$rl = $db->query($ql);
 				while ($row = $rl->fetchRow()) { 
@@ -955,6 +966,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 					$ql = "insert into CollectionVersionAreaStyles (cID, cvID, arHandle, csrID) values (?, ?, ?, ?)";
 					$db->query($ql, $vl);
 				}
+				$rl->Close();
 	
 				// now we grab all the blocks we're going to need
 				$cvList = implode(',',$cvList);
@@ -972,8 +984,10 @@ defined('C5_EXECUTE') or die("Access Denied.");
 								array('cID' => $newCID, 'cvID' => $row['cvID'], 'bID' => $row['bID'], 'paID' => $row2['paID'], 'pkID' => $row2['pkID']),
 								array('cID', 'cvID', 'bID', 'paID', 'pkID'), true);
 						}
+						$r2->Close();
 					}
 				}
+				$r->Close();
 	
 				// duplicate any attributes belonging to the collection
 				
@@ -983,7 +997,8 @@ defined('C5_EXECUTE') or die("Access Denied.");
 				while ($row = $r->fetchRow()) {
 					$v2 = array($row['akID'], $row['cvID'], $row['avID'], $newCID);
 					$db->query("insert into CollectionAttributeValues (akID, cvID, avID, cID) values (?, ?, ?, ?)", $v2);
-				}			
+				}
+				$r->Close();
 				return Collection::getByID($newCID);
 			}
 			

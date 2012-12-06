@@ -317,6 +317,7 @@ class Concrete5_Model_File extends Object {
 				$row['avID']
 			));
 		}
+		$r->Close();
 
 		$v = array($this->fID);
 		$q = "select fID, paID, pkID from FilePermissionAssignments where fID = ?";
@@ -326,6 +327,7 @@ class Concrete5_Model_File extends Object {
 			$q = "insert into FilePermissionAssignments (fID, paID, pkID) values (?, ?, ?)";
 			$db->query($q, $v);
 		}
+		$r->Close();
 		
 		// return the new file object
 		return File::getByID($fIDNew);
@@ -527,6 +529,7 @@ class Concrete5_Model_File extends Object {
 		while ($row = $r->FetchRow()) {
 			$files[] = $this->getVersion($row['fvID']);
 		}
+		$r->Close();
 		return $files;
 	}
 	

@@ -82,7 +82,8 @@
 
 			$r = $db->query($q, array($c->getCollectionID(), $cvID));
 			if ($r) {
-				$row = $r->fetchRow();					
+				$row = $r->fetchRow();
+				$r->Close();
 				if ($row) {
 					$cv->setPropertiesFromArray($row);
 				}
@@ -154,7 +155,7 @@
 			$v = array($comment, $thisCVID, $this->cID);
 			$db = Loader::db();
 			$q = "update CollectionVersions set cvComments = ? where cvID = ? and cID = ?";
-			$r = $db->query($q, $v);
+			$db->query($q, $v);
 			
 			$this->versionComments = $comment;
 		}
@@ -181,9 +182,9 @@
 				$recordExists = intval($db->getOne('SELECT count(*) FROM CollectionAttributeValues WHERE cID=? AND cvID=? AND akID=? AND avID=?',$v3))?1:0;
 				if(!$recordExists) $db->query("insert into CollectionAttributeValues (cID, cvID, akID, avID) values (?, ?, ?, ?)", $v3); 
 			}
-			
+			$r2->Close();
 			$r = $db->prepare($q);
-			$res = $db->execute($r, $v);
+			$db->execute($r, $v);
 			
 			$nv = CollectionVersion::get($c, $newVID);
 			Events::fire('on_page_version_add', $c, $nv);
@@ -224,13 +225,13 @@
 			// first we remove approval for the other version of this collection
 			$v = array($cID);
 			$q = "update CollectionVersions set cvIsApproved = 0 where cID = ?";
-			$r = $db->query($q, $v);
+			$db->query($q, $v);
 			$ov->refreshCache();
 			
 			// now we approve our version
 			$v2 = array($uID, $cID, $cvID);
 			$q2 = "update CollectionVersions set cvIsNew = 0, cvIsApproved = 1, cvApproverUID = ? where cID = ? and cvID = ?";
-			$r = $db->query($q2, $v2);
+			$db->query($q2, $v2);
 			
 			// next, we rescan our collection paths for the particular collection, but only if this isn't a generated collection
 			// I don't know why but this just isn't reliable. It might be a race condition with the cached page objects?
@@ -253,6 +254,7 @@
 					$r = $db->Execute('delete from CollectionVersionRelatedEdits where cID = ? and cvID = ? and cRelationID = ? and cvRelationID = ?', array($cID, $cvID, $row['cRelationID'], $row['cvRelationID']));
 				}
 			}
+			$r->Close();
 
 			if ($c->getCollectionInheritance() == 'TEMPLATE') {
 				// we make sure to update the cInheritPermissionsFromCID value
@@ -299,12 +301,12 @@
 			// first we remove approval for all versions of this collection
 			$v = array($cID);
 			$q = "update CollectionVersions set cvIsApproved = 0 where cID = ?";
-			$r = $db->query($q, $v);
+			$db->query($q, $v);
 			
 			// now we deny our version
 			$v2 = array($cID, $cvID);
 			$q2 = "update CollectionVersions set cvIsApproved = 0, cvApproverUID = 0 where cID = ? and cvID = ?";
-			$r2 = $db->query($q2, $v2);
+			$db->query($q2, $v2);
 			$this->refreshCache();
 		}
 		
@@ -327,6 +329,7 @@
 					}
 					unset($b);
 				}
+				$r->Close();
 			}
 			
 			$r = $db->Execute('select avID, akID from CollectionAttributeValues where cID = ? and cvID = ?', array($cID, $cvID));
@@ -338,6 +341,7 @@
 					$cav->delete();
 				}
 			}
+			$r->Close();
 			
 			$db->Execute('delete from CollectionVersionBlockStyles where cID = ? and cvID = ?', array($cID, $cvID));
 			$db->Execute('delete from CollectionVersionRelatedEdits where cID = ? and cvID = ?', array($cID, $cvID));
@@ -345,7 +349,7 @@
 			$db->Execute('delete from CollectionVersionAreaLayouts where cID = ? and cvID = ?', array($cID, $cvID));
 			
 			$q = "delete from CollectionVersions where cID = '{$cID}' and cvID='{$cvID}'";
-			$r = $db->query($q);
+			$db->query($q);
 			$this->refreshCache();
 
 		}

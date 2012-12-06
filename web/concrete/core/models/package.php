@@ -45,6 +45,7 @@ class Concrete5_Model_PackageList extends Object {
 		while ($row = $r->FetchRow()) {
 			$packageList[$row['pkgID']] = $row['pkgHandle'];
 		}
+		$r->Close();
 		
 		Cache::set('packageHandleList', false, $packageList);
 		return $packageList[$pkgID];
@@ -70,6 +71,7 @@ class Concrete5_Model_PackageList extends Object {
 			$pkg->setPropertiesFromArray($row);
 			$list->add($pkg);
 		}
+		$r->Close();
 		
 		Cache::set('pkgList', $pkgIsInstalled, $list);
 
@@ -630,6 +632,7 @@ class Concrete5_Model_Package extends Object {
 			$pkg->setPropertiesFromArray($row);
 			$pkgArray[] = $pkg;
 		}
+		$r->Close();
 		return $pkgArray;
 	}
 	

@@ -91,6 +91,7 @@ class Concrete5_Model_AttributeSet extends Object {
 		while ($row = $r->FetchRow()) {
 			$list[] = AttributeSet::getByID($row['asID']);
 		}
+		$r->Close();
 		foreach($list as $as) {
 			$as->export($axml);
 		}
@@ -107,6 +108,7 @@ class Concrete5_Model_AttributeSet extends Object {
 				$keys[] = $ak;
 			}
 		}
+		$r->Close();
 		return $keys;		
 	}
 	
@@ -139,6 +141,7 @@ class Concrete5_Model_AttributeSet extends Object {
 			$db->Execute('update AttributeSetKeys set displayOrder = ? where akID = ? and asID = ?', array($do, $row['akID'], $this->getAttributeSetID()));
 			$do++;
 		}
+		$r->Close();
 	}
 
 	public function updateAttributesDisplayOrder($uats) {

@@ -184,6 +184,7 @@ class Concrete5_Model_CustomStylePreset extends Object {
 			$obj->setPropertiesFromArray($row);
 			$presets[] = $obj;
 		}
+		$r->Close();
 		return $presets;
 	}
 

@@ -26,6 +26,7 @@ class Concrete5_Model_Pile extends Object {
 		$q = "select pID, uID, isDefault, name, state from Piles where pID = ?";
 		$r = $db->query($q, $v);
 		$row = $r->fetchRow();
+		$r->Close();
 
 		$p = new Pile;
 		if(is_array($row)) foreach ($row as $k => $v) {
@@ -144,6 +145,7 @@ class Concrete5_Model_Pile extends Object {
 			while ($row = $r->fetchRow()) {
 				$piles[] = Pile::get($row['pID']);
 			}
+			$r->Close();
 		}
 
 		return $piles;
@@ -199,6 +201,7 @@ class Concrete5_Model_Pile extends Object {
 		while($row = $r->fetchRow()) {
 			$pc[] = PileContent::get($row['pcID']);
 		}
+		$r->Close();
 		return $pc;
 	}
 	
@@ -281,6 +284,7 @@ class Concrete5_Model_Pile extends Object {
 			$db->query($q1, $v1);
 			$currentDisplayOrder++;
 		}
+		$r->Close();
 	}
 }
 

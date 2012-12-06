@@ -134,6 +134,7 @@ class Concrete5_Model_Stack extends Page {
 			$ax = Area::get($this, $row['arHandle']);
 			$ax->export($p, $this);
 		}
+		$r->Close();
 	}
 
 }

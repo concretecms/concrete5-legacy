@@ -53,6 +53,7 @@ abstract class Concrete5_Model_Workflow extends Object {
 				$workflows[] = $wf;
 			}	
 		}
+		$r->Close();
 		return $workflows;
 	}
 	

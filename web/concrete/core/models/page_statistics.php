@@ -102,7 +102,7 @@ class Concrete5_Model_PageStatistics {
 		$cpc = Page::getByID($cParentID);
 		$cpc->refreshCache();
 
-		$r = $db->query($q, array($cParentID));
+		$db->query($q, array($cParentID));
 
 	}
 
@@ -118,7 +118,7 @@ class Concrete5_Model_PageStatistics {
 		$cpc = Page::getByID($cParentID);
 		$cpc->refreshCache();
 		
-		$r = $db->query($q, array($cParentID));
+		$db->query($q, array($cParentID));
 
 	}
 	

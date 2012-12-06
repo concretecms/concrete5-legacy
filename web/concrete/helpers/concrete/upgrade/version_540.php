@@ -226,6 +226,7 @@ class ConcreteUpgradeVersion540Helper {
 					$db->Execute('insert into CollectionVersionBlockStyles (cID, cvID, bID, arHandle, csrID) values (?, ?, ?, ?, ?)', $argsCollectionVersionBlockStyles);
 				}
 			}
+			$r->Close();
 		}
 	}		
 }

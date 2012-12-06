@@ -59,6 +59,7 @@ class Concrete5_Controller_AttributeType_Select extends AttributeTypeController 
 				$row['isEndUserAdded']
 			));
 		}
+		$r->Close();
 	}
 	
 	public function exportKey($akey) {
@@ -75,6 +76,7 @@ class Concrete5_Controller_AttributeType_Select extends AttributeTypeController 
 			$opt->addAttribute('value', $row['value']);
 			$opt->addAttribute('is-end-user-added', $row['isEndUserAdded']);
 		}
+		$r->Close();
 		return $akey;
 	}
 	
@@ -180,6 +182,7 @@ class Concrete5_Controller_AttributeType_Select extends AttributeTypeController 
 		while ($row = $r->FetchRow()) {
 			$db->Execute('delete from atSelectOptionsSelected where atSelectOptionID = ?', array($row['ID']));
 		}
+		$r->Close();
 		$db->Execute('delete from atSelectOptions where akID = ?', array($this->attributeKey->getAttributeKeyID()));
 	}
 
@@ -405,7 +408,8 @@ class Concrete5_Controller_AttributeType_Select extends AttributeTypeController 
 			$opt = new SelectAttributeTypeOption($row['atSelectOptionID'], $row['value'], $i, $row['total']);
 			$list->add($opt);
 			$i++;
-		}		
+		}
+		$r->Close();
 		return $list;
 	}
 	
@@ -451,6 +455,7 @@ class Concrete5_Controller_AttributeType_Select extends AttributeTypeController 
 			$opt = new SelectAttributeTypeOption($row['ID'], $row['value'], $row['displayOrder']);
 			$options->add($opt);
 		}
+		$r->Close();
 		return $options;
 	}
 		

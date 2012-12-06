@@ -35,6 +35,7 @@ class Concrete5_Library_MailImporter extends Object {
 		while ($row = $r->FetchRow()) {
 			$importers[] = MailImporter::getByID($row['miID']);
 		}
+		$r->Close();
 		return $importers;
 	}
 
@@ -45,6 +46,7 @@ class Concrete5_Library_MailImporter extends Object {
 		while ($row = $r->FetchRow()) {
 			$importers[] = MailImporter::getByID($row['miID']);
 		}
+		$r->Close();
 		return $importers;
 	}
 	

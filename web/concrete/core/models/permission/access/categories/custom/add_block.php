@@ -10,11 +10,13 @@ class Concrete5_Model_AddBlockBlockTypePermissionAccess extends BlockTypePermiss
 			$v = array($row['peID'], $newPA->getPermissionAccessID(), $row['permission']);
 			$db->Execute('insert into BlockTypePermissionBlockTypeAccessList (peID, paID, permission) values (?, ?, ?)', $v);
 		}
+		$r->Close();
 		$r = $db->Execute('select * from BlockTypePermissionBlockTypeAccessListCustom where paID = ?', array($this->getPermissionAccessID()));
 		while ($row = $r->FetchRow()) {
 			$v = array($row['peID'], $newPA->getPermissionAccessID(), $row['btID']);
 			$db->Execute('insert into BlockTypePermissionBlockTypeAccessListCustom  (peID, paID, btID) values (?, ?, ?)', $v);
 		}
+		$r->Close();
 		return $newPA;
 	}
 

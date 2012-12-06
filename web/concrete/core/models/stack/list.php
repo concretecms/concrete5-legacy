@@ -30,6 +30,7 @@ class Concrete5_Model_StackList extends PageList {
 				$stack->export($gas);
 			}
 		}
+		$r->Close();
 	}
 
 	

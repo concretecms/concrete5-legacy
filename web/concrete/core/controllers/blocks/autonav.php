@@ -109,6 +109,7 @@
 			while ($row = $r->fetchRow()) {
 				$pages[] = Page::getByID($row['cID'], 'ACTIVE');
 			}
+			$r->Close();
 			return $pages;
 		}
 		
@@ -201,6 +202,7 @@
 					$r = $db->query($q);
 					if ($r) {
 						$row = $r->fetchRow();
+						$r->Close();
 						$displayHeadPage = true;
 						if ($this->displayUnapproved) {
 							$tc1 = Page::getByID($row['cID'], "RECENT");
@@ -385,6 +387,7 @@
 
 					}
 				}
+				$r->Close();
 				// end while -- sort navSort
 
 				// Joshua's Huge Sorting Crap

@@ -11,11 +11,13 @@ class Concrete5_Model_AddSubpagePagePermissionAccess extends PagePermissionAcces
 			$v = array($row['peID'], $newPA->getPermissionAccessID(), $row['permission'], $row['externalLink']);
 			$db->Execute('insert into PagePermissionPageTypeAccessList (peID, paID, permission, externalLink) values (?, ?, ?, ?)', $v);
 		}
+		$r->Close();
 		$r = $db->Execute('select * from PagePermissionPageTypeAccessListCustom where paID = ?', array($this->getPermissionAccessID()));
 		while ($row = $r->FetchRow()) {
 			$v = array($row['peID'], $newPA->getPermissionAccessID(), $row['ctID']);
 			$db->Execute('insert into PagePermissionPageTypeAccessListCustom  (peID, paID, ctID) values (?, ?, ?)', $v);
 		}
+		$r->Close();
 		return $newPA;
 	}
 

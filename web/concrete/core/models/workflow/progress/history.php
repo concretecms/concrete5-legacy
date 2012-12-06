@@ -36,6 +36,7 @@ class Concrete5_Model_WorkflowProgressHistory extends Object {
 				$list[] = $obj;
 			}
 		}
+		$r->Close();
 		return $list;
 	}
 }

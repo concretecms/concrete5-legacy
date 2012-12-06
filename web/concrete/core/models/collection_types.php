@@ -124,6 +124,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 					$ctArray[] = $ct;
 				}
 			}
+			$r->Close();
 			return $ctArray;
 		}
 		
@@ -144,6 +145,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 						$this->addCTGArray[] = $row['gID'];
 					}
 				}
+				$r->Close();
 			}
 		}
 		
@@ -348,7 +350,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 				$p->vObj->cvName = $row['cvName'];
 				$pages[] = $p;
 			}
-			
+			$r->Close();
 			return $pages;
 		}
 		
@@ -364,7 +366,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			$ids = $atids;
 			$ids[] = -1;
 			$v = implode(',', $ids);
-			$r = $db->Execute("delete from ComposerContentLayout where akID not in ({$v}) and bID = 0 and ctID = ?", array($this->getCollectionTypeID()));
+			$db->Execute("delete from ComposerContentLayout where akID not in ({$v}) and bID = 0 and ctID = ?", array($this->getCollectionTypeID()));
 
 			// now we append the new items
 			$displayOrder = $db->GetOne('select max(displayOrder) from ComposerContentLayout where ctID = ?', array($this->getCollectionTypeID()));
@@ -433,7 +435,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 
 			$v = array($data['ctName'], $data['ctHandle'], $data['ctIcon'], $this->ctID);
 			$r = $db->prepare("update PageTypes set ctName = ?, ctHandle = ?, ctIcon = ? where ctID = ?");
-			$res = $db->execute($r, $v);
+			$db->execute($r, $v);
 			
 			// metadata
 			$v2 = array($this->getCollectionTypeID());
@@ -464,6 +466,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 				while ($row = $r->fetchRow()) {
 					$this->akIDArray[] = $row['akID'];
 				}
+				$r->Close();
 			}
 		}
 		
@@ -531,6 +534,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 					}
 				}
 			}
+			$r->Close();
 			return $items;
 		}
 		

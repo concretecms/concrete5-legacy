@@ -65,6 +65,7 @@ class Concrete5_Helper_Navigation {
 				$q = "select cID, cParentID from Pages where cID = '{$currentcParentID}'";
 				$r = $db->query($q);
 				$row = $r->fetchRow();
+				$r->Close();
 				if ($row['cID']) {
 					$cArray[] = Page::getByID($row['cID'], 'ACTIVE');
 				}

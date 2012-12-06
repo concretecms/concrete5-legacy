@@ -52,6 +52,7 @@ class Concrete5_Model_GroupSetPermissionAccessEntity extends PermissionAccessEnt
 				$users[] = $ui;
 			}
 		}
+		$r->Close();
 		return $users;
 	}
 

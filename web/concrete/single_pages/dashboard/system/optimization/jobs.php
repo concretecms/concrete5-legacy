@@ -174,4 +174,5 @@ jQuery(function($) {
 		<input type="submit" class="btn" value="<?=t('Reset all Running Jobs')?>" />
 	</form>
 <? } ?></div>
+<?$jobList->Close();?>
 <?=$h->getDashboardPaneFooterWrapper(false);?>

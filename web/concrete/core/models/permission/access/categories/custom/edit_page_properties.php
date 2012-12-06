@@ -18,11 +18,13 @@ class Concrete5_Model_EditPagePropertiesPagePermissionAccess extends PagePermiss
 			);
 			$db->Execute('insert into PagePermissionPropertyAccessList (peID, paID, attributePermission, name, publicDateTime, uID, description, paths) values (?, ?, ?, ?, ?, ?, ?, ?)', $v);
 		}
+		$r->Close();
 		$r = $db->Execute('select * from PagePermissionPropertyAttributeAccessListCustom where paID = ?', array($this->getPermissionAccessID()));
 		while ($row = $r->FetchRow()) {
 			$v = array($row['peID'], $newPA->getPermissionAccessID(), $row['akID']);
 			$db->Execute('insert into PagePermissionPropertyAttributeAccessListCustom  (peID, paID, akID) values (?, ?, ?)', $v);
 		}
+		$r->Close();
 		return $newPA;
 	}
 

@@ -12,11 +12,13 @@ class Concrete5_Model_AddBlockToAreaAreaPermissionAccess extends AreaPermissionA
 			$v = array($row['peID'], $newPA->getPermissionAccessID(), $row['permission']);
 			$db->Execute('insert into AreaPermissionBlockTypeAccessList (peID, paID, permission) values (?, ?, ?)', $v);
 		}
+		$r->Close();
 		$r = $db->Execute('select * from AreaPermissionBlockTypeAccessListCustom where paID = ?', array($this->getPermissionAccessID()));
 		while ($row = $r->FetchRow()) {
 			$v = array($row['peID'], $newPA->getPermissionAccessID(), $row['btID']);
 			$db->Execute('insert into AreaPermissionBlockTypeAccessListCustom  (peID, paID, btID) values (?, ?, ?)', $v);
 		}
+		$r->Close();
 		return $newPA;
 	}
 

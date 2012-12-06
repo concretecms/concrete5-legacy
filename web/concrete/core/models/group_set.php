@@ -19,6 +19,7 @@ class Concrete5_Model_GroupSet extends Object {
 		while ($row = $r->FetchRow()) {
 			$list[] = GroupSet::getByID($row['gsID']);
 		}
+		$r->Close();
 		return $list;
 	}	
 
@@ -88,6 +89,7 @@ class Concrete5_Model_GroupSet extends Object {
 				$groups[] = $g;
 			}
 		}
+		$r->Close();
 		return $groups;		
 	}
 	

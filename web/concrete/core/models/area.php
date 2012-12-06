@@ -523,7 +523,7 @@ class Concrete5_Model_Area extends Object {
 			$db->query("update Areas set arInheritPermissionsFromAreaOnCID = " . $this->getAreaCollectionInheritID() . " where arID = " . $row['arID']);
 			$this->rescanSubAreaPermissions($row['cID']);
 		}
-		
+		$r->Close();
 	}
 	
 	/**

@@ -126,7 +126,7 @@ class Concrete5_Controller_Block_Form extends BlockController {
 			$q = "update {$this->btTable} set questionSetId = ?, surveyName=?, notifyMeOnSubmission=?, recipientEmail=?, thankyouMsg=?, displayCaptcha=?, redirectCID=?, addFilesToSet=? where bID = ? AND questionSetId=".$data['qsID'];
 		}
 		
-		$rs = $db->query($q,$v);  
+		$db->query($q,$v);  
 		
 		//Add Questions (for programmatically creating forms, such as during the site install)
 		if( count($data['questions'])>0 ){
@@ -158,7 +158,7 @@ class Concrete5_Controller_Block_Form extends BlockController {
 	
 		//assign any new questions the new block id 
 		$vals=array( intval($data['bID']), intval($data['qsID']), intval($data['oldQsID']) );  
-		$rs=$db->query('UPDATE btFormQuestions SET bID=?, questionSetId=? WHERE bID=0 && questionSetId=?',$vals);
+		$db->query('UPDATE btFormQuestions SET bID=?, questionSetId=? WHERE bID=0 && questionSetId=?',$vals);
  
  		//These are deleted or edited questions.  (edited questions have already been created with the new bID).
  		$ignoreQuestionIDsDirty=explode( ',', $data['ignoreQuestionIDs'] );
@@ -173,7 +173,7 @@ class Concrete5_Controller_Block_Form extends BlockController {
 		foreach($pendingDeleteQIDsDirty as $msqID)
 			$pendingDeleteQIDs[]=intval($msqID);		
 		$vals=array( $this->bID, intval($data['qsID']), join(',',$pendingDeleteQIDs) );  
-		$unchangedQuestions=$db->query('DELETE FROM btFormQuestions WHERE bID=? AND questionSetId=? AND msqID IN (?)',$vals);			
+		$db->query('DELETE FROM btFormQuestions WHERE bID=? AND questionSetId=? AND msqID IN (?)',$vals);			
 	} 
 	
 	//Duplicate will run when copying a page with a block, or editing a block for the first time within a page version (before the save).
@@ -187,6 +187,7 @@ class Concrete5_Controller_Block_Form extends BlockController {
 		$q = "select * from {$this->btTable} where bID = ? LIMIT 1";
 		$r = $db->query($q, $v);
 		$row = $r->fetchRow();
+		$r->Close();
 		
 		//if the same block exists in multiple collections with the same questionSetID
 		if(count($row)>0){ 
@@ -210,7 +211,7 @@ class Concrete5_Controller_Block_Form extends BlockController {
 			//with a new Block ID and a new Question 
 			$v = array($newQuestionSetId,$row['surveyName'],$newBID,$row['thankyouMsg'],intval($row['notifyMeOnSubmission']),$row['recipientEmail'],$row['displayCaptcha'], $row['addFilesToSet']);
 			$q = "insert into {$this->btTable} ( questionSetId, surveyName, bID,thankyouMsg,notifyMeOnSubmission,recipientEmail,displayCaptcha,addFilesToSet) values (?, ?, ?, ?, ?, ?, ?,?)";
-			$result=$db->Execute($q, $v); 
+			$db->Execute($q, $v); 
 			
 			$rs=$db->query("SELECT * FROM {$this->btQuestionsTablename} WHERE questionSetId=$oldQuestionSetId AND bID=".intval($this->bID) );
 			while( $row=$rs->fetchRow() ){
@@ -218,7 +219,7 @@ class Concrete5_Controller_Block_Form extends BlockController {
 				$sql= "INSERT INTO {$this->btQuestionsTablename} (questionSetId,msqID,bID,question,inputType,options,position,width,height,required) VALUES (?,?,?,?,?,?,?,?,?,?)";
 				$db->Execute($sql, $v);
 			}
-			
+			$rs->Close();
 			return $newQuestionSetId;
 		}
 		return 0;	
@@ -473,10 +474,6 @@ class Concrete5_Controller_Block_Form extends BlockController {
 		$miniSurvey=new MiniSurvey();
 		$info=$miniSurvey->getMiniSurveyBlockInfo($this->bID);
 		
-		//get all answer sets
-		$q = "SELECT asID FROM {$this->btAnswerSetTablename} WHERE questionSetId = ".intval($info['questionSetId']);
-		$answerSetsRS = $db->query($q); 
- 
 		//delete the questions
 		$deleteData['questionsIDs']=$db->getAll( "SELECT qID FROM {$this->btQuestionsTablename} WHERE questionSetId = ".intval($info['questionSetId']).' AND bID='.intval($this->bID) );
 		foreach($deleteData['questionsIDs'] as $questionData)
@@ -494,7 +491,7 @@ class Concrete5_Controller_Block_Form extends BlockController {
 		
 		//delete the form block		
 		$q = "delete from {$this->btTable} where bID = '{$this->bID}'";
-		$r = $db->query($q);		
+		$db->query($q);		
 		
 		parent::delete();
 		

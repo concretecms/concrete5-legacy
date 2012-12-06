@@ -112,6 +112,7 @@ class Concrete5_Model_ComposerPage extends Page {
 				$pages[] = $entry;
 			}
 		}
+		$r->Close();
 		return $pages;		
 	}
 	

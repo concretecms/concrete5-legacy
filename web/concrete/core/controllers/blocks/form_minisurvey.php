@@ -328,12 +328,12 @@ class Concrete5_Controller_Block_FormMinisurvey {
 			//form block was just upgraded, so set the bID column
 			if(!$questionsWithBIDs){ 
 				$vals=array( intval($bID), intval($qsID) );  
-				$rs=$db->query('UPDATE btFormQuestions SET bID=? WHERE bID=0 AND questionSetId=?',$vals);
+				$db->query('UPDATE btFormQuestions SET bID=? WHERE bID=0 AND questionSetId=?',$vals);
 				return; 
 			} 			
 			
 			//Then remove all temp/placeholder questions for this questionSetId that haven't been assigned to a block
 			$vals=array( intval($qsID) );  
-			$rs=$db->query('DELETE FROM btFormQuestions WHERE bID=0 AND questionSetId=?',$vals);			
+			$db->query('DELETE FROM btFormQuestions WHERE bID=0 AND questionSetId=?',$vals);			
 		}
 }	

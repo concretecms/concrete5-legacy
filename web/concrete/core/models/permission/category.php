@@ -125,6 +125,7 @@ class Concrete5_Model_PermissionKeyCategory extends Object {
 		while ($row = $r->FetchRow()) {
 			$cats[] = PermissionKeyCategory::getByID($row['pkCategoryID']);
 		}
+		$r->Close();
 		return $cats;
 	}
 	

@@ -11,11 +11,13 @@ class Concrete5_Model_AccessUserSearchUserPermissionAccess extends PermissionAcc
 			$v = array($row['peID'], $newPA->getPermissionAccessID(), $row['permission']);
 			$db->Execute('insert into ' . $this->dbTableAccessList . ' (peID, paID, permission) values (?, ?, ?)', $v);
 		}
+		$r->Close();
 		$r = $db->Execute('select * from ' . $this->dbTableAccessListCustom . ' where paID = ?', array($this->getPermissionAccessID()));
 		while ($row = $r->FetchRow()) {
 			$v = array($row['peID'], $newPA->getPermissionAccessID(), $row['gID']);
 			$db->Execute('insert into ' . $this->dbTableAccessListCustom . ' (peID, paID, gID) values (?, ?, ?)', $v);
 		}
+		$r->Close();
 		return $newPA;
 	}
 	

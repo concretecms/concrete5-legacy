@@ -602,6 +602,7 @@ class Concrete5_Model_AttributeKey extends Object {
 		while ($row = $r->FetchRow()) {
 			$sets[] = AttributeSet::getByID($row['asID']);
 		}
+		$r->Close();
 		return $sets;
 	}
 	

@@ -175,6 +175,7 @@ class Concrete5_Model_FileAttributeKey extends AttributeKey {
 		while ($row = $r->FetchRow()) {
 			$db->Execute('delete from AttributeValues where avID = ?', array($row['avID']));
 		}
+		$r->Close();
 		$db->Execute('delete from FileAttributeValues where akID = ?', array($this->getAttributeKeyID()));
 	}
 

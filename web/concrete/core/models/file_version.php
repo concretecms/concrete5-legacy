@@ -185,6 +185,7 @@ class Concrete5_Model_FileVersion extends Object {
 				$row['avID']
 			));
 		}
+		$r->Close();
 		$fv2 = $f->getVersion($fvID);
 		Events::fire('on_file_version_duplicate', $fv2);
 		return $fv2;
