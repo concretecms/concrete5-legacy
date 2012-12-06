@@ -814,10 +814,10 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		 * @param BlockType $bt
 		 * @param Area|string $a An Area instance (or its handle)
 		 * @param array $data
-		 * @param int $beforeBID Put the new block before this block id
+		 * @param int $beforeBID Put the new block before this block id. If specified but the block wasn't found this value will be reset to 0.
 		 * @return Block
 		 */
-		public function addBlock($bt, $a, $data, $beforeBID = 0) {
+		public function addBlock($bt, $a, $data, &$beforeBID = 0) {
 			$db = Loader::db();
 			
 			// first we add the block to the system
@@ -841,6 +841,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 				}
 			}
 			if(is_null($newBlockDisplayOrder)) {
+				$beforeBID = 0;
 				if ($bt->includeAll()) {
 					// normally, display order is dependant on a per area, per version basis. However, since this block
 					// is not aliased across versions, then we want to get display order simply based on area, NOT based 
