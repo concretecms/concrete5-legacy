@@ -389,11 +389,11 @@ defined('C5_EXECUTE') or die("Access Denied.");
 	 * This function queries CollectionBlocks to return all the collection blocks and their relative order.
 	 * @param string $arHandle The area handle
 	 * @param bool $ignoreVersions Ignore versions?
-	 * @return array|false Returns false in case of errors, a list of arrays with the keys bID, cbDisplayOrder otherwise.
+	 * @return array|false Returns false in case of errors, a list of arrays with the keys cvID, bID, cbDisplayOrder otherwise.
 	 */
 	private function getCollectionAreaBlocksOrder($arHandle, $ignoreVersions = false) {
 		$db = Loader::db();
-		$q = 'select bID, cbDisplayOrder from CollectionVersionBlocks where cID = ? and arHandle = ?';
+		$q = 'select cvID, bID, cbDisplayOrder from CollectionVersionBlocks where cID = ? and arHandle = ?';
 		$v = array($this->cID, $arHandle);
 		if (!$ignoreVersions) {
 			$q .= ' and cvID = ?';
@@ -832,11 +832,9 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			$newBlockDisplayOrder = null;
 			$increaseOldBlocksOrder = false;
 			if($beforeBID) {
-				$allAreaBlocks = $this->getCollectionAreaBlocksOrder($arHandle, $bt->includeAll() ? true : false);
-				$n = count($allAreaBlocks);
-				for($i = 0; $i < $n; $i++) {
-					if($allAreaBlocks[$i]['bID'] == $beforeBID) {
-						$newBlockDisplayOrder = $allAreaBlocks[$i]['cbDisplayOrder'];
+				foreach($this->getCollectionAreaBlocksOrder($arHandle) as $order) {
+					if($order['bID'] == $beforeBID) {
+						$newBlockDisplayOrder = $order['cbDisplayOrder'];
 						$increaseOldBlocksOrder = true;
 						break;
 					}
