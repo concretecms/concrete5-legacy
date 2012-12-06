@@ -318,12 +318,14 @@
 							$xvc->relateVersionEdits($nvc);
 						}
 						$data['stID'] = $stack->getCollectionID();
-						$nb = $nvc->addBlock($btx, $ax, $data);
+						$beforeBID = empty($_REQUEST['beforeBID']) ? 0 : @intval($_REQUEST['beforeBID']);
+						$nb = $nvc->addBlock($btx, $ax, $data, $beforeBID);
 
 						$obj->aID = $a->getAreaID();
 						$obj->arHandle = $a->getAreaHandle();
 						$obj->cID = $c->getCollectionID();
 						$obj->bID = $nb->getBlockID();
+						$obj->beforeBID = $beforeBID;
 						$obj->error = false;
 					} else {
 						$obj->error = true;

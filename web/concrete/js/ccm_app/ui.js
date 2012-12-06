@@ -95,10 +95,10 @@ ccm_showBlockMenu = function(obj, e) {
 		if (obj.canSetupComposer) {
 			html += '<li><a class="ccm-menu-icon ccm-icon-setup-composer-menu" dialog-append-buttons="true" onclick="ccm_hideMenus()" dialog-width="300" dialog-modal="false" dialog-height="130" id="menuBlockSetupComposer' + obj.bID + '-' + obj.aID + '" href="' + CCM_TOOLS_PATH + '/edit_block_popup.php?cID=' + obj.cID + '&bID=' + obj.bID + '&arHandle=' + encodeURIComponent(obj.arHandle) + '&btask=composer" dialog-title="' + ccmi18n.setBlockComposerSettings + '">' + ccmi18n.setBlockComposerSettings + '</a></li>';
 		}
-		html += '<li class="ccm-menu-separator ccm-menu-if-canAddBlocks"></li>';
-		html += '<li class="ccm-menu-if-canAddBlocks"><a onclick="ccm_hideMenus()" class="ccm-menu-icon ccm-icon-add-block-menu" dialog-title="' + ccmi18n.addBlock + '" dialog-modal="false" dialog-width="550" dialog-height="380" id="menuAddNewBlockBeforeThis' + obj.bID + '-' + obj.aID + '" href="' + CCM_TOOLS_PATH + '/edit_area_popup.php?cID=' + CCM_CID + '&amp;arHandle=' + encodeURIComponent(obj.arHandle) + '&amp;atask=add&amp;beforeBID=' + obj.bID + '">'+ ccmi18n.addBlockBeforeThis + '</a></li>';
-		html += '<li class="ccm-menu-if-canAddBlocks"><a onclick="ccm_hideMenus()" class="ccm-menu-icon ccm-icon-clipboard-menu" dialog-title="' + ccmi18n.addBlockPaste + '" dialog-modal="false" dialog-width="550" dialog-height="380" id="menuAddPasteBeforeThis' + obj.bID + '-' + obj.aID + '" href="' + CCM_TOOLS_PATH + '/edit_area_popup.php?cID=' + CCM_CID + '&amp;arHandle=' + encodeURIComponent(obj.arHandle) + '&amp;atask=paste&amp;beforeBID=' + obj.bID + '">' + ccmi18n.addBlockPasteBeforeThis + '</a></li>';
-
+		html += '<li class="ccm-menu-separator ccm-menu-if-can ccm-menu-if-canAddBlocks ccm-menu-if-canAddStacks"></li>';
+		html += '<li class="ccm-menu-if-can ccm-menu-if-canAddBlocks"><a onclick="ccm_hideMenus()" class="ccm-menu-icon ccm-icon-add-block-menu" dialog-title="' + ccmi18n.addBlock + '" dialog-modal="false" dialog-width="550" dialog-height="380" id="menuAddNewBlockBeforeThis' + obj.bID + '-' + obj.aID + '" href="' + CCM_TOOLS_PATH + '/edit_area_popup.php?cID=' + CCM_CID + '&amp;arHandle=' + encodeURIComponent(obj.arHandle) + '&amp;atask=add&amp;beforeBID=' + obj.bID + '">'+ ccmi18n.addBlockBeforeThis + '</a></li>';
+		html += '<li class="ccm-menu-if-can ccm-menu-if-canAddBlocks"><a onclick="ccm_hideMenus()" class="ccm-menu-icon ccm-icon-clipboard-menu" dialog-title="' + ccmi18n.addBlockPaste + '" dialog-modal="false" dialog-width="550" dialog-height="380" id="menuAddPasteBeforeThis' + obj.bID + '-' + obj.aID + '" href="' + CCM_TOOLS_PATH + '/edit_area_popup.php?cID=' + CCM_CID + '&amp;arHandle=' + encodeURIComponent(obj.arHandle) + '&amp;atask=paste&amp;beforeBID=' + obj.bID + '">' + ccmi18n.addBlockPasteBeforeThis + '</a></li>';
+		html += '<li class="ccm-menu-if-can ccm-menu-if-canAddStacks"><a onclick="ccm_hideMenus()" class="ccm-menu-icon ccm-icon-add-stack-menu" dialog-title="' + ccmi18n.addBlockStack + '" dialog-modal="false" dialog-width="550" dialog-height="380" id="menuAddNewStackBeforeThis' + obj.bID + '-' + obj.aID + '" href="' + CCM_TOOLS_PATH + '/edit_area_popup.php?cID=' + CCM_CID + '&amp;arHandle=' + encodeURIComponent(obj.arHandle) + '&amp;atask=add_from_stack&amp;beforeBID=' + obj.bID + '">' + ccmi18n.addBlockStackBeforeThis + '</a></li>';
 		html += '</ul>';
 		html += '</div></div></div>';
 		bobj.append(html);
@@ -127,11 +127,18 @@ ccm_showBlockMenu = function(obj, e) {
 		}
 		$("a#menuAddNewBlockBeforeThis" + obj.bID + '-' + obj.aID).dialog();
 		$("a#menuAddPasteBeforeThis" + obj.bID + '-' + obj.aID).dialog();
+		$("a#menuAddNewStackBeforeThis" + obj.bID + '-' + obj.aID).dialog();
 	} else {
 		bobj = $("#ccm-block-menu" + obj.bID + '-' + obj.aID);
 	}
 	var area = window["ccm_areaMenuObj" + obj.aID];
-	bobj.find('li.ccm-menu-if-canAddBlocks')[(area && area.canAddBlocks) ? 'show' : 'hide']();
+	bobj.find('li.ccm-menu-if-can').hide();
+	if(area && area.canAddBlocks) {
+		bobj.find('li.ccm-menu-if-canAddBlocks').show();
+	}
+	if(area && area.canAddStacks) {
+		bobj.find('li.ccm-menu-if-canAddStacks').show();
+	}
 	ccm_fadeInMenu(bobj, e);
 
 }

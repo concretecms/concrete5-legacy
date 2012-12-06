@@ -12,6 +12,7 @@ var ccmi18n = {
 	addBlockBeforeThis: "<?=t('Add Block above')?>",
 	addBlockNew: "<?=t('Add Block')?>",
 	addBlockStack: "<?=t('Add Stack')?>",
+	addBlockStackBeforeThis: "<?=t('Add Stack above')?>",
 	addBlockPaste: "<?=t('Paste from Clipboard')?>",
 	addBlockPasteBeforeThis: "<?=t('Paste above')?>",
 	changeAreaCSS: "<?=t('Design')?>",

@@ -28,7 +28,9 @@ if (count($blocks) == 0) { ?>
 
 	<div id="ccm-tab-content-add-stack-block" style="display: none">
 	
-	<? foreach($blocks as $b) { 
+	<?
+	$beforeBID = empty($_REQUEST['beforeBID']) ? 0 : @intval($_REQUEST['beforeBID']);
+	foreach($blocks as $b) { 
 		$bt = $b->getBlockTypeObject();
 		$btIcon = $ci->getBlockTypeIconURL($bt);
 		$name = $bt->getBlockTypeName();
@@ -38,7 +40,7 @@ if (count($blocks) == 0) { ?>
 		?>			
 		<div class="ccm-scrapbook-list-item" id="ccm-stack-block-<?=$b->getBlockID()?>">
 			<div class="ccm-block-type">
-				<a class="ccm-block-type-inner" style="background-image: url(<?=$btIcon?>)" href="javascript:void(0)" onclick="jQuery.fn.dialog.showLoader();$.get('<?=DIR_REL?>/<?=DISPATCHER_FILENAME?>?bID=<?=$b->getBlockID()?>&add=1&processBlock=1&cID=<?=$c->getCollectionID()?>&arHandle=<?=$a->getAreaHandle()?>&btask=alias_existing_block&<?=$token?>', function(r) { ccm_parseBlockResponse(r, false, 'add'); })"><?=$name?></a>
+				<a class="ccm-block-type-inner" style="background-image: url(<?=$btIcon?>)" href="javascript:void(0)" onclick="jQuery.fn.dialog.showLoader();$.get('<?=DIR_REL?>/<?=DISPATCHER_FILENAME?>?bID=<?=$b->getBlockID()?>&amp;add=1&amp;processBlock=1&amp;cID=<?=$c->getCollectionID()?>&amp;arHandle=<?=$a->getAreaHandle()?>&amp;btask=alias_existing_block&amp;beforeBID=<?=$beforeBID?>&amp;<?=$token?>', function(r) { ccm_parseBlockResponse(r, false, 'add'); })"><?=$name?></a>
 				<div class="ccm-scrapbook-list-item-detail">	
 					<?	
 					try {
