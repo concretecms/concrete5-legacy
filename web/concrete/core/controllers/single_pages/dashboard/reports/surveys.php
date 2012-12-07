@@ -68,10 +68,8 @@ class Concrete5_Controller_Dashboard_Reports_Surveys extends Controller {
 		// Set default information in case query returns nothing
 		$current_survey = 'Unknown Survey';
 		$details = array();
-		$row = $r->fetchRow();
-		$r->Close();
 		
-		if ($row) {
+		if ($row = $r->fetchRow()) {
 			// Build array of information we need
 			$i = 0;
 			foreach ($r as $row) {
@@ -82,7 +80,9 @@ class Concrete5_Controller_Dashboard_Reports_Surveys extends Controller {
 				$current_survey = $row['question'];
 				$i++;
 			}
+			$r->Close();
 		} else { // If there is no user-submitted information pertaining to this survey, just get the name
+			$r->Close();
 			$q = 'SELECT question FROM btSurvey WHERE bID = ?';
 			$v = array($bID);
 			$r = $db->query($q, $v);
