@@ -487,7 +487,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 						$q = "insert into UserGroups (uID, gID, ugEntered) values ({$this->uID}, $gID, '{$datetime}')";
 						$r = $db->query($q);
 						// fire the user group addition event
-						Events::fire('on_user_enter_group', $this, Group::getByID($gID));
+						Events::fire('on_user_enter_group', $this->getUserObject(), Group::getByID($gID));
 					}
 				}
 			}
@@ -500,7 +500,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 				
 				// fire the user group removal event for each of the groups we've deleted
 				foreach($existingGIDArray as $gID) {
-					Events::fire('on_user_exit_group', $this, Group::getByID($gID));
+					Events::fire('on_user_exit_group', $this->getUserObject(), Group::getByID($gID));
 				}
 			}
 		}
