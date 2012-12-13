@@ -75,9 +75,6 @@ if ($_REQUEST['approveImmediately'] == 1) {
 	</script>
 	
 
-	<div id="ccm-required-meta">
-	
-	
 	<? if (!$c->isMasterCollection()) { ?>
 	<ul class="nav-tabs nav" id="ccm-properties-tabs">
 		<li class="active"><a href="javascript:void(0)" id="ccm-properties-standard"><?=t('Standard Properties')?></a></li>

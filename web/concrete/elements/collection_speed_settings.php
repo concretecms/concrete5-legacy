@@ -145,6 +145,7 @@ global $c;
 				</li>
 			</ul>
 			</div>
+			</div>
 		<? } ?>
 	</div>	
 	

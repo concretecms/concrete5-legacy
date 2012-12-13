@@ -92,7 +92,7 @@ $canEditGroups = $gp->canEditGroups();
 foreach ($gResults as $g) { ?>
 	
 	<div class="ccm-group">
-		<<? if ($canEditGroups) { ?>a<? } else {?>span<? } ?> class="ccm-group-inner" <? if ($canEditGroups) { ?>href="<?=$this->url('/dashboard/users/groups?task=edit&gID=' . $g['gID'])?>"<? } ?> style="background-image: url(<?=ASSETS_URL_IMAGES?>/icons/group.png)"><?=t($g['gName'])?><? if ($canEditGroups) { ?></a><? } else {?></span><? } ?>
+		<<? if ($canEditGroups) { ?>a<? } else {?>span<? } ?> class="ccm-group-inner" <? if ($canEditGroups) { ?>href="<?=$this->url('/dashboard/users/groups?task=edit&gID=' . $g['gID'])?>"<? } ?> style="background-image: url(<?=ASSETS_URL_IMAGES?>/icons/group.png)"><?=t($g['gName'])?></<? if ($canEditGroups) { ?>a<? } else {?>span<? } ?>>
 		<? if ($g['gDescription']) { ?>
 			<div class="ccm-group-description"><?=$g['gDescription']?></div>
 		<? } ?>

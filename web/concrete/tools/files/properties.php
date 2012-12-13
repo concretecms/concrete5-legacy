@@ -209,7 +209,7 @@ if (!$previewMode && $fp->canEditFileContents()) {
 <h4><?=t('Basic Properties')?></h4>
 <table border="0" cellspacing="0" cellpadding="0" class="ccm-grid">
 <tr>
-	<td><strong><?=t('ID')?></strong></strong></td>
+	<td><strong><?=t('ID')?></strong></td>
 	<td width="100%" colspan="2"><?=$fv->getFileID()?> <span style="color: #afafaf">(<?=t('Version')?> <?=$fv->getFileVersionID()?>)</span></td>
 </tr>
 <tr>
@@ -360,7 +360,7 @@ foreach($attribs as $at) {
 				</td>
 				<td width="100">
 					<div style="width: 150px; word-wrap: break-word">
-					<a href="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/files/properties?fID=<?=$f->getFileID()?>&fvID=<?=$fvv->getFileVersionID()?>&task=preview_version" dialog-modal="false" dialog-width="630" dialog-height="450" dialog-title="<?=t('Preview File')?>" class="dialog-launch">
+					<a href="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/files/properties?fID=<?=$f->getFileID()?>&amp;fvID=<?=$fvv->getFileVersionID()?>&amp;task=preview_version" dialog-modal="false" dialog-width="630" dialog-height="450" dialog-title="<?=t('Preview File')?>" class="dialog-launch">
 						<?=$fvv->getFilename()?>
 					</a>
 					</div>

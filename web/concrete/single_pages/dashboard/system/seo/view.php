@@ -38,5 +38,5 @@ foreach($categories as $cat) { ?>
 	<? } ?>
 
 <? } ?>
-
+</form>
 <?=Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper();?>

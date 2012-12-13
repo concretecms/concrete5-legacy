@@ -8,8 +8,8 @@ $form = Loader::helper('form');
 	
 
 	<?php echo Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('SMTP Method'), false, 'span8 offset2', false)?>
-	<div class="ccm-pane-body">
 	<form method="post" action="<?=$this->url('/dashboard/system/mail/method', 'save_settings')?>" class="form-horizontal" id="mail-settings-form">
+	<div class="ccm-pane-body">
 	<fieldset>
 	<legend><?=t('Send Mail Method')?></legend>
 	<div class="control-group">
@@ -17,7 +17,7 @@ $form = Loader::helper('form');
 	<label class="radio"><?=$form->radio('MAIL_SEND_METHOD', 'PHP_MAIL', MAIL_SEND_METHOD)?> <span><?=t('Default PHP Mail Function')?></span></label>
 	<label class="radio"><?=$form->radio('MAIL_SEND_METHOD', 'SMTP', MAIL_SEND_METHOD)?> <span><?=t('External SMTP Server')?></span></label>
 	</div>
-	<div>
+	</div>
 	</fieldset>
 	<fieldset id="ccm-settings-mail-smtp">
 		<legend><?=t('SMTP Settings')?></legend>
@@ -58,8 +58,6 @@ $form = Loader::helper('form');
 		<?=$ih->submit(t('Save'), 'mail-settings-form','right','primary')?>
 	</div>
 	</form>
-	
-	</div>
 	<?php echo Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper(false);?>
 	
 		<script type="text/javascript">
