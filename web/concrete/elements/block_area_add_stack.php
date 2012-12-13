@@ -9,6 +9,7 @@ $stacks = $sl->get();
 $ci = Loader::helper('concrete/urls');
 $ch = Loader::helper('concrete/interface');
 $form = Loader::helper('form');
+$beforeBID = empty($_REQUEST['beforeBID']) ? 0 : @intval($_REQUEST['beforeBID']);
 ?>
 
 <script type="text/javascript">
@@ -105,7 +106,7 @@ ccmStackSearchResetKeys = function() {
 ccmStackAddToArea = function(stackID, arHandle) {
 	ccmStackSearchResetKeys();
 	jQuery.fn.dialog.showLoader();
-	$.get('<?=DIR_REL?>/<?=DISPATCHER_FILENAME?>?atask=add_stack&stID=' + stackID + '&cID=<?=$c->getCollectionID()?>&arHandle=' + encodeURIComponent(arHandle) + '&<?=$token?>', 
+	$.get('<?=DIR_REL?>/<?=DISPATCHER_FILENAME?>?atask=add_stack&stID=' + stackID + '&cID=<?=$c->getCollectionID()?>&arHandle=' + encodeURIComponent(arHandle) + '&beforeBID=<?=$beforeBID?>&<?=$token?>', 
 		function(r) { ccm_parseBlockResponse(r, false, 'add'); 
 	});
 }
@@ -134,22 +135,20 @@ $(function() {
 		</div>		
 	</div>
 	
-	<? if (count($stacks) > 0) { ?>
-		<ul id="ccm-stack-list" class="item-select-list item-select-list-groups">
-		<? foreach($stacks as $s) { 
+	<?
+	if (count($stacks) > 0) {
+		$beforeBID = empty($_REQUEST['beforeBID']) ? 0 : @intval($_REQUEST['beforeBID']);
+		?><ul id="ccm-stack-list" class="item-select-list item-select-list-groups"><?
+		foreach($stacks as $s) { 
 			$as = Area::get($s, STACKS_AREA_NAME);
 			$asp = new Permissions($as);
 			if ($asp->canRead() && $ap->canAddStackToArea($s)) { 
-			?>	
-			<li class="ccm-stack-available">
-				<a onclick="ccmStackSearchResetKeys()" dialog-on-destroy="ccmStackSearchMapKeys()" class="dialog-launch ccm-block-type-inner" dialog-on-close="ccm_blockWindowAfterClose()" dialog-append-buttons="true" dialog-modal="false" dialog-width="620" dialog-height="400" dialog-title="<?=$s->getCollectionName()?> <?=t('Contents')?>" href="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/edit_area_popup.php?atask=add_stack_contents&cID=<?=$c->getCollectionID()?>&stackID=<?=$s->getCollectionID()?>&arHandle=<?=Loader::helper('text')->entities($a->getAreaHandle())?>"><?=$s->getCollectionName()?></a>
-			</li>
-			
-			<? } ?>
-			
-		<? } ?>
-		</ul>
-		<?
+				?><li class="ccm-stack-available">
+					<a onclick="ccmStackSearchResetKeys()" dialog-on-destroy="ccmStackSearchMapKeys()" class="dialog-launch ccm-block-type-inner" dialog-on-close="ccm_blockWindowAfterClose()" dialog-append-buttons="true" dialog-modal="false" dialog-width="620" dialog-height="400" dialog-title="<?=$s->getCollectionName()?> <?=t('Contents')?>" href="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/edit_area_popup.php?atask=add_stack_contents&amp;cID=<?=$c->getCollectionID()?>&amp;stackID=<?=$s->getCollectionID()?>&amp;arHandle=<?=Loader::helper('text')->entities($a->getAreaHandle())?>&amp;beforeBID=<?=$beforeBID?>"><?=$s->getCollectionName()?></a>
+				</li><?
+			}
+		}
+		?></ul><?
 	} else { ?>
 		<br/>
 		<p><?=t('No stacks can be added to this area.')?></p>

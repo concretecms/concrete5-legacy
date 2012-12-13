@@ -318,12 +318,14 @@
 							$xvc->relateVersionEdits($nvc);
 						}
 						$data['stID'] = $stack->getCollectionID();
-						$nb = $nvc->addBlock($btx, $ax, $data);
+						$beforeBID = empty($_REQUEST['beforeBID']) ? 0 : @intval($_REQUEST['beforeBID']);
+						$nb = $nvc->addBlock($btx, $ax, $data, $beforeBID);
 
 						$obj->aID = $a->getAreaID();
 						$obj->arHandle = $a->getAreaHandle();
 						$obj->cID = $c->getCollectionID();
 						$obj->bID = $nb->getBlockID();
+						$obj->beforeBID = $beforeBID;
 						$obj->error = false;
 					} else {
 						$obj->error = true;
@@ -737,6 +739,7 @@
 				}
 				$ap = new Permissions($ax);	
 				if ($_REQUEST['btask'] == 'alias_existing_block') {
+					$beforeBID = 0;
 					if (is_array($_REQUEST['pcID'])) {		
 						Loader::model('pile');
 
@@ -762,7 +765,8 @@
 										$xvc->relateVersionEdits($nvc);
 									}
 									$data['bOriginalID'] = $bID;
-									$nb = $nvc->addBlock($btx, $ax, $data);
+									$beforeBID = empty($_REQUEST['beforeBID']) ? 0 : @intval($_REQUEST['beforeBID']);
+									$nb = $nvc->addBlock($btx, $ax, $data, $beforeBID);
 									$nb->refreshCache();
 								}
 							}
@@ -780,7 +784,8 @@
 								$xvc->relateVersionEdits($nvc);
 							}
 							$data['bOriginalID'] = $_REQUEST['bID'];
-							$nb = $nvc->addBlock($btx, $ax, $data);
+							$beforeBID = empty($_REQUEST['beforeBID']) ? 0 : @intval($_REQUEST['beforeBID']);
+							$nb = $nvc->addBlock($btx, $ax, $data, $beforeBID);
 							$nb->refreshCache();
 						}
 					}
@@ -791,6 +796,7 @@
 						$obj->arHandle = $a->getAreaHandle();
 						$obj->cID = $c->getCollectionID();
 						$obj->bID = $nb->getBlockID();
+						$obj->beforeBID = $beforeBID;
 						$obj->error = false;
 					} else {
 						$e = Loader::helper('validation/error');
@@ -816,13 +822,13 @@
 						$obj->cID = $c->getCollectionID();
 					
 						if ((!is_object($e)) || (($e instanceof ValidationErrorHelper) && (!$e->has()))) {
-							
+							$beforeBID = empty($_REQUEST['_beforeBID']) ? 0 : @intval($_REQUEST['_beforeBID']);
 							if (!$bt->includeAll()) {
 								$nvc = $cx->getVersionToModify();
-								$nb = $nvc->addBlock($bt, $ax, $data);
+								$nb = $nvc->addBlock($bt, $ax, $data, $beforeBID);
 							} else {
 								// if we apply to all, then we don't worry about a new version of the page
-								$nb = $cx->addBlock($bt, $ax, $data);
+								$nb = $cx->addBlock($bt, $ax, $data, $beforeBID);
 							}
 							
 							if ($a->isGlobalArea() && $nvc instanceof Collection) {
@@ -832,6 +838,7 @@
 
 							$obj->error = false;
 							$obj->bID = $nb->getBlockID();
+							$obj->beforeBID = $beforeBID;
 							
 						} else {
 							
