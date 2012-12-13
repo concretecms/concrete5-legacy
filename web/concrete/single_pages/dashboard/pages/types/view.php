@@ -9,6 +9,8 @@ $form = Loader::helper('form');
 $ctArray = CollectionType::getList();
 $args['section'] = 'collection_types';
 $u = new User();
+$json = Loader::helper('json');
+$interface = Loader::helper('concrete/interface');
 
 Loader::model('file_set');
 $pageTypeIconsFS = FileSet::getByName("Page Type Icons");
@@ -215,13 +217,64 @@ if ($ctEditMode) {
         </table>
 	</div>
 
-    <? $confirmMsg = t('Are you sure?'); ?>
-	<script type="text/javascript">
+    <script type="text/javascript">
 	deletePageType = function() {
-		if(confirm('<?=$confirmMsg?>')){ 
-			location.href="<?=$this->url('/dashboard/pages/types/','delete',$_REQUEST['ctID'], $valt->generate('delete_page_type'))?>";
-		}	
+		$.ajax(<?=$json->encode($this->url('/dashboard/pages/types/', 'get_delete_info', $ct->getCollectionTypeID(), $valt->generate('get_delete_info')))?>, {
+			dataType: 'json',
+			type: 'post',
+			data: {ctID: <?=$ct->getCollectionTypeID(); ?>},
+			error: function(r) {
+				alert(r.responseText);
+			},
+			success: function(r) {
+				if(typeof r.error != "undefined") {
+					alert(r.error);
+				} else {
+					if(r.usage == 0) {
+						if(confirm('<?=t('Are you sure?'); ?>')){
+							location.href = "<?=$this->url('/dashboard/pages/types/', 'delete', $ct->getCollectionTypeID(), $valt->generate('delete_page_type')); ?>";
+						}
+					}
+					else if(!r.replace_existing_with.length) {
+						alert("<?=t("This page type can't be deleted since it is in use and it is the only defined page type."); ?>");
+					}
+					else {
+						var $dialog;
+						$dialog = $('<div style="display:none" class="ccm-ui"></div>')
+							.append('<p><?=t('This page type is currently associated to some page.').'<br />'.t('In order to delete the page type you have to specify the new page type to use for these pages:'); ?></p>')
+							.append(r.replace_existing_with)
+							.append($('<div class="dialog-buttons"></div>')
+								.append(<?=$json->encode($interface->button(t('Delete page type'), '#', 'right', 'error do-delete',  array('onclick' => 'deletePageTypeWithReplace(); return false'))); ?>)
+							)
+						;
+						$(document.body).append($dialog);
+						$dialog.dialog({
+							width: 500,
+							title: "<?= t('Page type in use'); ?>",
+							buttons:[{}],
+							open: function() {
+								$(this).parent().find('.ui-dialog-buttonpane').addClass("ccm-ui").html('');
+								$(this).find('.dialog-buttons').appendTo($(this).parent().find('.ui-dialog-buttonpane'));
+								$(this).find('.dialog-buttons').remove();
+							},
+							close: function() { $dialog.remove(); }
+						});
+					}
+				}
+			}
+		});
 	}
+	deletePageTypeWithReplace = function() {
+		var $s, url;
+		$s = $("#replace_existing_with");
+		if((url = $s.val()) == "") {
+			$s.focus();
+			return;
+		}
+		if(confirm('<?=t('Are you sure?'); ?>')){
+			location.href = url;
+		}
+	};
 	</script>
     
     <div class="ccm-pane-footer">
