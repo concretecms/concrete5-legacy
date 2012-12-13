@@ -28,6 +28,9 @@ abstract class Concrete5_Model_PermissionAccessEntity extends Object {
 			$pt = PermissionAccessEntityType::getByID($r['petID']);
 			$class = Loader::helper('text')->camelcase($pt->getAccessEntityTypeHandle());
 			$class .= 'PermissionAccessEntity';
+			if (!class_exists($class)) {
+				Loader::model('permission/access/entity/types/' . $pt->getAccessEntityTypeHandle() , $pt->getPackageHandle());
+			}
 			$obj = new $class();
 			$r['petHandle'] = $pt->getAccessEntityTypeHandle();
 			$obj->setPropertiesFromArray($r);
