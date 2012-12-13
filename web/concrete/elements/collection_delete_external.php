@@ -43,7 +43,7 @@ $(function() {
 });
 </script>
 
-	<form class="form-stacked" method="post" id="ccm-delete-external-link-form" action="<?=DIR_REL?>/<?=DISPATCHER_FILENAME?>?cID=<?=$cID?>&<?=Loader::helper('validation/token')->getParameter()?>">		
+	<form class="form-stacked" method="post" id="ccm-delete-external-link-form" action="<?=DIR_REL?>/<?=DISPATCHER_FILENAME?>?cID=<?=$cID?>&amp;<?=Loader::helper('validation/token')->getParameter()?>">		
 	
 	<?=t('Remove this alias or external link?')?>
 

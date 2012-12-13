@@ -46,7 +46,7 @@ if ($c->getCollectionInheritance() == 'OVERRIDE') {
 <? defined('C5_EXECUTE') or die("Access Denied."); ?>
 
 <? $cat = PermissionKeyCategory::getByHandle('page'); ?>
-<form method="post" id="ccm-permission-list-form" action="<?=$cat->getToolsURL("save_permission_assignments")?>&cID=<?=$c->getCollectionID()?>">
+<form method="post" id="ccm-permission-list-form" action="<?=$cat->getToolsURL("save_permission_assignments")?>&amp;cID=<?=$c->getCollectionID()?>">
 
 <table class="ccm-permission-grid">
 <?

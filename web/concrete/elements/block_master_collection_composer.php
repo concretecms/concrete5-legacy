@@ -9,7 +9,7 @@ $txt = Loader::helper('text');
 ?>
 <div class="ccm-ui">
 
-<form method="post" class="form-stacked" id="ccmComposerCustomTemplateForm" action="<?=$b->getBlockUpdateComposerSettingsAction()?>&rcID=<?=intval($rcID) ?>">
+<form method="post" class="form-stacked" id="ccmComposerCustomTemplateForm" action="<?=$b->getBlockUpdateComposerSettingsAction()?>&amp;rcID=<?=intval($rcID) ?>">
 
 	<div class="clearfix">
 	<div class="input">

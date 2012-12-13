@@ -188,9 +188,9 @@ $(function() {
 			?>	
 			<li class="ccm-block-type ccm-block-type-available">
 				<? if (!$bt->hasAddTemplate()) { ?>
-					<a style="background-image: url(<?=$btIcon?>)" href="javascript:void(0)" onclick="ccmBlockTypeResetKeys(); jQuery.fn.dialog.showLoader(); $.get('<?=$bt->getBlockAddAction($a)?>&processBlock=1&add=1', function(r) { ccm_parseBlockResponse(r, false, 'add'); })" class="ccm-block-type-inner"><?=$bt->getBlockTypeName()?></a>
+					<a style="background-image: url(<?=$btIcon?>)" href="javascript:void(0)" onclick="ccmBlockTypeResetKeys(); jQuery.fn.dialog.showLoader(); $.get('<?=$bt->getBlockAddAction($a)?>&amp;processBlock=1&amp;add=1', function(r) { ccm_parseBlockResponse(r, false, 'add'); })" class="ccm-block-type-inner"><?=$bt->getBlockTypeName()?></a>
 				<? } else { ?>
-					<a onclick="ccmBlockTypeResetKeys()" dialog-on-destroy="ccmBlockTypeMapKeys()" class="dialog-launch ccm-block-type-inner" dialog-on-close="ccm_blockWindowAfterClose()" dialog-append-buttons="true" dialog-modal="false" dialog-width="<?=$bt->getBlockTypeInterfaceWidth()?>" dialog-height="<?=$bt->getBlockTypeInterfaceHeight()+20?>" style="background-image: url(<?=$btIcon?>)" dialog-title="<?=t('Add')?> <?=$bt->getBlockTypeName()?>" href="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/add_block_popup.php?cID=<?=$c->getCollectionID()?>&btID=<?=$bt->getBlockTypeID()?>&arHandle=<?=urlencode($a->getAreaHandle())?>"><?=$bt->getBlockTypeName()?></a>
+					<a onclick="ccmBlockTypeResetKeys()" dialog-on-destroy="ccmBlockTypeMapKeys()" class="dialog-launch ccm-block-type-inner" dialog-on-close="ccm_blockWindowAfterClose()" dialog-append-buttons="true" dialog-modal="false" dialog-width="<?=$bt->getBlockTypeInterfaceWidth()?>" dialog-height="<?=$bt->getBlockTypeInterfaceHeight()+20?>" style="background-image: url(<?=$btIcon?>)" dialog-title="<?=t('Add')?> <?=$bt->getBlockTypeName()?>" href="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/add_block_popup.php?cID=<?=$c->getCollectionID()?>&amp;btID=<?=$bt->getBlockTypeID()?>&amp;arHandle=<?=urlencode($a->getAreaHandle())?>"><?=$bt->getBlockTypeName()?></a>
 				<? } ?>
 				<div class="ccm-block-type-description"  id="ccm-bt-help<?=$bt->getBlockTypeID()?>"><?=$bt->getBlockTypeDescription()?></div>
 			</li>
@@ -198,7 +198,7 @@ $(function() {
 			
 			/* ?>	
 			<div class="ccm-block-type-grid-entry">
-				<a class="dialog-launch ccm-block-type-inner" dialog-modal="false" dialog-width="<?=$bt->getBlockTypeInterfaceWidth()?>" dialog-height="<?=$bt->getBlockTypeInterfaceHeight()?>" style="background-image: url(<?=$btIcon?>)" dialog-title="<?=t('Add')?> <?=$bt->getBlockTypeName()?>" href="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/add_block_popup.php?cID=<?=$c->getCollectionID()?>&btID=<?=$bt->getBlockTypeID()?>&arHandle=<?=$a->getAreaHandle()?>"><?=$bt->getBlockTypeName()?></a>
+				<a class="dialog-launch ccm-block-type-inner" dialog-modal="false" dialog-width="<?=$bt->getBlockTypeInterfaceWidth()?>" dialog-height="<?=$bt->getBlockTypeInterfaceHeight()?>" style="background-image: url(<?=$btIcon?>)" dialog-title="<?=t('Add')?> <?=$bt->getBlockTypeName()?>" href="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/add_block_popup.php?cID=<?=$c->getCollectionID()?>&amp;btID=<?=$bt->getBlockTypeID()?>&amp;arHandle=<?=$a->getAreaHandle()?>"><?=$bt->getBlockTypeName()?></a>
 			</div> <? */ ?>
 			
 		<? }

@@ -825,24 +825,24 @@ ccm_alActivateMenu = function(obj, e) {
 			html += '<li><a class="ccm-menu-icon ccm-icon-download-menu" href="javascript:void(0)" id="menuDownload' + fID + '" onclick="window.frames[\'' + ccm_alProcessorTarget + '\'].location=\'' + CCM_TOOLS_PATH + '/files/download?fID=' + fID + '\'">'+ ccmi18n_filemanager.download + '<\/a><\/li>';	
 		}
 		if ($(obj).attr('ccm-file-manager-can-edit') == '1') {
-			html += '<li><a class="ccm-menu-icon ccm-icon-edit-menu dialog-launch" dialog-modal="false" dialog-width="90%" dialog-height="75%" dialog-title="' + ccmi18n_filemanager.edit + '" id="menuEdit' + fID + '" href="' + CCM_TOOLS_PATH + '/files/edit?searchInstance=' + searchInstance + '&fID=' + fID + filterStr + '">'+ ccmi18n_filemanager.edit + '<\/a><\/li>';
+			html += '<li><a class="ccm-menu-icon ccm-icon-edit-menu dialog-launch" dialog-modal="false" dialog-width="90%" dialog-height="75%" dialog-title="' + ccmi18n_filemanager.edit + '" id="menuEdit' + fID + '" href="' + CCM_TOOLS_PATH + '/files/edit?searchInstance=' + searchInstance + '&amp;fID=' + fID + filterStr + '">'+ ccmi18n_filemanager.edit + '<\/a><\/li>';
 		}
-		html += '<li><a class="ccm-menu-icon ccm-icon-properties-menu dialog-launch" dialog-modal="false" dialog-width="680" dialog-height="450" dialog-title="' + ccmi18n_filemanager.properties + '" id="menuProperties' + fID + '" href="' + CCM_TOOLS_PATH + '/files/properties?searchInstance=' + searchInstance + '&fID=' + fID + '">'+ ccmi18n_filemanager.properties + '<\/a><\/li>';
+		html += '<li><a class="ccm-menu-icon ccm-icon-properties-menu dialog-launch" dialog-modal="false" dialog-width="680" dialog-height="450" dialog-title="' + ccmi18n_filemanager.properties + '" id="menuProperties' + fID + '" href="' + CCM_TOOLS_PATH + '/files/properties?searchInstance=' + searchInstance + '&amp;fID=' + fID + '">'+ ccmi18n_filemanager.properties + '<\/a><\/li>';
 		if ($(obj).attr('ccm-file-manager-can-replace') == '1') {
-			html += '<li><a class="ccm-menu-icon ccm-icon-replace dialog-launch" dialog-modal="false" dialog-width="300" dialog-height="260" dialog-title="' + ccmi18n_filemanager.replace + '" id="menuFileReplace' + fID + '" href="' + CCM_TOOLS_PATH + '/files/replace?searchInstance=' + searchInstance + '&fID=' + fID + '">'+ ccmi18n_filemanager.replace + '<\/a><\/li>';
+			html += '<li><a class="ccm-menu-icon ccm-icon-replace dialog-launch" dialog-modal="false" dialog-width="300" dialog-height="260" dialog-title="' + ccmi18n_filemanager.replace + '" id="menuFileReplace' + fID + '" href="' + CCM_TOOLS_PATH + '/files/replace?searchInstance=' + searchInstance + '&amp;fID=' + fID + '">'+ ccmi18n_filemanager.replace + '<\/a><\/li>';
 		}
 		if ($(obj).attr('ccm-file-manager-can-duplicate') == '1') {
 			html += '<li><a class="ccm-menu-icon ccm-icon-copy-menu" id="menuFileDuplicate' + fID + '" href="javascript:void(0)" onclick="ccm_alDuplicateFile(' + fID + ',\'' + searchInstance + '\')">'+ ccmi18n_filemanager.duplicate + '<\/a><\/li>';
 		}
-		html += '<li><a class="ccm-menu-icon ccm-icon-sets dialog-launch" dialog-modal="false" dialog-width="500" dialog-height="400" dialog-title="' + ccmi18n_filemanager.sets + '" id="menuFileSets' + fID + '" href="' + CCM_TOOLS_PATH + '/files/add_to?searchInstance=' + searchInstance + '&fID=' + fID + '">'+ ccmi18n_filemanager.sets + '<\/a><\/li>';
+		html += '<li><a class="ccm-menu-icon ccm-icon-sets dialog-launch" dialog-modal="false" dialog-width="500" dialog-height="400" dialog-title="' + ccmi18n_filemanager.sets + '" id="menuFileSets' + fID + '" href="' + CCM_TOOLS_PATH + '/files/add_to?searchInstance=' + searchInstance + '&amp;fID=' + fID + '">'+ ccmi18n_filemanager.sets + '<\/a><\/li>';
 		if ($(obj).attr('ccm-file-manager-can-admin') == '1' || $(obj).attr('ccm-file-manager-can-delete') == '1') {
 			html += '<li class="ccm-menu-separator"></li>';
 		}
 		if ($(obj).attr('ccm-file-manager-can-admin') == '1') {
-			html += '<li><a class="ccm-menu-icon ccm-icon-access-permissions dialog-launch" dialog-modal="false" dialog-width="400" dialog-height="450" dialog-title="' + ccmi18n_filemanager.permissions + '" id="menuFilePermissions' + fID + '" href="' + CCM_TOOLS_PATH + '/files/permissions?searchInstance=' + searchInstance + '&fID=' + fID + '">'+ ccmi18n_filemanager.permissions + '<\/a><\/li>';
+			html += '<li><a class="ccm-menu-icon ccm-icon-access-permissions dialog-launch" dialog-modal="false" dialog-width="400" dialog-height="450" dialog-title="' + ccmi18n_filemanager.permissions + '" id="menuFilePermissions' + fID + '" href="' + CCM_TOOLS_PATH + '/files/permissions?searchInstance=' + searchInstance + '&amp;fID=' + fID + '">'+ ccmi18n_filemanager.permissions + '<\/a><\/li>';
 		}
 		if ($(obj).attr('ccm-file-manager-can-delete') == '1') {
-			html += '<li><a class="ccm-icon-delete-menu ccm-menu-icon dialog-launch" dialog-append-buttons="true" dialog-modal="false" dialog-width="500" dialog-height="200" dialog-title="' + ccmi18n_filemanager.deleteFile + '" id="menuDeleteFile' + fID + '" href="' + CCM_TOOLS_PATH + '/files/delete?searchInstance=' + searchInstance + '&fID=' + fID + '">'+ ccmi18n_filemanager.deleteFile + '<\/a><\/li>';
+			html += '<li><a class="ccm-icon-delete-menu ccm-menu-icon dialog-launch" dialog-append-buttons="true" dialog-modal="false" dialog-width="500" dialog-height="200" dialog-title="' + ccmi18n_filemanager.deleteFile + '" id="menuDeleteFile' + fID + '" href="' + CCM_TOOLS_PATH + '/files/delete?searchInstance=' + searchInstance + '&amp;fID=' + fID + '">'+ ccmi18n_filemanager.deleteFile + '<\/a><\/li>';
 		}
 		html += '</ul>';
 		html += '</div></div></div>';
