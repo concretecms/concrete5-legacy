@@ -178,27 +178,14 @@
 			}
 			
 			$db = Loader::db(); 
-			$db->query("DELETE FROM AreaGroupBlockTypes WHERE gID = ?",array(intval($this->gID)) );
-			$db->query("DELETE FROM AreaGroups WHERE gID = ?",array(intval($this->gID)) );
-			$db->query("DELETE FROM CollectionVersionBlockPermissions WHERE gID = ?",array(intval($this->gID)) );
-			$db->query("DELETE FROM FileSetPermissions WHERE gID = ?",array(intval($this->gID)) );
-			$db->query("DELETE FROM FilePermissionFileTypes WHERE gID = ?",array(intval($this->gID)) );
+			$db->query("DELETE FROM Groups WHERE gID = ?",array(intval($this->gID)) );
+			$db->query("DELETE FROM UserGroups WHERE gID = ?",array(intval($this->gID)) );
 			$db->query("DELETE FROM FilePermissionFileTypes WHERE gID = ?",array(intval($this->gID)) );
 			$db->query("DELETE FROM FilePermissions WHERE gID = ?",array(intval($this->gID)) );
-			$db->query("DELETE FROM Groups WHERE gID = ?",array(intval($this->gID)) );
-			$db->query("DELETE FROM GroupAttributeValues WHERE gID = ?",array(intval($this->gID)) );
-			$db->query("DELETE FROM GroupSearchIndexAttributes WHERE gID = ?",array(intval($this->gID)) );
 			$db->query("DELETE FROM GroupSetGroups WHERE gID = ?",array(intval($this->gID)) );
-			$db->query("DELETE FROM PagePermissionPageTypes WHERE gID = ?",array(intval($this->gID)) );
-			$db->query("DELETE FROM PagePermissions WHERE gID = ?",array(intval($this->gID)) );
 			$db->query("DELETE FROM PermissionAccessEntityGroups WHERE gID = ?",array(intval($this->gID)) );
-			$db->query("DELETE FROM TaskPermissionUserGroups WHERE gID = ?",array(intval($this->gID)) );
-			$db->query("DELETE FROM UserAttributeAccordingToGroupAttributeKeys WHERE gID = ?",array(intval($this->gID)) );
-			$db->query("DELETE FROM UserAttributeAccordingToGroupAttributeValues WHERE gID = ?",array(intval($this->gID)) );
-			$db->query("DELETE FROM UserGroups WHERE gID = ?",array(intval($this->gID)) );
-			$db->query("DELETE FROM UserPermissionAssignGroupAccessListCustom WHERE gID = ?",array(intval($this->gID)) );
 			$db->query("DELETE FROM UserPermissionUserSearchAccessListCustom WHERE gID = ?",array(intval($this->gID)) );
-			$db->query("DELETE FROM UserAttributeAccordingToGroupAttributeValues WHERE gID = ?",array(intval($this->gID)) );
+			$db->query("DELETE FROM UserPermissionAssignGroupAccessListCustom WHERE gID = ?",array(intval($this->gID)) );	
 		}
 
 		function inGroup() {
