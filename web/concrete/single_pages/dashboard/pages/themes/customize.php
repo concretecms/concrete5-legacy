@@ -15,7 +15,7 @@ $ih = Loader::helper('concrete/interface');
     
     <?=Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Customize Theme'), false, false, false);?>
 
-    <form action="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/themes/preview_internal?themeID=<?=$themeID?>&previewCID=1" method="post" target="preview-theme" id="customize-form">
+    <form action="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/themes/preview_internal?themeID=<?=$themeID?>&amp;previewCID=1" method="post" target="preview-theme" id="customize-form">
 	
 	<div class="ccm-pane-options">
 	<?	
@@ -85,7 +85,7 @@ $ih = Loader::helper('concrete/interface');
     ?>
 		<div id="previewContainer" style="border: 2px solid #eee; height:500px;">
 			<div id="previewTheme">
-				<iframe name="preview-theme" id="preview-theme" height="100%" width="100%" src="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/themes/preview_internal?themeID=<?=$themeID?>&previewCID=1" border="0" frameborder="0"></iframe>
+				<iframe name="preview-theme" id="preview-theme" height="100%" width="100%" src="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/themes/preview_internal?themeID=<?=$themeID?>&amp;previewCID=1" border="0" frameborder="0"></iframe>
 			</div>
 		</div>
         

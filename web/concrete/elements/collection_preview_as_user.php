@@ -39,7 +39,7 @@ $us = Loader::helper('form/user_selector'); ?>
 <?
 $assignments = $cp->getAllTimedAssignmentsForPage();
 if (count($assignments) > 0) { ?>
-	<a href="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/edit_collection_popup.php?cID=<?=$c->getCollectionID()?>&ctask=view_timed_permission_list" dialog-width="500" dialog-height="300" dialog-title="<?=t('View Timed Permission Assignments')?>" class="dialog-launch" onclick="" id="ccm-list-view-customize-top"><span class="ccm-menu-icon ccm-icon-clock"></span><? 
+	<a href="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/edit_collection_popup.php?cID=<?=$c->getCollectionID()?>&amp;ctask=view_timed_permission_list" dialog-width="500" dialog-height="300" dialog-title="<?=t('View Timed Permission Assignments')?>" class="dialog-launch" onclick="" id="ccm-list-view-customize-top"><span class="ccm-menu-icon ccm-icon-clock"></span><? 
 		if (count($assignments) == 1) { ?><?=t('1 Timed Permission Found')?><? } else { ?><?=t('%s Timed Permissions Found', count($assignments))?><? } ?></a>
 <? } ?>
 </div>

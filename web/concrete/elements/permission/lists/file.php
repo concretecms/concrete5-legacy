@@ -32,7 +32,7 @@ if (!$f->overrideFileSetPermissions()) { ?>
 
 <? $cat = PermissionKeyCategory::getByHandle('file');?>
 
-<form method="post" id="ccm-permission-list-form" action="<?=$cat->getToolsURL("save_permission_assignments")?>&fID=<?=$f->getFileID()?>">
+<form method="post" id="ccm-permission-list-form" action="<?=$cat->getToolsURL("save_permission_assignments")?>&amp;fID=<?=$f->getFileID()?>">
 
 <table class="ccm-permission-grid">
 <?

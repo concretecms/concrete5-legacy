@@ -22,7 +22,7 @@ Loader::element('pane_header', array('c'=>$c));
 ?>
 <div class="ccm-pane-controls">
     <div id="ccm-edit-collection">
-        <form method="post" id="ccm-check-in" action="<?=DIR_REL?>/<?=DISPATCHER_FILENAME?>?cID=<?=$c->getCollectionID()?>&ctask=check-in">
+        <form method="post" id="ccm-check-in" action="<?=DIR_REL?>/<?=DISPATCHER_FILENAME?>?cID=<?=$c->getCollectionID()?>&amp;ctask=check-in">
         	<? $valt = Loader::helper('validation/token'); $valt->output(); ?>
             <h1><?=t('Exit Edit Mode')?></h1>
             

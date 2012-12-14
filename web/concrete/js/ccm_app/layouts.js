@@ -70,7 +70,7 @@ function ccmLayout( cvalID, layout_id, area, locked ){
 			html += '<ul>';
 			
 			//the arHandle here should be encoded with encodeURIComponent(), but it leads to a double encoding issue in ccm.dialog.js 
-			html += '<li><a onclick="ccm_hideMenus()" class="ccm-menu-icon ccm-icon-edit-menu" dialog-title="' + ccmi18n.editAreaLayout + '" dialog-modal="false" dialog-width="550" dialog-height="280" dialog-append-buttons="true" id="menuEditLayout' + this.cvalID + '" href="' + CCM_TOOLS_PATH + '/edit_area_popup.php?cID=' + CCM_CID + '&arHandle=' + encodeURIComponent(this.area) + '&layoutID=' + this.layout_id + '&cvalID=' + this.cvalID +  '&atask=layout">' + ccmi18n.editAreaLayout + '</a></li>';
+			html += '<li><a onclick="ccm_hideMenus()" class="ccm-menu-icon ccm-icon-edit-menu" dialog-title="' + ccmi18n.editAreaLayout + '" dialog-modal="false" dialog-width="550" dialog-height="280" dialog-append-buttons="true" id="menuEditLayout' + this.cvalID + '" href="' + CCM_TOOLS_PATH + '/edit_area_popup.php?cID=' + CCM_CID + '&amp;arHandle=' + encodeURIComponent(this.area) + '&amp;layoutID=' + this.layout_id + '&amp;cvalID=' + this.cvalID +  '&amp;atask=layout">' + ccmi18n.editAreaLayout + '</a></li>';
 
 			html += '<li><a onclick="ccm_hideMenus()" href="javascript:void(0)" class="ccm-menu-icon ccm-icon-move-up" id="menuAreaLayoutMoveUp' + this.cvalID + '">' + ccmi18n.moveLayoutUp + '</a></li>';
 						
