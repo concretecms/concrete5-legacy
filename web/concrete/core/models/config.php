@@ -147,6 +147,7 @@ class Concrete5_Model_Config extends Object {
 				}
 			}
 		}
+		$r->Close();
 	}
 	
 }

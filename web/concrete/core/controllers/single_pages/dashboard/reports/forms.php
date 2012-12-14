@@ -201,10 +201,10 @@ class Concrete5_Controller_Dashboard_Reports_Forms extends Controller {
 		$db = Loader::db();
 		$v = array(intval($asID));
 		$q = 'DELETE FROM btFormAnswers WHERE asID = ?';		
-		$r = $db->query($q, $v);
+		$db->query($q, $v);
 		
 		$q = 'DELETE FROM btFormAnswerSet WHERE asID = ?';		
-		$r = $db->query($q, $v);
+		$db->query($q, $v);
 	}
 	//DELETE FORMS AND ALL SUBMISSIONS
 	private function deleteForm($bID, $qsID){
@@ -217,16 +217,17 @@ class Concrete5_Controller_Dashboard_Reports_Forms extends Controller {
 			$asID = $row['asID'];
 			$this->deleteAnswers($asID);
 		}
+		$r->Close();
 		
 		$v = array(intval($bID));
 		$q = 'DELETE FROM btFormQuestions WHERE bID = ?';		
-		$r = $db->query($q, $v);
+		$db->query($q, $v);
 		
 		$q = 'DELETE FROM btForm WHERE bID = ?';		
-		$r = $db->query($q, $v);
+		$db->query($q, $v);
 		
 		$q = 'DELETE FROM Blocks WHERE bID = ?';		
-		$r = $db->query($q, $v);
+		$db->query($q, $v);
 		
 	}	
 }

@@ -28,6 +28,7 @@ class Concrete5_Library_LogEntry extends Object {
 		$r = $db->Execute("select * from Logs where logID = ?", array($logID));
 		if ($r) {
 			$row = $r->FetchRow();
+			$r->Close();
 			$obj = new LogEntry();
 			$obj->setPropertiesFromArray($row);
 			return $obj;

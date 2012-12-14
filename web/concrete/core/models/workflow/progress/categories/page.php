@@ -46,6 +46,7 @@ class Concrete5_Model_PageWorkflowProgress extends WorkflowProgress {
 				$list[] = $wp;
 			}
 		}
+		$r->Close();
 		return $list;
 	}
 

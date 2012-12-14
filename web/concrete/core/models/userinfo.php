@@ -96,10 +96,12 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			$db = Loader::db();
 			$q = "select Users.uID, Users.uLastLogin, Users.uLastIP, Users.uIsValidated, Users.uPreviousLogin, Users.uIsFullRecord, Users.uNumLogins, Users.uDateAdded, Users.uIsActive, Users.uLastOnline, Users.uHasAvatar, Users.uName, Users.uEmail, Users.uPassword, Users.uTimezone from Users " . $where;
 			$r = $db->query($q, array($var));
-			if ($r && $r->numRows() > 0) {
-				$ui = new UserInfo;
-				$row = $r->fetchRow();
-				$ui->setPropertiesFromArray($row);
+			if ($r) {
+				if($r->numRows() > 0) {
+					$ui = new UserInfo;
+					$row = $r->fetchRow();
+					$ui->setPropertiesFromArray($row);
+				}
 				$r->free();
 			}
 			
@@ -201,19 +203,20 @@ defined('C5_EXECUTE') or die("Access Denied.");
 					$av->delete();
 				}
 			}
+			$r->Close();
 
-			$r = $db->query("DELETE FROM UsersFriends WHERE friendUID = ?",array(intval($this->uID)) );
-			$r = $db->query("DELETE FROM UserSearchIndexAttributes WHERE uID = ?",array(intval($this->uID)) );
+			$db->query("DELETE FROM UsersFriends WHERE friendUID = ?",array(intval($this->uID)) );
+			$db->query("DELETE FROM UserSearchIndexAttributes WHERE uID = ?",array(intval($this->uID)) );
 			
-			$r = $db->query("DELETE FROM UserGroups WHERE uID = ?",array(intval($this->uID)) );
-			$r = $db->query("DELETE FROM UserOpenIDs WHERE uID = ?",array(intval($this->uID)));
-			$r = $db->query("DELETE FROM Users WHERE uID = ?",array(intval($this->uID)));
-			$r = $db->query("DELETE FROM UserValidationHashes WHERE uID = ?",array(intval($this->uID)));
+			$db->query("DELETE FROM UserGroups WHERE uID = ?",array(intval($this->uID)) );
+			$db->query("DELETE FROM UserOpenIDs WHERE uID = ?",array(intval($this->uID)));
+			$db->query("DELETE FROM Users WHERE uID = ?",array(intval($this->uID)));
+			$db->query("DELETE FROM UserValidationHashes WHERE uID = ?",array(intval($this->uID)));
 			
-			$r = $db->query("DELETE FROM Piles WHERE uID = ?",array(intval($this->uID)));
+			$db->query("DELETE FROM Piles WHERE uID = ?",array(intval($this->uID)));
 			
-			$r = $db->query("UPDATE Blocks set uID=? WHERE uID = ?",array( intval(USER_SUPER_ID), intval($this->uID)));
-			$r = $db->query("UPDATE Pages set uID=? WHERE uID = ?",array( intval(USER_SUPER_ID), intval($this->uID)));
+			$db->query("UPDATE Blocks set uID=? WHERE uID = ?",array( intval(USER_SUPER_ID), intval($this->uID)));
+			$db->query("UPDATE Pages set uID=? WHERE uID = ?",array( intval(USER_SUPER_ID), intval($this->uID)));
 		}
 
 		/**
@@ -471,6 +474,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 				while ($row = $r->fetchRow()) {
 					$existingGIDArray[] = $row['gID'];
 				}
+				$r->Close();
 			}
 
 			$dh = Loader::helper('date');
@@ -485,7 +489,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 					} else {
 						// this item is new, so we add it.
 						$q = "insert into UserGroups (uID, gID, ugEntered) values ({$this->uID}, $gID, '{$datetime}')";
-						$r = $db->query($q);
+						$db->query($q);
 					}
 				}
 			}
@@ -494,7 +498,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			if (count($existingGIDArray) > 0) {
 				$inStr = implode(',', $existingGIDArray);
 				$q2 = "delete from UserGroups where uID = '{$this->uID}' and gID in ({$inStr})";
-				$r2 = $db->query($q2);
+				$db->query($q2);
 			}
 		}
 		
@@ -553,14 +557,14 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		function activate() {
 			$db = Loader::db();
 			$q = "update Users set uIsActive = 1 where uID = '{$this->uID}'";
-			$r = $db->query($q);
+			$db->query($q);
 			Events::fire('on_user_activate', $this);
 		}
 
 		function deactivate() {
 			$db = Loader::db();
 			$q = "update Users set uIsActive = 0 where uID = '{$this->uID}'";
-			$r = $db->query($q);
+			$db->query($q);
 			Events::fire('on_user_deactivate', $this);
 		}
 		

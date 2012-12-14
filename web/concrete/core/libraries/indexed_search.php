@@ -97,7 +97,7 @@ class Concrete5_Library_IndexedSearch {
 				unset($bi);
 			}		
 		}
-		
+		$r->Close();
 		return $text;
 	}
 	

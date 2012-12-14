@@ -75,6 +75,7 @@ class Concrete5_Model_PileContent extends Object {
 		$q = "select pID, pcID, itemID, itemType, displayOrder, quantity, timestamp from PileContents where pcID = ?";
 		$r = $db->query($q, $v);
 		$row = $r->fetchRow();
+		$r->Close();
 
 		$pc = new PileContent;
 		if( is_array($row) ) foreach ($row as $k => $v) {

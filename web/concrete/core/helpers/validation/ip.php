@@ -39,6 +39,7 @@
 			
 			$rs 	= $db->Execute($q,$v);
 			$row 	= $rs->fetchRow();
+			$rs->Close();
 			
 			return ($row['count'] > 0) ? false : true;
 		}
@@ -88,6 +89,7 @@
 				
 				$rs = $db->execute($q,$v);			
 				$row = $rs->fetchRow();
+				$rs->Close();
 				if ($row['count'] >= $threshold_attempts) {
 					return true;
 				}

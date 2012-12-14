@@ -86,7 +86,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
  		
 			$db = Loader::db();
 			$query = "INSERT INTO btGuestBookEntries (bID, cID, uID, user_name, user_email, commentText, approved) VALUES (?, ?, ?, ?, ?, ?, ?)";
-			$res = $db->query($query, array($this->bID, $cID, intval($uID), $txt->sanitize($name), $txt->sanitize($email), $txt->sanitize($comment), $approved) );
+			$db->query($query, array($this->bID, $cID, intval($uID), $txt->sanitize($name), $txt->sanitize($email), $txt->sanitize($comment), $approved) );
 
 			$this->adjustCountCache(1);
 		}
@@ -113,6 +113,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 				$rs = $db->query($q,$v);
 				$row = $rs->FetchRow();
 				$count = $row['count'];
+				$rs->Close();
 			}
 			$ca->set('GuestBookCount',$this->cID."-".$this->bID,$count);
 		}
@@ -129,7 +130,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			$db = Loader::db();
 			$txt = Loader::helper('text');
 			$query = "UPDATE btGuestBookEntries SET user_name=?, uID=?, user_email=?, commentText=? WHERE entryID=? AND bID=?";
-			$res = $db->query($query, array($txt->sanitize($name), intval($uID), $txt->sanitize($email),$txt->sanitize($comment),$entryID,$this->bID));
+			$db->query($query, array($txt->sanitize($name), intval($uID), $txt->sanitize($email),$txt->sanitize($comment),$entryID,$this->bID));
 		}
  		
 		/** 
@@ -139,21 +140,21 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		function removeEntry($entryID) {
 			$db = Loader::db();
 			$query = "DELETE FROM btGuestBookEntries WHERE entryID=? AND bID=?";
-			$res = $db->query($query, array($entryID,$this->bID));
+			$db->query($query, array($entryID,$this->bID));
 			$this->adjustCountCache(-1);
 		}
 		
 		function approveEntry($entryID) {
 			$db = Loader::db();
 			$query = "UPDATE btGuestBookEntries SET approved = 1 WHERE entryID=? AND bID=?";
-			$res = $db->query($query, array($entryID,$this->bID));
+			$db->query($query, array($entryID,$this->bID));
 			$this->adjustCountCache(1);
 		}
 	
 		function unApproveEntry($entryID) {
 			$db = Loader::db();
 			$query = "UPDATE btGuestBookEntries SET approved = 0 WHERE entryID=? AND bID=?";
-			$res = $db->query($query, array($entryID,$this->bID));
+			$db->query($query, array($entryID,$this->bID));
 			$this->adjustCountCache(-1);
 		}
 		
@@ -163,7 +164,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		function removeAllEntries($cID) {
 			$db = Loader::db();
 			$query = "DELETE FROM btGuestBookEntries WHERE bID=? AND cID = ?";
-			$res = $db->query($query, array($this->bID, $cID));	
+			$db->query($query, array($this->bID, $cID));	
 			$this->adjustCountCache(false);
 		}
 		

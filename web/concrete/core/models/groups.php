@@ -19,6 +19,7 @@
 					if(!in_array($g,$this->gArray)) 
 						$this->gArray[] = $g;
 				}
+				$r->Close();
 			} else {
 				$groups = $this->getRelevantGroups($obj, $omitRequiredGroups);
 				foreach($groups as $g) {
@@ -127,6 +128,7 @@
 				$ui->setGroupMemberType($row['type']);
 				$members[] = $ui;
 			}
+			$r->Close();
 			return $members;			
 		}
 
@@ -140,6 +142,7 @@
 					$r = $db->query($q);
 					if ($r) {
 						$row = $r->fetchRow();
+						$r->Close();
 						if ($row['gID']) {
 							$this->inGroup = true;
 							$this->gDateTimeEntered = $row['ugEntered'];
@@ -178,8 +181,8 @@
 			}
 			
 			$db = Loader::db(); 
-			$r = $db->query("DELETE FROM UserGroups WHERE gID = ?",array(intval($this->gID)) );
-			$r = $db->query("DELETE FROM Groups WHERE gID = ?",array(intval($this->gID)) );
+			$db->query("DELETE FROM UserGroups WHERE gID = ?",array(intval($this->gID)) );
+			$db->query("DELETE FROM Groups WHERE gID = ?",array(intval($this->gID)) );
 		}
 
 		function inGroup() {
@@ -269,7 +272,7 @@
 			if ($this->gID) {
 				$v = array($gName, $gDescription, $this->gID);
 				$r = $db->prepare("update Groups set gName = ?, gDescription = ? where gID = ?");
-				$res = $db->Execute($r, $v);
+				$db->Execute($r, $v);
 				$group = Group::getByID($this->gID);
 		        Events::fire('on_group_update', $this);
         		

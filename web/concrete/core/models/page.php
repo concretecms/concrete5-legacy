@@ -78,6 +78,7 @@ class Concrete5_Model_Page extends Collection {
 			$cPathOverride = $row['cPath'];
 			$cPointerID = $row['cPointerID'];
 			$cDisplayOrderOverride = $row['cDisplayOrder'];
+			$r->Close();
 			$r = $db->query($q1, $v);
 			$row = $r->fetchRow();
 		}
@@ -128,6 +129,7 @@ class Concrete5_Model_Page extends Collection {
 			$pk->setPermissionObject($this);
 			$this->permissionAssignments[$row['pkID']] = PermissionAccess::getByID($row['paID'], $pk);
 		}
+		$r->Close();
 	}
 
 	public function getPermissionAccessObject(PermissionKey $pk) {
@@ -174,7 +176,7 @@ class Concrete5_Model_Page extends Collection {
 		// This function forces checkin to take place
 		$db = Loader::db();
 		$q = "update Pages set cIsCheckedOut = 0, cCheckedOutUID = null, cCheckedOutDatetime = null, cCheckedOutDatetimeLastEdit = null where cID = '{$this->cID}'";
-		$r = $db->query($q);
+		$db->query($q);
 		$this->refreshCache();
 	}
 
@@ -257,6 +259,7 @@ class Concrete5_Model_Page extends Collection {
 		$r = $db->query($q);
 		if ($r) {
 			$row = $r->fetchRow();
+			$r->Close();
 			if ($row['cIsCheckedOut'] == 0) {
 				return false;
 			} else {
@@ -435,7 +438,7 @@ class Concrete5_Model_Page extends Collection {
 		$q = "insert into Pages (cID, cParentID, uID, cPointerID) values (?, ?, ?, ?)";
 		$r = $db->prepare($q);
 		
-		$res = $db->execute($r, $v);
+		$db->execute($r, $v);
 		$newCID = $db->Insert_ID();
 
 		Loader::model('page_statistics');		
@@ -511,7 +514,7 @@ class Concrete5_Model_Page extends Collection {
 		$q = "insert into Pages (cID, cParentID, uID, cPointerExternalLink, cPointerExternalLinkNewWindow) values (?, ?, ?, ?, ?)";
 		$r = $db->prepare($q);
 		
-		$res = $db->execute($r, $v);
+		$db->execute($r, $v);
 		$newCID = $db->Insert_ID();
 
 		Loader::model('page_statistics');		
@@ -588,16 +591,16 @@ class Concrete5_Model_Page extends Collection {
 
 			$args = array($this->getCollectionPointerOriginalID());
 			$q = "delete from Pages where cID = ?";
-			$r = $db->query($q, $args);
+			$db->query($q, $args);
 
 			$q = "delete from Collections where cID = ?";
-			$r = $db->query($q, $args);
+			$db->query($q, $args);
 
 			$q = "delete from CollectionVersions where cID = ?";
-			$r = $db->query($q, $args);
+			$db->query($q, $args);
 			
 			$q = "delete from PagePaths where cID = ?";
-			$r = $db->query($q, $args);
+			$db->query($q, $args);
 
 			Cache::delete('page', $this->getCollectionPointerOriginalID()  );
 			Cache::delete('page_path', $this->getCollectionPointerOriginalID()  );
@@ -638,6 +641,7 @@ class Concrete5_Model_Page extends Collection {
 			$ax = Area::get($this, $row['arHandle']);
 			$ax->export($p, $this);
 		}
+		$r->Close();
 	}
 
 	/**
@@ -733,7 +737,7 @@ class Concrete5_Model_Page extends Collection {
 			$db = Loader::db();
 			$q = 'SELECT bID FROM CollectionVersionBlocks WHERE cID = ? AND isOriginal = 0 AND cvID = ? AND bID IN (SELECT bID FROM CollectionVersionBlocks AS cvb2 WHERE cvb2.cid = ?)';
 			$v = array($this->getCollectionID(), $this->getVersionObject()->getVersionID(), $this->getMasterCollectionID());
-			$r = $db->execute($q, $v);
+			$db->execute($q, $v);
 			$this->blocksAliasedFromMasterCollection = $db->GetCol($q, $v);
 		}
 		
@@ -1020,6 +1024,7 @@ class Concrete5_Model_Page extends Collection {
 					if( !$oneLevelOnly ) $this->_getNumChildren($row['cID']);
 				}
 			}
+			$r->Close();
 		}
 	}
 
@@ -1105,14 +1110,14 @@ class Concrete5_Model_Page extends Collection {
 			$v = array($cName, $cHandle, $cDescription, $cDatePublic, $cvID, $this->cID);
 			$q = "update CollectionVersions set cvName = ?, cvHandle = ?, cvDescription = ?, cvDatePublic = ? where cvID = ? and cID = ?";
 			$r = $db->prepare($q);
-			$res = $db->execute($r, $v);
+			$db->execute($r, $v);
 
 		} else {
 
 			$v = array($cName, $cHandle, $ctID, $cDescription, $cDatePublic, $cvID, $this->cID);
 			$q = "update CollectionVersions set cvName = ?, cvHandle = ?, ctID = ?, cvDescription = ?, cvDatePublic = ? where cvID = ? and cID = ?";
 			$r = $db->prepare($q);
-			$res = $db->execute($r, $v);				
+			$db->execute($r, $v);				
 		}
 
 		$db->query("update Pages set uID = ?, pkgID = ?, cFilename = ?, cCacheFullPageContent = ?, cCacheFullPageContentLifetimeCustom = ?, cCacheFullPageContentOverrideLifetime = ? where cID = ?", array($uID, $pkgID, $cFilename, $cCacheFullPageContent, $cCacheFullPageContentLifetimeCustom, $cCacheFullPageContentOverrideLifetime, $this->cID));
@@ -1139,6 +1144,7 @@ class Concrete5_Model_Page extends Collection {
 			} else {
 				$suffix++;
 			}
+			$r->Close();
 		}
 
 		return $newPath;
@@ -1191,7 +1197,7 @@ class Concrete5_Model_Page extends Collection {
 				$v = array($this->cID, $val);
 				$q = "insert into PagePaths (cID, cPath, ppIsCanonical) values (?, ?, 0)";
 			}
-			$r = $db->query($q, $v);
+			$db->query($q, $v);
 		}
 	}
 
@@ -1207,7 +1213,7 @@ class Concrete5_Model_Page extends Collection {
 		$this->updatePermissionsCollectionID($this->cID, $cpID);
 		$v = array('PARENT', $cpID, $this->cID);
 		$q = "update Pages set cInheritPermissionsFrom = ?, cInheritPermissionsFromCID = ? where cID = ?";
-		$r = $db->query($q, $v);
+		$db->query($q, $v);
 		$this->cInheritPermissionsFrom = 'PARENT';
 		$this->cInheritPermissionsFromCID = $cpID;
 		$this->clearPagePermissions();
@@ -1220,7 +1226,7 @@ class Concrete5_Model_Page extends Collection {
 		$this->updatePermissionsCollectionID($this->cID, $cpID);
 		$v = array('TEMPLATE', $cpID, $this->cID);
 		$q = "update Pages set cInheritPermissionsFrom = ?, cInheritPermissionsFromCID = ? where cID = ?";
-		$r = $db->query($q, $v);
+		$db->query($q, $v);
 		$this->cInheritPermissionsFrom = 'TEMPLATE';
 		$this->cInheritPermissionsFromCID = $cpID;
 		$this->clearPagePermissions();
@@ -1237,7 +1243,7 @@ class Concrete5_Model_Page extends Collection {
 			$this->updatePermissionsCollectionID($this->cID, $cpID);
 			$v = array('OVERRIDE', $cpID, $this->cID);
 			$q = "update Pages set cInheritPermissionsFrom = ?, cInheritPermissionsFromCID = ? where cID = ?";
-			$r = $db->query($q, $v);
+			$db->query($q, $v);
 			$this->cInheritPermissionsFrom = 'OVERRIDE';
 			$this->cInheritPermissionsFromCID = $cpID;
 			$this->rescanAreaPermissions();
@@ -1279,10 +1285,11 @@ class Concrete5_Model_Page extends Collection {
 		while ($row = $r->fetchRow()) {
 			$cList[] = $row['cID'];
 		}
+		$r->Close();
 		if (count($cList) > 0) {
 			$cParentIDString = implode(',', $cList);
 			$q2 = "update Pages set cInheritPermissionsFromCID = {$npID} where cID in ({$cParentIDString})";
-			$r2 = $db->query($q2);
+			$db->query($q2);
 			$this->updatePermissionsCollectionID($cParentIDString, $npID);
 		}
 	}
@@ -1303,6 +1310,7 @@ class Concrete5_Model_Page extends Collection {
 			$q = "insert into AreaPermissionAssignments (cID, arHandle, paID, pkID) values (?, ?, ?, ?)";
 			$db->query($q, $v);
 		}
+		$r->Close();
 	}
 
 	function acquirePagePermissions($permissionsCollectionID) {
@@ -1319,6 +1327,7 @@ class Concrete5_Model_Page extends Collection {
 			$q = "insert into PagePermissionAssignments (cID, paID, pkID) values (?, ?, ?)";
 			$db->query($q, $v);
 		}
+		$r->Close();
 	}
 
 	public function __destruct() {
@@ -1336,10 +1345,11 @@ class Concrete5_Model_Page extends Collection {
 		while ($row = $r->fetchRow()) {
 			$cList[] = $row['cID'];
 		}
+		$r->Close();
 		if (count($cList) > 0) {
 			$cParentIDString = implode(',', $cList);
 			$q2 = "update Pages set cInheritPermissionsFromCID = {$this->cID} where cID in ({$cParentIDString})";
-			$r2 = $db->query($q2);
+			$db->query($q2);
 			$this->updateGroupsSubCollection($cParentIDString);
 		}
 	}
@@ -1366,7 +1376,7 @@ class Concrete5_Model_Page extends Collection {
 				//as well as all collections beneath it that are set to inherit from this parent
 				// first we do this one
 				$q = "update Pages set cInheritPermissionsFromCID = {$npID} where cID = {$this->cID}";
-				$r = $db->query($q);
+				$db->query($q);
 				$this->updatePermissionsCollectionID($this->getCollectionID(), $npID);
 			}
 		}
@@ -1375,7 +1385,7 @@ class Concrete5_Model_Page extends Collection {
 		$v = array($newCParentID, $cID);
 		$q = "update Pages set cParentID = ? where cID = ?";
 		$r = $db->prepare($q);
-		$res = $db->execute($r, $v);
+		$db->execute($r, $v);
 
 		PageStatistics::incrementParents($cID);
 		if (!$this->isActive()) {
@@ -1424,6 +1434,7 @@ class Concrete5_Model_Page extends Collection {
 				$nc = $tc->duplicate($cNewParent, $preserveUserID);
 				$tc->_duplicateAll($tc, $nc, $preserveUserID);
 			}
+			$r->Close();
 		}
 	}
 
@@ -1481,7 +1492,7 @@ class Concrete5_Model_Page extends Collection {
 				// we need to clear out any lingering permissions groups (just in case), and set this collection to inherit from the parent
 				$npID = $nc->getPermissionsCollectionID();
 				$q = "update Pages set cInheritPermissionsFromCID = {$npID} where cID = {$newCID}";
-				$r = $db->query($q);
+				$db->query($q);
 			}
 			
 			if ($index > 1) {
@@ -1526,31 +1537,32 @@ class Concrete5_Model_Page extends Collection {
 
 		// Now that all versions are gone, we can delete the collection information
 		$q = "delete from PagePaths where cID = '{$cID}'";
-		$r = $db->query($q);
+		$db->query($q);
 		
 		// remove all pages where the pointer is this cID
 		$r = $db->query("select cID from Pages where cPointerID = ?", array($cID));
 		while ($row = $r->fetchRow()) {
 			PageStatistics::decrementParents($row['cID']);
 		}
+		$r->Close();
 
 		// Update cChildren for cParentID
 		PageStatistics::decrementParents($cID);
 		
 		$q = "delete from PagePermissionAssignments where cID = '{$cID}'";
-		$r = $db->query($q);
+		$db->query($q);
 
 		$q = "delete from Pages where cID = '{$cID}'";
-		$r = $db->query($q);
+		$db->query($q);
 
 		$q = "delete from Pages where cPointerID = '{$cID}'";
-		$r = $db->query($q);
+		$db->query($q);
 		
 		$q = "delete from Areas WHERE cID = '{$cID}'";
-		$r = $db->query($q);
+		$db->query($q);
 
 		$q = "delete from ComposerDrafts WHERE cID = '{$cID}'";
-		$r = $db->query($q);
+		$db->query($q);
 
 		$db->query('delete from PageSearchIndex where cID = ?', array($cID));
 		
@@ -1565,6 +1577,7 @@ class Concrete5_Model_Page extends Collection {
 					else $nc->delete();
 				}
 			}
+			$r->Close();
 		}
 	}
 	
@@ -1584,7 +1597,7 @@ class Concrete5_Model_Page extends Collection {
 		$current_count=0;
 		foreach($children_array as $newcID) {
 			$q = "update Pages set cDisplayOrder='$current_count' where cID='$newcID'";
-			$r = $db->query($q);
+			$db->query($q);
 			$current_count++;
 		}
 	}
@@ -1682,6 +1695,7 @@ class Concrete5_Model_Page extends Collection {
 				} else {
 					$suffix++;
 				}
+				$r2->Close();
 			}
 
 			if ($row['cpcID']) {
@@ -1748,7 +1762,8 @@ class Concrete5_Model_Page extends Collection {
 			$r = $db->Execute('select cID from PagePaths where cPath like "' . $sp . '"');
 			while ($row = $r->Fetchrow()) {
 				$db->Execute('update Pages set cIsSystemPage = 1 where cID = ?', array($row['cID']));
-			}			
+			}
+			$r->Close();
 		}
 	}
 	
@@ -1900,7 +1915,7 @@ class Concrete5_Model_Page extends Collection {
 		$v = array($cID, $cParentID, $uID, 'OVERRIDE', 1, 1, 0);
 		$q = "insert into Pages (cID, cParentID, uID, cInheritPermissionsFrom, cOverrideTemplatePermissions, cInheritPermissionsFromCID, cDisplayOrder) values (?, ?, ?, ?, ?, ?, ?)";
 		$r = $db->prepare($q);
-		$res = $db->execute($r, $v);
+		$db->execute($r, $v);
 		$pc = Page::getByID($cID, 'RECENT');
 		return $pc;
 	}

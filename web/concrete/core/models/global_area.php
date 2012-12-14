@@ -22,6 +22,7 @@ class Concrete5_Model_GlobalArea extends Area {
 		while ($row = $r->FetchRow()) {
 			$a = Cache::delete('area', $row['cID'] . ':' . $arHandle);
 		}
+		$r->Close();
 		$db->Execute('delete from Areas where arHandle = ? and arIsGlobal = 1', array($arHandle));
 	}
 	

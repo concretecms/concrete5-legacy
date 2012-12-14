@@ -68,7 +68,8 @@ class Concrete5_Library_Content_Exporter {
 		while($row = $r->FetchRow()) {
 			$pc = Page::getByID($row['cID'], 'RECENT');
 			$pc->export($singlepages);
-		}		
+		}
+		$r->Close();
 		
 		// now page types
 		CollectionType::exportList($this->x);
@@ -84,7 +85,8 @@ class Concrete5_Library_Content_Exporter {
 		while($row = $r->FetchRow()) {
 			$pc = Page::getByID($row['cID'], 'RECENT');
 			$pc->export($pages);
-		}		
+		}
+		$r->Close();
 		
 		Loader::model("system/captcha/library");		
 		SystemCaptchaLibrary::exportList($this->x);

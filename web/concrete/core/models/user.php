@@ -41,6 +41,7 @@
 			$r = $db->query($q, $v);
 			if ($r) {
 				$row = $r->fetchRow();
+				$r->Close();
 				$nu = new User();
 				$nu->uID = $row['uID'];
 				$nu->uName = $row['uName'];
@@ -439,7 +440,7 @@
 				
 				$ret = Events::fire('on_user_exit_group', $this, $g);
 				$q = "delete from UserGroups where uID = '{$this->uID}' and gID = '{$gID}'";
-				$r = $db->query($q);	
+				$db->query($q);	
 			}		
 		}
 		
@@ -486,13 +487,14 @@
 			$r = $db->query($q);
 			if ($r) {
 				$row = $r->fetchRow();
+				$r->Close();
 				if (!$row['cIsCheckedOut']) {
 					$_SESSION['editCID'] = $cID;
 					$uID = $this->getUserID();
 					$dh = Loader::helper('date');
 					$datetime = $dh->getSystemDateTime();
 					$q2 = "update Pages set cIsCheckedOut = 1, cCheckedOutUID = '{$uID}', cCheckedOutDatetime = '{$datetime}', cCheckedOutDatetimeLastEdit = '{$datetime}' where cID = '{$cID}'";
-					$r2 = $db->query($q2);
+					$db->query($q2);
 					
 					$c->cIsCheckedOut = 1;
 					$c->cCheckedOutUID = $uID;
@@ -516,7 +518,7 @@
 				}
 				
 				$q = "update Pages set cIsCheckedOut = 0, cCheckedOutUID = null, cCheckedOutDatetime = null, cCheckedOutDatetimeLastEdit = null where cCheckedOutUID = " . $this->getUserID();
-				$r = $db->query($q);
+				$db->query($q);
 			}
 		}
 		
@@ -542,7 +544,7 @@
 				$datetime = $dh->getSystemDateTime();
 					
 				$q = "update Pages set cCheckedOutDatetimeLastEdit = '{$datetime}' where cID = '{$cID}'";
-				$r = $db->query($q);
+				$db->query($q);
 					
 				$c->cCheckedOutDatetimeLastEdit = $datetime;
 			}

@@ -49,11 +49,13 @@ class Concrete5_Model_ViewUserAttributesUserPermissionAccess extends UserPermiss
 			$v = array($row['peID'], $newPA->getPermissionAccessID(), $row['permission']);
 			$db->Execute('insert into UserPermissionViewAttributeAccessList (peID, paID, permission) values (?, ?, ?)', $v);
 		}
+		$r->Close();
 		$r = $db->Execute('select * from UserPermissionViewAttributeAccessListCustom where paID = ?', array($this->getPermissionAccessID()));
 		while ($row = $r->FetchRow()) {
 			$v = array($row['peID'], $newPA->getPermissionAccessID(), $row['akID']);
 			$db->Execute('insert into UserPermissionViewAttributeAccessListCustom  (peID, paID, akID) values (?, ?, ?)', $v);
 		}
+		$r->Close();
 		return $newPA;
 	}
 

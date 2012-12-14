@@ -19,11 +19,13 @@ class Concrete5_Model_EditUserPropertiesUserPermissionAccess extends UserPermiss
 			);
 			$db->Execute('insert into UserPermissionEditPropertyAccessList (paID, peID, attributePermission, uName, uEmail, uPassword, uAvatar, uTimezone, uDefaultLanguage) values (?, ?, ?, ?, ?, ?, ?, ?, ?)', $v);
 		}
+		$r->Close();
 		$r = $db->Execute('select * from UserPermissionEditPropertyAttributeAccessListCustom where paID = ?', array($this->getPermissionAccessID()));
 		while ($row = $r->FetchRow()) {
 			$v = array($row['peID'], $newPA->getPermissionAccessID(), $row['akID']);
 			$db->Execute('insert into UserPermissionEditPropertyAttributeAccessListCustom (peID, paID, akID) values (?, ?, ?)', $v);
 		}
+		$r->Close();
 		return $newPA;
 	}
 	

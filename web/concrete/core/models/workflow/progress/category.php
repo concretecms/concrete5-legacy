@@ -65,6 +65,7 @@ class Concrete5_Model_WorkflowProgressCategory extends Object {
 		while ($row = $r->FetchRow()) {
 			$cats[] = WorkflowProgressCategory::getByID($row['wpCategoryID']);
 		}
+		$r->Close();
 		return $cats;
 	}
 	

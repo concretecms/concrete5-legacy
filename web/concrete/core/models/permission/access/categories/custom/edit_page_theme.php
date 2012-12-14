@@ -10,11 +10,13 @@ class Concrete5_Model_EditPageThemePagePermissionAccess extends PagePermissionAc
 			$v = array($row['peID'], $newPA->getPermissionAccessID(), $row['permission']);
 			$db->Execute('insert into PagePermissionThemeAccessList (peID, paID, permission) values (?, ?, ?)', $v);
 		}
+		$r->Close();
 		$r = $db->Execute('select * from PagePermissionThemeAccessListCustom where paID = ?', array($this->getPermissionAccessID()));
 		while ($row = $r->FetchRow()) {
 			$v = array($row['peID'], $newPA->getPermissionAccessID(), $row['ptID']);
 			$db->Execute('insert into PagePermissionThemeAccessListCustom  (peID, paID, ptID) values (?, ?, ?)', $v);
 		}
+		$r->Close();
 		return $newPA;
 	}
 

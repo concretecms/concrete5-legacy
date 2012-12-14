@@ -42,6 +42,7 @@ class Concrete5_Model_PermissionAccess extends Object {
 			}
 			$list[] = $obj;
 		}
+		$r->Close();
  		return $list;
 	}
 	
@@ -149,6 +150,7 @@ class Concrete5_Model_PermissionAccess extends Object {
 				$workflows[] = $wf;
 			}
 		}
+		$r->Close();
 		return $workflows;
 	}
 

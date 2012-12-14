@@ -386,6 +386,7 @@ class ConcreteDashboardSitemapHelper {
 		while ($row = $r->fetchRow()) {
 			$drops[] = $row['cID'];
 		}
+		$r->Close();
 		return $drops;
 	}
 	

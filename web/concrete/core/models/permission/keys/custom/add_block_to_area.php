@@ -28,6 +28,7 @@ class Concrete5_Model_AddBlockToAreaAreaPermissionKey extends AreaPermissionKey 
 						'paID' => $row['paID']
 					), array('paID', 'peID'), true);				
 				}
+				$rx->Close();
 				$db->Execute('delete from AreaPermissionBlockTypeAccessListCustom where paID = ?', array(
 					$row['paID']
 				));
@@ -41,7 +42,9 @@ class Concrete5_Model_AddBlockToAreaAreaPermissionKey extends AreaPermissionKey 
 						'peID' => $row['peID']
 					), array('paID', 'peID', 'btID'), true);				
 				}
+				$rx->Close();
 			}
+			$r->Close();
 		}
 	}
 	

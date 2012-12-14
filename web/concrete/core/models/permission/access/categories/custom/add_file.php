@@ -29,11 +29,13 @@ class Concrete5_Model_AddFileFileSetPermissionAccess extends FileSetPermissionAc
 			$v = array($row['peID'], $newPA->getPermissionAccessID(), $row['permission']);
 			$db->Execute('insert into FileSetPermissionFileTypeAccessList (peID, paID, permission) values (?, ?, ?)', $v);
 		}
+		$r->Close();
 		$r = $db->Execute('select * from FileSetPermissionFileTypeAccessListCustom where paID = ?', array($this->getPermissionAccessID()));
 		while ($row = $r->FetchRow()) {
 			$v = array($row['peID'], $newPA->getPermissionAccessID(), $row['extension']);
 			$db->Execute('insert into FileSetPermissionFileTypeAccessListCustom  (peID, paID, extension) values (?, ?, ?)', $v);
 		}
+		$r->Close();
 		return $newPA;
 	}
 	

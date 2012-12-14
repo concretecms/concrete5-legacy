@@ -24,6 +24,7 @@ class Concrete5_Model_SinglePage extends Page {
 		while ($row = $r->FetchRow()) {
 			$singlePages[] = SinglePage::getByID($row['cID']);
 		}
+		$r->Close();
 		return $singlePages;
 	}
 		
@@ -287,6 +288,7 @@ class Concrete5_Model_SinglePage extends Page {
 			$p->populatePage($row['cID'], 'where Pages.cID = ?', 'RECENT');
 			$pages[] = $p;
 		}
+		$r->Close();
 		return $pages;
 	}
 

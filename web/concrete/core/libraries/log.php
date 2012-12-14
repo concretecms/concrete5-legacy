@@ -132,6 +132,7 @@ class Concrete5_Library_Log {
 		while ($row = $r->FetchRow()) {
 			$entries[] = LogEntry::getByID($row['logID']);
 		}
+		$r->Close();
 		return $entries;
 	}
 	

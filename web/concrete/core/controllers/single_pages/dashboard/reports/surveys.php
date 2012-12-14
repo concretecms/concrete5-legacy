@@ -80,13 +80,16 @@ class Concrete5_Controller_Dashboard_Reports_Surveys extends Controller {
 				$current_survey = $row['question'];
 				$i++;
 			}
+			$r->Close();
 		} else { // If there is no user-submitted information pertaining to this survey, just get the name
+			$r->Close();
 			$q = 'SELECT question FROM btSurvey WHERE bID = ?';
 			$v = array($bID);
 			$r = $db->query($q, $v);
 			if ($row = $r->fetchRow()) {
 				$current_survey = $row['question'];
 			}
+			$r->Close();
 		}
 		// Store local data in larger scope
 		$this->set('survey_details', $details);

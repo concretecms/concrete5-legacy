@@ -290,6 +290,7 @@ class ConcreteUpgradeVersion560Helper {
 					}
 				}
 			}
+			$r->Close();
 			
 		} else {
 			$adminGroup = Group::getByID(ADMIN_GROUP_ID);
@@ -360,7 +361,8 @@ class ConcreteUpgradeVersion560Helper {
 			$r = $db->Execute('select cID, ptID from Pages where ptID > 0');
 			while ($row = $r->FetchRow()) {
 				$db->Execute('update CollectionVersions set ptID = ? where cID = ?', array($row['ptID'], $row['cID']));
-			}		
+			}
+			$r->Close();
 		} catch(Exception $e) {}
 		
 	}
@@ -371,7 +373,8 @@ class ConcreteUpgradeVersion560Helper {
 			$r = $db->Execute('select cID, ctID from Pages where ctID > 0');
 			while ($row = $r->FetchRow()) {
 				$db->Execute('update CollectionVersions set ctID = ? where cID = ?', array($row['ctID'], $row['cID']));
-			}		
+			}
+			$r->Close();
 		} catch(Exception $e) {}
 		
 	}
@@ -401,6 +404,7 @@ class ConcreteUpgradeVersion560Helper {
 				$args['pageTypesIncluded'][$pe->getAccessEntityID()] = 'C';
 				$args['ctIDInclude'][$pe->getAccessEntityID()][] = $row2['ctID'];
 			}
+			$ro->Close();
 			$co = Page::getByID($row['cID']);
 			if (is_object($co) && (!$co->isError())) { 
 				$pk->setPermissionObject($co);
@@ -418,6 +422,7 @@ class ConcreteUpgradeVersion560Helper {
 				$pt->assignPermissionAccess($pa);
 			}
 		}
+		$r->Close();
 	}
 	
 	protected function migrateTaskPermissions() {
@@ -445,6 +450,7 @@ class ConcreteUpgradeVersion560Helper {
 				$pt->assignPermissionAccess($pa);
 			}			
 		}
+		$r->Close();
 	}
 
 	protected function migrateAddFilePermissions() {
@@ -491,6 +497,7 @@ class ConcreteUpgradeVersion560Helper {
 				$pt->assignPermissionAccess($pa);
 			}
 		}
+		$r->Close();
 	}
 
 
@@ -522,6 +529,7 @@ class ConcreteUpgradeVersion560Helper {
 				$args['blockTypesIncluded'][$pe->getAccessEntityID()] = 'C';
 				$args['btIDInclude'][$pe->getAccessEntityID()][] = $row2['btID'];
 			}
+			$ro->Close();
 			$co = Page::getByID($row['cID']);
 			if (is_object($co) && (!$co->isError())) { 
 				$ax = Area::getOrCreate($co, $row['arHandle']);
@@ -554,6 +562,7 @@ class ConcreteUpgradeVersion560Helper {
 				}
 			}
 		}
+		$r->Close();
 	}
 	
 	protected function migrateAccessEntity($row) {
@@ -637,6 +646,7 @@ class ConcreteUpgradeVersion560Helper {
 				}
 			}
 		}
+		$r->Close();
 	}
 	
 	protected function migratePagePermissions() {
@@ -707,6 +717,7 @@ class ConcreteUpgradeVersion560Helper {
 				}
 			}
 		}
+		$r->Close();
 	}
 	
 	const ACCESS_TYPE_MINE = 3;
@@ -782,6 +793,7 @@ class ConcreteUpgradeVersion560Helper {
 				}
 			}
 		}
+		$r->Close();
 	}
 
 	protected function migrateFilePermissions() {
@@ -830,6 +842,7 @@ class ConcreteUpgradeVersion560Helper {
 				}
 			}
 		}
+		$r->Close();
 	}	
 	protected function migrateBlockPermissions() {
 		if (PERMISSIONS_MODEL == 'simple') {
@@ -889,6 +902,7 @@ class ConcreteUpgradeVersion560Helper {
 				}
 			}
 		}
+		$r->Close();
 	}	
 	protected function installPermissionsAndWorkflow() {
 		$sx = simplexml_load_file(DIR_BASE_CORE . '/config/install/base/permissions.xml');

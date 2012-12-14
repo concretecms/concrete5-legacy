@@ -53,6 +53,7 @@ class Concrete5_Controller_Block_Survey extends BlockController {
 					$opt->displayOrder = $row['displayOrder'];
 					$this->options[] = $opt;
 				}
+				$r->Close();
 			}
 		}
 	}
@@ -144,6 +145,7 @@ class Concrete5_Controller_Block_Survey extends BlockController {
 					$q3 = "insert into btSurveyResults (optionID, uID, ipAddress, timestamp) values (?, ?, ?, ?)";
 					$db->query($q3, $v3);
 				}
+				$r2->Close();
 			}
 		}
 		
@@ -197,6 +199,7 @@ class Concrete5_Controller_Block_Survey extends BlockController {
 			$options[$i]['id'] = $row['optionID'];
 			$i++;
 		}
+		$r->Close();
 		
 		// Get chosen count for each option
 		$total_results = 0;
@@ -210,6 +213,7 @@ class Concrete5_Controller_Block_Survey extends BlockController {
 				$options[$i]['amount'] = $row['count(*)'];
 				$total_results += $row['count(*)'];
 			}
+			$r->Close();
 			$i++;
 		}
 		

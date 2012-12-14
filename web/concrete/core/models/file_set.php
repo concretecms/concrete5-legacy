@@ -70,6 +70,7 @@
 				$fs->Set($row);
 				$sets[] = $fs;
 			}
+			$r->Close();
 			return $sets;
 		}
 
@@ -92,6 +93,7 @@
 					$sets[] = $fs;
 				}
 			}
+			$r->Close();
 			return $sets;
 		}
 		
@@ -268,7 +270,7 @@
 				$q = "insert into FileSetPermissionAssignments (fsID, paID, pkID) values (?, ?, ?)";
 				$db->query($q, $v);
 			}
-	
+			$r->Close();
 		}
 		
 		public function assignPermissions($userOrGroup, $permissions = array(), $accessType = FileSetPermissionKey::ACCESS_TYPE_INCLUDE) {

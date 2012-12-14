@@ -45,6 +45,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			while ($row = $r->FetchRow()) {
 				$blockTypes[] = BlockType::getByID($row['btID']);
 			}
+			$r->Close();
 			return $blockTypes;
 		}
 		
@@ -180,6 +181,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 					$btArray[] = $bt;
 				}
 			}
+			$r->Close();
 			return $btArray;
 		}
 		
@@ -345,8 +347,9 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			
 			$r = $db->query($q, $properties);
 			
-			if ($r->numRows() > 0) {
-				$row = $r->fetchRow();
+			$row = ($r->numRows() > 0) ? $r->fetchRow() : null;
+			$r->Close();
+			if($row) { 
 				$bt = new BlockType;
 				$bt->setPropertiesFromArray($row);
 				return $bt;
@@ -863,7 +866,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 					$b->deleteBlock();
 				}
 			}
-			
+			$r->Close();
 			$ca = new Cache();
 			$ca->delete('blockTypeByID', $this->btID);
 			$ca->delete('blockTypeByHandle', $this->btHandle);		 	

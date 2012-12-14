@@ -45,6 +45,7 @@
 				$r = $db->query($q);
 				if ($r) {
 					$row = $r->fetchRow();
+					$r->Close();
 				}
 			} else {
 				$row['num'] = $this->num;

@@ -102,6 +102,7 @@ class Concrete5_Model_Block extends Object {
 
 		$r = $db->query($q, $v);
 		$row = $r->fetchRow();
+		$r->free();
 		
 		if (is_array($row)) {
 			$b->setPropertiesFromArray($row);
@@ -111,7 +112,6 @@ class Concrete5_Model_Block extends Object {
 				$b->arHandle,
 				$bID
 			));
-			$r->free();
 			
 			$bt = BlockType::getByID($b->getBlockTypeID());
 			$class = $bt->getBlockTypeClass();
@@ -233,7 +233,9 @@ class Concrete5_Model_Block extends Object {
 			$q = "select bID from CollectionVersionBlocks where bID = '{$this->bID}' and cID='{$cID}' and isOriginal = 0 and cvID = $cvID";
 			$r = $db->query($q);
 			if ($r) {
-				return ($r->numRows() > 0);
+				$numRows = $r->numRows();
+				$r->Close();
+				return ($numRows > 0);
 			}
 		} else {
 			return (!$this->isOriginal);
@@ -323,6 +325,7 @@ class Concrete5_Model_Block extends Object {
 		$r = $db->query($q);
 		if ($r) {
 			$row = $r->fetchRow();
+			$r->Close();
 			$cID = $row['cID'];
 			$nc = Page::getByID($cID, "ACTIVE");
 			return $nc;
@@ -402,7 +405,7 @@ class Concrete5_Model_Block extends Object {
 		$q = "update Blocks set bDateModified = ? where bID = ?";
 
 		$r = $db->prepare($q);
-		$res = $db->execute($r, $v);
+		$db->execute($r, $v);
 		
 		$btID = $this->getBlockTypeID();
 		$bt = BlockType::getByID($btID);
@@ -446,7 +449,7 @@ class Concrete5_Model_Block extends Object {
 			if( strlen($name)>60 ) $name = substr($name, 0, 60) . '...';
 			$v = array(htmlspecialchars($name), $this->bID); 
 			$q = "UPDATE Blocks SET bName = ? WHERE bID = ?";
-			$r = $db->query($q,$v);
+			$db->query($q,$v);
 			//$res = $db->execute($r, $v);
 			$this->bName=$name;
 		}
@@ -537,7 +540,7 @@ class Concrete5_Model_Block extends Object {
 		$v = array($this->bName, $bDate, $bDate, $this->bFilename, $this->btID, $this->uID);
 		$q = "insert into Blocks (bName, bDateAdded, bDateModified, bFilename, btID, uID) values (?, ?, ?, ?, ?, ?)";
 		$r = $db->prepare($q);
-		$res = $db->execute($r, $v);
+		$db->execute($r, $v);
 		$newBID = $db->Insert_ID(); // this is the latest inserted block ID
 
 		// now, we duplicate the block-specific permissions
@@ -573,13 +576,13 @@ class Concrete5_Model_Block extends Object {
 		$v = array($ncID, $nvID, $newBID, $this->arHandle, $newBlockDisplayOrder, 1, $this->overrideAreaPermissions());
 		$q = "insert into CollectionVersionBlocks (cID, cvID, bID, arHandle, cbDisplayOrder, isOriginal, cbOverrideAreaPermissions) values (?, ?, ?, ?, ?, ?, ?)";
 		$r = $db->prepare($q);
-		$res = $db->execute($r, $v);
+		$db->execute($r, $v);
 
 		// now we make a DUPLICATE entry in the BlockRelations table, so that we know that the blocks are chained together
 		$v2 = array($this->bID, $newBID, "DUPLICATE");
 		$q2 = "insert into BlockRelations (originalBID, bID, relationType) values (?, ?, ?)";
 		$r2 = $db->prepare($q2);
-		$res2 = $db->execute($r2, $v2);
+		$db->execute($r2, $v2);
 		$nb = Block::getByID($newBID, $nc, $this->arHandle);
 		
 		$v = array($ncID, $nvID, $newBID, $this->arHandle, $this->csrID);
@@ -619,7 +622,8 @@ class Concrete5_Model_Block extends Object {
 				$c1 = Page::getByID($row['cID'], $row['cvID']);
 				$b1 = Block::getByID($row['bID'], $c1, $row['arHandle']);
 				$b1->refreshCache();
-			}			
+			}
+			$r->Close();
 			$db->Execute('delete from CollectionVersionBlockStyles where bID = ? and csrID = ?', array(
 				$this->bID,
 				$this->csrID
@@ -651,7 +655,8 @@ class Concrete5_Model_Block extends Object {
 				$c1 = Page::getByID($row['cID'], $row['cvID']);
 				$b1 = Block::getByID($row['bID'], $c1, $row['arHandle']);
 				$b1->setBlockCustomStyle($csr, false);
-			}			
+			}
+			$r->Close();
 		} else {
 			$db->Replace('CollectionVersionBlockStyles', 
 				array('cID' => $this->getBlockCollectionID(), 'cvID' => $cvID, 'arHandle' => $this->getAreaHandle(), 'bID' => $this->bID, 'csrID' => $csr->getCustomStyleRuleID()),
@@ -867,30 +872,31 @@ class Concrete5_Model_Block extends Object {
 			while ($row = $r->FetchRow()) {
 				Cache::delete('collection_blocks', $row['cID'] . ':' . $row['cvID']);
 			}
+			$r->Close();
 
 			// this is an original. We're deleting it, and everything else having to do with it
 			$q = "delete from CollectionVersionBlocks where bID = '$bID'";
-			$r = $db->query($q);
+			$db->query($q);
 
 			$q = "delete from ComposerContentLayout where bID = '$bID'";
-			$r = $db->query($q);
+			$db->query($q);
 
 			$q = "delete from BlockPermissionAssignments where bID = '$bID'";
-			$r = $db->query($q);
+			$db->query($q);
 			
 			$q = "delete from CollectionVersionBlockStyles where bID = ".intval($bID);
-			$r = $db->query($q);
+			$db->query($q);
 			
 		} else {
 			$q = "delete from CollectionVersionBlocks where cID = '$cID' and (cvID = '$cvID' or cbIncludeAll=1) and bID = '$bID' and arHandle = '$arHandle'";
-			$r = $db->query($q);
+			$db->query($q);
 
 			// next, we delete the groups instance of this block
 			$q = "delete from BlockPermissionAssignments where bID = '$bID' and cvID = '$cvID' and cID = '$cID'";
-			$r = $db->query($q);
+			$db->query($q);
 			
 			$q = "delete from CollectionVersionBlockStyles where cID = '$cID' and cvID = '$cvID' and bID = '$bID' and arHandle = '$arHandle'";
-			$r = $db->query($q);				
+			$db->query($q);				
 		}
 
 		//then, we see whether or not this block is aliased to anything else
@@ -898,7 +904,7 @@ class Concrete5_Model_Block extends Object {
 		$totalBlocks = $db->getOne($q);
 		if ($totalBlocks < 1) {
 			$q = "delete from BlockRelations where originalBID = ? or bID = ?";
-			$r = $db->query($q, array($this->bID, $this->bID));
+			$db->query($q, array($this->bID, $this->bID));
 			// this block is not referenced in the system any longer, so we delete the entry in the blocks table, as well as the entries in the corresponding
 			// sub-blocks table
 
@@ -915,7 +921,7 @@ class Concrete5_Model_Block extends Object {
 
 			// now that the block's subcontent delete() method has been run, we delete the block from the Blocks table
 			$q = "delete from Blocks where bID = ?";
-			$r = $db->query($q, $v);
+			$db->query($q, $v);
 			
 			// Aaaand then we delete all scrapbooked blocks to this entry
 			$r = $db->Execute('select cID, cvID, CollectionVersionBlocks.bID, arHandle from CollectionVersionBlocks inner join btCoreScrapbookDisplay on CollectionVersionBlocks.bID = btCoreScrapbookDisplay.bID where bOriginalID = ?', array($bID));
@@ -924,7 +930,7 @@ class Concrete5_Model_Block extends Object {
 				$b = Block::getByID($row['bID'], $c, $row['arHandle']);
 				$b->delete();
 			}
-			
+			$r->Close();
 
 		}
 	}
@@ -944,7 +950,7 @@ class Concrete5_Model_Block extends Object {
 		$cvID = $c->getVersionID();
 	
 		$q = "update CollectionVersionBlocks set cbDisplayOrder = ? where bID = ? and cID = ? and (cvID = ? or cbIncludeAll=1) and arHandle = ?";
-		$r = $db->query($q, array($do, $bID, $cID, $cvID, $arHandle));
+		$db->query($q, array($do, $bID, $cID, $cvID, $arHandle));
 		
 		$this->refreshCache();
 	}
@@ -978,12 +984,12 @@ class Concrete5_Model_Block extends Object {
 				if ($origDisplayOrder != '0') {
 					$newDisplayOrder = $origDisplayOrder - 1;
 					$q = "update CollectionVersionBlocks set cbDisplayOrder = '$origDisplayOrder' where cbDisplayOrder = '$newDisplayOrder' and cID = '$cID' and (cvID = '{$cvID}' or cbIncludeAll=1) and arHandle = '$arHandle'";
-					$r = $db->query($q);
+					$db->query($q);
 
 					// now that we've set the other block to our original display order, we set our block to the new display order
 
 					$q = "update CollectionVersionBlocks set cbDisplayOrder = '$newDisplayOrder' where bID = '$bID' and cID = '$cID' and (cvID = '{$cvID}' or cbIncludeAll=1) and arHandle = '$arHandle'";
-					$r = $db->query($q);
+					$db->query($q);
 				}
 				break;
 			case '-1':
@@ -1000,12 +1006,12 @@ class Concrete5_Model_Block extends Object {
 				if ($origDisplayOrder <= $maxDisplayOrder) {
 					$newDisplayOrder = $origDisplayOrder + 1;
 					$q = "update CollectionVersionBlocks set cbDisplayOrder = '$origDisplayOrder' where cbDisplayOrder = '$newDisplayOrder' and cID = '$cID' and (cvID = '{$cvID}' or cbIncludeAll=1) and arHandle = '$arHandle'";
-					$r = $db->query($q);
+					$db->query($q);
 
 					// now that we've set the other block to our original display order, we set our block to the new display order
 
 					$q = "update CollectionVersionBlocks set cbDisplayOrder = '$newDisplayOrder' where bID = '$bID' and cID = '$cID' and arHandle = '$arHandle'";
-					$r = $db->query($q);
+					$db->query($q);
 				}
 				break;
 		}
@@ -1138,7 +1144,7 @@ class Concrete5_Model_Block extends Object {
 		$v = array($bName, $bFilename, $dt, $this->bID);
 		$q = "update Blocks set bName = ?, bFilename = ?, bDateModified = ? where bID = ?";
 		$r = $db->prepare($q);
-		$res = $db->execute($r, $v);
+		$db->execute($r, $v);
 		$this->refreshCache();
 		
 	}

@@ -266,6 +266,7 @@ class Concrete5_Model_UserAttributeKey extends AttributeKey {
 		while ($row = $r->FetchRow()) {
 			$db->Execute('delete from AttributeValues where avID = ?', array($row['avID']));
 		}
+		$r->Close();
 		$db->Execute('delete from UserAttributeValues where akID = ?', array($this->getAttributeKeyID()));
 	}
 

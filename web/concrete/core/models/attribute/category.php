@@ -77,6 +77,7 @@ class Concrete5_Model_AttributeKeyCategory extends Object {
 		while ($row = $r->FetchRow()) {
 			$keys[] = $cat->getAttributeKeyByID($row['akID']);
 		}
+		$r->Close();
 		return $keys;		
 	}	
 
@@ -109,6 +110,7 @@ class Concrete5_Model_AttributeKeyCategory extends Object {
 		while ($row = $r->FetchRow()) {
 			$sets[] = AttributeSet::getByID($row['asID']);
 		}
+		$r->Close();
 		return $sets;
 	}
 	
@@ -145,6 +147,7 @@ class Concrete5_Model_AttributeKeyCategory extends Object {
 		while ($row = $r->FetchRow()) {
 			$cats[] = AttributeKeyCategory::getByID($row['akCategoryID']);
 		}
+		$r->Close();
 		return $cats;
 	}
 	
@@ -199,6 +202,7 @@ class Concrete5_Model_AttributeKeyCategory extends Object {
 			$db->Execute('update AttributeSetKeys set displayOrder = ? where asID = ?', array($do, $row['asID']));
 			$do++;
 		}
+		$r->Close();
 	}
 
 	public function updateAttributeSetDisplayOrder($uats) {
