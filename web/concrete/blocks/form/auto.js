@@ -84,15 +84,16 @@ var miniSurvey ={
 			} else {
 				msqID=parseInt($('#msqID').val(), 10);
 			}
-			var postStr='question='+encodeURIComponent($('#question'+mode).val())+'&options='+encodeURIComponent($('#answerOptions'+mode).val());
+			var formID = '#answerType'+mode;
+			answerType = $(formID).val();
+			var options = encodeURIComponent($('#answerOptions'+mode).val());
+			var postStr='question='+encodeURIComponent($('#question'+mode).val())+'&options='+options;
 			postStr+='&width='+escape($('#width'+mode).val());
 			postStr+='&height='+escape($('#height'+mode).val());
 			var req = $('#required'+mode+' input[value=1]').prop('checked') ? 1 : 0;
 			postStr+='&required='+req;
 			postStr+='&position='+escape($('#position'+mode).val());
 			var form=document.getElementById('ccm-block-form'); 
-			var formID = '#answerType'+mode;
-			answerType = $(formID).val();
 			postStr+='&inputType='+answerType;//$('input[name=answerType'+mode+']:checked').val()
 			postStr+='&msqID='+msqID+'&qsID='+parseInt(this.qsID);
 			if(answerType == 'email') {
@@ -182,7 +183,7 @@ var miniSurvey ={
 								}
 							}
 						}
-						
+
 						$('#msqID').val(jsonObj.msqID);    
 						$('#answerTypeEdit').val(jsonObj.inputType);
 						miniSurvey.optionsCheck($('#answerTypeEdit').get(0), 'Edit');
@@ -190,6 +191,7 @@ var miniSurvey ={
 						
 						if(parseInt(jsonObj.bID)>0) 
 							miniSurvey.edit_qID = parseInt(qID) ;
+						$('.miniSurveyOptions').first().closest('.ui-dialog-content').get(0).scrollTop = 0;
 					}
 			});
 	},	

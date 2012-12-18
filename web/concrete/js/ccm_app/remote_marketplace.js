@@ -1,3 +1,7 @@
+/** 
+ * Remote Marketplace
+ */
+
 ccm_openThemeLauncher = function() {
 	jQuery.fn.dialog.closeTop();
 	jQuery.fn.dialog.showLoader();
@@ -110,17 +114,7 @@ ccm_getMarketplaceItemDetails = function(mpID) {
 			width: 820,
 			appendButtons: true,
 			modal: false,
-			height: 640,
-			onOpen: function() {
-	
-				$("#ccm-marketplace-item-screenshots").nivoSlider({
-					'controlNav': false,
-					'effect': 'fade',
-					'pauseOnHover': false,
-					'directionNav': false
-				});
-	
-			}
+			height: 640
 		});
 	}, 'get_item_details', mpID);
 }
@@ -149,10 +143,10 @@ ccm_getMarketplaceItem = function(args) {
 				$.fn.dialog.open({
 					title: ccmi18n.community,
 					href:  CCM_TOOLS_PATH + '/marketplace/download?install=1&mpID=' + mpID,
-					width: 350,
+					width: 500,
 					appendButtons: true,
 					modal: false,
-					height: 240
+					height: 400
 				});
 			} else {
 				$.fn.dialog.open({

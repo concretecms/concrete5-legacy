@@ -46,10 +46,11 @@ $ih = Loader::helper('concrete/interface');
 				<?=$form->label('recipientEmail', t('Notify me by email when people submit this form'))?>
 				<div class="input">
 					<div class="input-prepend">
-						<label class="add-on" style="z-index: 2000">
+						<label>
+						<span class="add-on" style="z-index: 2000">
 							<?=$form->checkbox('notifyMeOnSubmission', 1, $miniSurveyInfo['notifyMeOnSubmission'] == 1, array('onclick' => "$('input[name=recipientEmail]').focus()"))?>
+						</span><?=$form->text('recipientEmail', $miniSurveyInfo['recipientEmail'], array('style' => 'z-index:2000;' ))?>
 						</label>
-						<?=$form->text('recipientEmail', $miniSurveyInfo['recipientEmail'])?>
 					</div>
 
 					<span class="help-block"><?=t('(Seperate multiple emails with a comma)')?></span>
@@ -142,6 +143,8 @@ $ih = Loader::helper('concrete/interface');
 						<option value="email"><?=t('Email Address')?></option>
 						<option value="telephone"><?=t('Telephone')?></option>
 						<option value="url"><?=t('Web Address')?></option>
+						<option value="date"><?=t('Date Field')?></option>
+						<option value="datetime"><?=t('DateTime Field')?></option>
 					</select>
 				</div>
 			</div>
@@ -189,7 +192,7 @@ $ih = Loader::helper('concrete/interface');
 
 			<div class="clearfix">
 				<div id="emailSettings">
-					<?php print $form->label('send_notification_from', t('Send Form Email From From This Address'));?>
+					<?php print $form->label('send_notification_from', t('Send Form Email From This Address'));?>
 					<div class="input send_notification_from">
 						<?php print $form->checkbox('send_notification_from', 1); ?>
 					</div>
@@ -236,10 +239,12 @@ $ih = Loader::helper('concrete/interface');
 							<option value="email"><?=t('Email Address')?></option>
 							<option value="telephone"><?=t('Telephone')?></option>
 							<option value="url"><?=t('Web Address')?></option>
+							<option value="date"><?=t('Date Field')?></option>
+							<option value="datetime"><?=t('DateTime Field')?></option>
 						</select>
 					</div>
 				</div>
-				
+
 				<div id="answerOptionsAreaEdit">
 					<div class="clearfix">
 						<?=$form->label('answerOptionsEdit', t('Answer Options'))?>
@@ -269,11 +274,18 @@ $ih = Loader::helper('concrete/interface');
 					<label><?=t('Required')?> </label>
 					<div class="input">
 						<ul class="inputs-list" id="requiredEdit">
-							<li><label> <?=$form->radio('requiredEdit', 1)?> <span><?=t('Yes')?>
-								</span>
-							</label></li>
-							<li><label> <?=$form->radio('requiredEdit', 0)?> <span><?=t('No')?> </span>
-							</label></li>
+							<li>
+								<label>
+									<?=$form->radio('requiredEdit', 1)?>
+									<span><?=t('Yes')?></span>
+								</label>
+							</li>
+							<li>
+								<label>
+									<?=$form->radio('requiredEdit', 0)?>
+									<span><?=t('No')?> </span>
+								</label>
+							</li>
 						</ul>
 					</div>
 				</div>
@@ -290,7 +302,7 @@ $ih = Loader::helper('concrete/interface');
 			
 			<div>
 				<?=$ih->button(t('Cancel'), 'javascript:void(0)', 'left', '', array('id' => 'cancelEditQuestion'))?>
-				<?=$ih->button(t('Save Changes'), '#', 'right', 'primary', array('id' => 'editQuestion'))?>
+				<?=$ih->button(t('Save Changes'), 'javascript:void(0)', 'right', 'primary', array('id' => 'editQuestion'))?>
 			</div>
 		</div>
 	
