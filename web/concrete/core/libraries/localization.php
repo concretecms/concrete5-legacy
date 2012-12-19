@@ -2,18 +2,19 @@
 	defined('C5_EXECUTE') or die("Access Denied.");
 	class Concrete5_Library_Localization {
 	
+        	private static $loc = null;
+        
 		public function init() {
 			$loc = Localization::getInstance();
 			$loc->getTranslate();
 		}
 		
-		public static function getInstance() {
-			static $loc;
-			if (!isset($loc)) {			
-				$loc = new Localization();
-			}
-			return $loc;
-		}
+		public static function getInstance() {            
+            		if (null === self::$loc) {
+                		self::$loc = new self;
+            		}
+            		return self::$loc;
+		}  
 		
 		public static function changeLocale($locale) {
 			$loc = Localization::getInstance();
