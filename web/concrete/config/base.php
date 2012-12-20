@@ -551,3 +551,6 @@ if(!defined('SITEMAPXML_DEFAULT_PRIORITY')) {
 	*/
 	define('SITEMAPXML_DEFAULT_PRIORITY', 0.5);
 }
+if(!defined('ENABLE_COMPOSER_AUTOSAVE')) {
+    define('ENABLE_COMPOSER_AUTOSAVE', true);
+}
