@@ -69,9 +69,13 @@ var CCM_REL = "<?php echo DIR_REL?>";
 
 <?php
 $html = Loader::helper('html');
-$this->addHeaderItem($html->css('ccm.base.css'), 'CORE');
-$this->addHeaderItem($html->javascript('jquery.js'), 'CORE');
-$this->addHeaderItem($html->javascript('ccm.base.js', false, true), 'CORE');
+if (defined('INCLUDE_JQUERY') && INCLUDE_JQUERY) {
+    $this->addHeaderItem($html->javascript('jquery.js'), 'CORE');
+}
+if (defined('INCLUDE_CCM_BASE') && INCLUDE_CCM_BASE) {
+    $this->addHeaderItem($html->css('ccm.base.css'), 'CORE');    
+    $this->addHeaderItem($html->javascript('ccm.base.js', false, true), 'CORE');
+}
 
 $favIconFID=intval(Config::get('FAVICON_FID'));
 $appleIconFID =intval(Config::get('IPHONE_HOME_SCREEN_THUMBNAIL_FID'));
