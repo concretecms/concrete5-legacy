@@ -31,7 +31,6 @@ class Concrete5_Controller_Dashboard_System_Registration_PublicRegistration exte
 					Config::save('ENABLE_REGISTRATION', true);
 					Config::save('USER_VALIDATE_EMAIL', false);	
 					Config::save('USER_VALIDATE_EMAIL_REQUIRED', false);
-					Config::save('USER_REGISTRATION_APPROVAL_REQUIRED', false);
 					Config::save('REGISTER_NOTIFICATION', $this->post('register_notification'));
 					Config::save('EMAIL_ADDRESS_REGISTER_NOTIFICATION', $this->post('register_notification_email'));
 				break;
@@ -40,16 +39,6 @@ class Concrete5_Controller_Dashboard_System_Registration_PublicRegistration exte
 					Config::save('ENABLE_REGISTRATION', true);
 					Config::save('USER_VALIDATE_EMAIL', true);	
 					Config::save('USER_VALIDATE_EMAIL_REQUIRED', true);
-					Config::save('USER_REGISTRATION_APPROVAL_REQUIRED', false);
-					Config::save('REGISTER_NOTIFICATION', $this->post('register_notification'));
-					Config::save('EMAIL_ADDRESS_REGISTER_NOTIFICATION', $this->post('register_notification_email'));
-				break;
-				
-				case "manual_approve":
-					Config::save('ENABLE_REGISTRATION', true);
-					Config::save('USER_REGISTRATION_APPROVAL_REQUIRED', true);
-					Config::save('USER_VALIDATE_EMAIL', false);	
-					Config::save('USER_VALIDATE_EMAIL_REQUIRED', false);
 					Config::save('REGISTER_NOTIFICATION', $this->post('register_notification'));
 					Config::save('EMAIL_ADDRESS_REGISTER_NOTIFICATION', $this->post('register_notification_email'));
 				break;

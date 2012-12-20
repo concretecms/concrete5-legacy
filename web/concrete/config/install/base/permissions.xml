@@ -108,7 +108,7 @@
             </access>
 		</permissionkey>
 
-        <permissionkey handle="activate_user" name="Activate/Deactivate User" package="" category="user">
+        <permissionkey handle="activate_user" name="Activate/Deactivate User" package="" category="user" can-trigger-workflow="true">
             <access>
                 <group name="Administrators"/>
             </access>

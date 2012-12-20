@@ -193,35 +193,33 @@ class Concrete5_Controller_Register extends Controller {
 					$rcID = 0;
 				}
 				
-				// now we check whether we need to validate this user's email address
-				if (defined("USER_VALIDATE_EMAIL") && USER_VALIDATE_EMAIL) {
-					if (USER_VALIDATE_EMAIL > 0) {
-						$uHash = $process->setupValidation();
-						
-						$mh = Loader::helper('mail');
-						if (defined('EMAIL_ADDRESS_VALIDATE')) {
-							$mh->from(EMAIL_ADDRESS_VALIDATE,  t('Validate Email Address'));
-						}
-						$mh->addParameter('uEmail', $_POST['uEmail']);
-						$mh->addParameter('uHash', $uHash);
-						$mh->to($_POST['uEmail']);
-						$mh->load('validate_user_email');
-						$mh->sendMail();
-
-						//$this->redirect('/register', 'register_success_validate', $rcID);
-						$redirectMethod='register_success_validate';
-						$registerData['msg']= join('<br><br>',$this->getRegisterSuccessValidateMsgs());
-						
-						$u->logout();
-
+				if (defined("USER_VALIDATE_EMAIL") && USER_VALIDATE_EMAIL > 0) {
+					$uHash = $process->setupValidation();
+					
+					$mh = Loader::helper('mail');
+					if (defined('EMAIL_ADDRESS_VALIDATE')) {
+						$mh->from(EMAIL_ADDRESS_VALIDATE,  t('Validate Email Address'));
 					}
-				} else if(defined('USER_REGISTRATION_APPROVAL_REQUIRED') && USER_REGISTRATION_APPROVAL_REQUIRED) {
+					$mh->addParameter('uEmail', $_POST['uEmail']);
+					$mh->addParameter('uHash', $uHash);
+					$mh->to($_POST['uEmail']);
+					$mh->load('validate_user_email');
+					$mh->sendMail();
+
+					//$this->redirect('/register', 'register_success_validate', $rcID);
+					$redirectMethod='register_success_validate';
+					$registerData['msg']= join('<br><br>',$this->getRegisterSuccessValidateMsgs());
+					
+					$u->logout();
+				} else {
 					$ui = UserInfo::getByID($u->getUserID());
 					$ui->deactivate();
-					//$this->redirect('/register', 'register_pending', $rcID);
-					$redirectMethod='register_pending';
-					$registerData['msg']=$this->getRegisterPendingMsg();
-					$u->logout();
+					
+					if (!$ui->markValidated()) {
+						$redirectMethod='register_pending';
+						$registerData['msg']=$this->getRegisterPendingMsg();
+						$u->logout();
+					}
 				}
 				
 				if (!$u->isError()) {

@@ -16,25 +16,19 @@ $h = Loader::helper('concrete/interface');
 			        <input type="radio" name="registration_type" value="disabled" style="" <?php echo ( $registration_type == "disabled" || !strlen($registration_type) )?'checked':''?> />
 			        <span><?php echo t('Off')?></span>
 			      </label>
-			    </li> 
+			    </li>
+			    <li>
+			      <label>
+			        <input type="radio" name="registration_type" value="enabled" style="" <?php echo ( $registration_type == "enabled" )?'checked':''?> />
+			        <span><?php echo t('On')?></span>
+			      </label>
+			    </li>
 			    <li>
 			      <label>
 			        <input type="radio" name="registration_type" value="validate_email" style="" <?php echo ( $registration_type == "validate_email" )?'checked':''?> />
 			        <span><?php echo t(' On - email validation')?></span>
 			      </label>
 			    </li>
-			    <li>
-			      <label>
-			        <input type="radio" name="registration_type" value="manual_approve" style="" <?php echo ( $registration_type == "manual_approve" )?'checked':''?> />
-			        <span><?php echo t('On - approve manually')?></span>
-			      </label>
-			    </li>
-			    <li>
-			      <label>
-			        <input type="radio" name="registration_type" value="enabled" style="" <?php echo ( $registration_type == "enabled" )?'checked':''?> />
-			        <span><?php echo t('On - signup and go')?></span>
-			      </label>
-			    </li>  
 			  </ul>
 			</div>
 		</div>  

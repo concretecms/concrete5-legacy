@@ -532,8 +532,15 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			$v = array($this->uID);
 			$db->query("update Users set uIsValidated = 1, uIsFullRecord = 1 where uID = ?", $v);
 			$db->query("update UserValidationHashes set uDateRedeemed = " . time() . " where uID = ?", $v);
+			$this->uIsValidated = 1;
 			Events::fire('on_user_validate', $this);
-			return true;
+			
+			// Trigger workflow request
+			$pkr = new ActivateUserUserWorkflowRequest();
+			$pkr->setRequestedUserID($this->uID);
+			$pkr->trigger();
+			
+			return (bool)$db->GetOne('select uIsActive from Users where uID = ?', $v);
 		}
 		
 		function changePassword($newPassword) { 
