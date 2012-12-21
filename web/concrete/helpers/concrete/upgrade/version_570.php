@@ -16,6 +16,12 @@ class ConcreteUpgradeVersion570Helper {
 			$sp->update(array('cName'=>t('Excluded URL Words')));
 		}
 		*/
+		
+		$db = Loader::db();
+		$columns = $db->MetaColumns('Pages');
+		if (isset($columns['PTID'])) {
+			$db->Execute('alter table Pages drop column ptID');
+		}		
 	}
 
 }
