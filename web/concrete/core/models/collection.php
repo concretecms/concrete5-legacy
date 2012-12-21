@@ -742,6 +742,11 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			return $blocks;
 		}
 		
+		/**
+		 * List the block IDs in a collection or area within a collection
+		 * @param string $arHandle. If specified, returns just the blocks in an area
+		 * @return blockIDs[]. An array of bID and arHandle
+		 */
 		public function getBlockIDs($arHandle = false) {
 
 			$v = array($this->getCollectionID(), $this->getVersionID());
@@ -781,7 +786,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		/**
 		 * List the blocks in a collection or area within a collection
 		 * @param area handle $arHandle. If specified, returns just the blocks in an area
-		 * @return Array of Block objects
+		 * @return Block[]
 		 */
 		public function getBlocks($arHandle = false) {
 
