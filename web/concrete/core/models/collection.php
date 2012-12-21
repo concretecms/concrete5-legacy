@@ -742,13 +742,11 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			return $blocks;
 		}
 		
-		public function getBlocks($arHandle = false) {
-			
-			$v = array($this->getCollectionID(), $this->getVersionID());
-			$blocks = array();
+		public function getBlockIDs($arHandle = false) {
 
-			$blockIDs = Cache::get('collection_blocks', $this->getCollectionID() . ':' . $this->getVersionID());		
-			
+			$v = array($this->getCollectionID(), $this->getVersionID());
+			$blockIDs = Cache::get('collection_blocks', $this->getCollectionID() . ':' . $this->getVersionID());
+
 			if (!is_array($blockIDs)) {
 				$db = Loader::db();
 				$q = "select Blocks.bID, CollectionVersionBlocks.arHandle from CollectionVersionBlocks inner join Blocks on (CollectionVersionBlocks.bID = Blocks.bID) inner join BlockTypes on (Blocks.btID = BlockTypes.btID) where CollectionVersionBlocks.cID = ? and (CollectionVersionBlocks.cvID = ? or CollectionVersionBlocks.cbIncludeAll=1) order by CollectionVersionBlocks.cbDisplayOrder asc";
@@ -761,12 +759,12 @@ defined('C5_EXECUTE') or die("Access Denied.");
 				}
 				Cache::set('collection_blocks', $this->getCollectionID() . ':' . $this->getVersionID(), $blockIDs);
 			}
-			
+
 			if ($arHandle != false) {
 				$blockIDsTmp = $blockIDs[strtolower($arHandle)];
 				$blockIDs = $blockIDsTmp;
 			} else {
-			
+
 				$blockIDsTmp = $blockIDs;
 				$blockIDs = array();
 				foreach($blockIDsTmp as $arHandle => $row) {
@@ -776,8 +774,19 @@ defined('C5_EXECUTE') or die("Access Denied.");
 						}
 					}
 				}
-			}		
-			
+			}
+			return $blockIDs;
+		}
+
+		/**
+		 * List the blocks in a collection or area within a collection
+		 * @param area handle $arHandle. If specified, returns just the blocks in an area
+		 * @return Array of Block objects
+		 */
+		public function getBlocks($arHandle = false) {
+
+			$blockIDs = $this->getBlockIDs($arHandle);
+
 			$blocks = array();
 			if (is_array($blockIDs)) {
 				foreach($blockIDs as $row) {
