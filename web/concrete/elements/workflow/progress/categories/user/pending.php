@@ -72,10 +72,15 @@ $(function() {
 		},
 		success: function(r) {
 			var wpID = r.wpID;
-			
-			$('.container').prepend("<div class='ccm-ui' id='ccm-dashboard-result-message' style='display: block;'>"
-			+ "<div class='row'><div class='span12'><div class='alert alert-info'><button type='button' class='close' data-dismiss='alert'>×</button>"
-			+ r.message + "</div></div></div></div>");
+			var statusBar = $('#ccm-dashboard-result-message');
+			var alertInnerContent = "<button type='button' class='close' data-dismiss='alert'>×</button>" + r.message;
+			if (statusBar.length == 0) {
+				$('.container').prepend("<div class='ccm-ui' id='ccm-dashboard-result-message'>"
+				+ "<div class='row'><div class='span12'><div class='alert alert-info'>" 
+				+ alertInnerContent + "</div></div></div></div>");			
+			} else {
+				$('.alert', statusBar).html(alertInnerContent);
+			}
 			
 			$('.ccm-workflow-waiting-for-me-row' + wpID).fadeOut(300, function() {
 				jQuery.fn.dialog.hideLoader();

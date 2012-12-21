@@ -17,9 +17,9 @@ class Concrete5_Model_ActivateUserUserWorkflowRequest extends UserWorkflowReques
 	
 	public function getWorkflowRequestDescriptionObject() {
 		$d = new WorkflowDescription();
-		$d->setEmailDescription(t("User has pending permission changes."));
-		$d->setInContextDescription(t("User Submitted for Permission Changes."));
-		$d->setShortStatus(t("Permission Changes"));
+		$ui = UserInfo::getByID($this->getRequestedUserID());
+		$d->setEmailDescription(t("User account \"%s\" has pending activation request and needs to be approved.", $ui->getUserName()));
+		$d->setShortStatus(t("Activation Request"));
 		return $d;
 	}
 	
@@ -27,14 +27,14 @@ class Concrete5_Model_ActivateUserUserWorkflowRequest extends UserWorkflowReques
 		$ui = UserInfo::getByID($this->getRequestedUserID());
 		$ui->activate();
 		$wpr = new WorkflowProgressResponse();
-		$wpr->message = t("User was activated.");
+		$wpr->message = t("User %s has been activated.", $ui->getUserName());
 		$wpr->setWorkflowProgressResponseURL(BASE_URL . DIR_REL . '/' . DISPATCHER_FILENAME . '?uID=' . $this->getRequestedUserID());
 		return $wpr;
 	}
 	
-	public function cancel(WorkflowProgress $wp) {
+	public function cancel(WorkflowProgress $wp) {		
 		$wpr = parent::cancel($wp);
-		$wpr->message = t("User was not activated.");
+		$wpr->message = t("User activation has been cancelled.");
 		$ui = UserInfo::getByID($this->getRequestedUserID());
 		$ui->delete();
 		return $wpr;
