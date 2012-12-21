@@ -32,7 +32,7 @@ $noitems = true;
 	<td><a href="javascript:void(0)" title="<?=t('Click for history.')?>" onclick="$(this).parentsUntil('tr').parent().next().show()"><?=$wf->getWorkflowProgressStatusDescription($wp)?></a></td>
 	<td class="ccm-workflow-progress-actions">
 	<form action="<?=$wp->getWorkflowProgressFormAction()?>" method="post">
-	
+		
 	<? $actions = $wp->getWorkflowProgressActions(); ?>
 	<? foreach($actions as $act) {
 		$attribs = '';
@@ -49,8 +49,11 @@ $noitems = true;
 		if ($act->getWorkflowProgressActionStyleInnerButtonRightHTML()) {
 			$br = ' ' . $act->getWorkflowProgressActionStyleInnerButtonRightHTML();
 		}
-		
-		print '<button type="submit" ' . $attribs . ' name="action_' . $act->getWorkflowProgressActionTask() . '" class="btn btn-mini ' . $act->getWorkflowProgressActionStyleClass() . '">' . $bl . $act->getWorkflowProgressActionLabel() . $br . '</button> ';
+		if ($act->getWorkflowProgressActionURL() != '') {
+			print '<a href="' . $act->getWorkflowProgressActionURL() . '&source=dashboard" ' . $attribs . ' class="btn btn-mini ' . $act->getWorkflowProgressActionStyleClass() . '">' . $bl . $act->getWorkflowProgressActionLabel() . $br . '</a> ';
+		} else {
+			print '<button type="submit" ' . $attribs . ' name="action_' . $act->getWorkflowProgressActionTask() . '" class="btn btn-mini ' . $act->getWorkflowProgressActionStyleClass() . '">' . $bl . $act->getWorkflowProgressActionLabel() . $br . '</button> ';
+		}
 	} ?>
 	</form>
 	</td>
@@ -76,12 +79,12 @@ $(function() {
 			var alertInnerContent = "<button type='button' class='close' data-dismiss='alert'>×</button>" + r.message;
 			if (statusBar.length == 0) {
 				$('.container').prepend("<div class='ccm-ui' id='ccm-dashboard-result-message'>"
-				+ "<div class='row'><div class='span12'><div class='alert alert-info'>" 
-				+ alertInnerContent + "</div></div></div></div>");			
+				+ "<div class='row'><div class='span12'><div class='alert alert-info'>"
+				+ alertInnerContent + "</div></div></div></div>");
 			} else {
 				$('.alert', statusBar).html(alertInnerContent);
 			}
-			
+
 			$('.ccm-workflow-waiting-for-me-row' + wpID).fadeOut(300, function() {
 				jQuery.fn.dialog.hideLoader();
 				$('.ccm-workflow-waiting-for-me-row' + wpID).remove();

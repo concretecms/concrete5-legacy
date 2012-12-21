@@ -55,5 +55,20 @@ class Concrete5_Model_ActivateUserUserWorkflowRequest extends UserWorkflowReques
 	public function getWorkflowRequestApproveButtonText(){
 		return t('Approve User');
 	}
+	
+	public function getWorkflowRequestAdditionalActions(WorkflowProgress $wp) {
+		$buttons = array();
+
+		$button = new WorkflowProgressAction();
+		$button->setWorkflowProgressActionLabel(t('User Details'));
+		$button->addWorkflowProgressActionButtonParameter('dialog-title', t('User Details'));
+		$button->addWorkflowProgressActionButtonParameter('dialog-width', '420');
+		$button->addWorkflowProgressActionButtonParameter('dialog-height', '310');
+		$button->setWorkflowProgressActionStyleInnerButtonLeftHTML('<i class="icon-eye-open"></i>');
+		$button->setWorkflowProgressActionURL(REL_DIR_FILES_TOOLS_REQUIRED . '/workflow/dialogs/user_details.php?uID=' . $this->getRequestedUserID());
+		$button->setWorkflowProgressActionStyleClass('dialog-launch');
+		$buttons[] = $button;
+		return $buttons;
+	}
 
 }

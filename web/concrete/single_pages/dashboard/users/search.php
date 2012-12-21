@@ -64,12 +64,15 @@ function printAttributeRow($ak, $uo, $assignment) {
 	print $html;
 }
 
-
 if (intval($_GET['uID'])) {
-	
 	$uo = UserInfo::getByID(intval($_GET['uID']));
-	if (is_object($uo)) {
 	
+	if (is_object($uo)) {
+
+		if (!$uo->isActive()) {
+			$this->controller->redirect('/dashboard/users/search');
+		}
+
 		if (!PermissionKey::getByHandle('access_user_search')->validate($uo)) { 
 			throw new Exception(t('Access Denied.'));
 		}

@@ -194,9 +194,11 @@ class Concrete5_Controller_Dashboard_Users_Search extends Controller {
 	public function getRequestedSearchResults() {
 		$userList = new UserList();
 		$userList->sortBy('uDateAdded', 'desc');
-		$userList->showInactiveUsers = true;
+		//$userList->showInactiveUsers = true;
 		$userList->showInvalidatedUsers = true;
-		
+
+		$userList->filterByIsActive(true);
+
 		$columns = UserSearchColumnSet::getCurrent();
 		$this->set('columns', $columns);
 
