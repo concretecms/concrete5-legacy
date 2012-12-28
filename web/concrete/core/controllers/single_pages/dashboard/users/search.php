@@ -368,7 +368,7 @@ class Concrete5_Controller_Dashboard_Users_Search extends Controller {
 
 			$delUI=UserInfo::getByID($delUserId); 
 			
-			if(!($delUI instanceof UserInfo)) {
+			if (!($delUI instanceof UserInfo)) {
 				throw new Exception(t('Invalid user ID.'));
 			}
 
@@ -385,18 +385,20 @@ class Concrete5_Controller_Dashboard_Users_Search extends Controller {
 				throw new Exception(t('You may not remove the super user account.'));
 			}			
 
-			if($delUserId==$u->getUserID()) {
+			if ($delUserId==$u->getUserID()) {
 				throw new Exception(t('You cannot delete your own user account.'));
 			}
-
 
 			$valt = Loader::helper('validation/token');
 			if (!$valt->validate('delete_account', $token)) {
 				throw new Exception($valt->getErrorMessage());
 			}
 			
-			$delUI->delete(); 
-			$resultMsg=t('User deleted successfully.');
+			if ($delUI->triggerDelete()) {
+				$resultMsg=t('User deleted successfully.');
+			} else {
+				$resultMsg=t('User deletion workflow request is created successfully.');
+			}
 			
 			$_REQUEST=array();
 			$_GET=array();

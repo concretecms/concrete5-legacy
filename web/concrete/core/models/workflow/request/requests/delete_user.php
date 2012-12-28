@@ -8,36 +8,41 @@ defined('C5_EXECUTE') or die("Access Denied.");
  *
  */
  
-class Concrete5_Model_ActivateUserUserWorkflowRequest extends UserWorkflowRequest {
+class Concrete5_Model_DeleteUserUserWorkflowRequest extends UserWorkflowRequest {
 	
 	public function __construct() {
-		$pk = PermissionKey::getByHandle('activate_user');
+		$pk = PermissionKey::getByHandle('delete_user');
 		parent::__construct($pk);
 	}
 	
 	public function getWorkflowRequestDescriptionObject() {
 		$d = new WorkflowDescription();
 		$ui = UserInfo::getByID($this->getRequestedUserID());
-		$d->setEmailDescription(t("User account \"%s\" has pending activation request and needs to be approved.", $ui->getUserName()));
-		$d->setShortStatus(t("Activation Request"));
+		$d->setEmailDescription(t("User account \"%s\" has pending deletion request and needs to be approved.", $ui->getUserName()));
+		$d->setShortStatus(t("User deletion Request"));
 		return $d;
 	}
 	
 	public function approve(WorkflowProgress $wp) {
 		$ui = UserInfo::getByID($this->getRequestedUserID());
-		$ui->activate();
+		$ui->delete();
 		$wpr = new WorkflowProgressResponse();
-		$wpr->message = t("User %s has been activated.", $ui->getUserName());
+		$wpr->message = t("User %s has been deleted.", $ui->getUserName());
 		$wpr->setWorkflowProgressResponseURL(BASE_URL . DIR_REL . '/' . DISPATCHER_FILENAME . '?uID=' . $this->getRequestedUserID());
 		return $wpr;
 	}
 	
 	public function cancel(WorkflowProgress $wp) {
-		$wpr = parent::cancel($wp);
-		$wpr->message = t("User activation has been cancelled.");
-		
 		$ui = UserInfo::getByID($this->getRequestedUserID());
-		$ui->triggerDelete();
+		
+		if (!$ui->isActive()) {
+			$pkr = new ActivateUserUserWorkflowRequest();
+			$pkr->setRequestedUserID($this->uID);
+			$pkr->trigger();
+		}
+		
+		$wpr = parent::cancel($wp);
+		$wpr->message = t("User deletion request has been cancelled.");
 		return $wpr;
 	}
 
@@ -54,7 +59,7 @@ class Concrete5_Model_ActivateUserUserWorkflowRequest extends UserWorkflowReques
 	}
 
 	public function getWorkflowRequestApproveButtonText() {
-		return t('Approve User');
+		return t('Delete User');
 	}
 	
 	public function getWorkflowRequestAdditionalActions(WorkflowProgress $wp) {
@@ -70,5 +75,4 @@ class Concrete5_Model_ActivateUserUserWorkflowRequest extends UserWorkflowReques
 		$buttons[] = $button;
 		return $buttons;
 	}
-
 }

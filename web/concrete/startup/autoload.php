@@ -198,6 +198,7 @@ $classes = array(
 	'PageWorkflowRequest' => array('model','workflow/request/categories/page'),
 	'UserWorkflowRequest' => array('model','workflow/request/categories/user'),
 	'ActivateUserUserWorkflowRequest' => array('model','workflow/request/requests/activate_user'),
+	'DeleteUserUserWorkflowRequest' => array('model','workflow/request/requests/delete_user'),
 	'ApprovePagePageWorkflowRequest' => array('model','workflow/request/requests/approve_page'),
 	'ChangePagePermissionsPageWorkflowRequest' => array('model','workflow/request/requests/change_page_permissions'),
 	'ChangePagePermissionsInheritancePageWorkflowRequest' => array('model','workflow/request/requests/change_page_permissions_inheritance'),

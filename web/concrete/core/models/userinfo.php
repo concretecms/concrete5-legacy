@@ -175,10 +175,26 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		}
 		
 		/**
+		 * Tirgger user deletion request in workflow
+		 *
+		 * Returns true if user is deleted successfully
+		 *
+		 * @return boolean
+		 */
+		public function triggerDelete() {
+			$db = Loader::db();
+			$v = array($this->uID);
+			$pkr = new DeleteUserUserWorkflowRequest();
+			$pkr->setRequestedUserID($this->uID);
+			$pkr->trigger();
+			return $db->GetOne('select count(uID) from Users where uID = ?', $v) == 0;
+		}
+		
+		/**
 		 * Deletes a user
 		 * @return void
 		 */
-		public function delete(){
+		public function delete() {
 			// we will NOT let you delete the admin user
 			if ($this->uID == USER_SUPER_ID) {
 				return false;
@@ -535,12 +551,13 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			$this->uIsValidated = 1;
 			Events::fire('on_user_validate', $this);
 			
-			// Trigger workflow request
+			// Trigger workflow request		
 			$pkr = new ActivateUserUserWorkflowRequest();
 			$pkr->setRequestedUserID($this->uID);
 			$pkr->trigger();
 			
-			return (bool)$db->GetOne('select uIsActive from Users where uID = ?', $v);
+			$this->uIsActive = intval($db->GetOne('select uIsActive from Users where uID = ?', $v));
+			return $this->isActive();
 		}
 		
 		function changePassword($newPassword) { 

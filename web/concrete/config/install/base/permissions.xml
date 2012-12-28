@@ -118,7 +118,7 @@
         </permissionkey>
         
         
-        <permissionkey handle="delete_user" name="Delete User" package="" category="user">
+        <permissionkey handle="delete_user" name="Delete User" package="" category="user" can-trigger-workflow="true">
             <access>
                 <group name="Administrators"/>
             </access>

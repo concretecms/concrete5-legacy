@@ -2,7 +2,7 @@
 defined('C5_EXECUTE') or die("Access Denied.");
 $u = User::getByUserID($_REQUEST['uID']);
 $obj = new stdClass;
-
+$obj->tableData=t('None');
 
 if ($_REQUEST['task'] == 'save_user_workflow_progress' && Loader::helper("validation/token")->validate('save_user_workflow_progress')) {
 	$wp = UserWorkflowProgress::getByID($_REQUEST['wpID']);
@@ -23,6 +23,16 @@ if ($_REQUEST['task'] == 'save_user_workflow_progress' && Loader::helper("valida
 				} else {
 					$obj->redirect = BASE_URL . DIR_REL . '/' . DISPATCHER_FILENAME . '?uID=' . $_REQUEST['uID'];
 				}
+				
+				$category = WorkflowProgressCategory::getByID($wp->getWorkflowProgressCategoryID());
+				$list = $category->getPendingWorkflowProgressList();
+				$items = $list->get();
+				// start a new buffer
+				ob_start();
+				Loader::element('workflow/progress/categories/user/table_data', array('items' => $items, 'list' => $list));
+				$obj->tableData = ob_get_contents();
+				// flush the bugger & close it
+				ob_end_clean();
 			}
 		}
 	}
