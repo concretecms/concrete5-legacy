@@ -121,7 +121,7 @@
 		}
 
 		public function getCustomAreaStyles() {
-			if (!isset($this->customAreaStyles)) {
+			if (!isset($this->customAreaStyles) && defined('ENABLE_CUSTOM_DESIGN') && ENABLE_CUSTOM_DESIGN) {
 				$db = Loader::db();
 				$r = $db->GetAll('select csrID, arHandle from CollectionVersionAreaStyles where cID = ? and cvID = ?', array($c->getCollectionID(), $cvID));
 				$this->customAreaStyles = array();

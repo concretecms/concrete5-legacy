@@ -528,13 +528,15 @@ class Concrete5_Model_Block extends Object {
 			// styles
 			$csr = $this->getBlockCustomStyleRule();
 
-			$db->Execute('insert into CollectionVersionBlockStyles (cID, cvID, bID, arHandle, csrID) values (?, ?, ?, ?, ?)', array(
-				$cID, 
-				$cvID,
-				$this->bID,
-				$this->getAreaHandle(),
-				$this->getBlockCustomStyleRuleID()
-			));
+            if (defined('ENABLE_CUSTOM_DESIGN') && ENABLE_CUSTOM_DESIGN) {   
+                $db->Execute('insert into CollectionVersionBlockStyles (cID, cvID, bID, arHandle, csrID) values (?, ?, ?, ?, ?)', array(
+                    $cID, 
+                    $cvID,
+                    $this->bID,
+                    $this->getAreaHandle(),
+                    $this->getBlockCustomStyleRuleID()
+                ));
+            }
 			if ($res) {
 				// now we grab the permissions from the block we're aliasing from
 				$oc = $this->getBlockCollectionObject();
@@ -632,9 +634,10 @@ class Concrete5_Model_Block extends Object {
 		$res2 = $db->execute($r2, $v2);
 		$nb = Block::getByID($newBID, $nc, $this->arHandle);
 		
-		$v = array($ncID, $nvID, $newBID, $this->arHandle, $this->getBlockCustomStyleRuleID());
-		$db->Execute('insert into CollectionVersionBlockStyles (cID, cvID, bID, arHandle, csrID) values (?, ?, ?, ?, ?)', $v);
-
+        if (defined('ENABLE_CUSTOM_DESIGN') && ENABLE_CUSTOM_DESIGN) { 
+            $v = array($ncID, $nvID, $newBID, $this->arHandle, $this->getBlockCustomStyleRuleID());
+            $db->Execute('insert into CollectionVersionBlockStyles (cID, cvID, bID, arHandle, csrID) values (?, ?, ?, ?, ?)', $v);
+        }
 		
 		return $nb;
 	}
@@ -679,6 +682,9 @@ class Concrete5_Model_Block extends Object {
 	
 	
 	public function resetBlockCustomStyle($updateAll = false) {
+        if (!defined('ENABLE_CUSTOM_DESIGN') || !ENABLE_CUSTOM_DESIGN) {   
+            return;
+        }
 		$db = Loader::db();
 		$c = $this->getBlockCollectionObject();
 		$cvID = $c->getVersionID();
@@ -709,6 +715,9 @@ class Concrete5_Model_Block extends Object {
 	}
 	
 	public function setBlockCustomStyle($csr, $updateAll = false) {
+        if (!defined('ENABLE_CUSTOM_DESIGN') || !ENABLE_CUSTOM_DESIGN) {   
+            return;
+        }        
 		$db = Loader::db();
 		$c = $this->getBlockCollectionObject();
 		$cvID = $c->getVersionID();
