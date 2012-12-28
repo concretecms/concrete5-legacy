@@ -91,30 +91,34 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			}
 			
 			// duplicate any area styles
-			$q = "select csrID, arHandle from CollectionVersionAreaStyles where cID = '$cID' and cvID = '$cvID'";
-			$r = $db->query($q);
-			while ($row = $r->FetchRow()) {
-				$db->Execute('insert into CollectionVersionAreaStyles (cID, cvID, arHandle, csrID) values (?, ?, ?, ?)', array(
-					$this->getCollectionID(),
-					$nvObj->getVersionID(),
-					$row['arHandle'],
-					$row['csrID']
-				));
+			if (defined('ENABLE_CUSTOM_DESIGN') && ENABLE_CUSTOM_DESIGN) {
+				$q = "select csrID, arHandle from CollectionVersionAreaStyles where cID = '$cID' and cvID = '$cvID'";
+				$r = $db->query($q);
+				while ($row = $r->FetchRow()) {
+					$db->Execute('insert into CollectionVersionAreaStyles (cID, cvID, arHandle, csrID) values (?, ?, ?, ?)', array(
+						$this->getCollectionID(),
+						$nvObj->getVersionID(),
+						$row['arHandle'],
+						$row['csrID']
+					));
+				}
 			}
 			
 			// duplicate any area layout joins
-			$q = "select * from CollectionVersionAreaLayouts where cID = '$cID' and cvID = '$cvID'";
-			$r = $db->query($q);
-			while ($row = $r->FetchRow()) {
-				$db->Execute('insert into CollectionVersionAreaLayouts (cID, cvID, arHandle, layoutID, areaNameNumber, position) values (?, ?, ?, ?, ?, ?)', array(
-					$this->getCollectionID(),
-					$nvObj->getVersionID(),
-					$row['arHandle'],
-					$row['layoutID'],
-					$row['areaNameNumber'],
-					$row['position']
-				));
-			}			
+			if (defined('ENABLE_AREA_LAYOUTS') && ENABLE_AREA_LAYOUTS) {
+				$q = "select * from CollectionVersionAreaLayouts where cID = '$cID' and cvID = '$cvID'";
+				$r = $db->query($q);
+				while ($row = $r->FetchRow()) {
+					$db->Execute('insert into CollectionVersionAreaLayouts (cID, cvID, arHandle, layoutID, areaNameNumber, position) values (?, ?, ?, ?, ?, ?)', array(
+						$this->getCollectionID(),
+						$nvObj->getVersionID(),
+						$row['arHandle'],
+						$row['layoutID'],
+						$row['areaNameNumber'],
+						$row['position']
+					));
+				}			
+			}
 
 			// now that we've duplicated all the blocks for the collection, we return the new
 			// collection
@@ -390,72 +394,75 @@ defined('C5_EXECUTE') or die("Access Denied.");
 	 * or blocks
 	 */
 	public function outputCustomStyleHeaderItems($return = false) {	
-		
 		$db = Loader::db();
-		$csrs = array();
-		$txt = Loader::helper('text');
-		$r1 = $db->GetAll('select bID, arHandle, csrID from CollectionVersionBlockStyles where cID = ? and cvID = ? and csrID > 0', array($this->getCollectionID(), $this->getVersionID()));
-		$r2 = $db->GetAll('select arHandle, csrID from CollectionVersionAreaStyles where cID = ? and cvID = ? and csrID > 0', array($this->getCollectionID(), $this->getVersionID()));
-		foreach($r1 as $r) {
-			$csrID = $r['csrID'];
-			$arHandle = $txt->filterNonAlphaNum($r['arHandle']);
-			$bID = $r['bID'];
-			$obj = CustomStyleRule::getByID($csrID);
-			if (is_object($obj)) {
-				$obj->setCustomStyleNameSpace('blockStyle' . $bID . $arHandle);
-				$csrs[] = $obj;
-			}
-		}
-		foreach($r2 as $r) {
-			$csrID = $r['csrID'];
-			$arHandle = $txt->filterNonAlphaNum($r['arHandle']);
-			$obj = CustomStyleRule::getByID($csrID);
-			if (is_object($obj)) {
-				$obj->setCustomStyleNameSpace('areaStyle' . $arHandle);
-				$csrs[] = $obj;
-			}
-		}
-		
-		// grab all the header block style rules for items in global areas on this page
-		$rs = $db->GetCol('select arHandle from Areas where arIsGlobal = 1 and cID = ?', array($this->getCollectionID()));
-		if (count($rs) > 0) {
-			$pcp = new Permissions($this);
-			foreach($rs as $garHandle) {
-				if ($pcp->canViewPageVersions()) {
-					$s = Stack::getByName($garHandle, 'RECENT');
-				} else {
-					$s = Stack::getByName($garHandle, 'ACTIVE');
+		if (defined('ENABLE_CUSTOM_DESIGN') && ENABLE_CUSTOM_DESIGN) {
+			$csrs = array();
+			$txt = Loader::helper('text');
+			$r1 = $db->GetAll('select bID, arHandle, csrID from CollectionVersionBlockStyles where cID = ? and cvID = ? and csrID > 0', array($this->getCollectionID(), $this->getVersionID()));
+			$r2 = $db->GetAll('select arHandle, csrID from CollectionVersionAreaStyles where cID = ? and cvID = ? and csrID > 0', array($this->getCollectionID(), $this->getVersionID()));
+			foreach($r1 as $r) {
+				$csrID = $r['csrID'];
+				$arHandle = $txt->filterNonAlphaNum($r['arHandle']);
+				$bID = $r['bID'];
+				$obj = CustomStyleRule::getByID($csrID);
+				if (is_object($obj)) {
+					$obj->setCustomStyleNameSpace('blockStyle' . $bID . $arHandle);
+					$csrs[] = $obj;
 				}
-				if (is_object($s)) {
-					$rs1 = $db->GetAll('select bID, csrID, arHandle from CollectionVersionBlockStyles where cID = ? and cvID = ? and csrID > 0', array($s->getCollectionID(), $s->getVersionID()));
-					foreach($rs1 as $r) {
-						$csrID = $r['csrID'];
-						$arHandle = $txt->filterNonAlphaNum($r['arHandle']);
-						$bID = $r['bID'];
-						$obj = CustomStyleRule::getByID($csrID);
-						if (is_object($obj)) {
-							$obj->setCustomStyleNameSpace('blockStyle' . $bID . $arHandle);
-							$csrs[] = $obj;
+			}
+			foreach($r2 as $r) {
+				$csrID = $r['csrID'];
+				$arHandle = $txt->filterNonAlphaNum($r['arHandle']);
+				$obj = CustomStyleRule::getByID($csrID);
+				if (is_object($obj)) {
+					$obj->setCustomStyleNameSpace('areaStyle' . $arHandle);
+					$csrs[] = $obj;
+				}
+			}
+		
+			// grab all the header block style rules for items in global areas on this page
+			$rs = $db->GetCol('select arHandle from Areas where arIsGlobal = 1 and cID = ?', array($this->getCollectionID()));
+			if (count($rs) > 0) {
+				$pcp = new Permissions($this);
+				foreach($rs as $garHandle) {
+					if ($pcp->canViewPageVersions()) {
+						$s = Stack::getByName($garHandle, 'RECENT');
+					} else {
+						$s = Stack::getByName($garHandle, 'ACTIVE');
+					}
+					if (is_object($s)) {
+						$rs1 = $db->GetAll('select bID, csrID, arHandle from CollectionVersionBlockStyles where cID = ? and cvID = ? and csrID > 0', array($s->getCollectionID(), $s->getVersionID()));
+						foreach($rs1 as $r) {
+							$csrID = $r['csrID'];
+							$arHandle = $txt->filterNonAlphaNum($r['arHandle']);
+							$bID = $r['bID'];
+							$obj = CustomStyleRule::getByID($csrID);
+							if (is_object($obj)) {
+								$obj->setCustomStyleNameSpace('blockStyle' . $bID . $arHandle);
+								$csrs[] = $obj;
+							}
 						}
 					}
 				}
 			}
+			//get the header style rules
+			$styleHeader = ''; 
+			foreach($csrs as $st) { 
+				if ($st->getCustomStyleRuleCSSID(true)) { 
+					$styleHeader .= '#'.$st->getCustomStyleRuleCSSID(1).' {'. $st->getCustomStyleRuleText(). "} \r\n";  
+				}
+			} 		
 		}
-		//get the header style rules
-		$styleHeader = ''; 
-		foreach($csrs as $st) { 
-			if ($st->getCustomStyleRuleCSSID(true)) { 
-				$styleHeader .= '#'.$st->getCustomStyleRuleCSSID(1).' {'. $st->getCustomStyleRuleText(). "} \r\n";  
-			}
-		} 		
-		  
-		$r3 = $db->GetAll('select l.layoutID, l.spacing, arHandle, areaNameNumber from CollectionVersionAreaLayouts cval LEFT JOIN Layouts AS l ON  cval.layoutID=l.layoutID WHERE cval.cID = ? and cval.cvID = ?', array($this->getCollectionID(), $this->getVersionID()));
-		foreach($r3 as $data){  
-			if(!intval($data['spacing'])) continue; 
-			$layoutIDVal = strtolower('ccm-layout-'.TextHelper::camelcase($data['arHandle']).'-'.$data['layoutID'] . '-'. $data['areaNameNumber']);
-			$layoutStyleRules='#' . $layoutIDVal . ' .ccm-layout-col-spacing { margin:0px '.ceil(floatval($data['spacing'])/2).'px }';
-			$styleHeader .= $layoutStyleRules . " \r\n";  
-		}  
+		 
+		if (defined('ENABLE_AREA_LAYOUTS') && ENABLE_AREA_LAYOUTS) {
+			$r3 = $db->GetAll('select l.layoutID, l.spacing, arHandle, areaNameNumber from CollectionVersionAreaLayouts cval LEFT JOIN Layouts AS l ON  cval.layoutID=l.layoutID WHERE cval.cID = ? and cval.cvID = ?', array($this->getCollectionID(), $this->getVersionID()));
+			foreach($r3 as $data){  
+				if(!intval($data['spacing'])) continue; 
+				$layoutIDVal = strtolower('ccm-layout-'.TextHelper::camelcase($data['arHandle']).'-'.$data['layoutID'] . '-'. $data['areaNameNumber']);
+				$layoutStyleRules='#' . $layoutIDVal . ' .ccm-layout-col-spacing { margin:0px '.ceil(floatval($data['spacing'])/2).'px }';
+				$styleHeader .= $layoutStyleRules . " \r\n";  
+			}  
+		}
 		
 		if(strlen(trim($styleHeader))) {
 			if ($return == true) {
@@ -941,19 +948,21 @@ defined('C5_EXECUTE') or die("Access Denied.");
 					$db->query($ql, $vl);
 				}				
 
-				$ql = "select * from CollectionVersionBlockStyles where cID = '{$this->cID}'";
-				$rl = $db->query($ql);
-				while ($row = $rl->fetchRow()) { 
-					$vl = array( $newCID, $row['cvID'], $row['bID'], $row['arHandle'], $row['csrID'] );
-					$ql = "insert into CollectionVersionBlockStyles (cID, cvID, bID, arHandle, csrID) values (?, ?, ?, ?, ?)";
-					$db->query($ql, $vl);
-				}
-				$ql = "select * from CollectionVersionAreaStyles where cID = '{$this->cID}'";
-				$rl = $db->query($ql);
-				while ($row = $rl->fetchRow()) { 
-					$vl = array( $newCID, $row['cvID'], $row['arHandle'], $row['csrID'] );
-					$ql = "insert into CollectionVersionAreaStyles (cID, cvID, arHandle, csrID) values (?, ?, ?, ?)";
-					$db->query($ql, $vl);
+				if (defined('ENABLE_CUSTOM_DESIGN') && ENABLE_CUSTOM_DESIGN) {
+					$ql = "select * from CollectionVersionBlockStyles where cID = '{$this->cID}'";
+					$rl = $db->query($ql);
+					while ($row = $rl->fetchRow()) { 
+						$vl = array( $newCID, $row['cvID'], $row['bID'], $row['arHandle'], $row['csrID'] );
+						$ql = "insert into CollectionVersionBlockStyles (cID, cvID, bID, arHandle, csrID) values (?, ?, ?, ?, ?)";
+						$db->query($ql, $vl);
+					}
+					$ql = "select * from CollectionVersionAreaStyles where cID = '{$this->cID}'";
+					$rl = $db->query($ql);
+					while ($row = $rl->fetchRow()) { 
+						$vl = array( $newCID, $row['cvID'], $row['arHandle'], $row['csrID'] );
+						$ql = "insert into CollectionVersionAreaStyles (cID, cvID, arHandle, csrID) values (?, ?, ?, ?)";
+						$db->query($ql, $vl);
+					}
 				}
 	
 				// now we grab all the blocks we're going to need
