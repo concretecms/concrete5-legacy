@@ -37,6 +37,7 @@ class Concrete5_Model_Job extends Object {
 	public function getJobName() {return t($this->jName);}
 	public function getJobDescription() {return t($this->jDescription);}
 	public function getJobHandle() {return $this->jHandle;}
+	public function getJobID() {return $this->jID;}
 	public function getPackageHandle() {
 		return PackageList::getHandle($this->pkgID);
 	}
@@ -219,7 +220,7 @@ class Concrete5_Model_Job extends Object {
 					}
 					closedir($dh);
 				}
-			}else throw new Exception( t('Error: Invalid Jobs Directory %s', $jobClassLocation) );
+			}
 		}
 		
 		return $jobObjs;

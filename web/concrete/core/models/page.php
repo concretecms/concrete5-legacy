@@ -391,7 +391,7 @@ class Concrete5_Model_Page extends Collection {
 		if (isset($px->user)) {
 			foreach($px->user as $u) {
 				$pkHandles = self::translatePermissionsXMLToKeys($px->administrators);
-				$this->assignPermissions(Group::getByID($u['uID']), $pkHandles);
+				$this->assignPermissions(UserInfo::getByID($u['uID']), $pkHandles);
 			}
 		}
 		$this->refreshCache();
@@ -1168,7 +1168,7 @@ class Concrete5_Model_Page extends Collection {
 				$pathSegments = explode('/', $val);
 				$newVal = '/';
 				foreach($pathSegments as $pathSegment) {
-					$newVal .= URLify::filter($pathSegment) . '/';
+					$newVal .= $pathSegment . '/';
 				}
 				$newVal = substr($newVal, 0, strlen($newVal) - 1);
 				$newVal = str_replace('-', PAGE_PATH_SEPARATOR, $newVal);
@@ -1917,7 +1917,7 @@ class Concrete5_Model_Page extends Collection {
 	* @return page
 	**/
 	
-	public function add($ct, $data) {
+	public function add(CollectionType $ct, $data) {
 		$db = Loader::db();
 		$txt = Loader::helper('text');
 		

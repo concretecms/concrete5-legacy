@@ -6,16 +6,19 @@ $dt = Loader::helper('form/date_time');
 if (!$tp->canAccessUserSearch() && !$tp->canAccessGroupSearch()) { 
 	die(t("Access Denied."));
 }
-
+$pae = false;
 if ($_REQUEST['peID']) {
 	$pae = PermissionAccessEntity::getByID($_REQUEST['peID']);
-} else {
+}
+if (!is_object($pae)) {
 	$pae = false;
 }
 
+$pd = false;
 if ($_REQUEST['pdID']) {
 	$pd = PermissionDuration::getByID($_REQUEST['pdID']);
-} else {
+}
+if (!is_object($pd)) {
 	$pd = false;
 }
 
@@ -122,7 +125,7 @@ if ($_POST['task'] == 'save_permissions') {
 				ccmAlert.notice('<?=t("Error")?>', r.message);
 			} else {
 				if (typeof(ccm_addAccessEntity) == 'function') { 
-					ccm_addAccessEntity(r.peID, r.pdID, '<?=$_REQUEST["accessType"]?>');
+					ccm_addAccessEntity(r.peID, r.pdID, '<?=addslashes($_REQUEST["accessType"])?>');
 				} else {
 					alert(r.peID);
 					alert(r.pdID);

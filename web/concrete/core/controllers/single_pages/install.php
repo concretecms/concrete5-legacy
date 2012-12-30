@@ -2,7 +2,7 @@
 defined('C5_EXECUTE') or die("Access Denied.");
 ini_set('display_errors', 1);
 if (!ini_get('safe_mode')) {
-	@set_time_limit(120);
+	@set_time_limit(150);
 }
 
 date_default_timezone_set(@date_default_timezone_get());
@@ -113,12 +113,13 @@ class Concrete5_Controller_Install extends Controller {
 		// no longer need lucene
 		//$this->set('searchTest', function_exists('iconv') && function_exists('mb_strtolower') && (@preg_match('/\pL/u', 'a') == 1));
 		$this->set('remoteFileUploadTest', function_exists('iconv'));
-		
-		if (version_compare(PHP_VERSION, '5.2.0', '>=')) {
+		$phpVmin = '5.2.4';
+		if (version_compare(PHP_VERSION, $phpVmin, '>=')) {
 			$phpVtest = true;
 		} else {
 			$phpVtest = false;
 		}
+		$this->set('phpVmin',$phpVmin);
 		$this->set('phpVtest',$phpVtest);
 		
 	}
