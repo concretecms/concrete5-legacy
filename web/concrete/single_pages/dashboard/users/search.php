@@ -395,9 +395,13 @@ if (is_object($uo)) {
 					?>						
 				<? } else { ?>
 					
-					<?  if (!in_array("activate", $workflowRequestActions) && !in_array("register_activate", $workflowRequestActions)) {									   
-							print $ih->button(t('Activate User'), $this->url('/dashboard/users/search?uID=' . intval($uID) . '&task=activate&ccm_token='.$valt->generate('user_activate')), 'left');
+					<?  if ($uo->isValidated()) {
+							if ((!in_array("activate", $workflowRequestActions) && !in_array("register_activate", $workflowRequestActions))){
+								// show activate button in edit user page									   
+								print $ih->button(t('Activate User'), $this->url('/dashboard/users/search?uID=' . intval($uID) . '&task=activate&ccm_token='.$valt->generate('user_activate')), 'left');
+							}
 						}
+						
 					?>
 				<? } ?>
 			<? } ?>
