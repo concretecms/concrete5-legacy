@@ -68,6 +68,6 @@ $userGroup = $u->getUserGroups();
 	
 		<div class="dialog-buttons">
 		<? $ih = Loader::helper('concrete/interface')?>
-		<?=$ih->button_js(t('Cancel'), 'jQuery.fn.dialog.closeTop()', 'right', 'btn')?>
+		<?=$ih->button_js(t('Close'), 'jQuery.fn.dialog.closeTop()', 'left', 'btn')?>
 		</div>
 </div><!-- // div ccm-ui end -->

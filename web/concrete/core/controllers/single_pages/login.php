@@ -370,7 +370,8 @@ class Concrete5_Controller_Login extends Controller {
 		$ui = UserInfo::getByValidationHash($hash);
 		if (is_object($ui)) {
 			$this->set('uEmail', $ui->getUserEmail());
-			if ($ui->markValidated()) {
+			$ui->markValidated();
+			if ($ui->triggerActivate('register_activate', USER_SUPER_ID)) {
 				$this->set('validated', true);
 			} else {
 				$this->set('workflowPending', true);

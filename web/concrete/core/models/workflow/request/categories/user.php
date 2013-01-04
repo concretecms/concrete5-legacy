@@ -9,24 +9,39 @@ defined('C5_EXECUTE') or die("Access Denied.");
  */
 abstract class Concrete5_Model_UserWorkflowRequest extends WorkflowRequest {
 
-	public function setRequestedUserID($uID) {
-        $this->uID = $uID;
+	public function setRequestedUserID($requestedUID) {
+        $this->requestedUID = $requestedUID;
     }
 	
  	public function getRequestedUserID() {
-        return $this->uID;
+        return $this->requestedUID;
+    }
+
+	/**
+	 * Gets the action of user workflow request. There are four actions:
+	 * activate, register_activate, deactivate and delete
+	 * 
+	 * @return string
+	 */		
+	public function getRequestAction() {
+        return $this->requestAction;
     }
 
 	public function trigger() {
- 		$user = User::getByUserID($this->uID);
+ 		$user = User::getByUserID($this->requestedUID);
 		$pk = PermissionKey::getByID($this->pkID);
         $pk->setPermissionObject($user);		
 		return parent::trigger($pk);
 	}
 	
+	public function approve(WorkflowProgress $wp) {
+		$wpr = new WorkflowProgressResponse();
+		$wpr->setWorkflowProgressResponseURL(BASE_URL . DIR_REL . '/' . DISPATCHER_FILENAME . '/dashboard/users/search' . '?uID=' . $this->getRequestedUserID());
+		return $wpr;
+	}
 	public function cancel(WorkflowProgress $wp) {
 		$wpr = new WorkflowProgressResponse();
-		$wpr->setWorkflowProgressResponseURL(BASE_URL . DIR_REL . '/' . DISPATCHER_FILENAME . '?uID=' . $this->getRequestedUserID());
+		$wpr->setWorkflowProgressResponseURL(BASE_URL . DIR_REL . '/' . DISPATCHER_FILENAME . '/dashboard/users/search' . '?uID=' . $this->getRequestedUserID() . '&workflow_canceled=1');
 		return $wpr;
 	}
 	
@@ -60,4 +75,4 @@ abstract class Concrete5_Model_UserWorkflowRequest extends WorkflowRequest {
 		}
 		return $wpr;
 	}
-}  
+}

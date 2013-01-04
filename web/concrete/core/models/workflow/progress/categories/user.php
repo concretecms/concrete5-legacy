@@ -9,7 +9,8 @@ defined('C5_EXECUTE') or die("Access Denied.");
  */
 class Concrete5_Model_UserWorkflowProgress extends WorkflowProgress {
 	
-	protected $uID;
+	// Notice: here requestedUID is requested user id, NOT requester user id
+	protected $requestedUID;
 	
 	public function loadDetails() {
 		$db = Loader::db();
@@ -27,18 +28,39 @@ class Concrete5_Model_UserWorkflowProgress extends WorkflowProgress {
 		$wp = parent::add('user', $wf, $wr);
 		$db = Loader::db();
 		$db->Replace('UserWorkflowProgress', array('uID' => $wr->getRequestedUserID(), 'wpID' => $wp->getWorkflowProgressID()), array('uID', 'wpID'), true);
-		$wp->uID = $wr->getRequestedUserID();		
+		$wp->requestedUID = $wr->getRequestedUserID();		
 		return $wp;
 	}
 	
 	public function getWorkflowProgressFormAction(){
-		return REL_DIR_FILES_TOOLS_REQUIRED . '/' . DIRNAME_WORKFLOW . '/categories/user?task=save_user_workflow_progress&uID=' . $this->uID . '&wpID=' . $this->getWorkflowProgressID() . '&' . Loader::helper('validation/token')->getParameter('save_user_workflow_progress');
+		return REL_DIR_FILES_TOOLS_REQUIRED . '/' . DIRNAME_WORKFLOW . '/categories/user?task=save_user_workflow_progress&uID=' . $this->requestedUID . '&wpID=' . $this->getWorkflowProgressID() . '&' . Loader::helper('validation/token')->getParameter('save_user_workflow_progress');
 	}
 
 	public function getPendingWorkflowProgressList() {
 		$list = new UserWorkflowProgressList();
 		$list->filter('wpApproved', 0);
 		$list->sortBy('wpDateLastAction', 'desc');
+		return $list;
+	}
+	
+	public static function getList($requestedUID, $filters = array('wpIsCompleted' => 0), $sortBy = 'wpDateAdded asc') {
+		$db = Loader::db();
+		
+		$filter = '';
+		foreach($filters as $key => $value) {
+			$filter .= ' and ' . $key . ' = ' . $value . ' ';
+		}
+		$filter .= ' order by ' . $sortBy;
+		
+		
+		$r = $db->Execute('SELECT wp.wpID FROM UserWorkflowProgress uwp INNER JOIN WorkflowProgress wp ON wp.wpID = uwp.wpID WHERE uwp.uID = ? ' . $filter, $requestedUID);
+		$list = array();
+		while ($row = $r->FetchRow()) {
+			$wp = UserWorkflowProgress::getByID($row['wpID']);
+			if (is_object($wp)) {
+				$list[] = $wp;
+			}
+		}
 		return $list;
 	}	
 }

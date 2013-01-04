@@ -22,6 +22,7 @@ $(function() {
 				var wpID = r.wpID;
 				var statusBar = $('#ccm-dashboard-result-message');
 				var alertInnerContent = "<button type='button' class='close' data-dismiss='alert'>×</button>" + r.message;
+				
 				if (statusBar.length == 0) {
 					$('.container').prepend("<div class='ccm-ui' id='ccm-dashboard-result-message' style='display:block'>"
 					+ "<div class='row'><div class='span12'><div class='alert alert-info'>"

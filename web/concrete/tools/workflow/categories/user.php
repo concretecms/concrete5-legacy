@@ -15,8 +15,11 @@ if ($_REQUEST['task'] == 'save_user_workflow_progress' && Loader::helper("valida
 	
 		if ($wf->canApproveWorkflowProgressObject($wp)) {
 			$task = WorkflowProgress::getRequestedTask();
+			
 			if ($task) {		
 				$r = $wp->runTask($task, $_POST);
+				
+				
 				if (($r instanceof WorkflowProgressResponse) && $r->getWorkflowProgressResponseURL() != '') {
 					$obj->redirect = $r->getWorkflowProgressResponseURL();
 					$obj->message = $r->message;

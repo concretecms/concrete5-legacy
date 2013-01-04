@@ -10,34 +10,64 @@ defined('C5_EXECUTE') or die("Access Denied.");
  
 class Concrete5_Model_ActivateUserUserWorkflowRequest extends UserWorkflowRequest {
 	
+	protected $requestAction = 'activate';
+	
 	public function __construct() {
 		$pk = PermissionKey::getByHandle('activate_user');
 		parent::__construct($pk);
 	}
 	
+	public function setRequestAction($action) {
+        $this->requestAction = $action;
+    }	
+
+ 	public function isActivationRequest() {
+        return $this->requestAction == 'activate';
+    }
+	
+ 	public function isRegisterActivationRequest() {
+        return $this->requestAction == 'register_activate';
+    }
+	
+ 	public function isDeactivationRequest() {
+        return $this->requestAction == 'deactivate';
+    }
+	
 	public function getWorkflowRequestDescriptionObject() {
 		$d = new WorkflowDescription();
 		$ui = UserInfo::getByID($this->getRequestedUserID());
 		$d->setEmailDescription(t("User account \"%s\" has pending activation request and needs to be approved.", $ui->getUserName()));
-		$d->setShortStatus(t("Activation Request"));
+		$d->setShortStatus(t("Pending"));
 		return $d;
 	}
 	
 	public function approve(WorkflowProgress $wp) {
 		$ui = UserInfo::getByID($this->getRequestedUserID());
-		$ui->activate();
-		$wpr = new WorkflowProgressResponse();
-		$wpr->message = t("User %s has been activated.", $ui->getUserName());
-		$wpr->setWorkflowProgressResponseURL(BASE_URL . DIR_REL . '/' . DISPATCHER_FILENAME . '?uID=' . $this->getRequestedUserID());
+		$wpr = parent::approve($wp);
+		if ($this->isDeactivationRequest()) {
+			$wpr->message = t("User %s has been deactivated.", $ui->getUserName());
+			$wpr->setWorkflowProgressResponseURL(BASE_URL . DIR_REL . '/' . DISPATCHER_FILENAME . '/dashboard/users/search' . '?uID=' . $this->getRequestedUserID() . '&deactivated=1');
+			$ui->deactivate();
+		} else {
+			$wpr->message = t("User %s has been activated.", $ui->getUserName());
+			$wpr->setWorkflowProgressResponseURL(BASE_URL . DIR_REL . '/' . DISPATCHER_FILENAME . '/dashboard/users/search' . '?uID=' . $this->getRequestedUserID() . '&activated=1');
+			$ui->activate();
+		}
 		return $wpr;
 	}
 	
+	/**
+	 * after caneling activate(register activate) request, do nothing
+	 * 
+	 * @return object
+	 */
 	public function cancel(WorkflowProgress $wp) {
 		$wpr = parent::cancel($wp);
-		$wpr->message = t("User activation has been cancelled.");
-		
-		$ui = UserInfo::getByID($this->getRequestedUserID());
-		$ui->triggerDelete();
+		if ($this->isDeactivationRequest()) {
+			$wpr->message = t("User deactivation request has been cancelled.");
+		} else {
+			$wpr->message = t("User activation request has been cancelled.");
+		}
 		return $wpr;
 	}
 
@@ -54,7 +84,12 @@ class Concrete5_Model_ActivateUserUserWorkflowRequest extends UserWorkflowReques
 	}
 
 	public function getWorkflowRequestApproveButtonText() {
-		return t('Approve User');
+		if ($this->isDeactivationRequest()) {
+			return t('Deactivate User');
+		} else {
+			return t('Activate User');	
+		}
+		
 	}
 	
 	public function getWorkflowRequestAdditionalActions(WorkflowProgress $wp) {
@@ -71,4 +106,16 @@ class Concrete5_Model_ActivateUserUserWorkflowRequest extends UserWorkflowReques
 		return $buttons;
 	}
 
+	/**
+	 * Gets the translated text of action of user workflow request
+	 * 
+	 * @return string
+	 */
+	public function getRequestActionText() {
+		if ($this->isDeactivationRequest()) {
+			return t("Deactivate User");
+		} else {
+			return t("Activate Request");
+		}
+	}
 }

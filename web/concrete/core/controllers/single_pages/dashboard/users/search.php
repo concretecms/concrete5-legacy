@@ -34,6 +34,12 @@ class Concrete5_Controller_Dashboard_Users_Search extends Controller {
 		if ($_REQUEST['user_created']) {
 			$this->set('message', t('User created.'));
 		}
+		if ($_REQUEST['workflow_canceled']) {
+			$this->set('message', t('Workflow request is canceled.'));
+		}
+		if ($_REQUEST['deleted']) {
+			$this->set('message', t('User %s has been deleted.', $_REQUEST['username']));
+		}
 
 	}
 	
@@ -194,12 +200,11 @@ class Concrete5_Controller_Dashboard_Users_Search extends Controller {
 	public function getRequestedSearchResults() {
 		$userList = new UserList();
 		$userList->sortBy('uDateAdded', 'desc');
-		//$userList->showInactiveUsers = true;
+		$userList->showInactiveUsers = true;
 		$userList->showInvalidatedUsers = true;
 
-		$userList->filterByIsActive(true);
-
 		$columns = UserSearchColumnSet::getCurrent();
+	
 		$this->set('columns', $columns);
 
 		if ($_GET['keywords'] != '') {
@@ -398,6 +403,7 @@ class Concrete5_Controller_Dashboard_Users_Search extends Controller {
 				$resultMsg=t('User deleted successfully.');
 			} else {
 				$resultMsg=t('User deletion workflow request is created successfully.');
+				$this->redirect('/dashboard/users/search?uID=' . $delUserId);
 			}
 			
 			$_REQUEST=array();

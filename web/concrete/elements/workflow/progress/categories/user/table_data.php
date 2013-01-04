@@ -3,8 +3,8 @@
 <? if (count($items) > 0) { ?>
 	
 <table class="ccm-results-list" id="ccm-workflow-waiting-for-me">
-<tr>
-	<th class="<?=$list->getSearchResultsClass('uID')?>"><a href="<?=$list->getSortByURL('uID', 'asc')?>"><?=t('User ID')?></a></th>
+<tr>	
+	<th class="<?=$list->getSearchResultsClass('Request Type')?>"><?=t('Request Type')?></a></th>
 	<th class="<?=$list->getSearchResultsClass('uName')?>"><a href="<?=$list->getSortByURL('uName', 'asc')?>"><?=t('User Name')?></a></th>
 	<th class="<?=$list->getSearchResultsClass('wpDateLastAction')?>"><a href="<?=$list->getSortByURL('wpDateLastAction', 'desc')?>"><?=t('Last Action')?></a></th>
 	<th class="<?=$list->getSearchResultsClass('wpCurrentStatus')?>"><a href="<?=$list->getSortByURL('wpCurrentStatus', 'desc')?>"><?=t('Current Status')?></a></th>
@@ -20,8 +20,8 @@ foreach($items as $it) {
 	if ($wf->canApproveWorkflowProgressObject($wp)) {
 		$noitems = false;
 ?>
-<tr class="ccm-workflow-waiting-for-me-row<?=$wp->getWorkflowProgressID()?>">
-	<td><?=$u->getUserID();?></td>
+<tr class="ccm-workflow-waiting-for-me-row<?=$wp->getWorkflowProgressID()?>">	
+	<td><?=$wp->getWorkflowRequestObject()->getRequestActionText();?></td>
 	<td><?=$u->getUserName();?></td>
 	<td><?=date(DATE_APP_GENERIC_MDYT_FULL, strtotime($wp->getWorkflowProgressDateLastAction()))?></td>
 	<td><a href="javascript:void(0)" title="<?=t('Click for history.')?>" onclick="$(this).parentsUntil('tr').parent().next().show()"><?=$wf->getWorkflowProgressStatusDescription($wp)?></a></td>
@@ -59,4 +59,6 @@ foreach($items as $it) {
 } ?>
 
 </table>
+<? } else { ?>
+	<p><?=t('None.')?></p>
 <? } ?>

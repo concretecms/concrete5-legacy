@@ -130,6 +130,12 @@ defined('C5_EXECUTE') or die("Access Denied.");
 				$uIsValidated = -1;
 			}
 			
+			if (isset($data['uIsActive']) && $data['uIsActive'] == 0) {
+				$uIsActive = 0;
+			} else {
+				$uIsActive = 1;
+			}
+			
 			if (isset($data['uIsFullRecord']) && $data['uIsFullRecord'] == 0) {
 				$uIsFullRecord = 0;
 			} else {
@@ -144,7 +150,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			if (isset($data['uDefaultLanguage']) && $data['uDefaultLanguage'] != '') {
 				$uDefaultLanguage = $data['uDefaultLanguage'];
 			}
-			$v = array($data['uName'], $data['uEmail'], $password_to_insert, $uIsValidated, $uDateAdded, $uIsFullRecord, $uDefaultLanguage, 1);
+			$v = array($data['uName'], $data['uEmail'], $password_to_insert, $uIsValidated, $uDateAdded, $uIsFullRecord, $uDefaultLanguage, $uIsActive);
 			$r = $db->prepare("insert into Users (uName, uEmail, uPassword, uIsValidated, uDateAdded, uIsFullRecord, uDefaultLanguage, uIsActive) values (?, ?, ?, ?, ?, ?, ?, ?)");
 			$res = $db->execute($r, $v);
 			if ($res) {
@@ -165,12 +171,13 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			$dh = Loader::helper('date');
 			$uDateAdded = $dh->getSystemDateTime();
 			
-			$v = array(USER_SUPER_ID, USER_SUPER, $uEmail, $uPasswordEncrypted, 1, $uDateAdded);
-			$r = $db->prepare("insert into Users (uID, uName, uEmail, uPassword, uIsActive, uDateAdded) values (?, ?, ?, ?, ?, ?)");
+			$v = array(USER_SUPER_ID, USER_SUPER, $uEmail, $uPasswordEncrypted, 1, 1, $uDateAdded);
+			$r = $db->prepare("insert into Users (uID, uName, uEmail, uPassword, uIsActive, uIsValidated, uDateAdded) values (?, ?, ?, ?, ?, ?, ?)");
 			$res = $db->execute($r, $v);
 			if ($res) {
-				$newUID = $db->Insert_ID();
-				return UserInfo::getByID($newUID);
+				// because the autoincrement column is manually updated, 
+				// last_inser_id doesn't return the inserted value (at least in MySQL)
+				return UserInfo::getByID(USER_SUPER_ID);
 			}
 		}
 		
@@ -182,10 +189,13 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		 * @return boolean
 		 */
 		public function triggerDelete() {
+			global $u;
+			
 			$db = Loader::db();
 			$v = array($this->uID);
 			$pkr = new DeleteUserUserWorkflowRequest();
 			$pkr->setRequestedUserID($this->uID);
+			$pkr->setRequesterUserID($u->getUserID());
 			$pkr->trigger();
 			return $db->GetOne('select count(uID) from Users where uID = ?', $v) == 0;
 		}
@@ -550,14 +560,6 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			$db->query("update UserValidationHashes set uDateRedeemed = " . time() . " where uID = ?", $v);
 			$this->uIsValidated = 1;
 			Events::fire('on_user_validate', $this);
-			
-			// Trigger workflow request		
-			$pkr = new ActivateUserUserWorkflowRequest();
-			$pkr->setRequestedUserID($this->uID);
-			$pkr->trigger();
-			
-			$this->uIsActive = intval($db->GetOne('select uIsActive from Users where uID = ?', $v));
-			return $this->isActive();
 		}
 		
 		function changePassword($newPassword) { 
@@ -574,11 +576,49 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			}
 		}
 
+		function triggerActivate($action=null, $requesterUID=null) {
+			if ($requesterUID === null) {
+				global $u;
+				$requesterUID = $u->getUserID();
+			}
+			
+			$db = Loader::db();
+			$v = array($this->uID);
+			
+			$pkr = new ActivateUserUserWorkflowRequest();
+			if ($action !== null) {
+				$pkr->setRequestAction($action);
+			}			
+			// default activate action of workflow is set after workflow request is created
+			$pkr->setRequestedUserID($this->uID);
+			$pkr->setRequesterUserID($requesterUID);
+			$pkr->trigger();
+			
+			$this->uIsActive = intval($db->GetOne('select uIsActive from Users where uID = ?', $v));
+			return $this->isActive();
+		}
+		
 		function activate() {
 			$db = Loader::db();
 			$q = "update Users set uIsActive = 1 where uID = '{$this->uID}'";
 			$r = $db->query($q);
 			Events::fire('on_user_activate', $this);
+		}
+
+		function triggerDeactivate() {
+			global $u;
+				
+			$db = Loader::db();
+			$v = array($this->uID);
+			
+			$pkr = new ActivateUserUserWorkflowRequest();
+			$pkr->setRequestAction('deactivate');
+			$pkr->setRequestedUserID($this->uID);
+			$pkr->setRequesterUserID($u->getUserID());
+			$pkr->trigger();
+			
+			$this->uIsActive = intval($db->GetOne('select uIsActive from Users where uID = ?', $v));
+			return $this->isActive()==0;
 		}
 
 		function deactivate() {

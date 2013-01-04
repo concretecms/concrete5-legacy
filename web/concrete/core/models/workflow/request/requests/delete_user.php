@@ -10,6 +10,8 @@ defined('C5_EXECUTE') or die("Access Denied.");
  
 class Concrete5_Model_DeleteUserUserWorkflowRequest extends UserWorkflowRequest {
 	
+	protected $requestAction = 'delete';
+	
 	public function __construct() {
 		$pk = PermissionKey::getByHandle('delete_user');
 		parent::__construct($pk);
@@ -19,30 +21,27 @@ class Concrete5_Model_DeleteUserUserWorkflowRequest extends UserWorkflowRequest 
 		$d = new WorkflowDescription();
 		$ui = UserInfo::getByID($this->getRequestedUserID());
 		$d->setEmailDescription(t("User account \"%s\" has pending deletion request and needs to be approved.", $ui->getUserName()));
-		$d->setShortStatus(t("User deletion Request"));
+		$d->setShortStatus(t("Pending"));
 		return $d;
 	}
 	
 	public function approve(WorkflowProgress $wp) {
 		$ui = UserInfo::getByID($this->getRequestedUserID());
 		$ui->delete();
-		$wpr = new WorkflowProgressResponse();
+		$wpr = parent::cancel($wp);
+		$wpr->setWorkflowProgressResponseURL(BASE_URL . DIR_REL . '/' . DISPATCHER_FILENAME . '/dashboard/users/search?deleted=1&username='.urlencode($ui->getUserName()));
 		$wpr->message = t("User %s has been deleted.", $ui->getUserName());
-		$wpr->setWorkflowProgressResponseURL(BASE_URL . DIR_REL . '/' . DISPATCHER_FILENAME . '?uID=' . $this->getRequestedUserID());
 		return $wpr;
 	}
 	
+	/**
+	 * After canceling delete request, do nothing
+	 */
 	public function cancel(WorkflowProgress $wp) {
 		$ui = UserInfo::getByID($this->getRequestedUserID());
-		
-		if (!$ui->isActive()) {
-			$pkr = new ActivateUserUserWorkflowRequest();
-			$pkr->setRequestedUserID($this->uID);
-			$pkr->trigger();
-		}
-		
 		$wpr = parent::cancel($wp);
 		$wpr->message = t("User deletion request has been cancelled.");
+		
 		return $wpr;
 	}
 
@@ -74,5 +73,14 @@ class Concrete5_Model_DeleteUserUserWorkflowRequest extends UserWorkflowRequest 
 		$button->setWorkflowProgressActionStyleClass('dialog-launch');
 		$buttons[] = $button;
 		return $buttons;
+	}
+	
+	/**
+	 * Gets the translated text of action of user workflow request
+	 * 
+	 * @return string
+	 */
+	public function getRequestActionText() {
+		return t("Delete Request");
 	}
 }

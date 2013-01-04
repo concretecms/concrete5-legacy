@@ -193,6 +193,12 @@ class Concrete5_Controller_Register extends Controller {
 					$rcID = 0;
 				}
 				
+				// Call deactivate() separately because someone might be still attaching
+				// to the on_user_deactivate method during the registration.
+				// This used to be in the non-validation case only but with the workflow,
+				// we need to default the new user to inactive (uIsActive=0).
+				$process->deactivate();
+				
 				if (defined("USER_VALIDATE_EMAIL") && USER_VALIDATE_EMAIL > 0) {
 					$uHash = $process->setupValidation();
 					
@@ -210,12 +216,11 @@ class Concrete5_Controller_Register extends Controller {
 					$redirectMethod='register_success_validate';
 					$registerData['msg']= join('<br><br>',$this->getRegisterSuccessValidateMsgs());
 					
+					
 					$u->logout();
 				} else {
-					$ui = UserInfo::getByID($u->getUserID());
-					$ui->deactivate();
-					
-					if (!$ui->markValidated()) {
+					$process->markValidated();
+					if (!$process->triggerActivate('register_activate', USER_SUPER_ID)) {
 						$redirectMethod='register_pending';
 						$registerData['msg']=$this->getRegisterPendingMsg();
 						$u->logout();

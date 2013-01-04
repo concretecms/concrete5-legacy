@@ -134,6 +134,16 @@ class UserSearchDefaultColumnSet extends DatabaseItemListColumnSet {
 		return '<a href="mailto:' . $ui->getUserEmail() . '">' . $ui->getUserEmail() . '</a>';
 	}
 	
+	public function getUserStatus($ui) {		
+		if ($ui->isValidated() == 1) {
+			$currentStatus = $ui->isActive()==0?t('Inactivated'):t('Activated');
+		} else {
+			$currentStatus = t('Unvalidated');
+		} 
+		
+		return $currentStatus;
+	}
+	
 	public static function getUserDateAdded($ui) {
 		return date(DATE_APP_DASHBOARD_SEARCH_RESULTS_USERS, strtotime($ui->getUserDateAdded()));
 	}
@@ -142,7 +152,8 @@ class UserSearchDefaultColumnSet extends DatabaseItemListColumnSet {
 		$this->addColumn(new DatabaseItemListColumn('uName', t('Username'), array('UserSearchDefaultColumnSet', 'getUserName')));
 		$this->addColumn(new DatabaseItemListColumn('uEmail', t('Email'), array('UserSearchDefaultColumnSet', 'getUserEmail')));
 		$this->addColumn(new DatabaseItemListColumn('uDateAdded', t('Last Modified'), array('UserSearchDefaultColumnSet', 'getUserDateAdded')));
-		$this->addColumn(new DatabaseItemListColumn('uNumLogins', t('# Logins'), 'getNumLogins')); 
+		$this->addColumn(new DatabaseItemListColumn('uStatus', t('Status'), array('UserSearchDefaultColumnSet', 'getUserStatus'), false));
+		$this->addColumn(new DatabaseItemListColumn('uNumLogins', t('# Logins'), 'getNumLogins'));		
 		$date = $this->getColumnByKey('uDateAdded');
 		$this->setDefaultSortColumn($date, 'desc');
 	}

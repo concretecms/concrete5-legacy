@@ -211,10 +211,13 @@ $(function() {
 	<? if ($c->isEditMode()) { ?>
 		$(ccm_editInit);	
 	<? } ?>
-
-	<? 
+		
+	<?
 	if (!$dh->inDashboard()) { ?>
 		$("#ccm-page-controls-wrapper").html(menuHTML); 
+		
+	
+		
 		<? if ($cantCheckOut) { ?>
 			item = new ccm_statusBarItem();
 			item.setCSSClass('info');
@@ -249,6 +252,9 @@ $(function() {
 			sbitem.setDescription('<?= t('Page Defaults for %s Page Type. All edits take effect immediately.', $c->getCollectionTypeName()) ?>');
 			ccm_statusBar.addItem(sbitem);		
 		<? } ?>
+		
+
+		
 		<?
 		$hasPendingPageApproval = false;
 		
