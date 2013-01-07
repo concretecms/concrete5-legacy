@@ -214,6 +214,11 @@ class Concrete5_Controller_Dashboard_Users_Search extends Controller {
 		if ($_REQUEST['numResults'] && Loader::helper('validation/numbers')->integer($_REQUEST['numResults'])) {
 			$userList->setItemsPerPage($_REQUEST['numResults']);
 		}
+
+		if ($_REQUEST[$userList->getQueryStringSortVariable()] == 'uStatus') {
+			
+			$userList->sortByStatus($_REQUEST[$userList->getQueryStringSortDirectionVariable()]);
+		}
 		
 		$pk = PermissionKey::getByHandle('access_user_search');
 		$asl = $pk->getMyAssignment();
