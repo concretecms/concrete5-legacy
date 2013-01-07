@@ -119,8 +119,6 @@ class Concrete5_Model_UserList extends DatabaseItemList {
 				", CASE WHEN u.uIsValidated = 1 AND u.uIsActive = 1 THEN '" . t("Activated") . "' " .
 				"WHEN u.uIsValidated = 1 THEN '". t("Inactivated") . "' " .
 				"ELSE '". t("Unvalidated") . "' END AS uStatus";
-			
-			//$this->setQuery('SELECT DISTINCT u.uID, u.uName, '. $sql .' FROM Users u ');
 		}
 		$this->setQuery('SELECT DISTINCT u.uID, u.uName' . $sql . ' FROM Users u ');
 	}
