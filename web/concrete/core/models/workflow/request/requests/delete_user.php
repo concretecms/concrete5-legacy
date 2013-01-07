@@ -20,7 +20,9 @@ class Concrete5_Model_DeleteUserUserWorkflowRequest extends UserWorkflowRequest 
 	public function getWorkflowRequestDescriptionObject() {
 		$d = new WorkflowDescription();
 		$ui = UserInfo::getByID($this->getRequestedUserID());
-		$d->setEmailDescription(t("User account \"%s\" has pending deletion request and needs to be approved.", $ui->getUserName()));
+		$d->setEmailDescription(t("User account \"%s\" has been marked for deletion. The deletion request needs to be approved.", $ui->getUserName()));
+		$d->setDescription(t("User %s Submitted for Deletion.", $ui->getUserName()));
+		$d->setInContextDescription(t("User Submitted for Deletion."));
 		$d->setShortStatus(t("Pending"));
 		return $d;
 	}
@@ -81,6 +83,6 @@ class Concrete5_Model_DeleteUserUserWorkflowRequest extends UserWorkflowRequest 
 	 * @return string
 	 */
 	public function getRequestActionText() {
-		return t("Delete Request");
+		return t("Deletion");
 	}
 }

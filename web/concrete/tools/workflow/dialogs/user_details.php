@@ -2,6 +2,9 @@
 defined('C5_EXECUTE') or die("Access Denied.");
 
 $ui = UserInfo::getByID($_REQUEST['uID']);
+if (!is_object($ui)) {
+	die(t("Invalid user provided."));
+}
 $u = User::getByUserID($_REQUEST['uID']);
 $uName = $ui->getUserName();
 $uEmail = $ui->getUserEmail();
@@ -69,5 +72,6 @@ $userGroup = $u->getUserGroups();
 		<div class="dialog-buttons">
 		<? $ih = Loader::helper('concrete/interface')?>
 		<?=$ih->button_js(t('Close'), 'jQuery.fn.dialog.closeTop()', 'left', 'btn')?>
+		<?=$ih->button(t('Edit'), View::url('/dashboard/users/search') . '?uID=' . $u->getUserID() . '&amp;task=edit', 'right', 'btn btn-primary')?>
 		</div>
 </div><!-- // div ccm-ui end -->

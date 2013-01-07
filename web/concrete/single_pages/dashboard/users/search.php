@@ -146,8 +146,8 @@ if (is_object($uo)) {
 	$workflowList = UserWorkflowProgress::getList($uID);
 	
 	if (count($workflowList) > 0) {
-		foreach($workflowList as $wl) {
-			$wr = $wl->getWorkflowRequestObject();
+		foreach($workflowList as $wp) {
+			$wr = $wp->getWorkflowRequestObject();
 			$workflowRequestActions[] = $wr->getRequestAction();								
 		}
 	}
@@ -620,16 +620,16 @@ $(function() {
 	// if current user is activated/deactivated, and workflow is attached, corresponding "blue status bar" is triggered, start workflow for users
 	if (count($workflowList)) { ?>
 		$("body").append("<div id='ccm-page-controls-wrapper' ></div>");
-		<?php  foreach($workflowList as $wl) { ?>
-			<? 	$wr = $wl->getWorkflowRequestObject(); 
-				$wf = $wl->getWorkflowObject(); ?>
+		<?php  foreach($workflowList as $wp) { ?>
+			<? 	$wr = $wp->getWorkflowRequestObject(); 
+				$wf = $wp->getWorkflowObject(); ?>
 				
 				sbitem = new ccm_statusBarItem();
 				sbitem.setCSSClass('<?=$wr->getWorkflowRequestStyleClass()?>');
-				sbitem.setDescription('<?=$wf->getWorkflowProgressCurrentDescription($wl)?>');
-				sbitem.setAction('<?=$wl->getWorkflowProgressFormAction()?>');
+				sbitem.setDescription('<?=$wf->getWorkflowProgressCurrentDescription($wp)?>');
+				sbitem.setAction('<?=$wp->getWorkflowProgressFormAction()?>');
 				sbitem.enableAjaxForm();
-				<? $actions = $wl->getWorkflowProgressActions(); ?>
+				<? $actions = $wp->getWorkflowProgressActions(); ?>
 				<? foreach($actions as $act) { ?>							
 					
 					<? if ($act->getWorkflowProgressActionURL() == '') { ?>								

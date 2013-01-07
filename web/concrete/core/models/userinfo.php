@@ -586,10 +586,10 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			$v = array($this->uID);
 			
 			$pkr = new ActivateUserUserWorkflowRequest();
+			// default activate action of workflow is set after workflow request is created
 			if ($action !== null) {
 				$pkr->setRequestAction($action);
-			}			
-			// default activate action of workflow is set after workflow request is created
+			}
 			$pkr->setRequestedUserID($this->uID);
 			$pkr->setRequesterUserID($requesterUID);
 			$pkr->trigger();

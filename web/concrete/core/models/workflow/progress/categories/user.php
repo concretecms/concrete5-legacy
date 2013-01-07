@@ -67,7 +67,7 @@ class Concrete5_Model_UserWorkflowProgress extends WorkflowProgress {
 
 class Concrete5_Model_UserWorkflowProgressList extends UserList {
 	
-	protected $autoSortColumns = array('wpDateLastAction', 'wpCurrentStatus');
+	protected $autoSortColumns = array('uName', 'wpDateLastAction', 'wpCurrentStatus');
 	
 	public function __construct() {
 		$this->setQuery('SELECT DISTINCT u.uID, u.uName, wp.wpID FROM Users u INNER JOIN UserWorkflowProgress uwp ON uwp.uID = u.uID INNER JOIN WorkflowProgress wp ON wp.wpID = uwp.wpID');

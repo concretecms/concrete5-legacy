@@ -60,7 +60,7 @@ $(function() {
 
 <div class="success alert-message block-message">
 <p>
-<?= $workflowPending ? t('The email address <b>%s</b> has been verified and your account is pending for activation before you become a member of this website and are able to login.', $uEmail) : t('The email address <b>%s</b> has been verified and you are now a fully validated member of this website.', $uEmail)?>
+<?= $workflowPending ? t('The email address <b>%s</b> has been verified. Your account is currently pending for activation. After your account has been activated, you become a member of this website and are able to login.', $uEmail) : t('The email address <b>%s</b> has been verified and you are now a fully validated member of this website.', $uEmail)?>
 </p>
 <div class="alert-actions"><a class="btn small" href="<?=$this->url('/')?>"><?=t('Continue to Site')?></a></div>
 </div>
