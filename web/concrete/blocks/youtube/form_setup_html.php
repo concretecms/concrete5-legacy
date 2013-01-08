@@ -6,6 +6,11 @@ table#videoBlockSetup .note{ font-size:10px; color:#999999; font-weight:normal }
 </style> 
 
 <?
+
+if(!isset($bObj) || !($bObj instanceof YoutubeBlockController)) {
+	$bObj=new YoutubeBlockController;
+}
+
 if (!$bObj->vWidth) {
 	$bObj->vWidth=425;
 }
