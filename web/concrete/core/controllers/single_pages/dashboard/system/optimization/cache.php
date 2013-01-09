@@ -24,6 +24,7 @@ class Concrete5_Controller_Dashboard_System_Optimization_Cache extends Dashboard
 				Config::save('FULL_PAGE_CACHE_GLOBAL', $this->post('FULL_PAGE_CACHE_GLOBAL'));
 				Config::save('FULL_PAGE_CACHE_LIFETIME', $this->post('FULL_PAGE_CACHE_LIFETIME'));
 				Config::save('FULL_PAGE_CACHE_LIFETIME_CUSTOM', $this->post('FULL_PAGE_CACHE_LIFETIME_CUSTOM'));				
+				Events::fire('on_cache_updated', $this->post);
 				$this->redirect('/dashboard/system/optimization/cache', 'cache_updated');
 			}
 		} else {
