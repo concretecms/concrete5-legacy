@@ -101,7 +101,6 @@ class Concrete5_Model_BasicWorkflow extends Workflow  {
 	
 	public function cancel(WorkflowProgress $wp) {
 		if ($this->canApproveWorkflowProgressObject($wp)) {
-
 			$req = $wp->getWorkflowRequestObject();
 			$bdw = new BasicWorkflowProgressData($wp);
 			$u = new User();
@@ -116,7 +115,7 @@ class Concrete5_Model_BasicWorkflow extends Workflow  {
 			$hist->setAction('cancel');
 			$hist->setRequesterUserID($u->getUserID());
 			$wp->addWorkflowProgressHistoryObject($hist);
-
+			
 			$wpr = $req->runTask('cancel', $wp);
 			$wp->markCompleted();
 
