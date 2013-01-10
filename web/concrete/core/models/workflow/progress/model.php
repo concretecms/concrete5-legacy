@@ -162,6 +162,7 @@ abstract class Concrete5_Model_WorkflowProgress extends Object {
 		if (!($wpr instanceof WorkflowProgressResponse)) {
 			$wpr = new WorkflowProgressResponse();
 		}
+		Events::fire('workflow_progressed', $wpr);
 		return $wpr;
 	}
 	
