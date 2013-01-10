@@ -534,6 +534,15 @@ class Concrete5_Library_Content_Importer {
 		} else {
 			return $value;
 		}
-	}	
+	}
+	
+	protected function importPackages(SimpleXMLElement $sx) {
+		if (isset($sx->packages)) {
+			foreach($sx->packages->package as $p) {
+				$pkg = Loader::package((string)$p['handle']);
+				$pkg->install();
+			}
+		}
+	}
 
 }
