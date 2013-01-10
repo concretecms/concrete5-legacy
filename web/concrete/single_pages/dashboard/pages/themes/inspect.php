@@ -81,9 +81,6 @@ $ci = Loader::helper('concrete/interface');
                                     case PageThemeFile::TFTYPE_VIEW:
                                         print t('None. This file will automatically be used.');
                                         break;
-									case PageThemeFile::TFTYPE_MAIL_VIEW:
-										print t("None. This file will be automatically used for HTML format mails.");
-										break;
                                     case PageThemeFile::TFTYPE_DEFAULT:
                                         print t('None. This file will automatically be used for pages without a template.');
                                         break;
