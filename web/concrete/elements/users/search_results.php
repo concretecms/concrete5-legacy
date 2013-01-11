@@ -67,15 +67,15 @@ if (!$mode) {
 			<th width="1"><input id="ccm-user-list-cb-all" type="checkbox" /></th>
 			<? foreach($columns->getColumns() as $col) { ?>
 				<? if ($col->isColumnSortable()) { ?>
-					<th class="<?=$userList->getSearchResultsClass($col->getColumnKey())?>"><a href="<?=$userList->getSortByURL($col->getColumnKey(), $col->getColumnDefaultSortDirection(), $bu, $soargs)?>"><?=$col->getColumnName()?></a></th>				
+					<th class="<?=$userList->getSearchResultsClass($col->getColumnKey())?>"><a href="<?=$userList->getSortByURL($col->getColumnKey(), $col->getColumnDefaultSortDirection(), $bu, $soargs)?>"><?=$col->getColumnName()?></a></th>
 				<? } else { ?>
 					<th><?=$col->getColumnName()?></th>
 				<? } ?>
 			<? } ?>
+
 		</tr>
 	<?
-		foreach($users as $ui) {
-			
+		foreach($users as $ui) { 
 			$action = View::url('/dashboard/users/search?uID=' . $ui->getUserID());
 			
 			if ($mode == 'choose_one' || $mode == 'choose_multiple') {
@@ -99,6 +99,7 @@ if (!$mode) {
 					<td><?=$col->getColumnValue($ui)?></td>
 				<? } ?>
 			<? } ?>
+
 			</tr>
 			<?
 		}

@@ -114,7 +114,8 @@ class Concrete5_Model_UserList extends DatabaseItemList {
 	protected function setBaseQuery() {
 		$sql = '';
 		if ($this->sortUserStatus) {
-			// when uStatus column is selected
+			// When uStatus column is selected, we also get the "status" column for
+			// multilingual sorting purposes.
 			$sql =
 				", CASE WHEN u.uIsValidated = 1 AND u.uIsActive = 1 THEN '" . t("Active") . "' " .
 				"WHEN u.uIsValidated = 1 THEN '". t("Inactive") . "' " .

@@ -182,7 +182,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		}
 		
 		/**
-		 * Tirgger user deletion request in workflow
+		 * Tirgger user deletion request with workflow request.
 		 *
 		 * Returns true if user is deleted successfully
 		 *

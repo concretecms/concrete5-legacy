@@ -145,7 +145,7 @@ class Concrete5_Model_StartingPointPackage extends Package {
 			$uPasswordEncrypted = INSTALL_USER_PASSWORD_HASH;
 		}
 		$uEmail = INSTALL_USER_EMAIL;
-		$ui = UserInfo::addSuperUser($uPasswordEncrypted, $uEmail);
+		UserInfo::addSuperUser($uPasswordEncrypted, $uEmail);
 		$u = User::getByUserID(USER_SUPER_ID, true, false);
 		
 		Loader::library('mail/importer');
