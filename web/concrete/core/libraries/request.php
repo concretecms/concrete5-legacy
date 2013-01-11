@@ -172,13 +172,12 @@ class Concrete5_Library_Request {
 			$path = substr($path, 0, strrpos($path, '/'));
 		}		
 		
-		if ($cID && $cPath) { 
-			$req = Request::get();
-			$req->setCollectionPath($cPath);			
+        	$req = Request::get();
+       		$req->setCollectionPath($cPath);
+		if ($cID && $cPath) { 			
 			$c = Page::getByID($cID, 'ACTIVE');
-		} else {
-			$c = new Page();
-			$c->loadError(COLLECTION_NOT_FOUND);
+		} else {		
+			$c = Page::getByID(HOME_CID, 'ACTIVE');            
 		}
 		return $c;
 	}
