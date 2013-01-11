@@ -69,9 +69,6 @@ $ci = Loader::helper('concrete/interface');
                                     case PageThemeFile::TFTYPE_PAGE_TYPE_EXISTING:
                                         print t("Template for existing page type.");
                                         break;
-									case PageThemeFile::TFTYPE_MAIL_VIEW:
-										print t("Template for HTML format mails.");
-										break;
                                 }
                                 // END Switch
                             ?>
@@ -81,9 +78,6 @@ $ci = Loader::helper('concrete/interface');
                                     case PageThemeFile::TFTYPE_VIEW:
                                         print t('None. This file will automatically be used.');
                                         break;
-									case PageThemeFile::TFTYPE_MAIL_VIEW:
-										print t("None. This file will be automatically used for HTML format mails.");
-										break;
                                     case PageThemeFile::TFTYPE_DEFAULT:
                                         print t('None. This file will automatically be used for pages without a template.');
                                         break;

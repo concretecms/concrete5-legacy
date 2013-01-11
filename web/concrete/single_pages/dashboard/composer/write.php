@@ -318,4 +318,3 @@ if (isset($entry)) { ?>
 	<?=Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper()?>
 	
 <? } ?>
-
