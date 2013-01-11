@@ -86,8 +86,9 @@ abstract class Concrete5_Model_WorkflowRequest extends Object {
 			$workflows = $pa->getWorkflows();	
 			foreach($workflows as $wf) {
 				if ($wf->validateTrigger($this)) {
-					$this->addWorkflowProgress($wf);
+					$wp = $this->addWorkflowProgress($wf);
 					$workflowsStarted++;
+					Events::fire('workflow_triggered', $wp);
 				}
 			}
 		}
@@ -95,6 +96,7 @@ abstract class Concrete5_Model_WorkflowRequest extends Object {
 		if ($workflowsStarted == 0) {
 			$defaultWorkflow = new EmptyWorkflow();
 			$wp = $this->addWorkflowProgress($defaultWorkflow);
+			Events::fire('workflow_triggered', $wp);
 			return $wp->getWorkflowProgressResponseObject();
 		}
 		

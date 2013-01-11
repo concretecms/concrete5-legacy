@@ -9,8 +9,8 @@ defined('C5_EXECUTE') or die("Access Denied.");
  */
 class Concrete5_Model_UserWorkflowProgress extends WorkflowProgress {
 	
-	// Notice: here requestedUID is requested user id, NOT requester user id
-	protected $requestedUID;
+	// Notice: here uID is requested user id, NOT requester user id
+	protected $uID;
 	
 	public function loadDetails() {
 		$db = Loader::db();
@@ -28,12 +28,12 @@ class Concrete5_Model_UserWorkflowProgress extends WorkflowProgress {
 		$wp = parent::add('user', $wf, $wr);
 		$db = Loader::db();
 		$db->Replace('UserWorkflowProgress', array('uID' => $wr->getRequestedUserID(), 'wpID' => $wp->getWorkflowProgressID()), array('uID', 'wpID'), true);
-		$wp->requestedUID = $wr->getRequestedUserID();		
+		$wp->uID = $wr->getRequestedUserID();		
 		return $wp;
 	}
 	
 	public function getWorkflowProgressFormAction(){
-		return REL_DIR_FILES_TOOLS_REQUIRED . '/' . DIRNAME_WORKFLOW . '/categories/user?task=save_user_workflow_progress&uID=' . $this->requestedUID . '&wpID=' . $this->getWorkflowProgressID() . '&' . Loader::helper('validation/token')->getParameter('save_user_workflow_progress');
+		return REL_DIR_FILES_TOOLS_REQUIRED . '/' . DIRNAME_WORKFLOW . '/categories/user?task=save_user_workflow_progress&uID=' . $this->uID . '&wpID=' . $this->getWorkflowProgressID() . '&' . Loader::helper('validation/token')->getParameter('save_user_workflow_progress');
 	}
 
 	public function getPendingWorkflowProgressList() {
