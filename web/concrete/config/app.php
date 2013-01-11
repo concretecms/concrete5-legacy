@@ -9,19 +9,16 @@
  **/
 defined('C5_EXECUTE') or die("Access Denied."); 
 
-if (!defined('ENABLE_CACHE')) {
-	Config::getOrDefine('ENABLE_CACHE', true); 
-}
 if (!defined('ENABLE_OVERRIDE_CACHE')) {
 	Config::getOrDefine('ENABLE_OVERRIDE_CACHE', false); 
 }
 
-if (!ENABLE_CACHE) {
-	Cache::disableCache();
+if (!defined('ENABLE_BLOCK_CACHE')) {
+	Config::getOrDefine('ENABLE_BLOCK_CACHE', true); 
 }
 
-if (ENABLE_CACHE) {
-	Config::getOrDefine('FULL_PAGE_CACHE_GLOBAL', 'blocks');	
+if (!defined('FULL_PAGE_CACHE_GLOBAL')) {
+	Config::getOrDefine('FULL_PAGE_CACHE_GLOBAL', false);	
 }
 
 if (!defined('STATISTICS_TRACK_PAGE_VIEWS')) {
@@ -233,4 +230,8 @@ if (!defined('UPLOAD_FILE_EXTENSIONS_ALLOWED')) {
 	define('UPLOAD_FILE_EXTENSIONS_CONFIGURABLE', true);
 } else {
 	define('UPLOAD_FILE_EXTENSIONS_CONFIGURABLE', false);
+}
+
+if (!defined('SEO_EXCLUDE_WORDS')) {
+	Config::getOrDefine('SEO_EXCLUDE_WORDS', 'a, an, as, at, before, but, by, for, from, is, in, into, like, of, off, on, onto, per, since, than, the, this, that, to, up, via, with');
 }
