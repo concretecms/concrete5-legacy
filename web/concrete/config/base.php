@@ -69,6 +69,10 @@ if (!defined('SITEMAP_PAGES_LIMIT')) {
 	define('SITEMAP_PAGES_LIMIT', 100);
 }
 
+if (!defined('SITEMAP_APPROVE_IMMEDIATELY')) {
+	define('SITEMAP_APPROVE_IMMEDIATELY', true);
+}
+
 if (!defined('ENABLE_DEFINABLE_USER_ATTRIBUTES')) {
 	define('ENABLE_DEFINABLE_USER_ATTRIBUTES', true);
 }
@@ -314,15 +318,6 @@ define('DIR_LANGUAGES_CORE', DIR_BASE_CORE . '/' . DIRNAME_LANGUAGES);
 define('DIR_FILES_EMAIL_TEMPLATES', DIR_BASE . '/mail');
 define('DIR_FILES_EMAIL_TEMPLATES_CORE', DIR_BASE_CORE . '/mail');
 
-# Mail
-define('FILENAME_MAIL_DATA', 'data.php');
-define('FILENAME_MAIL_TPL_PLAIN', 'plain.php');
-define('FILENAME_MAIL_TPL_HTML', 'html.php');
-define('FILENAME_MAIL_THEME_FILE', 'mail_view.php');
-if (!defined('MAIL_TPL_HTML_SYSTEM_FOOTER')) {
-	define('MAIL_TPL_HTML_SYSTEM_FOOTER', true);
-}
-
 # Items used by the custom form core block
 define('DIR_FILES_BLOCK_TYPES_FORMS_EXTERNAL', DIR_FILES_BLOCK_TYPES . '/external_form/forms/');
 define('DIR_FILES_BLOCK_TYPES_FORMS_EXTERNAL_PROCESS', DIR_FILES_BLOCK_TYPES . '/external_form/forms/controllers');
@@ -346,6 +341,18 @@ if (!defined('DIR_FILES_CACHE')) {
 	define('DIR_FILES_CACHE', DIR_BASE . '/files/cache');
 }
 
+if (!defined('FILENAME_ENVIRONMENT_CACHE')) {
+	define('FILENAME_ENVIRONMENT_CACHE', 'environment.cache');
+}
+
+if (!defined('DIR_FILES_PAGE_CACHE')) {
+	define('DIR_FILES_PAGE_CACHE', DIR_BASE . '/files/cache/pages');
+}
+
+if (!defined('PAGE_CACHE_LIBRARY')) {
+	define('PAGE_CACHE_LIBRARY', 'file');
+}
+
 if (!defined('CACHE_ID')) {
 	define('CACHE_ID', md5(str_replace(array('https://', 'http://'), '', BASE_URL) . DIR_REL));
 }
@@ -355,13 +362,12 @@ define('DISPATCHER_FILENAME_CORE', 'dispatcher.php');
 
 if (defined('DIR_FILES_CACHE')) {
 	define('DIR_FILES_CACHE_DB', DIR_FILES_CACHE);
-	define('DIR_FILES_CACHE_PAGES', DIR_FILES_CACHE . '/lucene.pages');
 	$ADODB_ACTIVE_CACHESECS = 300;
 	$ADODB_CACHE_DIR = DIR_FILES_CACHE_DB;
 }
 
 if (!defined('CACHE_LIFETIME')) {
-	define('CACHE_LIFETIME', null);
+	define('CACHE_LIFETIME', 21600); // 6 hours
 }
 
 define('ON_WINDOWS', intval(substr(PHP_OS,0,3)=='WIN') );

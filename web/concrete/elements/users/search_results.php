@@ -67,7 +67,7 @@ if (!$mode) {
 			<th width="1"><input id="ccm-user-list-cb-all" type="checkbox" /></th>
 			<? foreach($columns->getColumns() as $col) { ?>
 				<? if ($col->isColumnSortable()) { ?>
-					<th class="<?=$userList->getSearchResultsClass($col->getColumnKey())?>"><?php //var_dump($col) ?><a href="<?=$userList->getSortByURL($col->getColumnKey(), $col->getColumnDefaultSortDirection(), $bu, $soargs)?>"><?=$col->getColumnName()?></a></th>				
+					<th class="<?=$userList->getSearchResultsClass($col->getColumnKey())?>"><a href="<?=$userList->getSortByURL($col->getColumnKey(), $col->getColumnDefaultSortDirection(), $bu, $soargs)?>"><?=$col->getColumnName()?></a></th>				
 				<? } else { ?>
 					<th><?=$col->getColumnName()?></th>
 				<? } ?>
@@ -94,7 +94,7 @@ if (!$mode) {
 			<td class="ccm-user-list-cb" style="vertical-align: middle !important"><input type="checkbox" value="<?=$ui->getUserID()?>" user-email="<?=$ui->getUserEmail()?>" user-name="<?=$ui->getUserName()?>" /></td>
 			<? foreach($columns->getColumns() as $col) { ?>
 				<? if ($col->getColumnKey() == 'uName') { ?>
-					<td><a href="<?=$action?>"><?=$ui->getUserName()?></a></td>					 
+					<td><a href="<?=$action?>"><?=$ui->getUserName()?></a></td>
 				<? } else { ?>
 					<td><?=$col->getColumnValue($ui)?></td>
 				<? } ?>

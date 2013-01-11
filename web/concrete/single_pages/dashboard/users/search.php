@@ -452,11 +452,9 @@ if (is_object($uo)) {
 				</script>
 	
 				
-				<?  if (!in_array("delete", $workflowRequestActions)) {
-						print $ih->button_js(t('Delete User Account'), "deleteUser()", 'left', 'error');
-					}				
-					//$this->controller->redirect('/dashboard/users/search?uID=' . intval($_GET['uID']));
-				?>
+				<? if (!in_array("delete", $workflowRequestActions)) {
+					print $ih->button_js(t('Delete User Account'), "deleteUser()", 'left', 'error');
+				} ?>
 	
 			<? } ?>
 		<? } ?>
