@@ -220,15 +220,6 @@
         </stacks>
         <pages>
             <page name="ホーム" path="" filename="" pagetype="right_sidebar" description="" package="">
-                <area name="Header">
-                    <block type="content" name="">
-                        <data table="btContentLocal">
-                            <record>
-                                <content><![CDATA[<h1>Welcome to concrete5 - an Open Source CMS</h1>]]></content>
-                            </record>
-                        </data>
-                    </block>
-                </area>
                 <area name="Sidebar">
                     <block type="content" name="">
                         <data table="btContentLocal">
@@ -263,7 +254,6 @@
                                 </data>
                             </block>
                         </area>
-                        <area name="HeaderImage"/>
                         <area name="Header Image">
                             <block type="image" name="">
                                 <data table="btContentImage">
@@ -282,15 +272,6 @@
                         </area>
                     </page>
 			<page name="概要" path="/about" filename="" pagetype="left_sidebar" description="" package="">
-											<area name="Header">
-												<block type="content" name="">
-													<data table="btContentLocal">
-														<record>
-															<content><![CDATA[<h1>概要</h1>]]></content>
-														</record>
-													</data>
-												</block>
-											</area>
 											<area name="Sidebar">
 												<block type="core_stack_display" name="">
 													<stack><![CDATA[Side Nav]]></stack>
@@ -312,15 +293,6 @@
 												</area>
 											</page>
 			<page name="ゲストブック" path="/about/guestbook" filename="" pagetype="right_sidebar" description="" package="">
-				<area name="Header">
-					<block type="content" name="">
-						<data table="btContentLocal">
-							<record>
-								<content><![CDATA[<h1>ゲストブック</h1>]]></content>
-							</record>
-						</data>
-					</block>
-				</area>
 				<area name="Sidebar">
 					<block type="core_stack_display" name="">
 						<stack><![CDATA[Side Nav]]></stack>
@@ -348,15 +320,6 @@
 				</area>
 			</page>
 			<page name="お問い合わせ" path="/about/contact-us" filename="" pagetype="left_sidebar" description="" package="">
-				<area name="Header">
-					<block type="content" name="">
-						<data table="btContentLocal">
-							<record>
-								<content><![CDATA[<h1>お問い合わせ</h1>]]></content>
-							</record>
-						</data>
-					</block>
-				</area>
 				<area name="Sidebar">
 					<block type="core_stack_display" name="">
 						<stack><![CDATA[Side Nav]]></stack>
@@ -441,15 +404,6 @@
 					</area>
 				</page>
 			<page name="検索" path="/search" filename="" pagetype="right_sidebar" description="" package="">
-					<area name="Header">
-						<block type="content" name="">
-							<data table="btContentLocal">
-								<record>
-									<content><![CDATA[<h1>サイトマップ</h1>]]></content>
-								</record>
-							</data>
-						</block>
-					</area>
 					<area name="Sidebar">
 						<block type="content" name="">
 							<data table="btContentLocal">
