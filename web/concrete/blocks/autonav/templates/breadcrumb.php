@@ -2,7 +2,7 @@
 $navItems = $controller->getNavItems();
 
 foreach ($navItems as $ni) {
-	if (!$ni->isFirst) {
+	if (!$ni->isHome) {
 		echo ' <span class="ccm-autonav-breadcrumb-sep">&gt;</span> ';
 	}
 	
