@@ -82,7 +82,12 @@ if (!defined('ENABLE_CUSTOM_USER_ATTRIBUTES_MODEL')) {
 }
 
 if (!defined("PAGE_TITLE_FORMAT")) {
+	// %1$s is the site name, %2$s is the page name 
 	define('PAGE_TITLE_FORMAT', '%1$s :: %2$s');
+}
+if (!defined("PAGE_METATITLE_FORMAT")) {
+	// %1$s is the site name, %2$s is the page meta-title 
+	define('PAGE_METATITLE_FORMAT', '%2$s');
 }
 
 if (!defined("PAGE_PATH_SEPARATOR")) {

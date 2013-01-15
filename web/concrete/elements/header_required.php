@@ -28,9 +28,9 @@ $akt = $c->getCollectionAttributeValue('meta_title');
 $akd = $c->getCollectionAttributeValue('meta_description');
 $akk = $c->getCollectionAttributeValue('meta_keywords');
 
-if ($akt) { 
-	$pageTitle = $akt; 
-	?><title><?php echo htmlspecialchars($akt, ENT_COMPAT, APP_CHARSET)?></title>
+if (is_string($akt) && strlen($akt)) { 
+	$pageTitle = htmlspecialchars($akt, ENT_COMPAT, APP_CHARSET);
+	?><title><?php echo sprintf(PAGE_METATITLE_FORMAT, SITE, $pageTitle)?></title>
 <?php } else { 
 	$pageTitle = htmlspecialchars($pageTitle, ENT_COMPAT, APP_CHARSET);
 	?><title><?php echo sprintf(PAGE_TITLE_FORMAT, SITE, $pageTitle)?></title>
