@@ -639,23 +639,23 @@ ccm_saveArrangement = function(cID) {
 	ccm_mainNavDisableDirectExit();
 	var serial = '';
 	$('div.ccm-area').each(function() {
-		areaStr = '&area[' + $(this).attr('id').substring(1) + '][]=';
-		
-		bArray = $(this).sortable('toArray');
-
-		for (i = 0; i < bArray.length; i++ ) {
-			if (bArray[i] != '' && bArray[i].substring(0, 1) == 'b') {
-				// make sure to only go from b to -, meaning b28-9 becomes "28"
-				var bID = bArray[i].substring(1, bArray[i].indexOf('-'));
-				var bObj = $('#' + bArray[i]);
-				if (bObj.attr('custom-style')) {
-					bID += '-' + bObj.attr('custom-style');
+		var area = this;
+		var $area = $(area);
+		var aID = $area.attr('id').substring(1);
+		$.each($area.sortable('toArray'), function(itemIndex, itemId) {
+			if(itemId != '' && itemId.substring(0, 1) == 'b') {
+				var $block = $('#' + itemId);
+				if($block.closest('div.ccm-area')[0] == area) {
+					var bID = itemId.substring(1, itemId.indexOf('-'));
+					serial += '&area[' + aID + '][]=' + bID;
+					var cs = $block.attr('custom-style');
+					if(cs) {
+						serial += '-' + cs;
+					}
 				}
-				serial += areaStr + bID;
 			}
-		}
+		});
 	});
-
  	$.ajax({
  		type: 'POST',
  		url: CCM_DISPATCHER_FILENAME,
