@@ -46,8 +46,6 @@ if ($_POST['update']) {
 	
 	if (!$ctName) {
 		$error[] = t("Name required.");
-	} else if (!$vs->alphanum($ctName, true)) {
-		$error[] = t('Page type names can only contain letters, numbers and spaces.');
 	}
 	
 	if (!$valt->validate('update_page_type')) {
