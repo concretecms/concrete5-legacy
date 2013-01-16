@@ -201,8 +201,11 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		}
 		
 		/**
-		 * Deletes a user
-		 * @return void
+		 * Deletes a user.
+		 * 
+		 * Returns true if the user is successfully deleted.
+		 * 
+		 * @return boolean
 		 */
 		public function delete() {
 			// we will NOT let you delete the admin user
@@ -240,6 +243,8 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			
 			$r = $db->query("UPDATE Blocks set uID=? WHERE uID = ?",array( intval(USER_SUPER_ID), intval($this->uID)));
 			$r = $db->query("UPDATE Pages set uID=? WHERE uID = ?",array( intval(USER_SUPER_ID), intval($this->uID)));
+			
+			return true;
 		}
 
 		/**
