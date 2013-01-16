@@ -16,6 +16,13 @@ if (!$a->isGlobalArea()) {
 	$isGlobalArea = true;
 }
 
+if (!is_object($b)) {
+	echo '<div class="ccm-ui"><div class="alert alert-error">';
+	echo(t("Unable to retrieve block object. If this block has been moved please reload the page."));
+	echo '</div></div';
+	exit;
+}
+
 $bp = new Permissions($b);
 $ap = new Permissions($a);
 if (!$bp->canViewEditInterface()) {
@@ -122,6 +129,7 @@ if (is_object($b)) {
 					'b' => $b,
 					'p' => $bp
 				));
+				$bv->setAreaObject($a);
 				$bv->render($b);
 				$bv->renderElement('block_footer');
 			}

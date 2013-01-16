@@ -159,16 +159,17 @@ foreach($t1 as $value) {
 				<select multiple name="fsID[]" class="chosen-select">
 					<optgroup label="<?=t('Sets')?>">
 					<? foreach($s1 as $s) { 
-					   $fsetName = $s->getFileSetName();
-					   $i = 0;
-					   $fsetName2 = array();
-                        for($i=0; $i < mb_strlen($fsetName, "UTF-8"); $i+=23){
-                            $fsetName2[] = mb_substr($fsetName, $i, 23, "UTF-8");
-                        }
-                       $fsetName2 = implode("-",$fsetName2);
-    				?>
+						$fsetName = $s->getFileSetName();
+						$i = 0;
+						$fsetName2 = array();
+						for($i=0; $i < mb_strlen($fsetName, "UTF-8"); $i+=23){
+							$fsetName2[] = mb_substr($fsetName, $i, 23, "UTF-8");
+						}
+						$fsetName2 = implode("-",$fsetName2);
+					?>
 						<option value="<?= $s->getFileSetID()?>"  <? if (is_array($searchRequest['fsID']) && in_array($s->getFileSetID(), $searchRequest['fsID'])) { ?> selected="selected" <? } ?>><?= $fsetName2; ?></option>
-					<?php } ?>
+					<? } ?>
+					</optgroup>
 					<optgroup label="<?=t('Other')?>">
 						<option value="-1" <? if (is_array($searchRequest['fsID']) && in_array(-1, $searchRequest['fsID'])) { ?> selected="selected" <? } ?>><?=t('Files in no sets.')?></option>
 					</optgroup>
