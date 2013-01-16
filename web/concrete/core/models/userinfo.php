@@ -560,6 +560,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			$db->query("update UserValidationHashes set uDateRedeemed = " . time() . " where uID = ?", $v);
 			$this->uIsValidated = 1;
 			Events::fire('on_user_validate', $this);
+			return true;
 		}
 		
 		function changePassword($newPassword) { 
