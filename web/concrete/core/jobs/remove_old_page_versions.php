@@ -68,8 +68,7 @@ class Concrete5_Job_RemoveOldPageVersions extends Job {
 				}
 			}
 		}
-		$pages = ($pageCount==1) ? t("Page") : t("Pages");
-		return 	$versionCount . " " . t("versions deleted from") . " " . $pageCount . " " . $pages . " (".$pNum.")";
+	        return t2('%d versions deleted from %s page (%d)', '%d versions deleted from %s pages (%d)', $pageCount, $versionCount, $pageCount, $pNum);
 	}
 }
 
