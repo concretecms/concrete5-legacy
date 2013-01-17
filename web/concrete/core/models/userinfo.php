@@ -303,7 +303,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		 */
 		public function getUserObject() {
 			// returns a full user object - groups and everything - for this userinfo object
-			$nu = User::getByUserID($this->uID);
+			$nu = User::getByID($this->uID);
 			return $nu;
 		}
 

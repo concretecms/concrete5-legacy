@@ -140,7 +140,7 @@ class Concrete5_Model_StartingPointPackage extends Package {
 		}
 		$uEmail = INSTALL_USER_EMAIL;
 		UserInfo::addSuperUser($uPasswordEncrypted, $uEmail);
-		$u = User::getByUserID(USER_SUPER_ID, true, false);
+		$u = User::getByID(USER_SUPER_ID, true, false);
 		
 		Loader::library('mail/importer');
 		MailImporter::add(array('miHandle' => 'private_message'));

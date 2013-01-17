@@ -70,7 +70,7 @@ $areEntries = count($entries) > 0 ? true : false;
                         echo t("Guest");
                     }
                     else{
-                        $u = User::getByUserID($ent->getUserID());
+                        $u = User::getByID($ent->getUserID());
                         echo $u->getUserName();
                     }
                     ?></strong></td>

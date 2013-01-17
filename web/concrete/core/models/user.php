@@ -30,11 +30,18 @@
 		protected $accessEntities = array();
 		
 		/**
+		 * @deprecated
+		 */
+		public static function getByUserID($uID, $login = false, $cacheItemsOnLogin = true) {
+			return self::getByID($uID, $login, $cacheItemsOnLogin);
+		}
+
+		/**
 		 * @param int $uID
 		 * @param boolean $login
 		 * @return User
 		 */
-		public static function getByUserID($uID, $login = false, $cacheItemsOnLogin = true) {
+		public static function getByID($uID, $login = false, $cacheItemsOnLogin = true) {
 			$db = Loader::db();
 			$v = array($uID);
 			$q = "SELECT uID, uName, uIsActive, uLastOnline, uTimezone, uDefaultLanguage FROM Users WHERE uID = ?";
@@ -80,7 +87,7 @@
 		 * @return User
 		 */
 		public function loginByUserID($uID) {
-			return User::getByUserID($uID, true);
+			return User::getByID($uID, true);
 		}
 		
 		public static function isLoggedIn() {
