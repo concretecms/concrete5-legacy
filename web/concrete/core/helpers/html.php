@@ -184,7 +184,7 @@ class Concrete5_Helper_Html {
 
 		// Build a table to drive symbol tests - for ease of future expansion
 
-		// symbols for 'ALL' as this overrides any package symbol
+		// symbols for 'ALL' are overridden by any subsequent package specific symbol
 		$symbol_list[] = array (
 				'file' => 'ASSET_MAP_ALL_FILE_'.$fsymbol,
 				'pkg' => 'ASSET_MAP_ALL_PKG_'.$fsymbol);
