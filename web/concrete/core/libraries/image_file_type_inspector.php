@@ -17,15 +17,16 @@ class Concrete5_Library_ImageFileTypeInspector extends FileTypeInspector {
 		$fv->setAttribute($at1, $size[0]);
 		$fv->setAttribute($at2, $size[1]);
 		
-		// create a level one and a level two thumbnail
-		// load up image helper
-		$hi = Loader::helper('image');
-		
-		// Use image helper to create thumbnail at the right size
-		$fv->createThumbnailDirectories();
-		$hi->create($fv->getPath(), $fv->getThumbnailPath(1), AL_THUMBNAIL_WIDTH, AL_THUMBNAIL_HEIGHT);
-		$hi->create($fv->getPath(), $fv->getThumbnailPath(2), AL_THUMBNAIL_WIDTH_LEVEL2, AL_THUMBNAIL_HEIGHT_LEVEL2);
-		
+		if ($size[0] * $size[1] <= 1040000) {
+			// create a level one and a level two thumbnail
+			// load up image helper
+			$hi = Loader::helper('image');
+			
+			// Use image helper to create thumbnail at the right size
+			$fv->createThumbnailDirectories();
+			$hi->create($fv->getPath(), $fv->getThumbnailPath(1), AL_THUMBNAIL_WIDTH, AL_THUMBNAIL_HEIGHT);
+			$hi->create($fv->getPath(), $fv->getThumbnailPath(2), AL_THUMBNAIL_WIDTH_LEVEL2, AL_THUMBNAIL_HEIGHT_LEVEL2);
+		}
 	}
 	
 
