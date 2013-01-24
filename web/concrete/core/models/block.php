@@ -178,6 +178,7 @@ class Concrete5_Model_Block extends Object {
 		
 		$bv = new BlockView();
 		$bt = BlockType::getByID( $this->getBlockTypeID() );  
+		$bv->setAreaObject($this->getBlockAreaObject());
 		$bv->render($this, $view, $args);
 	}
 
