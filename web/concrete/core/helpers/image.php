@@ -20,7 +20,9 @@
 defined('C5_EXECUTE') or die("Access Denied.");
 class Concrete5_Helper_Image {
 	
-	public $fileobj = null;
+	public $options = null;
+	public $newAbsPath = null;
+	public $newRelPath = null;
 	
 	/**
 	 * Creates a new image given an original path, a new path, a target width and height.
@@ -29,17 +31,70 @@ class Concrete5_Helper_Image {
 	 * @return void
 	 */
 	
-	public function create($originalPath, $newPath, $width, $height, $crop = false) {
-	
-		$imageSize = getimagesize($originalPath);
+	public function create($originalPath, $newPath = null, $width, $height, $crop = false) {
 		
-		$res = $this->process($originalPath);
-		$res = $this->resize($res, $imageSize[2], $maxWidth, $maxHeight);
-		if($crop){
-			$res = $this->crop($res, $imageSize[2], $maxWidth, $maxHeight);
+		if ( !file_exists($originalPath) ) return false;
+		
+		//build the file object before processing to determine if file already exists
+		$this->options = array_merge($this->options, array(
+			'width' => $width,
+			'height' => $height,
+			'resized' => true,
+			'cropped' => $crop,
+			'imageSize' => getimagesize($originalPath),
+			'originalPath' => $originalPath
+		));
+		
+		//generate new filepath
+		$exists = $this->path();
+		
+		//check if file already exists
+		if( $exists ) {
+			
+			return $newPath;
+			
+		} else {
+			
+			$res = $this->process();
+			$res = $this->resize($res);
+			
+			if($crop){
+				$res = $this->crop($res);
+			}
+			
+			return $this->cache($res) ? $newPath : false;
+			
+		}
+	}
+	
+	/**
+	 * Create cache file path if no path set and return false if file already exists
+	 * @return bool|string
+	 */
+	 
+	private function path( $fID = false ) {
+	
+		if( isset($this->newAbsPath) ){
+			$path = $this->newAbsPath;
+		} else {
+			$filename = md5(serialize($this->options));
+			
+			$path = DIR_FILES_CACHE . '/' . $filename;
+			$relpath = REL_DIR_FILES_CACHE . '/' . $filename;
+			
+			if ( isset($this->options['fID']) ) {
+				$relpath .= '_fID-'.$this->options['fID'];
+				$path .= '_fID-'.$this->options['fID'];
+			}
+			
+			$path .= image_type_to_extension($this->options['imageSize'][2]);
+			$relpath .= image_type_to_extension($this->options['imageSize'][2]);
+			
+			$this->newAbsPath = $path;
+			$this->newRelPath = $path;
 		}
 		
-		$this->cache($res, $imageSize[2]);
+		return file_exists($path);
 		
 	}
 	
@@ -49,40 +104,25 @@ class Concrete5_Helper_Image {
 	 * @return bool|string
 	 */
 	
-	private function cache($res, $type, $fID = false) {
-	
-		//take the file object and convert it to an MD5
-		$filename = md5(serialize($this->fileobj));
+	private function cache($res) {
 		
-		if ($fID) {
-			$filename = $filename . '_f' . $fID . image_type_to_extension($type);
-		} else {
-			$filename = $filename . image_type_to_extension($type);
+		switch($this->fileobj['imageSize'][2]) {
+			case IMAGETYPE_GIF:
+				$file = imagegif($res, $this->newAbsPath);
+				break;
+			case IMAGETYPE_JPEG:
+				$compression = defined('AL_THUMBNAIL_JPEG_COMPRESSION') ? AL_THUMBNAIL_JPEG_COMPRESSION : 80;
+				$file = imagejpeg($res, $this->newAbsPath, $compression);
+				break;
+			case IMAGETYPE_PNG:
+				$file = imagepng($res, $this->newAbsPath);
+				break;
 		}
 		
-		$filepath = DIR_FILES_CACHE . '/' . $filename;
-		
-		$file = false;
-		
-		if (!file_exists($filepath)) {
-			switch($type) {
-				case IMAGETYPE_GIF:
-					$file = imagegif($res, $filepath);
-					break;
-				case IMAGETYPE_JPEG:
-					$compression = defined('AL_THUMBNAIL_JPEG_COMPRESSION') ? AL_THUMBNAIL_JPEG_COMPRESSION : 80;
-					$file = imagejpeg($res, $filepath, $compression);
-					break;
-				case IMAGETYPE_PNG:
-					$file = imagepng($res, $filepath);
-					break;
-			}
-			@chmod($filepath, FILE_PERMISSIONS_MODE);
-		}
-		
+		@chmod($this->newAbsPath, FILE_PERMISSIONS_MODE);
 		imagedestroy($res);
 		
-		return ( file_exists($filepath) ) ? $filename : $file;
+		return file_exists($this->newAbsPath);
 		
 	}
 	
@@ -91,45 +131,36 @@ class Concrete5_Helper_Image {
 	 * @param string $path
 	 * @return resource $res
 	 */
-	private function process($path) {
-	
-		$imageSize = getimagesize($path);
+	private function process() {
 
-		switch($imageSize[2]) {
+		switch($this->options['imageSize'][2]) {
 			case IMAGETYPE_GIF:
-				$res = @imagecreatefromgif($path);
+				$res = @imagecreatefromgif($this->options['originalPath']);
 				break;
 			case IMAGETYPE_JPEG:
-				$res = @imagecreatefromjpeg($path);
+				$res = @imagecreatefromjpeg($this->options['originalPath']);
 				break;
 			case IMAGETYPE_PNG:
-				$res = imagecreatefrompng($path);
+				$res = imagecreatefrompng($this->options['originalPath']);
 				break;
 		}
-		
-		$this->fileobj = new stdClass();
-		
-		$this->fileobj->width = imagesx($res);
-		$this->fileobj->height = imagesy($res);
-		$this->fileobj->type = $imageSize[2];
-		$this->fileobj->path = $path;
 		
 		return $res;
 		
 	}
 	
 	/**
-	 * Resizes an image, defaults to the maximum length
-	 * @params resource $res, int $type, int $width, int $height, bool $max
+	 * Resizes an image resource, defaults to the maximum length
+	 * @params resource $res, bool $max
 	 * @return resource $image
 	 */
-	private function resize($res, $type, $width, $height, $max = true) {
+	private function resize($res, $max = true) {
 		
 		$oWidth = imagesx($res);
 		$oHeight = imagesy($res);
 		
-		$width = min($oWidth, $width);
-		$height = min($oHeight, $height);
+		$width = min($oWidth, $this->fileobj['width']);
+		$height = min($oHeight, $this->fileobj['height']);
 		
 		$finalWidth = 0;
 		$finalHeight = 0;
@@ -202,10 +233,6 @@ class Concrete5_Helper_Image {
 		
 		imagecopyresampled($image, $res, 0, 0, 0, 0, $finalWidth, $finalHeight, $oWidth, $oHeight);
 		
-		$this->fileobj->width = imagesx($image);
-		$this->fileobj->height = imagesy($image);
-		$this->fileobj->resized = 10;
-		
 		return $image;
 		
 	}
@@ -215,8 +242,10 @@ class Concrete5_Helper_Image {
 	 * @params resource $res, int $type, int $width, int $height
 	 * @return resource $image
 	 */
-	private function crop($res, $type, $width, $height) {
+	private function crop($res) {
 	
+		$width = $this->fileobj['width'];
+		$height = $this->fileobj['height'];
 		$oWidth = imagesx($res);
 		$oHeight = imagesy($res);
 		$finalWidth = 0; //For cropping, this is really "scale to width before chopping extra height"
@@ -276,7 +305,7 @@ class Concrete5_Helper_Image {
 		$image = imagecreatetruecolor($width, $height);
 		
 		// Better transparency - thanks for the ideas and some code from mediumexposure.com
-		if (($type == IMAGETYPE_GIF) || ($type == IMAGETYPE_PNG)) {
+		if (($this->options['imageSize'][2] == IMAGETYPE_GIF) || ($this->options['imageSize'][2] == IMAGETYPE_PNG)) {
 			$trnprt_indx = imagecolortransparent($res);
 			
 			// If we have a specific transparent color
@@ -295,7 +324,7 @@ class Concrete5_Helper_Image {
 				imagecolortransparent($image, $trnprt_indx);
 				
 			
-			} else if ($type == IMAGETYPE_PNG) {
+			} else if ($this->options['imageSize'][2] == IMAGETYPE_PNG) {
 				
 				// Turn off transparency blending (temporarily)
 				imagealphablending($image, false);
@@ -314,10 +343,6 @@ class Concrete5_Helper_Image {
 		
 		imagecopyresampled($image, $res, 0, 0, $crop_src_x, $crop_src_y, $finalWidth, $finalHeight, $oWidth, $oHeight);
 		
-		$this->fileobj->width = imagesx($image);
-		$this->fileobj->height = imagesy($image);
-		$this->fileobj->cropped = true;
-		
 		return $image;
 	} 
 	
@@ -331,39 +356,30 @@ class Concrete5_Helper_Image {
 	 * @param bool $crop
 	 */
 	public function getThumbnail($obj, $maxWidth, $maxHeight, $crop = false) {
-		$fID = false;
-		
+	
 		if ($obj instanceof File) {
 			$path = $obj->getPath();
-			$fID = $obj->getFileID();
+			$this->options['fID'] = $obj->getFileID();
 		} else {
 			$path = $obj;
 		}
-				
-		$imageSize = getimagesize($path);
-		$res = $this->process($path);
-		$res = $this->resize($res, $imageSize[2], $maxWidth, $maxHeight);
 		
-		if($crop){
-			$res = $this->crop($res, $imageSize[2], $maxWidth, $maxHeight);
-		}
-		
-		$image = $this->cache($res, $imageSize[2], $fID);
+		$image = $this->create($path, $maxWidth, $maxHeight, $crop);
 		
 		if ($image) {
-			$src = REL_DIR_FILES_CACHE . '/' . $image;
-			$abspath = DIR_FILES_CACHE . '/' . $image;
 			
 			$thumb = new stdClass;
-			$thumb->src = $src;
-			$dimensions = getimagesize($abspath);
+			$thumb->src = $this->newRelPath;
+			$dimensions = getimagesize($image);
 			$thumb->width = $dimensions[0];
 			$thumb->height = $dimensions[1];
 			
 			return $thumb;
 				
 		} else {
+		
 			return $image;
+			
 		}
 	}
 	
