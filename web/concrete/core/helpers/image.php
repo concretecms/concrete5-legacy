@@ -72,7 +72,7 @@ class Concrete5_Helper_Image {
 	 * @return bool
 	 */
 	 
-	private function path( $fID = false ) {
+	protected function path( $fID = false ) {
 	
 		if( isset($this->newAbsPath) ){
 			$path = $this->newAbsPath;
@@ -104,7 +104,7 @@ class Concrete5_Helper_Image {
 	 * @return bool
 	 */
 	
-	private function cache($res) {
+	protected function cache($res) {
 		
 		switch($this->options['imageSize'][2]) {
 			case IMAGETYPE_GIF:
@@ -130,7 +130,7 @@ class Concrete5_Helper_Image {
 	 * Create a image resource from a file path.
 	 * @return resource $res
 	 */
-	private function process() {
+	protected function process() {
 
 		switch($this->options['imageSize'][2]) {
 			case IMAGETYPE_GIF:
@@ -153,7 +153,7 @@ class Concrete5_Helper_Image {
 	 * @params resource $res, bool $max
 	 * @return resource $image
 	 */
-	private function resize($res, $max = true) {
+	protected function resize($res, $max = true) {
 		
 		$oWidth = imagesx($res);
 		$oHeight = imagesy($res);
@@ -241,7 +241,7 @@ class Concrete5_Helper_Image {
 	 * @param resource $res
 	 * @return resource $image
 	 */
-	private function crop($res) {
+	protected function crop($res) {
 	
 		$width = $this->options['width'];
 		$height = $this->options['height'];
