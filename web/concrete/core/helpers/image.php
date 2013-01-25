@@ -69,7 +69,7 @@ class Concrete5_Helper_Image {
 	
 	/**
 	 * Create cache file path if no path set and return false if file already exists
-	 * @return bool|string
+	 * @return bool
 	 */
 	 
 	private function path( $fID = false ) {
@@ -77,7 +77,7 @@ class Concrete5_Helper_Image {
 		if( isset($this->newAbsPath) ){
 			$path = $this->newAbsPath;
 		} else {
-			$filename = md5(serialize($this->options));
+			$filename = md5(serialize(sort($this->options)));
 			
 			$path = DIR_FILES_CACHE . '/' . $filename;
 			$relpath = REL_DIR_FILES_CACHE . '/' . $filename;
@@ -100,8 +100,8 @@ class Concrete5_Helper_Image {
 	
 	/**
 	 * Generates a cached version of the image resource, optionally with an fID associated.
-	 * @params resource $res, int $type, string $fID
-	 * @return bool|string
+	 * @param resource $res
+	 * @return bool
 	 */
 	
 	private function cache($res) {
@@ -128,7 +128,6 @@ class Concrete5_Helper_Image {
 	
 	/**
 	 * Create a image resource from a file path.
-	 * @param string $path
 	 * @return resource $res
 	 */
 	private function process() {
@@ -141,7 +140,7 @@ class Concrete5_Helper_Image {
 				$res = @imagecreatefromjpeg($this->options['originalPath']);
 				break;
 			case IMAGETYPE_PNG:
-				$res = imagecreatefrompng($this->options['originalPath']);
+				$res = @imagecreatefrompng($this->options['originalPath']);
 				break;
 		}
 		
@@ -239,7 +238,7 @@ class Concrete5_Helper_Image {
 		
 	/**
 	 * Crops an image
-	 * @params resource $res, int $type, int $width, int $height
+	 * @param resource $res
 	 * @return resource $image
 	 */
 	private function crop($res) {
@@ -350,10 +349,7 @@ class Concrete5_Helper_Image {
 	 * Returns a path to the specified item, resized and/or cropped to meet max width and height. $obj can either be
 	 * a string (path) or a file object. 
 	 * Returns an object with the following properties: src, width, height
-	 * @param mixed $obj
-	 * @param int $maxWidth
-	 * @param int $maxHeight
-	 * @param bool $crop
+	 * @params mixed $obj, int $maxWidth, int $maxHeight, bool $crop
 	 */
 	public function getThumbnail($obj, $maxWidth, $maxHeight, $crop = false) {
 	
