@@ -24,6 +24,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 	
 		private $viewPath;
 		protected $pkgHandle;
+		protected $disableContentInclude = false;
 		
 		/**
 		 * controller used by this particular view
@@ -63,8 +64,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		public function getInstance() {
 			static $instance;
 			if (!isset($instance)) {
-				$v = __CLASS__;
-				$instance = new $v;
+				$instance = new View();
 			}
 			return $instance;
 		}		
@@ -97,8 +97,39 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		public function getStyleSheet($stylesheet) {
 			if ($this->isPreview()) {
 				return REL_DIR_FILES_TOOLS . '/css/' . DIRNAME_THEMES . '/' . $this->getThemeHandle() . '/' . $stylesheet . '?mode=preview&time=' . time();
-			} else {
-				return REL_DIR_FILES_TOOLS . '/css/' . DIRNAME_THEMES . '/' . $this->getThemeHandle() . '/' . $stylesheet;
+			}
+			// first we take the uncached file
+			$file = $this->getThemePath() . '/' . $stylesheet;
+			$cacheFile = DIR_FILES_CACHE . '/' . DIRNAME_CSS . '/' . $this->getThemeHandle() . '/' . $stylesheet;
+			if (file_exists($cacheFile) && file_exists($this->getThemeDirectory() . '/' . $stylesheet)) {
+				if (filemtime($cacheFile) > filemtime($this->getThemeDirectory() . '/' . $stylesheet)) {
+					return REL_DIR_FILES_CACHE . '/' . DIRNAME_CSS . '/' . $this->getThemeHandle() . '/' . $stylesheet;
+				}
+			}
+
+			if (file_exists($this->getThemeDirectory() . '/' . $stylesheet)) {
+
+				$pt = PageTheme::getByHandle($this->getThemeHandle());
+				if (!file_exists(DIR_FILES_CACHE . '/' . DIRNAME_CSS)) {
+					@mkdir(DIR_FILES_CACHE . '/' . DIRNAME_CSS);
+				}
+				if (!file_exists(DIR_FILES_CACHE . '/' . DIRNAME_CSS . '/' . $this->getThemeHandle())) {
+					@mkdir(DIR_FILES_CACHE . '/' . DIRNAME_CSS . '/' . $this->getThemeHandle());
+				}
+				if (file_exists($pt->getThemeDirectory() . '/' . $stylesheet)) {
+					$fh = Loader::helper('file');
+					$stat = filemtime($pt->getThemeDirectory() . '/' . $stylesheet);
+					if (!file_exists(dirname($cacheFile))) {
+						@mkdir(dirname($cacheFile), DIRECTORY_PERMISSIONS_MODE, true);
+					}
+					$style = $pt->parseStyleSheet($stylesheet);
+					$r = @file_put_contents($cacheFile, $style);
+					if ($r) {
+						return REL_DIR_FILES_CACHE . '/' . DIRNAME_CSS . '/' . $this->getThemeHandle() . '/' . $stylesheet;
+					} else {
+						return $this->getThemePath() . '/' . $stylesheet;
+					}
+				}
 			}
 		}
 
@@ -641,10 +672,11 @@ defined('C5_EXECUTE') or die("Access Denied.");
 					}
 				} else {
 					$theme = $rec->file;
+					$this->disableContentInclude = true;
 				}
 				
-				$themeDir = str_replace(FILENAME_THEMES_DEFAULT, '', $env->getPath(DIRNAME_THEMES . '/' . $pl->getThemeHandle() . '/' . FILENAME_THEMES_DEFAULT, $this->pkgHandle));
-				$themePath = str_replace(FILENAME_THEMES_DEFAULT, '', $env->getURL(DIRNAME_THEMES . '/' . $pl->getThemeHandle() . '/' . FILENAME_THEMES_DEFAULT, $this->pkgHandle));
+				$themeDir = str_replace('/' . FILENAME_THEMES_DEFAULT, '', $env->getPath(DIRNAME_THEMES . '/' . $pl->getThemeHandle() . '/' . FILENAME_THEMES_DEFAULT, $this->pkgHandle));
+				$themePath = str_replace('/' . FILENAME_THEMES_DEFAULT, '', $env->getURL(DIRNAME_THEMES . '/' . $pl->getThemeHandle() . '/' . FILENAME_THEMES_DEFAULT, $this->pkgHandle));
 			} else {
 				$this->ptHandle = $pl;
 				if (file_exists(DIR_FILES_THEMES . '/' . $pl . '/' . $filename)) {
@@ -717,42 +749,13 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			
 			// Determine which inner item to load, load it, and stick it in $innerContent
 			$content = false;
-							
+
 			ob_start();			
 			if ($view instanceof Page) {
 
 				$_pageBlocks = $view->getBlocks();
 				$_pageBlocksGlobal = $view->getGlobalBlocks();
 				$_pageBlocks = array_merge($_pageBlocks, $_pageBlocksGlobal);
-				if ($view->supportsPageCache($_pageBlocks, $this->controller)) {
-					$pageContent = $view->getFromPageCache();
-					if ($pageContent != false) {
-						Events::fire('on_before_render', $this);
-						if (defined('APP_CHARSET')) {
-							header("Content-Type: text/html; charset=" . APP_CHARSET);
-						}
-						print($pageContent);
-						Events::fire('on_render_complete', $this);
-						if (ob_get_level() == OB_INITIAL_LEVEL) {
-	
-							require(DIR_BASE_CORE . '/startup/shutdown.php');
-							exit;
-						}
-						return;
-					}
-				}
-				
-				foreach($_pageBlocks as $b1) {
-					$b1p = new Permissions($b1);
-					if ($b1p->canRead()) { 
-						$btc = $b1->getInstance();
-						// now we inject any custom template CSS and JavaScript into the header
-						if('Controller' != get_class($btc)){
-							$btc->outputAutoHeaderItems();
-						}
-						$btc->runTask('on_page_view', array($view));
-					}
-				}
 				
 				// do we have any custom menu plugins?
 				$cp = new Permissions($view);
@@ -851,8 +854,25 @@ defined('C5_EXECUTE') or die("Access Denied.");
 					$view = $c;
 					$req = Request::get();
 					$req->setCurrentPage($c);
+					$_pageBlocks = $view->getBlocks();
+					$_pageBlocksGlobal = $view->getGlobalBlocks();
+					$_pageBlocks = array_merge($_pageBlocks, $_pageBlocksGlobal);
 				}
 			}
+			
+			if (is_array($_pageBlocks)) {
+				foreach($_pageBlocks as $b1) {
+					$b1p = new Permissions($b1);
+					if ($b1p->canRead()) { 
+						$btc = $b1->getInstance();
+						// now we inject any custom template CSS and JavaScript into the header
+						if('Controller' != get_class($btc)){
+							$btc->outputAutoHeaderItems();
+						}
+						$btc->runTask('on_page_view', array($view));
+					}
+				}
+			}			
 			
 			// Determine which outer item/theme to load
 			// obtain theme information for this collection
@@ -878,7 +898,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			extract($this->controller->getSets());
 			extract($this->controller->getHelperObjects());
 
-			if ($content != false) {
+			if ($content != false && (!$this->disableContentInclude)) {
 				include($content);
 			}
 
@@ -896,6 +916,12 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			
 			if (file_exists($this->theme)) {
 				
+				$cache = PageCache::getLibrary();
+				$shouldAddToCache = $cache->shouldAddToCache($this);
+				if ($shouldAddToCache) {
+					$cache->outputCacheHeaders($c);
+				}
+
 				ob_start();
 				include($this->theme);
 				$pageContent = ob_get_contents();
@@ -904,16 +930,17 @@ defined('C5_EXECUTE') or die("Access Denied.");
 				$ret = Events::fire('on_page_output', $pageContent);
 				if($ret != '') {
 					print $ret;
+					$pageContent = $ret;
 				} else {
 					print $pageContent;
 				}
-				
-				if ($view instanceof Page) {
-					if ($view->supportsPageCache($_pageBlocks, $this->controller)) {
-						$view->addToPageCache($pageContent);
-					}
+
+				$cache = PageCache::getLibrary();
+				if ($shouldAddToCache) {
+					$cache->set($c, $pageContent);
 				}
-				
+
+			
 			} else {
 				throw new Exception(t('File %s not found. All themes need default.php and view.php files in them. Consult concrete5 documentation on how to create these files.', $this->theme));
 			}

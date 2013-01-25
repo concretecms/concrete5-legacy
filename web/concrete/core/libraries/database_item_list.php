@@ -82,7 +82,7 @@ class Concrete5_Library_DatabaseItemList extends ItemList {
 						}
 						$q .= ') ';
 					} else {
-						$q .= 'and 1 = 2';
+						$q .= 'and 1 = 2 ';
 					}
 				} else { 
 					$comp = (is_null($value) && stripos($comp, 'is') === false) ? (($comp == '!=' || $comp == '<>') ? 'IS NOT' : 'IS') : $comp;
@@ -198,8 +198,7 @@ class Concrete5_Library_DatabaseItemList extends ItemList {
 		return parent::getSortByURL($column, $dir, $baseURL, $additionalVars);
 	}
 	
-	protected function setupAttributeFilters($join) {
-		$db = Loader::db();
+	protected function setupAttributeFilters($join) {		
 		$i = 1;
 		$this->addToQuery($join);
 		foreach($this->attributeFilters as $caf) {

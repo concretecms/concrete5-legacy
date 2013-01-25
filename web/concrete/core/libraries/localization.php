@@ -3,7 +3,7 @@
 	class Concrete5_Library_Localization {
 	
 		public function init() {
-			$loc = self::getInstance();
+			$loc = Localization::getInstance();
 			$loc->getTranslate();
 		}
 		
@@ -16,12 +16,12 @@
 		}
 		
 		public static function changeLocale($locale) {
-			$loc = self::getInstance();
+			$loc = Localization::getInstance();
 			$loc->setLocale($locale);
 		}
 		
 		public static function activeLocale() {
-			$loc = self::getInstance();
+			$loc = Localization::getInstance();
 			return $loc->getLocale();
 		}
 
@@ -30,12 +30,15 @@
 		public function __construct() {
 			Loader::library('3rdparty/Zend/Date');
 			Loader::library('3rdparty/Zend/Translate');
-			$this->setLocale(defined('ACTIVE_LOCALE') ? ACTIVE_LOCALE : 'en_US');
-			Zend_Date::setOptions(array('format_type' => 'php'));
-			$cache = Cache::getLibrary();
-			if (is_object($cache)) {
-				Zend_Translate::setCache($cache);
-				Zend_Date::setOptions(array('cache'=>$cache));
+			$locale = defined('ACTIVE_LOCALE') ? ACTIVE_LOCALE : 'en_US';
+			$this->setLocale($locale);
+			if ($locale != 'en_US') {
+				Zend_Date::setOptions(array('format_type' => 'php'));
+				$cache = Cache::getLibrary();
+				if (is_object($cache)) {
+					Zend_Translate::setCache($cache);
+					Zend_Date::setOptions(array('cache'=>$cache));
+				}
 			}
 		}
 		
@@ -87,7 +90,7 @@
 		}
 		
 		public static function getTranslate() {
-			$loc = self::getInstance();
+			$loc = Localization::getInstance();
 			return $loc->getActiveTranslateObject();
 		}
 	

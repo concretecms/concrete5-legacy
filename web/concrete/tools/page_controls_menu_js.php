@@ -57,7 +57,7 @@ menuHTML += '<li id="ccm-logo-wrapper"><?=Loader::helper('concrete/interface')->
 <?
 	if ($cp->canViewToolbar()) {  ?>
 	
-	menuHTML += '<li <? if ($c->isEditMode()) { ?>class="ccm-nav-edit-mode-active"<? } ?>><a class="ccm-icon-edit ccm-menu-icon" id="ccm-nav-edit" href="<? if (!$c->isEditMode()) { ?><?=DIR_REL?>/<?=DISPATCHER_FILENAME?>?cID=<?=$c->getCollectionID()?>&ctask=check-out<?=$token?><? } else { ?>javascript:void(0);<? } ?>"><? if ($c->isEditMode()) { ?><?=t('Editing')?><? } else { ?><?=t('Edit')?><? } ?></a></li>';
+	menuHTML += '<li <? if ($c->isEditMode()) { ?>class="ccm-nav-edit-mode-active"<? } ?>><a class="ccm-icon-edit ccm-menu-icon" id="ccm-nav-edit" href="<? if (!$c->isEditMode()) { ?><?=DIR_REL?>/<?=DISPATCHER_FILENAME?>?cID=<?=$c->getCollectionID()?>&ctask=check-out<?=$token?><? } else { ?>javascript:void(0);<? } ?>" <? if (!$c->isEditMode()) { ?> onclick="$(\'#ccm-edit-overlay\').hide()" <? } ?>><? if ($c->isEditMode()) { ?><?=t('Editing')?><? } else { ?><?=t('Edit')?><? } ?></a></li>';
 	<?
 	$items = $ihm->getPageHeaderMenuItems('left');
 	foreach($items as $ih) {
@@ -186,11 +186,11 @@ menuHTML += '<ul>';
 <? if ($cp->canViewPageVersions()) { ?>
 	menuHTML += '<li><a class="ccm-menu-icon ccm-icon-versions" <? if (!$c->isCheckedOut()) { ?> dialog-on-close="ccm_sitemapExitEditMode(<?=$c->getCollectionID()?>)" <? } ?> id="ccm-toolbar-nav-versions" dialog-width="640" dialog-height="340" dialog-modal="false" dialog-title="<?=t('Page Versions')?>" id="menuVersions<?=$cID?>" href="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/versions.php?cID=<?=$cID?>"><?=t('Versions')?></a></li>';
 <? } ?>
-<? if ($cp->canEditPageSpeedSettings()) { ?>
-	menuHTML += '<li><a class="ccm-menu-icon ccm-icon-speed-settings" <? if (!$c->isCheckedOut()) { ?> dialog-on-close="ccm_sitemapExitEditMode(<?=$c->getCollectionID()?>)" <? } ?> id="ccm-toolbar-nav-speed-settings" dialog-append-buttons="true" dialog-width="550" dialog-height="280" dialog-modal="false" dialog-title="<?=t('Speed Settings')?>" href="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/edit_collection_popup.php?&cID=<?=$cID?>&ctask=edit_speed_settings"><?=t('Speed Settings')?></a></li>';
-<? } ?>
 <? if ($cp->canMoveOrCopyPage()) { ?>
 	menuHTML += '<li><a class="ccm-menu-icon ccm-icon-move-copy" id="ccm-toolbar-nav-move-copy" dialog-width="90%" dialog-height="70%" dialog-modal="false" dialog-title="<?=t('Move/Copy Page')?>" href="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/sitemap_search_selector?sitemap_select_mode=move_copy_delete&cID=<?=$cID?>"><?=t('Move/Copy')?></a></li>';
+<? } ?>
+<? if ($cp->canEditPageSpeedSettings()) { ?>
+	menuHTML += '<li><a class="ccm-menu-icon ccm-icon-speed-settings" <? if (!$c->isCheckedOut()) { ?> dialog-on-close="ccm_sitemapExitEditMode(<?=$c->getCollectionID()?>)" <? } ?> id="ccm-toolbar-nav-speed-settings" dialog-append-buttons="true" dialog-width="550" dialog-height="280" dialog-modal="false" dialog-title="<?=t('Full Page Caching')?>" href="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/edit_collection_popup.php?&cID=<?=$cID?>&ctask=edit_speed_settings"><?=t('Full Page Caching')?></a></li>';
 <? } ?>
 <? if ($cp->canDeletePage()) { ?>
 	menuHTML += '<li><a class="ccm-menu-icon ccm-icon-delete" <? if (!$c->isCheckedOut()) { ?> dialog-on-close="ccm_sitemapExitEditMode(<?=$c->getCollectionID()?>)" <? } ?>  dialog-append-buttons="true" id="ccm-toolbar-nav-delete" dialog-width="360" dialog-height="150" dialog-modal="false" dialog-title="<?=t('Delete Page')?>" href="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/edit_collection_popup.php?&cID=<?=$cID?>&ctask=delete"><?=t('Delete')?></a></li>';
@@ -224,30 +224,30 @@ $(function() {
 
 		<? if ($c->getCollectionPointerID() > 0) { ?>
 	
-			item = new ccm_statusBarItem();
-			item.setCSSClass('info');
-			item.setDescription('<?= t("This page is an alias of one that actually appears elsewhere.", $c->getCollectionCheckedOutUserName())?>');
+			sbitem  = new ccm_statusBarItem();
+			sbitem.setCSSClass('info');
+			sbitem.setDescription('<?= t("This page is an alias of one that actually appears elsewhere.", $c->getCollectionCheckedOutUserName())?>');
 			btn1 = new ccm_statusBarItemButton();
 			btn1.setLabel('<?=t('View/Edit Original')?>');
 			btn1.setURL('<?=DIR_REL . "/" . DISPATCHER_FILENAME . "?cID=" . $c->getCollectionID()?>');
-			item.addButton(btn1);
+			sbitem.addButton(btn1);
 			<? if ($cp->canApprovePageVersions()) { ?>
 				btn2 = new ccm_statusBarItemButton();
 				btn2.setLabel('<?=t('Remove Alias')?>');
 				btn2.setCSSClass('danger');
 				btn2.setURL('<?=DIR_REL . "/" . DISPATCHER_FILENAME . "?cID=" . $c->getCollectionPointerOriginalID() . "&ctask=remove-alias" . $token?>');
-				item.addButton(btn2);
+				sbitem.addButton(btn2);
 			<? } ?>
-			ccm_statusBar.addItem(item);		
+			ccm_statusBar.addItem(sbitem);		
 		
 		<? } 	
 
 		if ($c->isMasterCollection()) { ?>
 
-			item = new ccm_statusBarItem();
-			item.setCSSClass('info');
-			item.setDescription('<?= t('Page Defaults for %s Page Type. All edits take effect immediately.', $c->getCollectionTypeName()) ?>');
-			ccm_statusBar.addItem(item);		
+			sbitem = new ccm_statusBarItem();
+			sbitem.setCSSClass('info');
+			sbitem.setDescription('<?= t('Page Defaults for %s Page Type. All edits take effect immediately.', $c->getCollectionTypeName()) ?>');
+			ccm_statusBar.addItem(sbitem);		
 		<? } ?>
 		<?
 		$hasPendingPageApproval = false;
@@ -262,11 +262,11 @@ $(function() {
 					}
 					?>
 					<? $wf = $wl->getWorkflowObject(); ?>
-					item = new ccm_statusBarItem();
-					item.setCSSClass('<?=$wr->getWorkflowRequestStyleClass()?>');
-					item.setDescription('<?=$wf->getWorkflowProgressCurrentDescription($wl)?>');
-					item.setAction('<?=$wl->getWorkflowProgressFormAction()?>');
-					item.enableAjaxForm();
+					sbitem = new ccm_statusBarItem();
+					sbitem.setCSSClass('<?=$wr->getWorkflowRequestStyleClass()?>');
+					sbitem.setDescription('<?=$wf->getWorkflowProgressCurrentDescription($wl)?>');
+					sbitem.setAction('<?=$wl->getWorkflowProgressFormAction()?>');
+					sbitem.enableAjaxForm();
 					<? $actions = $wl->getWorkflowProgressActions(); ?>
 					<? foreach($actions as $act) { ?>
 						btn = new ccm_statusBarItemButton();
@@ -284,9 +284,9 @@ $(function() {
 								btn.addAttribute('<?=$key?>', '<?=$value?>');
 							<? } ?>
 						<? } ?>
-						item.addButton(btn);
+						sbitem.addButton(btn);
 					<? } ?>
-					ccm_statusBar.addItem(item);
+					ccm_statusBar.addItem(sbitem);
 				<? } ?>
 			
 			<? } ?>
@@ -298,9 +298,9 @@ $(function() {
 			if (is_object($vo)) {
 				if (!$vo->isApproved() && !$c->isEditMode()) { ?>
 				
-					item = new ccm_statusBarItem();
-					item.setCSSClass('info');
-					item.setDescription('<?= t("This page is pending approval.")?>');
+					sbitem = new ccm_statusBarItem();
+					sbitem.setCSSClass('info');
+					sbitem.setDescription('<?= t("This page is pending approval.")?>');
 					<? if ($cp->canApprovePageVersions() && !$c->isCheckedOut()) { 
 						$pk = PagePermissionKey::getByHandle('approve_page_versions');
 						$pk->setPermissionObject($c);
@@ -317,9 +317,9 @@ $(function() {
 						btn1 = new ccm_statusBarItemButton();
 						btn1.setLabel('<?=$appLabel?> <i class="icon-thumbs-up"></i>');
 						btn1.setURL('<?=DIR_REL . "/" . DISPATCHER_FILENAME . "?cID=" . $c->getCollectionID() . "&ctask=approve-recent" . $token?>');
-						item.addButton(btn1);
+						sbitem.addButton(btn1);
 					<? } ?>
-					ccm_statusBar.addItem(item);		
+					ccm_statusBar.addItem(sbitem);		
 				<? }
 			}
 		} ?>		

@@ -2,7 +2,7 @@
 defined('C5_EXECUTE') or die("Access Denied.");
 $sh = Loader::helper('concrete/dashboard/sitemap');
 if (!$sh->canRead()) {
-	die(t('Access Denied. You do not have access to sitemap permissions.'));
+	die(t('Access Denied.') . ' ' . t('You do not have access to the sitemap.'));
 }
 
 $select_mode = Loader::helper('text')->entities($_REQUEST['sitemap_select_mode']);
@@ -10,9 +10,12 @@ $callback = Loader::helper('text')->entities($_REQUEST['callback']);
 
 if (Loader::helper('validation/numbers')->integer($_REQUEST['cID']) && $select_mode == 'move_copy_delete') {
 	$cID = '&cID=' . $_REQUEST['cID'];
+} else {
+	$cID = '';
 }
+
 if ($callback) {
-	$callback = '&callback=' . $_REQUEST['callback'];
+	$callback = '&callback=' . addslashes($callback);
 }
 
 ?>

@@ -1,6 +1,6 @@
 <? defined('C5_EXECUTE') or die("Access Denied."); ?> 
 
-<script type="text/javascript" src="<?=ASSETS_URL_JAVASCRIPT?>/bootstrap.tooltip.js"></script>
+<script type="text/javascript" src="<?=ASSETS_URL_JAVASCRIPT?>/bootstrap.js"></script>
 <script type="text/javascript" src="<?=ASSETS_URL_JAVASCRIPT?>/jquery.cookie.js"></script>
 <script type="text/javascript">
 $(function() {
@@ -24,7 +24,7 @@ $(function() {
 
 	ccm_installRoutine<?=$i?> = function() {
 		<? if ($routine->getText() != '') { ?>
-			$("#install-progress-summary").html('<?=$routine->getText()?>');
+			$("#install-progress-summary").html('<?=addslashes($routine->getText())?>');
 		<? } ?>
 		$.ajax('<?=$this->url("/install", "run_routine", $installPackage, $routine->getMethod())?>', {
 			dataType: 'json',
@@ -325,8 +325,8 @@ $(function() {
 <tbody>
 <tr>
 	<td><? if ($phpVtest) { ?><img src="<?=ASSETS_URL_IMAGES?>/icons/success.png" /><? } else { ?><img src="<?=ASSETS_URL_IMAGES?>/icons/warning.png" /><? } ?></td>
-	<td width="100%"><?=t('PHP 5.2')?></td>
-	<td><? if (!$phpVtest) { ?><img src="<?=ASSETS_URL_IMAGES?>/icons/tooltip.png" class="launch-tooltip" title="<?=t('While concrete5 will mostly run on PHP 5.1, 5.2 is strongly encouraged and some functions will not work properly without it.')?>" /><? } ?></td>
+	<td width="100%"><?=t(/*i18n: %s is the php version*/'PHP %s', $phpVmin)?></td>
+	<td><? if (!$phpVtest) { ?><img src="<?=ASSETS_URL_IMAGES?>/icons/tooltip.png" class="launch-tooltip" title="<?=t('While concrete5 will mostly run on PHP 5.1, %s is strongly encouraged and some functions will not work properly without it.', $phpVmin)?>" /><? } ?></td>
 </tr>
 <tr>
 	<td class="ccm-test-js"><img id="ccm-test-js-success" src="<?=ASSETS_URL_IMAGES?>/icons/success.png" style="display: none" />

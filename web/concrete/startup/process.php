@@ -270,6 +270,9 @@
 							// which handles permissions and everything
 							$p = new Permissions($b);
 							if ($p->canViewBlock()) {
+								if (!is_object($b)) {
+									exit;
+								}
 								$action = $b->passThruBlock($_REQUEST['method']);
 							}
 						}
@@ -1114,7 +1117,7 @@
 
 					if ($_POST['rel'] == 'SITEMAP') { 
 						$u = new User();
-						if ($cp->canApprovePageVersions()) {
+						if ($cp->canApprovePageVersions() && SITEMAP_APPROVE_IMMEDIATELY) {
 							$pkr = new ApprovePagePageWorkflowRequest();
 							$pkr->setRequestedPage($nc);
 							$v = CollectionVersion::get($nc, "RECENT");

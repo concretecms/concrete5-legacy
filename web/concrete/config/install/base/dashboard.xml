@@ -181,9 +181,6 @@
 				<attributekey handle="meta_keywords">
 					<value>group set</value>
 				</attributekey>
-				<attributekey handle="exclude_nav">
-					<value><![CDATA[1]]></value>
-				</attributekey>
 				<attributekey handle="icon_dashboard">
 					<value>icon-list</value>
 				</attributekey>
@@ -500,6 +497,13 @@
 			<attributes>
 				<attributekey handle="meta_keywords">
 					<value>traffic, statistics, google analytics, quant, pageviews, hits</value>
+				</attributekey>
+			</attributes>
+        </page>
+        <page name="Excluded URL Word List" path="/dashboard/system/seo/excluded" filename="/dashboard/system/seo/excluded.php" pagetype="" description="" package="">
+			<attributes>
+				<attributekey handle="meta_keywords">
+					<value>pretty, slug</value>
 				</attributekey>
 			</attributes>
         </page>

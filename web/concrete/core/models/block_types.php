@@ -69,15 +69,12 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		 * @param Area $ap
 		 * @return BlockType[]
 		 */
-		public static function getDashboardBlockTypes($ap) {
-			$blockTypeIDs = $ap->getAddBlockTypes();
+		public static function getDashboardBlockTypes() {
 			$db = Loader::db();
 			$btIDs = $db->GetCol('select btID from BlockTypes where btHandle like "dashboard_%" order by btDisplayOrder asc, btID asc');
 			$blockTypes = array();
 			foreach($btIDs as $btID) {
-				if (in_array($btID, $blockTypeIDs)) {
-					$blockTypes[] = BlockType::getByID($btID);
-				}
+				$blockTypes[] = BlockType::getByID($btID);
 			}
 			return $blockTypes;
 		}
@@ -127,6 +124,8 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		 * @return BlockType[] 
 		 */
 		public static function getAvailableList() {
+			$env = Environment::get();
+			$env->clearOverrideCache();
 			$blocktypes = array();
 			$dir = DIR_FILES_BLOCK_TYPES;
 			$db = Loader::db();
@@ -154,12 +153,8 @@ defined('C5_EXECUTE') or die("Access Denied.");
 							$bt->hasCustomViewTemplate = file_exists(DIR_FILES_BLOCK_TYPES . '/' . $file . '/' . FILENAME_BLOCK_VIEW);
 							$bt->hasCustomEditTemplate = file_exists(DIR_FILES_BLOCK_TYPES . '/' . $file . '/' . FILENAME_BLOCK_EDIT);
 							$bt->hasCustomAddTemplate = file_exists(DIR_FILES_BLOCK_TYPES . '/' . $file . '/' . FILENAME_BLOCK_ADD);
-							
-							
-							$btID = $db->GetOne("select btID from BlockTypes where btHandle = ?", array($file));
-							$bt->installed = ($btID > 0);
-							$bt->btID = $btID;
-							
+							$bt->installed = false;
+							$bt->btID = null;
 							$blocktypes[] = $bt;
 							
 						}
@@ -241,7 +236,6 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		
 		public static function resetBlockTypeDisplayOrder($column = 'btID') {
 			$db = Loader::db();
-			$ca = new Cache();
 			$stmt = $db->Prepare("UPDATE BlockTypes SET btDisplayOrder = ? WHERE btID = ?");
 			$btDisplayOrder = 1;
 			$blockTypes = $db->GetArray("SELECT btID, btHandle, btIsInternal FROM BlockTypes ORDER BY {$column} ASC");
@@ -252,10 +246,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 					$db->Execute($stmt, array($btDisplayOrder, $bt['btID']));
 					$btDisplayOrder++;
 				}
-				$ca->delete('blockTypeByID', $bt['btID']);
-				$ca->delete('blockTypeByHandle', $bt['btHandle']);
 			}
-			$ca->delete('blockTypeList', false);
 		}
 		
 	}
@@ -304,17 +295,20 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		 * @return BlockType
 		 */
 		public static function getByHandle($handle) {
-			$ca = new Cache();
-			$bt = $ca->get('blockTypeByHandle', $handle);
-			if (!is_object($bt)) {
+			$bt = CacheLocal::getEntry('blocktype', $handle);
+			if ($bt === -1) {
+				return false;
+			} else if (!is_object($bt)) {
 				$where = 'btHandle = ?';
-				$bt = BlockType::get($where, array($handle));
-				$ca->set('blockTypeByHandle', $handle, $bt);
+				$bt = BlockType::get($where, array($handle));			
+				if (is_object($bt)) {
+					CacheLocal::set('blocktype', $handle, $bt);
+				} else {
+					CacheLocal::set('blocktype', $handle, -1);
+				}
 			}
-			if (is_object($bt)) {
-				$bt->controller = Loader::controller($bt);
-				return $bt;
-			}
+			$bt->controller = Loader::controller($bt);
+			return $bt;
 		}
 
 		/**
@@ -323,19 +317,22 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		 * @return BlockType
 		 */
 		public static function getByID($btID) {
-			$ca = new Cache();
-			$bt = $ca->get('blockTypeByID', $btID);
-			if (!is_object($bt)) {
+			$bt = CacheLocal::getEntry('blocktype', $btID);
+			if ($bt === -1) {
+				return false;
+			} else if (!is_object($bt)) {
 				$where = 'btID = ?';
 				$bt = BlockType::get($where, array($btID));			
-				$ca->set('blockTypeByID', $btID, $bt);
+				if (is_object($bt)) {
+					CacheLocal::set('blocktype', $btID, $bt);
+				} else {
+					CacheLocal::set('blocktype', $btID, -1);
+				}
 			}
-			if (is_object($bt)) {
-				$bt->controller = Loader::controller($bt);
-				return $bt;
-			}
+			$bt->controller = Loader::controller($bt);
 			return $bt;
 		}
+		
 		
 		/**
 		 * internal method to query the BlockTypes table and get a BlockType object
@@ -653,7 +650,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		 * @param string template 'view' for the default
 		 * @return void
 		 */
-		public function render($view) {
+		public function render($view = 'view') {
 			$bv = new BlockView();
 			$bv->setController($this->controller);
 			$bv->render($this, $view);
@@ -676,6 +673,8 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		 */
 		protected function doInstallBlockType($btHandle, $bt, $dir, $btID = 0) {
 			$db = Loader::db();
+			$env = Environment::get();
+			$env->clearOverrideCache();
 			
 			if (file_exists($dir . '/' . $btHandle . '/' . FILENAME_BLOCK_CONTROLLER)) {
 				$class = $bt->getBlockTypeClassFromHandle();
@@ -755,7 +754,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 				$ca->delete('blockTypeByID', $btID);
 				$ca->delete('blockTypeByHandle', $btHandle);
 				$ca->delete('blockTypeList', false);		 	
-				
+
 				if (!$r) {
 					return $db->ErrorMsg();
 				}

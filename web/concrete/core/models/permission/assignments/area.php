@@ -40,7 +40,7 @@ class Concrete5_Model_AreaPermissionAssignment extends PermissionAssignment {
 				// won't see anything. so we have to check
 				$areac = Page::getByID($a->getAreaCollectionInheritID());
 				$inheritArea = Area::get($areac, $a->getAreaHandlE());
-				if ($inheritArea->overrideCollectionPermissions()) {
+				if (is_object($inheritArea) && $inheritArea->overrideCollectionPermissions()) {
 					// okay, so that area is still around, still has set permissions on it. So we
 					// pass our current area to our grouplist, userinfolist objects, knowing that they will 
 					// smartly inherit the correct items.
@@ -62,7 +62,7 @@ class Concrete5_Model_AreaPermissionAssignment extends PermissionAssignment {
 			$r = $db->GetOne('select paID from AreaPermissionAssignments where cID = ? and arHandle = ? and pkID = ? ' . $filterString, array(
 				$this->permissionObjectToCheck->getCollectionID(), $this->permissionObjectToCheck->getAreaHandle(), $this->pk->getPermissionKeyID()
 			));
-			return PermissionAccess::getByID($r, $this->pk);
+			return PermissionAccess::getByID($r, $this->pk, false);
 		} else if (isset($this->inheritedPermissions[$this->pk->getPermissionKeyHandle()])) { 
 			// this is a page
 			$pk = PermissionKey::getByHandle($this->inheritedPermissions[$this->pk->getPermissionKeyHandle()]);
