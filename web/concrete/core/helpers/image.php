@@ -20,9 +20,9 @@
 defined('C5_EXECUTE') or die("Access Denied.");
 class Concrete5_Helper_Image {
 	
-	public $options = null;
-	public $newAbsPath = null;
-	public $newRelPath = null;
+	private $options = null;
+	private $newAbsPath = null;
+	private $newRelPath = null;
 	
 	/**
 	 * Creates a new image given an original path, a new path, a target width and height.
@@ -51,7 +51,7 @@ class Concrete5_Helper_Image {
 		//check if file already exists
 		if( $exists ) {
 			
-			return $newPath;
+			return $this->newAbsPath;
 			
 		} else {
 			
@@ -62,7 +62,7 @@ class Concrete5_Helper_Image {
 				$res = $this->crop($res);
 			}
 			
-			return $this->cache($res) ? $newPath : false;
+			return $this->cache($res) ? $this->newAbsPath : false;
 			
 		}
 	}
@@ -91,7 +91,7 @@ class Concrete5_Helper_Image {
 			$relpath .= image_type_to_extension($this->options['imageSize'][2]);
 			
 			$this->newAbsPath = $path;
-			$this->newRelPath = $path;
+			$this->newRelPath = $relpath;
 		}
 		
 		return file_exists($path);
@@ -106,7 +106,7 @@ class Concrete5_Helper_Image {
 	
 	private function cache($res) {
 		
-		switch($this->fileobj['imageSize'][2]) {
+		switch($this->options['imageSize'][2]) {
 			case IMAGETYPE_GIF:
 				$file = imagegif($res, $this->newAbsPath);
 				break;
@@ -159,8 +159,8 @@ class Concrete5_Helper_Image {
 		$oWidth = imagesx($res);
 		$oHeight = imagesy($res);
 		
-		$width = min($oWidth, $this->fileobj['width']);
-		$height = min($oHeight, $this->fileobj['height']);
+		$width = min($oWidth, $this->options['width']);
+		$height = min($oHeight, $this->options['height']);
 		
 		$finalWidth = 0;
 		$finalHeight = 0;
@@ -244,8 +244,8 @@ class Concrete5_Helper_Image {
 	 */
 	private function crop($res) {
 	
-		$width = $this->fileobj['width'];
-		$height = $this->fileobj['height'];
+		$width = $this->options['width'];
+		$height = $this->options['height'];
 		$oWidth = imagesx($res);
 		$oHeight = imagesy($res);
 		$finalWidth = 0; //For cropping, this is really "scale to width before chopping extra height"
@@ -364,7 +364,7 @@ class Concrete5_Helper_Image {
 			$path = $obj;
 		}
 		
-		$image = $this->create($path, $maxWidth, $maxHeight, $crop);
+		$image = $this->create($path, null, $maxWidth, $maxHeight, $crop);
 		
 		if ($image) {
 			
