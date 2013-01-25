@@ -35,7 +35,7 @@ class Concrete5_Helper_Image {
 		
 		if ( !file_exists($originalPath) ) return false;
 		
-		//build the file object before processing to determine if file already exists
+		//build the file object before GD processing to determine if file already exists
 		$this->options = array_merge($this->options, array(
 			'width' => $width,
 			'height' => $height,
