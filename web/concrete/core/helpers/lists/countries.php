@@ -25,7 +25,7 @@ class Concrete5_Helper_Lists_Countries {
 		Loader::library('3rdparty/Zend/Locale');
 		$countries = Zend_Locale::getTranslationList('territory', Localization::activeLocale(), 2);
 		// unset invalid countries
-		unset($countries['SU'], $countries['ZZ'], $countries['IM'], $countries['JE'], $countries['VD']);
+		unset($countries['SU'], $countries['ZZ'], $countries['IM'], $countries['JE'], $countries['VD'], $countries['DD']);
 		asort($countries, SORT_LOCALE_STRING);
 		$this->countries = $countries;
 	}
