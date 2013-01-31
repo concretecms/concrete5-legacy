@@ -78,14 +78,18 @@
 	# Startup check, install ##
 	require($cdir . '/startup/config_check_complete.php');
 
+	# Must come before packages 
+	require($cdir . '/startup/tools_upgrade_check.php');
+
+	## Localization ##
+	## This MUST be run before packages start - since they check ACTIVE_LOCALE which is defined here ##
+	require($cdir . '/config/localization.php');
+
 	## Package events
 	require($cdir . '/startup/packages.php');
 
 	## Load permissions and attributes
 	PermissionKey::loadAll();
-
-	## Localization ##
-	require($cdir . '/config/localization.php');
 
 	## File types ##
 	## Note: these have to come after config/localization.php ##
@@ -106,8 +110,6 @@
 	if (file_exists(DIR_CONFIG_SITE . '/site_post_restricted.php')) {
 		require(DIR_CONFIG_SITE . '/site_post_restricted.php');
 	}
-
-	require($cdir . '/startup/tools_upgrade_check.php');
 
 	## Specific site routes for various content items (if they exist) ##
 	if (file_exists(DIR_CONFIG_SITE . '/site_theme_paths.php')) {
@@ -192,7 +194,6 @@
 			$v->render('/page_not_found');
 		}
 
-
 		## If there's no error, then we build the collection, but first we load it with the appropriate
 		## version. We pass the function the collection object, as well as the collection permissions
 		## object, which the function will use to determine what version we get to see
@@ -200,10 +201,9 @@
 		if ($cp->canEditPageContents() || $cp->canEditPageProperties() || $cp->canViewPageVersions()) {
 			$cvID = ($_REQUEST['cvID']) ? $_REQUEST['cvID'] : "RECENT";
 			$c->loadVersionObject($cvID);
-			$vp = new Permissions($c->getVersionObject());
-		} else {
-			$cvID = "ACTIVE";
 		}
+
+		$vp = new Permissions($c->getVersionObject());
 
 		if ($_REQUEST['ccm-disable-controls'] == true || intval($cvID) > 0) {
 			$v = View::getInstance();

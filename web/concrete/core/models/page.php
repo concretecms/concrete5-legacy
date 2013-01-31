@@ -112,8 +112,16 @@ class Concrete5_Model_Page extends Collection {
 	
 
 	public function getPermissionObjectIdentifier() {
-		return $this->getPermissionsCollectionID();
+		// this is a hack but it's a really good one for performance
+		// if the permission access entity for page owner exists in the database, then we return the collection ID. Otherwise, we just return the permission collection id
+		// this is because page owner is the ONLY thing that makes it so we can't use getPermissionsCollectionID, and for most sites that will DRAMATICALLY reduce the number of querie.s
+		if (PAGE_PERMISSION_IDENTIFIER_USE_COLLECTION_ID) {
+			return $this->getCollectionID();
+		} else {
+			return $this->getPermissionsCollectionID();
+		}
 	}
+
 	/**
 	 * Returns 1 if the page is in edit mode
 	 * @return bool
@@ -955,9 +963,15 @@ class Concrete5_Model_Page extends Collection {
 	 * @param string $sortColumn
 	 * @return Page
 	 */
-	public function getFirstChild($sortColumn = 'cDisplayOrder asc') {
+	public function getFirstChild($sortColumn = 'cDisplayOrder asc', $excludeSystemPages = false) {
+		if ($excludeSystemPages) {
+			$systemPages = ' and cIsSystemPage = 0';
+		} else {
+			$systemPages = '';
+		}
+		
 		$db = Loader::db();
-		$cID = $db->GetOne("select Pages.cID from Pages inner join CollectionVersions on Pages.cID = CollectionVersions.cID where cvIsApproved = 1 and cParentID = ? order by {$sortColumn}", array($this->cID));
+		$cID = $db->GetOne("select Pages.cID from Pages inner join CollectionVersions on Pages.cID = CollectionVersions.cID where cvIsApproved = 1 and cParentID = ? " . $systemPages . " order by {$sortColumn}", array($this->cID));
 		if ($cID > 1) {
 			return Page::getByID($cID, "ACTIVE");
 		}
@@ -1408,8 +1422,8 @@ class Concrete5_Model_Page extends Collection {
 		$newC = $cobj->duplicate();
 		$newCID = $newC->getCollectionID();
 		
-		$v = array($newCID, $cParentID, $uID, $this->overrideTemplatePermissions(), $this->getPermissionsCollectionID(), $this->getCollectionInheritance(), $this->cFilename, $this->cPointerID, $this->cPointerExternalLink, $this->cPointerExternalLinkNewWindow, $this->cDisplayOrder);
-		$q = "insert into Pages (cID, cParentID, uID, cOverrideTemplatePermissions, cInheritPermissionsFromCID, cInheritPermissionsFrom, cFilename, cPointerID, cPointerExternalLink, cPointerExternalLinkNewWindow, cDisplayOrder) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		$v = array($newCID, $cParentID, $uID, $this->overrideTemplatePermissions(), $this->getPermissionsCollectionID(), $this->getCollectionInheritance(), $this->cFilename, $this->cPointerID, $this->cPointerExternalLink, $this->cPointerExternalLinkNewWindow, $this->cDisplayOrder, $this->pkgID);
+		$q = "insert into Pages (cID, cParentID, uID, cOverrideTemplatePermissions, cInheritPermissionsFromCID, cInheritPermissionsFrom, cFilename, cPointerID, cPointerExternalLink, cPointerExternalLinkNewWindow, cDisplayOrder, pkgID) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		$res = $db->query($q, $v);
 	
 		Loader::model('page_statistics');

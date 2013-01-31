@@ -151,13 +151,13 @@ class Concrete5_Model_FileAttributeKey extends AttributeKey {
 		$f->logVersionUpdate(FileVersion::UT_EXTENDED_ATTRIBUTE, $this->getAttributeKeyID());
 		$fo = $f->getFile();
 		$fo->reindex();
-		$f->populateAttributes();
 		unset($av);
 		unset($fo);
 		unset($f);
 	}
 
 	public function add($at, $args, $pkg = false) {
+		CacheLocal::delete('file_attribute_key_by_handle', $args['akHandle']);
 		$ak = parent::add('file', $at, $args, $pkg);
 		return $ak;
 	}
