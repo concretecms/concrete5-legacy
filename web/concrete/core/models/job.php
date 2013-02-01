@@ -246,6 +246,11 @@ class Concrete5_Model_Job extends Object {
 		$timestampH =date('Y-m-d g:i:s A');
 		$timestamp=date('Y-m-d H:i:s');
 		$this->jDateLastRun = $timestampH; 
+		
+        	// make sure there's only one running job instance
+        	$status = $db->GetOne('SELECT jStatus FROM Jobs WHERE jHandle=?', array($this->jHandle));
+        	if ($status == 'RUNNING') return;
+        
 		$rs = $db->query( "UPDATE Jobs SET jStatus='RUNNING', jDateLastRun=? WHERE jHandle=?", array( $timestamp, $this->jHandle ) );
 		try{ 
 			$resultMsg=$this->run();
