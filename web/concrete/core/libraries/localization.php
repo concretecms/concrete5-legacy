@@ -31,21 +31,17 @@
 			Loader::library('3rdparty/Zend/Date');
 			Loader::library('3rdparty/Zend/Translate');
 			$locale = defined('ACTIVE_LOCALE') ? ACTIVE_LOCALE : 'en_US';
-			$this->setLocale($locale);
-			if ($locale != 'en_US') {
-				Zend_Date::setOptions(array('format_type' => 'php'));
-				$cache = Cache::getLibrary();
-				if (is_object($cache)) {
-					Zend_Translate::setCache($cache);
-					Zend_Date::setOptions(array('cache'=>$cache));
-				}
+			$this->setLocale($locale);	
+			Zend_Date::setOptions(array('format_type' => 'php'));
+			$cache = Cache::getLibrary();
+			if (is_object($cache)) {
+				Zend_Translate::setCache($cache);
+				Zend_Date::setOptions(array('cache'=>$cache));
 			}
 		}
 		
 		public function setLocale($locale) {
-			if ($locale == 'en_US' && isset($this->translate)) {
-				unset($this->translate);
-			} else if ($locale != 'en_US' && is_dir(DIR_BASE . '/languages/' . $locale)) {
+			if (is_dir(DIR_BASE . '/languages/' . $locale)) {
 				$options = array('adapter' => 'gettext');
 				if (defined('TRANSLATE_OPTIONS')) {
 					$_options = unserialize(TRANSLATE_OPTIONS);
