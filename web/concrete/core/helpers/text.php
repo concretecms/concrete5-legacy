@@ -35,7 +35,7 @@ class Concrete5_Helper_Text {
 	 */
 	public function urlify($handle) {
 		Loader::library('3rdparty/urlify');
-		$handle = URLify::filter($handle);
+		$handle = URLify::filter($handle,60,LANGUAGE);
 		return $handle;
 	}
 		
