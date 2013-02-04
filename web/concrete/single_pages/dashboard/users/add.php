@@ -5,6 +5,7 @@ $th = Loader::helper('text');
 
 Loader::model('attribute/categories/user');
 $attribs = UserAttributeKey::getRegistrationList();
+$assignment = PermissionKey::getByHandle('edit_user_properties')->getMyAssignment();
 
 Loader::model("search/group");
 $gl = new GroupSearch();
@@ -15,7 +16,7 @@ $languages = Localization::getAvailableInterfaceLanguages();
 
 ?>
 
-<?=Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Add User').'<span class="label" style="position:relative;top:-3px;left:12px;">'.t('* required field').'</span>', false, false, false);?>
+<?=Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Add User'), false, false, false);?>
 
 <form method="post" enctype="multipart/form-data" id="ccm-user-form" action="<?=$this->url('/dashboard/users/add')?>">
 	<?=$valt->output('create_account')?>
@@ -24,7 +25,7 @@ $languages = Localization::getAvailableInterfaceLanguages();
 
 	<div class="ccm-pane-body">
 	
-    	<table border="0" cellspacing="0" cellpadding="0" width="100%">
+    	<table class="table table-bordered">
             <thead>
                 <tr>
                     <th colspan="2"><?=t('User Information')?></th>
@@ -41,11 +42,11 @@ $languages = Localization::getAvailableInterfaceLanguages();
 				</tr>
                 <tr>
                     <td><?=t('Email Address')?> <span class="required">*</span></td>
-                    <td><?=t('User Avatar')?></td>
+                    <td><? if ($assignment->allowEditAvatar()) { ?><?=t('User Avatar')?><? } ?></td>
                 </tr>
                 <tr>
 					<td><input type="text" name="uEmail" autocomplete="off" value="<?=$th->entities($_POST['uEmail'])?>" style="width: 95%"></td>
-					<td><input type="file" name="uAvatar" style="width: 95%"/></td>
+					<td><? if ($assignment->allowEditAvatar()) { ?><input type="file" name="uAvatar" style="width: 95%"/><? } ?></td>
 				</tr>
                 
                 
@@ -79,7 +80,7 @@ $languages = Localization::getAvailableInterfaceLanguages();
 
 	<? if (count($attribs) > 0) { ?>
 	
-        <table border="0" cellspacing="0" cellpadding="0" width="100%" class="zebra-striped">
+        <table class="table table-striped">
         	<thead>
 	        	<tr>
             		<th><?=t('Registration Data')?></th>
@@ -87,17 +88,16 @@ $languages = Localization::getAvailableInterfaceLanguages();
 			</thead>
             <tbody class="inputs-list">
             
-			<? foreach($attribs as $ak) { ?>
+			<? foreach($attribs as $ak) { 
+				if (in_array($ak->getAttributeKeyID(), $assignment->getAttributesAllowedArray())) { 
+				?>
                 <tr>
                     <td class="clearfix">
-                    	<label>
-                            <p>
-                                <?=$ak->getAttributeKeyName()?> <? if ($ak->isAttributeKeyRequiredOnRegister()) { ?><span class="required">*</span><? } ?>
-                            </p>
-                            <? $ak->render('form', $caValue, false)?>
-                        </label>
+                    	<label><?=$ak->getAttributeKeyName()?> <? if ($ak->isAttributeKeyRequiredOnRegister()) { ?><span class="required">*</span><? } ?></label>
+                        <? $ak->render('form', $caValue, false)?>
                     </td>
                 </tr>
+                <? } ?>
             <? } // END Foreach ?>
         
 			</tbody>
@@ -105,7 +105,7 @@ $languages = Localization::getAvailableInterfaceLanguages();
 	
 	<? } ?>
 
-		<table border="0" cellspacing="0" cellpadding="0" width="100%" class="inputs-list zebra-striped">
+		<table class="inputs-list table-striped table">
         	<thead>
 				<tr>
 					<th><?=t('Groups')?></th>
@@ -115,7 +115,13 @@ $languages = Localization::getAvailableInterfaceLanguages();
 				<tr>
 					<td>
                     
-					<? foreach ($gArray as $g) { ?>
+					<? 
+					$gak = PermissionKey::getByHandle('assign_user_groups');
+					foreach ($gArray as $g) { 
+						if ($gak->validate($g['gID'])) {
+
+
+						?>
 						<label>
 							<input type="checkbox" name="gID[]" value="<?=$g['gID']?>" <? 
                             if (is_array($_POST['gID'])) {
@@ -126,7 +132,10 @@ $languages = Localization::getAvailableInterfaceLanguages();
                         ?> />
 							<span><?=$g['gName']?></span>
 						</label>
-                    <? } ?>
+                    <? }
+                    
+                    
+                } ?>
 			
 					<div id="ccm-additional-groups"></div>
 			
@@ -140,7 +149,7 @@ $languages = Localization::getAvailableInterfaceLanguages();
     <div class="ccm-pane-footer">
         <div class="ccm-buttons">
             <input type="hidden" name="create" value="1" />
-            <? print $ih->submit(t('Create User'), 'ccm-user-form', 'right', 'primary'); ?>
+            <? print $ih->submit(t('Add'), 'ccm-user-form', 'right', 'primary'); ?>
         </div>	
     </div>
 

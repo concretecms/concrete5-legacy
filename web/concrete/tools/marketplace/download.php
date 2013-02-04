@@ -56,13 +56,19 @@ if (!$error->has() && $install) {
 if (!$error->has()) { ?>
 	<p>
 	<? if ($install) {
- 		echo t('The package was successfully installed.');
+		$_pkg = Package::getByHandle($p->getPackageHandle());
+		if ($_pkg->hasInstallPostScreen()) { 
+			Loader::element('dashboard/install_post', false, $_pkg->getPackageHandle());
+		} else {
+	 		echo t('The package was successfully installed.');
+	 	}
 	} else {
 		echo t('The package was successfully downloaded and decompressed on your server.');
 	} 
-	print '<br><br>';
-	print Loader::helper('concrete/interface')->button_js(t('Return'), 'javascript:ccm_getMarketplaceItem.onComplete()')?>
-	
+	print '<div class="dialog-buttons">';
+	print Loader::helper('concrete/interface')->button_js(t('Return'), 'javascript:ccm_getMarketplaceItem.onComplete()', 'right');
+	print '</div>';
+	?>
 	</p>
 <? } else { ?>
 	<p><?= t("The package could not be installed:") ?></p>
@@ -78,5 +84,6 @@ if (!$error->has()) { ?>
 		<li><?=t('Go to the <a href="%s">Add Functionality</a> page in your concrete5 Dashboard.', View::url('/dashboard/install'))?></li>
         <li><?=t('Click the Install button next to the package name.')?></li>
 	</ol>
+	<div class="dialog-buttons"></div>
 	<? } ?>
 <? } ?>

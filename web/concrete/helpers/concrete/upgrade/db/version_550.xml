@@ -32,6 +32,10 @@
     <index name="arIsGlobal">
       <col>arIsGlobal</col>
     </index>
+    <index name="cID">
+      <col>cID</col>
+    </index>
+
     <index name="arHandle">
       <col>arHandle</col>
     </index>
@@ -254,7 +258,69 @@
 		<field name="truncateChars" type="I">
 			<default value="128"/>
 		</field>		
-	</table>  
+	</table>
+
+<table name="MailImporters">
+    <field name="miID" type="I" size="10">
+      <KEY/>
+      <AUTOINCREMENT/>
+      <UNSIGNED/>
+    </field>
+    <field name="miHandle" type="C" size="64">
+      <NOTNULL/>
+    </field>
+    <field name="miServer" type="C" size="255"/>
+    <field name="miUsername" type="C" size="255"/>
+    <field name="miPassword" type="C" size="255"/>
+    <field name="miEncryption" type="C" size="32"/>
+    <field name="miIsEnabled" type="I" size="1">
+      <NOTNULL/>
+      <DEFAULT value="0"/>
+    </field>
+    <field name="miEmail" type="C" size="255"/>
+    <field name="miPort" type="I" size="10">
+      <NOTNULL/>
+      <DEFAULT value="0"/>
+      <UNSIGNED/>
+    </field>
+   <field name="pkgID" type="I" size="10">
+      <UNSIGNED />
+    </field>
+	<field name="miConnectionMethod" type="C" size="8">
+		<default value="POP" />
+	</field>
+  </table>
+
+<table name="SystemAntispamLibraries">
+    <field name="saslHandle" type="C" size="64">
+      <KEY/>
+    </field>
+    <field name="saslName" type="C" size="255"/>
+    <field name="saslIsActive" type="I" size="1">
+      <NOTNULL/>
+      <DEFAULT value="0"/>
+    </field>
+    <field name="pkgID" type="I" size="10">
+      <NOTNULL/>
+      <DEFAULT value="0"/>
+      <UNSIGNED/>
+    </field>
+  </table>
+  <table name="SystemCaptchaLibraries">
+    <field name="sclHandle" type="C" size="64">
+      <KEY/>
+    </field>
+    <field name="sclName" type="C" size="255"/>
+    <field name="sclIsActive" type="I" size="1">
+      <NOTNULL/>
+      <DEFAULT value="0"/>
+    </field>
+    <field name="pkgID" type="I" size="10">
+      <NOTNULL/>
+      <DEFAULT value="0"/>
+      <UNSIGNED/>
+    </field>
+  </table>	
 	<table name="btFormAnswerSet">
 		<field name="asID" type="I">
 			<key />
@@ -277,5 +343,34 @@
 		</index>
 	</table>
 	
+	<table name="btContentImage">
+		<field name="bID" type="I">
+			<key />
+			<unsigned />
+		</field>
+		<field name="fID" type="I">
+			<unsigned />
+			<default value="0" />
+		</field>
+		<field name="fOnstateID" type="I">
+			<unsigned />
+			<default value="0" />
+		</field>
+		<field name="maxWidth" type="I">
+			<unsigned />
+			<default value="0" />
+		</field>
+		<field name="maxHeight" type="I">
+			<unsigned />
+			<default value="0" />
+		</field>
+		<field name="externalLink"  type="C" size="255"></field>
+		<field name="internalLinkCID"  type="I">
+			<unsigned />
+			<default value="0" />
+		</field>
+		<field name="altText" type="C" size="255">
+		</field>
+	</table>
 
 </schema>

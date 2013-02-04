@@ -1,16 +1,14 @@
 <? defined('C5_EXECUTE') or die("Access Denied."); ?>
 
-<? if ($_GET['_ccm_dashboard_external']) { ?>
-	<ul class="ccm-pane-header-icons">
-		<li><a href="javascript:void(0)" onclick="ccm_closeNewsflow()" class="ccm-icon-close"><?=t('Close')?></a></li>
-	</ul>
-<? } ?>
+<ul class="ccm-pane-header-icons">
+	<li><a href="javascript:void(0)" onclick="ccm_closeNewsflow(this)" class="ccm-icon-close"><?=t('Close')?></a></li>
+</ul>
 
 <?
 $_c = Page::getCurrentPage();
 $valt = Loader::Helper('validation/token');
 $token = '&' . $valt->getParameter();
-if ($_c->getCollectionPath() != '/dashboard' && $_c->getCollectionPath() != '/dashboard/welcome' && !$_GET['_ccm_dashboard_external']) { ?>
+if ($_c->getCollectionPath() != '/dashboard/news' && $_c->getCollectionPath() != '/dashboard/welcome' && !$_GET['_ccm_dashboard_external']) { ?>
 <div class="well" style="margin-bottom: 0px">
 	<? if ($_c->isCheckedOut()) { ?>
 	<a href="#" id="ccm-nav-save-arrange" class="btn ccm-main-nav-arrange-option" style="display: none"><?=t('Save Positioning')?></a>

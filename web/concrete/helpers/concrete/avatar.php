@@ -19,13 +19,20 @@
 
 defined('C5_EXECUTE') or die("Access Denied.");
 class ConcreteAvatarHelper {
-
+	/**
+	* Gets the default avatar
+	* @return array $aDir
+	*/
 	function getStockAvatars() {
 		$f = Loader::helper('file');
 		$aDir = $f->getDirectoryContents(DIR_FILES_AVATARS_STOCK);
 		return $aDir;			
 	}
-
+	/** 
+	* Outputs the final user avatar
+	* @param user object $uo
+	* @return string $str
+	*/
 	function outputUserAvatar($uo, $suppressNone = false, $aspectRatio = 1.0) {	
 		if (is_object($uo) && $uo->hasAvatar()) {
 			if (file_exists(DIR_FILES_AVATARS . '/' . $uo->getUserID() . '.jpg')) {
@@ -45,12 +52,21 @@ class ConcreteAvatarHelper {
 				return $str;
 			}
 		}
-		
+
+		if(Config::get('GRAVATAR_FALLBACK')) {
+		  return $this->get_gravatar( $uo->getUserEmail(), $AVATAR_WIDTH, Config::get('GRAVATAR_IMAGE_SET'), Config::get('GRAVATAR_MAX_LEVEL'), true, $atts = array('alt' => $uo->getUserName()) );
+		}
+
 		if (!$suppressNone) {
 			return $this->outputNoAvatar($aspectRatio);
 		}
 	}
-	
+	/**
+	* gets the image path for a users avatar
+	* @param user object $uo
+	* @param bool $withNoCacheStr
+	* @return string $src
+	*/
 	public function getImagePath($uo,$withNoCacheStr=true) {
 		if (!$uo->hasAvatar()) {
 			return false;
@@ -72,13 +88,23 @@ class ConcreteAvatarHelper {
 		}
 	}
 
-	
+	/**
+	* What to show if the user has no avatar
+	* @param int $aspectRatio
+	* @return string $str
+	*/
 	function outputNoAvatar($aspectRatio = 1.0) {
 		$str = '<img class="u-avatar" src="' . AVATAR_NONE . '" width="' . AVATAR_WIDTH*$aspectRatio . '" height="' . AVATAR_HEIGHT*$aspectRatio . '" alt="" />';
 		return $str;
 	}
 	
-
+	/**
+	* Makes the provided image the avatar for the user
+	* It needs to make some various sizes of the image
+	* @param string $pointer
+	* @param int $uID
+	* @return int $uHasAvatar
+	*/
 	function processUploadedAvatar($pointer, $uID) {
 		$uHasAvatar = 0;
 		$imageSize = getimagesize($pointer);
@@ -140,7 +166,10 @@ class ConcreteAvatarHelper {
 
 		return $uHasAvatar;
 	}
-	
+	/**
+	* Removes the avatar for the given user
+	* @param user object $ui
+	*/
 	function removeAvatar($ui) {
 		if (is_object($ui)) {
 			$uID = $ui->getUserID();
@@ -150,14 +179,23 @@ class ConcreteAvatarHelper {
 		$db = Loader::db();
 		$db->query("update Users set uHasAvatar = 0 where uID = ?", array($uID));
 	}
-
+	/**
+	* Updates the avatar for the given user with the image given in $pointer
+	* @param string $pointer
+	* @param int $uID
+	* @return int $uHasAvatar
+	*/
 	function updateUserAvatar($pointer, $uID) {
 		$uHasAvatar = $this->processUploadedAvatar($pointer, $uID);
 		$db = Loader::db();
 		$db->query("update Users set uHasAvatar = {$uHasAvatar} where uID = ?", array($uID));
 		return $uHasAvatar;
 	}
-	
+	/**
+	* Updates the avatar for the given user with a stock image thats given with $pointer
+	* @param string $pointer
+	* @param int $uID
+	*/
 	function updateUserAvatarWithStock($pointer, $uID) {
 		if ($pointer != "") {
 			if (file_exists(DIR_FILES_AVATARS_STOCK . '/' . $pointer)) {
@@ -167,6 +205,31 @@ class ConcreteAvatarHelper {
 			}
 		}
 	}
+
+  /**
+   * Get either a Gravatar URL or complete image tag for a specified email address.
+   *
+   * @param string $email The email address
+   * @param string $s Size in pixels, defaults to 80px [ 1 - 512 ]
+   * @param string $d Default imageset to use [ 404 | mm | identicon | monsterid | wavatar ]
+   * @param string $r Maximum rating (inclusive) [ g | pg | r | x ]
+   * @param bool $img True to return a complete IMG tag False for just the URL
+   * @param array $atts Optional, additional key/value attributes to include in the IMG tag
+   * @return String containing either just a URL or a complete image tag
+   * @source http://gravatar.com/site/implement/images/php/
+   */
+  function get_gravatar( $email, $s = 80, $d = 'mm', $r = 'g', $img = false, $atts = array() ) {
+	  $url = 'http://www.gravatar.com/avatar/';
+	  $url .= md5( strtolower( trim( $email ) ) );
+	  $url .= "?s=$s&d=$d&r=$r";
+	  if ( $img ) {
+		  $url = '<img src="' . $url . '"';
+		  foreach ( $atts as $key => $val )
+			  $url .= ' ' . $key . '="' . $val . '"';
+		  $url .= ' />';
+	  }
+	  return $url;
+  }
 
 }
 

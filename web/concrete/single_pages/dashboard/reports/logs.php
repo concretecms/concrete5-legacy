@@ -36,28 +36,26 @@ $areEntries = count($entries) > 0 ? true : false;
                         <?=$form->text('keywords', $keywords, array('style'=>'width:180px;'))?>
                     </div>
                 </div>
-                <div class="span5">
+                <div class="span6">
                     <label for="logType"><?=t('Type')?></label>
                     <div class="input">
                         <?=$form->select('logType', $logTypes, array('style'=>'width:180px;'))?>
-                    </div>
-                </div>
-                <div class="span3">   
                     <?=$form->submit('search',t('Search') )?>
-			        <input class="btn error" type="button" onclick="if (confirm('<?=t("Are you sure you want to clear this log?")?>')) { location.href='<?=$this->url('/dashboard/reports/logs', 'clear', $valt->generate())?>'}" value="<?=t('Clear Log')?>" />
+                    </div>
                 </div>
             </div>
         </form>
     </div>
         
 	<div class="ccm-pane-body <? if(!$paginator || !strlen($paginator->getPages())>0) { ?>ccm-pane-body-footer <? } ?>">
-    
-        <table border="0" cellspacing="0" cellpadding="0" class="grid-list zebra-striped">
+
+        <table class="table table-bordered">
         	<thead>
                 <tr>
                     <th class="subheaderActive"><?=t('Date/Time')?></th>
-                    <th class="subheader"><?=t('Log Type')?></th>
-                    <th class="subheader"><?=t('Text')?></th>
+                    <th class="subheader"><?=t('Type')?></th>
+                    <th class="subheader"><?=t('User')?></th>
+                    <th class="subheader"><input style="float: right" class="btn error btn-mini" type="button" onclick="if (confirm('<?=t("Are you sure you want to clear this log?")?>')) { location.href='<?=$this->url('/dashboard/reports/logs', 'clear', $valt->generate(), $_POST['logType'])?>'}" value="<?=t('Clear Log')?>" /><?=t('Text')?></th>
                 </tr>
 			</thead>
             <tbody>
@@ -67,9 +65,18 @@ $areEntries = count($entries) > 0 ? true : false;
                         <?=t(' at ')?><?=date(DATE_APP_GENERIC_MDY, strtotime($ent->getTimestamp('user')))?>
                     <? } ?></td>
                     <td valign="top"><strong><?=$ent->getType()?></strong></td>
+                    <td valign="top"><strong><?php
+                    if($ent->getUserID() == NULL){
+                        echo t("Guest");
+                    }
+                    else{
+                        $u = User::getByUserID($ent->getUserID());
+                        echo $u->getUserName();
+                    }
+                    ?></strong></td>
                     <td style="width: 100%"><?=$th->makenice($ent->getText())?></td>
                 </tr>
-                <? } // END FOREACH ?>
+                <? } ?>
 			</tbody>
 		</table>
     

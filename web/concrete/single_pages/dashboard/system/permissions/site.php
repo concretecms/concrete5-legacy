@@ -6,7 +6,7 @@ $ih = Loader::helper('concrete/interface');
 /* @var $form FormHelper */
 $form = Loader::helper('form');
 ?>
-<?=$h->getDashboardPaneHeaderWrapper(t('Site Permissions'), false, false, false);?>
+<?=$h->getDashboardPaneHeaderWrapper(t('Site Access'), false, false, false);?>
 <form id="site-permissions-form" action="<?=$this->action('')?>" method="post">
 	<?=$this->controller->token->output('site_permissions_code')?>
 
@@ -50,7 +50,7 @@ $form = Loader::helper('form');
 				<?foreach($gArray as $g):?>
 				<li>
 					<label>
-						<?=$form->checkbox('gID[]', $g->getGroupID(), $g->canWrite())?>
+						<?=$form->checkbox('gID[]', $g->getGroupID(), in_array($g->getGroupID(), $editAccess))?>
 						<span><?=$g->getGroupName()?></span>
 					</label>
 				</li>

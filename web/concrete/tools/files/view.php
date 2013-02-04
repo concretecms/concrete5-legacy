@@ -4,6 +4,9 @@ $u = new User();
 $form = Loader::helper('form');
 
 $f = File::getByID($_REQUEST['fID']);
+if ($f->isError()) {
+	die('Invalid File ID');
+}
 if (isset($_REQUEST['fvID'])) {
 	$fv = $f->getVersion($_REQUEST['fvID']);
 } else {
@@ -11,7 +14,7 @@ if (isset($_REQUEST['fvID'])) {
 }
 
 $fp = new Permissions($f);
-if (!$fp->canRead()) {
+if (!$fp->canViewFile()) {
 	die(t("Access Denied."));
 }
 ?>

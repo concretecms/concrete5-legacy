@@ -8,11 +8,16 @@ $form = Loader::helper('form');
 
 $f = File::getByID($_REQUEST['fID']);
 $fp = new Permissions($f);
-if (!$fp->canWrite()) {
+if (!$fp->canEditFileContents()) {
 	die(t('Access Denied.'));
 }
 
-$searchInstance = $_REQUEST['searchInstance'];
+$searchInstance = Loader::helper('text')->entities($_REQUEST['searchInstance']);
+?>
+
+<div class="ccm-ui">
+
+<?
 
 Loader::element('files/upload_single', array('searchInstance' => $searchInstance, 'mode' => 'replace', 'fID' => $f->getFileID())); 
 
@@ -46,6 +51,7 @@ if (count($contents) > 0) { ?>
 
 <h3><?=t("Add from Remote URL")?></h3>
 
+
 <form method="post" id="ccm-file-manager-replace-remote" action="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/files/importers/remote">
 <?=$valt->output('import_remote');?>
     <input type="hidden" name="searchInstance" value="<?=$searchInstance?>" />
@@ -56,6 +62,7 @@ if (count($contents) > 0) { ?>
 <?= $form->submit('submit', t('Add File')); ?>
 
 </form>
+</div>
 
 <script type="text/javascript">
 $(function() { 

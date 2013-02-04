@@ -10,11 +10,13 @@ if ($tp->canInstallPackages()) {
 
 $pkgRemote = array();
 $pkgLocal = array();
-if (ENABLE_MARKETPLACE_SUPPORT) {
-	$pkgArray = Package::getInstalledList();
-	foreach($pkgArray as $pkg) {
-		if ($pkg->isPackageInstalled() && version_compare($pkg->getPackageVersion(), $pkg->getPackageVersionUpdateAvailable(), '<')) { 
-			$pkgRemote[] = $pkg;
+if (ENABLE_MARKETPLACE_SUPPORT && is_object($mi)) {
+	if ($mi->isConnected()) { 
+		$pkgArray = Package::getInstalledList();
+		foreach($pkgArray as $pkg) {
+			if ($pkg->isPackageInstalled() && version_compare($pkg->getPackageVersion(), $pkg->getPackageVersionUpdateAvailable(), '<')) { 
+				$pkgRemote[] = $pkg;
+			}
 		}
 	}
 }
@@ -25,22 +27,19 @@ foreach($pkgAvailableArray as $pkg) {
 	}
 }
 
+?>
+		<?=Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Update Add-Ons'));?>
 
+<?
 if (!$tp->canInstallPackages()) { ?>
 	<p class="block-message alert-message error"><?=t('You do not have access to download themes or add-ons from the marketplace.')?></p>
-<? } else if (!$mi->isConnected()) { ?>
-	<h1><span><?=t('concrete5.org Marketplace')?></span></h1>
-	<div class="ccm-dashboard-inner ccm-ui">
-		<? Loader::element('dashboard/marketplace_connect_failed')?>
-	</div>
 <? } else { ?>
 
-		<?=Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Update Add-Ons'));?>
 		<? if (count($pkgLocal) == 0 && count($pkgRemote) == 0) { ?>
 			<p><?=t('No updates for your add-ons are available.')?></p>
 		<? } else { ?>
 
-			<table>
+			<table class="table table-striped">
 			<? foreach($pkgRemote as $pkg) { 
 
 				$rpkg = MarketplaceRemoteItem::getByHandle($pkg->getPackageHandle());
@@ -49,7 +48,7 @@ if (!$tp->canInstallPackages()) { ?>
 				<tr>
 					<td class="ccm-marketplace-list-thumbnail" rowspan="2"><img src="<?=$ci->getPackageIconURL($pkg)?>" /></td>
 					<td class="ccm-addon-list-description"><h3><?=$pkg->getPackageName()?></h3><p><?=$pkg->getPackageDescription()?></p>
-					<p><strong><?=t('New Version: %s. Upgrading from: %s.', $pkg->getPackageVersionUpdateAvailable(), $pkg->getPackageVersion())?></p>
+					<p><strong><?=t('New Version: %s. Upgrading from: %s.', $pkg->getPackageVersionUpdateAvailable(), $pkg->getPackageVersion())?></strong></p>
 
 					</td>
 					<? if (!is_object($rpkg)) { ?>
@@ -87,7 +86,7 @@ if (!$tp->canInstallPackages()) { ?>
 				<tr>
 					<td class="ccm-marketplace-list-thumbnail" rowspan="2"><img src="<?=$ci->getPackageIconURL($pkg)?>" /></td>
 					<td class="ccm-addon-list-description"><h3><?=$pkg->getPackageName()?></h3><p><?=$pkg->getPackageDescription()?></p>
-					<p><strong><?=t('New Version: %s. Upgrading from: %s.', $pkg->getPackageVersion(), $pkg->getPackageCurrentlyInstalledVersion())?></p>
+					<p><strong><?=t('New Version: %s. Upgrading from: %s.', $pkg->getPackageVersion(), $pkg->getPackageCurrentlyInstalledVersion())?></strong></p>
 					</td>
 					<td class="ccm-marketplace-list-install-button"><?=$ch->button(t("Update Add-On"), View::url('/dashboard/extend/update', 'do_update', $pkg->getPackageHandle()), "", "primary")?></td>					
 				</tr>
@@ -111,7 +110,28 @@ if (!$tp->canInstallPackages()) { ?>
 			</table>
 			
 		<? } ?>
-		<?=Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper();
-		?>
 
 <? } ?>
+
+		<?
+		if (is_object($mi) && $mi->isConnected()) { ?>
+
+			<h3><?=t("Project Page")?></h3>
+			<p><?=t('Your site is currently connected to the concrete5 community. Your project page URL is:')?><br/>
+			<a href="<?=$mi->getSitePageURL()?>"><?=$mi->getSitePageURL()?></a></p>
+		
+		<? } else if (is_object($mi) && $mi->hasConnectionError()) { ?>
+			
+			<?=Loader::element('dashboard/marketplace_connect_failed');?>
+		
+		<? } else if ($tp->canInstallPackages() && ENABLE_MARKETPLACE_SUPPORT == true) { ?>
+
+			<div class="well" style="padding:10px 20px;">
+				<h3><?=t('Connect to Community')?></h3>
+				<p><?=t('Your site is not connected to the concrete5 community. Connecting lets you easily extend a site with themes and add-ons. Connecting enables automatic updates.')?></p>
+				<p><a class="btn success" href="<?=$this->url('/dashboard/extend/connect', 'register_step1')?>"><?=t("Connect to Community")?></a></p>
+			</div>
+		
+		<? } ?>
+
+<?=Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper();?>

@@ -6,10 +6,14 @@
 
 <div class="ccm-pane-body">
 
-<? } ?>
+<? } 
 
-<?
-	if (!$mode) {
+$ek = PermissionKey::getByHandle('edit_user_properties');
+$ik = PermissionKey::getByHandle('activate_user');
+$gk = PermissionKey::getByHandle('assign_user_groups');
+$dk = PermissionKey::getByHandle('delete_user');
+
+if (!$mode) {
 		$mode = $_REQUEST['mode'];
 	}
 	if (!$searchType) {
@@ -25,24 +29,34 @@
 
 <div id="ccm-list-wrapper"><a name="ccm-<?=$searchInstance?>-list-wrapper-anchor"></a>
 
-	<div style="float: right; margin-bottom: 10px">
+	<div style="margin-bottom: 10px">
 		<? $form = Loader::helper('form'); ?>
 
-		<?=$form->label('ccm-user-list-multiple-operations', t('With Selected'))?>
-		<select id="ccm-<?=$searchInstance?>-list-multiple-operations" style="width: 120px; margin-left: 8px;" disabled>
-					<option value="">**</option>
-					<option value="properties"><?=t('Edit Properties')?></option>
+		<a href="<?=View::url('/dashboard/users/add')?>" style="float: right" class="btn primary"><?=t("Add User")?></a>
+		<select id="ccm-<?=$searchInstance?>-list-multiple-operations" class="span3" disabled>
+					<option value="">** <?=t('With Selected')?></option>
+					<? if ($ek->validate()) { ?>
+						<option value="properties"><?=t('Edit Properties')?></option>
+					<? } ?>
+					<? if ($ik->validate()) { ?>
+						<option value="activate"><?=t('Activate')?></option>
+						<option value="deactivate"><?=t('Deactivate')?></option>
+					<? } ?>
+					<? if ($gk->validate()) { ?>
+					<option value="group_add"><?=t('Add to Group')?></option>
+					<option value="group_remove"><?=t('Remove from Group')?></option>
+					<? } ?>
+					<? if ($dk->validate()) { ?>
+					<option value="delete"><?=t('Delete')?></option>
+					<? } ?>
 				<? if ($mode == 'choose_multiple') { ?>
 					<option value="choose"><?=t('Choose')?></option>
 				<? } ?>
 				</select>
-		<a href="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/users/customize_search_columns" id="ccm-list-view-customize"><span class="ccm-menu-icon ccm-icon-properties"></span><?=t('Customize Results')?></a>
-		<a id="ccm-export-results" href="javascript:void(0)" onclick="$('#ccm-user-advanced-search').attr('action', '<?=REL_DIR_FILES_TOOLS_REQUIRED?>/users/search_results_export'); $('#ccm-user-advanced-search').get(0).submit(); $('#ccm-user-advanced-search').attr('action', '<?=REL_DIR_FILES_TOOLS_REQUIRED?>/users/search_results');"><span></span><?=t('Export')?></a>
 
 	</div>
 
 	<?
-	$userList->displaySummary();
 	$txt = Loader::helper('text');
 	$keywords = $_REQUEST['keywords'];
 	$bu = REL_DIR_FILES_TOOLS_REQUIRED . '/users/search_results';
@@ -104,7 +118,15 @@
 	<? }  ?>
 
 </div>
-	
+
+<div id="ccm-export-results-wrapper">
+	<a id="ccm-export-results" href="javascript:void(0)" onclick="$('#ccm-user-advanced-search').attr('action', '<?=REL_DIR_FILES_TOOLS_REQUIRED?>/users/search_results_export'); $('#ccm-user-advanced-search').get(0).submit(); $('#ccm-user-advanced-search').attr('action', '<?=REL_DIR_FILES_TOOLS_REQUIRED?>/users/search_results');"><span></span><?=t('Export')?></a>
+</div>
+
+<?
+	$userList->displaySummary();
+?>
+
 <? if ($searchType == 'DASHBOARD') { ?>
 </div>
 
@@ -122,6 +144,6 @@
 
 <script type="text/javascript">
 $(function() { 
-	ccm_setupUserSearch(); 
+	ccm_setupUserSearch('<?=$searchInstance?>'); 
 });
 </script>

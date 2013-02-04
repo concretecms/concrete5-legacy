@@ -6,10 +6,12 @@ $this->inc('elements/header.php', array('enableEditing' => true));
 <div class="ccm-ui">
 <div class="newsflow" id="newsflow-main">
 <? $this->inc('elements/header_newsflow.php'); ?>
-<table>
+<table class="newsflow-layout">
 <tr>
 	<td class="newsflow-em1" style="width: 66%" colspan="2" rowspan="2">
+	<div id="ccm-dashboard-welcome-back">
 	<? $a = new Area('Primary'); $a->display($c); ?>
+	</div>
 	</td>
 	<td><? $a = new Area('Secondary 1'); $a->display($c); ?></td>
 </tr>

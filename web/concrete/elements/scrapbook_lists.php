@@ -1,6 +1,7 @@
 <? 
 Loader::model('pile');
 $ci = Loader::helper('concrete/urls');
+$ap = new Permissions($a);
 ?>
 	<div id="ccm-scrapbook-list">
 	<?
@@ -15,6 +16,9 @@ $ci = Loader::helper('concrete/urls');
 		if (is_object($item)) {
 			$bt = $item->getBlockTypeObject();
 			$btIcon = $ci->getBlockTypeIconURL($bt);
+			if (!$ap->canAddBlockToArea($bt)) {
+				continue;
+			}
 			?>			
 			<div class="ccm-scrapbook-list-item" id="ccm-pc-<?=$obj->getPileContentID()?>">
 				<div class="ccm-block-type">
@@ -39,7 +43,7 @@ $ci = Loader::helper('concrete/urls');
 		
 			<div class="ccm-scrapbook-list-item" id="ccm-pc-<?=$obj->getPileContentID()?>">
 				<div class="ccm-block-type">
-					<a class="ccm-scrapbook-delete" title="Remove from Clipboard" href="javascript:void(0)" id="sb<?=$obj->getPileContentID()?>"><img src="<?=ASSETS_URL_IMAGES?>/icons/delete_small.png" width="16" height="16" /></a>
+					<a class="ccm-scrapbook-delete" title="<?php echo t('Remove from Clipboard')?>" href="javascript:void(0)" id="sb<?=$obj->getPileContentID()?>"><img src="<?=ASSETS_URL_IMAGES?>/icons/delete_small.png" width="16" height="16" /></a>
 					<div class="ccm-scrapbook-list-item-detail">	
 						<?	
 						print BLOCK_NOT_AVAILABLE_TEXT;

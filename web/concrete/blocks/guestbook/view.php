@@ -10,7 +10,7 @@ if (!$dateFormat) {
 	$dateFormat = t('M jS, Y');
 }
 $posts = $controller->getEntries();
-$bp = $controller->getPermissionsObject(); 
+$bp = $controller->getPermissionObject(); 
 foreach($posts as $p) { ?>
 	<? if($p['approved'] || $bp->canWrite()) { ?>
     <div class="guestBook-entry<?php if ($c->getVersionObject()->getVersionAuthorUserName() == $u->getUserName()) {?> authorPost <?php }?>">
@@ -56,7 +56,9 @@ foreach($posts as $p) { ?>
 		<div><?=t('You must be logged in to leave a reply.')?> <a href="<?=View::url("/login","forward",$c->getCollectionID())?>"><?=t('Login')?> &raquo;</a></div>
 	<? }else{ ?>	
 		<a name="guestBookForm-<?=$controller->bID?>"></a>
+
 		<div id="guestBook-formBlock-<?=$controller->bID?>" class="guestBook-formBlock">
+
 			<h5 class="guestBook-formBlock-title"><?php echo t('Leave a Reply')?></h5>
 			<form method="post" action="<?=$this->action('form_save_entry', '#guestBookForm-'.$controller->bID)?>">
 			<? if(isset($Entry->entryID)) { ?>
@@ -67,20 +69,19 @@ foreach($posts as $p) { ?>
 				<label for="name"><?=t('Name')?>:</label><?=(isset($errors['name'])?"<span class=\"error\">".$errors['name']."</span>":"")?><br />
 				<input type="text" name="name" value="<?=$Entry->user_name ?>" /> <br />
 				<label for="email"><?=t('Email')?>:</label><?=(isset($errors['email'])?"<span class=\"error\">".$errors['email']."</span>":"")?><br />
-				<input type="text" name="email" value="<?=$Entry->user_email ?>" /> <span class="note">(<?=t('Your email will not be publicly displayed.')?>)</span> <br />
+				<input type="email" name="email" value="<?=$Entry->user_email ?>" /> <span class="note">(<?=t('Your email will not be publicly displayed.')?>)</span> <br />
 			<? } ?>
 			
 			<?=(isset($errors['commentText'])?"<br /><span class=\"error\">".$errors['commentText']."</span>":"")?>
 			<textarea name="commentText"><?=$Entry->commentText ?></textarea><br />
 			<?
 			if($controller->displayCaptcha) {
-				
-				echo(t('Please type the letters and numbers shown in the image.'));			   
+						   
 				
 				$captcha = Loader::helper('validation/captcha');				
+   				$captcha->label();
+   				$captcha->showInput();
 				$captcha->display();
-				print '<br/>';
-				$captcha->showInput();		
 
 				echo isset($errors['captcha'])?'<span class="error">' . $errors['captcha'] . '</span>':'';
 				

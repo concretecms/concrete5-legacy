@@ -2,8 +2,12 @@
 defined('C5_EXECUTE') or die("Access Denied.");
 $u = new User();
 $form = Loader::helper('form');
+$fp = FilePermissions::getGlobal();
+if (!$fp->canAccessFileManager()) {
+	die(t("Access Denied."));
+}
 
-$respw = array();
+$resp = array();
 
 $fileIDs = array();
 $files = array();
@@ -16,7 +20,7 @@ if (is_array($_REQUEST['fID'])) {
 foreach($fileIDs as $fID) {
 	$f = File::getByID($fID);
 	$fp = new Permissions($f);
-	if ($fp->canRead()) {
+	if ($fp->canViewFileInFileManager()) {
 		$files[] = $f;
 	}
 }

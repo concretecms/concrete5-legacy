@@ -30,8 +30,8 @@ if (is_array($headerItems[$identifier])) {
 ?>
 $(function() {
 	$('#ccm-block-form').each(function() {
-		<? if (isset($proxyBlock)) { ?>
-			ccm_setupBlockForm($(this), '<?=$proxyBlock->getBlockID()?>', 'edit');
+		<? if (is_object($b->getProxyBlock())) { ?>
+			ccm_setupBlockForm($(this), '<?=$b->getProxyBlock()->getBlockID()?>', 'edit');
 		<? } else { ?>
 			ccm_setupBlockForm($(this), '<?=$b->getBlockID()?>', 'edit');
 		<? } ?>
@@ -42,19 +42,34 @@ $(function() {
 <?
 $hih = Loader::helper("concrete/interface/help");
 $blockTypes = $hih->getBlockTypes();
+$cont = $bt->getController();
+if ($b->getBlockTypeHandle() == BLOCK_HANDLE_SCRAPBOOK_PROXY) {
+	$bx = Block::getByID($b->getController()->getOriginalBlockID());
+	$cont = $bx->getController();
+}
+
 if (isset($blockTypes[$bt->getBlockTypeHandle()])) {
 	$help = $blockTypes[$bt->getBlockTypeHandle()];
 } else {
-	$cont = $bt->getController();
 	if ($cont->getBlockTypeHelp()) {
 		$help = $cont->getBlockTypeHelp();
 	}
 }
 if (isset($help)) { ?>
-	<div class="dialog-help"><?=$help?></div>
+	<div class="dialog-help" id="ccm-menu-help-content"><? 
+		if (is_array($help)) { 
+			print $help[0] . '<br><br><a href="' . $help[1] . '" class="btn small" target="_blank">' . t('Learn More') . '</a>';
+		} else {
+			print $help;
+		}
+	?></div>
 <? } ?>
 
-<form method="post" id="ccm-block-form" class="validate" action="<?=$b->getBlockEditAction()?>&rcID=<?=intval($rcID)?>" enctype="multipart/form-data">
+<? if ($cont->getBlockTypeWrapperClass() != '') { ?>
+	<div class="<?=$cont->getBlockTypeWrapperClass();?>">
+<? } ?>
+
+<form method="post" id="ccm-block-form" class="validate form-horizontal" action="<?=$b->getBlockEditAction()?>&rcID=<?=intval($rcID)?>" enctype="multipart/form-data">
 
 <input type="hidden" name="ccm-block-form-method" value="REGULAR" />
 

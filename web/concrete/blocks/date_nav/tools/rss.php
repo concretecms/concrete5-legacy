@@ -13,13 +13,13 @@ if($_GET['bID']) {
 	$rssUrl = $controller->getRssUrl($b);
 	
 	$bp = new Permissions($b);
-	if( $bp->canRead() && $controller->rss) {
+	if( $bp->canViewBlock() && $controller->rss) {
 
 		$cArray = $controller->getPages();
 		$nh = Loader::helper('navigation');
 
 		header('Content-type: text/xml');
-		echo "<?php xml version=\"1.0\"?>\n";
+		echo "<" . "?" . "xml version=\"1.0\"?>\n";
 
 ?>
 		<rss version="2.0">

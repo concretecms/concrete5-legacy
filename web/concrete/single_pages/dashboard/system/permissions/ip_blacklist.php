@@ -3,7 +3,7 @@
 $h = Loader::helper('concrete/dashboard');?>
 <form method="post" id="ipblacklist-form" action="<?php echo $this->action('update_ipblacklist')?>">
 	<?php echo $this->controller->token->output('update_ipblacklist')?>
-	<?=$h->getDashboardPaneHeaderWrapper(t('IP Address Blacklist'), false, 'span16', false);?>
+	<?=$h->getDashboardPaneHeaderWrapper(t('IP Address Blacklist'), false, 'span10 offset1', false);?>
 	<div class="ccm-pane-body">
 			
 			<h3><?php echo t('Smart IP Banning')?></h3>
@@ -41,7 +41,7 @@ $h = Loader::helper('concrete/dashboard');?>
 				<tbody>
 				<?php  if (count($user_banned_limited_ips) == 0) {?>
 				<tr>
-					<td colspan="4">None</td>
+					<td colspan="4"><?php  echo t('None')?></td>
 				</tr>
 				<?php  } else { ?>
 					<?php  foreach ($user_banned_limited_ips as $user_banned_ip) { ?>

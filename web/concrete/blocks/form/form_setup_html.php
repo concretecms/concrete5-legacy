@@ -46,10 +46,11 @@ $ih = Loader::helper('concrete/interface');
 				<?=$form->label('recipientEmail', t('Notify me by email when people submit this form'))?>
 				<div class="input">
 					<div class="input-prepend">
-						<label class="add-on" style="z-index: 2000">
+						<label>
+						<span class="add-on" style="z-index: 2000">
 							<?=$form->checkbox('notifyMeOnSubmission', 1, $miniSurveyInfo['notifyMeOnSubmission'] == 1, array('onclick' => "$('input[name=recipientEmail]').focus()"))?>
+						</span><?=$form->text('recipientEmail', $miniSurveyInfo['recipientEmail'], array('style' => 'z-index:2000;' ))?>
 						</label>
-						<?=$form->text('recipientEmail', $miniSurveyInfo['recipientEmail'])?>
 					</div>
 
 					<span class="help-block"><?=t('(Seperate multiple emails with a comma)')?></span>
@@ -89,12 +90,28 @@ $ih = Loader::helper('concrete/interface');
 					</div>
 				</div>
 			</div>
+			<div class="clearfix">
+				<label for="ccm-form-fileset"><?=t('Add uploaded files to a set?')?></label>
+				<div class="input">
+					<div id="ccm-form-fileset">
+						<?php
+							Loader::model('file_set');
+							$fs = new FileSet();
+							$fileSets = $fs->getMySets();
+							$sets = array(0 => t('None'));
+							foreach($fileSets as $fileSet) {
+								$sets[$fileSet->fsID] = $fileSet->fsName;
+							}
+							print $form->select('addFilesToSet', $sets, $miniSurveyInfo['addFilesToSet']);
+						?>
+					</div>
+				</div>
+			</div>
 		</fieldset>
 	</div> 
 	
 	<input type="hidden" id="qsID" name="qsID" type="text" value="<?php echo intval($miniSurveyInfo['questionSetId'])?>" />
 	<input type="hidden" id="oldQsID" name="oldQsID" type="text" value="<?php echo intval($miniSurveyInfo['questionSetId'])?>" />
-	<input type="hidden" id="bID" name="bID" type="text" value="<?php echo intval($miniSurveyInfo['bID'])?>" />
 	<input type="hidden" id="msqID" name="msqID" type="text" value="<?php echo intval($msqID)?>" />
 	
 	<div id="ccm-formBlockPane-add" class="ccm-formBlockPane" style=" <?php echo (intval($miniSurveyInfo['bID'])==0)?'display:block':''?> ">
@@ -116,44 +133,19 @@ $ih = Loader::helper('concrete/interface');
 			<div class="clearfix">
 				<label><?=t('Answer Type')?></label>
 				<div class="input">
-					<ul class="inputs-list" id="answerType">
-						<li><label>
-							<?=$form->radio('answerType', 'field')?>
-							<span><?=t('Text Field')?></span>
-						</label></li>
-						<li><label>
-							<?=$form->radio('answerType', 'text')?>
-							<span><?=t('Text Area')?></span>
-						</label></li>
-						<li><label>
-							<?=$form->radio('answerType', 'radios')?>
-							<span><?=t('Radio Buttons')?></span>
-						</label></li>
-						<li><label>
-							<?=$form->radio('answerType', 'select')?>
-							<span><?=t('Select Box')?></span>
-						</label></li>
-						<li><label>
-							<?=$form->radio('answerType', 'checkboxlist')?>
-							<span><?=t('Checkbox List')?></span>
-						</label></li>
-						<li><label>
-							<?=$form->radio('answerType', 'fileupload')?>
-							<span><?=t('File Upload')?></span>
-						</label></li>
-						<li><label>
-							<?=$form->radio('answerType', 'email')?>
-							<span><?=t('Email Address')?></span>
-						</label></li>
-						<li><label>
-							<?=$form->radio('answerType', 'telephone')?>
-							<span><?=t('Telephone')?></span>
-						</label></li>
-						<li><label>
-							<?=$form->radio('answerType', 'url')?>
-							<span><?=t('Web Address')?></span>
-						</label></li>
-					</ul>
+					<select class="inputs-list span4" name="answerType" id="answerType">
+						<option value="field"><?=t('Text Field')?></option>
+						<option value="text"><?=t('Text Area')?></option>
+						<option value="radios"><?=t('Radio Buttons')?></option>
+						<option value="select"><?=t('Select Box')?></option>
+						<option value="checkboxlist"><?=t('Checkbox List')?></option>
+						<option value="fileupload"><?=t('File Upload')?></option>
+						<option value="email"><?=t('Email Address')?></option>
+						<option value="telephone"><?=t('Telephone')?></option>
+						<option value="url"><?=t('Web Address')?></option>
+						<option value="date"><?=t('Date Field')?></option>
+						<option value="datetime"><?=t('DateTime Field')?></option>
+					</select>
 				</div>
 			</div>
 			
@@ -197,11 +189,24 @@ $ih = Loader::helper('concrete/interface');
 					</ul>
 				</div>
 			</div>
-			
-			<div class="actions">
+
+			<div class="clearfix">
+				<div id="emailSettings">
+					<?php print $form->label('send_notification_from', t('Send Form Email From This Address'));?>
+					<div class="input send_notification_from">
+						<?php print $form->checkbox('send_notification_from', 1); ?>
+					</div>
+				</div>
+			</div>
+
+			<div class="clearfix">
+			<label></label>
+			<div class="input">
 				<?=$ih->button(t('Refresh'), '#', 'left', '', array('style' => 'display:none', 'id' => 'refreshButton'))?>
 				<?=$ih->button(t('Add Question'), '#', '', '', array('id' => 'addQuestion'))?>
 			</div>
+			</div>
+			
 		</fieldset> 
 	</div> 
 		
@@ -224,47 +229,22 @@ $ih = Loader::helper('concrete/interface');
 				<div class="clearfix">
 					<label><?=t('Answer Type')?></label>
 					<div class="input">
-						<ul class="inputs-list" id="answerTypeEdit">
-							<li><label>
-								<?=$form->radio('answerTypeEdit', 'field')?>
-								<span><?=t('Text Field')?></span>
-							</label></li>
-							<li><label>
-								<?=$form->radio('answerTypeEdit', 'text')?>
-								<span><?=t('Text Area')?></span>
-							</label></li>
-							<li><label>
-								<?=$form->radio('answerTypeEdit', 'radios')?>
-								<span><?=t('Radio Buttons')?></span>
-							</label></li>
-							<li><label>
-								<?=$form->radio('answerTypeEdit', 'select')?>
-								<span><?=t('Select Box')?></span>
-							</label></li>
-							<li><label>
-								<?=$form->radio('answerTypeEdit', 'checkboxlist')?>
-								<span><?=t('Checkbox List')?></span>
-							</label></li>
-							<li><label>
-								<?=$form->radio('answerTypeEdit', 'fileupload')?>
-								<span><?=t('File Upload')?></span>
-							</label></li>
-							<li><label>
-								<?=$form->radio('answerTypeEdit', 'email')?>
-								<span><?=t('Email Address')?></span>
-							</label></li>
-							<li><label>
-								<?=$form->radio('answerTypeEdit', 'telephone')?>
-								<span><?=t('Telephone')?></span>
-							</label></li>
-							<li><label>
-								<?=$form->radio('answerTypeEdit', 'url')?>
-								<span><?=t('Web Address')?></span>
-							</label></li>
-						</ul>
+						<select class="inputs-list span4" name="answerTypeEdit" id="answerTypeEdit">
+							<option value="field"><?=t('Text Field')?></option>
+							<option value="text"><?=t('Text Area')?></option>
+							<option value="radios"><?=t('Radio Buttons')?></option>
+							<option value="select"><?=t('Select Box')?></option>
+							<option value="checkboxlist"><?=t('Checkbox List')?></option>
+							<option value="fileupload"><?=t('File Upload')?></option>
+							<option value="email"><?=t('Email Address')?></option>
+							<option value="telephone"><?=t('Telephone')?></option>
+							<option value="url"><?=t('Web Address')?></option>
+							<option value="date"><?=t('Date Field')?></option>
+							<option value="datetime"><?=t('DateTime Field')?></option>
+						</select>
 					</div>
 				</div>
-				
+
 				<div id="answerOptionsAreaEdit">
 					<div class="clearfix">
 						<?=$form->label('answerOptionsEdit', t('Answer Options'))?>
@@ -294,12 +274,26 @@ $ih = Loader::helper('concrete/interface');
 					<label><?=t('Required')?> </label>
 					<div class="input">
 						<ul class="inputs-list" id="requiredEdit">
-							<li><label> <?=$form->radio('requiredEdit', 1)?> <span><?=t('Yes')?>
-								</span>
-							</label></li>
-							<li><label> <?=$form->radio('requiredEdit', 0)?> <span><?=t('No')?> </span>
-							</label></li>
+							<li>
+								<label>
+									<?=$form->radio('requiredEdit', 1)?>
+									<span><?=t('Yes')?></span>
+								</label>
+							</li>
+							<li>
+								<label>
+									<?=$form->radio('requiredEdit', 0)?>
+									<span><?=t('No')?> </span>
+								</label>
+							</li>
 						</ul>
+					</div>
+				</div>
+
+				<div id="emailSettingsEdit">
+					<?php print $form->label('send_notification_from_edit', t('Reply to this email address'));?>
+					<div class="input send_notification_from">
+						<?php print $form->checkbox('send_notification_from_edit', 1); ?>
 					</div>
 				</div>
 			</fieldset>
@@ -307,8 +301,8 @@ $ih = Loader::helper('concrete/interface');
 			<input type="hidden" id="positionEdit" name="position" type="text" value="1000" />
 			
 			<div>
-				<?=$ih->button(t('Cancel'), '#', 'left', '', array('id' => 'cancelEditQuestion'))?>
-				<?=$ih->button(t('Save Changes'), '#', 'right', 'primary', array('id' => 'editQuestion'))?>
+				<?=$ih->button(t('Cancel'), 'javascript:void(0)', 'left', '', array('id' => 'cancelEditQuestion'))?>
+				<?=$ih->button(t('Save Changes'), 'javascript:void(0)', 'right', 'primary', array('id' => 'editQuestion'))?>
 			</div>
 		</div>
 	

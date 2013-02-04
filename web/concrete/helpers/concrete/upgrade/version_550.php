@@ -39,6 +39,10 @@ class ConcreteUpgradeVersion550Helper {
 			$db->Execute('alter table PageSearchIndex add index (cRequiresReindex)');
 		}
 		
+		// install version job
+		Loader::model("job");
+		Job::installByHandle('remove_old_page_versions');		
+		
 		// flag system pages appropriately 
 		Page::rescanSystemPages();		
 		
@@ -60,14 +64,24 @@ class ConcreteUpgradeVersion550Helper {
 		$this->installSinglePages();
 		
 		// move the old dashboard
-		$dashboard = Page::getByPath('/dashboard');
-		$dashboard->moveToTrash();
+		$newDashPage = Page::getByPath('/dashboard/welcome');
+		if (!is_object($newDashPage) || $newDashPage->isError()) {
+			$dashboard = Page::getByPath('/dashboard');
+			$dashboard->moveToTrash();
+			
+			// install new dashboard + page types		
+			$this->installDashboard();
 		
-		// install new dashboard + page types		
-		$this->installDashboard();
+			$this->migrateOldDashboard();
+		}
 		
-		$this->migrateOldDashboard();
-
+		Loader::model('system/captcha/library');
+		$scl = SystemCaptchaLibrary::getByHandle('securimage');
+		if (!is_object($scl)) {
+			$scl = SystemCaptchaLibrary::add('securimage', t('SecurImage (Default)'));
+			$scl->activate();
+		}
+		
 		Config::save('SEEN_INTRODUCTION', 1);
 
 		
@@ -184,9 +198,9 @@ class ConcreteUpgradeVersion550Helper {
 		if (!is_object($bt)) {
 			BlockType::installBlockType('dashboard_featured_theme');			
 		}
-		$bt = BlockType::getByHandle('dashboard_form_summary');
+		$bt = BlockType::getByHandle('dashboard_site_activity');
 		if (!is_object($bt)) {
-			BlockType::installBlockType('dashboard_form_summary');			
+			BlockType::installBlockType('dashboard_site_activity');			
 		}
 		$bt = BlockType::getByHandle('dashboard_newsflow_latest');
 		if (!is_object($bt)) {

@@ -9,15 +9,16 @@
  **/
 defined('C5_EXECUTE') or die("Access Denied."); 
 
-if (!defined('ENABLE_CACHE')) {
-	Config::getOrDefine('ENABLE_CACHE', true); 
-}
-if (!ENABLE_CACHE) {
-	Cache::disableCache();
+if (!defined('ENABLE_OVERRIDE_CACHE')) {
+	Config::getOrDefine('ENABLE_OVERRIDE_CACHE', false); 
 }
 
-if (ENABLE_CACHE) {
-	Config::getOrDefine('FULL_PAGE_CACHE_GLOBAL', 'blocks');	
+if (!defined('ENABLE_BLOCK_CACHE')) {
+	Config::getOrDefine('ENABLE_BLOCK_CACHE', true); 
+}
+
+if (!defined('FULL_PAGE_CACHE_GLOBAL')) {
+	Config::getOrDefine('FULL_PAGE_CACHE_GLOBAL', false);	
 }
 
 if (!defined('STATISTICS_TRACK_PAGE_VIEWS')) {
@@ -75,6 +76,10 @@ if (!defined('ENABLE_INTELLIGENT_SEARCH_MARKETPLACE')) {
 	}
 }
 
+if (!defined('ENABLE_NEWSFLOW_OVERLAY')) {
+	Config::getOrDefine('ENABLE_NEWSFLOW_OVERLAY', true);
+}
+
 if (!defined('WHITE_LABEL_LOGO_SRC')) {
 	Config::getOrDefine('WHITE_LABEL_LOGO_SRC', false);
 }
@@ -103,6 +108,13 @@ if (!defined('ENABLE_PROGRESSIVE_PAGE_REINDEX')) {
 	define('ENABLE_PROGRESSIVE_PAGE_REINDEX', true);
 }
 
+if (!defined('ENABLE_APP_NEWS')) {
+	Config::getOrDefine('ENABLE_APP_NEWS', true);
+}
+
+if (!defined('FORBIDDEN_SHOW_LOGIN')) {
+	Config::getOrDefine('FORBIDDEN_SHOW_LOGIN', true); //show the login page instead of forbidden for non-logged in users
+}
 
 if (URL_REWRITING_ALL == true) {
 	define('URL_SITEMAP', BASE_URL . DIR_REL . '/dashboard/sitemap');
@@ -180,6 +192,14 @@ if (!defined('USER_REGISTRATION_APPROVAL_REQUIRED')) {
 	Config::getOrDefine('USER_REGISTRATION_APPROVAL_REQUIRED', false);
 }
 
+if (!defined('REGISTER_NOTIFICATION')) {
+	Config::getOrDefine('REGISTER_NOTIFICATION', false);
+}
+
+if (!defined('EMAIL_ADDRESS_REGISTER_NOTIFICATION')) {
+	Config::getOrDefine('EMAIL_ADDRESS_REGISTER_NOTIFICATION', false);
+}
+
 if (!defined('REGISTRATION_TYPE')) {
 	Config::getOrDefine('REGISTRATION_TYPE', 'disabled');	
 }
@@ -206,8 +226,15 @@ define('UVTYPE_CHANGE_PASSWORD', 1);
 
 
 if (!defined('UPLOAD_FILE_EXTENSIONS_ALLOWED')) {
-	Config::getOrDefine('UPLOAD_FILE_EXTENSIONS_ALLOWED','*.flv;*.jpg;*.gif;*.jpeg;*.ico;*.docx;*.xla;*.png;*.psd;*.swf;*.doc;*.txt;*.xls;*.xlsx;*.csv;*.pdf;*.tiff;*.rtf;*.m4a;*.mov;*.wmv;*.mpeg;*.mpg;*.wav;*.avi;*.m4v;*.mp4;*.mp3;*.qt;*.ppt;*.pptx;*.kml;*.xml');
+	Config::getOrDefine('UPLOAD_FILE_EXTENSIONS_ALLOWED','*.flv;*.jpg;*.gif;*.jpeg;*.ico;*.docx;*.xla;*.png;*.psd;*.swf;*.doc;*.txt;*.xls;*.xlsx;*.csv;*.pdf;*.tiff;*.rtf;*.m4a;*.mov;*.wmv;*.mpeg;*.mpg;*.wav;*.3gp;*.avi;*.m4v;*.mp4;*.mp3;*.qt;*.ppt;*.pptx;*.kml;*.xml;*.svg;*.webm;*.ogg;*.ogv');
 	define('UPLOAD_FILE_EXTENSIONS_CONFIGURABLE', true);
 } else {
 	define('UPLOAD_FILE_EXTENSIONS_CONFIGURABLE', false);
 }
+
+if (!defined('SEO_EXCLUDE_WORDS')) {
+	Config::getOrDefine('SEO_EXCLUDE_WORDS', 'a, an, as, at, before, but, by, for, from, is, in, into, like, of, off, on, onto, per, since, than, the, this, that, to, up, via, with');
+}
+
+// determining whether we can use page permissions getPermissionCollectionID as our permission object identifier
+define('PAGE_PERMISSION_IDENTIFIER_USE_COLLECTION_ID', PagePermissionAccess::usePermissionCollectionIDForIdentifier());

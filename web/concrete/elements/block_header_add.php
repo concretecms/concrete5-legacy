@@ -44,19 +44,30 @@ $(function() {
 <?
 $hih = Loader::helper("concrete/interface/help");
 $blockTypes = $hih->getBlockTypes();
+$cont = $bt->getController();
+	
 if (isset($blockTypes[$bt->getBlockTypeHandle()])) {
 	$help = $blockTypes[$bt->getBlockTypeHandle()];
 } else {
-	$cont = $bt->getController();
 	if ($cont->getBlockTypeHelp()) {
 		$help = $cont->getBlockTypeHelp();
 	}
 }
 if (isset($help)) { ?>
-	<div class="dialog-help"><?=$help?></div>
+	<div class="dialog-help" id="ccm-menu-help-content"><? 
+		if (is_array($help)) { 
+			print $help[0] . '<br><br><a href="' . $help[1] . '" class="btn small" target="_blank">' . t('Learn More') . '</a>';
+		} else {
+			print $help;
+		}
+	?></div>
 <? } ?>
 
-<form method="post" action="<?=$action?>" class="validate" id="ccm-block-form" enctype="multipart/form-data">
+<? if ($cont->getBlockTypeWrapperClass() != '') { ?>
+	<div class="<?=$cont->getBlockTypeWrapperClass();?>">
+<? } ?>
+
+<form method="post" action="<?=$action?>" id="ccm-block-form" enctype="multipart/form-data" class="validate form-horizontal">
 
 <input type="hidden" name="ccm-block-form-method" value="REGULAR" />
 

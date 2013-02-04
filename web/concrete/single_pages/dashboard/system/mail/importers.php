@@ -1,4 +1,3 @@
-
 <? $ih = Loader::helper('concrete/interface'); ?>
 <?
 $enabledVals = array('0' => t('No'), '1' => t('Yes'));
@@ -9,61 +8,68 @@ $form = Loader::helper('form');
 
 <? if ($this->controller->getTask() == 'edit_importer') { ?>
 
-<?php echo Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Edit Importer'), false, 'span12 offset2', false)?>
+<?php echo Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Edit Importer'), false, 'span8 offset2', false)?>
 <div class="ccm-pane-body">
 
-	<form method="post" id="mail-importer-form" action="<?=$this->url('/dashboard/system/mail/importers', 'save_importer')?>">
-		<fieldset>
-			<legend><?=$mi->getMailImporterName()?> <?=t('Settings');?></legend>
+	<form method="post" id="mail-importer-form" class="form-horizontal" action="<?=$this->url('/dashboard/system/mail/importers', 'save_importer')?>">
 			<?=$form->hidden('miID', $mi->getMailImporterID())?>
+		<fieldset>
+			<legend><?=t($mi->getMailImporterName())?> <?=t('Settings');?></legend>
 		
-			<div class="clearfix">
-				<?=$form->label('miEmail','Email Address to Route Emails To');?>
-				<div class="input">
+			<div class="control-group">
+				<?=$form->label('miEmail',t('Email Address to Route Emails To'));?>
+				<div class="controls">
 					<?=$form->text('miEmail', $mi->getMailImporterEmail())?>
 				</div>
 			</div>
 			
-			<div class="clearfix">
-				<?=$form->label('miIsEnabled','Enabled');?>
-				<div class="input">
+			<div class="control-group">
+				<?=$form->label('miIsEnabled',t('Enabled'));?>
+				<div class="controls">
 					<?=$form->select('miIsEnabled', $enabledVals, $mi->isMailImporterEnabled())?>
 				</div>
 			</div>	
 		</fieldset>
 		<fieldset>
 			<legend><?=t('POP Mail Server Authentication Settings')?></legend>
-			<div class="clearfix">
-				<?=$form->label('miServer','Mail Server');?>
-				<div class="input">
+			<div class="control-group">
+				<?=$form->label('miServer',t('Mail Server'));?>
+				<div class="controls">
 					<?=$form->text('miServer', $mi->getMailImporterServer())?>
 				</div>
 			</div>
-			<div class="clearfix">
-				<?=$form->label('miUsername','Username');?>
-				<div class="input">
+			<div class="control-group">
+				<?=$form->label('miUsername',t('Username'));?>
+				<div class="controls">
 					<?=$form->text('miUsername', $mi->getMailImporterUsername())?>
 				</div>
 			</div>
-			<div class="clearfix">
-				<?=$form->label('miPassword','Password');?>
-				<div class="input">
+			<div class="control-group">
+				<?=$form->label('miPassword',t('Password'));?>
+				<div class="controls">
 					<?=$form->text('miPassword', $mi->getMailImporterPassword())?>
 				</div>
 			</div>
 			
-			<div class="clearfix">
-				<?=$form->label('miEncryption','Encryption');?>
-				<div class="input">
+			<div class="control-group">
+				<?=$form->label('miEncryption',t('Encryption'));?>
+				<div class="controls">
 					<?=$form->select('miEncryption', $secureVals, $mi->getMailImporterEncryption())?>
 				</div>
 			</div>
 			<? $port = $mi->getMailImporterPort() == 0 ? '' : $mi->getMailImporterPort(); ?>
 		
-			<div class="clearfix">
-				<?=$form->label('miPort','Port (Leave blank for default)');?>
-				<div class="input">
+			<div class="control-group">
+				<?=$form->label('miPort',t('Port (Leave blank for default)'));?>
+				<div class="controls">
 					<?=$form->text('miPort', $port)?>
+				</div>
+			</div>
+
+			<div class="control-group">
+				<?=$form->label('miConnectionMethod', t('Connection Method'));?>
+				<div class="controls">
+					<?=$form->select('miConnectionMethod', array('POP' => 'POP', 'IMAP' => 'IMAP'), $mi->getMailImporterConnectionMethod())?>
 				</div>
 			</div>
 
@@ -77,13 +83,13 @@ $form = Loader::helper('form');
 
 <? } else { ?>
 
-<?php echo Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Mail Importers'), false, 'span12 offset2')?>	
+<?php echo Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Mail Importers'), false, 'span8 offset2')?>	
 	<div class="ccm-pane-body">
 	<? if (count($importers) == 0) { ?>
 		<p><?=t('There are no mail importers. Mail importers poll email accounts for new messages and run actions on those messages.')?></p>
 	<? } else { ?>
 	
-	<table class="zebra-striped" border="0" cellspacing="1" cellpadding="0">
+	<table class="table table-striped" border="0" cellspacing="1" cellpadding="0">
 	<tr>
 		<td class="header"><?=t('Name')?></td>
 		<td class="header"><?=t('Server')?></td>

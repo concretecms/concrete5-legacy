@@ -1,4 +1,4 @@
-body {background-color: #eee; margin: 0px;}
+body {background: #557693 url(../images/dashboard/bg.jpg) repeat-x; margin: 0px;}
 div#ccm-dashboard-content {  margin-top: 130px; margin-bottom: 80px }
 #ccm-dashboard-result-message {display: none;}
 
@@ -14,7 +14,7 @@ div#ccm-dashboard-content {  margin-top: 130px; margin-bottom: 80px }
 	border-top-left-radius: 6px;
 	-moz-border-radius-topleft: 6px;
 	-moz-border-radius-topright: 6px;
-	position: relative; 
+	position: relative;
 	border-bottom:1px solid #eee;padding:5px 20px; position: relative;
 }
 
@@ -22,15 +22,14 @@ div#ccm-dashboard-content {  margin-top: 130px; margin-bottom: 80px }
 #ccm-dashboard-image-caption div {padding: 8px; color: #fff;}
 #ccm-dashboard-image-caption a {color: #fff; text-decoration: underline;}
 
-.ccm-dashboard-page-container {  .fixed-container();}
-.ccm-dashboard-page-container div.ccm-pane {position: relative; z-index: 2;}
-
 .ccm-ui div.popover ul.ccm-navigate-page-menu {list-style-type: none; margin: -14px}
 .ccm-ui div.popover ul.ccm-navigate-page-menu li {padding: 0px; margin: 0px;}
 .ccm-ui div.popover ul.ccm-navigate-page-menu li a {display: block; padding: 8px 14px 8px 14px; color: #333;}
 .ccm-ui div.popover ul.ccm-navigate-page-menu li a:hover {text-decoration: none; background-color: #E0F2FE;}
 .ccm-ui div.popover ul.ccm-navigate-page-menu li:last-child a {.border-radius-bottom-only(6px);}
 .ccm-ui div.popover ul.ccm-navigate-page-menu li.nav-selected a {background-color: #f6f6f6; font-weight: bold;}
+
+.ccm-ui .inline-form-fix {padding-left: 0px; padding-top: 8px;}
 
 #ccm-dashboard-background-caption {
 	background-color: rgba(0,0,0,0.8) !important;
@@ -63,7 +62,7 @@ div.ccm-dashboard-system-category h3 {border-bottom: 1px solid #dfdfdf; margin-b
 
 div.ccm-dashboard-system-category h3 a {color: #333;}
 div.ccm-dashboard-system-category h3 a:hover {text-decoration: none; color: #999;}
-div.ccm-dashboard-system-category-inner {.clearfix(); 
+div.ccm-dashboard-system-category-inner {.clearfix();
 	border-top: 1px solid #f2f2f2;
 	padding: 10px 0px 20px 0px;
 	margin-bottom: 20px;
@@ -91,7 +90,7 @@ div.ccm-dashboard-system-category-inner div {
 }
 
 div.ccm-dashboard-inner {
-	padding: 20px; 
+	padding: 20px;
 	color: @gray;
 	margin-top: -21px;
 	background-color:#ffffff;
@@ -147,6 +146,8 @@ div.ccm-theme-style-attribute div.ccm-theme-style-font {
 	background: transparent url(../images/widgets/font/text_rich.png) no-repeat scroll 6px 6px;
 }
 
+div.ccm-attribute-list-wrapper {margin-top: 10px; margin-bottom: 10px;}
+
 div.ccm-theme-style-attribute div.ccm-theme-style-custom {
 	background: transparent url(../images/widgets/font/custom_style.png) no-repeat scroll 10px 10px;
 	*position:absolute;
@@ -157,9 +158,9 @@ div#jquery-font-panel input, div#jquery-custom-panel input {
 }
 
 div#jquery-font-panel, div#jquery-custom-panel {
-	display: none; 
-	position: absolute; 
-	top: 0px; left: 0px; 
+	display: none;
+	position: absolute;
+	top: 0px; left: 0px;
 	width: 356px;
 	height: 176px;
 	overflow: hidden;
@@ -194,14 +195,14 @@ div#jquery-font-panel div#jquery-font-panel-list-fonts {
 	position: absolute;
 	top: 10px;
 	left: 10px;
-	width: 180px; 
+	width: 180px;
 }
 
 div#jquery-font-panel div#jquery-font-panel-list-sizes {
 	position: absolute;
 	top: 10px;
 	left: 205px;
-	width: 60px; 
+	width: 60px;
 }
 
 div#jquery-font-panel div#jquery-font-panel-list-styles {
@@ -221,7 +222,7 @@ div#jquery-font-panel div#jquery-font-panel-list-weights {
 }
 
 div#jquery-font-panel div#jquery-font-panel-save {
-	position: absolute; 
+	position: absolute;
 	top: 130px;
 	left: 295px;
 }
@@ -236,7 +237,7 @@ div#jquery-font-panel div.jquery-font-panel-list div {
 	padding: 4px;
 	border-bottom: 2px solid #e1e1e1;
 	background-color: #fefefe;
-	font-size: 12px; 
+	font-size: 12px;
 	color: #787878;
 	cursor: pointer;
 }
@@ -249,3 +250,17 @@ table#ip-blacklist td label {
 	width: auto;
 	text-align: left;
 }
+
+table#ccm-site-statistics-downloads {
+	td.ccm-site-statistics-downloads-title{
+		white-space:nowrap;
+		font-family:monospace;
+	}
+}
+
+/* workflow */
+#ccm-workflow-waiting-for-me form {
+	margin-bottom: 0px;
+}
+#ccm-workflow-waiting-for-me .ccm-workflow-progress-history {display: none;}
+#ccm-workflow-waiting-for-me .ccm-results-list td {vertical-align: middle;}

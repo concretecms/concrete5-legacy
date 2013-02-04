@@ -1,3 +1,7 @@
+/** 
+ * Theme JS
+ */
+
 function ccm_previewInternalTheme(cID, themeID,themeName){
 	var ctID=$("input[name=ctID]").val();
 	$.fn.dialog.open({
@@ -24,7 +28,7 @@ function ccm_previewMarketplaceTheme(cID, themeCID,themeName,themeHandle){
 ccm_marketplaceDetailShowMore = function() {	
 	$(".ccm-marketplace-item-information-more").hide();
 	$(".ccm-marketplace-item-information-inner").css('max-height', 'none');
-	ccm_marketplaceBrowserSetupNextAndPrevious();
+	//ccm_marketplaceBrowserSetupNextAndPrevious();
 }
 
 ccm_marketplaceUpdatesShowMore = function(obj) {	

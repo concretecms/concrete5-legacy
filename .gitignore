@@ -36,3 +36,10 @@ error_log
 .htaccess
 .ftpquota
 /.idea/
+
+# ignore Aptana and Eclipse project files
+.project
+
+# ignore Eclipse-specific files
+/.settings/
+/.buildpath

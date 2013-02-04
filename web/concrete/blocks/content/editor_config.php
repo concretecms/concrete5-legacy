@@ -1,4 +1,4 @@
-<?
+<?php
 $textEditorWidth=intval(Config::get('CONTENTS_TXT_EDITOR_WIDTH'));
 $textEditorHeight=intval(Config::get('CONTENTS_TXT_EDITOR_HEIGHT'));
 if($textEditorWidth<580)   $textEditorWidth=580;
@@ -16,7 +16,10 @@ tinyMCE.init({
 	relative_urls : false,
 	document_base_url: '<?=BASE_URL . DIR_REL?>/',
 	convert_urls: false,
-	content_css : "<?=$theme->getThemeEditorCSS()?>",
+	entity_encoding: 'raw',
+	<? if (is_object($theme)) { ?>
+		content_css : "<?=$theme->getThemeEditorCSS()?>",
+	<? } ?>
 	<?
 	$txtEditorMode=Config::get('CONTENTS_TXT_EDITOR_MODE');
 	if( $txtEditorMode=='CUSTOM' ){ ?>

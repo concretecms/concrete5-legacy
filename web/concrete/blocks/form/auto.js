@@ -3,9 +3,8 @@ var miniSurvey ={
 	serviceURL: $("input[name=miniSurveyServices]").val() + '?block=form&',
 	init: function(){ 
 			this.tabSetup();
-			this.answerTypes=document.forms['ccm-block-form'].answerType;
-			this.answerTypesEdit=document.forms['ccm-block-form'].answerTypeEdit; 
 
+			/*			
 			for(var i=0;i<this.answerTypes.length;i++){
 				this.answerTypes[i].onclick=function(){miniSurvey.optionsCheck(this);miniSurvey.settingsCheck(this);}
 				this.answerTypes[i].onchange=function(){miniSurvey.optionsCheck(this);miniSurvey.settingsCheck(this);}
@@ -14,12 +13,25 @@ var miniSurvey ={
 				this.answerTypesEdit[i].onclick=function(){miniSurvey.optionsCheck(this,'Edit');miniSurvey.settingsCheck(this,'Edit');}
 				this.answerTypesEdit[i].onchange=function(){miniSurvey.optionsCheck(this,'Edit');miniSurvey.settingsCheck(this,'Edit');}
 			} 			
+			*/
+			
+			$("#answerType").change(function(r) {
+				miniSurvey.optionsCheck($('#answerType').get(0));
+				miniSurvey.settingsCheck($('#answerType').get(0));
+			});
+
+			$("#answerTypeEdit").change(function(r) {
+				miniSurvey.optionsCheck($('#answerTypeEdit').get(0), 'Edit');
+				miniSurvey.settingsCheck($('#answerTypeEdit').get(0), 'Edit');
+			});
+
 			$('#refreshButton').click( function(){ miniSurvey.refreshSurvey(); return false; } );
 			$('#addQuestion').click(   function(){ miniSurvey.addQuestion(); return false; } );
-			$('#editQuestion').click(  function(){ miniSurvey.addQuestion('Edit')   } );
+			$('#editQuestion').click(  function(){ miniSurvey.addQuestion('Edit'); return false; } );
 			$('#cancelEditQuestion').click(   function(){ $('#editQuestionForm').css('display','none') } );			
 			this.serviceURL+='cID='+this.cID+'&arHandle='+this.arHandle+'&bID='+this.bID+'&btID='+this.btID+'&';
 			miniSurvey.refreshSurvey();
+			$('#emailSettings').hide();
 		},	
 	tabSetup: function(){
 		$('ul#ccm-formblock-tabs li a').each( function(num,el){ 
@@ -49,13 +61,21 @@ var miniSurvey ={
 			if(mode!='Edit') mode='';
 			if( radioButton.value=='select' || radioButton.value=='radios' || radioButton.value=='checkboxlist'){
 				 $('#answerOptionsArea'+mode).css('display','block');
-			}else $('#answerOptionsArea'+mode).css('display','none');			
+			}else $('#answerOptionsArea'+mode).css('display','none');
+
+			if( radioButton.value=='email') {
+				$('#emailSettings'+mode).show();
+			} else {
+				$('#emailSettings'+mode).hide();
+			}
 		},
 	settingsCheck : function(radioButton,mode){
 			if(mode!='Edit') mode='';
 			if( radioButton.value=='text'){
 				 $('#answerSettings'+mode).css('display','block');
-			}else $('#answerSettings'+mode).css('display','none');			
+			}else {
+				$('#answerSettings'+mode).css('display','none');
+			}
 		},
 	addQuestion : function(mode){ 
 			var msqID=0;
@@ -64,23 +84,28 @@ var miniSurvey ={
 			} else {
 				msqID=parseInt($('#msqID').val(), 10);
 			}
-			var postStr='question='+encodeURIComponent($('#question'+mode).val())+'&options='+encodeURIComponent($('#answerOptions'+mode).val());
+			var formID = '#answerType'+mode;
+			answerType = $(formID).val();
+			var options = encodeURIComponent($('#answerOptions'+mode).val());
+			var postStr='question='+encodeURIComponent($('#question'+mode).val())+'&options='+options;
 			postStr+='&width='+escape($('#width'+mode).val());
 			postStr+='&height='+escape($('#height'+mode).val());
 			var req = $('#required'+mode+' input[value=1]').prop('checked') ? 1 : 0;
 			postStr+='&required='+req;
 			postStr+='&position='+escape($('#position'+mode).val());
 			var form=document.getElementById('ccm-block-form'); 
-			var opts=form['answerType'+mode];
-			var answerType='';
-			for(var i=0;i<opts.length;i++){
-				if(opts[i].checked){
-					answerType=opts[i].value;
-					break;
-				}
-			} 
 			postStr+='&inputType='+answerType;//$('input[name=answerType'+mode+']:checked').val()
-			postStr+='&msqID='+msqID+'&qsID='+parseInt(this.qsID);			
+			postStr+='&msqID='+msqID+'&qsID='+parseInt(this.qsID);
+			if(answerType == 'email') {
+				postStr+='&send_notification_from=';
+                		if (mode == 'Edit') {
+                    			fieldID = "#send_notification_from_edit";
+                		}
+                		else {
+                    			fieldID = "#send_notification_from";
+                		}
+				postStr+= $(fieldID).is(':checked') ? "1" : "0"
+			}
 			$.ajax({ 
 					type: "POST",
 					data: postStr,
@@ -147,19 +172,32 @@ var miniSurvey ={
 						} else {
 							$('#requiredEdit input[value=1]').prop('checked', false);
 							$('#requiredEdit input[value=0]').prop('checked', true);
-						} 
-						
-						$('#msqID').val(jsonObj.msqID);    
-						for(var i=0;i<miniSurvey.answerTypesEdit.length;i++){							
-							if(miniSurvey.answerTypesEdit[i].value==jsonObj.inputType){
-								miniSurvey.answerTypesEdit[i].checked=true; 
-								miniSurvey.optionsCheck(miniSurvey.answerTypesEdit[i],'Edit');
-								miniSurvey.settingsCheck(miniSurvey.answerTypesEdit[i],'Edit');
+						}
+
+						if(jsonObj.inputType == 'email') {
+							var options = jsonObj.optionVals.split(";");
+							for (var i = 0; i < options.length; i++) {
+								key_val = options[i].split('::');
+								if(key_val.length == 2) {
+									if (key_val[0] == 'send_notification_from') {
+										if (key_val[1] == 1) {
+											$('.send_notification_from input').prop('checked', true);
+										} else {
+											$('.send_notification_from input').prop('checked', false);
+										}
+									}
+								}
 							}
 						}
+
+						$('#msqID').val(jsonObj.msqID);    
+						$('#answerTypeEdit').val(jsonObj.inputType);
+						miniSurvey.optionsCheck($('#answerTypeEdit').get(0), 'Edit');
+						miniSurvey.settingsCheck($('#answerTypeEdit').get(0), 'Edit');
+						
 						if(parseInt(jsonObj.bID)>0) 
 							miniSurvey.edit_qID = parseInt(qID) ;
-						scroll(0,165);
+						$('.miniSurveyOptions').first().closest('.ui-dialog-content').get(0).scrollTop = 0;
 					}
 			});
 	},	
@@ -190,9 +228,7 @@ var miniSurvey ={
 			$('#width').val('50');
 			$('#height').val('3');
 			$('#msqID').val('');
-			for(var i=0;i<this.answerTypes.length;i++){
-				this.answerTypes[i].checked=false;
-			}
+			$('#answerType').val('field').change();
 			$('#answerOptionsArea').hide();
 			$('#answerSettings').hide();
 			$('#required input').prop('checked', false);

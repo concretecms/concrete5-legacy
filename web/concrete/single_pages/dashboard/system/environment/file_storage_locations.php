@@ -1,21 +1,32 @@
-	<?=Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('File Storage Locations'), false, 'span10 offset3', false)?>
+	<?=Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('File Storage Locations'), false, 'span6 offset3', false)?>
 
-	<form method="post" class="form-stacked" id="file-access-storage" action="<?=$this->url('/dashboard/system/environment/file_storage_locations', 'save')?>">
+	<form method="post" class="form-inline" id="file-access-storage" action="<?=$this->url('/dashboard/system/environment/file_storage_locations', 'save')?>">
 	<div class="ccm-pane-body">
 			<?=$validation_token->output('file_storage');?>
-			<h4><?=t('Standard File Location')?></h4>
-			<p><?=t('Enter the directory where files will be stored on this server by default.')?></p>
-			<?=$form->text('DIR_FILES_UPLOADED', DIR_FILES_UPLOADED, array('rows'=>'2','style' => 'width:530px'))?>
-
+			<fieldset>
+			<legend><?=t('Standard File Location')?></legend>
+			<div class="control-group">
+			<label class="control-label" for="DIR_FILES_UPLOADED"><?=t('Path')?></label>
+			<div class="controls">
+			<?=$form->text('DIR_FILES_UPLOADED', DIR_FILES_UPLOADED, array('rows'=>'2','class' => 'span5'))?>
+			</div>
+			</div>
 			
-			<h4><?=t('Alternate Storage Directory')?></h4>
-			<p><?=t('Enter the name and path of an optional, additional location for file storage.')?></p>
+			</fieldset>
+			<fieldset>
+			<legend><?=t('Alternate Storage Directory')?></legend>
 			
-			<label for="alternate_storage_directory_name"><strong><?=t('Location Name')?></strong></label>
-			<?=$form->text('fslName', $fslName, array('style' => 'width:530px'))?>
-			<br/><br/>
-			<label for="alternate_storage_directory_name"><strong><?=t('Path')?></strong></label>
-			<?=$form->text('fslDirectory', $fslDirectory, array('rows' => '2', 'style' => 'width:530px'))?>
+			<div class="control-group">
+			<label for="fslName" class="control-label"><?=t('Location Name')?></label>
+			<div class="controls">
+			<?=$form->text('fslName', $fslName, array('class' => 'span5'))?>
+			</div></div>
+			<div class="control-group">
+			<label for="fslDirectory" class="control-label"><?=t('Path')?></label>
+			<div class="controls">
+			<?=$form->text('fslDirectory', $fslDirectory, array('rows' => '2', 'class' => 'span5'))?>
+			</div></div>
+			</fieldset>
 	</div>
 	<div class="ccm-pane-footer">
 			<?php		

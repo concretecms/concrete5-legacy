@@ -96,8 +96,7 @@ $ih = Loader::helper('concrete/interface');
     <div class="ccm-pane-footer">
     	<? print $ih->button(t('Return to Themes'), $this->url('/dashboard/pages/themes'), 'left'); ?>
         <? print $ih->button_js(t('Save'), 'saveCustomizedTheme()', 'right', 'primary'); ?>
-        <? print $ih->button_js(t('Reset'), 'resetCustomizedTheme()', 'right', 'error'); ?>
-        <? print $ih->button_js(t("Fullscreen View"), "ccm_previewInternalTheme(1, " . intval($t->getThemeID()) . ",'" . addslashes(str_replace(array("\r","\n",'\n'),'',$t->getThemeName())) . "')", 'right'); ?>
+        <? print $ih->button_js(t('Reset'), 'resetCustomizedTheme()', 'right'); ?>
     </div>
 
     </form>
@@ -109,7 +108,7 @@ $ih = Loader::helper('concrete/interface');
     // Only include JS if editable styles found.
     
     $ok = t('Ok');
-    $resetMsg = t('This will remove any theme customizations you have made.');
+    $resetMsg = t('Reset styles in this theme?');
     
     ?>
     
@@ -252,7 +251,7 @@ $ih = Loader::helper('concrete/interface');
                 $('div#jquery-font-panel-list-fonts div').removeClass('font-panel-list-selected');
                 $(this).addClass("font-panel-list-selected");
             });
-            $('div#jquery-font-panel-list-fonts div[font-panel-font=' + font + ']').addClass('font-panel-list-selected');
+            $('div#jquery-font-panel-list-fonts div[font-panel-font="' + font + '"]').addClass('font-panel-list-selected');
         },
     
         setupSizes: function(size) {
@@ -340,7 +339,7 @@ $ih = Loader::helper('concrete/interface');
         
     <? // BEGIN No editable styles found for theme dialogue. ?>
     
-    <?=Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Customize Theme'), false, 'span12 offset2', false)?>
+    <?=Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Customize Theme'), false, 'span10 offset1', false)?>
     
         <div class="ccm-pane-body">
             <p style="margin-bottom:18px;"><?=t('This theme contains no styles that can be customized.')?></p>

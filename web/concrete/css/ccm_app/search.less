@@ -17,6 +17,7 @@ div#ccm-list-wrapper div.ccm-pagination span.ccm-page-left{ position:static; flo
 div#ccm-list-wrapper div.ccm-pagination span.ccm-page-right{ position:static; float:right; text-align:right; display:block; width:100px; }
 div.ccm-list-action-row {float: right; margin-bottom: 10px;}
 
+table.ccm-results-list {.ccm-ui.table; .ccm-ui.table-condensed;}
 table.ccm-results-list td {vertical-align: middle;}
 table.ccm-results-list ul.media-grid {margin-left: 0px; width: auto;}
 table.ccm-results-list ul.media-grid a {margin-left: auto; margin-right: auto; margin-bottom: 0px;}
@@ -34,14 +35,11 @@ table.ccm-results-list tr.ccm-list-record-alt td, table.ccm-results-list tr.ccm-
 table.ccm-results-list tr.ccm-list-record:hover td {cursor: pointer; background-color: rgba(214,237,247,0.6) !important; }
 
 img#ccm-search-loading,img.ccm-search-loading { display: none; margin-left: 5px; vertical-align: middle;}
-div.ccm-results-list-none { font-weight: bold}
-
-div#ccm-search-overlay {display: block; width: 100%; font-size: 13px; padding:0px; margin:0px; height:auto; overflow:hidden }
-div#ccm-search-overlay h2 {margin-bottom: 0px}
+div.ccm-results-list-none { font-weight: bold; clear: both;}
 
 .ccm-search-advanced-fields td {vertical-align: middle;}
 .ccm-search-advanced-fields th {background-color: #fff; .border-radius-top-only(5px);}
-a.ccm-advanced-search-add-field {color: #333; padding: 3px 27px 3px 3px; position: relative; height: 24px;}
+a.ccm-advanced-search-add-field {color: #333 !important; padding: 3px 27px 3px 3px; position: relative; height: 24px;}
 a.ccm-advanced-search-add-field:hover {.border-radius(3px); background-color: #d7d7d7; text-decoration: none; color: #333;}
 a.ccm-advanced-search-add-field span {position: absolute; top: -2px; right: 3px; width: 22px; height: 24px;}
 a.ccm-search-remove-option {margin-right: 3px; display: block;}
@@ -73,9 +71,11 @@ a.ccm-search-save {color: #333; padding: 3px 27px 3px 3px; position: relative; h
 a.ccm-search-save:hover {.border-radius(3px); background-color: #d7d7d7; text-decoration: none; color: #333;}
 a.ccm-search-save span {position: absolute; top: -2px; right: 3px; width: 22px; height: 24px;}
 
-a#ccm-list-view-customize, a#ccm-export-results {margin-left: 8px; color: #333; padding: 3px 29px 3px 3px; position: relative; height: 24px;}
-a#ccm-list-view-customize:hover, a#ccm-export-results:hover {.border-radius(3px); background-color: #d7d7d7; text-decoration: none; color: #333;}
-a#ccm-list-view-customize span, a#ccm-export-results span {position: absolute; top: 2px; right: 5px; width: 24px; height: 24px;}
+#ccm-export-results-wrapper {float: right;}
+div.ccm-pane-options a#ccm-list-view-customize-top {position: absolute; top: 5px; right: 5px; line-height: 12px; height: auto;}
+a#ccm-list-view-customize, a#ccm-list-view-customize-top, a#ccm-export-results {margin-left: 8px; color: #333; padding: 3px 29px 3px 3px; position: relative; height: 24px;}
+a#ccm-list-view-customize:hover, a#ccm-list-view-customize-top:hover, a#ccm-export-results:hover {.border-radius(3px); background-color: #d7d7d7; text-decoration: none; color: #333;}
+a#ccm-list-view-customize span, a#ccm-list-view-customize-top span, a#ccm-export-results span {position: absolute; top: 2px; right: 5px; width: 24px; height: 24px;}
 a#ccm-export-results span {background: transparent url(../images/icons/excel.png) no-repeat; background-position: top right}
 
 ul.ccm-search-sortable-column-wrapper {border: 2px solid #dedede; padding: 0px; margin: 0px; padding-top: 8px}

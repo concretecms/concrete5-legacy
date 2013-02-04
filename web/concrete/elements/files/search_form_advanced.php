@@ -79,7 +79,7 @@ foreach($t1 as $value) {
 		
 	</div>
 
-	<form method="get" id="ccm-<?=$searchInstance?>-advanced-search" action="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/files/search_results">
+	<form method="get" class="form-horizontal" id="ccm-<?=$searchInstance?>-advanced-search" action="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/files/search_results">
 	<? if ($_REQUEST['fType'] != false) { ?>
 		<div class="ccm-file-manager-pre-filter"><?=t('Only displaying %s files.', FileType::getGenericTypeText($_REQUEST['fType']))?></div>
 	<? } else if ($_REQUEST['fExtension'] != false) { ?>
@@ -111,9 +111,9 @@ foreach($t1 as $value) {
 				$savedSearches[$fss->getFileSetID()] = $fss->getFileSetName();
 			}
 		?>
-			<div class="clearfix">
+			<div class="control-group">
 			<?=$form->label('fssID', t('Saved Search'))?>
-			<div class="input">
+			<div class="controls">
 				<?=$form->select('fssID', $savedSearches, $fssID, array('class' => 'span3', 'style' => 'vertical-align: middle'))?>
 				<? if ($_REQUEST['fssID'] > 0) { ?>
 					<a href="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/files/delete_set?fsID=<?=$_REQUEST['fssID']?>&searchInstance=<?=$searchInstance?>" class="ccm-file-set-delete-saved-search" dialog-append-buttons="true" dialog-title="<?=t('Delete File Set')?>" dialog-width="320" dialog-height="110" dialog-modal="false" style="vertical-align: middle"><img src="<?=ASSETS_URL_IMAGES?>/icons/delete_small.png" style="vertical-align: middle" width="16" height="16" border="0" /></a>
@@ -123,10 +123,10 @@ foreach($t1 as $value) {
 			
 		<? } ?>
 
-		<div class="span5">
+		<div class="span3">
 		<?=$form->label('fvKeywords', t('Keywords'))?>
-		<div class="input">
-			<?=$form->text('fKeywords', $searchRequest['fKeywords'], array('style'=> 'width: 170px')); ?>
+		<div class="controls">
+			<?=$form->text('fKeywords', $searchRequest['fKeywords'], array('style'=> 'width: 130px')); ?>
 		</div>
 		</div>
 		
@@ -134,24 +134,46 @@ foreach($t1 as $value) {
 		<?
 		$s1 = FileSet::getMySets();
 		if (count($s1) > 0) { ?>
-		<div class="span5" >
+		<div class="span4" style="width: 280px">
 			<?=$form->label('fsID', t('In Set(s)'))?>
+			<? if ($_REQUEST['fssID'] > 0) { ?>
+			
+				<div class="controls">
+					<? foreach($s1 as $s) { ?>
+						<? if (is_array($searchRequest['fsID']) && in_array($s->getFileSetID(), $searchRequest['fsID'])) { ?>
+						<label class="checkbox">
+						<input type="checkbox"  checked disabled><?=wordwrap($s->getFileSetName(), '23', '&shy;', true)?>
+						</label>
+						<? } ?>
+					<? } ?>
+					<? if (is_array($searchRequest['fsID']) && in_array(-1, $searchRequest['fsID'])) { ?>					
+					<label class="checkbox">
+					<input type="checkbox"  checked disabled><?=t('Files in no sets.')?>
+					</label>
+					<? } ?> 
+				</div>
+
+			<? } else { ?>
+			
 			<div class="input">
 				<select multiple name="fsID[]" class="chosen-select">
 					<optgroup label="<?=t('Sets')?>">
 					<? foreach($s1 as $s) { ?>
-						<option value="<?=$s->getFileSetID()?>"  <? if (is_array($searchRequest['fsID']) && in_array($s->getFileSetID(), $searchRequest['fsID'])) { ?> selected="selected" <? } ?>><?=$s->getFileSetName()?></option>
+						<option value="<?=$s->getFileSetID()?>"  <? if (is_array($searchRequest['fsID']) && in_array($s->getFileSetID(), $searchRequest['fsID'])) { ?> selected="selected" <? } ?>><?=wordwrap($s->getFileSetName(), '23', '&shy;', true)?></option>
 					<? } ?>
+					</optgroup>
 					<optgroup label="<?=t('Other')?>">
 						<option value="-1" <? if (is_array($searchRequest['fsID']) && in_array(-1, $searchRequest['fsID'])) { ?> selected="selected" <? } ?>><?=t('Files in no sets.')?></option>
 					</optgroup>
 				</select>
 			</div>
+			
+			<? } ?>
 		</div>
 		<? } ?>
 		</div>
 		
-		<div class="span5">
+		<div class="span3">
 		<?=$form->label('numResults', t('# Per Page'))?>
 		<div class="input">
 			<?=$form->select('numResults', array(
@@ -164,7 +186,6 @@ foreach($t1 as $value) {
 
 		</div>
 		<?=$form->submit('ccm-search-files', t('Search'), array('style' => 'margin-left: 10px'))?>
-			<img src="<?=ASSETS_URL_IMAGES?>/loader_intelligent_search.gif" width="43" height="11" class="ccm-search-loading" id="ccm-<?=$searchInstance?>-search-loading" />
 
 		</div>
 
@@ -172,12 +193,13 @@ foreach($t1 as $value) {
 	</div>
 	
 	<a href="javascript:void(0)" onclick="ccm_paneToggleOptions(this)" class="ccm-icon-option-<? if (is_array($searchRequest['selectedSearchField']) && count($searchRequest['selectedSearchField']) > 1) { ?>open<? } else { ?>closed<? } ?>"><?=t('Advanced Search')?></a>
-	<div class="clearfix ccm-pane-options-content" <? if (is_array($searchRequest['selectedSearchField']) && count($searchRequest['selectedSearchField']) > 1) { ?>style="display: block" <? } ?>>
+	<div class="control-group ccm-pane-options-content" <? if (is_array($searchRequest['selectedSearchField']) && count($searchRequest['selectedSearchField']) > 1) { ?>style="display: block" <? } ?>>
 		<br/>
-		<table class="zebra-striped ccm-search-advanced-fields" id="ccm-<?=$searchInstance?>-search-advanced-fields">
+		<table class="table table-striped ccm-search-advanced-fields" id="ccm-<?=$searchInstance?>-search-advanced-fields">
 		<? if ($_REQUEST['fssID'] < 1) { ?>
 		<tr>
-			<th style="text-align: right" colspan="3"><a href="javascript:void(0)" id="ccm-<?=$searchInstance?>-search-add-option" class="ccm-advanced-search-add-field"><span class="ccm-menu-icon ccm-icon-view"></span><?=t('Add Field')?></a></th>
+			<th colspan="2" width="100%"><?=t('Additional Filters')?></th>
+			<th style="text-align: right; white-space: nowrap"><a href="javascript:void(0)" id="ccm-<?=$searchInstance?>-search-add-option" class="ccm-advanced-search-add-field"><span class="ccm-menu-icon ccm-icon-view"></span><?=t('Add')?></a></th>
 		</tr>
 		<? } ?>
 		<tr id="ccm-search-field-base">
@@ -260,9 +282,12 @@ foreach($t1 as $value) {
 				} ?>
 		</table>
 
+		<? if ($_REQUEST['fssID'] < 1) { ?>
 		<div id="ccm-search-fields-submit">
-			<? if ($_REQUEST['fssID'] < 1) { ?><a class="ccm-search-save" href="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/files/save_search?searchInstance=<?=$searchInstance?>" id="ccm-<?=$searchInstance?>-launch-save-search" dialog-title="<?=t('Save Search')?>" dialog-width="320" dialog-height="200" dialog-modal="false"><span class="ccm-menu-icon ccm-icon-search-pages"></span><?=t('Save Search')?></a><? } ?>
+				<a href="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/files/customize_search_columns?searchInstance=<?=$searchInstance?>" id="ccm-list-view-customize"><span class="ccm-menu-icon ccm-icon-properties"></span><?=t('Customize Results')?></a>
+				<a class="ccm-search-save" href="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/files/save_search?searchInstance=<?=$searchInstance?>" id="ccm-<?=$searchInstance?>-launch-save-search" dialog-title="<?=t('Save Search')?>" dialog-width="320" dialog-height="200" dialog-modal="false"><span class="ccm-menu-icon ccm-icon-search-pages"></span><?=t('Save Search')?></a>
 		</div>
+		<? } ?>
 
 	</div>
 </form>	

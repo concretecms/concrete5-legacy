@@ -21,7 +21,7 @@ $cList = $ct->getPages();
 	<p><?=t("Choose which pages below this particular block should appear on. Any previously selected blocks may also be removed using the checkbox. Click the checkbox in the header to select/deselect all pages.")?></p>
 	<br/>
 		
-		<table class="zebra-stripped" >
+		<table class="table-striped table table-bordered" >
 		<tr>
 			<th>ID</th>
 			<th><?=t('Name')?></th>
@@ -49,7 +49,7 @@ $cList = $ct->getPages();
 	
 	<div class="dialog-buttons">
 	<a href="#" class="ccm-dialog-close ccm-button-left btn cancel"><?=t('Cancel')?></a>
-	<a href="javascript:void(0)" onclick="$('#ccmBlockMasterCollectionForm').submit()" class="btn primary ccm-button-right accept"><?=t('Update')?></a>
+	<a href="javascript:void(0)" onclick="$('#ccmBlockMasterCollectionForm').submit()" class="btn primary ccm-button-right accept"><?=t('Save')?></a>
 	</div>
 
 <script type="text/javascript">

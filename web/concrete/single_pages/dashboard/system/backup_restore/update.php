@@ -4,8 +4,15 @@ $h = Loader::helper('concrete/dashboard');
 $ih = Loader::helper('concrete/interface');
 $form = Loader::helper('form');
 if ($downloadableUpgradeAvailable) { ?>
-	<?=$h->getDashboardPaneHeaderWrapper(t('Download Update'));?>
-		<span class="label"><?=t('Current Version %s',config::get('SITE_APP_VERSION'))?></span>
+	<?=$h->getDashboardPaneHeaderWrapper(t('Download Update'), false, 'span8 offset2');?>
+	<? if (!defined('MULTI_SITE') || MULTI_SITE == false) { ?>
+		<a href="<?=$this->action('check_for_updates')?>" class="btn" style="float: right"><?=t('Check For Updates')?></a>
+	<? } ?>
+		<h2><?=t('Currently Running %s',config::get('SITE_APP_VERSION'))?></h2>
+		<div class="clearfix">
+		</div>
+		<br/>
+		<h2><?=t('Available Update')?></h2>
 		<form method="post" action="<?=$this->action('download_update')?>" id="ccm-download-update-form">
 		
 			<?=Loader::helper('validation/token')->output('download_update')?>
@@ -22,7 +29,7 @@ if ($downloadableUpgradeAvailable) { ?>
 		</form>
 	<?=$h->getDashboardPaneFooterWrapper();?>
 <? } else if (count($updates)) { ?>
-	<?=$h->getDashboardPaneHeaderWrapper(t('Install Local Update'),false,false,false);?>
+	<?=$h->getDashboardPaneHeaderWrapper(t('Install Local Update'),false,'span8 offset2',false);?>
 		<div class="ccm-pane-body">
 			<?print '<strong>' . t('Make sure you <a href="%s">backup your database</a> before updating.', $this->url('/dashboard/system/backup_restore/backup')) . '</strong><br/>';
 			$ih = Loader::helper('concrete/interface');
@@ -58,8 +65,16 @@ if ($downloadableUpgradeAvailable) { ?>
 	<?=$h->getDashboardPaneFooterWrapper(false);?>
 	<div class="clearfix">&nbsp;</div>
 <? } else { ?>
-	<?=$h->getDashboardPaneHeaderWrapper(t('Update concrete5'));?>
-		<h3><?=t('You are currently up to date!')?></h3>
-		<span class="label"><?=t('Current Version %s',config::get('SITE_APP_VERSION'))?></span>
+	<?=$h->getDashboardPaneHeaderWrapper(t('Update concrete5'), false, 'span8 offset2');?>
+	<? if (!defined('MULTI_SITE') || MULTI_SITE == false) { ?>
+		<a href="<?=$this->action('check_for_updates')?>" class="btn" style="float: right"><?=t('Check For Updates')?></a>
+	<? } ?>
+		<h2><?=t('Currently Running %s',config::get('SITE_APP_VERSION'))?></h2>
+		<div class="clearfix">
+		</div>
+		<br/>
+		
+		<p><?=t('No updates available.')?></p>
+
 	<?=$h->getDashboardPaneFooterWrapper();?>
 <? } ?>

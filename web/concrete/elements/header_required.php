@@ -1,11 +1,17 @@
 <?php 
 defined('C5_EXECUTE') or die("Access Denied.");
-global $c;
-global $cp;
-global $cvID;
+$c = $this->getCollectionObject();
+if (is_object($c)) {
+	$cp = new Permissions($c);
+}
 
 if (is_object($c)) {
-	$pageTitle = (!$pageTitle) ? $c->getCollectionName() : $pageTitle;
+	if(!(isset($pageTitle) && strlen($pageTitle))) {
+		$pageTitle = $c->getCollectionName();
+		if($c->isAdminArea()) {
+			$pageTitle = t($pageTitle);
+		}
+	}
 	$pageDescription = (!$pageDescription) ? $c->getCollectionDescription() : $pageDescription;
 	$cID = $c->getCollectionID(); 
 	$isEditMode = ($c->isEditMode()) ? "true" : "false";
@@ -57,6 +63,7 @@ if($c->getCollectionAttributeValue('exclude_search_index')) { ?>
 ?>
 var CCM_IMAGE_PATH = "<?php echo ASSETS_URL_IMAGES?>";
 var CCM_TOOLS_PATH = "<?php echo REL_DIR_FILES_TOOLS_REQUIRED?>";
+var CCM_BASE_URL = "<?php echo BASE_URL?>";
 var CCM_REL = "<?php echo DIR_REL?>";
 
 </script>
@@ -68,12 +75,18 @@ $this->addHeaderItem($html->javascript('jquery.js'), 'CORE');
 $this->addHeaderItem($html->javascript('ccm.base.js', false, true), 'CORE');
 
 $favIconFID=intval(Config::get('FAVICON_FID'));
+$appleIconFID =intval(Config::get('IPHONE_HOME_SCREEN_THUMBNAIL_FID'));
 
 
 if($favIconFID) {
 	$f = File::getByID($favIconFID); ?>
 	<link rel="shortcut icon" href="<?php echo $f->getRelativePath()?>" type="image/x-icon" />
 	<link rel="icon" href="<?php echo $f->getRelativePath()?>" type="image/x-icon" />
+<?php } 
+
+if($appleIconFID) {
+	$f = File::getByID($appleIconFID); ?>
+	<link rel="apple-touch-icon" href="<?php echo $f->getRelativePath()?>"  />
 <?php } ?>
 
 <?php 
@@ -88,7 +101,7 @@ if (is_object($cp)) {
 	}
 	$cih = Loader::helper('concrete/interface');
 	if ($cih->showNewsflowOverlay()) {
-		$this->addFooterItem('<script type="text/javascript">$(function() { ccm_showNewsflow(); });</script>');
+		$this->addFooterItem('<script type="text/javascript">$(function() { ccm_showDashboardNewsflowWelcome(); });</script>');
 	}	
 
 }

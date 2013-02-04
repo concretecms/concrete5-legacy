@@ -15,7 +15,7 @@ if (is_array($_REQUEST['cID'])) {
 	foreach($_REQUEST['cID'] as $cID) {
 		$c = Page::getByID($cID);
 		$cp = new Permissions($c);
-		if ($cp->canWrite()) {
+		if ($cp->canEditPageProperties()) {
 			$pages[] = $c;
 		}
 	}
@@ -28,10 +28,9 @@ if ($_POST['task'] == 'update_extended_attribute') {
 	$ak = CollectionAttributeKey::get($cakID);
 	foreach($pages as $c) {
 		$cp = new Permissions($c);
-		if ($cp->canWrite()) {
+		if ($cp->canEditPageProperties($ak)) {
 			$ak->saveAttributeForm($c);
 			$c->reindex();
-
 		}
 	}
 	$val = $c->getAttributeValueObject($ak);
@@ -47,7 +46,7 @@ if ($_POST['task'] == 'clear_extended_attribute') {
 	$ak = CollectionAttributeKey::get($cakID);
 	foreach($pages as $c) {
 		$cp = new Permissions($c);
-		if ($cp->canWrite()) {
+		if ($cp->canEditPageProperties($ak)) {
 			$c->clearAttribute($ak);
 			$c->reindex();
 		}
@@ -91,7 +90,7 @@ function printAttributeRow($ak) {
 	
 	$html = '
 	<tr class="ccm-attribute-editable-field">
-		<th><a href="javascript:void(0)">' . $ak->getAttributeKeyName() . '</a></th>
+		<td><strong><a href="javascript:void(0)">' . $ak->getAttributeKeyName() . '</a></strong></td>
 		<td width="100%" class="ccm-attribute-editable-field-central"><div class="ccm-attribute-editable-field-text">' . $text . '</div>
 		<form method="post" action="' . REL_DIR_FILES_TOOLS_REQUIRED . '/pages/bulk_metadata_update">
 			<input type="hidden" name="cakID" value="' . $ak->getAttributeKeyID() . '" />
@@ -112,7 +111,7 @@ function printAttributeRow($ak) {
 
 	$html = '
 	<tr>
-		<th>' . $ak->getAttributeKeyName() . '</th>
+		<td><strong>' . $ak->getAttributeKeyName() . '</strong></td>
 		<td width="100%" colspan="2">' . $text . '</td>
 	</tr>';	
 	}
@@ -123,10 +122,7 @@ if (!isset($_REQUEST['reload'])) { ?>
 	<div id="ccm-page-properties-wrapper">
 <? } ?>
 
-<h1><?=t('Page Details')?></h1>
-
-
-<div id="ccm-page-properties">
+<div id="ccm-page-properties" class="ccm-ui">
 
 <table border="0" cellspacing="0" cellpadding="0" class="ccm-grid">
 <?

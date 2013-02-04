@@ -13,9 +13,13 @@ $dh = Loader::helper('date');
 $form = Loader::helper('form');
 $ih = Loader::helper('concrete/interface');
 $av = Loader::helper('concrete/avatar'); 
+$pk = PermissionKey::getByHandle('view_user_attributes');
+$pke = PermissionKey::getByHandle('edit_user_properties');
+$assignment = $pke->getMyAssignment();
 
-function printAttributeRow($ak, $uo) {
-	
+$searchInstance = (isset($searchInstance)?$searchInstance:'user');
+
+function printAttributeRow($ak, $uo, $assignment) {
 	$vo = $uo->getAttributeValueObject($ak);
 	$value = '';
 	if (is_object($vo)) {
@@ -27,7 +31,7 @@ function printAttributeRow($ak, $uo) {
 	} else {
 		$text = $value;
 	}
-	if ($ak->isAttributeKeyEditable()) { 
+	if ($ak->isAttributeKeyEditable() && in_array($ak->getAttributeKeyID(), $assignment->getAttributesAllowedArray())) { 
 	$type = $ak->getAttributeType();
 	
 	$html = '
@@ -39,9 +43,7 @@ function printAttributeRow($ak, $uo) {
 		<input type="hidden" name="uID" value="' . $uo->getUserID() . '" />
 		<input type="hidden" name="task" value="update_extended_attribute" />
 		<div class="ccm-attribute-editable-field-form ccm-attribute-editable-field-type-' . strtolower($type->getAttributeTypeHandle()) . '">
-		<label>
 		' . $ak->render('form', $vo, true) . '
-		</label>
 		</div>
 		</form>
 		</td>
@@ -55,8 +57,8 @@ function printAttributeRow($ak, $uo) {
 
 	$html = '
 	<tr>
-		<th>' . $ak->getAttributeKeyDisplayHandle() . '</th>
-		<td width="100%" colspan="2">' . $text . '</td>
+		<td width="250">' . $ak->getAttributeKeyDisplayHandle() . '</th>
+		<td class="ccm-attribute-editable-field-central" colspan="2">' . $text . '</td>
 	</tr>';	
 	}
 	print $html;
@@ -67,6 +69,12 @@ if (intval($_GET['uID'])) {
 	
 	$uo = UserInfo::getByID(intval($_GET['uID']));
 	if (is_object($uo)) {
+	
+		if (!PermissionKey::getByHandle('access_user_search')->validate($uo)) { 
+			throw new Exception(t('Access Denied.'));
+		}
+		
+		
 		$uID = intval($_REQUEST['uID']);
 		
 		if (isset($_GET['task'])) {
@@ -75,38 +83,45 @@ if (intval($_GET['uID'])) {
 			}
 		}
 		
-		if ($_GET['task'] == 'activate') {
-			if( !$valt->validate("user_activate") ){
-				throw new Exception(t('Invalid token.  Unable to activate user.'));
-			}else{		
-				$uo->activate();
-				$uo = UserInfo::getByID(intval($_GET['uID']));
-				$this->controller->redirect('/dashboard/users/search?uID=' . intval($_GET['uID']) . '&activated=1');
+		$tp = new Permissions();
+		if ($tp->canActivateUser()) { 
+			if ($_GET['task'] == 'activate') {
+				if( !$valt->validate("user_activate") ){
+					throw new Exception(t('Invalid token.  Unable to activate user.'));
+				}else{		
+					$uo->activate();
+					$uo = UserInfo::getByID(intval($_GET['uID']));
+					$this->controller->redirect('/dashboard/users/search?uID=' . intval($_GET['uID']) . '&activated=1');
+				}
 			}
-		}
 
-		if ($_GET['task'] == 'validate_email') {
-			$uo->markValidated();
-			$uo = UserInfo::getByID(intval($_GET['uID']));
-			$this->controller->redirect('/dashboard/users/search?uID=' . intval($_GET['uID']) . '&validated=1');
+			if ($_GET['task'] == 'deactivate') {
+				if( !$valt->validate("user_deactivate") ){
+					throw new Exception(t('Invalid token.  Unable to deactivate user.'));
+				}else{
+					$uo->deactivate();
+					$uo = UserInfo::getByID(intval($_GET['uID']));
+					$this->controller->redirect('/dashboard/users/search?uID=' . intval($_GET['uID']) . '&deactivated=1');
+				}
+			}	
+
+
+			if ($_GET['task'] == 'validate_email') {
+				$uo->markValidated();
+				$uo = UserInfo::getByID(intval($_GET['uID']));
+				$this->controller->redirect('/dashboard/users/search?uID=' . intval($_GET['uID']) . '&validated=1');
+			}
+
 		}
 		
 		
-		if ($_GET['task'] == 'remove-avatar') {
+		
+		if ($_GET['task'] == 'remove-avatar' && $assignment->allowEditAvatar()) {
 			$av->removeAvatar($uo->getUserID());
 			$this->controller->redirect('/dashboard/users/search?uID=' . intval($_GET['uID']) . '&task=edit');
 
 		}
 		
-		if ($_GET['task'] == 'deactivate') {
-			if( !$valt->validate("user_deactivate") ){
-				throw new Exception(t('Invalid token.  Unable to deactivate user.'));
-			}else{
-				$uo->deactivate();
-				$uo = UserInfo::getByID(intval($_GET['uID']));
-				$this->controller->redirect('/dashboard/users/search?uID=' . intval($_GET['uID']) . '&deactivated=1');
-			}
-		}	
 	}
 }
 
@@ -114,12 +129,14 @@ if (intval($_GET['uID'])) {
 if (is_object($uo)) { 
 	$gl = new GroupList($uo, true);
 	
-	if ($_GET['task'] == 'edit' || $_POST['edit'] && !$editComplete) { ?>
+	if ($pke->validate() && ($_GET['task'] == 'edit' || $_POST['edit'] && !$editComplete)) { 
+		$assignment = $pke->getMyAssignment();
+		?>
     
 	<?
     $gArray = $gl->getGroupList();
-	$uName = ($_POST) ? $_POST['uName'] : $uo->getUserName();
-	$uEmail = ($_POST) ? $_POST['uEmail'] : $uo->getUserEmail();
+	$uName = (isset($_POST['uName'])) ? $_POST['uName'] : $uo->getUserName();
+	$uEmail = (isset($_POST['uEmail'])) ? $_POST['uEmail'] : $uo->getUserEmail();
 	?>
 		
 	<script>	
@@ -137,15 +154,15 @@ if (is_object($uo)) {
 	</script>
 		
 		
-	<?=Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Edit User').'<span class="label" style="position:relative;top:-3px;left:12px;">'.t('* required field').'</span>', t('Edit User account.'), false, false);?>
+	<?=Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Edit User'), t('Edit User account.'), false, false);?>
 	
-    <form method="post" enctype="multipart/form-data" id="ccm-user-form" action="<?=$this->url('/dashboard/users/search?uID=' . intval($_GET['uID']) )?>">
-	<?=$valt->output('update_account_' . intval($_GET['uID']) )?>
-	<input type="hidden" name="_disableLogin" value="1">
     
 	<div class="ccm-pane-body">
+    <form method="post"  class="form-vertical" enctype="multipart/form-data" id="ccm-user-form" action="<?=$this->url('/dashboard/users/search?uID=' . intval($_GET['uID']) )?>">
+	<?=$valt->output('update_account_' . intval($_GET['uID']) )?>
+	<input type="hidden" name="_disableLogin" value="1">
 
-		<table border="0" cellspacing="0" cellpadding="0" width="100%">
+		<table class="table" border="0" cellspacing="0" cellpadding="0" width="100%">
             <thead>
                 <tr>
                     <th colspan="3"><?=t('User Information')?></th>
@@ -155,32 +172,36 @@ if (is_object($uo)) {
                 <tr>
                     <td width="35%"><?=t('Username')?> <span class="required">*</span></td>
                     <td width="35%"><?=t('Email Address')?> <span class="required">*</span></td>
-                    <td width="30%"><?=t('User Avatar')?></td>
+                   <? if ($assignment->allowEditAvatar()) { ?> <td width="30%"><?=t('User Avatar')?></td><? } ?>
                 </tr>	
                 <tr>
-                    <td><input type="text" name="uName" autocomplete="off" value="<?=$uName?>" style="width: 95%"></td>
-                    <td><input type="text" name="uEmail" autocomplete="off" value="<?=$uEmail?>" style="width: 95%"></td>
-                    <td>
+                    <td><? if ($assignment->allowEditUserName()) { ?><input type="text" name="uName" autocomplete="off" value="<?=$uName?>" style="width: 95%"><? } else { ?><?=$uName?><? } ?></td>
+                    <td><? if ($assignment->allowEditEmail()) { ?><input type="text" name="uEmail" autocomplete="off" value="<?=$uEmail?>" style="width: 95%"><? } else { ?><?=$uEmail?><? } ?></td>
+                    <? if ($assignment->allowEditAvatar()) { ?><td>
+                    
                     <? if ($uo->hasAvatar()) { ?>
                     <input class="btn error" type="button" onclick="location.href='<?=$this->url('/dashboard/users/search?uID=' . intval($uID) . '&task=remove-avatar')?>'" value="<?=t('Remove Avatar')?>" />
                     <? } else { ?>
                     <input type="file" name="uAvatar" style="width: 95%" /><input type="hidden" name="uHasAvatar" value="<?=$uo->hasAvatar()?>" />
                     <? } ?>
                     </td>
+                    <? } ?>
                 </tr>
             </tbody>
 		</table>
         
-		<table border="0" cellspacing="0" cellpadding="0" width="100%">
-        	<thead>
+        
+        
+		<table class="table" border="0" cellspacing="0" cellpadding="0" width="100%">
+	        <? if ($assignment->allowEditPassword()) { ?>
+
             	<tr>
-                	<th colspan="2">
+                	<th colspan="2"><strong>
 						<?=t('Change Password')?>
                         <span style="margin-left: 4px; color: #aaa"><?=t('(Leave these fields blank to keep the same password)')?></span>
+                        </strong>
 					</th>
 				</tr>
-			</thead>
-            <tbody>
             	<tr>
 					<td><?=t('Password')?></td>
 					<td><?=t('Password (Confirm)')?></td>
@@ -189,29 +210,34 @@ if (is_object($uo)) {
                     <td><input type="password" name="uPassword" autocomplete="off" value="" style="width: 95%"></td>
                     <td><input type="password" name="uPasswordConfirm" autocomplete="off" value="" style="width: 95%"></td>
                 </tr>
-                
-				<?
+            
+            <? } ?>
+            
+            <?
                 $languages = Localization::getAvailableInterfaceLanguages();
                 if (count($languages) > 0) { ?>
-	
                 <tr>
-                    <td colspan="2"><?=t('Default Language')?></td>
+                    <td colspan="2"><strong><?=t('Default Language')?></strong></td>
                 </tr>	
 				<tr>
                     <td colspan="2">
                     <?
-                        array_unshift($languages, 'en_US');
-                        $locales = array();
-                        Loader::library('3rdparty/Zend/Locale');
-                        Loader::library('3rdparty/Zend/Locale/Data');
-                        $locales[''] = t('** Default');
-                        Zend_Locale_Data::setCache(Cache::getLibrary());
-                        foreach($languages as $lang) {
-                            $loc = new Zend_Locale($lang);
-                            $locales[$lang] = Zend_Locale::getTranslation($loc->getLanguage(), 'language', ACTIVE_LOCALE);
-                        }
-                        $ux = $uo->getUserObject();
-                        print $form->select('uDefaultLanguage', $locales, $ux->getUserDefaultLanguage());
+						$ux = $uo->getUserObject();
+                    	if ($assignment->allowEditDefaultLanguage()) { 
+							array_unshift($languages, 'en_US');
+							$locales = array();
+							Loader::library('3rdparty/Zend/Locale');
+							Loader::library('3rdparty/Zend/Locale/Data');
+							$locales[''] = t('** Default');
+							Zend_Locale_Data::setCache(Cache::getLibrary());
+							foreach($languages as $lang) {
+								$loc = new Zend_Locale($lang);
+								$locales[$lang] = Zend_Locale::getTranslation($loc->getLanguage(), 'language', $lang);
+							}
+							print $form->select('uDefaultLanguage', $locales, $ux->getUserDefaultLanguage());
+						} else {
+							print $ux->getUserDefaultLanguage();
+						}
                     ?>
                     </td>
 				</tr>	
@@ -219,15 +245,20 @@ if (is_object($uo)) {
 
 				<? if(ENABLE_USER_TIMEZONES) { ?>
                 <tr>
-                    <td colspan="2"><?=t('Time Zone')?></td>
+                    <td colspan="2"><strong><?=t('Time Zone')?></strong></td>
                 </tr>
                 <tr>
                     <td colspan="2">
                         <?php 
+                    	if ($assignment->allowEditDefaultLanguage()) { 
                         echo $form->select('uTimezone', 
                                 $dh->getTimezones(), 
                                 ($uo->getUserTimezone()?$uo->getUserTimezone():date_default_timezone_get())
-						); ?>
+						);
+						} else {
+							print $uo->getUserTimezone();
+						
+						}?>
                     </td>
                 </tr>
         		<?php } // END Timezone options ?>
@@ -235,12 +266,12 @@ if (is_object($uo)) {
 			</tbody>
 		</table>
     
-		<table border="0" cellspacing="0" cellpadding="0" class="zebra-striped">
+		<table border="0" cellspacing="0" cellpadding="0" class="table table-striped">
         	<thead>
             	<tr>
                 	<th>
 						<span style="line-height:32px;"><?=t('Groups')?></span>
-                    	<a class="btn primary small ccm-button-v2-right" id="groupSelector" href="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/user_group_selector.php?mode=groups" dialog-title="<?=t('Add Groups')?>" dialog-modal="false"><?=t('Add Group')?></a>
+                    	<a class="btn small ccm-button-v2-right" id="groupSelector" href="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/user_group_selector.php?mode=groups&filter=assign" dialog-title="<?=t('Add Groups')?>" dialog-modal="false"><?=t('Add Group')?></a>
                     </th>
                 </tr>
 			</thead>
@@ -276,7 +307,14 @@ if (is_object($uo)) {
         
         <input type="hidden" name="edit" value="1" />
 
-		<table border="0" cellspacing="0" cellpadding="0" width="100%" class="zebra-striped inputs-list">
+    <div class="well">
+    	<? print $ih->button(t('Back'), $this->url('/dashboard/users/search?uID=' . intval($_GET['uID'])), 'left')?>
+		<? print $ih->submit(t('Update User'), 'update', 'right', 'primary')?>
+    </div>
+
+		</form>
+		
+		<table border="0" cellspacing="0" cellpadding="0" width="100%" class="table table-striped">
         	<thead>
             	<tr>
                 	<th colspan="3">
@@ -289,8 +327,10 @@ if (is_object($uo)) {
             
 				<?            
                 $attribs = UserAttributeKey::getEditableList();
-                foreach($attribs as $ak) { 
-                    printAttributeRow($ak, $uo);
+                foreach($attribs as $ak) {
+					if ($pk->validate($ak)) { 
+                    	printAttributeRow($ak, $uo, $assignment);
+                	}
                 }
 				?>
                 
@@ -299,13 +339,6 @@ if (is_object($uo)) {
 		
 	</div>
     
-    <div class="ccm-pane-footer">
-    	<? print $ih->button(t('Back'), $this->url('/dashboard/users/search?uID=' . intval($_GET['uID'])), 'left')?>
-		<? print $ih->submit(t('Update User'), 'update', 'right', 'primary')?>
-    </div>
-    
-	</form>
-    
     <!-- END User Edit Page -->
     
 	<? } else { ?>
@@ -313,16 +346,22 @@ if (is_object($uo)) {
 	<?=Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('View User'), t('View User accounts.'), false, false);?>
 	<div class="ccm-pane-options">
 		<? if ($uo->getUserID() != USER_SUPER_ID || $u->isSuperUser()) { ?>
+			
+			<? if ($pke->validate()) { ?>
+				<? print $ih->button(t('Edit User'), $this->url('/dashboard/users/search?uID=' . intval($uID) ) . '&task=edit', 'left');?>
+			<? } ?>
 
-			<? print $ih->button(t('Edit User'), $this->url('/dashboard/users/search?uID=' . intval($uID) ) . '&task=edit', 'left');?>
-
-			<? if (USER_VALIDATE_EMAIL == true) { ?>
+			<?
+			$tp = new Permissions();
+			?>
+			
+			<? if (USER_VALIDATE_EMAIL == true && $tp->canActivateUser()) { ?>
 				<? if ($uo->isValidated() < 1) { ?>
 				<? print $ih->button(t('Mark Email as Valid'), $this->url('/dashboard/users/search?uID=' . intval($uID) . '&task=validate_email'), 'left');?>
 				<? } ?>
 			<? } ?>
 			
-			<? if ($uo->getUserID() != USER_SUPER_ID) { ?>
+			<? if ($uo->getUserID() != USER_SUPER_ID && $tp->canActivateUser()) { ?>
 				<? if ($uo->isActive()) { ?>
 					<? print $ih->button(t('Deactivate User'), $this->url('/dashboard/users/search?uID=' . intval($uID) . '&task=deactivate&ccm_token='.$valt->generate('user_deactivate')), 'left');?>
 				<? } else { ?>
@@ -383,10 +422,10 @@ if (is_object($uo)) {
 		<div class="ccm-pane-body ccm-pane-body-footer" id="ccm-dashboard-user-body">
 		
 		<?=$av->outputUserAvatar($uo)?>
-		<h3><?=t('Basic Details')?></h3>
-		<p><strong><?=$uo->getUserName()?></strong>
+		<h3><?=t('Basic Details')?></h3><br/>
+		<p><strong><?=$uo->getUserName()?></strong></p>
 		<p><a href="mailto:<?=$uo->getUserEmail()?>"><?=$uo->getUserEmail()?></a></p>
-		<p><?=t('Account created on %s', $uo->getUserDateAdded('user'))?></p>
+		<p><?=t('Account created on %s. Last logged in from IP: %s.', date(DATE_APP_GENERIC_MDYT, strtotime($uo->getUserDateAdded('user'))), $uo->getLastIPAddress())?></p>
 		<?=(ENABLE_USER_TIMEZONES && strlen($uo->getUserTimezone())?"<p>".t('Timezone').": ".$uo->getUserTimezone() . '</p>':"")?>
 		<? if (USER_VALIDATE_EMAIL) { ?>
 			<p>
@@ -412,11 +451,12 @@ if (is_object($uo)) {
 		<?
 		$attribs = UserAttributeKey::getList(true);
 		if (count($attribs) > 0) { ?>
-		<h3><?=t('User Attributes')?></h3>
+		<h3><?=t('User Attributes')?></h3><br/>
 
 		<? 
 		for ($i = 0; $i < count($attribs); $i++) { 			
 			$uk = $attribs[$i]; 
+			if ($pk->validate($uk)) { 
 			
 			?>
 			
@@ -427,7 +467,11 @@ if (is_object($uo)) {
 		</p></div>
 		</div>
 
-		<? } ?>
+		<? } 
+		
+		}
+		
+		?>
 		
 		<? }  ?>
 		
@@ -542,7 +586,6 @@ $(function() {
 <?
 $tp = new TaskPermission();
 if ($tp->canAccessUserSearch()) { ?>
-
 <div class="ccm-pane-options" id="ccm-<?=$searchInstance?>-pane-options">
 <? Loader::element('users/search_form_advanced', array('columns' => $columns, 'searchInstance' => $searchInstance, 'searchRequest' => $searchRequest, 'searchType' => 'DASHBOARD')); ?>
 </div>

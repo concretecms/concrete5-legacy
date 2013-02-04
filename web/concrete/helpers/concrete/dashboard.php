@@ -25,14 +25,14 @@ class ConcreteDashboardHelper {
 	public function canRead() {
 		$c = Page::getByPath('/dashboard', 'ACTIVE');
 		$cp = new Permissions($c);
-		return $cp->canRead();
+		return $cp->canViewPage();
 	}
 	
 	
 	public function canAccessComposer() {
 		$c = Page::getByPath('/dashboard/composer', 'ACTIVE');
 		$cp = new Permissions($c);
-		return $cp->canRead();
+		return $cp->canViewPage();
 	}
 
 	public function inDashboard($page = false) {
@@ -50,19 +50,36 @@ class ConcreteDashboardHelper {
 		return $html;
 	}
 	
-	public function getDashboardPaneHeaderWrapper($title = false, $help = false, $span = 'span16', $includeDefaultBody = true, $navigatePages = array(), $upToPage = false) {
-		if (!$span) {
-			$span = 'span16';
+	public function getDashboardPaneHeaderWrapper($title = false, $help = false, $span = 'span12', $includeDefaultBody = true, $navigatePages = array(), $upToPage = false, $favorites = true) {
+		
+		$spantotal = 12;
+		$offset = preg_match('/offset([0-9]+)/i', $span, $offsetmatches);
+		if ($offset) {
+			$offsettotal = $offsetmatches[1];
+			$hasspan = preg_match('/span([0-9]+)/i', $span, $spanmatches);
+			if ($hasspan) {
+				$spantotal = $spanmatches[1];
+				$gridtotal = ($offsettotal * 2) + $spantotal;
+			}
 		}
+		
+		if ($gridtotal > 12) {
+			// we are working with legacy bootstrap 16-column grid
+			// we take the offset and then we subtract from the span
+			$spantotal = $spantotal - ($gridtotal - 12);
+			$spantotal .= ' offset' . $offsettotal;
+			$span = 'span' . $spantotal;
+		}
+		
 		$html = '<div class="ccm-ui"><div class="row"><div class="' . $span . '"><div class="ccm-pane">';
-		$html .= self::getDashboardPaneHeader($title, $help, $navigatePages, $upToPage);
+		$html .= self::getDashboardPaneHeader($title, $help, $navigatePages, $upToPage, $favorites);
 		if ($includeDefaultBody) {
 			$html .= '<div class="ccm-pane-body ccm-pane-body-footer">';
 		}
 		return $html;
 	}
 	
-	public function getDashboardPaneHeader($title = false, $help = false, $navigatePages = array(), $upToPage = false) {
+	public function getDashboardPaneHeader($title = false, $help = false, $navigatePages = array(), $upToPage = false, $favorites = true) {
 		$c = Page::getCurrentPage();
 		$vt = Loader::helper('validation/token');
 		$token = $vt->generate('access_quick_nav');
@@ -72,29 +89,36 @@ class ConcreteDashboardHelper {
 		$trail = $nh->getTrailToCollection($c);
 		if (count($trail) > 1 || count($navigatePages) > 1 || is_object($upToPage)) { 
 			$parent = Page::getByID($c->getCollectionParentID());
-			if (count($trail) > 2 && (!is_object($upToPage))) {
+			if (count($trail) > 1 && (!is_object($upToPage))) {
 				$upToPage = Page::getByID($parent->getCollectionParentID());
 			}
 			Loader::block('autonav');
-			if (count($navigatePages) > 0) { 
-				$subpages = $navigatePages;
-			} else { 
-				$subpages = AutonavBlockController::getChildPages($parent);
+			$subpages = array();
+			if ($navigatePages !== -1) { 
+				if (count($navigatePages) > 0) { 
+					$subpages = $navigatePages;
+				} else { 
+					$subpages = AutonavBlockController::getChildPages($parent);
+				}
 			}
 			
 			$subpagesP = array();
-			foreach($subpages as $sc) {
-				$cp = new Permissions($sc);
-				if ($cp->canRead()) { 
-					$subpagesP[] = $sc;
+			if(is_array($subpages)) {
+				foreach($subpages as $sc) {
+					$cp = new Permissions($sc);
+					if ($cp->canViewPage()) { 
+						$subpagesP[] = $sc;
+					}
 				}
 			}
 			
 			if (count($subpagesP) > 0 || is_object($upToPage)) { 
-				$relatedPages = '<div id="ccm-page-navigate-pages-content" style="display: none">';
-				$relatedPages .= '<ul class="ccm-navigate-page-menu">';
+				$relatedPages = '<ul id="ccm-page-navigate-pages-content" class="dropdown-menu">';
 		
 				foreach($subpagesP as $sc) { 
+					if ($sc->getAttribute('exclude_nav')) {
+						continue;
+					}
 		
 					if ($c->getCollectionPath() == $sc->getCollectionPath() || (strpos($c->getCollectionPath(), $sc->getCollectionPath()) == 0) && strpos($c->getCollectionPath(), $sc->getCollectionPath()) !== false) {
 						$class= 'nav-selected';
@@ -102,31 +126,26 @@ class ConcreteDashboardHelper {
 						$class = '';
 					}
 					
-					$relatedPages .= '<li class="' . $class . '"><a href="' . $nh->getLinkToCollection($sc) . '">' . $sc->getCollectionName() . '</a></li>';
+					$relatedPages .= '<li class="' . $class . '"><a href="' . $nh->getLinkToCollection($sc, false, true) . '">' . t($sc->getCollectionName()) . '</a></li>';
 				}
 		
 				if ($upToPage) { 
 					$relatedPages .= '<li class="ccm-menu-separator"></li>';
-					$relatedPages .= '<li><a href="' . $nh->getLinkToCollection($upToPage) . '">' . t('&lt; Back to %s', $upToPage->getCollectionName()) . '</a></li>';
+					$relatedPages .= '<li><a href="' . $nh->getLinkToCollection($upToPage, false, true) . '">' . t('&lt; Back to %s', t($upToPage->getCollectionName())) . '</a></li>';
 				}
 				$relatedPages .= '</ul>';
-				$relatedPages .= '</div>';
-				$navigateTitle = $parent->getCollectionName();
+				$navigateTitle = t($parent->getCollectionName());
 			}
 		}
 		
 
 		$html = '<div class="ccm-pane-header">';
 		
-		$html .= $relatedPages;
-		
 		$class = 'ccm-icon-favorite';
-		$u = new User();
-		$quicknav = unserialize($u->config('QUICK_NAV_BOOKMARKS'));
-		if (is_array($quicknav)) {
-			if (in_array($c->getCollectionID(), $quicknav)) {
-				$class = 'ccm-icon-favorite-selected';	
-			}
+		$qn = ConcreteDashboardMenu::getMine();
+		$quicknav = $qn->getItems();
+		if (in_array($c->getCollectionPath(), $quicknav)) {
+			$class = 'ccm-icon-favorite-selected';	
 		}
 		$html .= '<ul class="ccm-pane-header-icons">';
 		if (!$help) {
@@ -137,14 +156,22 @@ class ConcreteDashboardHelper {
 			}
 		}
 		
+		if (is_array($help)) {
+			$help = $help[0] . '<br/><br/><a href="' . $help[1] . '" class="btn small" target="_blank">' . t('Learn More') . '</a>';
+		}
+		
 		if (isset($relatedPages)) { 
-			$html .= '<li><a href="javascript:void(0)" onclick="ccm_togglePopover(event, this)" class="ccm-icon-navigate-pages" title="' . $navigateTitle . '" id="ccm-page-navigate-pages">' . t('Help') . '</a></li>';
+			$html .= '<li><a href="" class="ccm-icon-navigate-pages" data-toggle="dropdown" title="' . $navigateTitle . '" id="ccm-page-navigate-pages">' . t('Help') . '</a>' . $relatedPages . '</li>';
 		}
 		
 		if ($help) {
-			$html .= '<li><span style="display: none" id="ccm-page-help-content">' . $help . '</span><a href="javascript:void(0)" onclick="ccm_togglePopover(event, this)" class="ccm-icon-help" title="' . t('Help') . '" id="ccm-page-help">' . t('Help') . '</a></li>';
+			$html .= '<li><span style="display: none" id="ccm-page-help-content">' . $help . '</span><a href="javascript:void(0)" class="ccm-icon-help" title="' . t('Help') . '" id="ccm-page-help">' . t('Help') . '</a></li>';
 		}
+		
+		if ($favorites) {
 		$html .= '<li><a href="javascript:void(0)" id="ccm-add-to-quick-nav" onclick="ccm_toggleQuickNav(' . $c->getCollectionID() . ',\'' . $token . '\')" class="' . $class . '">' . t('Add to Favorites') . '</a></li>';
+		}
+
 		$html .= '<li><a href="javascript:void(0)" onclick="ccm_closeDashboardPane(this)" class="ccm-icon-close">' . t('Close') . '</a></li>';
 		$html .= '</ul>';
 		if (!$title) {
@@ -162,26 +189,91 @@ class ConcreteDashboardHelper {
 		$filename = date('Ymd') . '.jpg';
 		$obj = new stdClass;
 		$obj->checkData = false;
+		$obj->displayCaption = false;
 		
 		if (defined('WHITE_LABEL_DASHBOARD_BACKGROUND_FEED') && WHITE_LABEL_DASHBOARD_BACKGROUND_FEED != '') {
 			$image = WHITE_LABEL_DASHBOARD_BACKGROUND_FEED . '/' . $filename;
 		} else if (defined('WHITE_LABEL_DASHBOARD_BACKGROUND_SRC') && WHITE_LABEL_DASHBOARD_BACKGROUND_SRC != '') {
 			$image = WHITE_LABEL_DASHBOARD_BACKGROUND_SRC;
+			if ($image == 'none') {
+				$image = '';
+			}
 		} else {
-			$image = DASHBOARD_BACKGROUND_FEED . '/' . $filename;
 			$obj->checkData = true;
+			$imageSetting = Config::get('DASHBOARD_BACKGROUND_IMAGE');
+			if ($imageSetting == 'custom') {
+				$fo = File::getByID(Config::get('DASHBOARD_BACKGROUND_IMAGE_CUSTOM_FILE_ID'));
+				if (is_object($fo)) {
+					$image = $fo->getRelativePath();
+				}
+			} else if ($imageSetting == 'none') {
+				$image = '';
+			} else { 
+				$image = DASHBOARD_BACKGROUND_FEED . '/' . $filename;
+				$obj->displayCaption = true;
+			}
 		}
 		$obj->filename = $filename;
 		$obj->image = $image;
 		return $obj;
 	}
+	
+	public function addQuickNavToMenus($html) {
+		$recent = '';
+		ob_start();		
+		
+			$c = Page::getCurrentPage();
+			if (!is_array($_SESSION['ccmQuickNavRecentPages'])) {
+				$_SESSION['ccmQuickNavRecentPages'] = array();
+			}
+			if (in_array($c->getCollectionID(), $_SESSION['ccmQuickNavRecentPages'])) {
+				unset($_SESSION['ccmQuickNavRecentPages'][array_search($c->getCollectionID(), $_SESSION['ccmQuickNavRecentPages'])]);
+				$_SESSION['ccmQuickNavRecentPages'] = array_values($_SESSION['ccmQuickNavRecentPages']);
+			}
+			
+			$_SESSION['ccmQuickNavRecentPages'][] = $c->getCollectionID();
+	
+			if (count($_SESSION['ccmQuickNavRecentPages']) > 5) {
+				array_shift($_SESSION['ccmQuickNavRecentPages']);
+			}
+			
+
+			if (count($_SESSION['ccmQuickNavRecentPages']) > 0) { ?>
+				<ul class="breadcrumb">
+				<li><strong><?=t('Recent')?></strong> <span class="divider">:</span></li>
+				<? $i = 0;
+				foreach($_SESSION['ccmQuickNavRecentPages'] as $_cID) {
+					$_c = Page::getByID($_cID);
+					$name = t('(No Name)');
+					$divider = '';
+					if (isset($_SESSION['ccmQuickNavRecentPages'][$i+1])) {
+						$divider = '<span class="divider">/</span>';
+					}
+					if ($_c->getCollectionName()) {
+						$name = $_c->getCollectionName();
+					}
+					?> <li><a id="ccm-recent-page-<?=$_c->getCollectionID()?>" href="<?=Loader::helper('navigation')->getLinkToCollection($_c)?>"><?=t($name)?></a><?=$divider?></li>
+					<? $i++;
+				}
+				?>
+				</ul>
+				<?
+			}
+		$recent = ob_get_contents();
+		ob_end_clean();
+		$html = str_replace("<!--recent-->", $recent, $html);		
+		return str_replace(array("\n", "\r", "\t"), "", $html);
+	}
 
 	public function getDashboardAndSearchMenus() {
+
 		if (isset($_SESSION['dashboardMenus'])) {
-			
 			return $_SESSION['dashboardMenus'];
 		}
-		
+				
+		$d = ConcreteDashboardMenu::getMine();
+		$items = $d->getItems();
+
 		ob_start(); ?>
 			<div id="ccm-intelligent-search-results">
 			<?
@@ -192,18 +284,22 @@ class ConcreteDashboardHelper {
 			$corepages = array();
 			foreach($children as $ch) {
 				$page = Page::getByID($ch);
-				if (!$page->getAttribute("exclude_nav")) {
-					if ($page->getPackageID() > 0) {
-						$packagepages[] = $page;
-					} else {
-						$corepages[] = $page;
+				$pageP = new Permissions($page);
+				if ($pageP->canRead()) { 
+					if (!$page->getAttribute("exclude_nav")) {
+						if ($page->getPackageID() > 0) {
+							$packagepages[] = $page;
+						} else {
+							$corepages[] = $page;
+						}
 					}
+				} else {
+					continue;
 				}
 			
 				if ($page->getAttribute('exclude_search_index')) {
 					continue;
 				}
-				
 				
 				if ($page->getCollectionPath() == '/dashboard/system') {
 					$ch2 = $page->getCollectionChildrenArray();
@@ -219,30 +315,40 @@ class ConcreteDashboardHelper {
 				
 				<ul class="ccm-intelligent-search-results-list">
 				<? if (count($ch2) == 0) { ?>
-					<li><a href="<?=Loader::helper('navigation')->getLinkTocollection($page)?>"><?=t($page->getCollectionName())?></a><span><?=t($page->getCollectionName())?> <?=$page->getAttribute('meta_keywords')?></span></li>
+					<li><a href="<?=Loader::helper('navigation')->getLinkTocollection($page, false, true)?>"><?=t($page->getCollectionName())?></a><span><?=t($page->getCollectionName())?> <?=$page->getAttribute('meta_keywords')?></span></li>
 				<? } ?>
 				
 				<?
 				if ($page->getCollectionPath() == '/dashboard/system') { ?>
-					<li><a href="<?=Loader::helper('navigation')->getLinkTocollection($page)?>"><?=t('View All')?><span><?=t($page->getCollectionName())?> <?=$page->getAttribute('meta_keywords')?></span></li>
+					<li><a href="<?=Loader::helper('navigation')->getLinkTocollection($page, false, true)?>"><?=t('View All')?></a><span><?=t($page->getCollectionName())?> <?=$page->getAttribute('meta_keywords')?></span></li>
 				<?				
 				}
 				
 				foreach($ch2 as $chi) {
 					$subpage = Page::getByID($chi); 
+					$subpageP = new Permissions($subpage);
+					if (!$subpageP->canRead()) {
+						continue;
+					}
+
 					if ($subpage->getAttribute('exclude_search_index')) {
 						continue;
 					}
 			
 					?>
-					<li><a href="<?=Loader::helper('navigation')->getLinkTocollection($subpage)?>"><?=$subpage->getCollectionName()?></a><span><? if ($page->getCollectionPath() != '/dashboard/system') { ?><?=t($page->getCollectionName())?> <?=$page->getAttribute('meta_keywords')?> <? } ?><?=$subpage->getCollectionName()?> <?=$subpage->getAttribute('meta_keywords')?></span></li>
+					<li><a href="<?=Loader::helper('navigation')->getLinkTocollection($subpage, false, true)?>"><?=$subpage->getCollectionName()?></a><span><? if ($page->getCollectionPath() != '/dashboard/system') { ?><?=t($page->getCollectionName())?> <?=$page->getAttribute('meta_keywords')?> <? } ?><?=$subpage->getCollectionName()?> <?=$subpage->getAttribute('meta_keywords')?></span></li>
 					<? 
 				}
 				?>
 				</ul>
 				
 				</div>
-				<? } ?>
+				<? }
+				
+				$custHome = Page::getByPath('/dashboard/home');
+				$custHomeP = new Permissions($custHome);
+				if ($custHomeP->canRead()) {
+				?>
 				
 				<div class="ccm-intelligent-search-results-module ccm-intelligent-search-results-module-onsite">
 				
@@ -250,9 +356,17 @@ class ConcreteDashboardHelper {
 				
 				
 				<ul class="ccm-intelligent-search-results-list">
-					<li><a href="<?=View::url('/dashboard/home')?>"><?=t('Customize')?> <span><?=('Customize Dashboard Home')?></span></a></li>
+					<li><a href="<?=View::url('/dashboard/home')?>"><?=t('Customize')?> <span><?=t('Customize Dashboard Home')?></span></a></li>
 				</ul>
 				
+				</div>
+				
+				<? } ?>
+				
+				<div class="ccm-intelligent-search-results-module ccm-intelligent-search-results-module-loading">
+				<h1><?=t('Your Site')?></h1>
+				<ul class="ccm-intelligent-search-results-list" id="ccm-intelligent-search-results-list-your-site">
+				</ul>
 				</div>
 				
 				<? if (ENABLE_INTELLIGENT_SEARCH_HELP) { ?>
@@ -265,7 +379,7 @@ class ConcreteDashboardHelper {
 				
 				<? if (ENABLE_INTELLIGENT_SEARCH_MARKETPLACE) { ?>
 				<div class="ccm-intelligent-search-results-module ccm-intelligent-search-results-module-offsite ccm-intelligent-search-results-module-loading">
-				<h1><?=t('Add-Ons &amp; Themes')?></h1>
+				<h1><?=t('Add-Ons')?></h1>
 				<ul class="ccm-intelligent-search-results-list" id="ccm-intelligent-search-results-list-marketplace">
 				</ul>
 				</div>
@@ -276,103 +390,212 @@ class ConcreteDashboardHelper {
 			<div id="ccm-dashboard-overlay-core">
 			<div class="ccm-dashboard-overlay-inner" id="ccm-dashboard-overlay-main">
 			
-			<?php
+			<!--recent-->
+						
 			
-			foreach($corepages as $page) {
-				?>
-				
-				<div class="ccm-dashboard-overlay-module">
-				
-				<h1><a href="<?=Loader::helper('navigation')->getLinkToCollection($page)?>"><?=t($page->getCollectionName())?></a></h1>
-				
-				
-				<ul>
-				
-				<?
-				$ch2 = $page->getCollectionChildrenArray(true);
-				foreach($ch2 as $chi) {
-					$subpage = Page::getByID($chi); 
-					if ($subpage->getAttribute('exclude_nav')) {
-						continue;
-					}
+			<? 
+			$currentHeader = false;
+			$x = 0;
+			foreach($items as $path) { 
 			
-					?>
-					<li><a href="<?=Loader::helper('navigation')->getLinkToCollection($subpage)?>"><?=t($subpage->getCollectionName())?></a></li>
-					<? 
-				}
-				?>
-				</ul>
-				
-				</div>
-				
-				<?
-			}
-				
-			?>
-			
-			
-			</div>
-			</div>
-			<div id="ccm-dashboard-overlay-misc" <? if (count($packagepages) == 0)  { ?>class="ccm-dashboard-overlay-misc-rounded" <? } ?>>
-			<div class="ccm-dashboard-overlay-inner">
-			<ul>
-			<li><a href="<?=View::url('/dashboard')?>"><strong><?=t('News')?></strong></a> – <?=t('Learn about your site and concrete5')?></li>
-			<li><a href="<?=View::url('/dashboard/system')?>"><strong><?=t('System &amp; Settings')?></strong></a> – <?=t('Secure and setup your site.')?></li>
-			<li><a href="<?php echo View::url('/dashboard/extend') ?>"><strong><?php echo t("Extend concrete5") ?></strong></a> – 
-			<?php echo sprintf(t('<a href="%s">Install</a>, <a href="%s">update</a> or download more <a href="%s">themes</a> and <a href="%s">add-ons</a>.'),
-				View::url('/dashboard/extend/install'),
-				View::url('/dashboard/extend/update'),
-				View::url('/dashboard/extend/themes'),
-				View::url('/dashboard/extend/add-ons')); ?>
-			</li>
-			</ul>
-			</div>
-			</div>
-			<? if (count($packagepages) > 0) { ?>
-			<div id="ccm-dashboard-overlay-footer">
-			<div class="ccm-dashboard-overlay-inner" id="ccm-dashboard-overlay-packages">
-			<?php
-			
-			
-			foreach($packagepages as $page) {
-				?>
-				
-				<div class="ccm-dashboard-overlay-module">
-				
-				<h1><a href="<?=Loader::helper('navigation')->getLinkToCollection($page)?>"><?=t($page->getCollectionName())?></a></h1>
-				
-				
-				<ul>
-				
-				<?
-				$ch2 = $page->getCollectionChildrenArray(true);
-				foreach($ch2 as $chi) {
-					$subpage = Page::getByID($chi); 
-					if ($subpage->getAttribute('exclude_nav')) {
-						continue;
+				$p = Page::getByPath($path, 'ACTIVE');
+				$pc = new Permissions($p);
+				if ($pc->canViewPage()) {
+					
+					$name = t($p->getCollectionName());
+					$parent = Page::getByID($p->getCollectionParentID(), 'ACTIVE');
+					if ($parent->getCollectionPath() == '/dashboard') {
+						$parent = $p;
+						$name = t('Home');						
 					}
 					
-					?>
-					<li><a href="<?=Loader::helper('navigation')->getLinkToCollection($subpage)?>"><?=t($subpage->getCollectionName())?></a></li>
-					<? 
-				}
-				?>
-				</ul>
+					if ($currentHeader != $parent->getCollectionID()) { ?>
+						<? if ($currentHeader != false) { ?>
+							</ul>
+							</div>
+							<? $x++; ?>
+							<? if ($x % 4 == 0) { ?>
+								<div class="clearfix" style="padding-bottom: 0px"></div>
+							<? } ?>
+							
+						<? } ?>
+
+						<div class="ccm-dashboard-overlay-module">
+						<h1><?=t($parent->getCollectionName())?></h1>
+						<ul>			
+						
+						<? $currentHeader = $parent->getCollectionID(); ?>		
+
+					<? } ?>
+					
+						<li><a href="<?=Loader::helper('navigation')->getLinkToCollection($p, false, true)?>"><?=$name?></a></li>
+
 				
-				</div>
+				<? } ?>
 				
-				<?
-			}
-				
-			?>
-			</div>
-			</div>
+							
+			<? } ?>
+			
+			<? if ($currentHeader != false) { ?>
+							</ul>
+							</div>
 			<? } ?>
 			</div>
+			</div>
+			<div id="ccm-dashboard-overlay-misc" class="ccm-dashboard-overlay-misc-rounded">
+			<div class="ccm-dashboard-overlay-inner">
+
+            <?
+
+			// Before we throw in a UL, we check permissions, etc. to see if any of the LI items need to be shown.
+			$systemNews = Page::getByPath('/dashboard/news');
+			$systemNewsP = new Permissions($systemNews);
+			$canAccessNews = $systemNewsP->canRead();
+
+			$systemSettings = Page::getByPath('/dashboard/system');
+			$systemSettingsP = new Permissions($systemSettings);
+			$canAccessSystem = $systemSettingsP->canRead();
+
+			$tpa = new TaskPermission();
+			$canAccessExtend = $tpa->canInstallPackages();
+			$systemExtend = Page::getByPath('/dashboard/extend');
+			$systemExtendP = new Permissions($systemExtend);
+			$canViewExtend = $systemExtendP->canRead();
+
+			// If any need to be shown then we proceed...
+			if($canAccessNews || $canAccessSystem || ($canAccessExtend && $canViewExtend)){ ?>
+
+                <ul>
+
+                <? if ($canAccessNews) { ?>
+                    <li><a href="<?=View::url('/dashboard/news')?>"><strong><?=t('News')?></strong></a> – <?=t('Learn about your site and concrete5.')?></li>
+                <? } ?>
+
+				<? if ($canAccessSystem) { ?>
+                    <li><a href="<?=View::url('/dashboard/system')?>"><strong><?=t('System &amp; Settings')?></strong></a> – <?=t('Secure and setup your site.')?></li>
+                <? } ?>
+
+                <? if ($canAccessExtend && $canViewExtend) { ?>
+                    <li><a href="<?php echo View::url('/dashboard/extend') ?>"><strong><?php echo t("Extend concrete5") ?></strong></a> – 
+                    <? if (ENABLE_MARKETPLACE_SUPPORT) { ?>
+                    <?php echo sprintf(t('<a href="%s">Install</a>, <a href="%s">update</a> or download more <a href="%s">themes</a> and <a href="%s">add-ons</a>.'),
+                        View::url('/dashboard/extend/install'),
+                        View::url('/dashboard/extend/update'),
+                        View::url('/dashboard/extend/themes'),
+                        View::url('/dashboard/extend/add-ons')); ?>
+                    <? } else { ?>
+					<?php echo sprintf(t('<a href="%s">Install</a> or <a href="%s">update</a> packages.'),
+                        View::url('/dashboard/extend/install'),
+                        View::url('/dashboard/extend/update'))?>
+                    <? } ?>
+					</li>
+                <? } ?>
+
+                </ul>
+
+            <? } ?>
+
+			</div>
+			</div>
+			<div id="ccm-dashboard-overlay-footer">
+			<div class="ccm-dashboard-overlay-inner">
+			<a href="<?=View::url('/dashboard')?>"><?=t('View Full Dashboard')?>  <i class="icon-arrow-right"></i></a>
+			</div>
+			</div>
+			</div>
 		<?
-			$contents = ob_get_contents();
+			$html = ob_get_contents();
 			ob_end_clean();
-			return str_replace(array("\n", "\r", "\t"), "", $contents);
+			
+		return str_replace(array("\n", "\r", "\t"), "", $html);
 	
 	}
+}
+
+class ConcreteDashboardMenu {
+	
+	protected $items;
+	public function getItems() {
+		usort($this->items, array('ConcreteDashboardMenu', 'sortItems'));
+		return $this->items;
+	}
+	
+	protected static function sortItems($a, $b) {
+		$subpatha = substr($a, 11); // /dashboard
+		$subpathb = substr($b, 11); // /dashboard
+		$segmentsa = explode('/', $subpatha);
+		$segmentsb = explode('/', $subpathb);
+		$segmenta = substr($subpatha, 0, strpos($subpatha, '/'));
+		$segmentb = substr($subpathb, 0, strpos($subpathb, '/'));
+		if (count($segmentsa) == 3 && count($segmentsb) == 3) {
+			$subpatha = $segmenta[0] . '/' . $segmenta[1];
+			$subpathb = $segmentb[0] . '/' . $segmentb[1];
+			$segmenta .= '/' . $segmentsa[1];
+			$segmentb .= '/' . $segmentsb[1];
+			
+		}
+
+		if (!$segmenta) {
+			$segmenta = $subpatha;
+		}
+		if (!$segmentb) {
+			$segmentb = $subpathb;
+		}
+		$db = Loader::db();
+		$displayorderA = intval($db->GetOne('select cDisplayOrder from Pages p inner join PagePaths cp on p.cID = cp.cID where cPath = ?', array('/dashboard/' . $segmenta)));
+		$displayorderB = intval($db->GetOne('select cDisplayOrder from Pages p inner join PagePaths cp on p.cID = cp.cID where cPath = ?', array('/dashboard/' . $segmentb)));
+
+		if ($displayorderA > $displayorderB) {
+			return 1;
+		} else if ($displayorderA < $displayorderB) {
+			return -1;
+		} else {
+			$displayorderA = intval($db->GetOne('select cDisplayOrder from Pages p inner join PagePaths cp on p.cID = cp.cID where cPath = ?', array('/dashboard/' . $subpatha)));
+			$displayorderB = intval($db->GetOne('select cDisplayOrder from Pages p inner join PagePaths cp on p.cID = cp.cID where cPath = ?', array('/dashboard/' . $subpathb)));
+			if ($displayorderA > $displayorderB) {
+				return 1;
+			} else if ($displayorderA < $displayorderB) {
+				return -1;
+			}
+		}
+	}
+	
+	public function contains($c) {
+		return in_array($c->getCollectionPath(), $this->items);
+	}
+	
+	public function add($c) {
+		$this->items[] = $c->getCollectionPath();
+	}
+
+	public function remove($c) {
+		unset($this->items[array_search($c->getCollectionPath(), $this->items)]);
+	}
+
+	public static function getMine() {
+		$u = new User();
+		$qn = unserialize($u->config('QUICK_NAV_BOOKMARKS'));
+		if (is_object($qn)) {
+			return $qn;
+		}
+		$qn = new ConcreteDashboardMenu();
+		$qnx = new ConcreteDashboardDefaultMenu();
+		$qn->items = $qnx->items;
+		return $qn;	
+	}
+}
+
+class ConcreteDashboardDefaultMenu extends ConcreteDashboardMenu {
+	
+	public $items = array(
+		'/dashboard/composer/write',
+		'/dashboard/composer/drafts',
+		'/dashboard/sitemap/full',
+		'/dashboard/sitemap/search',
+		'/dashboard/files/search',
+		'/dashboard/files/sets',
+		'/dashboard/reports/statistics',
+		'/dashboard/reports/forms'
+	);
+
 }

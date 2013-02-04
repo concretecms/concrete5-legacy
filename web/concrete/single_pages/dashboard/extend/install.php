@@ -12,7 +12,7 @@ $pkgArray = Package::getInstalledList();?>
 <?
 if ($this->controller->getTask() == 'install_package' && $showInstallOptionsScreen && $tp->canInstallPackages()) { ?>
 
-<?=Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Install %s', $pkg->getPackageName()), false, 'span12 offset2', false);?>
+<?=Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Install %s', $pkg->getPackageName()), false, 'span10 offset1', false);?>
 <form method="post" action="<?=$this->action('install_package', $pkg->getPackageHandle())?>">
 <?=Loader::helper('validation/token')->output('install_options_selected')?>
 <div class="ccm-pane-body">
@@ -32,8 +32,8 @@ if ($this->controller->getTask() == 'install_package' && $showInstallOptionsScre
 	<label><?=t("Swap Site Contents")?></label>
 	<div class="input">
 		<ul class="inputs-list">
-			<li><label><input type="radio" name="pkgDoFullContentSwap" value="0" checked="checked" <?=$disabled?> /> <span><?=t('No. Do <strong>not</strong> remove any content or files from this website.')?></span></li>
-			<li><label><input type="radio" name="pkgDoFullContentSwap" value="1" <?=$disabled?> /> <span><?=t('Yes. Reset site content with the content found in this package')?></span></li>
+			<li><label><input type="radio" name="pkgDoFullContentSwap" value="0" checked="checked" <?=$disabled?> /> <span><?=t('No. Do <strong>not</strong> remove any content or files from this website.')?></span></label></li>
+			<li><label><input type="radio" name="pkgDoFullContentSwap" value="1" <?=$disabled?> /> <span><?=t('Yes. Reset site content with the content found in this package')?></span></label></li>
 		</ul>
 	</div>
 	</div>
@@ -53,7 +53,7 @@ if ($this->controller->getTask() == 'install_package' && $showInstallOptionsScre
 ?>
 <form method="post" class="form-stacked" id="ccm-uninstall-form" action="<?=$this->action('do_uninstall_package')?>" onsubmit="return confirm('<?=$removeBTConfirm?>')">
 
-<?=Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Uninstall Package'), false, 'span12 offset2', false);?>
+<?=Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Uninstall Package'), false, 'span10 offset1', false);?>
 <div class="ccm-pane-body">
 	
 	<?=$valt->output('uninstall')?>
@@ -80,18 +80,18 @@ if ($this->controller->getTask() == 'install_package' && $showInstallOptionsScre
 		<h3><?=t('Move package to trash directory on server?')?></h3>
 		<ul class="inputs-list">
 		<li><label><?=Loader::helper('form')->checkbox('pkgMoveToTrash', 1)?>
-		<span><?=t('Yes, remove the package\'s directory from of the installation directory.')?></span></label>
+		<span><?=t('Yes, remove the package\'s directory from the installation directory.')?></span></label>
 		</li>
 		</ul>
 		</div>
 		
 		
-		<? Loader::packageElement('dashboard/uninstall', $pkg->getPackageHandle()); ?>
+		<? @Loader::packageElement('dashboard/uninstall', $pkg->getPackageHandle()); ?>
 				
 		
 </div>
 <div class="ccm-pane-footer">
-<? print $ch->submit(t('Uninstall Package'), 'ccm-uninstall-form', 'right', 'error'); ?>
+<? print $ch->submit(t('Uninstall'), 'ccm-uninstall-form', 'right', 'error'); ?>
 <? print $ch->button(t('Cancel'), $this->url('/dashboard/extend/install', 'inspect_package', $pkg->getPackageID()), ''); ?>
 </div>
 <?=Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper()?>
@@ -169,14 +169,13 @@ if ($this->controller->getTask() == 'install_package' && $showInstallOptionsScre
 	
 	if (is_object($pkg)) { ?>
 	
-		<?=Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Inspect Package'), false, 'span12 offset2');?>
-
-			<ul class="breadcrumb"><li><a href="<?=$this->url('/dashboard/extend/install')?>">&lt; <?=t('Return to Add Functionality')?></a></li></ul>
-
-			<table class="zebra-striped">
+		<?=Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Inspect Package'), false, 'span10 offset1', false);?>
+		
+		<div class="ccm-pane-body">
+			<table class="table table-bordered table-striped">
 			<tr>
 				<td class="ccm-marketplace-list-thumbnail"><img src="<?=$ci->getPackageIconURL($pkg)?>" /></td>
-				<td class="ccm-addon-list-description" style="width: 100%"><h3><?=$pkg->getPackageName()?> - <?=$pkg->getPackageVersion()?></a></h3><?=$pkg->getPackageDescription()?></td>
+				<td class="ccm-addon-list-description" style="width: 100%"><h3><?=$pkg->getPackageName()?> - <?=$pkg->getPackageVersion()?></h3><?=$pkg->getPackageDescription()?></td>
 			</tr>				
 			</table>
 		
@@ -202,23 +201,43 @@ if ($this->controller->getTask() == 'install_package' && $showInstallOptionsScre
 
 			<? } ?>
 
-			<? 
-			
-			$tp = new TaskPermission();
-			if ($tp->canUninstallPackages()) { 
-			
-				$buttons[] = $ch->button(t('Uninstall Package'), $this->url('/dashboard/extend/install', 'uninstall', $pkg->getPackageID()), 'left');
-				print $ch->buttons($buttons); 
-
-			} ?>
-			
-			<?=Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper()?>
+			</div>
+			<div class="ccm-pane-footer">
+			<? $tp = new TaskPermission();
+			if ($tp->canUninstallPackages()) {  ?>
+				<? print $ch->button(t('Uninstall Package'), $this->url('/dashboard/extend/install', 'uninstall', $pkg->getPackageID()), 'right'); ?>
+			<? } ?>
+				<a href="<?=$this->url('/dashboard/extend/install')?>" class="btn"><?=t('Back to Add Functionality')?></a>			
+			</div>
+			<?=Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper(false)?>
 	<?
 	
 	 } else { ?>
 		
-		<?=Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Add Functionality'), t('Install custom add-ons or those downloaded from the concrete5.org marketplace.'), 'span12 offset2');?>
+		<?=Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Add Functionality'), t('Install custom add-ons or those downloaded from the concrete5.org marketplace.'), 'span10 offset1');?>
 			
+		<? if (is_object($installedPKG) && $installedPKG->hasInstallPostScreen()) { ?>
+	
+			<div style="display: none">
+			<div id="ccm-install-post-notes"><div class="ccm-ui"><?=Loader::element('dashboard/install_post', false, $installedPKG->getPackageHandle())?>
+			<div class="dialog-buttons">
+				<a href="javascript:void(0)" onclick="jQuery.fn.dialog.closeAll()" class="btn ccm-button-right"><?=t('Ok')?></a>
+			</div>
+			</div>
+			</div>
+			</div>
+			
+			<script type="text/javascript">
+			$(function() { 
+				$('#ccm-install-post-notes').dialog({width: 500, modal: true, height: 400, title: "<?=t('Installation Notes')?>", buttons:[{}], 'open': function() {
+					$(this).parent().find('.ui-dialog-buttonpane').addClass("ccm-ui").html('');
+					$(this).find('.dialog-buttons').appendTo($(this).parent().find('.ui-dialog-buttonpane'));
+					$(this).find('.dialog-buttons').remove();
+				}});
+			});	
+			</script>
+		<? } ?>
+		
 		<h3><?=t('Currently Installed')?></h3>
 		<? if (count($pkgArray) > 0) { ?>
 			
@@ -234,12 +253,12 @@ if ($this->controller->getTask() == 'install_package' && $showInstallOptionsScre
 				</div>
 			<? } ?>
 
-			<table class="zebra-striped">
+			<table class="table table-bordered table-striped">
 		
 			<?	foreach ($pkgArray as $pkg) { ?>
 				<tr>
 					<td class="ccm-marketplace-list-thumbnail"><img src="<?=$ci->getPackageIconURL($pkg)?>" /></td>
-					<td class="ccm-addon-list-description"><h3><?=$pkg->getPackageName()?> - <?=$pkg->getPackageVersion()?></a></h3><?=$pkg->getPackageDescription()?>
+					<td class="ccm-addon-list-description"><h3><?=$pkg->getPackageName()?> - <?=$pkg->getPackageVersion()?></h3><?=$pkg->getPackageDescription()?>
 
 					</td>
 					<td class="ccm-marketplace-list-install-button"><?=$ch->button(t("Edit"), View::url('/dashboard/extend/install', 'inspect_package', $pkg->getPackageID()), "")?></td>					
@@ -261,7 +280,7 @@ if ($this->controller->getTask() == 'install_package' && $showInstallOptionsScre
 			
 		<? } else { ?>
 	
-			<table class="zebra-striped">
+			<table class="table table-bordered table-striped">
 			<? foreach ($purchasedBlocks as $pb) {
 				$file = $pb->getRemoteFileURL();
 				if (!empty($file)) {?>
@@ -286,6 +305,29 @@ if ($this->controller->getTask() == 'install_package' && $showInstallOptionsScre
 	
 	
 			<? } ?>
-		<? } ?>		
+		
+		<?
+		if (is_object($mi) && $mi->isConnected()) { ?>
+
+			<h3><?=t("Project Page")?></h3>
+			<p><?=t('Your site is currently connected to the concrete5 community. Your project page URL is:')?><br/>
+			<a href="<?=$mi->getSitePageURL()?>"><?=$mi->getSitePageURL()?></a></p>
+
+		<? } else if (is_object($mi) && $mi->hasConnectionError()) { ?>
+			
+			<?=Loader::element('dashboard/marketplace_connect_failed');?>
+		
+
+		<? } else if ($tp->canInstallPackages() && ENABLE_MARKETPLACE_SUPPORT == true) { ?>
+
+			<div class="well" style="padding:10px 20px;">
+				<h3><?=t('Connect to Community')?></h3>
+				<p><?=t('Your site is not connected to the concrete5 community. Connecting lets you easily extend a site with themes and add-ons.')?></p>
+				<p><a class="btn success" href="<?=$this->url('/dashboard/extend/connect', 'register_step1')?>"><?=t("Connect to Community")?></a></p>
+			</div>
+		
+		<? } ?>
 	<? } ?>
-<? } ?>
+<? } 
+
+} ?>

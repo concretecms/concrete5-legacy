@@ -32,55 +32,22 @@ if ($_REQUEST['task'] == 'edit') {
 	}
 }
 
-if ($_POST['update']) {
-	$ctName = Loader::helper("text")->entities($_POST['ctName']);
-	$ctHandle = Loader::helper('text')->entities($_POST['ctHandle']);
-	
-	$error = array();
-	if (!$ctHandle) {
-		$error[] = t("Handle required.");
-	}
-	if (!$ctName) {
-		$error[] = t("Name required.");
-	}
-	
-	if (!$valt->validate('update_page_type')) {
-		$error[] = $valt->getErrorMessage();
-	}
-	
-	$akIDArray = $_POST['akID'];
-	if (!is_array($akIDArray)) {
-		$akIDArray = array();
-	}
-	
-	if (count($error) == 0) {
-		try {
-			if (is_object($ct)) {
-				$ct->update($_POST);
-				$this->controller->redirect('/dashboard/pages/types?updated=1');
-			}		
-			exit;
-		} catch(Exception $e1) {
-			$error[] = $e1->getMessage();
-		}
-	}
-}
-
-if ($_REQUEST['updated']) {
-	$message = t('Page Type updated.');
-}
-
-
 ?>
 
 <?
 if ($ctEditMode) { 
 	$ct->populateAvailableAttributeKeys();
+
+        $akIDArray = $_POST['akID'];
+        if (!is_array($akIDArray)) {
+            $akIDArray = array();
+        }
+
 	?>
 	
     <?=Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Edit Page Type').'<span class="label" style="position:relative;top:-3px;left:12px;">'.t('* required field').'</span>', false, false, false);?>
     
-    <form method="post" id="update_page_type" action="<?=$this->url('/dashboard/pages/types/')?>">
+    <form class="form-horizontal" method="post" id="update_page_type" action="<?=$this->url('/dashboard/pages/types/', 'update')?>">
 	<?=$valt->output('update_page_type')?>
     <?=$form->hidden('ctID', $_REQUEST['ctID']); ?>
     <?=$form->hidden('task', 'edit'); ?>
@@ -88,7 +55,7 @@ if ($ctEditMode) {
     
 	<div class="ccm-pane-body">
 		
-        <table border="0" cellspacing="0" cellpadding="0">
+        <table class="table" border="0" cellspacing="0" cellpadding="0">
             <thead>
                 <tr>
                     <th class="header"><?=t('Name')?> <span class="required">*</span></th>
@@ -97,17 +64,17 @@ if ($ctEditMode) {
             </thead>
             <tbody>
                 <tr>
-                    <td>
-                        <?=$form->text('ctName', $ctName, array('class' => 'span9'))?>
+                    <td style="width: 60%">
+                        <?=$form->text('ctName', $ctName, array('style' => 'width:100%'))?>
                     </td>
                     <td>
-                        <?=$form->text('ctHandle', $ctHandle, array('class' => 'span6'))?>
+                        <?=$form->text('ctHandle', $ctHandle, array('style' => 'width:100%'))?>
                     </td>
                 </tr>
 			</tbody>
 		</table>
         
-        <table border="0" cellspacing="0" cellpadding="0">
+        <table class="table" border="0" cellspacing="0" cellpadding="0">
             <thead>
                 <tr>
                     <th class="subheader">
@@ -115,11 +82,11 @@ if ($ctEditMode) {
                     <?
                         if (!is_object($pageTypeIconsFS)) {
                             print '<span style="margin-left: 4px; color: #aaa">';
-                            print t('(To add your own page type icons, create a file set named "%s" and add files to that set)', t('Page Type Icons'));
+                            print t('(To add your own page type icons, create a file set named "%s" and add files to that set)', 'Page Type Icons');
                             print '</span>';
                         } else {
                             print '<span style="margin-left: 4px; color: #aaa">';
-                            print t('(Pulling icons from file set "%s". Icons will be displayed at %s x %s.)', t('Page Type Icons'), COLLECTION_TYPE_ICON_WIDTH, COLLECTION_TYPE_ICON_HEIGHT);
+                            print t('(Pulling icons from file set "%s". Icons will be displayed at %s x %s.)', 'Page Type Icons', COLLECTION_TYPE_ICON_WIDTH, COLLECTION_TYPE_ICON_HEIGHT);
                             print '</span>';
                         }
                     ?>
@@ -141,7 +108,7 @@ if ($ctEditMode) {
                                     }
                                     $first = false;
                                     ?>
-                                    <label style="white-space: nowrap; margin: 10px 20px 10px 0; float:left;">
+                                    <label class="checkbox inline">
                                     <input type="radio" name="ctIcon" value="<?= $ic->getFileID() ?>" style="vertical-align: middle" <?=$checked?> />
                                     <img src="<?= $fv->getRelativePath(); ?>" width="<?=COLLECTION_TYPE_ICON_WIDTH?>" height="<?=COLLECTION_TYPE_ICON_HEIGHT?>" style="vertical-align: middle" />
                                     </label>
@@ -153,7 +120,7 @@ if ($ctEditMode) {
                                     }
                                     $first = false;
                                     ?>
-                                    <label style="white-space: nowrap; margin: 10px 20px 10px 0; float:left;">
+                                    <label class="checkbox inline">
                                     <input type="radio" name="ctIcon" value="<?= $ic ?>" style="vertical-align: middle" <?=$checked?> />
                                         <img src="<?=REL_DIR_FILES_COLLECTION_TYPE_ICONS.'/'.$ic;?>" width="<?=COLLECTION_TYPE_ICON_WIDTH?>" height="<?=COLLECTION_TYPE_ICON_HEIGHT?>" style="vertical-align: middle" />
                                     </label>
@@ -167,7 +134,7 @@ if ($ctEditMode) {
 			</tbody>
 		</table>
         
-        <table border="0" cellspacing="0" cellpadding="0">
+        <table class="table" border="0" cellspacing="0" cellpadding="0">
             <thead>
                 <tr>
                     <th colspan="3" class="subheader"><?= t('Default Attributes'); ?></th>
@@ -208,34 +175,7 @@ if ($ctEditMode) {
             </tbody>
         </table>
 	</div>
-    
-    <div class="ccm-pane-footer">
-        <? print $ih->submit(t('Update Page Type'), 'update_page_type', 'right', 'primary'); ?>
-        <? print $ih->button(t('Cancel'), $this->url('/dashboard/pages/types'), 'left'); ?>
-    </div>
-    
-    </form>
-    
-    <?=Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper(false)?>
-    
-    <!-- END: Edit Page Type pane -->
-	
-    
-    <div class="ccm-spacer" style="height:10px;">&nbsp;</div>
-        
-        
-    <!-- START: Delete Page Type pane -->
-    
-    <?=Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Delete Page Type'), false, false, false);?>
-	
-    <div class="ccm-pane-body">
-		<p><?=t('Click below to remove this page type entirely. (Note: You may only remove page types which are not being used on your site. If a page type is being used, delete all instances of its pages first.)')?></p>
-	</div>
-	
-    <div class="ccm-pane-footer">
-		<? print $ih->button_js(t('Delete Page Type'), "deletePageType()", 'left', 'error'); ?>
-    </div>
-    
+
     <? $confirmMsg = t('Are you sure?'); ?>
 	<script type="text/javascript">
 	deletePageType = function() {
@@ -245,27 +185,37 @@ if ($ctEditMode) {
 	}
 	</script>
     
+    <div class="ccm-pane-footer">
+        <? print $ih->submit(t('Save'), 'update_page_type', 'right', 'primary'); ?>
+		<? print $ih->button_js(t('Delete'), "deletePageType()", 'right', 'error'); ?>
+        <? print $ih->button(t('Cancel'), $this->url('/dashboard/pages/types'), 'left'); ?>
+    </div>
+    
+    </form>
+    
     <?=Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper(false)?>
     
-    <!-- END: Delete Page Type pane -->
     
 <? } else { ?>
     <!-- START: Default Page Types pane -->
-    <?=Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Page Types'), false, false, false);?>
+    <?=Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Page Types'), false, false);?>
 	
-    <div class="ccm-pane-body">	
-
+	<div class="clearfix">
+       <? print $ih->button(t('Add a Page Type'), $this->url('/dashboard/pages/types/add'), 'right'); ?>
+       <br/><br/>
+	</div>
+	
 	<? if (count($ctArray) == 0) { ?>
 		<br/><strong><?=t('No page types found.')?></strong><br/><br>
 	<? } else { ?>
 	
-	<table border="0" cellspacing="0" cellpadding="0" class="zebra-striped">
+	<table border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-striped">
     	<thead>
             <tr>
                 <th width="100%"><?=t('Name')?></th>
                 <th><?=t('Handle')?></th>
                 <th><?=t('Package')?></th>
-                <th <? if ($cap->canAccessComposer()) { ?>colspan="3"<? } else { ?>colspan="2"<? } ?></th>
+                <th <? if ($cap->canAccessComposer()) { ?>colspan="3"<? } else { ?>colspan="2"<? } ?>></th>
             </tr>
 		</thead>
 		<tbody>
@@ -309,14 +259,8 @@ if ($ctEditMode) {
 	</table>
 	
 	<? } ?>
-    
-    </div>
-    
-    <div class="ccm-pane-footer">
-        <? print $ih->button(t('Add a Page Type'), $this->url('/dashboard/pages/types/add'), 'left', 'primary'); ?>
-    </div>
-    
-    <?=Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper(false)?>
+   
+    <?=Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper()?>
     
     <!-- END: Default Page Type pane -->
 	

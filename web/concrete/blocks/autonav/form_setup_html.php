@@ -2,17 +2,16 @@
 defined('C5_EXECUTE') or die("Access Denied.");
 $form = Loader::helper('form');
 ?>
-<ul id="ccm-autonav-tabs" class="ccm-dialog-tabs">
-	<li class="ccm-nav-active"><a id="ccm-autonav-tab-add" href="javascript:void(0);"><?=t('Edit')?></a></li>
+<ul id="ccm-autonav-tabs" class="nav nav-tabs">
+	<li class="active"><a id="ccm-autonav-tab-add" href="javascript:void(0);"><?=t('Edit')?></a></li>
 	<li class=""><a id="ccm-autonav-tab-preview"  href="javascript:void(0);"><?=t('Preview')?></a></li>
 </ul>
 
 <div style="padding: 10px">
 
 
-<div class="ccm-autonavPane ccm-preview-pane" id="ccm-autonavPane-preview" style="display: none">
+<div style="clear: both" class="ccm-autonavPane ccm-preview-pane" id="ccm-autonavPane-preview" style="display: none">
 
-<center><?=t('Preview')?></center>
 
 </div>
 <div class="ccm-autonavPane" id="ccm-autonavPane-add">

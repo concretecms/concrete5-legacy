@@ -207,13 +207,7 @@ $(function(){ GlobalScrapbook.init(); });
 			</div>
 			</div>
 
-
-
-			
 			</form>
-			</td>
-		</tr>
-		</table>
 		
 		
 		<div class="ccm-spacer"></div>			
@@ -267,7 +261,7 @@ $(function(){ GlobalScrapbook.init(); });
 							
 							<? } ?>
 							
-							<? if (PERMISSIONS_MODEL != 'simple' && $bp->canAdmin()) { ?>
+							<? if (PERMISSIONS_MODEL != 'simple' && $bp->canEditBlockPermissions()) { ?>
 								<a href="javascript:void(0)" onclick="GlobalScrapbook.editBlockPermissions(<?=$b->getBlockID()?>)" ><?=t('Permissions')?></a> 
 								<? if ($bp->canDeleteBlock()) { ?>
 									&nbsp;|&nbsp;

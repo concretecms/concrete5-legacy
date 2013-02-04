@@ -11,14 +11,18 @@ if (!$fp->canAddFiles()) {
 }
 
 $types = $fp->getAllowedFileExtensions();
-$searchInstance = $_REQUEST['searchInstance'];
-$ocID = $_REQUEST['ocID'];
+$searchInstance = Loader::helper('text')->entities($_REQUEST['searchInstance']);
+$ocID = 0;
+if (Loader::helper('validation/numbers')->integer($_REQUEST['ocID'])) {
+	$ocID = $_REQUEST['ocID'];
+}
+
 $types = $ch->serializeUploadFileExtensions($types);
 $valt = Loader::helper('validation/token');
 ?>
 <div class="ccm-ui">
 <ul class="tabs" id="ccm-file-import-tabs">
-<li class="active"><a href="javascript:void(0)" id="ccm-file-upload-multiple"><?=t('Upload Multiple')?></a></li>
+<li class="active"><a href="javascript:void(0)" id="ccm-file-add-multiple"><?=t('Upload Multiple')?></a></li>
 <li><a href="javascript:void(0)" id="ccm-file-add-incoming"><?=t('Add Incoming')?></a></li>
 <li><a href="javascript:void(0)" id="ccm-file-add-remote"><?=t('Add Remote Files')?></a></li>
 </ul>
@@ -29,17 +33,43 @@ $valt = Loader::helper('validation/token');
 <script type="text/javascript" src="<?=ASSETS_URL_JAVASCRIPT?>/swfupload/swfupload.queue.js"></script>
 
 <script type="text/javascript">
-var ccm_fiActiveTab = "ccm-file-upload-multiple";
+var ccm_fiActiveTab = "ccm-file-add-multiple";
 $("#ccm-file-import-tabs a").click(function() {
+
 	$("li.active").removeClass('active');
+	var activesection = ccm_fiActiveTab.substring(13);
+	var wind = $(this).parentsUntil('.ui-dialog').parent();
+	var bp = wind.find('.ui-dialog-buttonpane');
+	$("#dialog-buttons-" + activesection).html(bp.html());
+
 	$("#" + ccm_fiActiveTab + "-tab").hide();
 	ccm_fiActiveTab = $(this).attr('id');
+	if (ccm_fiActiveTab != 'ccm-file-add-multiple') {
+		$('#ccm-file-add-multiple-outer').css('visibility', 'hidden');
+	} else {
+		$('#ccm-file-add-multiple-outer').css('visibility', 'visible');
+	}
+
 	$(this).parent().addClass("active");
 	$("#" + ccm_fiActiveTab + "-tab").show();
+	var section = $(this).attr('id').substring(13);
+
+	var buttons = $("#dialog-buttons-" + section);
+	bp.html(buttons.html());
+
 });
 </script>
 
-<div id="ccm-file-upload-multiple-tab">
+<div style="position: absolute; top: 107px; right: 15px;" id="ccm-file-add-multiple-outer"><span id="ccm-file-add-multiple-spanButtonPlaceHolder"></span></div>
+
+<div id="ccm-file-add-multiple-tab">
+	<div style="float: right">
+		<div class="help-block" style="margin-top: 11px">
+		<?=t('Upload Max: %s.', ini_get('upload_max_filesize'))?>
+		<?=t('Post Max: %s', ini_get('post_max_size'))?>
+		</div>
+	</div>
+
 <h3><?php echo t('Upload Multiple Files')?></h3>
 
 <?
@@ -66,15 +96,15 @@ $(function() {
 		upload_url : "<?=REL_DIR_FILES_TOOLS_REQUIRED?>/files/importers/multiple",
 		post_params: {'ccm-session' : "<?php echo session_id(); ?>",'searchInstance': '<?=$searchInstance?>', 'ocID' : '<?=$ocID?>', 'ccm_token' : '<?=$valt->generate("upload")?>'},
 		file_size_limit : "<?=$umf?>",
-		file_types : "<?=$types?>",
+		/* file_types : "<?=$types?>", */
 		button_window_mode : SWFUpload.WINDOW_MODE.TRANSPARENT,
 		file_types_description : "<?php echo t('All Files') ?>",
 		file_upload_limit : 100,
 		button_cursor: SWFUpload.CURSOR.HAND,
 		file_queue_limit : 0,
 		custom_settings : {
-			progressTarget : "ccm-file-upload-multiple-list",
-			cancelButtonId : "ccm-file-upload-multiple-btnCancel"
+			progressTarget : "ccm-file-add-multiple-list",
+			cancelButtonId : "ccm-file-add-multiple-btnCancel"
 		},
 		debug: false,
 
@@ -85,7 +115,7 @@ $(function() {
 		button_height: "16",
 		button_text_left_padding: 18,
 		button_text_style: ".uploadButtonText {background-color: #eee; font-family: Helvetica Neue, Helvetica, Arial}",
-		button_placeholder_id: "ccm-file-upload-multiple-spanButtonPlaceHolder",
+		button_placeholder_id: "ccm-file-add-multiple-spanButtonPlaceHolder",
 		
 		// The event handler functions are defined in handlers.js
 		// wrapped function with apply are so c5 can do anything special it needs to
@@ -141,8 +171,11 @@ $(function() {
 		queue_complete_handler : function(file){
 			// queueComplete() from swfupload.handlers.js
 			if (ccm_uploadedFiles.length > 0) {
-				queueComplete();		
-				ccm_filesUploadedDialog('<?=$searchInstance?>'); 
+				queueComplete();
+				jQuery.fn.dialog.closeTop();
+				setTimeout(function() { 
+					ccm_filesUploadedDialog('<?=$searchInstance?>'); 
+				}, 100);
 			}
 		}
 	});
@@ -156,10 +189,11 @@ $(function() {
 </style>
 
 <form id="form1" action="<?=DISPATCHER_FILENAME?>" method="post" enctype="multipart/form-data">
-		
-		<table border="0" width="100%" cellspacing="0" cellpadding="0" id="ccm-file-upload-multiple-list">
+
+	
+		<table border="0" width="100%" cellspacing="0" cellpadding="0" id="ccm-file-add-multiple-list" class="table table-striped">
 		<tr>
-			<th colspan="2"><div style="width: 80px; float: right"><span id="ccm-file-upload-multiple-spanButtonPlaceHolder"></span></div><?=t('Upload Queue');?></th>
+			<th colspan="2"><?=t('Upload Queue');?></th>
 		</tr>
 		</table>
 		
@@ -168,11 +202,11 @@ $(function() {
 		<!--
 		<div>
 
-		<div id="ccm-file-upload-multiple-results-wrapper">
+		<div id="ccm-file-add-multiple-results-wrapper">
 
 		<div style="width: 100px; float: right; text-align: right"></div>
 
-		<div id="ccm-file-upload-multiple-results">0 <?=t('Files Uploaded');?></div>
+		<div id="ccm-file-add-multiple-results">0 <?=t('Files Uploaded');?></div>
 		
 		<div class="ccm-spacer">&nbsp;</div>
 		
@@ -180,12 +214,34 @@ $(function() {
 		
 		</div>
 		<br style="clear:left;"/> //-->
-		<div>
+		<div class="dialog-buttons">
 			<?
 			
 			print $h->button_js(t('Start Uploads'), 'swfu.startUpload()', 'right', 'primary');
-			print $h->button_js(t('Cancel All Uploads'), 'swfu.cancelQueue()', 'left', null,array('id'=>'ccm-file-upload-multiple-btnCancel', 'disabled' => 1));
+			print $h->button_js(t('Cancel'), 'swfu.cancelQueue()', 'left', null,array('id'=>'ccm-file-add-multiple-btnCancel', 'disabled' => 1));
 			
+			?>
+		</div>
+		
+		<? // don't ask why we have to this. it's because we're swapping out buttons with the tabs. Ugh. ?>
+		<div style="display: none" id="dialog-buttons-multiple">
+			<?
+			
+			print $h->button_js(t('Start Uploads'), 'swfu.startUpload()', 'right', 'primary');
+			print $h->button_js(t('Cancel'), 'swfu.cancelQueue()', 'left', null,array('id'=>'ccm-file-add-multiple-btnCancel', 'disabled' => 1));
+			
+			?>
+		</div>
+		
+		<div style="display: none" id="dialog-buttons-incoming">
+			<?
+				print $form->submit('submit', t('Import Files'), array('onclick' => "jQuery.fn.dialog.showLoader();$('#ccm-file-manager-multiple-incoming').submit()", 'class' => 'primary ccm-button-right'));
+			?>
+		</div>
+		
+		<div id="dialog-buttons-remote" style="display: none">
+			<?
+				print $form->submit('submit', t('Import Files'), array('onclick' => "jQuery.fn.dialog.showLoader();$('#ccm-file-manager-multiple-remote').submit()", 'class' => 'primary ccm-button-right'));
 			?>
 		</div>
 
@@ -193,11 +249,6 @@ $(function() {
 
 <div class="ccm-spacer">&nbsp;</div>
 <br/>
-
-<div class="ccm-note">
-	<strong><?=t('Upload Max File Size: %s', ini_get('upload_max_filesize'))?></strong><br/>
-	<strong><?=t('Post Max Size: %s', ini_get('post_max_size'))?></strong><br/>
-</div>
 
 </div>
 
@@ -214,16 +265,13 @@ $(function() {
 <form id="ccm-file-manager-multiple-incoming" method="post" action="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/files/importers/incoming">
 	<input type="hidden" name="searchInstance" value="<?=$searchInstance?>" />
     <input type="hidden" name="ocID" value="<?=$ocID?>" />
-		<table id="incoming_file_table" width="100%" cellpadding="0" cellspacing="0">
+		<table id="incoming_file_table" class="table table-bordered" width="100%" cellpadding="0" cellspacing="0">
 			<tr>
-				<td width="10%" valign="middle" class="center theader"><input type="checkbox" id="check_all_imports" name="check_all_imports" onclick="ccm_alSelectMultipleIncomingFiles(this);" value="" /></td>
-				<td width="20%" valign="middle" class="center theader"></td>
-				<td width="45%" valign="middle" class="theader"><?=t('Filename')?></td>
-				<td width="25%" valign="middle" class="center theader"><?=t('Size')?></td>
+				<th width="10%" valign="middle" class="center theader"><input type="checkbox" id="check_all_imports" name="check_all_imports" onclick="ccm_alSelectMultipleIncomingFiles(this);" value="" /></th>
+				<th width="20%" valign="middle" class="center theader"></th>
+				<th width="45%" valign="middle" class="theader"><?=t('Filename')?></th>
+				<th width="25%" valign="middle" class="center theader"><?=t('Size')?></th>
 			</tr>
-		</table>
-	<div id="incoming_files" class="incoming_file_importer">
-		<table id="incoming_file_table" width="100%">
 		<?php foreach($incoming_contents as $filenum=>$file_array) { 
 				$ft = FileTypeList::getType($file_array['name']);
 		?>
@@ -235,25 +283,15 @@ $(function() {
 				</td>
 				<td width="20%" valign="middle" class="center"><?=$ft->getThumbnail(1)?></td>
 				<td width="45%" valign="middle"><?=$file_array['name']?></td>
-				<td width="25%" valign="middle" class="center"><?=$file_array['size']?><?=t('Kb')?></div>
+				<td width="25%" valign="middle" class="center"><?=$file_array['size']?><?=t('Kb')?></td>
 			</tr>
 		<?php } ?>
-			<tr>
-				<td style="text-align: center"><input type="checkbox" name="removeFilesAfterPost" value="1" /></td>
-				<td colspan="2">
-				
-				<?=t('Remove files from incoming/ directory.')?></td>
-				<td>
-				<?
-					print $form->submit('submit', t('Add Files'), array('class' => 'primary'));
-				?>
-				</td>
-			</tr>
 		</table>
-		<div class="clear"></div>
-	</div>
+		<input type="checkbox" name="removeFilesAfterPost" value="1" />
+		<?=t('Remove files from incoming/ directory.')?>
+		
+		
 	<?=$valt->output('import_incoming');?>
-	<div style="clear: both">&nbsp;</div>
 
 </form>
 <?php } else { ?>
@@ -266,18 +304,14 @@ $(function() {
 <form method="POST" id="ccm-file-manager-multiple-remote" action="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/files/importers/remote">
 	<input type="hidden" name="searchInstance" value="<?=$searchInstance?>" />
     <input type="hidden" name="ocID" value="<?=$ocID?>" />
-	<h4><?=t('Enter URL to valid file(s)')?></h4>
+	<p><?=t('Enter URL to valid file(s)')?></p>
 	<?=$valt->output('import_remote');?>
 
-	<?=$form->text('url_upload_1', array('style' => 'width:90%'))?><br/><br/>
-	<?=$form->text('url_upload_2', array('style' => 'width:90%'))?><br/><br/>
-	<?=$form->text('url_upload_3', array('style' => 'width:90%'))?><br/><br/>
-	<?=$form->text('url_upload_4', array('style' => 'width:90%'))?><br/><br/>
-	<?=$form->text('url_upload_5', array('style' => 'width:90%'))?><br/>
-	<br/>
-	<?
-		print $form->submit('submit', t('Add Files'), array('class' => 'primary'));
-	?>
+	<?=$form->text('url_upload_1', array('style' => 'width:455px'))?><br/><br/>
+	<?=$form->text('url_upload_2', array('style' => 'width:455px'))?><br/><br/>
+	<?=$form->text('url_upload_3', array('style' => 'width:455px'))?><br/><br/>
+	<?=$form->text('url_upload_4', array('style' => 'width:455px'))?><br/><br/>
+	<?=$form->text('url_upload_5', array('style' => 'width:455px'))?><br/>
 </form>
 </div>
 </div>

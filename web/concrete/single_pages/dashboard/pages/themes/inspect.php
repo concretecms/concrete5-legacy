@@ -6,7 +6,7 @@ $ci = Loader::helper('concrete/interface');
 
 ?>
 
-	<?=Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Inspect Theme'), false, 'span14 offset1', false);?>
+		<?=Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Inspect Theme'), false, 'span10 offset1', false);?>
     
     <form method="post" id="ccm-inspect-form" action="<?=$this->url('/dashboard/pages/themes/inspect/', 'activate_files', $ptID)?>">
     
@@ -25,9 +25,9 @@ $ci = Loader::helper('concrete/interface');
                 </div>
             </div>
         
-            <div class="span10">
+            <div class="span6">
                 <h5><?=t('Files in Theme')?></h5>
-                <table border="0" cellspacing="0" cellpadding="0" class="zebra-striped">            
+                <table border="0" cellspacing="0" cellpadding="0" class="table table-striped table-bordered">            
                     <thead>
                         <tr>
                             <th><?=t('File')?></th>
@@ -61,7 +61,7 @@ $ci = Loader::helper('concrete/interface');
                                         print t("Default template.");
                                         break;
                                     case PageThemeFile::TFTYPE_SINGLE_PAGE:
-                                        print t("Template for internal Concrete page.");
+                                        print t("Template for internal concrete5 page.");
                                         break;
                                     case PageThemeFile::TFTYPE_PAGE_TYPE_NEW:
                                         print t("New template.");
@@ -110,7 +110,7 @@ $ci = Loader::helper('concrete/interface');
         <?
         print $ci->button(t('Return to Themes'), $this->url('/dashboard/pages/themes'), 'left');
         if ($pf > 0) { 
-            print $ci->submit(t('Activate Files'), 'ccm-inspect-form', 'right', 'primary'); ?>
+            print $ci->submit(t('Ok'), 'ccm-inspect-form', 'right', 'primary'); ?>
         <? }?>
     </div>
     

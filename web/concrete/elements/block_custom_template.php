@@ -13,20 +13,17 @@ $templates = $bt->getBlockTypeCustomTemplates();
 $txt = Loader::helper('text');
 ?>
 <div class="ccm-ui" style="padding-top:10px;">
-<form method="post" id="ccmCustomTemplateForm" action="<?=$b->getBlockUpdateInformationAction()?>&amp;rcID=<?=intval($rcID) ?>" class="form-stacked clearfix">
+<form method="post" id="ccmCustomTemplateForm" action="<?=$b->getBlockUpdateInformationAction()?>&amp;rcID=<?=intval($rcID) ?>" class="form-vertical">
 	
 	<? if (count($templates) == 0) { ?>
-	
+
 		<?=t('There are no custom templates available.')?>
-		<div class="ccm-buttons dialog-buttons">
-			<a href="#" class="btn ccm-dialog-close ccm-button-left cancel"><?=t('Cancel')?></a>
-		</div>
 
 	<? } else { ?>
 		
-    	<div class="clearfix">
-            <label for="bFilename"><?=t('Custom Template')?></label>
-            <div class="input">
+    	<div class="control-group">
+          <label for="bFilename" class="control-label"><?=t('Custom Template')?></label>
+            <div class="controls">
                 <select id="bFilename" name="bFilename" class="xlarge">
                     <option value="">(<?=t('None selected')?>)</option>
                     <? foreach($templates as $tpl) { ?>
@@ -40,14 +37,22 @@ $txt = Loader::helper('text');
                     <? } ?>
                 </select>
             </div>
+				</div>
+
+	<? } ?>
+
+        <div class="control-group" style="padding-top:10px">
+          <label for="bName" class="control-label"><?=t('Block Name')?></label>
+            <div class="controls">
+						<input type="text" id="bName" name="bName" class="bName" value="<?=$b->getBlockName() ?>" />
+            </div>
         </div>
-        
+
 		<div class="ccm-buttons dialog-buttons">
 			<a href="#" class="btn ccm-dialog-close ccm-button-left cancel"><?=t('Cancel')?></a>
-			<a href="javascript:void(0)" onclick="$('#ccmCustomTemplateForm').submit()" class="ccm-button-right accept primary btn"><span><?=t('Update')?></span></a>
+			<a href="javascript:void(0)" onclick="$('#ccmCustomTemplateForm').submit()" class="ccm-button-right accept primary btn"><span><?=t('Save')?></span></a>
 		</div>
 		
-	<? } ?>
 <?
 $valt = Loader::helper('validation/token');
 $valt->output();

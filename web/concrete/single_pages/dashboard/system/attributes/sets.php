@@ -3,7 +3,7 @@ $form = Loader::helper('form');
 $txt = Loader::helper('text');?>
 <?php if (in_array($this->controller->getTask(), array('update_set', 'update_set_attributes', 'edit', 'delete_set'))) { 
 
-	echo Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Edit Set'), false);?>
+	echo Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Edit Set'), false, 'span6 offset3');?>
 		
 		<div class="clearfix">
 		<div class="row">
@@ -16,7 +16,7 @@ $txt = Loader::helper('text');?>
 			</div>	
 		<?php } ?>
 
-		<form class="form-stacked" method="post" action="<?php echo $this->action('update_set')?>">
+		<form class="" method="post" action="<?php echo $this->action('update_set')?>">
 			<input type="hidden" name="asID" value="<?php echo $set->getAttributeSetID()?>" />
 			<?php echo Loader::helper('validation/token')->output('update_set')?>
 			<div class="clearfix">
@@ -37,8 +37,11 @@ $txt = Loader::helper('text');?>
 				</div>
 			</div>
 
-			<div class="actions">
-				<?php echo $form->submit('submit', t('Update Set'), array('class' => 'primary'))?>
+			<div class="clearfix">
+				<label></label>
+				<div class="input">
+					<?php echo $form->submit('submit', t('Update Set'), array('class' => ''))?>
+				</div>
 			</div>
 		</form>
 
@@ -49,7 +52,7 @@ $txt = Loader::helper('text');?>
 				<input type="hidden" name="asID" value="<?php echo $set->getAttributeSetID()?>" />
 				<?php echo Loader::helper('validation/token')->output('delete_set')?>
 			
-				<div class="form-stacked actions">
+				<div class="clearfix">
 					<?php echo $form->submit('submit', t('Delete Set'), array('class' => 'danger'))?>
 				</div>
 			</form>
@@ -91,8 +94,8 @@ $txt = Loader::helper('text');?>
 					</ul>
 				</div>
 		
-				<div class="form-stacked actions">
-					<?php echo $form->submit('submit', t('Update Attributes'), array('class' => 'primary'))?>
+				<div class="clearfix">
+					<?php echo $form->submit('submit', t('Update Attributes'), array('class' => ''))?>
 				</div>
 			<?php } else { ?>
 				<p><?php echo t('No attributes found.')?></p>
@@ -111,10 +114,9 @@ $txt = Loader::helper('text');?>
 
 <?php } else if($this->controller->getTask() == 'category' || $this->controller->getTask() == 'add_set'){ ?>
 
-	<?php echo Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper($txt->unHandle($this->controller->category->getAttributeKeyCategoryHandle()).' '.t('Attribute Sets'), false, false, false);?>
+	<?php echo Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper($txt->unHandle($this->controller->category->getAttributeKeyCategoryHandle()).' '.t('Attribute Sets'), false, 'span6 offset3');?>
 	<form method="post" action="<?php echo $this->action('add_set')?>">
 
-	<div class="ccm-pane-body">
 
 	<?php if (count($sets) > 0) { ?>
 	
@@ -136,8 +138,6 @@ $txt = Loader::helper('text');?>
 	
 	<h3><?=t('Add Set')?></h3>
 
-	<p><?php echo t('Group attributes into sets for better organization and management.')?></p>
-	
 	<input type="hidden" name="categoryID" value="<?php echo $categoryID?>" />
 	<?php echo Loader::helper('validation/token')->output('add_set')?>
 	<div class="clearfix">
@@ -154,18 +154,21 @@ $txt = Loader::helper('text');?>
 		</div>
 	</div>
 	
+	<div class="clearfix">
+		<label></label>
+		<div class="input">
+			<?php echo $form->submit('submit', t('Add Set'), array('class' => 'btn'))?>
+		</div>
 	</div>
-	
-	<div class="ccm-pane-footer">
-		<?php echo $form->submit('submit', t('Add Set'), array('class' => 'ccm-button-right 	primary'))?>
-		<a class="btn" href="<?php echo $this->url('/dashboard/system/attributes/sets')?>"><?php echo t('Back to Categories')?></a>	
-	</div>
+
 	</form>
 	
-	<?php echo Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper(false);?>
+	<?php echo Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper();?>
+	
+	
 
 <?php } else { ?>
-	<?php echo Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Attribute Categories'), false);?>
+	<?php echo Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Attribute Categories'), false, 'span6 offset3');?>
 		<p><?php echo t('Attribute Categories are used to group different types of sets.')?></p>
 		<div class="">
 			<?php 

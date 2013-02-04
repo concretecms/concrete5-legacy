@@ -27,6 +27,9 @@ if ($controller->hasVoted()) { ?>
 			$graphColors[]=array_pop($availableChartColors);
 			$totalVotes+=intval($opt->getResults());
 		}
+		foreach ($optionResults as &$value){
+			$value=round($value/$totalVotes*100,0);
+		}		
 		?>
 		
 		<strong><?=t("Question")?>: <?=$controller->getQuestion()?></strong>
@@ -70,6 +73,8 @@ if ($controller->hasVoted()) { ?>
 	
 	<? if(!$controller->requiresRegistration() || intval($uID) > 0) { ?>
 	<form method="post" action="<?=$this->action('form_save_vote', '#survey-form-'.$controller->bID)?>">
+	<? $c = Page::getCurrentPage(); ?>
+	<input type="hidden" name="rcID" value="<?=$c->getCollectionID()?>" />
 	<? } ?>
 	
 	<?	
