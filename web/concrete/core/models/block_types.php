@@ -292,7 +292,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		 * $bt = BlockType::getByHandle('content'); // returns the BlockType object for the core Content block
 		 * ?></code>
 		 * @param string $handle
-		 * @return mixed
+		 * @return BlockType|false
 		 */
 		public static function getByHandle($handle) {
 			$bt = CacheLocal::getEntry('blocktype', $handle);
