@@ -25,26 +25,48 @@ class Concrete5_Helper_Lists_Countries {
 		Loader::library('3rdparty/Zend/Locale');
 		$countries = Zend_Locale::getTranslationList('territory', Localization::activeLocale(), 2);
 		// unset invalid countries
-		unset($countries['SU'], $countries['ZZ'], $countries['IM'], $countries['JE'], $countries['VD']);
+		unset(
+			$countries['FX'], // Metropolitan France (it's not a country, but its the part of France located in Europe, but we've already FR - France)
+			$countries['IM'], // Isle of Man (it's a British Crown Dependency)
+			$countries['JE'], // Jersey (it's a British Crown Dependency)
+			$countries['NT'], // Neutral Zone
+			$countries['PU'], // U.S. Miscellaneous Pacific Islands
+			$countries['ZZ']  // Unknown or Invalid Region
+		);
 		asort($countries, SORT_LOCALE_STRING);
 		$this->countries = $countries;
 	}
 	
 	/** 
-	 * Returns an array of Countries with their short name as the key and their full name as the value
-	 * @return array
+	 * Returns an array of countries with their short name as the key and their full name as the value
+	 * @param bool $includeDismissed Include also no-more existing countries? [default: false]
+	 * @return array Keys are the country codes, values are the county names
 	 */
-	public function getCountries() {
-		return $this->countries;
+	public function getCountries($includeDismissed = false) {
+		if($includeDismissed) {
+			return $this->countries;
+		}
+		$countries = $this->countries;
+		unset(
+			$countries['CS'], // Serbia and Montenegro (since 2006 has been spitted in Serbia and Montenegro)
+			$countries['CT'], // Canton and Enderbury Islands (merged into Kiribati since 1979)
+			$countries['DD'], // East Germany (merged with West Germany into Germany in 1990)
+			$countries['PC'], // Pacific Islands Trust Territory (no more existing since 1994)
+			$countries['PZ'], // Panama Canal Zone (merged into Panama since 2000)
+			$countries['SU'], // Union of Soviet Socialist Republics (splitted into several countries since 1991)
+			$countries['VD'], // North Vietnam (merged with South Vietnam into Socialist Republic of Vietnam in 1976)
+			$countries['YD']  // People's Democratic Republic of Yemen (no more existing since 1990)
+		);
+		return $countries;
 	}
 	
-
 	/** 
-	 * Gets a country full name given its index
+	 * Gets a country full name given its code
+	 * @param string $code The country code
 	 * @return string
-	 * @param string $index
 	 */
-	public function getCountryName($index) { return $this->countries[$index]; }
-
+	public function getCountryName($code) {
+		return $this->countries[$code];
+	}
 
 }
