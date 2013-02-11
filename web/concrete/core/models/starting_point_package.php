@@ -50,7 +50,6 @@ class Concrete5_Model_StartingPointPackage extends Package {
 			$bi = $b->getInstance();
 			$bi->setupAndRun('view');
 		}
-		Loader::helper('concrete/interface')->cacheInterfaceItems();
 	}
 	
 	public function install_attributes() {

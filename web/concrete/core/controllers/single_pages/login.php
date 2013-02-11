@@ -223,6 +223,8 @@ class Concrete5_Controller_Login extends Controller {
 				$u->setUserDefaultLanguage($this->post('USER_LOCALE'));
 			}
 		}
+		
+		Loader::helper('concrete/interface')->clearInterfaceItemsCache();
 
 		// Verify that the user has filled out all
 		// required items that are required on register
