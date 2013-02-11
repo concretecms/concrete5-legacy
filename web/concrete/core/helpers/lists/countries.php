@@ -21,6 +21,8 @@ class Concrete5_Helper_Lists_Countries {
 
 	protected $countries = array();
 	
+	private $countryCache = array();
+	
 	public function __construct() {
 		Loader::library('3rdparty/Zend/Locale');
 		$countries = Zend_Locale::getTranslationList('territory', Localization::activeLocale(), 2);
@@ -43,21 +45,27 @@ class Concrete5_Helper_Lists_Countries {
 	 * @return array Keys are the country codes, values are the county names
 	 */
 	public function getCountries($includeDismissed = false) {
-		if($includeDismissed) {
-			return $this->countries;
+		$cacheIndex = $includeDismissed ? 1 : 0;
+		if(!isset($this->countriesCache[$cacheIndex])) {
+			$countries = Events::fire('on_countries_getlist', $includeDismissed);
+			if(!is_array($countries)) {
+				$countries = $this->countries;
+				if(!$includeDismissed) {
+					unset(
+						$countries['CS'], // Serbia and Montenegro (since 2006 has been spitted in Serbia and Montenegro)
+						$countries['CT'], // Canton and Enderbury Islands (merged into Kiribati since 1979)
+						$countries['DD'], // East Germany (merged with West Germany into Germany in 1990)
+						$countries['PC'], // Pacific Islands Trust Territory (no more existing since 1994)
+						$countries['PZ'], // Panama Canal Zone (merged into Panama since 2000)
+						$countries['SU'], // Union of Soviet Socialist Republics (splitted into several countries since 1991)
+						$countries['VD'], // North Vietnam (merged with South Vietnam into Socialist Republic of Vietnam in 1976)
+						$countries['YD']  // People's Democratic Republic of Yemen (no more existing since 1990)
+					);
+				}
+			}
+			$this->countriesCache[$cacheIndex] = $countries;
 		}
-		$countries = $this->countries;
-		unset(
-			$countries['CS'], // Serbia and Montenegro (since 2006 has been spitted in Serbia and Montenegro)
-			$countries['CT'], // Canton and Enderbury Islands (merged into Kiribati since 1979)
-			$countries['DD'], // East Germany (merged with West Germany into Germany in 1990)
-			$countries['PC'], // Pacific Islands Trust Territory (no more existing since 1994)
-			$countries['PZ'], // Panama Canal Zone (merged into Panama since 2000)
-			$countries['SU'], // Union of Soviet Socialist Republics (splitted into several countries since 1991)
-			$countries['VD'], // North Vietnam (merged with South Vietnam into Socialist Republic of Vietnam in 1976)
-			$countries['YD']  // People's Democratic Republic of Yemen (no more existing since 1990)
-		);
-		return $countries;
+		return $this->countriesCache[$cacheIndex];
 	}
 	
 	/** 
@@ -66,7 +74,8 @@ class Concrete5_Helper_Lists_Countries {
 	 * @return string
 	 */
 	public function getCountryName($code) {
-		return $this->countries[$code];
+		$countries = $this->getCountries(true);
+		return $countries[$code];
 	}
 
 }
