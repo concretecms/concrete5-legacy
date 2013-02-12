@@ -35,11 +35,17 @@ class Concrete5_Controller_Dashboard_Pages_Types_Composer extends Controller {
 		exit;
 	}
 	
-	public function view($ctID = false, $action = false) { 
+	public function view($ctID = false, $action = false, $msg = '') {
 		$this->verify($ctID);
 		$this->set('contentitems', $this->ct->getComposerContentItems());
 		if ($action == 'updated') {
 			$this->set('message', t('Composer settings updated.'));
+
+		} elseif ($action == 'error') {
+			if(!$msg) {
+				$msg = t('An Error Occurred');
+			}
+			$this->set('error', $msg);
 		}
 	}	
 	
@@ -49,6 +55,12 @@ class Concrete5_Controller_Dashboard_Pages_Types_Composer extends Controller {
 			switch($this->post('ctComposerPublishPageMethod')) {
 				case 'PARENT':
 					$page = Page::getByID($this->post('ctComposerPublishPageParentID'));
+
+					if($page->isError()) {
+						$this->view($this->ct->getCollectionTypeID(), 'error', t('Parent page not selected.'));
+						return;
+					}
+
 					$this->ct->saveComposerPublishTargetPage($page);
 					break;
 				case 'PAGE_TYPE':
