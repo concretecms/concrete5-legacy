@@ -446,8 +446,8 @@ class Concrete5_Helper_Lists_StatesProvinces {
 	*/
 	public function getStateProvinceArray($country) {
 		$statesProvinces = $this->getStateProvinces();
-		if(isset($statesProvinces[$k])) {
-			return $statesProvinces[$k];
+		if(isset($statesProvinces[$country])) {
+			return $statesProvinces[$country];
 		}
 	}
 
@@ -460,8 +460,7 @@ class Concrete5_Helper_Lists_StatesProvinces {
 	* @return array Returns an array whose keys are the US State codes and the values are their names.
 	*/
 	public function getStates() {
-		$statesProvinces = $this->getStateProvinces();
-		return $statesProvinces['US'];
+		return $this->getStateProvinceArray('US');
 	}
 
 	/** Returns an array of Canadian provinces.
@@ -469,8 +468,7 @@ class Concrete5_Helper_Lists_StatesProvinces {
 	* @return array Returns an array whose keys are the Canadian Provinces codes and the values are their names.
 	*/
 	public function getCanadianProvinces() {
-		$statesProvinces = $this->getStateProvinces();
-		return $statesProvinces['CA'];
+		return $this->getStateProvinceArray('CA');
 	}
 
 }
