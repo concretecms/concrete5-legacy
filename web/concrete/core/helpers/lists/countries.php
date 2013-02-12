@@ -47,7 +47,7 @@ class Concrete5_Helper_Lists_Countries {
 	public function getCountries($includeDismissed = false) {
 		$cacheIndex = $includeDismissed ? 1 : 0;
 		if(!isset($this->countriesCache[$cacheIndex])) {
-			$countries = Events::fire('on_countries_getlist', $includeDismissed);
+			$countries = Events::fire('on_countries_getlist', $this->countries, $includeDismissed);
 			if(!is_array($countries)) {
 				$countries = $this->countries;
 				if(!$includeDismissed) {
