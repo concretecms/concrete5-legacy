@@ -410,7 +410,7 @@ class Concrete5_Helper_Lists_StatesProvinces {
 	*/
 	protected function getStateProvinces() {
 		if(!isset($this->stateProvincesFromEvent)) {
-			$stateProvincesFromEvent = Events::fire('on_stateprovinces_getlist');
+			$stateProvincesFromEvent = Events::fire('on_stateprovinces_getlist', $this->stateProvinces);
 			if(is_array($stateProvincesFromEvent)) {
 				$this->stateProvincesFromEvent = $stateProvincesFromEvent;
 				foreach(array_keys($stateProvincesFromEvent) as $country) {
