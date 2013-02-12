@@ -398,52 +398,80 @@ class Concrete5_Helper_Lists_StatesProvinces {
 
 	)
 	);
-	
+
+	protected $stateProvincesFromEvent;
+
 	public function __construct() {
 		$this->stateProvinces['GB'] = $this->stateProvinces['UK'];
 	}
-	public function getStateProvinceName($v, $country) {
-		foreach($this->stateProvinces as $countryKey => $countries) {
-			foreach($countries as $key => $value) {
-				if ($key == $v && $country == $countryKey) {
-					return $value;
+
+	/** Returns the list of States/Provinces for some countries (States/Provinces are sorted alphabetically).
+	* @return array Returns an array whose keys are the country codes and the values are arrays (with keys: State/Province code, values: State/Province names)
+	*/
+	protected function getStateProvinces() {
+		if(!isset($this->stateProvincesFromEvent)) {
+			$stateProvincesFromEvent = Events::fire('on_stateprovinces_getlist');
+			if(is_array($stateProvincesFromEvent)) {
+				$this->stateProvincesFromEvent = $stateProvincesFromEvent;
+				foreach(array_keys($stateProvincesFromEvent) as $country) {
+					asort($stateProvincesFromEvent[$country]);
+				}
+				$this->stateProvincesFromEvent = $stateProvincesFromEvent;
+			}
+			else {
+				$this->stateProvincesFromEvent = false;
+				foreach(array_keys($this->stateProvinces) as $country) {
+					asort($this->stateProvinces[$country]);
 				}
 			}
 		}
+		return is_array($this->stateProvincesFromEvent) ? $this->stateProvincesFromEvent : $this->stateProvinces;
 	}
-	
-	public function getStateProvinceArray($k) {
-		$a = $this->stateProvinces[$k];
-		asort($a);
-		return $a;
-	}
-	
-	public function getAll() {
-		$sp = $this->stateProvinces;
-		foreach($sp as $p => $pv) {
-			asort($sp[$p]);
+
+	/** Returns the name of a specified State/Province in a specified Country.
+	* @param string $stateProvCode The State/Province code.
+	* @param string $country The Country code.
+	* @return mixed Returns the State/Province name (if found), or nothing if not found.
+	*/
+	public function getStateProvinceName($code, $country) {
+		$stateProvinces = $this->getStateProvinces();
+		if(isset($stateProvinces[$country]) && isset($stateProvinces[$country][$code])) {
+			return $stateProvinces[$country][$code];
 		}
-		return $sp;
 	}
-	
-	/** 
-	 * Returns an array of US states
-	 * @deprecated
-	 * @return array
-	 */
+
+	/** Returns a list of States/Provinces for some countries.
+	* @param string $country The country code.
+	* @return mixed If If the Country is supported, the function returns an array (whose keys are State/Province code and the values are the State/Province names). Returns nothing if $country is not supported.
+	*/
+	public function getStateProvinceArray($country) {
+		$statesProvinces = $this->getStateProvinces();
+		if(isset($statesProvinces[$k])) {
+			return $statesProvinces[$k];
+		}
+	}
+
+	public function getAll() {
+		return $this->getStateProvinces();
+	}
+
+	/** Returns an array of US states.
+	* @deprecated
+	* @return array Returns an array whose keys are the US State codes and the values are their names.
+	*/
 	public function getStates() {
-		return $this->stateProvinces['US'];
+		$statesProvinces = $this->getStateProvinces();
+		return $statesProvinces['US'];
 	}
-	
-	/** 
-	 * Returns an array of Canadian provinces
-	 * @deprecated
-	 * @return array
-	 */
+
+	/** Returns an array of Canadian provinces.
+	* @deprecated
+	* @return array Returns an array whose keys are the Canadian Provinces codes and the values are their names.
+	*/
 	public function getCanadianProvinces() {
-		return $this->stateProvinces['CA'];
+		$statesProvinces = $this->getStateProvinces();
+		return $statesProvinces['CA'];
 	}
-	
 
 }
 
