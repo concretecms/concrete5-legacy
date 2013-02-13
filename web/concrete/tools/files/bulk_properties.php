@@ -269,10 +269,18 @@ table.ccm-grid th {width: 70px}
 <div class="ccm-ui">
 <? if ($_REQUEST['uploaded']) { ?>
 	<? if (count($_REQUEST['fID']) == 1) { ?>
-		<div class="block-message alert-message success" style="padding-right: 14px !important"><a class="btn success btn-mini" style="float: right;" onclick="jQuery.fn.dialog.closeTop()"><?=t('Continue')?></a><?=t('1 file uploaded successfully.')?></div>
+		<div class="block-message alert-message success" style="padding-right: 14px !important"><a class="btn success btn-mini" style="float: right;" onclick="jQuery.fn.dialog.closeTop()"><?=t('Continue')?></a><a class="btn btn-mini btn-upload-success-choose" style="float: right; margin-right: 10px;"><?=t('Choose')?></a><?=t('1 file uploaded successfully.')?></div>
 	<? } else { ?>
-		<div class="block-message alert-message success" style="padding-right: 14px !important"><a class="btn success btn-mini" style="float: right;" onclick="jQuery.fn.dialog.closeTop()"><?=t('Continue')?></a><?=t('%s files uploaded successfully.', count($_REQUEST['fID']))?></div>
+		<div class="block-message alert-message success" style="padding-right: 14px !important"><a class="btn success btn-mini" style="float: right;" onclick="jQuery.fn.dialog.closeTop()"><?=t('Continue')?></a><a class="btn btn-mini btn-upload-success-choose" style="float: right; margin-right: 10px;"><?=t('Choose')?></a><?=t('%s files uploaded successfully.', count($_REQUEST['fID']))?></div>
 	<? } ?>
+	<script type="text/javascript">
+	var showUploadSuccessChooseButton = !!$('#ccm-list-wrapper select#ccm-<?=$_REQUEST['searchInstance']; ?>-list-multiple-operations option[value="choose"]').length;
+	$('a.btn-upload-success-choose').toggle(showUploadSuccessChooseButton).on('click', function() {
+		jQuery.fn.dialog.closeTop();
+		var uploadSuccessChooseFIDs = [<?=implode(',', $_REQUEST['fID']); ?>];
+		ccm_alSelectFile(uploadSuccessChooseFIDs);
+	});
+	</script>
 <? } ?>
 
 <ul class="tabs" id="ccm-file-manager-add-complete-tabs">
