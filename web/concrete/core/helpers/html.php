@@ -53,6 +53,8 @@ class Concrete5_Helper_Html {
 	 */
 	public function css($file, $pkgHandle = null, $uniqueItemHandle = array()) {
 
+		list($file, $pkgHandle) = $this->assetMap($file, $pkgHandle);
+
 		$css = new CSSOutputObject($uniqueItemHandle);
 
 		// if the first character is a / then that means we just go right through, it's a direct path
@@ -105,6 +107,8 @@ class Concrete5_Helper_Html {
 	 */
 	public function javascript($file, $pkgHandle = null, $uniqueItemHandle = array()) {
 
+		list($file, $pkgHandle) = $this->assetMap($file, $pkgHandle);
+
 		$js = new JavaScriptOutputObject($uniqueItemHandle);
 		
 		if (substr($file, 0, 1) == '/' || substr($file, 0, 4) == 'http' || strpos($file, DISPATCHER_FILENAME) > -1) {
@@ -136,7 +140,72 @@ class Concrete5_Helper_Html {
 		$js->href = $js->file;
 		return $js;
 	}
-	
+
+
+	/**
+	 * Maps an asset according to defined constants. Can be used, for example, to map jQuery to a cdn
+	 * by defining  ASSET_MAP_ALL_FILE_JQUERYJS as the cdn path. Can also be used to resolve duplicated
+	 * assets by mapping all to a common file and package.
+	 *
+	 * Mapping can be global (ALL) or specific to a package handle (PKG)
+	 *
+	 * @param string $file name of asset file
+	 * @param string $pkgHandle handle of the package that the asset file is located in (if applicable)
+	 * @return array($file, $pkgHandle)
+	 */
+	public function assetMap($file, $pkgHandle=null){		
+		// Use a symbol list to detect mapping constants for file or pkgHandle. 
+		// Last found overrides first found as later sybols are more specific.
+		foreach ($this->getAssetMapSymbols($file, $pkgHandle) as $ix=>$symbol_case){
+			if (defined($symbol_case['file'])){
+				$file = constant($symbol_case['file']);
+			}
+			if (defined($symbol_case['pkg'])){
+				$pkgHandle = constant($symbol_case['pkg']);
+			}
+		}
+		return array($file,$pkgHandle);
+	}
+
+	/**
+	 * Lists symbols applicable to assets, used by assetMap (above) and public
+	 * so it could be used, for example, with a dashboard interface to help identify
+	 * symbols to a developer or site owner.
+	 *
+	 * @param string $file name of asset file
+	 * @param string $pkgHandle handle of the package that the asset file is located in (if applicable)
+	 * @return array of arrays of symbols for file and pkg
+	 */
+	public function getAssetMapSymbols($file, $pkgHandle=null){
+		$th = Loader::helper('text');
+		$fsymbol = strtoupper($th->handle($file));
+
+		$symbol_list = array ();
+
+		// Build a table to drive symbol tests - for ease of future expansion
+
+		// symbols for 'ALL' are overridden by any subsequent package specific symbol
+		$symbol_list[] = array (
+				'file' => 'ASSET_MAP_ALL_FILE_'.$fsymbol,
+				'pkg' => 'ASSET_MAP_ALL_PKG_'.$fsymbol);
+
+		// symbols for case of 'PKG' where there is a package handle
+		if($pkgHandle){
+			$psymbol = strtoupper($th->handle($pkgHandle));
+			$symbol_list[] = array (
+				'file' => 'ASSET_MAP_PKG_FILE_'.$psymbol.'_'.$fsymbol,
+				'pkg' => 'ASSET_MAP_PKG_PKG_'.$psymbol.'_'.$fsymbol);
+
+		// symbols for case of 'PKG' where there is no package handle
+		}else{
+			$symbol_list[] = array (
+				'file' => 'ASSET_MAP_PKG_FILE_'.$fsymbol,
+				'pkg' => 'ASSET_MAP_PKG_PKG_'.$fsymbol);
+		}
+
+		return $symbol_list;
+	}
+
 	
 	/** 
 	 * Includes a JavaScript inline script.
