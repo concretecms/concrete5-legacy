@@ -271,6 +271,11 @@ class Concrete5_Model_Block extends Object {
 		}
 	}
 
+	public function clearBlockCachedOutput() {
+		$db = Loader::db();
+		$db->execute('DELETE FROM CollectionVersionBlocksOutputCache WHERE bID=?',array($this->getBlockID()));
+	}
+
 	public function inc($file) {
 		$b = $this;
 		if (file_exists($this->getBlockPath() . '/' . $file)) {
