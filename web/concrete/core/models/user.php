@@ -30,11 +30,49 @@
 		protected $accessEntities = array();
 		
 		/**
+		 * Duplicated getByID() so that it reflects the right class when called.
+		 * @deprecated
+		 */
+		public static function getByUserID($uID, $login = false, $cacheItemsOnLogin = true) {
+			$db = Loader::db();
+			$v = array($uID);
+			$q = "SELECT uID, uName, uIsActive, uLastOnline, uTimezone, uDefaultLanguage FROM Users WHERE uID = ?";
+			$r = $db->query($q, $v);
+			if ($r) {
+				$row = $r->fetchRow();
+				$nu = new User();
+				$nu->uID = $row['uID'];
+				$nu->uName = $row['uName'];
+				$nu->uIsActive = $row['uIsActive'];
+				$nu->uDefaultLanguage = $row['uDefaultLanguage'];
+				$nu->uLastLogin = $row['uLastLogin'];
+				$nu->uTimezone = $row['uTimezone'];
+				$nu->uGroups = $nu->_getUserGroups(true);
+				$nu->superUser = ($nu->getUserID() == USER_SUPER_ID);
+				if ($login) {
+					User::regenerateSession();
+					$_SESSION['uID'] = $row['uID'];
+					$_SESSION['uName'] = $row['uName'];
+					$_SESSION['uBlockTypesSet'] = false;
+					$_SESSION['uGroups'] = $nu->uGroups;
+					$_SESSION['uLastOnline'] = $row['uLastOnline'];
+					$_SESSION['uTimezone'] = $row['uTimezone'];
+					$_SESSION['uDefaultLanguage'] = $row['uDefaultLanguage'];
+					if ($cacheItemsOnLogin) { 
+						Loader::helper('concrete/interface')->cacheInterfaceItems();
+					}
+					$nu->recordLogin();
+				}
+			}
+			return $nu;
+		}
+
+		/**
 		 * @param int $uID
 		 * @param boolean $login
 		 * @return User
 		 */
-		public static function getByUserID($uID, $login = false, $cacheItemsOnLogin = true) {
+		public static function getByID($uID, $login = false, $cacheItemsOnLogin = true) {
 			$db = Loader::db();
 			$v = array($uID);
 			$q = "SELECT uID, uName, uIsActive, uLastOnline, uTimezone, uDefaultLanguage FROM Users WHERE uID = ?";
@@ -80,7 +118,7 @@
 		 * @return User
 		 */
 		public function loginByUserID($uID) {
-			return User::getByUserID($uID, true);
+			return User::getByID($uID, true);
 		}
 		
 		public static function isLoggedIn() {
