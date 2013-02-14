@@ -2,7 +2,6 @@
 defined('C5_EXECUTE') or die("Access Denied.");
 $view = View::getInstance();
 $c = $view->getCollectionObject();
-global $c;
 if (is_object($c)) {
 	$cp = new Permissions($c);
 }
