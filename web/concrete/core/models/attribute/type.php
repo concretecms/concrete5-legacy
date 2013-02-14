@@ -4,7 +4,7 @@ class Concrete5_Model_AttributeType extends Object {
 
 	public function getAttributeTypeID() {return $this->atID;}
 	public function getAttributeTypeHandle() {return $this->atHandle;}
-	public function getAttributeTypeName() {return $this->atName;}
+	public function getAttributeTypeName() {return t($this->atName);}
 	public function getController() {return $this->controller;}
 	
 	public static function getByID($atID) {

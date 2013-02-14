@@ -199,11 +199,11 @@
 		}
 		
 		function getGroupName() {
-			return $this->gName;
+			return t($this->gName);
 		}
 		
 		function getGroupDescription() {
-			return $this->gDescription;
+			return t($this->gDescription);
 		}
 		
 		/**

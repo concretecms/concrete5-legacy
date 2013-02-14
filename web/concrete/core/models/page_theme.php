@@ -623,13 +623,13 @@ class Concrete5_Model_PageTheme extends Object {
 	}
 	
 	public function getThemeID() {return $this->ptID;}
-	public function getThemeName() {return $this->ptName;}
+	public function getThemeName() {return t($this->ptName);}
 	public function getPackageID() {return $this->pkgID;}
 	public function getPackageHandle() {
 		return PackageList::getHandle($this->pkgID);
 	}
 	public function getThemeHandle() {return $this->ptHandle;}
-	public function getThemeDescription() {return $this->ptDescription;}
+	public function getThemeDescription() {return t($this->ptDescription);}
 	public function getThemeDirectory() {return $this->ptDirectory;}
 	public function getThemeURL() {return $this->ptURL;}
 	public function getThemeEditorCSS() {return $this->ptURL . '/' . PageTheme::FILENAME_TYPOGRAPHY_CSS;}
