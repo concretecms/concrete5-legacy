@@ -20,7 +20,7 @@ class Concrete5_Library_IndexedSearch {
 		return $action;
 	}
 	
-	public function getSavedSearchableAreas() {
+	public static function getSavedSearchableAreas() {
 		$areas = Config::get('SEARCH_INDEX_AREA_LIST');
 		$areas = unserialize($areas);
 		if (!is_array($areas)) {
@@ -29,7 +29,7 @@ class Concrete5_Library_IndexedSearch {
 		return $areas;
 	}
 	
-	public function clearSearchIndex() {
+	public static function clearSearchIndex() {
 		$db = Loader::db();
 		$db->Execute('truncate table PageSearchIndex');
 	}
