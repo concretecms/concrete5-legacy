@@ -34,12 +34,12 @@ class Concrete5_Library_Database {
 	 * Set's debug to true or false. True will display errors
 	 * @param bool $_debug
 	 */ 
-	public function setDebug($_debug) {
+	public static function setDebug($_debug) {
 		$db = Loader::db();
 		$db->debug = $_debug;
 	}
 	
-	public function getDebug() {
+	public static function getDebug() {
 		$db = Loader::db();
 		return $db->debug;
 	}
