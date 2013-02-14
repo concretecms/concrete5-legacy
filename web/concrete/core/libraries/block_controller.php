@@ -109,7 +109,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		 * @param string $path
 		 * @return mixed boolean or object having ->result (boolean) and ->message (string) properties
 		 */
-		function install($path) {
+		public function install($path) {
 			// passed path is the path to this block (try saying that ten times fast)
 			// create the necessary table
 			if (!$this->btTable) {
@@ -131,7 +131,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		 * @param string $view
 		 * @return void
 		 */
-		function render($view) {
+		public function render($view) {
 			$bv = new BlockView();
 			$bv->setController($this);
 			// sometimes we need the block type available in here
