@@ -535,6 +535,7 @@ define('MARKETPLACE_URL_CONNECT_TOKEN_NEW', CONCRETE5_ORG_URL.'/marketplace/conn
 define('MARKETPLACE_REMOTE_ITEM_LIST_WS', CONCRETE5_ORG_URL.'/marketplace/');
 
 define('DASHBOARD_BACKGROUND_FEED', 'http://backgroundimages.concrete5.org/wallpaper');
+define('DASHBOARD_BACKGROUND_FEED_SECURE', 'https://backgroundimages.concrete5.org/wallpaper');
 if (!defined('DASHBOARD_BACKGROUND_INFO')) { 
 	define('DASHBOARD_BACKGROUND_INFO', 'http://backgroundimages.concrete5.org/get_image_data.php');
 }
@@ -573,9 +574,14 @@ if(!defined('SITEMAPXML_DEFAULT_PRIORITY')) {
 	*/
 	define('SITEMAPXML_DEFAULT_PRIORITY', 0.5);
 }
+
 if(!defined('SITEMAPXML_BASE_URL')) {
 	/** The base url for building the page urls, will use the BASE_URL constant if not defined
 	* @var string
 	*/
 	define('SITEMAPXML_BASE_URL', BASE_URL);
+}
+
+if(!defined('APP_VERSION_DISPLAY_IN_HEADER')) {
+	define('APP_VERSION_DISPLAY_IN_HEADER', true);
 }

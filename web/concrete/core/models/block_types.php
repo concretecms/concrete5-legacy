@@ -141,7 +141,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 						if (is_dir($fdir) && !in_array($file, $btHandles) && file_exists($fdir . '/' . FILENAME_BLOCK_CONTROLLER)) {
 							$bt = new BlockType;
 							$bt->btHandle = $file;
-							$class = $bt->getBlockTypeClassFromHandle($file);
+							$class = $bt->getBlockTypeClass();
 							
 							require_once($fdir . '/' . FILENAME_BLOCK_CONTROLLER);
 							if (!class_exists($class)) {
@@ -290,25 +290,30 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		 * ex: 
 		 * <code><?php
 		 * $bt = BlockType::getByHandle('content'); // returns the BlockType object for the core Content block
-		 * ?></code
+		 * ?></code>
 		 * @param string $handle
-		 * @return BlockType
+		 * @return BlockType|false
 		 */
 		public static function getByHandle($handle) {
 			$bt = CacheLocal::getEntry('blocktype', $handle);
 			if ($bt === -1) {
 				return false;
-			} else if (!is_object($bt)) {
-				$where = 'btHandle = ?';
-				$bt = BlockType::get($where, array($handle));			
-				if (is_object($bt)) {
-					CacheLocal::set('blocktype', $handle, $bt);
-				} else {
-					CacheLocal::set('blocktype', $handle, -1);
-				}
 			}
-			$bt->controller = Loader::controller($bt);
-			return $bt;
+
+			if (is_object($bt)) {
+				$bt->controller = Loader::controller($bt);
+				return $bt;
+			}
+
+			$bt = BlockType::get('btHandle = ?', array($handle));
+			if (is_object($bt)) {
+				CacheLocal::set('blocktype', $handle, $bt);
+				$bt->controller = Loader::controller($bt);
+				return $bt;
+			}
+
+			CacheLocal::set('blocktype', $handle, -1);
+			return false;
 		}
 
 		/**
@@ -677,7 +682,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			$env->clearOverrideCache();
 			
 			if (file_exists($dir . '/' . $btHandle . '/' . FILENAME_BLOCK_CONTROLLER)) {
-				$class = $bt->getBlockTypeClassFromHandle();
+				$class = $bt->getBlockTypeClass();
 				
 				$path = $dir . '/' . $btHandle;
 				if (!class_exists($class)) {
@@ -843,12 +848,14 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		}
 		
 		public function getBlockTypeClass() {
-			$btHandle = $this->getBlockTypeHandle();
-			return $this->_getClass($btHandle);
+			return $this->_getClass();
 		}
 		
+		/**
+		 * Deprecated -- use getBlockTypeClass() instead.
+		 */
 		public function getBlockTypeClassFromHandle() {
-			return $this->_getClass();
+			return $this->getBlockTypeClass();
 		}
 		
 		/** 
@@ -870,6 +877,9 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			$ca->delete('blockTypeByHandle', $this->btHandle);		 	
 			$ca->delete('blockTypeList', false);		 	
 			$db->Execute("delete from BlockTypes where btID = ?", array($this->btID));
+			
+			//Remove gaps in display order numbering (to avoid future sorting errors)
+			BlockTypeList::resetBlockTypeDisplayOrder('btDisplayOrder');
 		}
 		
 		/** 
