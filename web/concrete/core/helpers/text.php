@@ -312,10 +312,17 @@ class Concrete5_Helper_Text {
 		$result     = ''; // holds formatted version as it is built
 		$pad        = 0; // initial indent
 		$matches    = array(); // returns from preg_matches()
+		$cntCDATA   = 0; // CDATA flag
 		
 		// scan each line and adjust indent based on opening/closing tags
 		while ($token !== false) : 
 		
+		if( $cntCDATA>0 ) {
+			if (preg_match('/\]\]/', $token, $matches)) $cntCDATA--;
+			$result .= $token . "\n";
+			$token   = strtok("\n");
+			continue;
+		}
 		// test for the various tag states
 		
 		// 1. open and closing tags on same line - no change
@@ -332,6 +339,10 @@ class Concrete5_Helper_Text {
 		  $indent = 0; 
 		endif;
 		
+		if (preg_match('/&lt;!\[CDATA\[/', $token, $matches)) {
+			$cntCDATA++;
+			if (preg_match('/\]\]&gt;/', $token, $matches)) $cntCDATA--;
+		}
 		// pad the line with the required number of leading spaces
 		$line    = str_pad($token, strlen($token)+$pad, ' ', STR_PAD_LEFT);
 		$result .= $line . "\n"; // add to the cumulative result, with linefeed
