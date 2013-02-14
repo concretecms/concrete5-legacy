@@ -1,5 +1,6 @@
 ccm_closeDashboardPane = function(r) {
 	$(r).closest('div.ccm-pane').fadeOut(120, 'easeOutExpo');
+	$(document).trigger('ccm_closeDashboardPane');
 }
 
 ccm_getDashboardBackgroundImageData = function(image, display) {
@@ -60,13 +61,16 @@ ccm_dashboardEqualizeMenus = function() {
 $(function() {
 	ccm_activateToolbar();
 	
-	$("#ccm-page-help").popover({
+	var $ccmPageHelp = $("#ccm-page-help").popover({
 		trigger: 'click',
 		content: function() {
 		var id = $(this).attr('id') + '-content';
 		return $('#' + id).html();
 		
 	}, placement: 'bottom', html: true});
+	$(document).on('ccm_closeDashboardPane', function() {
+		$ccmPageHelp.popover('hide');
+	});
 	$('.launch-tooltip').tooltip({placement: 'bottom'});
 	if ($('#ccm-dashboard-result-message').length > 0) { 
 		if ($('.ccm-pane').length > 0) { 
