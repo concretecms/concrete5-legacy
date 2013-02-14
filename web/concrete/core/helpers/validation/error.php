@@ -19,6 +19,7 @@
 	class Concrete5_Helper_Validation_Error {
 	
 		protected $error = array();
+		protected $completeErrors = array();
 		
 		/**
 		 * this method is called by the Loader::helper to clean up the instance of this object
@@ -27,6 +28,7 @@
 		*/
 		public function reset() {
 			$this->error = array();
+			$this->completeErrors = array();
 		}
 		
 		/** 
@@ -44,6 +46,16 @@
 			}
 		}
 		
+		/**
+		 * Sets the internal completeError array, with the name attribute
+		 * from the form, as the key and message at the value.
+		 * @param StdClass $f
+		 * @return void
+		 */
+		public function addComplete($f) {
+			$this->completeErrors[$f->field] = $f->message;
+		}
+		
 		/** 
 		 * Returns a list of errors in the error helper
 		 * @return array
@@ -52,6 +64,11 @@
 			return $this->error;
 		}
 		
+		public function getCompleteErrors() {
+			return $this->completeErrors;
+		}
+
+
 		/** 
 		 * Returns whether or not this error helper has more than one error registered within it.
 		 * @return bool

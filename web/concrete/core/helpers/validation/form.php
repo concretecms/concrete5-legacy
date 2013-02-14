@@ -25,7 +25,8 @@
 		protected $data = array();
 		protected $files = array();
 		protected $error;
-		
+
+
 		/**
 		 * @access private
 		 */
@@ -141,7 +142,15 @@
 			}
 		}
 		
-		
+		/**
+		 * saving the name of the field, for presenting error msg in the value attribute in the form.
+		 */
+		protected function setFormErrorsFromInvalidFields() {
+			foreach($this->fieldsInvalid as $f) {
+				$this->error->addComplete($f);	
+			}
+		}
+
 		public function invalidate($message) {
 			$f = new stdClass;
 			$f->message = $message;
@@ -214,6 +223,7 @@
 			}
 			
 			$this->setErrorsFromInvalidFields();
+			$this->setFormErrorsFromInvalidFields();
 			return count($this->fieldsInvalid) == 0;
 		}
 		
