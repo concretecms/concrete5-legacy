@@ -178,8 +178,14 @@
 			}
 			
 			$db = Loader::db(); 
-			$r = $db->query("DELETE FROM UserGroups WHERE gID = ?",array(intval($this->gID)) );
-			$r = $db->query("DELETE FROM Groups WHERE gID = ?",array(intval($this->gID)) );
+			$db->query("DELETE FROM Groups WHERE gID = ?",array(intval($this->gID)) );
+			$db->query("DELETE FROM UserGroups WHERE gID = ?",array(intval($this->gID)) );
+			$db->query("DELETE FROM FilePermissionFileTypes WHERE gID = ?",array(intval($this->gID)) );
+			$db->query("DELETE FROM FilePermissions WHERE gID = ?",array(intval($this->gID)) );
+			$db->query("DELETE FROM GroupSetGroups WHERE gID = ?",array(intval($this->gID)) );
+			$db->query("DELETE FROM PermissionAccessEntityGroups WHERE gID = ?",array(intval($this->gID)) );
+			$db->query("DELETE FROM UserPermissionUserSearchAccessListCustom WHERE gID = ?",array(intval($this->gID)) );
+			$db->query("DELETE FROM UserPermissionAssignGroupAccessListCustom WHERE gID = ?",array(intval($this->gID)) );	
 		}
 
 		function inGroup() {
