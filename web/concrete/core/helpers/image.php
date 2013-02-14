@@ -248,13 +248,13 @@ class Concrete5_Helper_Image {
 			$filename = md5($prefix . $path . ':' . $maxWidth . ':' . $maxHeight . ':') . '.' . $fh->getExtension($path);
 		}
 
-		if (!file_exists(DIR_FILES_CACHE . '/' . $filename)) {
+		if (!file_exists(DIR_FILES_UPLOADED_THUMBNAILS . '/' . $filename)) {
 			// create image there
-			$this->create($path, DIR_FILES_CACHE . '/' . $filename, $maxWidth, $maxHeight, $crop);
+			$this->create($path, DIR_FILES_UPLOADED_THUMBNAILS . '/' . $filename, $maxWidth, $maxHeight, $crop);
 		}
 		
-		$src = REL_DIR_FILES_CACHE . '/' . $filename;
-		$abspath = DIR_FILES_CACHE . '/' . $filename;
+		$src = REL_DIR_FILES_UPLOADED_THUMBNAILS . '/' . $filename;
+		$abspath = DIR_FILES_UPLOADED_THUMBNAILS . '/' . $filename;
 		$thumb = new stdClass;
 		if (isset($abspath) && file_exists($abspath)) {			
 			$thumb->src = $src;
