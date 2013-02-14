@@ -77,7 +77,11 @@ var ccmi18n = {
 	user_deactivate: "<?=t('Deactivate Users')?>",
 	user_delete: "<?=t('Delete')?>",
 	user_group_remove: "<?=t('Remove From Group')?>",
-	user_group_add: "<?=t('Add to Group')?>"
+	user_group_add: "<?=t('Add to Group')?>",
+	cancel: "<?=t('Cancel')?>",
+	accept: "<?=t('Accept')?>",
+	otherClasses: "<?=t('Other classes')?>",
+	cssClassesSelection: "<?=t('CSS Classes Selection')?>"
 }
 
 var ccmi18n_sitemap = {

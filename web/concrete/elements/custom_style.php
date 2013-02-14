@@ -39,6 +39,12 @@ if (!isset($_REQUEST['csrID'])) {
 if ($_REQUEST['subtask'] == 'delete_custom_style_preset') {
 	$cspID = 0;
 }
+
+$suggestCssClasses = array();
+if($c) {
+	$pt = $c->getCollectionThemeObject();
+	$suggestCssClasses = $pt->getBlockCssClasses();
+}
 ?>
 
 <? if (!$_REQUEST['refresh']) { ?>
@@ -130,7 +136,7 @@ $valt->output();
 
 <script type="text/javascript">
 	$(function() {
-		ccmCustomStyle.initForm();
+		ccmCustomStyle.initForm(<?php echo Loader::helper('json')->encode($suggestCssClasses); ?>);
 	});
 </script>
 
