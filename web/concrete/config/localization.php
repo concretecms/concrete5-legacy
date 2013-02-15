@@ -46,7 +46,7 @@ if (!defined('DATE_APP_GENERIC_MDYT')) {
 }
 
 if (!defined('DATE_APP_GENERIC_MDY')) {
-	define('DATE_APP_GENERIC_MDY', t('Y-m-d'));
+	define('DATE_APP_GENERIC_MDY', t('n/j/Y'));
 }
 
 if (!defined('DATE_APP_DATE_PICKER')) {
