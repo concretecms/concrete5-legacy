@@ -381,7 +381,11 @@ class Concrete5_Helper_Mail {
 				$l->write(t('Reply-To') . ': ' . $replyStr);
 			}
 			$l->write(t('Subject') . ': ' . $this->subject);
-			$l->write(t('Body') . ': ' . $this->body);
+			if($this->bodyHTML){
+				$l->write(t('Body') . ': ' . $this->bodyHTML);
+			}else{
+				$l->write(t('Body') . ': ' . $this->body);
+			}
 			$l->close();
 		}		
 		
