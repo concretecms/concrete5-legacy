@@ -36,7 +36,7 @@ if (count($assignments) > 0) {
 				$pdTitle = 'title="' . $pd->getTextRepresentation() . '"';
 			}
 		}
-		$str .= '<span class="label ' . $class . '" ' . $pdTitle . '>' . $entity->getAccessEntityLabel() . '</span> ';
+		$str .= '<span class="label ' . $class . '" ' . $pdTitle . '>' . t($entity->getAccessEntityLabel()) . '</span> ';
 	}
 }
 

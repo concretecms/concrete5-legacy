@@ -17,7 +17,7 @@
 
 
 <div class="clearfix">
-	<label><?=$entity->getAccessEntityLabel()?></label>
+	<label><?=t($entity->getAccessEntityLabel())?></label>
 	<div class="input">
 	<?=$form->select('propertiesIncluded[' . $entity->getAccessEntityID() . ']', array('A' => t('All Attributes'), 'C' => t('Custom')), $assignment->getAttributesAllowedPermission())?><br/><br/>
 	<ul class="page-type-list inputs-list" <? if ($assignment->getAttributesAllowedPermission() != 'C') { ?>style="display: none"<? } ?>>
@@ -52,7 +52,7 @@
 
 
 <div class="clearfix">
-	<label><?=$entity->getAccessEntityLabel()?></label>
+	<label><?=t($entity->getAccessEntityLabel())?></label>
 	<div class="input">
 
 	<?=$form->select('propertiesExcluded[' . $entity->getAccessEntityID() . ']', array('N' => t('No Page Attributes'), 'C' => t('Custom')), $assignment->getAttributesAllowedPermission())?><br/><br/>

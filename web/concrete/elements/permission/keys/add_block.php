@@ -19,7 +19,7 @@ $blockTypes = $btl->getBlockTypeList();
 
 
 <div class="clearfix">
-	<label><?=$entity->getAccessEntityLabel()?></label>
+	<label><?=t($entity->getAccessEntityLabel())?></label>
 	<div class="input">
 	<?=$form->select('blockTypesIncluded[' . $entity->getAccessEntityID() . ']', array('A' => t('All Block Types'), 'C' => t('Custom')), $assignment->getBlockTypesAllowedPermission())?><br/><br/>
 	<ul class="inputs-list" <? if ($assignment->getBlockTypesAllowedPermission() != 'C') { ?>style="display: none"<? } ?>>
@@ -45,7 +45,7 @@ $blockTypes = $btl->getBlockTypeList();
 
 
 <div class="clearfix">
-	<label><?=$entity->getAccessEntityLabel()?></label>
+	<label><?=t($entity->getAccessEntityLabel())?></label>
 	<div class="input">
 	<?=$form->select('blockTypesExcluded[' . $entity->getAccessEntityID() . ']', array('N' => t('No Block Types'), 'C' => t('Custom')), $assignment->getBlockTypesAllowedPermission())?><br/><br/>
 	<ul class="inputs-list" <? if ($assignment->getBlockTypesAllowedPermission() != 'C') { ?>style="display: none"<? } ?>>

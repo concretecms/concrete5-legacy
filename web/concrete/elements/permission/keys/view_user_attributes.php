@@ -20,7 +20,7 @@ $attribs = UserAttributeKey::getList();
 
 
 <div class="clearfix">
-	<label><?=$entity->getAccessEntityLabel()?></label>
+	<label><?=t($entity->getAccessEntityLabel())?></label>
 	<div class="input">
 	<?=$form->select('viewAttributesIncluded[' . $entity->getAccessEntityID() . ']', array('A' => t('All Attributes'), 'C' => t('Custom')), $assignment->getAttributesAllowedPermission())?><br/><br/>
 	<ul class="inputs-list" <? if ($assignment->getAttributesAllowedPermission() != 'C') { ?>style="display: none"<? } ?>>
@@ -46,7 +46,7 @@ $attribs = UserAttributeKey::getList();
 
 
 <div class="clearfix">
-	<label><?=$entity->getAccessEntityLabel()?></label>
+	<label><?=t($entity->getAccessEntityLabel())?></label>
 	<div class="input">
 	<?=$form->select('viewAttributesExcluded[' . $entity->getAccessEntityID() . ']', array('N' => t('No Attributes'), 'C' => t('Custom')), $assignment->getAttributesAllowedPermission())?><br/><br/>
 	<ul class="inputs-list" <? if ($assignment->getAttributesAllowedPermission() != 'C') { ?>style="display: none"<? } ?>>
