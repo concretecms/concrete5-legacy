@@ -6,6 +6,7 @@ __MACOSX
 
 # ignore the site.php
 /web/config/site.php
+/web/config/*.local.php
 
 #ignore everything but the index.html
 /web/files/*
