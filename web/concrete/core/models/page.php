@@ -215,7 +215,7 @@ class Concrete5_Model_Page extends Collection {
 							if (!$ap->canAddBlockToArea($bt) && (!$bt->isBlockTypeInternal())) {
 								$obj = new stdClass;
 								$obj->error = true;
-								$obj->message = t('You may not add %s to area %s.', $bt->getBlockTypeName(), $arHandle);
+								$obj->message = t('You may not add %s to area %s.', t($bt->getBlockTypeName()), $arHandle);
 								return $obj;
 							}
 						}

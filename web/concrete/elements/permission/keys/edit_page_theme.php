@@ -17,7 +17,7 @@
 
 
 <div class="clearfix">
-	<label><?=$entity->getAccessEntityLabel()?></label>
+	<label><?=t($entity->getAccessEntityLabel())?></label>
 	<div class="input">
 	<?=$form->select('themesIncluded[' . $entity->getAccessEntityID() . ']', array('A' => t('All Themes'), 'C' => t('Custom')), $assignment->getThemesAllowedPermission())?><br/><br/>
 	<ul class="theme-list inputs-list" <? if ($assignment->getThemesAllowedPermission() != 'C') { ?>style="display: none"<? } ?>>
@@ -44,7 +44,7 @@
 
 
 <div class="clearfix">
-	<label><?=$entity->getAccessEntityLabel()?></label>
+	<label><?=t($entity->getAccessEntityLabel())?></label>
 	<div class="input">
 	<?=$form->select('themesExcluded[' . $entity->getAccessEntityID() . ']', array('N' => t('No Themes'), 'C' => t('Custom')), $assignment->getThemesAllowedPermission())?><br/><br/>
 	<ul class="theme-list inputs-list" <? if ($assignment->getThemesAllowedPermission() != 'C') { ?>style="display: none"<? } ?>>
