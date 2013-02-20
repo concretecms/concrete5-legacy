@@ -57,12 +57,13 @@ class Concrete5_Model_AreaPermissionAssignment extends PermissionAssignment {
 	public function getPermissionAccessObject() {
 		$db = Loader::db();
 		
-		if ($this->permissionObjectToCheck instanceof Area) { 
-		
+		if ($this->permissionObjectToCheck instanceof Area) {
 			$r = $db->GetOne('select paID from AreaPermissionAssignments where cID = ? and arHandle = ? and pkID = ? ' . $filterString, array(
 				$this->permissionObjectToCheck->getCollectionID(), $this->permissionObjectToCheck->getAreaHandle(), $this->pk->getPermissionKeyID()
 			));
-			return PermissionAccess::getByID($r, $this->pk, false);
+			if ($r) {
+				return PermissionAccess::getByID($r, $this->pk, false);
+			}
 		} else if (isset($this->inheritedPermissions[$this->pk->getPermissionKeyHandle()])) { 
 			// this is a page
 			$pk = PermissionKey::getByHandle($this->inheritedPermissions[$this->pk->getPermissionKeyHandle()]);
@@ -75,7 +76,7 @@ class Concrete5_Model_AreaPermissionAssignment extends PermissionAssignment {
 			return $pae;
 		}
 		
-		return $r;
+		return false;
 	}
 	
 	public function getPermissionKeyToolsURL($task = false) {

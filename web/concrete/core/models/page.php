@@ -114,11 +114,11 @@ class Concrete5_Model_Page extends Collection {
 	public function getPermissionObjectIdentifier() {
 		// this is a hack but it's a really good one for performance
 		// if the permission access entity for page owner exists in the database, then we return the collection ID. Otherwise, we just return the permission collection id
-		// this is because page owner is the ONLY thing that makes it so we can't use getPermissionsCollectionID, and for most sites that will DRAMATICALLY reduce the number of querie.s
-		if (PAGE_PERMISSION_IDENTIFIER_USE_COLLECTION_ID) {
-			return $this->getCollectionID();
-		} else {
+		// this is because page owner is the ONLY thing that makes it so we can't use getPermissionsCollectionID, and for most sites that will DRAMATICALLY reduce the number of queries.
+		if (PAGE_PERMISSION_IDENTIFIER_USE_PERMISSION_COLLECTION_ID) {
 			return $this->getPermissionsCollectionID();
+		} else {
+			return $this->getCollectionID();
 		}
 	}
 
@@ -192,7 +192,12 @@ class Concrete5_Model_Page extends Collection {
 				// this is a serialized area;
 				$arHandle = $db->getOne("select arHandle from Areas where arID = ?", array($arID));
 				$startDO = 0;
-				
+
+				if (PERMISSIONS_MODEL == 'advanced') { // for performance sake
+					$ao = Area::getOrCreate($this, $arHandle);
+					$ap = new Permissions($ao);
+				}
+
 				foreach($blocks as $bIdentifier) {
 
 					$bID = 0;
@@ -203,6 +208,18 @@ class Concrete5_Model_Page extends Collection {
 					$csrID = $bd2[1];
 
 					if (intval($bID) > 0) {
+	
+						if (PERMISSIONS_MODEL == 'advanced') { // for performance sake
+							$b = Block::getByID($bID);
+							$bt = $b->getBlockTypeObject();
+							if (!$ap->canAddBlockToArea($bt) && (!$bt->isBlockTypeInternal())) {
+								$obj = new stdClass;
+								$obj->error = true;
+								$obj->message = t('You may not add %s to area %s.', $bt->getBlockTypeName(), $arHandle);
+								return $obj;
+							}
+						}
+
 						$v = array($startDO, $arHandle, $bID, $this->getCollectionID(), $this->getVersionID());
 						try {
 							$db->query("update CollectionVersionBlocks set cbDisplayOrder = ?, arHandle = ? where bID = ? and cID = ? and (cvID = ? or cbIncludeAll = 1)", $v);
@@ -495,6 +512,7 @@ class Concrete5_Model_Page extends Collection {
 		Loader::model('page_statistics');		
 		PageStatistics::incrementParents($newCID);
 
+		Page::getByID($newCID)->movePageDisplayOrderToBottom();
 		return $newCID;
 
 	}
@@ -636,7 +654,6 @@ class Concrete5_Model_Page extends Collection {
 	public static function getCollectionPathFromID($cID) {
 		$db = Loader::db();
 		$path = $db->GetOne("select cPath from PagePaths inner join CollectionVersions on (PagePaths.cID = CollectionVersions.cID and CollectionVersions.cvIsApproved = 1) where PagePaths.cID = ?", array($cID));
-		$path .= '/';
 		return $path;
 	}
 
