@@ -49,9 +49,9 @@ class Concrete5_Helper_Pagination {
 		$this->current_page=$page_num;
 		$this->result_count=intval($num_results);
 		if ($URL == false || $URL == '') {
-			$this->URL = $this->getBaseURL();
+			$this->URL = htmlspecialchars( $this->getBaseURL() );
 		} else {
-			$this->URL = $this->getBaseURL($URL);
+			$this->URL = htmlspecialchars( $this->getBaseURL($URL) );
 		}
 		$this->page_size=intval($size); 
 		//calulate the number of pages
