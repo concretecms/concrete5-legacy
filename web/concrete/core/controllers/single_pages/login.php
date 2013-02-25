@@ -6,7 +6,8 @@ class Concrete5_Controller_Login extends Controller {
 	public $helpers = array('form');
 	private $openIDReturnTo;
 	protected $locales = array();
-
+	protected $supportsPageCache = true;
+	
 	public function on_start() {
 		$this->error = Loader::helper('validation/error');
 		if (USER_REGISTRATION_WITH_EMAIL_ADDRESS) {
@@ -134,6 +135,10 @@ class Concrete5_Controller_Login extends Controller {
 		$loginData['success']=0;
 
 		try {
+			if(!$_COOKIE[SESSION]) {
+				throw new Exception(t('Your browser\'s cookie functionality is turned off. Please turn it on.'));
+			}
+		
 			if (!$ip->check()) {
 				throw new Exception($ip->getErrorMessage());
 			}

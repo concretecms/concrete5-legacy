@@ -69,15 +69,12 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		 * @param Area $ap
 		 * @return BlockType[]
 		 */
-		public static function getDashboardBlockTypes($ap) {
-			$blockTypeIDs = $ap->getAddBlockTypes();
+		public static function getDashboardBlockTypes() {
 			$db = Loader::db();
 			$btIDs = $db->GetCol('select btID from BlockTypes where btHandle like "dashboard_%" order by btDisplayOrder asc, btID asc');
 			$blockTypes = array();
 			foreach($btIDs as $btID) {
-				if (in_array($btID, $blockTypeIDs)) {
-					$blockTypes[] = BlockType::getByID($btID);
-				}
+				$blockTypes[] = BlockType::getByID($btID);
 			}
 			return $blockTypes;
 		}
@@ -127,6 +124,8 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		 * @return BlockType[] 
 		 */
 		public static function getAvailableList() {
+			$env = Environment::get();
+			$env->clearOverrideCache();
 			$blocktypes = array();
 			$dir = DIR_FILES_BLOCK_TYPES;
 			$db = Loader::db();
@@ -142,7 +141,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 						if (is_dir($fdir) && !in_array($file, $btHandles) && file_exists($fdir . '/' . FILENAME_BLOCK_CONTROLLER)) {
 							$bt = new BlockType;
 							$bt->btHandle = $file;
-							$class = $bt->getBlockTypeClassFromHandle($file);
+							$class = $bt->getBlockTypeClass();
 							
 							require_once($fdir . '/' . FILENAME_BLOCK_CONTROLLER);
 							if (!class_exists($class)) {
@@ -237,7 +236,6 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		
 		public static function resetBlockTypeDisplayOrder($column = 'btID') {
 			$db = Loader::db();
-			$ca = new Cache();
 			$stmt = $db->Prepare("UPDATE BlockTypes SET btDisplayOrder = ? WHERE btID = ?");
 			$btDisplayOrder = 1;
 			$blockTypes = $db->GetArray("SELECT btID, btHandle, btIsInternal FROM BlockTypes ORDER BY {$column} ASC");
@@ -248,10 +246,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 					$db->Execute($stmt, array($btDisplayOrder, $bt['btID']));
 					$btDisplayOrder++;
 				}
-				$ca->delete('blockTypeByID', $bt['btID']);
-				$ca->delete('blockTypeByHandle', $bt['btHandle']);
 			}
-			$ca->delete('blockTypeList', false);
 		}
 		
 	}
@@ -295,22 +290,30 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		 * ex: 
 		 * <code><?php
 		 * $bt = BlockType::getByHandle('content'); // returns the BlockType object for the core Content block
-		 * ?></code
+		 * ?></code>
 		 * @param string $handle
-		 * @return BlockType
+		 * @return BlockType|false
 		 */
 		public static function getByHandle($handle) {
-			$ca = new Cache();
-			$bt = $ca->get('blockTypeByHandle', $handle);
-			if (!is_object($bt)) {
-				$where = 'btHandle = ?';
-				$bt = BlockType::get($where, array($handle));
-				$ca->set('blockTypeByHandle', $handle, $bt);
+			$bt = CacheLocal::getEntry('blocktype', $handle);
+			if ($bt === -1) {
+				return false;
 			}
+
 			if (is_object($bt)) {
 				$bt->controller = Loader::controller($bt);
 				return $bt;
 			}
+
+			$bt = BlockType::get('btHandle = ?', array($handle));
+			if (is_object($bt)) {
+				CacheLocal::set('blocktype', $handle, $bt);
+				$bt->controller = Loader::controller($bt);
+				return $bt;
+			}
+
+			CacheLocal::set('blocktype', $handle, -1);
+			return false;
 		}
 
 		/**
@@ -319,19 +322,22 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		 * @return BlockType
 		 */
 		public static function getByID($btID) {
-			$ca = new Cache();
-			$bt = $ca->get('blockTypeByID', $btID);
-			if (!is_object($bt)) {
+			$bt = CacheLocal::getEntry('blocktype', $btID);
+			if ($bt === -1) {
+				return false;
+			} else if (!is_object($bt)) {
 				$where = 'btID = ?';
 				$bt = BlockType::get($where, array($btID));			
-				$ca->set('blockTypeByID', $btID, $bt);
+				if (is_object($bt)) {
+					CacheLocal::set('blocktype', $btID, $bt);
+				} else {
+					CacheLocal::set('blocktype', $btID, -1);
+				}
 			}
-			if (is_object($bt)) {
-				$bt->controller = Loader::controller($bt);
-				return $bt;
-			}
+			$bt->controller = Loader::controller($bt);
 			return $bt;
 		}
+		
 		
 		/**
 		 * internal method to query the BlockTypes table and get a BlockType object
@@ -676,7 +682,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			$env->clearOverrideCache();
 			
 			if (file_exists($dir . '/' . $btHandle . '/' . FILENAME_BLOCK_CONTROLLER)) {
-				$class = $bt->getBlockTypeClassFromHandle();
+				$class = $bt->getBlockTypeClass();
 				
 				$path = $dir . '/' . $btHandle;
 				if (!class_exists($class)) {
@@ -842,12 +848,14 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		}
 		
 		public function getBlockTypeClass() {
-			$btHandle = $this->getBlockTypeHandle();
-			return $this->_getClass($btHandle);
+			return $this->_getClass();
 		}
 		
+		/**
+		 * Deprecated -- use getBlockTypeClass() instead.
+		 */
 		public function getBlockTypeClassFromHandle() {
-			return $this->_getClass();
+			return $this->getBlockTypeClass();
 		}
 		
 		/** 
@@ -869,6 +877,9 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			$ca->delete('blockTypeByHandle', $this->btHandle);		 	
 			$ca->delete('blockTypeList', false);		 	
 			$db->Execute("delete from BlockTypes where btID = ?", array($this->btID));
+			
+			//Remove gaps in display order numbering (to avoid future sorting errors)
+			BlockTypeList::resetBlockTypeDisplayOrder('btDisplayOrder');
 		}
 		
 		/** 

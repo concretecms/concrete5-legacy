@@ -153,8 +153,9 @@ class Concrete5_Controller_Register extends Controller {
 						}
 					}
 					
-					$mh->addParameter('uName', $process->getUserName());
-					$mh->addParameter('uID', $process->getUserID());
+					$mh->addParameter('uID',    $process->getUserID());
+					$mh->addParameter('user',   $process);
+					$mh->addParameter('uName',  $process->getUserName());
 					$mh->addParameter('uEmail', $process->getUserEmail());
 					$attribs = UserAttributeKey::getRegistrationList();
 					$attribValues = array();
@@ -287,7 +288,7 @@ class Concrete5_Controller_Register extends Controller {
 	}
 	
 	public function getRegisterPendingMsg(){
-		return t('You are registered but a site administrator must review and approve your account. You will not be able to login until your account has been approved.');
+		return t('You are registered but a site administrator must review your account, you will not be able to login until your account has been approved.');
 	}	
 }
 

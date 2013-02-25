@@ -44,12 +44,6 @@ class Concrete5_Model_StartingPointPackage extends Package {
 	}
 	
 	public function precache() {
-		$c = Page::getByID(HOME_CID);
-		$blocks = $c->getBlocks();
-		foreach($blocks as $b) {
-			$bi = $b->getInstance();
-			$bi->setupAndRun('view');
-		}
 		$c = Page::getByPath('/dashboard/home');
 		$blocks = $c->getBlocks();
 		foreach($blocks as $b) {
@@ -145,7 +139,7 @@ class Concrete5_Model_StartingPointPackage extends Package {
 			$uPasswordEncrypted = INSTALL_USER_PASSWORD_HASH;
 		}
 		$uEmail = INSTALL_USER_EMAIL;
-		$ui = UserInfo::addSuperUser($uPasswordEncrypted, $uEmail);
+		UserInfo::addSuperUser($uPasswordEncrypted, $uEmail);
 		$u = User::getByUserID(USER_SUPER_ID, true, false);
 		
 		Loader::library('mail/importer');

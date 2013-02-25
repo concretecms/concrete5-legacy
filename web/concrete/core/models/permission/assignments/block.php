@@ -52,7 +52,9 @@ class Concrete5_Model_BlockPermissionAssignment extends PermissionAssignment {
 			$paID = $db->GetOne('select paID from BlockPermissionAssignments where cID = ? and cvID = ? and bID = ? and pkID = ? ' . $filterString, array(
 				$co->getCollectionID(), $co->getVersionID(), $this->permissionObject->getBlockID(), $this->pk->getPermissionKeyID()
 			));
-			$pae = PermissionAccess::getByID($paID, $this->pk);
+			if ($paID) {
+				$pae = PermissionAccess::getByID($paID, $this->pk, false);
+			}
 		} else if ($this->permissionObjectToCheck instanceof Area && isset($this->inheritedAreaPermissions[$this->pk->getPermissionKeyHandle()])) { 
 
 			$pk = PermissionKey::getByHandle($this->inheritedAreaPermissions[$this->pk->getPermissionKeyHandle()]);
@@ -92,7 +94,7 @@ class Concrete5_Model_BlockPermissionAssignment extends PermissionAssignment {
 		$b = $this->getPermissionObject();
 		$c = $b->getBlockCollectionObject();
 		$arHandle = $b->getAreaHandle();
-		return parent::getPermissionKeyToolsURL($task) . '&cID=' . $c->getCollectionID() . '&cvID=' . $c->getVersionID() . '&bID=' . $b->getBlockID() . '&arHandle=' . $arHandle;
+		return parent::getPermissionKeyToolsURL($task) . '&cID=' . $c->getCollectionID() . '&cvID=' . $c->getVersionID() . '&bID=' . $b->getBlockID() . '&arHandle=' . urlencode($arHandle);
 	}
 
 	

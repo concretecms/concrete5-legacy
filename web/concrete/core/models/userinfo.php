@@ -182,7 +182,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		}
 		
 		/**
-		 * Tirgger user deletion request in workflow
+		 * Tirgger user deletion request with workflow request.
 		 *
 		 * Returns true if user is deleted successfully
 		 *
@@ -201,8 +201,11 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		}
 		
 		/**
-		 * Deletes a user
-		 * @return void
+		 * Deletes a user.
+		 * 
+		 * Returns true if the user is successfully deleted.
+		 * 
+		 * @return boolean
 		 */
 		public function delete() {
 			// we will NOT let you delete the admin user
@@ -240,6 +243,8 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			
 			$r = $db->query("UPDATE Blocks set uID=? WHERE uID = ?",array( intval(USER_SUPER_ID), intval($this->uID)));
 			$r = $db->query("UPDATE Pages set uID=? WHERE uID = ?",array( intval(USER_SUPER_ID), intval($this->uID)));
+			
+			return true;
 		}
 
 		/**
@@ -560,6 +565,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			$db->query("update UserValidationHashes set uDateRedeemed = " . time() . " where uID = ?", $v);
 			$this->uIsValidated = 1;
 			Events::fire('on_user_validate', $this);
+			return true;
 		}
 		
 		function changePassword($newPassword) { 

@@ -100,12 +100,13 @@ jQuery.fn.dialog.open = function(obj) {
 		},*/
 		
 		'open': function() {
+			$("body").attr('data-last-overflow', $('body').css('overflow'));
 			$("body").css("overflow", "hidden");
 		},
 		'beforeClose': function() {
 			var nd = $(".ui-dialog").length;
 			if (nd == 1) {
-				$("body").css("overflow", "auto");		
+				$("body").css("overflow", $('body').attr('data-last-overflow'));		
 			}
 		},
 		'close': function(ev, u) {
@@ -178,6 +179,8 @@ jQuery.fn.dialog.replaceTop = function(r) {
 	});
 	if ($("#ccm-dialog-content" + nd + " .dialog-buttons").length > 0) {
 		$("#ccm-dialog-content" + nd).jqdialog('option', 'buttons', [{}]);
+		$("#ccm-dialog-content" + nd).parent().find(".ui-dialog-buttonset").remove();
+		$("#ccm-dialog-content" + nd).parent().find(".ui-dialog-buttonpane").html('');
 		$("#ccm-dialog-content" + nd + " .dialog-buttons").appendTo($("#ccm-dialog-content" + nd).parent().find('.ui-dialog-buttonpane').addClass("ccm-ui"));
 	}
 	if ($("#ccm-dialog-content" + nd + " .dialog-help").length > 0) {

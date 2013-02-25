@@ -452,11 +452,9 @@ if (is_object($uo)) {
 				</script>
 	
 				
-				<?  if (!in_array("delete", $workflowRequestActions)) {
-						print $ih->button_js(t('Delete User Account'), "deleteUser()", 'left', 'error');
-					}				
-					//$this->controller->redirect('/dashboard/users/search?uID=' . intval($_GET['uID']));
-				?>
+				<? if (!in_array("delete", $workflowRequestActions)) {
+					print $ih->button_js(t('Delete User Account'), "deleteUser()", 'left', 'error');
+				} ?>
 	
 			<? } ?>
 		<? } ?>
@@ -570,6 +568,7 @@ ccm_activateEditableProperties = function() {
 		});
 		
 		trow.find('.ccm-attribute-editable-field-save-button').parent().click(function() {
+			trow.find('form input[name=task]').val('update_extended_attribute');
 			ccm_submitEditableProperty(trow);
 		});
 
