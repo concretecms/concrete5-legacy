@@ -117,8 +117,8 @@ class Concrete5_Model_UserList extends DatabaseItemList {
 			// When uStatus column is selected, we also get the "status" column for
 			// multilingual sorting purposes.
 			$sql =
-				", CASE WHEN u.uIsValidated = 1 AND u.uIsActive = 1 THEN '" . t("Active") . "' " .
-				"WHEN u.uIsValidated = 1 THEN '". t("Inactive") . "' " .
+				", CASE WHEN u.uIsActive = 1 THEN '" . t("Active") . "' " .
+				"WHEN u.uIsValidated = 1 AND u.uIsActive = 0 THEN '". t("Inactive") . "' " .
 				"ELSE '". t("Unvalidated") . "' END AS uStatus";
 		}
 		$this->setQuery('SELECT DISTINCT u.uID, u.uName' . $sql . ' FROM Users u ');
@@ -151,11 +151,13 @@ class UserSearchDefaultColumnSet extends DatabaseItemListColumnSet {
 	}
 	
 	public function getUserStatus($ui) {		
-		if ($ui->isValidated() == 1) {
-			$currentStatus = $ui->isActive()==0 ? t('Inactive') : t('Active');
+		if ($ui->isActive()) {
+			$currentStatus = t('Active');
+		} elseif ($ui->isValidated()) {
+			$currentStatus = t('Inactive');
 		} else {
 			$currentStatus = t('Unvalidated');
-		} 
+		}
 		
 		return $currentStatus;
 	}
