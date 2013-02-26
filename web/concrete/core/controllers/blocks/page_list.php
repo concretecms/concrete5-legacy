@@ -42,7 +42,7 @@
 			$db = Loader::db();
 			$bID = $this->bID;
 			if ($this->bID) {
-				$q = "select num, cParentID, cThis, orderBy, ctID, displayAliases, rss from btPageList where bID = '$bID'";
+				$q = "select num, cParentID, cThis, orderBy, ctID, displayAliases, rss, dateFilter from btPageList where bID = '$bID'";
 				$r = $db->query($q);
 				if ($r) {
 					$row = $r->fetchRow();
@@ -55,6 +55,7 @@
 				$row['ctID'] = $this->ctID;
 				$row['rss'] = $this->rss;
 				$row['displayAliases'] = $this->displayAliases;
+				$row['dateFilter'] = '';
 			}
 			
 
@@ -81,6 +82,17 @@
 					break;
 				default:
 					$pl->sortByPublicDateDescending();
+					break;
+			}
+
+			switch ($row['dateFilter']) {
+				case 'past':
+					$pl->filterByPublicDate(date("Y-m-d G:i:s", time()), "<=");
+					break;
+				case 'future':
+					$pl->filterByPublicDate(date("Y-m-d G:i:s", time()), ">=");
+					break;
+				default:
 					break;
 			}
 
@@ -251,6 +263,16 @@
 			$a = $b->getBlockAreaObject();
 			$rssUrl = $uh->getBlockTypeToolsURL($bt)."/" . $tool . "?bID=".$b->getBlockID()."&amp;cID=".$c->getCollectionID()."&amp;arHandle=" . $a->getAreaHandle();
 			return $rssUrl;
+		}
+
+		public function getDateFilterOptions()
+		{
+			return array(
+				''       => t('All Items'),
+				'past'   => t('Past Items'),
+				'future' => t('Future Items')
+
+			);
 		}
 	}
 

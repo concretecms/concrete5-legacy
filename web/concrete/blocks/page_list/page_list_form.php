@@ -43,6 +43,12 @@
 		<br/>
 		
 	</div>
+	<div class="control-group">
+		<?php print $form->label('dateFilter', t('Filter By Date')); ?>
+		<div class="controls">
+			<?php print $form->select('dateFilter', $controller->getDateFilterOptions(), $dateFilter); ?>
+		</div>
+	</div>
 	<div class="ccm-block-field-group">
 		<h2><?=t('Pagination')?></h2>
 		<input type="checkbox" name="paginate" value="1" <? if ($paginate == 1) { ?> checked <? } ?> />
