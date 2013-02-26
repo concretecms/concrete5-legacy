@@ -53,6 +53,7 @@
 				$row['orderBy'] = $this->orderBy;
 				$row['ctID'] = $this->ctID;
 				$row['rss'] = $this->rss;
+				$row['dateFilter'] = $this->dateFilter;
 			}
 
 			$pl = new PageList();
@@ -61,7 +62,18 @@
 			$cArray = array();
 
 			//$pl->sortByPublicDate();
-			$pl->sortByPublicDateDescending(); 
+			$pl->sortByPublicDateDescending();
+
+			switch ($row['dateFilter']) {
+				case 'past':
+					$pl->filterByPublicDate(date("Y-m-d G:i:s", time()), "<=");
+					break;
+				case 'future':
+					$pl->filterByPublicDate(date("Y-m-d G:i:s", time()), ">=");
+					break;
+				default:
+					break;
+			}
 
 			$num = (int) $row['num'];
 			
@@ -142,7 +154,16 @@
 			$args['showDescriptions'] = ($args['showDescriptions']) ? '1' : '0';		
 
 			parent::save($args);		
-		} 
+		}
+
+		public function getDateFilterOptions()
+		{
+			return array(
+				''       => t('All Items'),
+				'past'   => t('Past Items'),
+				'future' => t('Future Items')
+			);
+		}
 	}
 
 ?>
