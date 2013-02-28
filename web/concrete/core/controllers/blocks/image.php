@@ -141,11 +141,12 @@
 			
 			$linkURL = $this->getLinkURL();
 			if (!empty($linkURL)) {
-				$img = "<a href=\"{$linkURL}\"";
+				$imgA = "<a href=\"{$linkURL}\"";
 				if (!empty($this->openLinkAs)) {
-					$img .= " target=\"_{$this->openLinkAs}\"";
+					$imgA .= " target=\"_{$this->openLinkAs}\"";
 				}
-				$img .= ">" . $img ."</a>";
+				$imgA .= ">" . $img ."</a>";
+				$img = $imgA;
 			}
 			return $img;
 		}
