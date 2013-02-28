@@ -69,10 +69,10 @@ if ($forceImageToMatchDimensions && $maxWidth && $maxHeight) {
 	<?=$form->label('openLinkAs'), t('Open inL')?>
 	<div class="input">
 		<select name="openLinkAs" id="openLinkAs">
-			<option value="blank" <?=(empty(!$openLinkAs) && $openLinkAs == 'blank' ? 'selected="selected"' : '')?>New Window</option>
-			<option value="parent" <?=(empty(!$openLinkAs) && $openLinkAs == 'parent' ? 'selected="selected"' : '')?>Parent Frame</option>
-			<option value="self" <?=(empty(!$openLinkAs) && $openLinkAs == 'self' ? 'selected="selected"' : '')?>Own Frame</option>
-			<option value="top" <?=(empty(!$openLinkAs) && $openLinkAs == 'top' ? 'selected="selected"' : '')?>Top Frame</option>
+			<option value="blank" <?php echo (!empty($openLinkAs) && $openLinkAs == 'blank' ? 'selected="selected"' : '')?>>New Window</option>
+			<option value="parent" <?php echo(!empty($openLinkAs) && $openLinkAs == 'parent' ? 'selected="selected"' : '')?>>Parent Frame</option>
+			<option value="self" <?php echo (!empty($openLinkAs) && $openLinkAs == 'self' ? 'selected="selected"' : '')?>>Own Frame</option>
+			<option value="top" <?php echo(!empty($openLinkAs) && $openLinkAs == 'top' ? 'selected="selected"' : '')?>>Top Frame</option>
 		</select>
 	</div>
 </div>
