@@ -7,6 +7,11 @@ ccmValidateBlockForm = function() {
 
 refreshLinkTypeControls = function() {
 	var linkType = $('#linkType').val();
+	if(linkType > 0) {
+		$('#linkOpenAs').show();
+	} else {
+		$('#linkOpenAs').hide();
+	}
 	$('#linkTypePage').toggle(linkType == 1);
 	$('#linkTypeExternal').toggle(linkType == 2);
 }
