@@ -35,6 +35,16 @@ class ConcreteUpgradeVersion561Helper {
 			$bt->refresh();
 		}
 
+		$bt = BlockType::getByHandle('page_list');
+		if (is_object($bt)) {
+			$bt->refresh();
+		}
+
+		$bt = BlockType::getByHandle('date_nav');
+		if (is_object($bt)) {
+			$bt->refresh();
+		}
+
 	}
 
 	
