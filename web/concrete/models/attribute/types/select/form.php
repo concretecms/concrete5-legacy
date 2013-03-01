@@ -72,10 +72,12 @@ if ($akSelectAllowMultipleValues && $akSelectAllowOtherValues) { // display auto
 
 	var ccmAttributeTypeSelectTagHelper<?php echo $attrKeyID?>={  
 			addButtonClick: function() {
-				var valrow = $("input[name=newAttrValueRows<?=$attrKeyID?>]");
-				ccmAttributeTypeSelectTagHelper<?php echo $attrKeyID?>.add(valrow.val());
-				valrow.val('');
-				$("#newAttrValueRows<?php echo $this->attributeKey->getAttributeKeyID()?>").autocomplete( "close" );
+				if($(this).val().length > 0) {
+					var valrow = $("input[name=newAttrValueRows<?=$attrKeyID?>]");
+					ccmAttributeTypeSelectTagHelper<?php echo $attrKeyID?>.add(valrow.val());
+					valrow.val('');
+					$("#newAttrValueRows<?php echo $this->attributeKey->getAttributeKeyID()?>").autocomplete( "close" );
+				}
 				return false;
 			},
 			add:function(value){
