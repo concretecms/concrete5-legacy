@@ -193,7 +193,7 @@ $(function() {
 	<br/><br/>
 	<?
 	$h = Loader::helper('concrete/interface');
-	$b1 = $h->submit(t('Update'), false, 'left');
+	$b1 = $h->submit(t('Update'), false, 'left', 'disabled');
 	print $b1;
 	?>
 	</form>
