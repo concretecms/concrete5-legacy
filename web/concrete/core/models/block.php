@@ -669,10 +669,16 @@ class Concrete5_Model_Block extends Object {
 				return false;
 			}
 
+			if ($co->getCollectionTypeHandle() === STACKS_PAGE_TYPE) {
+				$arHandle = STACKS_AREA_NAME;
+			} else {
+				$arHandle = $this->getAreaHandle();
+			}
+
 			$v = array(
 				$co->getCollectionID(), 
 				$co->getVersionID(),
-				$this->getAreaHandle(),
+				$arHandle,
 				$this->bID
 			);
 			$this->csrID = $db->GetOne('select csrID from CollectionVersionBlockStyles where cID = ? and cvID = ? and arHandle = ? and bID = ?', $v);
