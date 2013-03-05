@@ -80,7 +80,7 @@ $searchInstance = Loader::helper('text')->entities($_REQUEST['searchInstance']);
 	
 	<? foreach($pages as $c) { 
 		$cp = new Permissions($c);
-		$c->loadVersionObject();
+		$c->getVersionToModify();
 		if ($cp->canDeletePage()) { ?>
 		
 		<?=$form->hidden('cID[]', $c->getCollectionID())?>		
