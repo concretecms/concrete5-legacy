@@ -238,7 +238,20 @@ ccm_submitEditablePropertiesGrid = function(trow) {
 		// resp is new HTML to display in the div
 		trow.find('.ccm-attribute-editable-field-loading').hide();
 		trow.find('.ccm-attribute-editable-field-save-button').show();
-		trow.find('.ccm-attribute-editable-field-text').text(resp);
+		//
+		//  If select attribute we use html() to preserve <br />'s
+		//  If None div returned after delete we use html()
+		//  Otherwise we'll use text() to display <'s
+		//
+		if (
+		    $(resp).hasClass('ccm-attribute-field-none')
+		    ||
+		    trow.find('.ccm-attribute-editable-field-type-select').length
+		) {
+			trow.find('.ccm-attribute-editable-field-text').html(resp);
+		} else {
+			trow.find('.ccm-attribute-editable-field-text').text(resp);
+		}
 		trow.find('.ccm-attribute-editable-field-form').hide();
 		trow.find('.ccm-attribute-editable-field-save-button').hide();
 		trow.find('.ccm-attribute-editable-field-text').show();
