@@ -114,12 +114,10 @@ class URLify {
 	public function get_removed_list() {
 		$remove_list = Config::get('SEO_EXCLUDE_WORDS');
 		if(isset($remove_list)) {
-			if(strlen($remove_list)) {
-				$remove_array = explode(',', $remove_list);
-				if(is_array($remove_array) && count($remove_array)) {
-					$remove_array = array_map('trim', $remove_array);
-					$remove_array = array_filter($remove_array,'strlen');
-				}
+			$remove_array = explode(',', $remove_list);
+			if(is_array($remove_array) && count($remove_array)) {
+				$remove_array = array_map('trim', $remove_array);
+				$remove_array = array_filter($remove_array,'strlen');
 			}
 		}
 		if(is_array($remove_array)) {
@@ -216,5 +214,3 @@ class URLify {
 		return self::downcode ($text);
 	}
 }
-
-?>
