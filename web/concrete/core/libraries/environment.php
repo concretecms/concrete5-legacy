@@ -79,9 +79,7 @@ class Concrete5_Library_Environment {
 			if (is_dir($loc)) {
 				$contents = $this->getDirectoryContents($loc, array(), true);
 				foreach($contents as $f) {
-					if (preg_match('/^.+\.php$/i', $f)) {
-						$this->coreOverrides[] = str_replace(DIR_BASE . '/', '', $f);
-					}				
+					$this->coreOverrides[] = str_replace(DIR_BASE . '/', '', $f);
 				}
 			}
 			
