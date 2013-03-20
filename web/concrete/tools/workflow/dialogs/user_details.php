@@ -49,20 +49,14 @@ $userGroup = $u->getUserGroups();
 		<? 	if(count($attributeList) > 0) { ?>
 		<h3><?=t('User Attributes')?></h3>
 		<br>
-		<?	foreach ($attributeList as $key => $value) {
-			if ($value->atHandle == "boolean") {
-				$attributeValue = ($ui->getAttribute($value->akHandle) == 1)?"Yes":"No";
-			} else if ($value->atHandle == "number") {
-				$attributeValue = $ui->getAttribute($value->akHandle);
-			}
-		?>
+		<?php	foreach ($attributeList as $ak) { ?>
 		<div class="row">
 			<div class="span3">
-				<p><strong><?=$value->akName?></strong></p>
+				<p><strong><?php echo t($ak->getAttributeKeyName()) ?></strong></p>
 			</div>
 
 			<div class="span2">
-				<p><?=$attributeValue?></p>
+				<p><?php echo $ui->getAttribute($ak, 'displaySanitized', 'display') ?></p>
 			</div>
 		</div>
 		<? }
