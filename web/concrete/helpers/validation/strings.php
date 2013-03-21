@@ -2,7 +2,7 @@
 
 class ValidationStringsHelper extends Concrete5_Helper_Validation_Strings {
 
-	public function multiLingualName($field, $allow_spaces = false) {
+	public function multiLingualName($field, $allow_spaces = false, $allow_dash = false) {
 		if($allow_spaces) {
 			return !preg_match("/[<>;'`_ ]+$/u", $field);
 		} else {
