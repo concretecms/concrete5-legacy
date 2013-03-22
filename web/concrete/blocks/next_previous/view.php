@@ -1,7 +1,4 @@
-<?php
-defined('C5_EXECUTE') or die("Access Denied.");
-$ih = Loader::helper('image');
-?>
+<?php defined('C5_EXECUTE') or die(_("Access Denied.")); ?>
 
 <div id="ccm-next-previous-<?php echo intval($bID)?>" class="ccm-next-previous-wrapper">
 
