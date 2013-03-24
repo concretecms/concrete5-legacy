@@ -58,12 +58,20 @@ $nav = Loader::helper('navigation');
 				}
 				?>
 
-				<p><?php echo t('Posted by:');?> <span class="post-author"><?php  echo $userName; ?> at <a href="<?php $c->getLinkToCollection;?>"><?php echo $c->getCollectionDatePublic('g:i a')?> on <?php echo $c->getCollectionDatePublic('F jS, Y')?></a></span>
+				<p>
+					<?php echo t(
+						/*i18n: %1$s is an author name, 2$s is an URL, %3$s is a date, %4$s is a time */
+						'Posted by: <span class="post-author">%1$s at <a href="%2$s">%3$s on %4$s</a></span>',
+						$userName,
+						$c->getLinkToCollection,
+						$c->getCollectionDatePublic(t('g:i a')),
+						$c->getCollectionDatePublic(t('F jS, Y'))
+					); ?>
 					<div id="main-content-post-footer-share">
-						<p>Share:
-						<a href="mailto:?subject=<?php echo $c->getCollectionName(); ?>&body=<?php echo $nav->getLinkToCollection($c, true); ?>"><img class="main-content-post-footer-share-email" src="<?php echo $this->getThemePath(); ?>/images/icon_email.png" alt="Email" /></a>
-						<a href="https://twitter.com/share"><img class="main-content-post-footer-share-twitter" src="<?php echo $this->getThemePath(); ?>/images/icon_twitter.png" alt="Share on Twitter" /></a>
-						<a href="http://www.facebook.com/share.php?u=<?php echo $nav->getLinkToCollection($c, true); ?>"><img class="main-content-post-footer-share-facebook" src="<?php echo $this->getThemePath(); ?>/images/icon_facebook.png" alt="Share on Facebook" /></a>
+						<p><?php echo t('Share:'); ?>
+						<a href="mailto:?subject=<?php echo $c->getCollectionName(); ?>&body=<?php echo $nav->getLinkToCollection($c, true); ?>"><img class="main-content-post-footer-share-email" src="<?php echo $this->getThemePath(); ?>/images/icon_email.png" alt="<?php echo t('Email'); ?>" /></a>
+						<a href="https://twitter.com/share"><img class="main-content-post-footer-share-twitter" src="<?php echo $this->getThemePath(); ?>/images/icon_twitter.png" alt="<?php echo t('Share on Twitter'); ?>" /></a>
+						<a href="http://www.facebook.com/share.php?u=<?php echo $nav->getLinkToCollection($c, true); ?>"><img class="main-content-post-footer-share-facebook" src="<?php echo $this->getThemePath(); ?>/images/icon_facebook.png" alt="<?php echo t('Share on Facebook'); ?>" /></a>
 						</p>
 					</div>
 				</p>	
