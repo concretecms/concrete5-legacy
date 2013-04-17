@@ -38,6 +38,7 @@ $form = Loader::helper('form');
 <strong><?=t('Display Pages')?></strong><br>
 <select name="displayPages" onchange="toggleCustomPage(this.value);">
 	<option value="top"<? if ($info['displayPages'] == 'top') { ?> selected<? } ?>><?=t('at the top level.')?></option>
+	<option value="first_level"<? if ($info['displayPages'] == 'first_level') { ?> selected<? } ?>><?=t('at the first level.')?></option>
 	<option value="second_level"<? if ($info['displayPages'] == 'second_level') { ?> selected<? } ?>><?=t('at the second level.')?></option>
 	<option value="third_level"<? if ($info['displayPages'] == 'third_level') { ?> selected<? } ?>><?=t('at the third level.')?></option>
 	<option value="above"<? if ($info['displayPages'] == 'above') { ?> selected<? } ?>><?=t('at the level above.')?></option>
