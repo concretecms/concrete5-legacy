@@ -13,6 +13,7 @@ if (count($items) > 0) { ?>
 <script type="text/javascript">
 $(function() {
 	var init = function() {
+		$('.dialog-launch').dialog();
 		$('.ccm-workflow-progress-actions form').ajaxForm({
 			dataType: 'json',
 			beforeSubmit: function() {
