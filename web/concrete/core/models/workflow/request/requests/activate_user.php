@@ -38,7 +38,11 @@ class Concrete5_Model_ActivateUserUserWorkflowRequest extends UserWorkflowReques
 		$ui = UserInfo::getByID($this->getRequestedUserID());
 		$d->setEmailDescription(t("User account \"%s\" has pending activation request which needs to be approved.", $ui->getUserName()));
 		$d->setDescription(t("User %s Submitted for Approval.", $ui->getUserName()));
-		$d->setInContextDescription(t("User Submitted for Approval."));
+		if ($this->isDeactivationRequest()) {
+			$d->setInContextDescription(t("User Submitted for Deactivation."));
+		} else {
+			$d->setInContextDescription(t("User Submitted for Approval."));
+		}
 		$d->setShortStatus(t("Pending"));
 		return $d;
 	}
