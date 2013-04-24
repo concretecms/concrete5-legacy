@@ -450,6 +450,14 @@ class Concrete5_Controller_Block_Form extends BlockController {
 				$mh->addParameter('questionAnswerPairs', $questionAnswerPairs); 
 				$mh->load('block_form_submission');
 				$mh->setSubject(t('%s Form Submission', $this->surveyName));
+				foreach( $rows as $row ){
+					if ($row['inputType'] == 'fileupload') {
+						$fileId = intval( $tmpFileIds[intval($row['msqID'])] );
+						if ($fileId) {
+							$mh->addAttachment(File::getByID($fileId));
+						}
+					}
+				}
 				//echo $mh->body.'<br>';
 				@$mh->sendMail(); 
 			} 
