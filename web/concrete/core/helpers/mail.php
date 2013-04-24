@@ -432,6 +432,7 @@ class Concrete5_Helper_Mail {
 			$this->subject = '';
 			$this->body = '';
 			$this->bodyHTML = '';
+			$this->attachments = array();
 		}
 	}
 	
