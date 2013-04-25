@@ -26,11 +26,11 @@ class ValidationStringsHelper extends Concrete5_Helper_Validation_Strings {
 			."|\xE3\x81[\x81-\xBF]|\xE3\x82[\x80-\x93]|[\xE4-\xE9][\x80-\xBF][\x80-\xBF]"
 			."|\xEF\xBC[\xA1-\xBA\xA1-\xBA]|\xEF\xBD[\x81-\x9A])+$/", $field);
 		} else if ($allow_dashes) {
-			return preg_match("/^(?:[A-Za-z0-9\-]|\xE3\x80\x80"
+			return preg_match("/^(?:[A-Za-z0-9\-]"
 			."|\xE3\x81[\x81-\xBF]|\xE3\x82[\x80-\x93]|[\xE4-\xE9][\x80-\xBF][\x80-\xBF]"
 			."|\xEF\xBC[\xA1-\xBA\xA1-\xBA]|\xEF\xBD[\x81-\x9A])+$/", $field);
 		} else {
-			return preg_match("/^(?:[A-Za-z0-9]|\xE3\x80\x80"
+			return preg_match("/^(?:[A-Za-z0-9]"
 			."|\xE3\x81[\x81-\xBF]|\xE3\x82[\x80-\x93]|[\xE4-\xE9][\x80-\xBF][\x80-\xBF]"
 			."|\xEF\xBC[\xA1-\xBA\xA1-\xBA]|\xEF\xBD[\x81-\x9A])+$/", $field);
 		}
