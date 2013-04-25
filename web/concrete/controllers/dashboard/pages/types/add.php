@@ -1,6 +1,7 @@
 <?php
 defined('C5_EXECUTE') or die("Access Denied.");
 class DashboardPagesTypesAddController extends Concrete5_Controller_Dashboard_Pages_Types_Add {
+	
 	public function do_add() {
 		$ctName = $_POST['ctName'];
 		$ctHandle = $_POST['ctHandle'];
@@ -16,7 +17,7 @@ class DashboardPagesTypesAddController extends Concrete5_Controller_Dashboard_Pa
 		if (!$ctName) {
 			$this->error->add(t("Name required."));
 		} else if (!$vs->multiLingualName($ctName, true)) {
-			$this->error->add(t('Page type names can only contain letters, numbers and spaces.'));
+			$this->error->add(t('Invalid characters in page type name.'));
 		}
 
 		$valt = Loader::helper('validation/token');
@@ -41,6 +42,5 @@ class DashboardPagesTypesAddController extends Concrete5_Controller_Dashboard_Pa
 			}
 		}
 	}
-	
 
 }
