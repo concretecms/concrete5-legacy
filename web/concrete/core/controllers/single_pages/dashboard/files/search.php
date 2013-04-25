@@ -77,12 +77,12 @@ class Concrete5_Controller_Dashboard_Files_Search extends Controller {
 		}
 		
 		if (isset($_GET['fType']) && $_GET['fType'] != '') {
-			$type = $_GET['fType'];
+			$type = explode(",",$_GET['fType']);
 			$fileList->filterByType($type);
 		}
 
 		if (isset($_GET['fExtension']) && $_GET['fExtension'] != '') {
-			$ext = $_GET['fExtension'];
+			$ext = explode(",",$_GET['fExtension']);
 			$fileList->filterByExtension($ext);
 		}
 		
