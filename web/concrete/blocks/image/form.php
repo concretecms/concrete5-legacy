@@ -100,6 +100,12 @@ if ($maxHeight == 0) {
 	</div>
 </div>
 
+<div class="clearfix">
+	<?=$form->label('percentageWidth', t('CSS-Width Percentage (without %)'))?>
+	<div class="input">	
+		<?=$form->text('percentageWidth', $percentageWidth, array('style' => 'width: 60px')); ?>
+	</div>
+</div>
 
 <div class="clearfix">
 	<?=$form->label('forceImageToMatchDimensions', t('Scale Image'))?>

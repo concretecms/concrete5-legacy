@@ -117,6 +117,8 @@
 			$img = "<img border=\"0\" class=\"ccm-image-block\" alt=\"{$this->altText}\" src=\"{$relPath}\" {$sizeStr} ";
 			$img .= ($align) ? "align=\"{$align}\" " : '';
 			
+			$style = ($style) ? $style : '';
+			$style .= ($this->percentageWidth > 0) ? "width:{$this->percentageWidth}%; height: auto;" : '';
 			$img .= ($style) ? "style=\"{$style}\" " : '';
 			if($this->fOnstateID != 0) {
 				$fos = $this->getFileOnstateObject();
