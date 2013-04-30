@@ -81,7 +81,7 @@ class Concrete5_Model_PagePermissionResponse extends PermissionResponse {
 				return COLLECTION_FORBIDDEN;
 			}
 		} else {
-			if ((!$this->canViewPage()) && (!$this->object->getCollectionPointerExternalLink() != '')) {
+			if ((!$this->canViewPage()) && (!$this->canAdminPage()) && (!$this->object->getCollectionPointerExternalLink() != '')) {
 				return COLLECTION_FORBIDDEN;
 			}
 		}
