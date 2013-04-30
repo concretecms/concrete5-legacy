@@ -1,11 +1,13 @@
 <?php defined('C5_EXECUTE') or die("Access Denied.");
 class Request extends Concrete5_Library_Request {
+
+	/** 
+	 * Gets the current collection path as contained in the current request
+	 * @return string
+	 */
 	public function getRequestCollectionPath() {
-		// I think the regexps take care of the trimming for us but just to be sure..
-		$cPath = trim($this->cPath, '/');
-		if ($cPath != '') {
-			return '/' . rawurldecode($cPath);
-		}
-		return '';
+		$cPath = parent::getRequestCollectionPath();
+		return rawurldecode($cPath);
 	}
+
 }
