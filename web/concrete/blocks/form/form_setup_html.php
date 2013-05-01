@@ -107,6 +107,12 @@ $ih = Loader::helper('concrete/interface');
 					</div>
 				</div>
 			</div>
+			<div class="clearfix">
+				<?=$form->label('attachFilesToEmail', t('Attach uploaded files to the notification email?'))?>
+				<div class="input">
+					<?=$form->checkbox('attachFilesToEmail', 1, (int) $miniSurveyInfo['attachFilesToEmail'])?>
+				</div>
+			</div>
 		</fieldset>
 	</div> 
 	
