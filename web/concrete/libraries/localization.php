@@ -1,11 +1,20 @@
-<?
+<?php	
 defined('C5_EXECUTE') or die("Access Denied.");
 class Localization extends Concrete5_Library_Localization {
+
+	private static $loc = null;
 		
+	public static function getInstance() {
+		if (null === self::$loc) {
+			self::$loc = new self;
+		}
+		return self::$loc;
+	}
+
 	public function setLocale($locale) {
-		if ($locale == 'en_US' && isset($this->translate)) {
+		if (!ENABLE_TRANSLATE_LOCALE_EN_US && $locale == 'en_US' && isset($this->translate)) {
 			unset($this->translate);
-		} else if ($locale != 'en_US') {
+		} else if (ENABLE_TRANSLATE_LOCALE_EN_US || $locale != 'en_US') {
 
 			if(defined("DIRNAME_APP_UPDATED")){
 				$languageFolder = DIR_BASE . '/'. DIRNAME_UPDATES .'/' . DIRNAME_APP_UPDATED . '/' . DIRNAME_LANGUAGES;
@@ -66,7 +75,6 @@ class Localization extends Concrete5_Library_Localization {
 		
 		return $languages;
 	}
-	
 	
 	
 }
