@@ -28,6 +28,7 @@ class Concrete5_Controller_Dashboard_Extend_Update extends Controller {
 							Localization::changeLocale($currentLocale);
 						}
 						$p->upgrade();
+						Loader::helper('concrete/interface')->cacheInterfaceItems();
 						$this->set('message', t('The package has been updated successfully.'));
 					} catch(Exception $e) {
 						$this->set('error', $e);

@@ -113,6 +113,7 @@ class Concrete5_Controller_Dashboard_Extend_Install extends Controller {
 								Localization::changeLocale($currentLocale);
 							}
 							$pkg = Package::getByHandle($p->getPackageHandle());
+							Loader::helper('concrete/interface')->cacheInterfaceItems();
 							$this->redirect('/dashboard/extend/install', 'package_installed', $pkg->getPackageID());
 						} catch(Exception $e) {
 							if ($currentLocale != 'en_US') {
