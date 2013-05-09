@@ -128,12 +128,16 @@ function printFileAttributeRow($ak, $fv) {
 	if (is_object($vo)) {
 		$value = $vo->getValue('displaySanitized');
 	}
-	
+
 	if ($value == '') {
 		$text = '<div class="ccm-attribute-field-none">' . t('None') . '</div>';
 	} else {
 		$text = $value;
 	}
+	if (is_object($text) && !method_exists($text, '__toString')) {
+		$text = '<div class="ccm-attribute-field-none">' .t('No Display') . '</div>';
+	}
+
 	if ($ak->isAttributeKeyEditable() && $fp->canEditFileProperties() && (!$previewMode)) { 
 	$type = $ak->getAttributeType();
 	
