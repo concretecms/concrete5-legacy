@@ -5786,7 +5786,7 @@ msgstr "山線（ridge）"
 
 #: /Users/hishikawa/git_repos/concrete5japan/concrete5/web/concrete/elements/custom_style/border.php:34
 msgid "Direction"
-msgstr "文字表示方向 (direction)"
+msgstr "方向 (direction)"
 
 #: /Users/hishikawa/git_repos/concrete5japan/concrete5/web/concrete/elements/custom_style/border.php:38
 msgid "Full"
@@ -5796,27 +5796,27 @@ msgstr "すべて"
 #: /Users/hishikawa/git_repos/concrete5japan/concrete5/web/concrete/elements/custom_style/spacing.php:9
 #: /Users/hishikawa/git_repos/concrete5japan/concrete5/web/concrete/elements/custom_style/spacing.php:46
 msgid "Top"
-msgstr "上寄せ"
+msgstr "上"
 
 #: /Users/hishikawa/git_repos/concrete5japan/concrete5/web/concrete/elements/custom_style/border.php:40
 #: /Users/hishikawa/git_repos/concrete5japan/concrete5/web/concrete/elements/custom_style/fonts.php:55
 #: /Users/hishikawa/git_repos/concrete5japan/concrete5/web/concrete/elements/custom_style/spacing.php:17
 #: /Users/hishikawa/git_repos/concrete5japan/concrete5/web/concrete/elements/custom_style/spacing.php:54
 msgid "Right"
-msgstr "右寄せ"
+msgstr "右"
 
 #: /Users/hishikawa/git_repos/concrete5japan/concrete5/web/concrete/elements/custom_style/border.php:41
 #: /Users/hishikawa/git_repos/concrete5japan/concrete5/web/concrete/elements/custom_style/spacing.php:25
 #: /Users/hishikawa/git_repos/concrete5japan/concrete5/web/concrete/elements/custom_style/spacing.php:62
 msgid "Bottom"
-msgstr "下寄せ"
+msgstr "下"
 
 #: /Users/hishikawa/git_repos/concrete5japan/concrete5/web/concrete/elements/custom_style/border.php:42
 #: /Users/hishikawa/git_repos/concrete5japan/concrete5/web/concrete/elements/custom_style/fonts.php:53
 #: /Users/hishikawa/git_repos/concrete5japan/concrete5/web/concrete/elements/custom_style/spacing.php:33
 #: /Users/hishikawa/git_repos/concrete5japan/concrete5/web/concrete/elements/custom_style/spacing.php:70
 msgid "Left"
-msgstr "左寄せ"
+msgstr "左"
 
 #: /Users/hishikawa/git_repos/concrete5japan/concrete5/web/concrete/elements/custom_style/border.php:48
 #: /Users/hishikawa/git_repos/concrete5japan/concrete5/web/concrete/elements/custom_style/fonts.php:39
@@ -5861,11 +5861,11 @@ msgstr "デフォルト"
 
 #: /Users/hishikawa/git_repos/concrete5japan/concrete5/web/concrete/elements/custom_style/fonts.php:54
 msgid "Center"
-msgstr "中央寄せ"
+msgstr "中央"
 
 #: /Users/hishikawa/git_repos/concrete5japan/concrete5/web/concrete/elements/custom_style/fonts.php:56
 msgid "Justify"
-msgstr "そろえる"
+msgstr "均等割付"
 
 #: /Users/hishikawa/git_repos/concrete5japan/concrete5/web/concrete/elements/custom_style/spacing.php:5
 msgid "Margin"
