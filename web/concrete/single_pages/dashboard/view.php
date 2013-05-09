@@ -12,7 +12,7 @@ for ($i = 0; $i < count($categories); $i++) {
 	<div class="well" style="visibility: hidden">
 
 	<ul class="nav nav-list">
-	<li class="nav-header"><?=t($cat->getCollectionName())?></li>
+	<li class="nav-header"><a href="<?=Loader::helper('navigation')->getLinkToCollection($cat, false, true)?>"><?=t($cat->getCollectionName())?></a></li>
 		
 	<?
 	$show = array();
