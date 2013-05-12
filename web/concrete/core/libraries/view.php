@@ -732,8 +732,6 @@ defined('C5_EXECUTE') or die("Access Denied.");
 				}
 			}
 			
-			$dsh = Loader::helper('concrete/dashboard');
-
 			$wrapTemplateInTheme = false;
 			$this->checkMobileView();
 			Events::fire('on_start', $this);
@@ -755,11 +753,6 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			if ($view instanceof Page) {
 
 				$_pageBlocks = $view->getBlocks();
-
-				if (!$dsh->inDashboard()) {
-					$_pageBlocksGlobal = $view->getGlobalBlocks();
-					$_pageBlocks = array_merge($_pageBlocks, $_pageBlocksGlobal);
-				}
 
 				// do we have any custom menu plugins?
 				$cp = new Permissions($view);
@@ -859,8 +852,6 @@ defined('C5_EXECUTE') or die("Access Denied.");
 					$req = Request::get();
 					$req->setCurrentPage($c);
 					$_pageBlocks = $view->getBlocks();
-					$_pageBlocksGlobal = $view->getGlobalBlocks();
-					$_pageBlocks = array_merge($_pageBlocks, $_pageBlocksGlobal);
 				}
 			}
 			

@@ -239,7 +239,12 @@ defined('C5_EXECUTE') or die("Access Denied.");
 					$footer = DIR_FILES_ELEMENTS_CORE . '/block_footer_view.php';										
 					break;
 				case 'composer':
-				case 'view':				
+				case 'view':
+					// If we have a block AND it's from a stack or global area...
+					if (isset($b) && $this->c->isSystemPage()) {
+						// ...then output template-specific JS + CSS
+						$this->controller->outputAutoHeaderItems();
+					}
 					if (!$outputContent) {
 						if (!isset($_filename)) {
 							$_filename = FILENAME_BLOCK_VIEW;
