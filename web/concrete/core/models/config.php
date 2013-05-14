@@ -103,12 +103,13 @@ class Concrete5_Model_Config extends Object {
 	*/
 	public function getAndDefine($key, $defaultValue) {
 		$val = Config::get($key, true);
-		if (!$val) {
+		if (is_null($val)) {
 			$val = $defaultValue;
 		} else {
 			$val = $val->value;
 		}
 		define($key, $val);
+		return $val;
 	}
 	/**
 	* Clears a gived config key
