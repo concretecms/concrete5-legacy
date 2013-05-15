@@ -157,24 +157,28 @@
 					$orderBy = '';
 					break;
 			}
+			
 			$level = 0;
 			$cParentID = 0;
 			switch($this->displayPages) {
 				case 'current':
 					$cParentID = $this->cParentID;
-					if ($cParentID < 1) {
-						$cParentID = 1;
+					if ($cParentID < HOME_CID) {
+						$cParentID = HOME_CID;
 					}
 					break;
 				case 'top':
 					// top level actually has ID 1 as its parent, since the home page is effectively alone at the top
-					$cParentID = 1;
+					$cParentID = HOME_CID;
 					break;
 				case 'above':
 					$cParentID = $this->getParentParentID();
 					break;
 				case 'below':
 					$cParentID = $this->cID;
+					break;
+				case 'first_level':
+					$cParentID = HOME_CID;
 					break;
 				case 'second_level':
 					$cParentID = $this->getParentAtLevel(2);
@@ -186,7 +190,7 @@
 					$cParentID = $this->displayPagesCID;
 					break;
 				default:
-					$cParentID = 1;
+					$cParentID = HOME_CID;
 					break;
 			}
 			
@@ -225,8 +229,8 @@
 				
 				$this->getNavigationArray($cParentID, $orderBy, $level);
 				
-				// if we're at the top level we add home to the beginning
-				if ($cParentID == 1) {
+				// if we're at the top level we add home to the beginning, unless in first_level
+				if (($cParentID == HOME_CID) && ($this->displayPages != 'first_level')) {
 					if ($this->displayUnapproved) {
 						$tc1 = Page::getByID(HOME_CID, "RECENT");
 					} else {
