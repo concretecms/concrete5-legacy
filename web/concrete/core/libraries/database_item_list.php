@@ -127,7 +127,7 @@ class Concrete5_Library_DatabaseItemList extends ItemList {
 	/** 
 	 * Returns an array of whatever objects extends this class (e.g. PageList returns a list of pages).
 	 */
-	public function get($itemsToGet = 0, $offset = 0) {
+	public function get($itemsToGet = 0, $offset = 0, $returnAll = true) {
 		$q = $this->executeBase();
 		// handle order by
 		$this->setupAttributeSort();
@@ -145,8 +145,12 @@ class Concrete5_Library_DatabaseItemList extends ItemList {
 		if ($this->debug) { 
 			Database::setDebug(true);
 		}
-		//echo $q.'<br>'; 
-		$resp = $db->GetAll($q);
+        if ($returnAll) {
+            $resp = $db->GetAll($q);
+        }
+        else {
+            $resp = $db->Execute($q);
+        }
 		if ($this->debug) { 
 			Database::setDebug(false);
 		}

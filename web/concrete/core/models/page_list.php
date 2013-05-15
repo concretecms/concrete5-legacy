@@ -8,7 +8,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 * @package Pages
 *
 */
-class Concrete5_Model_PageList extends DatabaseItemList {
+class Concrete5_Model_PageList extends DatabaseItemList implements Iterator {
 
 	protected $includeSystemPages = false;
 	protected $attributeFilters = array();
@@ -22,9 +22,51 @@ class Concrete5_Model_PageList extends DatabaseItemList {
 	protected $attributeClass = 'CollectionAttributeKey';
 	protected $autoSortColumns = array('cvName', 'cvDatePublic', 'cDateAdded', 'cDateModified');
 	protected $indexedSearch = false;
+    
+    private $cursor = false;
+    private $row = false;
+    private $eof = false;
+
+    /* iterator methods */
+    public function current() {    
+        $nc = $this->loadPageID($this->row['cID'], 'ACTIVE');
+        if (!$this->displayOnlyApprovedPages) {
+            $cp = new Permissions($nc);
+            if ($cp->canViewPageVersions()) {
+                $nc->loadVersionObject('RECENT');
+            }
+        }
+
+        $nc->setPageIndexScore($this->row['cIndexScore']);
+        return $nc;    
+    }
+    
+    public function key() {
+    }
+    
+    public function next() {
+		if ($this->getQuery() == '') {
+			$this->setBaseQuery();
+		}
+
+        if (!$this->cursor) {
+            $this->rewind();
+        }
+        
+        $this->ind++;        
+        $this->row = $this->cursor->FetchRow();
+        $this->eof = !is_array($this->row);        
+    }
+    
+    public function rewind() {
+        $this->cursor = parent::get($itemsToGet, $offset, false);
+    }
+    
+    public function valid() {
+        return !$this->eof;
+    }
 	
-	/* magic method for filtering by page attributes. */
-	
+	/* magic method for filtering by page attributes. */	
 	public function __call($nm, $a) {
 		if (substr($nm, 0, 8) == 'filterBy') {
 			$txt = Loader::helper('text');
