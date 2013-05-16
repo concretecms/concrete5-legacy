@@ -62,7 +62,9 @@
 		if(isset($_POST['newVersionComment']) && is_string($_POST['newVersionComment'])) {
 			$v = CollectionVersion::get($c, $_GET['cvID']);
 			if(!$v->isError()) {
-				$v->setComment($_POST['newVersionComment']);
+				if($v->getVersionAuthorUserID() == $u->getUserID()) {
+					$v->setComment($_POST['newVersionComment']);
+				}
 			}
 			exit;
 		}
@@ -145,6 +147,7 @@ if (!$_GET['versions_reloaded']) { ?>
 <script type="text/javascript">
 
 var ccm_versionsChecked = 0;
+var ccm_mineVersionsChecked = 0;
 /* if this gets set to true, exiting this pane reloads the page */
 var ccm_versionsMustReload = false;
 var ccm_versionComments;
@@ -159,10 +162,17 @@ $(function() {
 	$(".ccm-version").dialog();
 	
 	$("input[type=checkbox]").click(function() {
+		var mine = $(this).closest("tr").hasClass("version-mine");
 		if ($(this).get(0).checked) {
 			ccm_versionsChecked++;
+			if(mine) {
+				ccm_mineVersionsChecked++;
+			}
 		} else {
 			ccm_versionsChecked--;
+			if(mine) {
+				ccm_mineVersionsChecked--;
+			}
 		}
 		
 		ccm_setSelectors();
@@ -178,6 +188,9 @@ $(function() {
 ccm_setSelectors = function() {
 	if (ccm_versionsChecked < 0) {
 		ccm_versionsChecked = 0;
+	}
+	if (ccm_mineVersionsChecked < 0) {
+		ccm_mineVersionsChecked = 0;
 	}
 	
 	/* first, we grab whether an active version is checked, so we can use that later */
@@ -206,7 +219,7 @@ ccm_setSelectors = function() {
 
 	if (ccm_versionsChecked == 1) {
 		$("button[name=vCopy]").prop('disabled', false);
-		$("button[name=vRename]").prop('disabled', false);
+		$("button[name=vRename]").prop('disabled', ccm_mineVersionsChecked != 1);
 	} else {
 		$("button[name=vCopy]").prop('disabled', true);
 		$("button[name=vRename]").prop('disabled', true);
@@ -290,7 +303,7 @@ $("button[name=vCopy]").click(function() {
 });
 
 $("button[name=vRename]").click(function() {
-	var cvID = $("table#ccm-versions-list input[type=checkbox]:checked").get(0).value, $dialog, $comments;
+	var cvID = $("table#ccm-versions-list tr.version-mine input[type=checkbox]:checked").get(0).value, $dialog, $comments;
 	$(document.body).append($dialog = $('<div class="ccm-ui"><h4><?php echo t('Version Comments'); ?></h4></div>'));
 	$dialog.append($comments = $('<input type="text" maxlength="255" style="width:520px" />'));
 	if(typeof(ccm_versionComments[cvID]) != "string") {
@@ -448,9 +461,12 @@ $("button[name=vRemove]").click(function() {
 		}
 		
 		if ($vIsPending) {
-			$class .= 'version-pending';
+			$class .= 'version-pending ';
 		} else if ($v->isApproved()) {
-			$class .= "version-active";
+			$class .= "version-active ";
+		}
+		if($v->getVersionAuthorUserID() == $u->getUserID()) {
+			$class .= 'version-mine ';
 		}
 		$versionComments[$v->getVersionID()] = $v->getVersionComments();
 	?> 
