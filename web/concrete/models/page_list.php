@@ -9,13 +9,14 @@ class PageList extends Concrete5_Model_PageList {
 	public function filterByKeywords($keywords, $simple = false) {
 		$db = Loader::db();
 		if(strpos($keywords," ") !== false){
-		  $keywords = explode(" ",$keywords);
+		  $_keywords = explode(" ",$keywords);
 		  $kw = array();
 		  $qk = array();
-		  foreach($keywords as $keyword){
+		  foreach($_keywords as $keyword){
     		$kw[] = $db->quote($keyword);
     		$qk[] = $db->quote('%' . $keyword . '%');
           }
+          unset($_keywords);
 		}else{
     		$kw = $db->quote($keywords);
     		$qk = $db->quote('%' . $keywords . '%');
