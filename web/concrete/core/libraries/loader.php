@@ -257,6 +257,8 @@
 						
 						ADOdb_Active_Record::SetDatabaseAdapter($_dba);
 					} else if (defined('DB_SERVER')) {
+						Loader::Library('view');
+						Loader::Library('localization');
 						$v = View::getInstance();
 						$v->renderError(t('Unable to connect to database.'), t('A database error occurred while processing this request.'));
 					}
