@@ -23,7 +23,7 @@
 defined('C5_EXECUTE') or die("Access Denied.");
 class Concrete5_Helper_File {
 
-	public function getDirectoryContents($dir, $ignoreFilesArray = array(), $recursive = false) {
+	public static function getDirectoryContents($dir, $ignoreFilesArray = array(), $recursive = false) {
 		$env = Environment::get();
 		return $env->getDirectoryContents($dir, $ignoreFilesArray, $recursive);
 	}
@@ -33,7 +33,7 @@ class Concrete5_Helper_File {
 	 * @param string $filename
 	 * @return string
 	 */	
-	public function unfilename($filename) {
+	public static function unfilename($filename) {
 		// removes the extension and makes it look nice
 		$txt = Loader::helper('text');
 		return substr($txt->unhandle($filename), 0, strrpos($filename, '.'));
@@ -45,7 +45,7 @@ class Concrete5_Helper_File {
 	 * @param string $target Place to copy the source
 	 * @param int $mode What to chmod the file to
 	 */
-	public function copyAll($source, $target, $mode = NULL) {
+	public static function copyAll($source, $target, $mode = NULL) {
 		if (is_dir($source)) {
 			if($mode == null) {
 				@mkdir($target, DIRECTORY_PERMISSIONS_MODE);
@@ -64,13 +64,13 @@ class Concrete5_Helper_File {
 			
 				$Entry = $source . '/' . $entry;            
 				if (is_dir($Entry)) {
-					$this->copyAll($Entry, $target . '/' . $entry, $mode);
+					self::copyAll($Entry, $target . '/' . $entry, $mode);
 					continue;
 				}
 
 				copy($Entry, $target . '/' . $entry);
 				if($mode == null) {
-					@chmod($target . '/' . $entry, $this->getCreateFilePermissions($target)->file);
+					@chmod($target . '/' . $entry, self::getCreateFilePermissions($target)->file);
 				} else {
 					@chmod($target . '/' . $entry, $mode);
 				}
@@ -79,7 +79,7 @@ class Concrete5_Helper_File {
 			$d->close();
 		} else {
 			if ($mode == null) {
-				$mode = $this->getCreateFilePermissions(dirname($target))->file;
+				$mode = self::getCreateFilePermissions(dirname($target))->file;
 			}
 			copy($source, $target);
 			chmod($target, $mode);
@@ -90,12 +90,12 @@ class Concrete5_Helper_File {
 	 * Removes all files from within a specified directory
 	 * @param string $source Directory
 	 */
-	public function removeAll($source) {
+	public static function removeAll($source) {
 		$r = @glob($source);
 		if (is_array($r)) {
 			foreach($r as $file) {
 				if (is_dir($file)) {
-					$this->removeAll("$file/*");
+					self::removeAll("$file/*");
 					rmdir($file);
 				} else {
 					unlink($file);
@@ -108,7 +108,7 @@ class Concrete5_Helper_File {
 	 * Takes a path to a file and sends it to the browser, streaming it, and closing the HTTP connection afterwards. Basically a force download method
 	 * @param stings $file
 	 */
-	public function forceDownload($file) {
+	public static function forceDownload($file) {
 		session_write_close();
 		ob_clean();
 		header('Content-type: application/octet-stream');
@@ -126,7 +126,7 @@ class Concrete5_Helper_File {
 		
 		/*
 		$h = Loader::helper('mime');
-		$mimeType = $h->mimeFromExtension($this->getExtension($file));
+		$mimeType = $h->mimeFromExtension(self::getExtension($file));
 		header('Content-type: ' . $mimeType);
 		*/
 		
@@ -150,7 +150,7 @@ class Concrete5_Helper_File {
 	 * Returns the full path to the temporary directory
 	 * @return string
 	 */
-	public function getTemporaryDirectory() {
+	public static function getTemporaryDirectory() {
 		if (defined('DIR_TMP')) {
 			return DIR_TMP;
 		}
@@ -188,7 +188,7 @@ class Concrete5_Helper_File {
 	 * @param string $filename
 	 * @param string $content
 	 */
-	public function append($filename, $content) {
+	public static function append($filename, $content) {
 		file_put_contents($filename, $content, FILE_APPEND);
 	}
 	
@@ -200,7 +200,7 @@ class Concrete5_Helper_File {
 	 * @param string $timeout
 	 * @return string $contents
 	 */
-	public function getContents($file, $timeout = 5) {
+	public static function getContents($file, $timeout = 5) {
 		$url = @parse_url($file);
 		if (isset($url['scheme']) && isset($url['host'])) {
 			if (ini_get('allow_url_fopen')) {
@@ -252,7 +252,7 @@ class Concrete5_Helper_File {
 	 * Removes contents of the file
 	 * @param $filename
 	 */
-	public function clear($file) {
+	public static function clear($file) {
 		file_put_contents($file, '');
 	}
 	
@@ -262,7 +262,7 @@ class Concrete5_Helper_File {
 	 * @param string $file
 	 * @return string @file
 	 */
-	public function sanitize($file) {
+	public static function sanitize($file) {
 		// $file = preg_replace("/[^0-9A-Z_a-z-.\s]/","", $file); // pre 5.4.1 allowed spaces
 		$file = preg_replace(array("/[\s]/","/[^0-9A-Z_a-z-.]/"),array("_",""), $file);
 		return trim($file);
@@ -273,7 +273,7 @@ class Concrete5_Helper_File {
 	* @param string $filename
 	* @return string $extension
 	*/
-	public function getExtension($filename) {
+	public static function getExtension($filename) {
 		$extension = end(explode(".",$filename));
 		return $extension;
 	}
@@ -284,7 +284,7 @@ class Concrete5_Helper_File {
 	 * @param string $extension
 	 * @return string $newFileName
 	 */
-	public function replaceExtension($filename, $extension) {
+	public static function replaceExtension($filename, $extension) {
 		$newFileName = substr($filename, 0, strrpos($filename, '.')) . '.' . $extension;
 		return $newFileName;
 	}
@@ -297,7 +297,7 @@ class Concrete5_Helper_File {
 	 * @param string $path (optional)
 	 * @return StdClass
 	 */
-	public function getCreateFilePermissions($path = NULL) {
+	public static function getCreateFilePermissions($path = NULL) {
 		try {
 			if(!isset($path)) {
 				$path = DIR_BASE."/files";
