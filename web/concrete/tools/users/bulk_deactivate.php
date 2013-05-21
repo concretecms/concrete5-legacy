@@ -1,5 +1,4 @@
 <?php defined('C5_EXECUTE') or die("Access Denied.");
-
 $searchInstance = Loader::helper('text')->entities($_REQUEST['searchInstance']);
 if(!strlen($searchInstance)) {
 	$searchInstance = 'user';
@@ -33,13 +32,27 @@ if (is_array($_REQUEST['uID'])) {
 	}
 }
 
-if ($_POST['task'] == 'deactivate') {
+if ($_POST['task'] == 'deactivate') {	
 	foreach($users as $ui) {
-		if($ui->isActive()) {
-			$ui->deactivate();
+		if($ui->isActive()) { 
+			$ui->triggerDeactivate();
 		}
 	}
-	echo Loader::helper('json')->encode(array('error'=>false));
+	
+
+	$pk = PermissionKey::getByHandle('activate_user');
+	$pa = $pk->getPermissionAccessObject();
+	$workflows = $pa->getWorkflows();
+
+	if(count((array)$workflows) > 0) {
+		// workflow is attached
+		$alertMessage = t('User Settings saved. You must complete the workflow before this change is active.');
+	} else {
+		// workflow is not attached
+		$alertMessage = t('User Settings saved.');
+	}
+
+	echo Loader::helper('json')->encode(array('error'=>false, 'alertMessage' => $alertMessage));
 	exit;
 }
 
@@ -74,14 +87,15 @@ if (!isset($_REQUEST['reload'])) { ?>
 <? } ?>
 
 <script type="text/javascript">
-ccm_userBulkDeactivate = function() { 
+ccm_userBulkDeactivate = function() {
 	jQuery.fn.dialog.showLoader();
 	$("#ccm-user-bulk-deactivate").ajaxSubmit(function(resp) {
+		var respObj = jQuery.parseJSON(resp);
 		jQuery.fn.dialog.closeTop();
 		jQuery.fn.dialog.showLoader();
 		jQuery.fn.dialog.hideLoader();
 		ccm_deactivateSearchResults('<?=$searchInstance?>');
-		ccmAlert.hud(ccmi18n.saveUserSettingsMsg, 2000, 'success', ccmi18n.user_deactivate);
+		ccmAlert.hud(respObj.alertMessage, 2000, 'success', ccmi18n.user_deactivate);
 		$("#ccm-<?=$searchInstance?>-advanced-search").ajaxSubmit(function(r) {
 		       ccm_parseAdvancedSearchResponse(r, '<?=$searchInstance?>');
 		});
