@@ -32,24 +32,42 @@ if (is_array($_REQUEST['uID'])) {
 	}
 }
 
-if ($_POST['task'] == 'deactivate') {	
-	foreach($users as $ui) {
-		if($ui->isActive()) { 
-			$ui->triggerDeactivate();
-		}
-	}
-	
-
+if ($_POST['task'] == 'deactivate') {
+	// form alert message
+	$workflowAttached = false;
 	$pk = PermissionKey::getByHandle('activate_user');
 	$pa = $pk->getPermissionAccessObject();
 	$workflows = $pa->getWorkflows();
-
-	if(count((array)$workflows) > 0) {
+	$workflowAttached = count((array)$workflows); 
+	
+	if($workflowAttached) {
 		// workflow is attached
 		$alertMessage = t('User Settings saved. You must complete the workflow before this change is active.');
 	} else {
 		// workflow is not attached
 		$alertMessage = t('User Settings saved.');
+	}
+	
+	foreach($users as $ui) {
+		$workflowRequestActions = array();
+		
+		// when this request is attached to workflow, featch triggered workflow request actions of current user
+		// when this request is not attached to workflow, do nothing
+		if($workflowAttached) {
+			$workflowList = UserWorkflowProgress::getList($ui->getUserID());
+			
+			if (count($workflowList) > 0) {
+				foreach($workflowList as $wp) {
+					$wr = $wp->getWorkflowRequestObject();
+					$workflowRequestActions[] = $wr->getRequestAction();
+				}
+			}
+		}
+	
+		Log::addEntry(var_export($workflowRequestActions, true));
+		if($ui->isActive() && !in_array('deactivate',$workflowRequestActions)) {
+			$ui->triggerDeactivate();
+		}
 	}
 
 	echo Loader::helper('json')->encode(array('error'=>false, 'alertMessage' => $alertMessage));

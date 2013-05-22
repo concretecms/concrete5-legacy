@@ -22,7 +22,7 @@ $excluded_user_ids[] = USER_SUPER_ID; // can't delete the super user (admin)
 
 if (is_array($_REQUEST['uID'])) {
 	foreach($_REQUEST['uID'] as $uID) {
-		$ui = UserInfo::getByID($uID);		
+		$ui = UserInfo::getByID($uID);
 		if(!$sk->validate($ui) || (in_array($ui->getUserID(),$excluded_user_ids))) { 
 			$excluded = true;
 		} else {
@@ -32,24 +32,42 @@ if (is_array($_REQUEST['uID'])) {
 }
 
 if ($_POST['task'] == 'delete') {
-
-	foreach($users as $ui) {
-		if(!(in_array($ui->getUserID(),$excluded_user_ids))) {
-			$ui->triggerDelete();
-		}
-	}
-	
+	// check if workflow is attached to this request
+	$workflowAttached = false;
 	$pk = PermissionKey::getByHandle('delete_user');
 	$pa = $pk->getPermissionAccessObject();
 	$workflows = $pa->getWorkflows();
-	if(count((array)$workflows) > 0) {
+	$workflowAttached = count((array)$workflows);
+	
+	if($workflowAttached) {
 		// workflow is attached
 		$alertMessage = t('User Settings saved. You must complete the workflow before this change is active.');
 	} else {
 		// workflow is not attached
 		$alertMessage = t('User Settings saved.');
 	}
+	
+	foreach($users as $ui) {
+		$workflowRequestActions = array();
 		
+		// when this request is attached to workflow, featch triggered workflow request actions of current user
+		// when this request is not attached to workflow, do nothing
+		if($workflowAttached) {
+			$workflowList = UserWorkflowProgress::getList($ui->getUserID());
+			
+			if (count($workflowList) > 0) {
+				foreach($workflowList as $wp) {
+					$wr = $wp->getWorkflowRequestObject();
+					$workflowRequestActions[] = $wr->getRequestAction();
+				}
+			}
+		}
+	
+		if(!(in_array($ui->getUserID(),$excluded_user_ids)) && !in_array('delete',$workflowRequestActions)) {
+			$ui->triggerDelete();
+		}
+	}
+	
 	echo Loader::helper('json')->encode(array('error'=>false, 'alertMessage' => $alertMessage));
 	exit;
 } 

@@ -413,7 +413,7 @@ class Concrete5_Controller_Dashboard_Users_Search extends Controller {
 			
 			$_REQUEST=array();
 			$_GET=array();
-			$_POST=array();		
+			$_POST=array();
 			$this->set('message', $resultMsg);
 		} catch (Exception $e) {
 			$this->set('error', $e);
