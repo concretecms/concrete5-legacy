@@ -132,6 +132,10 @@ abstract class Concrete5_Model_PermissionKey extends Object {
 	}
 	
 	public function export($axml) {
+		$currentLocale = Localization::activeLocale();
+		if ($currentLocale != 'en_US') {
+			Localization::changeLocale('en_US');
+		}
 		$category = PermissionKeyCategory::getByID($this->pkCategoryID)->getPermissionKeyCategoryHandle();
 		$pkey = $axml->addChild('permissionkey');
 		$pkey->addAttribute('handle',$this->getPermissionKeyHandle());
@@ -140,6 +144,9 @@ abstract class Concrete5_Model_PermissionKey extends Object {
 		$pkey->addAttribute('package', $this->getPackageHandle());
 		$pkey->addAttribute('category', $category);
 		$this->exportAccess($pkey);
+		if ($currentLocale != 'en_US') {
+			Localization::changeLocale($currentLocale);
+		}
 		return $pkey;
 	}
 
