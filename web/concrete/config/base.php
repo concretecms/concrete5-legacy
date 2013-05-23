@@ -62,7 +62,9 @@ if (!defined('ENABLE_EMAILS')) {
 }
 
 if (!defined('EMAIL_DEFAULT_FROM_ADDRESS')) {
-	define('EMAIL_DEFAULT_FROM_ADDRESS', 'concrete5-noreply@' . str_replace(array('http://www.', 'https://www.', 'http://', 'https://'), '', BASE_URL));
+	$hostName = str_replace(array('http://www.', 'https://www.', 'http://', 'https://'), '', BASE_URL);
+	$hostName = (strpos($hostName, '.') === false) ? 'example.com' : $hostName;
+	define('EMAIL_DEFAULT_FROM_ADDRESS', 'concrete5-noreply@' . $hostName);
 }
 
 if (!defined('EMAIL_DEFAULT_FROM_NAME')) {
