@@ -35,21 +35,21 @@ if ($_POST['task'] == 'activate') {
 	$pk = PermissionKey::getByHandle('activate_user');
 	$pa = $pk->getPermissionAccessObject();
 	$workflows = $pa->getWorkflows();
-	$workflowAttached = count((array)$workflows);
+	$workflowAttached = count($workflows);
 	
 	if($workflowAttached) {
 		// workflow is attached
-		$alertMessage = t('User Settings saved. You must complete the workflow before this change is active.');
+		$hudMessage = t('User Settings saved. You must complete the workflow before this change is active.');
 	} else {
 		// workflow is not attached
-		$alertMessage = t('User Settings saved.');
+		$hudMessage = t('User Settings saved.');
 	}
 	
 	foreach($users as $ui) {
 		$workflowRequestActions = array();
 		
-		// when this request is attached to workflow, featch triggered workflow request actions of current user
-		// when this request is not attached to workflow, do nothing
+		// Fetch triggered workflow request actions of current user when workflow is attached to this request
+		// so that same request action won't triggered twice.
 		if($workflowAttached) {
 			$workflowList = UserWorkflowProgress::getList($ui->getUserID());
 			
@@ -66,7 +66,7 @@ if ($_POST['task'] == 'activate') {
 		}
 	}
 		
-	echo Loader::helper('json')->encode(array('error'=>false, 'alertMessage' => $alertMessage));
+	echo Loader::helper('json')->encode(array('error'=>false, 'hudMessage' => $hudMessage));
 	exit;
 } 
 
@@ -103,7 +103,7 @@ ccm_userBulkActivate = function() {
 		jQuery.fn.dialog.closeTop();
 		jQuery.fn.dialog.hideLoader();
 		ccm_deactivateSearchResults('<?=$searchInstance?>');
-		ccmAlert.hud(respObj.alertMessage, 2000, 'success', ccmi18n.user_activate);
+		ccmAlert.hud(respObj.hudMessage, 2000, 'success', ccmi18n.user_activate);
 		$("#ccm-<?=$searchInstance?>-advanced-search").ajaxSubmit(function(r) {
 		       ccm_parseAdvancedSearchResponse(r, '<?=$searchInstance?>');
 		});

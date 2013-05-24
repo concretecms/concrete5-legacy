@@ -35,7 +35,7 @@ class Concrete5_Model_DeleteUserUserWorkflowRequest extends UserWorkflowRequest 
 		$wpr->message = t("User %s has been deleted.", $ui->getUserName());
 		return $wpr;
 	}
-
+	
 	/**
 	 * After canceling delete request, do nothing
 	 */

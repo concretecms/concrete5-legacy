@@ -10,12 +10,12 @@ defined('C5_EXECUTE') or die("Access Denied.");
 abstract class Concrete5_Model_UserWorkflowRequest extends WorkflowRequest {
 	
 	public function setRequestedUserID($requestedUID) {
-        $this->requestedUID = $requestedUID;
-    }
+		$this->requestedUID = $requestedUID;
+	}
 	
- 	public function getRequestedUserID() {
-        return $this->requestedUID;
-    }
+	public function getRequestedUserID() {
+		return $this->requestedUID;
+	}
 
 	/**
 	 * Gets the action of user workflow request. There are four actions:
@@ -24,13 +24,13 @@ abstract class Concrete5_Model_UserWorkflowRequest extends WorkflowRequest {
 	 * @return string
 	 */		
 	public function getRequestAction() {
-        return $this->requestAction;
-    }
+		return $this->requestAction;
+	}
 	
 	public function trigger() {
- 		$user = User::getByUserID($this->requestedUID);
+		$user = User::getByUserID($this->requestedUID);
 		$pk = PermissionKey::getByID($this->pkID);
-        $pk->setPermissionObject($user);
+		$pk->setPermissionObject($user);
 		return parent::trigger($pk);
 	}
 	
