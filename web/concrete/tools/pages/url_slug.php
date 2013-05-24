@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <?
 defined('C5_EXECUTE') or die("Access Denied.");
 if (Loader::helper('validation/token')->validate('get_url_slug', $_REQUEST['token'])) {
@@ -10,3 +11,11 @@ if (Loader::helper('validation/token')->validate('get_url_slug', $_REQUEST['toke
 
 	echo $name;
 }
+=======
+<?
+defined('C5_EXECUTE') or die("Access Denied.");
+if (Loader::helper('validation/token')->validate('get_url_slug', $_REQUEST['token'])) {
+	Loader::library('3rdparty/urlify');
+	print URLify::filter($_REQUEST['name'],60,LANGUAGE);
+}
+>>>>>>> 058572c68a6a45ab50bde7e1041ff39e54279f4c
