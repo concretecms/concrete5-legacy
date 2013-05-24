@@ -45,19 +45,24 @@ $(function() {
 		<div class="dialog-buttons"><input type="button" class="btn" value="<?=t('Cancel')?>" onclick="jQuery.fn.dialog.closeTop()" /></div>
 		
 	<? } else { 
+
+		$request_rel = SecurityHelper::sanitizeString($_REQUEST['rel']);
 		?>
 		
 		<div class="ccm-buttons">
 
 		<form method="post" id="ccmDeletePageForm" action="<?=$c->getCollectionAction()?>">	
-			<input type="hidden" name="rel" value="<?=$_REQUEST['rel']?>" />
+			<input type="hidden" name="rel" value="<?php echo h($request_rel); ?>" />
 
 			<div class="dialog-buttons"><input type="button" class="btn" value="<?=t('Cancel')?>" onclick="jQuery.fn.dialog.closeTop()" />
 			<a href="javascript:void(0)" onclick="$('#ccmDeletePageForm').submit()" class="ccm-button-right btn error"><span><?=t('Delete')?></span></a>
 			</div>
+		<? if($c->isSystemPage()) { ?>
+			<div class="alert alert-error"><?php echo t('Warning! This is a system page. Deleting it could potentially break your site. Please proceed with caution.') ?></div>
+		<? } ?>
 		<h3><?=t('Are you sure you wish to delete this page?')?></h3>
 		<? if ($u->isSuperUser() && $numChildren > 0) { ?>
-			<h4><?=t('This will remove %s child page(s).', $numChildren)?></h4>
+			<h4><?=t2('This will remove %s child page.', 'This will remove %s child pages.', $numChildren, $numChildren)?></h4>
 		<? } ?>
 		
 		<? if (ENABLE_TRASH_CAN) { ?>
@@ -69,9 +74,15 @@ $(function() {
 			<input type="hidden" name="cID" value="<?=$c->getCollectionID()?>">
 			<input type="hidden" name="ctask" value="delete">
 			<input type="hidden" name="processCollection" value="1" />
-			<input type="hidden" name="display_mode" value="<?=$_REQUEST['display_mode']?>" />
-			<input type="hidden" name="instance_id" value="<?=$_REQUEST['instance_id']?>" />
-			<input type="hidden" name="select_mode" value="<?=$_REQUEST['select_mode']?>" />
+
+			<?php 
+			$display_mode = SecurityHelper::sanitizeString($_REQUEST['display_mode']);
+			$instance_id = SecurityHelper::sanitizeInt($_REQUEST['instance_id']);
+			$select_mode = SecurityHelper::sanitizeString($_REQUEST['select_mode']);
+			?>			
+			<input type="hidden" name="display_mode" value="<?php echo h($display_mode); ?>" />
+			<input type="hidden" name="instance_id" value="<?php echo h($instance_id); ?>" />
+			<input type="hidden" name="select_mode" value="<?php echo h($select_mode); ?>" />
 		</form>
 		</div>
 		

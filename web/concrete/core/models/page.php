@@ -114,11 +114,11 @@ class Concrete5_Model_Page extends Collection {
 	public function getPermissionObjectIdentifier() {
 		// this is a hack but it's a really good one for performance
 		// if the permission access entity for page owner exists in the database, then we return the collection ID. Otherwise, we just return the permission collection id
-		// this is because page owner is the ONLY thing that makes it so we can't use getPermissionsCollectionID, and for most sites that will DRAMATICALLY reduce the number of querie.s
-		if (PAGE_PERMISSION_IDENTIFIER_USE_COLLECTION_ID) {
-			return $this->getCollectionID();
-		} else {
+		// this is because page owner is the ONLY thing that makes it so we can't use getPermissionsCollectionID, and for most sites that will DRAMATICALLY reduce the number of queries.
+		if (PAGE_PERMISSION_IDENTIFIER_USE_PERMISSION_COLLECTION_ID) {
 			return $this->getPermissionsCollectionID();
+		} else {
+			return $this->getCollectionID();
 		}
 	}
 
@@ -183,21 +183,14 @@ class Concrete5_Model_Page extends Collection {
 
 		// this function is called via ajax, so it's a bit wonky, but the format is generally
 		// a{areaID} = array(b1, b2, b3) (where b1, etc... are blocks with ids appended.)
-		$db = Loader::db();
-		
-		$db->Execute('delete from CollectionVersionBlockStyles where cID = ? and cvID = ?', array($this->getCollectionID(), $this->getVersionID()));
-		
+		$db = Loader::db();		
+		$db->Execute('delete from CollectionVersionBlockStyles where cID = ? and cvID = ?', array($this->getCollectionID(), $this->getVersionID()));		
 		foreach($areas as $arID => $blocks) {
 			if (intval($arID) > 0) {
 				// this is a serialized area;
 				$arHandle = $db->getOne("select arHandle from Areas where arID = ?", array($arID));
 				$startDO = 0;
-
-				if (PERMISSIONS_MODEL == 'advanced') { // for performance sake
-					$ao = Area::getOrCreate($this, $arHandle);
-					$ap = new Permissions($ao);
-				}
-
+				
 				foreach($blocks as $bIdentifier) {
 
 					$bID = 0;
@@ -208,18 +201,6 @@ class Concrete5_Model_Page extends Collection {
 					$csrID = $bd2[1];
 
 					if (intval($bID) > 0) {
-	
-						if (PERMISSIONS_MODEL == 'advanced') { // for performance sake
-							$b = Block::getByID($bID);
-							$bt = $b->getBlockTypeObject();
-							if (!$ap->canAddBlockToArea($bt) && (!$bt->isBlockTypeInternal())) {
-								$obj = new stdClass;
-								$obj->error = true;
-								$obj->message = t('You may not add %s to area %s.', $bt->getBlockTypeName(), $arHandle);
-								return $obj;
-							}
-						}
-
 						$v = array($startDO, $arHandle, $bID, $this->getCollectionID(), $this->getVersionID());
 						try {
 							$db->query("update CollectionVersionBlocks set cbDisplayOrder = ?, arHandle = ? where bID = ? and cID = ? and (cvID = ? or cbIncludeAll = 1)", $v);
@@ -238,6 +219,7 @@ class Concrete5_Model_Page extends Collection {
 			}
 		}
 	}
+
 
 	/**
 	 * checks if the page is checked out, if it is return true
@@ -1932,6 +1914,9 @@ class Concrete5_Model_Page extends Collection {
 		$cDatePublic = ($data['cDatePublic']) ? $data['cDatePublic'] : null;		
 		
 		$data['ctID'] = $ct->getCollectionTypeID();
+		if ($ct->getCollectionTypeHandle() == STACKS_PAGE_TYPE) {
+			$data['cvIsNew'] = 0;
+		}
 		$cobj = parent::add($data);		
 		$cID = $cobj->getCollectionID();		
 		$ctID = $ct->getCollectionTypeID();

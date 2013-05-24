@@ -244,5 +244,3 @@ class URLify {
 		return self::downcode ($text);
 	}
 }
-
-?>
