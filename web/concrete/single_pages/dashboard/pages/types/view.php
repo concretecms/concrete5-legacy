@@ -240,23 +240,24 @@ if ($ctEditMode) {
 					}
 					else {
 						var $dialog;
-						$dialog = $('<div style="display:none" class="ccm-ui"></div>')
+						$dialog = $('<div></div>')
 							.append('<p><?=t('This page type is currently associated to some page.').'<br />'.t('In order to delete the page type you have to specify the new page type to use for these pages:'); ?></p>')
 							.append(r.replace_existing_with)
-							.append($('<div class="dialog-buttons"></div>')
-								.append(<?=$json->encode($interface->button(t('Delete page type'), '#', 'right', 'error do-delete',  array('onclick' => 'deletePageTypeWithReplace(); return false'))); ?>)
-							)
 						;
 						$(document.body).append($dialog);
 						$dialog.dialog({
 							width: 500,
 							title: "<?= t('Page type in use'); ?>",
-							buttons:[{}],
-							open: function() {
-								$(this).parent().find('.ui-dialog-buttonpane').addClass("ccm-ui").html('');
-								$(this).find('.dialog-buttons').appendTo($(this).parent().find('.ui-dialog-buttonpane'));
-								$(this).find('.dialog-buttons').remove();
-							},
+							dialogClass: "ccm-ui",
+							buttons: [
+								{
+									"text": "<?php echo t('Delete page type'); ?>",
+									"class": "btn error do-delete",
+									"click": function() {
+										deletePageTypeWithReplace();
+									}
+								}	
+							],
 							close: function() { $dialog.remove(); }
 						});
 					}
