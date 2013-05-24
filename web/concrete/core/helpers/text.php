@@ -31,8 +31,8 @@ class Concrete5_Helper_Text {
 	/** 
 	 * Takes text and returns it in the "lowercase-and-dashed-with-no-punctuation" format
 	 * @param string $handle
-     * @param string $maxlength Max total length of the return value
-     * @param string $lang Language code of the language rules that should be priorized
+	 * @param int $maxlength Max number of characters of the return value
+	 * @param string $lang Language code of the language rules that should be priorized
 	 * @return string $handle
 	 */
 	public function urlify($handle, $maxlength = PAGE_PATH_SEGMENT_MAX_LENGTH, $lang = LANGUAGE) {
