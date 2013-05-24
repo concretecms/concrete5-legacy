@@ -49,7 +49,7 @@ if ($_POST['task'] == 'activate') {
 		$workflowRequestActions = array();
 		
 		// Fetch triggered workflow request actions of current user when workflow is attached to this request
-		// so that same request action won't triggered twice.
+		// so that same request action won't trigger twice.
 		if($workflowAttached) {
 			$workflowList = UserWorkflowProgress::getList($ui->getUserID());
 			

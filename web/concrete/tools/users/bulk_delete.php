@@ -50,8 +50,8 @@ if ($_POST['task'] == 'delete') {
 	foreach($users as $ui) {
 		$workflowRequestActions = array();
 		
-		// when this request is attached to workflow, featch triggered workflow request actions of current user
-		// when this request is not attached to workflow, do nothing
+		// Fetch triggered workflow request actions of current user when workflow is attached to this request
+		// so that same request action won't trigger twice.
 		if($workflowAttached) {
 			$workflowList = UserWorkflowProgress::getList($ui->getUserID());
 			
