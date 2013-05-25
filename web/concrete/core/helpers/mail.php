@@ -45,6 +45,7 @@ class Concrete5_Helper_Mail {
 		$this->bcc = array();
 		$this->from = array();
 		$this->data = array();
+		$this->attachments = array();
 		$this->subject = '';
 		$this->body = '';
 		$this->template; 
