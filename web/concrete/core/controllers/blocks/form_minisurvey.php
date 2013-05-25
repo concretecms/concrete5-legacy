@@ -62,6 +62,16 @@ class Concrete5_Controller_Block_FormMinisurvey {
 					}
 					$values['options'] = serialize($options);
 				}
+				//see if the 'add file as attachment' checkbox is checked and save this to the options field
+				if($values['inputType'] == 'fileupload') {
+					$options = array();
+					if(array_key_exists('add_file_as_attachment', $values) && $values['add_file_as_attachment'] == 1) {
+						$options['add_file_as_attachment'] = 1;
+					} else {
+						$options['add_file_as_attachment'] = 0;
+					}
+					$values['options'] = serialize($options);
+				}
 				if( $pendingEditExists ){ 
 					$width = $height = 0;
 					if ($values['inputType'] == 'text'){
@@ -102,6 +112,14 @@ class Concrete5_Controller_Block_FormMinisurvey {
 				if($key=='options') {
 					$key='optionVals';
 					if($questionRow['inputType'] == 'email') {
+						$options = unserialize($val);
+						if (is_array($options)) {
+							foreach($options as $o_key => $o_val) {
+								$val = $o_key."::".$o_val.";";
+							}
+						}
+					}
+					if($questionRow['inputType'] == 'fileupload') {
 						$options = unserialize($val);
 						if (is_array($options)) {
 							foreach($options as $o_key => $o_val) {
