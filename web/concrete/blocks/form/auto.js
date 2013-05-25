@@ -68,6 +68,11 @@ var miniSurvey ={
 			} else {
 				$('#emailSettings'+mode).hide();
 			}
+			if( radioButton.value=='fileupload') {
+				$('#fileuploadSettings'+mode).show();
+			} else {
+				$('#fileuploadSettings'+mode).hide();
+			}
 		},
 	settingsCheck : function(radioButton,mode){
 			if(mode!='Edit') mode='';
@@ -104,6 +109,16 @@ var miniSurvey ={
                 		else {
                     			fieldID = "#send_notification_from";
                 		}
+				postStr+= $(fieldID).is(':checked') ? "1" : "0"
+			}
+			if(answerType == 'fileupload') {
+				postStr+='&add_file_as_attachment=';
+					if (mode == 'Edit') {
+						fieldID = "#add_file_as_attachment_edit";
+					}
+					else {
+						fieldID = "#add_file_as_attachment";
+					}
 				postStr+= $(fieldID).is(':checked') ? "1" : "0"
 			}
 			$.ajax({ 
@@ -174,7 +189,7 @@ var miniSurvey ={
 							$('#requiredEdit input[value=0]').prop('checked', true);
 						}
 
-						if(jsonObj.inputType == 'email') {
+						if(jsonObj.inputType == 'email' || jsonObj.inputType == 'fileupload') {
 							var options = jsonObj.optionVals.split(";");
 							for (var i = 0; i < options.length; i++) {
 								key_val = options[i].split('::');
@@ -184,6 +199,13 @@ var miniSurvey ={
 											$('.send_notification_from input').prop('checked', true);
 										} else {
 											$('.send_notification_from input').prop('checked', false);
+										}
+									}
+									if (key_val[0] == 'add_file_as_attachment') {
+										if (key_val[1] == 1) {
+											$('.add_file_as_attachment input').prop('checked', true);
+										} else {
+											$('.add_file_as_attachment input').prop('checked', false);
 										}
 									}
 								}

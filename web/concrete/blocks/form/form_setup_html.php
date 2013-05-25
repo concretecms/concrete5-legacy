@@ -197,6 +197,12 @@ $ih = Loader::helper('concrete/interface');
 						<?php print $form->checkbox('send_notification_from', 1); ?>
 					</div>
 				</div>
+				<div id="fileuploadSettings">
+					<?php print $form->label('add_file_as_attachment', t('Add file as an attachment if notification email enabled'));?>
+					<div class="input add_file_as_attachment">
+						<?php print $form->checkbox('add_file_as_attachment', 1); ?>
+					</div>
+				</div>
 			</div>
 
 			<div class="clearfix">
@@ -294,6 +300,12 @@ $ih = Loader::helper('concrete/interface');
 					<?php print $form->label('send_notification_from_edit', t('Reply to this email address'));?>
 					<div class="input send_notification_from">
 						<?php print $form->checkbox('send_notification_from_edit', 1); ?>
+					</div>
+				</div>
+				<div id="fileuploadSettingsEdit">
+					<?php print $form->label('add_file_as_attachment', t('Add file as an attachment if notification email enabled'));?>
+					<div class="input add_file_as_attachment">
+						<?php print $form->checkbox('add_file_as_attachment_edit', 1); ?>
 					</div>
 				</div>
 			</fieldset>

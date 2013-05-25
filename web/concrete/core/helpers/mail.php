@@ -25,6 +25,7 @@ class Concrete5_Helper_Mail {
 	protected $bcc = array();
 	protected $from = array();
 	protected $data = array();
+	protected $attachments = array();
 	protected $subject = '';
 	public $body = '';
 	protected $template; 
@@ -44,6 +45,7 @@ class Concrete5_Helper_Mail {
 		$this->bcc = array();
 		$this->from = array();
 		$this->data = array();
+		$this->attachments = array();
 		$this->subject = '';
 		$this->body = '';
 		$this->template; 
@@ -285,6 +287,15 @@ class Concrete5_Helper_Mail {
 			$this->replyto[] = array($email, $name);	
 		}
 	}
+
+	/**
+	 * Add attachment to email
+	 * @param File $attachment
+	 * @return void
+	 */
+	public function addAttachment(File $attachment){
+		$this->attachments[] = $attachment;
+	}
 		
 	/** 
 	 * Sends the email
@@ -340,7 +351,25 @@ class Concrete5_Helper_Mail {
 					$mail->addBcc($bcc[0], $bcc[1]);
 				}
 			}
-			
+
+			if ( ! empty($this->attachments)) {
+				foreach($this->attachments as $file) {
+
+					$fv = $file->getVersion();
+					$fh = Loader::helper('file');
+
+					$contents = $fh->getContents($file->getPath());
+					if ($contents) {
+						$at = new Zend_Mime_Part($contents);
+						$at->type        = $fv->getMimeType();
+						$at->disposition = Zend_Mime::DISPOSITION_INLINE;
+						$at->encoding    = Zend_Mime::ENCODING_BASE64;
+						$at->filename    = $fv->getFileName();
+						$mail->addAttachment($at);
+					}
+				}
+			}
+
 			$mail->setBodyText($this->body);
 			if ($this->bodyHTML != false) {
 				$mail->setBodyHTML($this->bodyHTML);
