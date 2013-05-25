@@ -355,14 +355,17 @@ class Concrete5_Helper_Mail {
 				foreach($this->attachments as $file) {
 
 					$fv = $file->getVersion();
+					$fh = Loader::helper('file');
 
-					$at = new Zend_Mime_Part(file_get_contents($file->getPath()));
-					$at->type        = $fv->getMimeType();
-					$at->disposition = Zend_Mime::DISPOSITION_INLINE;
-					$at->encoding    = Zend_Mime::ENCODING_BASE64;
-					$at->filename    = $fv->getFileName();
-
-					$mail->addAttachment($at);
+					$contents = $fh->getContents($file->getPath());
+					if ($contents) {
+						$at = new Zend_Mime_Part($contents);
+						$at->type        = $fv->getMimeType();
+						$at->disposition = Zend_Mime::DISPOSITION_INLINE;
+						$at->encoding    = Zend_Mime::ENCODING_BASE64;
+						$at->filename    = $fv->getFileName();
+						$mail->addAttachment($at);
+					}
 				}
 			}
 
