@@ -78,25 +78,27 @@
 
 		/** 
 		 * Loads an element from C5 or the site
+		 * 
+		 * $_fi1e_xYzZy - use an unlikely name so it doesn't get broken when $args['file'] is extracted
 		 */
-		public function element($file, $args = null, $pkgHandle= null) {
+		public function element($_fi1e_xYzZy, $args = null, $pkgHandle= null) {
 			if (is_array($args)) {
 				extract($args);
 			}
 
 			$env = Environment::get();
-			include($env->getPath(DIRNAME_ELEMENTS . '/' . $file . '.php', $pkgHandle));
+			include($env->getPath(DIRNAME_ELEMENTS . '/' . $_fi1e_xYzZy . '.php', $pkgHandle));
 		}
 
 		 /**
 		 * Loads a tool file from c5 or site
 		 */
-		public function tool($file, $args = null, $pkgHandle= null) {
+		public function tool($_fi1e_xYzZy, $args = null, $pkgHandle= null) {
 		   if (is_array($args)) {
 			   extract($args);
 		   }
 			$env = Environment::get();
-			require_once($env->getPath(DIRNAME_TOOLS . '/' . $file . '.php', $pkgHandle));
+			require_once($env->getPath(DIRNAME_TOOLS . '/' . $_fi1e_xYzZy . '.php', $pkgHandle));
 		}
 		
 		/** 
