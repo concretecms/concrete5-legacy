@@ -78,14 +78,16 @@
 
 		/** 
 		 * Loads an element from C5 or the site
+		 * 
+		 * $_fi1e_xYzZy given an unlikely name so that extract does not overwrite it
 		 */
-		public function element($file, $args = null, $pkgHandle= null) {
+		public function element($_fi1e_xYzZy, $args = null, $pkgHandle= null) {
 			if (is_array($args)) {
 				extract($args);
 			}
 
 			$env = Environment::get();
-			include($env->getPath(DIRNAME_ELEMENTS . '/' . $file . '.php', $pkgHandle));
+			include($env->getPath(DIRNAME_ELEMENTS . '/' . $$_fi1e_xYzZy . '.php', $pkgHandle));
 		}
 
 		 /**
