@@ -386,6 +386,8 @@
 									case 'REMOVE':
 									case 'REMOVE_DEACTIVATE':
 										$this->exitGroup(Group::getByID($row['gID']));
+									case 'REMOVE':
+										break;
 									case 'DEACTIVATE':
 									case 'REMOVE_DEACTIVATE':
 										UserInfo::getByID($uID)->deactivate();
