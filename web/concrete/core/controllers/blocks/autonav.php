@@ -331,8 +331,16 @@
 		}
 
 		function getNavigationArray($cParentID, $orderBy, $currentLevel) {
+
+			// this does a check to see if we have some exlusive attributes set to lessen overhead before continuing
+			if ($cParentID !== HOME_CID) {
+				$cParent = Page::getByID($cParentID);
+				if ($cParent->getAttribute('exclude_nav') || $cParent->getAttribute('exclude_subpages_from_nav')) {
+					return;
+				}
+			}
+		
 			// increment all items in the nav array with a greater $currentLevel
-			
 			foreach($this->navArray as $ni) {
 				if ($ni->getLevel() + 1 < $currentLevel) {
 					$ni->hasChildren = true;
