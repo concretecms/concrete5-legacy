@@ -382,11 +382,13 @@
 							}
 							
 							if ($expire) {
-								if ($row['gUserExpirationAction'] == 'REMOVE' || $row['gUserExpirationAction'] == 'REMOVE_DEACTIVATE') {
-									$db->Execute('delete from UserGroups where uID = ? and gID = ?', array($uID, $row['gID']));
-								}
-								if ($row['gUserExpirationAction'] == 'DEACTIVATE' || $row['gUserExpirationAction'] == 'REMOVE_DEACTIVATE') {
-									$db->Execute('update Users set uIsActive = 0 where uID = ?', array($uID));
+								switch ($row['gUserExpirationAction']) {
+									case 'REMOVE':
+									case 'REMOVE_DEACTIVATE':
+										$this->exitGroup(Group::getByID($row['gID']));
+									case 'DEACTIVATE':
+									case 'REMOVE_DEACTIVATE':
+										UserInfo::getByID($uID)->deactivate();
 								}
 							} else {
 								$ug[$row['gID']] = $row['gName'];
