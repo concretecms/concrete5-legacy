@@ -328,6 +328,24 @@ class Concrete5_Helper_Text {
 			$this->appendXML($node, $ch);
 		}
 	}
+	
+    	/**
+     	* Prevents widows on text blocks by combining the last two words with &nbsp;
+     	* @param string $text
+     	* @return string $text
+     	*/
+    	public function preventWidows($text) {
+		if (substr_count($text, ' ') >= 3) {	    // Only process string if there are >= 3 words
+	    		$text = explode(' ', $text);
+	    		$last_word = array_pop($text);
+	    		$text = implode(' ', $text);
+	    		$text .= '&nbsp;';
+	    		$text .= $last_word;
+	    		return $text;
+		} else {
+	    		return $text;
+		}
+    	}
 
 
 }
