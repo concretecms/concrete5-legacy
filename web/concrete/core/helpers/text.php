@@ -336,6 +336,7 @@ class Concrete5_Helper_Text {
      	*/
     	public function preventWidows($text) {
 		if (substr_count($text, ' ') >= 3) {	    // Only process string if there are >= 3 words
+	    		$text = trim($text);
 	    		$text = explode(' ', $text);
 	    		$last_word = array_pop($text);
 	    		$text = implode(' ', $text);
