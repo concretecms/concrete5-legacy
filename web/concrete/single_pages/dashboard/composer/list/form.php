@@ -84,7 +84,7 @@
 $(function() {
 	$('a[data-dialog=add_set]').on('click', function() {
 		jQuery.fn.dialog.open({
-			element: '#ccm-composer-add-set',
+			element: $('#ccm-composer-add-set'),
 			modal: true,
 			width: 320,
 			title: '<?=t("Add Control Set")?>',
@@ -98,7 +98,7 @@ $(function() {
 			width: 320,
 			dialogClass: 'ccm-ui',
 			title: '<?=t("Delete Set ")?>',
-			height: 200, 
+			height: 200,
 			buttons: [
 				{
 					'text': '<?=t("Cancel")?>',
@@ -124,7 +124,7 @@ $(function() {
 			width: 320,
 			dialogClass: 'ccm-ui',
 			title: '<?=t("Update Set ")?>',
-			height: 235, 
+			height: 235,
 			buttons: [
 				{
 					'text': '<?=t("Cancel")?>',
@@ -147,7 +147,7 @@ $(function() {
 		handle: 'a[data-command=move_set]',
 		items: '.ccm-composer-form-layout-control-set',
 		cursor: 'move',
-		axis: 'y', 
+		axis: 'y',
 		stop: function() {
 			var formData = [{
 				'name': 'token',
@@ -176,7 +176,7 @@ $(function() {
 		handle: 'a[data-command=move-set-control]',
 		items: '.ccm-composer-form-layout-control-set-control',
 		cursor: 'move',
-		axis: 'y', 
+		axis: 'y',
 		stop: function() {
 			var formData = [{
 				'name': 'token',
@@ -207,7 +207,7 @@ $(function() {
 			width: 320,
 			dialogClass: 'ccm-ui',
 			title: '<?=t("Delete Control ")?>',
-			height: 200, 
+			height: 200,
 			buttons: [
 				{
 					'text': '<?=t("Cancel")?>',
@@ -236,7 +236,7 @@ $(function() {
 							success: function() {
 								jQuery.fn.dialog.hideLoader();
 								jQuery.fn.dialog.closeAll();
-								$('div[data-composer-form-layout-control-set-control-id=' + cmpFormLayoutSetControlID + ']').remove();								
+								$('div[data-composer-form-layout-control-set-control-id=' + cmpFormLayoutSetControlID + ']').remove();
 							}
 						});
 
