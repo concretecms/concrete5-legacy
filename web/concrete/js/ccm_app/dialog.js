@@ -51,6 +51,8 @@ jQuery.fn.dialog.close = function(num) {
 }
 
 jQuery.fn.dialog.open = function(options) {
+	var w,h;
+
 	if (typeof($.fn.ccmmenu) != 'undefined') {
 		$.fn.ccmmenu.hide();
 	}
