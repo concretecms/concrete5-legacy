@@ -21,7 +21,7 @@ $extensions = Loader::helper('concrete/file')->getAllowedFileExtensions();
 
 
 <div class="clearfix">
-	<label><?=$entity->getAccessEntityLabel()?></label>
+	<label><?=t($entity->getAccessEntityLabel())?></label>
 	<div class="input">
 	<?=$form->select('fileTypesIncluded[' . $entity->getAccessEntityID() . ']', array('A' => t('All File Types'), 'C' => t('Custom')), $assignment->getFileTypesAllowedPermission())?><br/><br/>
 	<ul class="inputs-list" <? if ($assignment->getFileTypesAllowedPermission() != 'C') { ?>style="display: none"<? } ?>>
@@ -49,7 +49,7 @@ $extensions = Loader::helper('concrete/file')->getAllowedFileExtensions();
 
 
 <div class="clearfix">
-	<label><?=$entity->getAccessEntityLabel()?></label>
+	<label><?=t($entity->getAccessEntityLabel())?></label>
 	<div class="input">
 	<?=$form->select('fileTypesExcluded[' . $entity->getAccessEntityID() . ']', array('N' => t('No File Types'), 'C' => t('Custom')), $assignment->getFileTypesAllowedPermission())?><br/><br/>
 	<ul class="inputs-list" <? if ($assignment->getFileTypesAllowedPermission() != 'C') { ?>style="display: none"<? } ?>>
