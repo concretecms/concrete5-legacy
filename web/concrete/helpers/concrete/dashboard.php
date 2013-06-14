@@ -273,8 +273,9 @@ class ConcreteDashboardHelper {
 
 	public function getDashboardAndSearchMenus() {
 
-		if (isset($_SESSION['dashboardMenus'][Localization::activeLocale()])) {
-			return $_SESSION['dashboardMenus'][Localization::activeLocale()];
+		$activeLocale = Localization::activeLocale();
+		if (isset($_SESSION['dashboardMenus'][$activeLocale])) {
+			return $_SESSION['dashboardMenus'][$activeLocale];
 		}
 				
 		$d = ConcreteDashboardMenu::getMine();
@@ -513,8 +514,8 @@ class ConcreteDashboardHelper {
 			$html = ob_get_contents();
 			ob_end_clean();
 			
-		return str_replace(array("\n", "\r", "\t"), "", $html);
-	
+		$_SESSION['dashboardMenus'][$activeLocale] = str_replace(array("\n", "\r", "\t"), "", $html);
+		return $_SESSION['dashboardMenus'][$activeLocale];
 	}
 }
 

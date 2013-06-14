@@ -173,18 +173,7 @@ class ConcreteInterfaceHelper {
 	}
 		
 	public function clearInterfaceItemsCache() {
-		$u = new User();
-		if ($u->isRegistered()) {
-			unset($_SESSION['dashboardMenus']);
-		}
-	}
-	
-	public function cacheInterfaceItems() {
-		$u = new User();
-		if ($u->isRegistered()) {
-			$ch = Loader::helper('concrete/dashboard');
-			$_SESSION['dashboardMenus'][Localization::activeLocale()] = $ch->getDashboardAndSearchMenus();
-		}
+		unset($_SESSION['dashboardMenus']);
 	}
 	
 	public function tabs($tabs, $jstabs = true) {
