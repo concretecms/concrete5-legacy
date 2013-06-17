@@ -161,43 +161,52 @@ class Concrete5_Helper_Date {
 		return array_combine(DateTimeZone::listIdentifiers(),DateTimeZone::listIdentifiers());
 	}
 
-	
+	/**
+	 * Calculate the elapsed time since a given point in time
+	 * e.g. "3 hours, 43 minutes"
+	 * based on http://www.php.net/manual/de/dateinterval.format.php#96768
+	 *
+	 * @param int $posttime unix timestamp
+	 * @param int $precise if 1 then return the two biggest parts like minutes and seconds
+	 * @return string elapsed time as a string
+	 */
 	public function timeSince($posttime,$precise=0){
-		$timeRemaining=0;
-		$diff=date("U")-$posttime;
-		$days=intval($diff/(24*60*60));
-		$hoursInSecs=$diff-($days*(24*60*60));
-		$hours=intval($hoursInSecs/(60*60));
-		if ($hours<=0) $hours=$hours+24;           
-		if ($posttime>date("U")) return date(DATE_APP_GENERIC_MDY,$posttime);
-		else{
-			if ($diff>86400){
-					$diff=$diff+86400;
-					$days=date("z",$diff);
-					$timeRemaining = t2('%d day', '%d days', $days, $days);
-					if($precise==1) {
-						$timeRemaining .= ', '.t2('%d hour', '%d hours', $hours, $hours);
-					}
-				} else if ($diff>3600) {
-					$timeRemaining = t2('%d hour', '%d hours', $hours, $hours);
-					if($precise==1) {
-						$minutes = date("i", $diff);
-						$timeRemaining .= ', '.t2('%d minute', '%d minutes', $minutes, $minutes);
-					}
-				}else if ($diff>60){
-					$minutes=date("i",$diff);
-					if(substr($minutes,0,1)=='0') $minutes=substr($minutes,1);
-					$timeRemaining = t2('%d minute', '%d minutes', $minutes, $minutes);
-					if($precise==1) {
-						$seconds = date("s",$diff);
-						$timeRemaining .= ', '.t2('%d second', '%d seconds', $seconds, $seconds);
-					}
-				}else{
-					$seconds=date("s",$diff);
-					if(substr($seconds,0,1)=='0') $seconds=substr($seconds,1);
-					$timeRemaining = t2('%d second', '%d seconds', $seconds, $seconds);
-				}
+		$now = new DateTime;
+		$then = new DateTime("@".$posttime);
+		
+		if ($now < $then) {
+			return date(DATE_APP_GENERIC_MDY,$posttime);
 		}
-		return $timeRemaining;
-	}//end timeSince
+		$interval = $now->diff($then);
+		
+		$format = array();
+		if($interval->y !== 0) {
+			$format[] = t2("%%y year", '%%y years', $interval->y, $interval->y);
+		}
+		if($interval->m !== 0) {
+			$format[] = t2("%%m month", '%%y months', $interval->m, $interval->m);
+		}
+		if($interval->d !== 0) {
+			$format[] = t2("%%d day", '%%d days', $interval->d, $interval->d);
+		}
+		if($interval->h !== 0) {
+			$format[] = t2("%%h hour", '%%h hours', $interval->h, $interval->h);
+		}
+		if($interval->i !== 0) {
+			$format[] = t2("%%i minute", '%%i minutes', $interval->i, $interval->i);
+		}
+		$format[] = t2("%%s second", '%%s seconds', $interval->s, $interval->s);
+
+		if(count($format) > 1 ) {
+			$mask = array_shift($format);
+			if ($precise) {
+				$mask .= ", ".array_shift($format);
+			}
+		} else {
+			$mask = array_pop($format);
+		} 
+		
+		return $interval->format($mask);
+		
+	}
 }
