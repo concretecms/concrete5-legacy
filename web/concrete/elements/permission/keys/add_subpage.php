@@ -17,7 +17,7 @@
 
 
 <div class="clearfix">
-	<label><?=$entity->getAccessEntityLabel()?></label>
+	<label><?=t($entity->getAccessEntityLabel())?></label>
 	<div class="input">
 	<?=$form->select('pageTypesIncluded[' . $entity->getAccessEntityID() . ']', array('A' => t('All Page Types'), 'C' => t('Custom')), $assignment->getPageTypesAllowedPermission())?><br/><br/>
 	<ul class="page-type-list inputs-list" <? if ($assignment->getPageTypesAllowedPermission() != 'C') { ?>style="display: none"<? } ?>>
@@ -48,7 +48,7 @@
 
 
 <div class="clearfix">
-	<label><?=$entity->getAccessEntityLabel()?></label>
+	<label><?=t($entity->getAccessEntityLabel())?></label>
 	<div class="input">
 	<?=$form->select('pageTypesExcluded[' . $entity->getAccessEntityID() . ']', array('N' => t('No Page Types'), 'C' => t('Custom')), $assignment->getPageTypesAllowedPermission())?><br/><br/>
 	<ul class="page-type-list inputs-list" <? if ($assignment->getPageTypesAllowedPermission() != 'C') { ?>style="display: none"<? } ?>>

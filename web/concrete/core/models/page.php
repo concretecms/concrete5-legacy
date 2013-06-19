@@ -190,7 +190,7 @@ class Concrete5_Model_Page extends Collection {
 				// this is a serialized area;
 				$arHandle = $db->getOne("select arHandle from Areas where arID = ?", array($arID));
 				$startDO = 0;
-				
+
 				foreach($blocks as $bIdentifier) {
 
 					$bID = 0;
