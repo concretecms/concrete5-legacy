@@ -61,7 +61,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		private $isEditingEnabled = true;
 		
 		// getInstance() grabs one instance of the view w/the singleton pattern
-		public function getInstance() {
+		public static function getInstance() {
 			static $instance;
 			if (!isset($instance)) {
 				$instance = new View();
