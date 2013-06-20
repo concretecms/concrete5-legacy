@@ -100,8 +100,19 @@
 			return $con;
 		}
 		
+		/**
+		 * Returns an array of child Page objects for a given Page contingent on the 
+		 * argument not having the "exclude_subpages_from_nav" attribute set
+		 * @param  [Object] $c Page
+		 * @return [Array|void]
+		 */
 		public function getChildPages($c) {
-		
+
+			// subvert loading of the pages if the children have already been excluded from nav
+			// this was previosly done after instantiaing all of the child page objects, which could 
+			// potentially add substantial overhead for large sites.
+			if ($c->getAttribute('exclude_subpages_from_nav')) { return; }
+
 			// a quickie
 			$db = Loader::db();
 			$r = $db->query("select cID from Pages where cParentID = ? order by cDisplayOrder asc", array($c->getCollectionID()));
@@ -320,8 +331,16 @@
 		}
 
 		function getNavigationArray($cParentID, $orderBy, $currentLevel) {
+
+			// this does a check to see if we have some exlusive attributes set to lessen overhead before continuing
+			if ($cParentID !== HOME_CID) {
+				$cParent = Page::getByID($cParentID);
+				if ($cParent->getAttribute('exclude_nav') || $cParent->getAttribute('exclude_subpages_from_nav')) {
+					return;
+				}
+			}
+		
 			// increment all items in the nav array with a greater $currentLevel
-			
 			foreach($this->navArray as $ni) {
 				if ($ni->getLevel() + 1 < $currentLevel) {
 					$ni->hasChildren = true;
