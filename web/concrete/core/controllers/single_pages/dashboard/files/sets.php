@@ -86,8 +86,8 @@ class Concrete5_Controller_Dashboard_Files_Sets extends Controller {
 			$this->view();
 			return;
 		}
-		if (!Loader::helper('validation/strings')->alphanum($setName, true, true)) {
-			$this->set('error', array(t('Set Names must only include alphanumerics and spaces.')));
+		if (!Loader::helper('validation/strings')->alphanum($setName, true, true, true)) {
+			$this->set('error', array(t('Set Names must only include alphanumerics, spaces, dashes and underscores.')));
 			$this->view();
 			return;
 		}

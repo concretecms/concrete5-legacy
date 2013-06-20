@@ -18,8 +18,8 @@ class Concrete5_Controller_Dashboard_Files_AddSet extends Controller {
 			return;
 		}
 		$setName = trim($this->post('file_set_name'));
-		if (!Loader::helper('validation/strings')->alphanum($setName, true)) {
-			$this->set('error', array(t('Set Names must only include alphanumerics and spaces.')));
+		if (!Loader::helper('validation/strings')->alphanum($setName, true, true, true)) {
+			$this->set('error', array(t('Set Names must only include alphanumerics, spaces, dashes and underscores.')));
 			return;
 		}
 		
