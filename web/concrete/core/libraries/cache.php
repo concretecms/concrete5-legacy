@@ -1,12 +1,12 @@
 <?
-
+defined('C5_EXECUTE') or die('Access Denied');
 class Concrete5_Library_Cache {
 	
-	public function key($type, $id) {
+	public static function key($type, $id) {
 		return md5($type . $id);
 	}
 	
-	public function getLibrary() {
+	public static function getLibrary() {
 		static $cache;
 		if (!isset($cache) && defined('DIR_FILES_CACHE')) {
 			if (is_dir(DIR_FILES_CACHE) && is_writable(DIR_FILES_CACHE)) {
@@ -47,28 +47,28 @@ class Concrete5_Library_Cache {
 		return $cache;
 	}
 	
-	public function startup() {
+	public static function startup() {
 		$cache = Cache::getLibrary();
 	}
 	
-	public function disableCache() {
+	public static function disableCache() {
 		$ca = Cache::getLibrary();
 		if (is_object($ca)) {
 			$ca->setOption('caching', false);
 		}
 	}
 	
-	public function enableCache() {
+	public static function enableCache() {
 		$ca = Cache::getLibrary();
 		if (is_object($ca)) {
 			$ca->setOption('caching', true);
 		}
 	}
 	
-	public function disableLocalCache() {
+	public static function disableLocalCache() {
 		CacheLocal::get()->enabled = false;
 	}
-	public function enableLocalCache() {
+	public static function enableLocalCache() {
 		CacheLocal::get()->enabled = true;
 	}
 	
@@ -76,7 +76,7 @@ class Concrete5_Library_Cache {
 	 * Inserts or updates an item to the cache
 	 * the cache must always be enabled for (getting remote data, etc..)
 	 */	
-	public function set($type, $id, $obj, $expire = false) {
+	public static function set($type, $id, $obj, $expire = false) {
 		$loc = CacheLocal::get();
 		if ($loc->enabled) {
 			if (is_object($obj)) {
@@ -96,7 +96,7 @@ class Concrete5_Library_Cache {
 	/** 
 	 * Retrieves an item from the cache
 	 */	
-	public function get($type, $id, $mustBeNewerThan = false) {
+	public static function get($type, $id, $mustBeNewerThan = false) {
 		$loc = CacheLocal::get();
 		$key = Cache::key($type, $id);
 		if ($loc->enabled && array_key_exists($key, $loc->cache)) {
@@ -146,7 +146,7 @@ class Concrete5_Library_Cache {
 	/** 
 	 * Removes an item from the cache
 	 */	
-	public function delete($type, $id){
+	public static function delete($type, $id){
 		$cache = Cache::getLibrary();
 		if ($cache) {
 			$cache->remove(Cache::key($type, $id));
@@ -161,7 +161,7 @@ class Concrete5_Library_Cache {
 	/** 
 	 * Completely flushes the cache
 	 */	
-	public function flush() {
+	public static function flush() {
 		$db = Loader::db();
 		$r = $db->MetaTables();
 
