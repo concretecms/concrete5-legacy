@@ -58,13 +58,19 @@
 					'content' => DIR_BASE . '/languages/' . $locale,
 					'locale' => $locale
 				));
+				$addSpecialItems = false;
 				if (!isset($this->translate)) {
 					$this->translate = new Zend_Translate($options);
+					$addSpecialItems = true;
 				} else {
 					if (!in_array($locale, $this->translate->getList())) {
 						$this->translate->addTranslation($options);
+						$addSpecialItems = true;
 					}
 					$this->translate->setLocale($locale);
+				}
+				if($addSpecialItems && is_file(DIR_CONFIG_SITE . '/special_items/' . ACTIVE_LOCALE . '.mo')) {
+					$this->translate->addTranslation(DIR_CONFIG_SITE . '/special_items/' . ACTIVE_LOCALE . '.mo', ACTIVE_LOCALE);
 				}
 			}
 		}
