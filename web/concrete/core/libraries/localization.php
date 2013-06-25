@@ -69,8 +69,8 @@
 					}
 					$this->translate->setLocale($locale);
 				}
-				if($addSpecialItems && is_file(DIR_CONFIG_SITE . '/special_items/' . ACTIVE_LOCALE . '.mo')) {
-					$this->translate->addTranslation(DIR_CONFIG_SITE . '/special_items/' . ACTIVE_LOCALE . '.mo', ACTIVE_LOCALE);
+				if($addSpecialItems && is_file(DIR_CONFIG_SITE . '/special_items/' . $locale . '.mo')) {
+					$this->translate->addTranslation(DIR_CONFIG_SITE . '/special_items/' . $locale . '.mo', $locale);
 				}
 			}
 		}
