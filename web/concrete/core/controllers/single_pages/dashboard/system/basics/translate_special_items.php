@@ -278,11 +278,6 @@ class Concrete5_Controller_Dashboard_System_Basics_TranslateSpecialItems extends
 							throw new Exception(t('Unable to save file %s', $filename));
 						}
 					}
-					$currentLocale = Localization::activeLocale();
-					if($currentLocale != 'en_US') {
-						Localization::changeLocale('en_US');
-						Localization::changeLocale($currentLocale);
-					}
 					$this->redirect('/dashboard/system/basics/translate_special_items/updated/?locale=' . rawurlencode($locale) . '&table=' . rawurlencode($this->post('currentTable')));
 				}
 				catch(Exception $x) {
