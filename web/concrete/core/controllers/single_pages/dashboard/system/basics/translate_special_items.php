@@ -32,7 +32,7 @@ class Concrete5_Controller_Dashboard_System_Basics_TranslateSpecialItems extends
 					$locale = Localization::activeLocale();
 					if(!array_key_exists($locale, $locales)) {
 						reset($locales);
-						$locale = key($locale);
+						$locale = key($locales);
 						reset($locales);
 					}
 				}
