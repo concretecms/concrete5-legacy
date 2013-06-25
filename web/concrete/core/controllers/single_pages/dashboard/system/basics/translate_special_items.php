@@ -60,8 +60,14 @@ class Concrete5_Controller_Dashboard_System_Basics_TranslateSpecialItems extends
 				foreach($akc->getAttributeSets() as $as) {
 					$attributeSetNames[$akcHandle][$as->getAttributeSetID()]['source'] = $as->getAttributeSetName();
 				}
+				if(isset($attributeSetNames[$akcHandle])) {
+					uasort($attributeSetNames[$akcHandle], array(__CLASS__, 'sortBySource'));
+				}
 				foreach(AttributeKey::getList($akcHandle) as $ak) {
 					$attributeKeyNames[$akcHandle][$ak->getAttributeKeyID()]['source'] = $ak->getAttributeKeyName();
+				}
+				if(isset($attributeKeyNames[$akcHandle])) {
+					uasort($attributeKeyNames[$akcHandle], array(__CLASS__, 'sortBySource'));
 				}
 			}
 			asort($attributeCategories);
@@ -69,6 +75,7 @@ class Concrete5_Controller_Dashboard_System_Basics_TranslateSpecialItems extends
 			foreach(AttributeType::getList() as $at) {
 				$attributeTypeNames[$at->getAttributeTypeID()]['source'] = $at->getAttributeTypeName();
 			}
+			uasort($attributeTypeNames, array(__CLASS__, 'sortBySource'));
 			$permissionCategories = array();
 			$permissionKeyNames = array();
 			$permissionKeyDescriptions = array();
@@ -126,12 +133,19 @@ class Concrete5_Controller_Dashboard_System_Basics_TranslateSpecialItems extends
 					$permissionKeyNames[$pkcHandle][$pk->getPermissionKeyID()]['source'] = $pk->getPermissionKeyName();
 					$permissionKeyDescriptions[$pkcHandle][$pk->getPermissionKeyID()]['source'] = $pk->getPermissionKeyDescription();
 				}
+				if(isset($permissionKeyNames[$pkcHandle])) {
+					uasort($permissionKeyNames[$pkcHandle], array(__CLASS__, 'sortBySource'));
+				}
+				if(isset($permissionKeyDescriptions[$pkcHandle])) {
+					uasort($permissionKeyDescriptions[$pkcHandle], array(__CLASS__, 'sortBySource'));
+				}
 			}
 			asort($permissionCategories);
 			$permissionAccessEntityTypeNames = array();
 			foreach(PermissionAccessEntityType::getList() as $accessEntityType) {
 				$permissionAccessEntityTypeNames[$accessEntityType->getAccessEntityTypeID()]['source'] = $accessEntityType->getAccessEntityTypeName();
 			}
+			uasort($permissionAccessEntityTypeNames, array(__CLASS__, 'sortBySource'));
 			$permissionAccessEntityTypes = array();
 			$curLocale = Localization::activeLocale();
 			if($curLocale != $locale) {
@@ -312,5 +326,9 @@ class Concrete5_Controller_Dashboard_System_Basics_TranslateSpecialItems extends
 			}
 		}
 		return $rows;
+	}
+
+	protected static function sortBySource($a, $b) {
+		return strcasecmp($a['source'], $b['source']);
 	}
 }
