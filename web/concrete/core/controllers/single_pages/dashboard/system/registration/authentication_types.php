@@ -42,7 +42,7 @@ class Concrete5_Controller_Dashboard_System_Registration_AuthenticationTypes ext
 		} catch (Exception $e) {
 			$this->error->add($e->getMessage());
 		}
-		$this->set('message',$at->getAuthenticationTypeName()." authentication has been enabled.");
+		$this->set('message',t('%s authentication has been enabled.', $at->getAuthenticationTypeName()));
 		$this->view();
 	}
 
@@ -54,7 +54,7 @@ class Concrete5_Controller_Dashboard_System_Registration_AuthenticationTypes ext
 		} catch (Exception $e) {
 			$this->error->add($e->getMessage());
 		}
-		$this->set('message',$at->getAuthenticationTypeName()." authentication has been disabled.");
+		$this->set('message',t('%s authentication has been disabled.', $at->getAuthenticationTypeName()));
 		$this->view();
 	}
 
@@ -73,7 +73,7 @@ class Concrete5_Controller_Dashboard_System_Registration_AuthenticationTypes ext
 			$this->redirect('dashboard/system/registration/authentication_types/');
 			exit;
 		}
-		$this->set('message',$at->getAuthenticationTypeName()." authentication has been disabled.");
+        $this->set('message',t('%s authentication has been saved.', $at->getAuthenticationTypeName()));
 		$this->view();
 	}
 
