@@ -553,17 +553,17 @@ ccm_unsavedAttributes = {
 
 	// helper method that returns boolean if we have unsaved attributes
 	has: function (search_id) {
-		var has = false;
+		var has = false, search_id = (search_id) ? parseInt(search_id, 10) : search_id;
 		$.each(this.unsaved, function(id) {
-			has = (typeof search_id === 'undefined' || search_id == parseInt(id, 10));
+			has = (typeof search_id === 'undefined' || search_id === id);
 		});
 		return has;
 	},
 
 	// abstracted method to get the uakID from any jquery element within the row
 	get_id: function ($element) {
-		var $row = $element.closest('.ccm-attribute-editable-field');
-		id = $row.find('[name="uakID"]').val();
+		var $row = $element.closest('.ccm-attribute-editable-field'),
+			id = $row.find('[name="uakID"]').val();
 		return (id) ? parseInt(id, 10) : false;
 	},
 
