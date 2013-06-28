@@ -57,7 +57,7 @@ function printAttributeRow($ak, $uo, $assignment) {
 
 	$html = '
 	<tr>
-		<td width="250">' . tc('AttributeKeyName', $ak->getAttributeKeyName()) . '</th>
+		<th width="250">' . tc('AttributeKeyName', $ak->getAttributeKeyName()) . '</th>
 		<td class="ccm-attribute-editable-field-central" colspan="2">' . $text . '</td>
 	</tr>';	
 	}
@@ -525,6 +525,69 @@ if (is_object($uo)) {
 
 <script type="text/javascript">
 
+/**
+ * Handles deferring submission of the form until the "edited" attributes are saved
+ */
+ccm_unsavedAttributes = {
+
+	// our unsaved object store
+	// format id (uakID) : jQuery element (table row)
+	unsaved: {},
+
+	// adds an item to the queue
+	add: function (id, trow) {
+		id = parseInt(id, 10);
+		this.unsaved[id] = trow;
+	},
+
+	// fired on callback of the save function to remove a previously flagged item
+	remove: function (id) {
+		if (id in this.unsaved) {
+			delete this.unsaved[id];
+			if (!this.has()) {
+				jQuery.fn.dialog.hideLoader();
+				$('#ccm-user-form').submit();
+			}
+		}
+	},
+
+	// helper method that returns boolean if we have unsaved attributes
+	has: function (search_id) {
+		var has = false;
+		$.each(this.unsaved, function(id) {
+			has = (typeof search_id === 'undefined' || search_id == parseInt(id, 10));
+		});
+		return has;
+	},
+
+	// abstracted method to get the uakID from any jquery element within the row
+	get_id: function ($element) {
+		var $row = $element.closest('.ccm-attribute-editable-field');
+		id = $row.find('[name="uakID"]').val();
+		return (id) ? parseInt(id, 10) : false;
+	},
+
+	// our init function that binds the event submission
+	init: function () {
+		$('#ccm-user-form').on('submit', function() {
+			$('.ccm-attribute-editable-field-form').each(function(){
+				var $field = $(this);
+				if ($field.is(':visible')) {
+					var id = ccm_unsavedAttributes.get_id($field);
+					ccm_unsavedAttributes.add(id, $field.closest('.ccm-attribute-editable-field'));
+				}
+			});
+			if (ccm_unsavedAttributes.has()) {
+				jQuery.fn.dialog.showLoader();
+				$.each(ccm_unsavedAttributes.unsaved, function(id, trow) {
+					ccm_submitEditableProperty(trow);
+				});
+				return false;
+			}
+		});
+	}
+
+};
 
 ccm_activateEditableProperties = function() {
 	$("tr.ccm-attribute-editable-field").each(function() {
@@ -577,6 +640,9 @@ ccm_submitEditableProperty = function(trow) {
 			color: '#FFF9BB'
 		});
 
+		var uakID = ccm_unsavedAttributes.get_id(trow);
+		ccm_unsavedAttributes.remove(uakID);
+
 	});
 }
 
@@ -587,6 +653,7 @@ $(function() {
 		var html = '<label><input type="checkbox" name="gID[]" value="' + gID + '" checked /> <span>' + gName + '</span>';
 		$("#ccm-additional-groups").append(html);
 	}
+	ccm_unsavedAttributes.init();
 
 });
 </script>
