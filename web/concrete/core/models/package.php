@@ -721,6 +721,13 @@ class Concrete5_Model_Package extends Object {
 		}
 		return $packages;
 	}
-	
+
+	/**
+	 * Frees us from having to type check throughout the core where a Package object or pkgHandle could be passed
+	 * @return string
+	 */
+	public function __toString() {
+		return $this->pkgHandle;
+	}
 
 }
