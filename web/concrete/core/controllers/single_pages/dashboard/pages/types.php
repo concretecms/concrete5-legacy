@@ -24,8 +24,8 @@ class Concrete5_Controller_Dashboard_Pages_Types extends Controller {
 			else {
 				$pageCount = $ct->getUsageCount();
 				if($pageCount > 0) {
-					$replaceExistingWith = @intval($replace_existing_with);
-					if($replaceExistingWith != 0) {
+					$replaceExistingWith = Loader::helper('security')->sanitizeInt($replace_existing_with);
+					if($replaceExistingWith) {
 						if(is_object(CollectionType::getByID($replaceExistingWith))) {
 							$db->query('UPDATE Pages INNER JOIN CollectionVersions ON Pages.cID = CollectionVersions.cID SET CollectionVersions.ctID = ? WHERE Pages.cIsTemplate = 0 and CollectionVersions.ctID = ?', array($replaceExistingWith, $ct->getCollectionTypeID()));
 							$pageCount = $ct->getUsageCount();
