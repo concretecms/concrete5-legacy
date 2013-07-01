@@ -170,12 +170,14 @@ class Concrete5_Library_Events {
 					if ($ev[1] instanceof Closure) {
 						$func = $ev[1];
 						$eventReturn = call_user_func_array($func, $params);
+						CacheLocal::set('event_return', $event, $eventReturn);
 					} else {
 						if (method_exists($ev[1], $ev[2])) {
 							// Note: DO NOT DO RETURN HERE BECAUSE THEN MULTIPLE EVENTS WON'T WORK
 							$response = call_user_func_array(array($ev[1], $ev[2]), $params);
 							if(!is_null($response)) {
 								$eventReturn = $response;
+								CacheLocal::set('event_return', $event, $eventReturn);
 							}
 						}
 					}
