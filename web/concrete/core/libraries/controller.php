@@ -318,6 +318,9 @@ class Concrete5_Library_Controller {
    * @return void
 	 */
 	public function set($key, $val) {
+		if (in_array($key, array('file'))) {
+                	throw new Exception(t("illegal variable name '%s' in set method.", $key));
+		}
 		$loc = CacheLocal::get();
 		$loc->cache['controllerSets'][$key] = $val;
 		$this->sets[$key] = $val;
