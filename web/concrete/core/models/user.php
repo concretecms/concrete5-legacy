@@ -67,6 +67,14 @@
 			}
 			return $nu;
 		}
+
+		/**
+		 * Static function to get the current User object
+		 * @return [object] User
+		 */
+		public static function getCurrentUser() {
+			return new self();
+		}
 		
 		protected static function regenerateSession() {
 			unset($_SESSION['dashboardMenus']);
