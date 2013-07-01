@@ -263,6 +263,22 @@ class Concrete5_Model_PageTheme extends Object {
 	public function outputStyleSheet($file, $styles = false) {
 		print $this->parseStyleSheet($file, $styles);
 	}
+
+        public function replaceImages($matches) {
+            $filename = $this->getThemeDirectory() . '/' . $matches[2];
+            $filesize = filesize($filename);
+            if (defined('EMBED_CSS_IMAGES') && EMBED_CSS_IMAGES) {
+                $mh = Loader::helper('mime');
+                $fileExtension = substr($filename, strrpos($filename, '.')+1);
+                $mimeType = $mh->mimeFromExtension($fileExtension);
+
+                return $matches[1] . 'data:' . $mimeType . ';base64,' . base64_encode(file_get_contents($filename));
+            }
+            else {
+                return $matches[1] . $this->getThemeURL() .'/'. $matches[2];                                
+            }            
+        }
+
 	
 	public function parseStyleSheet($file, $styles = false) {
 		$env = Environment::get();
@@ -272,11 +288,11 @@ class Concrete5_Model_PageTheme extends Object {
 			$contents = $fh->getContents($themeRec->file);
 			
 			// replace all url( instances with url starting with path to theme
-			$contents = preg_replace('/(url\(\')([^\)]*)/', '$1' . $this->getThemeURL() . '/$2', $contents);
-         	$contents = preg_replace('/(url\(")([^\)]*)/', '$1' . $this->getThemeURL() . '/$2', $contents);
-            $contents = preg_replace('/(url\((?![\'"]))([^\)]*)/', '$1' . $this->getThemeURL() . '/$2', $contents);
+			$contents = preg_replace_callback('/(url\(\')([^\)]*)/', array($this, 'replaceImages'), $contents);
+                        $contents = preg_replace_callback('/(url\(")([^\)]*)/', array($this, 'replaceImages'), $contents);
+                        $contents = preg_replace_callback('/(url\((?![\'"]))([^\)]*)/', array($this, 'replaceImages'), $contents);
+			
 			$contents = str_replace('url(' . $this->getThemeURL() . '/data:image', 'url(data:image', $contents);
-
 			
 			// load up all tokens from the db for this stylesheet.
 			// if a replacement style array is passed then we use that instead of the database (as is the case when previewing)
