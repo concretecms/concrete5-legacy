@@ -73,8 +73,7 @@
 		 * @return [object] User
 		 */
 		public static function getCurrentUser() {
-			$u = new self();
-			return ($u->isLoggedIn()) ? $u : null;
+			return self::isLoggedIn() ? new User() : null;
 		}
 		
 		protected static function regenerateSession() {
