@@ -54,6 +54,6 @@
 		<field name="showDescriptions" type="I">
 			<default value="0"/> 
 		</field>
-				
+		<field name="dateFilter" type="C" size="32"></field>
 	</table>
 </schema>

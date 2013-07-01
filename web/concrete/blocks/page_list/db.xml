@@ -57,5 +57,6 @@
 		<field name="truncateChars" type="I">
 			<default value="128"/>
 		</field>		
+		<field name="dateFilter" type="C" size="32"></field>
 	</table>
 </schema>

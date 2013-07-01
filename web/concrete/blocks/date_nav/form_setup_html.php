@@ -1,4 +1,6 @@
-<?php  defined('C5_EXECUTE') or die("Access Denied."); ?>  
+<?php  defined('C5_EXECUTE') or die("Access Denied.");
+$form_helper = Loader::helper('form');
+?>
 
 <style>
 #ccm-pagelist-truncateTxt.faintText, #ccm-pagelist-truncateTitleTxt.faintText{ color:#999; }
@@ -68,8 +70,15 @@ $("select#cParentIDLocation").change(function() {
 			}
 			?>
 		</div> 
-	</div> 
-	
+	</div>
+
+	<div class="control-group">
+		<?php print $form_helper->label('dateFilter', t('Filter By Date')); ?>
+		<div class="controls">
+			<?php print $form_helper->select('dateFilter', $controller->getDateFilterOptions(), $controller->dateFilter); ?>
+		</div>
+	</div>
+
 	<div class="ccm-block-field-group">
 	 	<h2><?php echo t('Display Format')?></h2>
 	 	<label class="radio inline">
