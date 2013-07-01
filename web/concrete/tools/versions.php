@@ -58,6 +58,17 @@
 		exit;
 	}
 	
+	if($_GET['vtask'] == 'update_version_comments') {
+		if(isset($_POST['newVersionComment']) && is_string($_POST['newVersionComment'])) {
+			$v = CollectionVersion::get($c, $_GET['cvID']);
+			if(!$v->isError()) {
+				if($v->getVersionAuthorUserID() == $u->getUserID()) {
+					$v->setComment($_POST['newVersionComment']);
+				}
+			}
+			exit;
+		}
+	}
 	
 	if (!$isCheckedOut) {
 		
@@ -136,22 +147,32 @@ if (!$_GET['versions_reloaded']) { ?>
 <script type="text/javascript">
 
 var ccm_versionsChecked = 0;
+var ccm_mineVersionsChecked = 0;
 /* if this gets set to true, exiting this pane reloads the page */
 var ccm_versionsMustReload = false;
+var ccm_versionComments;
 
 $(function() {
 	$('.tooltip').hide();	
 	$('button[name=vCompare]').tooltip();
 	$('button[name=vApprove]').tooltip();
 	$('button[name=vCopy]').tooltip();
+	$('button[name=vRename]').tooltip();
 	$('button[name=vRemove]').tooltip();
 	$(".ccm-version").dialog();
 	
 	$("input[type=checkbox]").click(function() {
+		var mine = $(this).closest("tr").hasClass("version-mine");
 		if ($(this).get(0).checked) {
 			ccm_versionsChecked++;
+			if(mine) {
+				ccm_mineVersionsChecked++;
+			}
 		} else {
 			ccm_versionsChecked--;
+			if(mine) {
+				ccm_mineVersionsChecked--;
+			}
 		}
 		
 		ccm_setSelectors();
@@ -167,6 +188,9 @@ $(function() {
 ccm_setSelectors = function() {
 	if (ccm_versionsChecked < 0) {
 		ccm_versionsChecked = 0;
+	}
+	if (ccm_mineVersionsChecked < 0) {
+		ccm_mineVersionsChecked = 0;
 	}
 	
 	/* first, we grab whether an active version is checked, so we can use that later */
@@ -195,8 +219,10 @@ ccm_setSelectors = function() {
 
 	if (ccm_versionsChecked == 1) {
 		$("button[name=vCopy]").prop('disabled', false);
+		$("button[name=vRename]").prop('disabled', ccm_mineVersionsChecked != 1);
 	} else {
 		$("button[name=vCopy]").prop('disabled', true);
+		$("button[name=vRename]").prop('disabled', true);
 	}
 	
 }
@@ -274,6 +300,61 @@ $("button[name=vCopy]").click(function() {
 		jQuery.fn.dialog.hideLoader();
 	});
 	
+});
+
+$("button[name=vRename]").click(function() {
+	var cvID = $("table#ccm-versions-list tr.version-mine input[type=checkbox]:checked").get(0).value, $dialog, $comments;
+	$(document.body).append($dialog = $('<div class="ccm-ui"><h4><?php echo t('Version Comments'); ?></h4></div>'));
+	$dialog.append($comments = $('<input type="text" maxlength="255" style="width:520px" />'));
+	if(typeof(ccm_versionComments[cvID]) != "string") {
+		ccm_versionComments[cvID] = "";
+	}
+	$comments.val(ccm_versionComments[cvID]);
+	$dialog.dialog({
+		title: "<?php echo t('Change version comments'); ?>",
+		modal: true,
+		width: 550,
+		resizable: false,
+		open: function() {
+			$comments.focus();
+		},
+		close: function() {
+			$dialog.remove();
+		},
+		dialogClass: "ccm-ui",
+		buttons: [
+			{
+				text: "<?php echo t('Cancel'); ?>",
+				"class": "btn",
+				click: function() {
+					$dialog.dialog("close");
+				}
+			},
+			{
+				text: "<?php echo t('Save'); ?>",
+				"class": "btn primary",
+				click: function() {
+					var newVersionComment;
+					newVersionComment = $.trim($comments.val());
+					if(newVersionComment == ccm_versionComments[cvID]) {
+						$dialog.dialog("close");
+						return;
+					}
+					jQuery.fn.dialog.showLoader();
+					$.post(
+						CCM_TOOLS_PATH + '/versions.php?cID=<?=$c->getCollectionID()?>&cvID=' + cvID + '&vtask=update_version_comments<?=$token?>',
+						{newVersionComment: newVersionComment},
+						function() {
+							ccm_versionComments[cvID] = newVersionComment;
+							$("#ccm-version-row" + cvID).find(".ccm-version").text(newVersionComment);
+							jQuery.fn.dialog.hideLoader();
+							$dialog.dialog("close");
+						}
+					);
+				}
+			}
+		]
+	});
 });
 
 ccm_goToVersionPage = function(p, url) {
@@ -356,6 +437,7 @@ $("button[name=vRemove]").click(function() {
 	if (!$ih->inDashboard($c)) { ?><button class="btn" name="vCompare" title="<?=t('Compare')?>" disabled><i class="icon-zoom-in"></i></button><? } ?>
 	<button class="btn" name="vApprove" title="<?=t('Approve')?>" disabled><i class="icon-thumbs-up"></i></button>
 	<button class="btn" name="vCopy" value="<?=t('Copy')?>" title="<?=t('Copy Version')?>" disabled><i class="icon-plus-sign"></i></button>
+	<button class="btn" name="vRename" value="<?=t('Rename')?>" title="<?=t('Rename Version')?>" disabled><i class="icon-edit"></i></button>
 	<? if ($cp->canDeletePageVersions()) { ?>
 		<button class="btn" name="vRemove" value="<?=t('Remove')?>" disabled><i class="icon-trash"></i></button>
 	<? } ?>
@@ -363,6 +445,7 @@ $("button[name=vRemove]").click(function() {
 		</th>
 	</tr>
 	<? 
+	$versionComments = array();
 	$vIsPending = true;
 	foreach ($vArray as $v) { 
 		if ($v->isApproved()) {
@@ -378,11 +461,14 @@ $("button[name=vRemove]").click(function() {
 		}
 		
 		if ($vIsPending) {
-			$class .= 'version-pending';
+			$class .= 'version-pending ';
 		} else if ($v->isApproved()) {
-			$class .= "version-active";
+			$class .= "version-active ";
 		}
-		
+		if($v->getVersionAuthorUserID() == $u->getUserID()) {
+			$class .= 'version-mine ';
+		}
+		$versionComments[$v->getVersionID()] = $v->getVersionComments();
 	?> 
 	<tr id="ccm-version-row<?=$v->getVersionID()?>" class="<?=$class?>">
 		<td style="text-align: center"><input type="checkbox" <? if ($vIsPending) { ?> class="cb-version-pending"<? } else if ($v->isApproved()) { ?> class="cb-version-active"<? } else { ?> class="cb-version-old" <? } ?> id="cb<?=$v->getVersionID()?>" name="vID[]" value="<?=$v->getVersionID()?>" /></td>
@@ -400,6 +486,9 @@ $("button[name=vRemove]").click(function() {
 	</tr>	
 	<? } ?>
 	</table>
+	<script type="text/javascript">
+	ccm_versionComments = <?php echo Loader::helper('json')->encode($versionComments); ?>;
+	</script>
 	<? if ($total > 20 ) { ?>
 	<div class="ccm-ui">
 		<div class="pagination ccm-pagination">
