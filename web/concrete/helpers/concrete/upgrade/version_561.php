@@ -35,6 +35,11 @@ class ConcreteUpgradeVersion561Helper {
 		if (is_object($bt)) {
 			$bt->refresh();
 		}
+		
+		$bt = BlockType::getByHandle('image');
+		if (is_object($bt)) {
+			$bt->refresh();
+		}
 
 	}
 
