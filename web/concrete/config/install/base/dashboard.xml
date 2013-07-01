@@ -477,6 +477,13 @@
 				</attributekey>
 			</attributes>
         </page>
+        <page name="Translate Special Items" path="/dashboard/system/basics/translate_special_items" filename="/dashboard/system/basics/interface.php" pagetype="" description="" package="">
+			<attributes>
+				<attributekey handle="meta_keywords">
+					<value>translate special items, translation, attribute names, attribute set names, attribute type names, permission names, permission descriptions, access entity type names</value>
+				</attributekey>
+			</attributes>
+        </page>
 
         <page name="SEO &amp; Statistics" path="/dashboard/system/seo" filename="/dashboard/system/seo/view.php" pagetype="" description="Enable pretty URLs, statistics and tracking codes." package=""/>
         <page name="Pretty URLs" path="/dashboard/system/seo/urls" filename="/dashboard/system/seo/urls.php" pagetype="" description="" package="">
