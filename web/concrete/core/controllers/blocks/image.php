@@ -72,6 +72,7 @@
 			$args['fID'] = ($args['fID'] != '') ? $args['fID'] : 0;
 			$args['maxWidth'] = (intval($args['maxWidth']) > 0) ? intval($args['maxWidth']) : 0;
 			$args['maxHeight'] = (intval($args['maxHeight']) > 0) ? intval($args['maxHeight']) : 0;
+			$args['percentageWidth'] = (intval($args['percentageWidth']) > 0) ? intval($args['percentageWidth']) : 0;
 			switch (intval($args['linkType'])) {
 				case 1:
 					$args['externalLink'] = '';
@@ -117,6 +118,8 @@
 			$img = "<img border=\"0\" class=\"ccm-image-block\" alt=\"{$this->altText}\" src=\"{$relPath}\" {$sizeStr} ";
 			$img .= ($align) ? "align=\"{$align}\" " : '';
 			
+			$style = ($style) ? $style : '';
+			$style .= ($this->percentageWidth > 0) ? "width:{$this->percentageWidth}%; height: auto;" : '';
 			$img .= ($style) ? "style=\"{$style}\" " : '';
 			if($this->fOnstateID != 0) {
 				$fos = $this->getFileOnstateObject();
