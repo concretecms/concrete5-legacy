@@ -70,7 +70,7 @@
 
 		/**
 		 * Static function to get the current User object
-		 * @return [object] User
+		 * @return User|null
 		 */
 		public static function getCurrentUser() {
 			return self::isLoggedIn() ? new User() : null;
