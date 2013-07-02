@@ -50,7 +50,6 @@ class Concrete5_Model_StartingPointPackage extends Package {
 			$bi = $b->getInstance();
 			$bi->setupAndRun('view');
 		}
-		Loader::helper('concrete/interface')->cacheInterfaceItems();
 	}
 	
 	public function install_attributes() {
@@ -140,7 +139,7 @@ class Concrete5_Model_StartingPointPackage extends Package {
 		}
 		$uEmail = INSTALL_USER_EMAIL;
 		UserInfo::addSuperUser($uPasswordEncrypted, $uEmail);
-		$u = User::getByUserID(USER_SUPER_ID, true, false);
+		$u = User::getByUserID(USER_SUPER_ID, true);
 		
 		Loader::library('mail/importer');
 		MailImporter::add(array('miHandle' => 'private_message'));
