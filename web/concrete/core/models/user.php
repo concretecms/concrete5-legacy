@@ -67,6 +67,14 @@
 			}
 			return $nu;
 		}
+
+		/**
+		 * Static function to get the current User object
+		 * @return User|null
+		 */
+		public static function getCurrentUser() {
+			return self::isLoggedIn() ? new User() : null;
+		}
 		
 		protected static function regenerateSession() {
 			unset($_SESSION['dashboardMenus']);
