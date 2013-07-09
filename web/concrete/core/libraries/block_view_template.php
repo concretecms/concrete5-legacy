@@ -60,13 +60,12 @@ class Concrete5_Library_BlockViewTemplate {
 		if ( substr( $bFilename, -4 ) === ".php" ) {
 			$bFilenameWithoutDotPhp = substr( $bFilename, 0, strlen( $bFilename ) -4 );
 		}
-
 		if ($bFilename) {
 			if (is_file(DIR_FILES_BLOCK_TYPES . '/' . $obj->getBlockTypeHandle() . '/' . DIRNAME_BLOCK_TEMPLATES . '/' . $bFilename)) {
 				$template = DIR_FILES_BLOCK_TYPES . '/' . $obj->getBlockTypeHandle() . '/' . DIRNAME_BLOCK_TEMPLATES . '/' . $bFilename;
 				$bv = new BlockView();
 				$bv->setBlockObject($obj);
-				$this->baseURL = $bv->getBlockURL();
+				$this->baseURL = $bv->getBlockURL($this->render);
 				$this->basePath = $bv->getBlockPath($this->render);
 			} else if (is_file(DIR_FILES_BLOCK_TYPES_CORE . '/' . $obj->getBlockTypeHandle() . '/' . DIRNAME_BLOCK_TEMPLATES . '/' . $bFilename)) {
 				$template = DIR_FILES_BLOCK_TYPES_CORE . '/' . $obj->getBlockTypeHandle() . '/' . DIRNAME_BLOCK_TEMPLATES . '/' . $bFilename;
@@ -218,4 +217,3 @@ class Concrete5_Library_BlockViewTemplate {
 
 
 }
-	
