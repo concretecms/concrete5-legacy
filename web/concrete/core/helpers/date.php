@@ -198,8 +198,6 @@ class Concrete5_Helper_Date {
 		$format[] = t2("%s second", '%s seconds', $interval->s, $interval->s);
 		
 		$result = implode(", ",array_slice($format,0,$precise + 1));
-		
 		return $result;
-		
 	}
 }
