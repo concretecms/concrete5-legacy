@@ -22,6 +22,12 @@ class Concrete5_Model_UserList extends DatabaseItemList {
 	public $showInactiveUsers;
 	public $showInvalidatedUsers=0;
 	public $searchAgainstEmail=0;
+	public $sortUserStatus=0;
+	
+	public function sortByStatus($dir="asc") {
+		$this->sortUserStatus = 1;
+		parent::sortBy('uStatus', $dir);
+	}
 	
 	//Filter by uName
 	public function filterByUserName($type) {
@@ -97,6 +103,7 @@ class Concrete5_Model_UserList extends DatabaseItemList {
 	protected function createQuery(){
 		if(!$this->queryCreated){
 			$this->setBaseQuery();
+			
 			if(!isset($this->showInactiveUsers)) $this->filter('u.uIsActive', 1);
 			if(!$this->showInvalidatedUsers) $this->filter('u.uIsValidated', 0, '!=');
 			$this->setupAttributeFilters("left join UserSearchIndexAttributes on (UserSearchIndexAttributes.uID = u.uID)");
@@ -105,7 +112,16 @@ class Concrete5_Model_UserList extends DatabaseItemList {
 	}	
 	
 	protected function setBaseQuery() {
-		$this->setQuery('SELECT DISTINCT u.uID, u.uName FROM Users u ');
+		$sql = '';
+		if ($this->sortUserStatus) {
+			// When uStatus column is selected, we also get the "status" column for
+			// multilingual sorting purposes.
+			$sql =
+				", CASE WHEN u.uIsActive = 1 THEN '" . t("Active") . "' " .
+				"WHEN u.uIsValidated = 1 AND u.uIsActive = 0 THEN '". t("Inactive") . "' " .
+				"ELSE '". t("Unvalidated") . "' END AS uStatus";
+		}
+		$this->setQuery('SELECT DISTINCT u.uID, u.uName' . $sql . ' FROM Users u ');
 	}
 
 	/* magic method for filtering by page attributes. */
@@ -134,6 +150,18 @@ class UserSearchDefaultColumnSet extends DatabaseItemListColumnSet {
 		return '<a href="mailto:' . $ui->getUserEmail() . '">' . $ui->getUserEmail() . '</a>';
 	}
 	
+	public function getUserStatus($ui) {		
+		if ($ui->isActive()) {
+			$currentStatus = t('Active');
+		} elseif ($ui->isValidated()) {
+			$currentStatus = t('Inactive');
+		} else {
+			$currentStatus = t('Unvalidated');
+		}
+		
+		return $currentStatus;
+	}
+	
 	public static function getUserDateAdded($ui) {
 		return date(DATE_APP_DASHBOARD_SEARCH_RESULTS_USERS, strtotime($ui->getUserDateAdded()));
 	}
@@ -142,7 +170,8 @@ class UserSearchDefaultColumnSet extends DatabaseItemListColumnSet {
 		$this->addColumn(new DatabaseItemListColumn('uName', t('Username'), array('UserSearchDefaultColumnSet', 'getUserName')));
 		$this->addColumn(new DatabaseItemListColumn('uEmail', t('Email'), array('UserSearchDefaultColumnSet', 'getUserEmail')));
 		$this->addColumn(new DatabaseItemListColumn('uDateAdded', t('Last Modified'), array('UserSearchDefaultColumnSet', 'getUserDateAdded')));
-		$this->addColumn(new DatabaseItemListColumn('uNumLogins', t('# Logins'), 'getNumLogins')); 
+		$this->addColumn(new DatabaseItemListColumn('uStatus', t('Status'), array('UserSearchDefaultColumnSet', 'getUserStatus')));
+		$this->addColumn(new DatabaseItemListColumn('uNumLogins', t('# Logins'), 'getNumLogins'));		
 		$date = $this->getColumnByKey('uDateAdded');
 		$this->setDefaultSortColumn($date, 'desc');
 	}

@@ -19,6 +19,7 @@ $assignment = $pke->getMyAssignment();
 
 $searchInstance = (isset($searchInstance)?$searchInstance:'user');
 
+
 function printAttributeRow($ak, $uo, $assignment) {
 	$vo = $uo->getAttributeValueObject($ak);
 	$value = '';
@@ -64,12 +65,11 @@ function printAttributeRow($ak, $uo, $assignment) {
 	print $html;
 }
 
-
 if (intval($_GET['uID'])) {
-	
 	$uo = UserInfo::getByID(intval($_GET['uID']));
-	if (is_object($uo)) {
 	
+	if (is_object($uo)) {
+
 		if (!PermissionKey::getByHandle('access_user_search')->validate($uo)) { 
 			throw new Exception(t('Access Denied.'));
 		}
@@ -88,24 +88,16 @@ if (intval($_GET['uID'])) {
 			if ($_GET['task'] == 'activate') {
 				if( !$valt->validate("user_activate") ){
 					throw new Exception(t('Invalid token.  Unable to activate user.'));
-				}else{		
-					$uo->activate();
-					$mh = Loader::helper('mail');
-					$mh->to($uo->getUserEmail());
-					$mh->load('user_registered_approval_complete');
-					if(defined('EMAIL_ADDRESS_REGISTER_NOTIFICATION_FROM')) {
-						$mh->from(EMAIL_ADDRESS_REGISTER_NOTIFICATION_FROM, t('Website Registration Notification'));
+				}else{
+					
+					if ($uo->triggerActivate()) {
+						// empty workflow is triggered, requested user is activated	
+						$uo = UserInfo::getByID(intval($_GET['uID']));
+						$this->controller->redirect('/dashboard/users/search?uID=' . intval($_GET['uID']) . '&activated=1');
 					} else {
-						$adminUser = UserInfo::getByID(USER_SUPER_ID);
-						$mh->from($adminUser->getUserEmail(), t('Website Registration Notification'));
+						// normal workflow is triggered,
+						$this->controller->redirect('/dashboard/users/search?uID=' . intval($_GET['uID']));	
 					}
-					$mh->addParameter('uID',    $uo->getUserID());
-					$mh->addParameter('user',   $uo);
-					$mh->addParameter('uName',  $uo->getUserName());
-					$mh->addParameter('uEmail', $uo->getUserEmail());
-					$mh->sendMail();
-					$uo = UserInfo::getByID(intval($_GET['uID']));
-					$this->controller->redirect('/dashboard/users/search?uID=' . intval($_GET['uID']) . '&activated=1');
 				}
 			}
 
@@ -113,9 +105,17 @@ if (intval($_GET['uID'])) {
 				if( !$valt->validate("user_deactivate") ){
 					throw new Exception(t('Invalid token.  Unable to deactivate user.'));
 				}else{
-					$uo->deactivate();
-					$uo = UserInfo::getByID(intval($_GET['uID']));
-					$this->controller->redirect('/dashboard/users/search?uID=' . intval($_GET['uID']) . '&deactivated=1');
+		
+					if ($uo->triggerDeactivate()) {
+						// empty workflow is triggered, requested user is activated
+						$uo = UserInfo::getByID(intval($_GET['uID']));							
+						$this->controller->redirect('/dashboard/users/search?uID=' . intval($_GET['uID']) . '&deactivated=1');
+					} else {
+						// normal workflow is triggered,						
+						$this->controller->redirect('/dashboard/users/search?uID=' . intval($_GET['uID']));
+					}
+					
+					
 				}
 			}	
 
@@ -140,7 +140,18 @@ if (intval($_GET['uID'])) {
 }
 
 
-if (is_object($uo)) { 
+if (is_object($uo)) {
+	$workflowRequestActions = array();
+	$uID = $uo->getUserID();		
+	$workflowList = UserWorkflowProgress::getList($uID);
+	
+	if (count($workflowList) > 0) {
+		foreach($workflowList as $wp) {
+			$wr = $wp->getWorkflowRequestObject();
+			$workflowRequestActions[] = $wr->getRequestAction();								
+		}
+	}
+	 
 	$gl = new GroupList($uo, true);
 	
 	if ($pke->validate() && ($_GET['task'] == 'edit' || $_POST['edit'] && !$editComplete)) { 
@@ -357,6 +368,7 @@ if (is_object($uo)) {
     
 	<? } else { ?>
 
+		
 	<?=Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('View User'), t('View User accounts.'), false, false);?>
 	<div class="ccm-pane-options">
 		<? if ($uo->getUserID() != USER_SUPER_ID || $u->isSuperUser()) { ?>
@@ -376,10 +388,21 @@ if (is_object($uo)) {
 			<? } ?>
 			
 			<? if ($uo->getUserID() != USER_SUPER_ID && $tp->canActivateUser()) { ?>
-				<? if ($uo->isActive()) { ?>
-					<? print $ih->button(t('Deactivate User'), $this->url('/dashboard/users/search?uID=' . intval($uID) . '&task=deactivate&ccm_token='.$valt->generate('user_deactivate')), 'left');?>
+				<? if ($uo->isActive()) { ?>					 
+					<? 	if (!in_array("deactivate", $workflowRequestActions)) {
+							print $ih->button(t('Deactivate User'), $this->url('/dashboard/users/search?uID=' . intval($uID) . '&task=deactivate&ccm_token='.$valt->generate('user_deactivate')), 'left');
+						}						
+					?>						
 				<? } else { ?>
-					<? print $ih->button(t('Activate User'), $this->url('/dashboard/users/search?uID=' . intval($uID) . '&task=activate&ccm_token='.$valt->generate('user_activate')), 'left');?>
+					
+					<?  if ($uo->isValidated()) {
+							if ((!in_array("activate", $workflowRequestActions) && !in_array("register_activate", $workflowRequestActions))){
+								// show activate button in edit user page									   
+								print $ih->button(t('Activate User'), $this->url('/dashboard/users/search?uID=' . intval($uID) . '&task=activate&ccm_token='.$valt->generate('user_activate')), 'left');
+							}
+						}
+						
+					?>
 				<? } ?>
 			<? } ?>
 		
@@ -428,7 +451,10 @@ if (is_object($uo)) {
 				}
 				</script>
 	
-				<? print $ih->button_js(t('Delete User Account'), "deleteUser()", 'left', 'error');?>
+				
+				<? if (!in_array("delete", $workflowRequestActions)) {
+					print $ih->button_js(t('Delete User Account'), "deleteUser()", 'left', 'error');
+				} ?>
 	
 			<? } ?>
 		<? } ?>
@@ -581,6 +607,7 @@ ccm_submitEditableProperty = function(trow) {
 }
 
 $(function() {
+
 	ccm_activateEditableProperties();
 	$("#groupSelector").dialog();
 	ccm_triggerSelectGroup = function(gID, gName) {
@@ -588,6 +615,44 @@ $(function() {
 		$("#ccm-additional-groups").append(html);
 	}
 
+	<?php
+	// if current user is activated/deactivated, and workflow is attached, corresponding "blue status bar" is triggered, start workflow for users
+	if (count($workflowList)) { ?>
+		$("body").append("<div id='ccm-page-controls-wrapper' ></div>");
+		<?php  foreach($workflowList as $wp) { ?>
+			<? 	$wr = $wp->getWorkflowRequestObject(); 
+				$wf = $wp->getWorkflowObject(); ?>
+				
+				sbitem = new ccm_statusBarItem();
+				sbitem.setCSSClass('<?=$wr->getWorkflowRequestStyleClass()?>');
+				sbitem.setDescription('<?=$wf->getWorkflowProgressCurrentDescription($wp)?>');
+				sbitem.setAction('<?=$wp->getWorkflowProgressFormAction()?>');
+				sbitem.enableAjaxForm();
+				<? $actions = $wp->getWorkflowProgressActions(); ?>
+				<? foreach($actions as $act) { ?>							
+					
+					<? if ($act->getWorkflowProgressActionURL() == '') { ?>								
+						btn = new ccm_statusBarItemButton();
+						btn.setLabel('<?=$act->getWorkflowProgressActionLabel()?>');
+						btn.setCSSClass('<?=$act->getWorkflowProgressActionStyleClass()?>');
+						btn.setInnerButtonLeftHTML('<?=$act->getWorkflowProgressActionStyleInnerButtonLeftHTML()?>');
+						btn.setInnerButtonRightHTML('<?=$act->getWorkflowProgressActionStyleInnerButtonRightHTML()?>');
+						btn.setAction('<?=$act->getWorkflowProgressActionTask()?>');
+						
+						<? if (count($act->getWorkflowProgressActionExtraButtonParameters()) > 0) { ?>
+							<? foreach($act->getWorkflowProgressActionExtraButtonParameters() as $key => $value) { ?>
+								btn.addAttribute('<?=$key?>', '<?=$value?>');
+							<? } ?>
+						<? } ?>
+					
+						sbitem.addButton(btn);
+					<? } ?>							
+					
+				<? } ?>
+				ccm_statusBar.addItem(sbitem);
+				ccm_statusBar.activate();
+		<?php	} ?>
+	<?php	} // end workflow for users?>
 });
 </script>
 

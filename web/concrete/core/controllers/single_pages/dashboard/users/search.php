@@ -37,6 +37,12 @@ class Concrete5_Controller_Dashboard_Users_Search extends Controller {
 		if ($_REQUEST['user_created']) {
 			$this->set('message', t('User created.'));
 		}
+		if ($_REQUEST['workflow_canceled']) {
+			$this->set('message', t('Workflow request is canceled.'));
+		}
+		if ($_REQUEST['deleted']) {
+			$this->set('message', t('User %s has been deleted.', $_REQUEST['username']));
+		}
 
 	}
 	
@@ -199,8 +205,9 @@ class Concrete5_Controller_Dashboard_Users_Search extends Controller {
 		$userList->sortBy('uDateAdded', 'desc');
 		$userList->showInactiveUsers = true;
 		$userList->showInvalidatedUsers = true;
-		
+
 		$columns = UserSearchColumnSet::getCurrent();
+	
 		$this->set('columns', $columns);
 
 		if ($_GET['keywords'] != '') {
@@ -209,6 +216,11 @@ class Concrete5_Controller_Dashboard_Users_Search extends Controller {
 		
 		if ($_REQUEST['numResults'] && Loader::helper('validation/numbers')->integer($_REQUEST['numResults'])) {
 			$userList->setItemsPerPage($_REQUEST['numResults']);
+		}
+
+		if ($_REQUEST[$userList->getQueryStringSortVariable()] == 'uStatus') {
+			
+			$userList->sortByStatus($_REQUEST[$userList->getQueryStringSortDirectionVariable()]);
 		}
 		
 		$pk = PermissionKey::getByHandle('access_user_search');
@@ -369,7 +381,7 @@ class Concrete5_Controller_Dashboard_Users_Search extends Controller {
 
 			$delUI=UserInfo::getByID($delUserId); 
 			
-			if(!($delUI instanceof UserInfo)) {
+			if (!($delUI instanceof UserInfo)) {
 				throw new Exception(t('Invalid user ID.'));
 			}
 
@@ -386,18 +398,21 @@ class Concrete5_Controller_Dashboard_Users_Search extends Controller {
 				throw new Exception(t('You may not remove the super user account.'));
 			}			
 
-			if($delUserId==$u->getUserID()) {
+			if ($delUserId==$u->getUserID()) {
 				throw new Exception(t('You cannot delete your own user account.'));
 			}
-
 
 			$valt = Loader::helper('validation/token');
 			if (!$valt->validate('delete_account', $token)) {
 				throw new Exception($valt->getErrorMessage());
 			}
 			
-			$delUI->delete(); 
-			$resultMsg=t('User deleted successfully.');
+			if ($delUI->triggerDelete()) {
+				$resultMsg=t('User deleted successfully.');
+			} else {
+				$resultMsg=t('User deletion workflow request is created successfully.');
+				$this->redirect('/dashboard/users/search?uID=' . $delUserId);
+			}
 			
 			$_REQUEST=array();
 			$_GET=array();

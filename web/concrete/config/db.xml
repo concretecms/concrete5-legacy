@@ -3055,5 +3055,17 @@
       <UNSIGNED/>
     </field>
   </table>
+  <table name="UserWorkflowProgress">
+    <field name="uID" type="I" size="10">
+      <KEY/>
+      <DEFAULT value="0"/>
+      <UNSIGNED/>
+    </field>
+    <field name="wpID" type="I" size="10">
+      <KEY/>
+      <DEFAULT value="0"/>
+      <UNSIGNED/>
+    </field>
+  </table>
 
   </schema>

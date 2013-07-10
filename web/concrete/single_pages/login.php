@@ -54,13 +54,13 @@ $(function() {
 	
 	</div>
 
-<? }elseif($validated) { ?>
+<? }elseif($validated || $workflowPending) { ?>
 
 <h3><?=t('Email Address Verified')?></h3>
 
 <div class="success alert-message block-message">
 <p>
-<?=t('The email address <b>%s</b> has been verified and you are now a fully validated member of this website.', $uEmail)?>
+<?= $workflowPending ? t('The email address <b>%s</b> has been verified. Your account is currently pending for activation. After your account has been activated, you become a member of this website and are able to login.', $uEmail) : t('The email address <b>%s</b> has been verified and you are now a fully validated member of this website.', $uEmail)?>
 </p>
 <div class="alert-actions"><a class="btn small" href="<?=$this->url('/')?>"><?=t('Continue to Site')?></a></div>
 </div>

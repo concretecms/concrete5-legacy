@@ -194,35 +194,38 @@ class Concrete5_Controller_Register extends Controller {
 					$rcID = 0;
 				}
 				
-				// now we check whether we need to validate this user's email address
-				if (defined("USER_VALIDATE_EMAIL") && USER_VALIDATE_EMAIL) {
-					if (USER_VALIDATE_EMAIL > 0) {
-						$uHash = $process->setupValidation();
-						
-						$mh = Loader::helper('mail');
-						if (defined('EMAIL_ADDRESS_VALIDATE')) {
-							$mh->from(EMAIL_ADDRESS_VALIDATE,  t('Validate Email Address'));
-						}
-						$mh->addParameter('uEmail', $_POST['uEmail']);
-						$mh->addParameter('uHash', $uHash);
-						$mh->to($_POST['uEmail']);
-						$mh->load('validate_user_email');
-						$mh->sendMail();
-
-						//$this->redirect('/register', 'register_success_validate', $rcID);
-						$redirectMethod='register_success_validate';
-						$registerData['msg']= join('<br><br>',$this->getRegisterSuccessValidateMsgs());
-						
-						$u->logout();
-
+				// Call deactivate() separately because someone might be still attaching
+				// to the on_user_deactivate method during the registration.
+				// This used to be in the non-validation case only but with the workflow,
+				// we need to default the new user to inactive (uIsActive=0).
+				$process->deactivate();
+				
+				if (defined("USER_VALIDATE_EMAIL") && USER_VALIDATE_EMAIL > 0) {
+					$uHash = $process->setupValidation();
+					
+					$mh = Loader::helper('mail');
+					if (defined('EMAIL_ADDRESS_VALIDATE')) {
+						$mh->from(EMAIL_ADDRESS_VALIDATE,  t('Validate Email Address'));
 					}
-				} else if(defined('USER_REGISTRATION_APPROVAL_REQUIRED') && USER_REGISTRATION_APPROVAL_REQUIRED) {
-					$ui = UserInfo::getByID($u->getUserID());
-					$ui->deactivate();
-					//$this->redirect('/register', 'register_pending', $rcID);
-					$redirectMethod='register_pending';
-					$registerData['msg']=$this->getRegisterPendingMsg();
+					$mh->addParameter('uEmail', $_POST['uEmail']);
+					$mh->addParameter('uHash', $uHash);
+					$mh->to($_POST['uEmail']);
+					$mh->load('validate_user_email');
+					$mh->sendMail();
+
+					//$this->redirect('/register', 'register_success_validate', $rcID);
+					$redirectMethod='register_success_validate';
+					$registerData['msg']= join('<br><br>',$this->getRegisterSuccessValidateMsgs());
+					
+					
 					$u->logout();
+				} else {
+					$process->markValidated();
+					if (!$process->triggerActivate('register_activate', USER_SUPER_ID)) {
+						$redirectMethod='register_pending';
+						$registerData['msg']=$this->getRegisterPendingMsg();
+						$u->logout();
+					}
 				}
 				
 				if (!$u->isError()) {
@@ -267,7 +270,7 @@ class Concrete5_Controller_Register extends Controller {
 		$this->set('successMsg', $this->getRegisterSuccessMsg() );
 	}
 
-	public function register_pending() {
+	public function register_pending($rcID = 0) {
 		$this->set('rcID', $rcID);
 		$this->set('success', 'pending');
 		$this->set('successMsg', $this->getRegisterPendingMsg() );
