@@ -175,38 +175,31 @@ class Concrete5_Helper_Date {
 		$then = new DateTime("@".$posttime);
 		
 		if ($now < $then) {
-			return date(DATE_APP_GENERIC_MDY,$posttime);
+			return $this->date(DATE_APP_GENERIC_MDY,$posttime);
 		}
 		$interval = $now->diff($then);
 		
 		$format = array();
 		if($interval->y !== 0) {
-			$format[] = t2("%%y year", '%%y years', $interval->y, $interval->y);
+			$format[] = t2("%s year", '%s years', $interval->y, $interval->y);
 		}
 		if($interval->m !== 0) {
-			$format[] = t2("%%m month", '%%y months', $interval->m, $interval->m);
+			$format[] = t2("%s month", '%s months', $interval->m, $interval->m);
 		}
 		if($interval->d !== 0) {
-			$format[] = t2("%%d day", '%%d days', $interval->d, $interval->d);
+			$format[] = t2("%s day", '%s days', $interval->d, $interval->d);
 		}
 		if($interval->h !== 0) {
-			$format[] = t2("%%h hour", '%%h hours', $interval->h, $interval->h);
+			$format[] = t2("%s hour", '%s hours', $interval->h, $interval->h);
 		}
 		if($interval->i !== 0) {
-			$format[] = t2("%%i minute", '%%i minutes', $interval->i, $interval->i);
+			$format[] = t2("%s minute", '%s minutes', $interval->i, $interval->i);
 		}
-		$format[] = t2("%%s second", '%%s seconds', $interval->s, $interval->s);
-
-		if(count($format) > 1 ) {
-			$mask = array_shift($format);
-			if ($precise) {
-				$mask .= ", ".array_shift($format);
-			}
-		} else {
-			$mask = array_pop($format);
-		} 
+		$format[] = t2("%s second", '%s seconds', $interval->s, $interval->s);
 		
-		return $interval->format($mask);
+		$result = implode(", ",array_slice($format,0,$precise + 1));
+		
+		return $result;
 		
 	}
 }
