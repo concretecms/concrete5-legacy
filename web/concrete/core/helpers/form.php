@@ -256,6 +256,18 @@ class Concrete5_Helper_Form {
 		return $this->inputType($key, 'text', $valueOrArray, $miscFields);
 
 	}
+	
+	/**
+	 * Renders a number input field.
+	 * @param string $key Input element's name and id
+	 * @param string|array $valueOrArray Either the default value (subject to be overridden by $_REQUEST) or $miscFields (see below)
+	 * @param array $miscFields A hash array with html attributes as key/value pairs (possibly including "class")
+	 * @return $html
+	 */
+	public function number($key, $valueOrArray = false, $miscFields = array()) {
+		return $this->inputType($key, 'number', $valueOrArray, $miscFields);
+
+	}
 
 	/**
 	 * Renders an email input field.
