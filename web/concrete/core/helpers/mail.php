@@ -29,7 +29,7 @@ class Concrete5_Helper_Mail {
 	public $body = '';
 	protected $template; 
 	protected $bodyHTML = false;
-	
+	protected $attachments = array();
 	
 	/**
 	 * this method is called by the Loader::helper to clean up the instance of this object
@@ -48,6 +48,7 @@ class Concrete5_Helper_Mail {
 		$this->body = '';
 		$this->template; 
 		$this->bodyHTML = false;
+		$this->attachments = array();
 	}
 	
 	
@@ -286,6 +287,33 @@ class Concrete5_Helper_Mail {
 		}
 	}
 		
+	/**
+	 * Adds file attachment to the email.
+	 * @param File file
+	 * @return void
+	 */
+	public function addAttachment(File $file) {
+		$fh = Loader::helper('file');
+		$mh = Loader::helper('mime');
+		
+		$fileName = $file->getFilename();
+		$fileExt = $fh->getExtension($file->getPath());
+		$contents = $fh->getContents($file->getPath());
+		
+		if (!contents) {
+			throw new Exception(t('Unable to get the file contents for attachment.'));
+		}
+		
+		Loader::library('3rdparty/Zend/Mime/Part');
+		$at = new Zend_Mime_Part($contents);
+		$at->type = $mh->mimeFromExtension($fileExt);
+		$at->disposition = Zend_Mime::DISPOSITION_ATTACHMENT;
+		$at->encoding = Zend_Mime::ENCODING_BASE64;
+		$at->filename = $fileName;
+		
+		$this->attachments[] = $at;
+	}
+	
 	/** 
 	 * Sends the email
 	 * @return void
@@ -345,6 +373,14 @@ class Concrete5_Helper_Mail {
 			if ($this->bodyHTML != false) {
 				$mail->setBodyHTML($this->bodyHTML);
 			}
+			
+			if(is_array($this->attachments) && count($this->attachments)) {
+				$mail->setType(Zend_Mime::MULTIPART_RELATED);
+				foreach($this->attachments as $attachment) {
+					$mail->addAttachment($attachment);
+				}
+			}
+			
 			try {
 				$mail->send($transport);
 					
@@ -396,6 +432,7 @@ class Concrete5_Helper_Mail {
 			$this->subject = '';
 			$this->body = '';
 			$this->bodyHTML = '';
+			$this->attachments = array();
 		}
 	}
 	

@@ -128,13 +128,17 @@ class Concrete5_Controller_Block_Form extends BlockController {
 			$data['addFilesToSet'] = 0;
 		}
 		
-		$v = array( $data['qsID'], $data['surveyName'], intval($data['notifyMeOnSubmission']), $data['recipientEmail'], $data['thankyouMsg'], intval($data['displayCaptcha']), intval($data['redirectCID']), intval($data['addFilesToSet']), intval($this->bID) );
+		if(empty($data['attachFilesToEmail'])) {
+			$data['attachFilesToEmail'] = 0;
+		}
+		
+		$v = array( $data['qsID'], $data['surveyName'], intval($data['notifyMeOnSubmission']), $data['recipientEmail'], $data['thankyouMsg'], intval($data['displayCaptcha']), intval($data['redirectCID']), intval($data['addFilesToSet']), intval($data['attachFilesToEmail']), intval($this->bID) );
  		
 		//is it new? 
 		if( intval($total)==0 ){
-			$q = "insert into {$this->btTable} (questionSetId, surveyName, notifyMeOnSubmission, recipientEmail, thankyouMsg, displayCaptcha, redirectCID, addFilesToSet, bID) values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+			$q = "insert into {$this->btTable} (questionSetId, surveyName, notifyMeOnSubmission, recipientEmail, thankyouMsg, displayCaptcha, redirectCID, addFilesToSet, attachFilesToEmail, bID) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		}else{
-			$q = "update {$this->btTable} set questionSetId = ?, surveyName=?, notifyMeOnSubmission=?, recipientEmail=?, thankyouMsg=?, displayCaptcha=?, redirectCID=?, addFilesToSet=? where bID = ? AND questionSetId=".$data['qsID'];
+			$q = "update {$this->btTable} set questionSetId = ?, surveyName=?, notifyMeOnSubmission=?, recipientEmail=?, thankyouMsg=?, displayCaptcha=?, redirectCID=?, addFilesToSet=?, attachFilesToEmail=? where bID = ? AND questionSetId=".$data['qsID'];
 		}
 		
 		$rs = $db->query($q,$v);  
@@ -219,8 +223,8 @@ class Concrete5_Controller_Block_Form extends BlockController {
 			
 			//duplicate survey block record 
 			//with a new Block ID and a new Question 
-			$v = array($newQuestionSetId,$row['surveyName'],$newBID,$row['thankyouMsg'],intval($row['notifyMeOnSubmission']),$row['recipientEmail'],$row['displayCaptcha'], $row['addFilesToSet']);
-			$q = "insert into {$this->btTable} ( questionSetId, surveyName, bID,thankyouMsg,notifyMeOnSubmission,recipientEmail,displayCaptcha,addFilesToSet) values (?, ?, ?, ?, ?, ?, ?,?)";
+			$v = array($newQuestionSetId,$row['surveyName'],$newBID,$row['thankyouMsg'],intval($row['notifyMeOnSubmission']),$row['recipientEmail'],$row['displayCaptcha'], $row['addFilesToSet'], $row['attachFilesToEmail']);
+			$q = "insert into {$this->btTable} ( questionSetId, surveyName, bID,thankyouMsg,notifyMeOnSubmission,recipientEmail,displayCaptcha,addFilesToSet,attachFilesToEmail) values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 			$result=$db->Execute($q, $v); 
 			
 			$rs=$db->query("SELECT * FROM {$this->btQuestionsTablename} WHERE questionSetId=$oldQuestionSetId AND bID=".intval($this->bID) );
@@ -450,6 +454,16 @@ class Concrete5_Controller_Block_Form extends BlockController {
 				$mh->addParameter('questionAnswerPairs', $questionAnswerPairs); 
 				$mh->load('block_form_submission');
 				$mh->setSubject(t('%s Form Submission', $this->surveyName));
+				if (intval($this->attachFilesToEmail)>0) {
+					foreach( $rows as $row ){
+						if ($row['inputType'] == 'fileupload') {
+							$fileId = intval( $tmpFileIds[intval($row['msqID'])] );
+							if ($fileId) {
+								$mh->addAttachment(File::getByID($fileId));
+							}
+						}
+					}
+				}
 				//echo $mh->body.'<br>';
 				@$mh->sendMail(); 
 			} 
