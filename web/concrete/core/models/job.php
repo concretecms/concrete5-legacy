@@ -23,42 +23,53 @@ defined('C5_EXECUTE') or die("Access Denied.");
 * @license http://www.opensource.org/licenses/mit-license.php MIT
 *
 */
-class Concrete5_Model_Job extends Object {
+abstract class Concrete5_Model_Job extends Object {
 
-	//Required Job Variables - Override these variables in your child job class
-	public $jName="Job base class";
-	public $jDescription="";
+	const JOB_SUCCESS = 0;
+	const JOB_ERROR_EXCEPTION_GENERAL = 1;
 
-	//you must override this method
-	function run(){
-		throw new Exception(t('Error: The Job::run() method must be overridden by your child Job class.'));
-	}	
+	abstract public function run();
+	abstract public function getJobName();
+	abstract public function getJobDescription();	
 	
-	public function getJobName() {return $this->jName;}
-	public function getJobDescription() {return $this->jDescription;}	
 	public function getJobHandle() {return $this->jHandle;}
 	public function getJobID() {return $this->jID;}
 	public function getPackageHandle() {
 		return PackageList::getHandle($this->pkgID);
 	}
+	public function getJobLastStatusCode() {
+		return $this->jLastStatusCode;
+	}
+	public function didFail() {
+		return in_array($this->jLastStatusCode, array(
+			self::JOB_ERROR_EXCEPTION_GENERAL
+		));
+	}
+	public function canUninstall() {
+		return $this->jNotUninstallable != 1;
+	}
 	
-	
+	public function supportsQueue() {return ($this instanceof QueueableJob);}
+
 	//==========================================================
 	// JOB MANAGEMENT - do not override anything below this line 
 	//==========================================================
 	
 	
 	//meta variables
-	public $errors=array();
 	protected $jobClassLocations=array();
 	
 	//Other Job Variables
 	public $jID=0;
 	public $jStatus='ENABLED';	
 	public $availableJStatus=array( 'ENABLED','RUNNING','DISABLED_ERROR','DISABLED' );
-	public $jDateLastRun=' default ';	
+	public $jDateLastRun;
 	public $jHandle='';
 	public $jNotUninstallable=0;
+	
+	public $isScheduled = 0;
+	public $scheduledInterval = 'days'; // hours|days|weeks|months
+	public $scheduledValue = 0;
 	
 	/*
 	final public __construct(){
@@ -70,6 +81,9 @@ class Concrete5_Model_Job extends Object {
 		return array(DIR_FILES_JOBS, DIR_FILES_JOBS_CORE);
 	}
 
+	public function getJobDateLastRun() {return $this->jDateLastRun;}
+	public function getJobStatus() {return $this->jStatus;}
+	public function getJobLastStatusText() {return $this->jLastStatusText;}
 
 	// authenticateRequest checks against your site's salt and a custom auth field to make 
 	// sure that this is a request that is coming either from something cronned by the site owner
@@ -100,17 +114,66 @@ class Concrete5_Model_Job extends Object {
 	// Job Retrieval 
 	// ==============
 	
-	public static function getList(){
+	public static function getList($scheduledOnly = false){
 		$db = Loader::db();
-		$v=array();
-		$q = "SELECT * FROM Jobs ORDER BY jDateLastRun";
-		$rs = $db->query($q, $v);
-		return $rs;
+		
+		if($scheduledOnly) {
+			$q = "SELECT jID FROM Jobs WHERE isScheduled = 1 ORDER BY jDateLastRun";
+		} else {
+			$q = "SELECT jID FROM Jobs ORDER BY jDateLastRun";
+		}
+		$r = $db->Execute($q);
+		$jobs = array();
+		while ($row = $r->FetchRow()) {
+			$j = Job::getByID($row['jID']);
+			if (is_object($j)) {
+				$jobs[] = $j;
+			}
+		}
+		return $jobs;
 	}
 	
-	public static function resetRunningJobs() {
+	public function reset() {
 		$db = Loader::db();
-		$db->Execute('update Jobs set jStatus = \'ENABLED\' where jStatus = \'RUNNING\'');
+		$db->Execute('update Jobs set jLastStatusCode = 0, jStatus = \'ENABLED\' where jID = ?', array($this->jID));
+	}
+
+	public function markStarted(){
+		Events::fire('on_before_job_execute', $this);
+		$db = Loader::db();
+		$timestampH =date('Y-m-d g:i:s A');
+		$timestamp=date('Y-m-d H:i:s');
+		$this->jDateLastRun = $timestampH; 
+		$rs = $db->query( "UPDATE Jobs SET jStatus='RUNNING', jDateLastRun=? WHERE jHandle=?", array( $timestamp, $this->jHandle ) );
+	}
+
+	public function markCompleted($resultCode = 0, $resultMsg = false) {
+		$db = Loader::db();
+		if (!$resultMsg) {
+			$resultMsg= t('The Job was run successfully.');
+		}
+		if (!$resultCode) {
+			$resultCode = 0;
+		}
+		$jStatus='ENABLED';
+		if ($this->didFail()) {
+			$jStatus = 'ERROR';
+		}
+		$timestamp=date('Y-m-d H:i:s');
+		$rs = $db->query( "UPDATE Jobs SET jStatus=?, jLastStatusCode = ?, jLastStatusText=? WHERE jHandle=?", array( $jStatus, $resultCode, $resultMsg, $this->jHandle ) );
+		$rs = $db->query( "INSERT INTO JobsLog (jID, jlMessage, jlTimestamp, jlError) VALUES(?,?,?,?)", array( $this->jID, $resultMsg, $timestamp, $resultCode ) );
+		Events::fire('on_job_execute', $this);
+
+		$obj = new stdClass;
+		$obj->error = $resultCode;
+		$obj->result = $resultMsg;
+		$obj->jDateLastRun = date(DATE_APP_GENERIC_MDYT_FULL_SECONDS);
+
+		$this->jLastStatusCode = $resultCode;
+		$this->jLastStatusText = $resultMsg;
+		$this->jStatus = $jStatus;
+		
+		return $obj;
 	}
 	
 	public static function getByID( $jID=0 ){
@@ -152,13 +215,7 @@ class Concrete5_Model_Job extends Object {
 				$j = new $className();
 				$j->jHandle=$jHandle;
 				if(intval($jobData['jID'])>0){
-					$j->jID=intval($jobData['jID']);
-					$j->jStatus=$jobData['jStatus'];
-					$j->jDateLastRun=$jobData['jDateLastRun'];
-					$j->jLastStatusText=$jobData['jLastStatusText'];					
-					$j->pkgID=$jobData['pkgID'];
-					$j->jDateInstalled=$jobData['jDateInstalled'];	
-					$j->jNotUninstallable=$jobData['jNotUninstallable'];			
+					$j->setPropertiesFromArray($jobData);
 				}
 				return $j;
 			}
@@ -174,9 +231,10 @@ class Concrete5_Model_Job extends Object {
 	
 		//get existing jobs
 		$existingJobHandles=array();
-		$existingJobsRS = Job::getList();
-		while($existingJobsRow = $existingJobsRS->fetchRow() ) 
-			$existingJobHandles[]=$existingJobsRow['jHandle'];
+		$existingJobs = Job::getList();
+		foreach($existingJobs as $j) {
+			$existingJobHandles[] = $j->getJobHandle();
+		}
 	
 		if(!$includeConcreteDirJobs)
 			 $jobClassLocations = array( DIR_FILES_JOBS );
@@ -231,43 +289,31 @@ class Concrete5_Model_Job extends Object {
 	// Running Jobs
 	// ==============
 
+	/*
 	public static function runAllJobs(){
 		//loop through all installed jobs
-		$jobListRS=Job::getList();
-		while( $jobItem = $jobListRS->fetchRow() ){ 
-			$jobObj = Job::getJobObjByHandle($jobItem['jHandle']);
-			$jobObj->executeJob();
+		$jobs = Job::getList();
+		foreach($jobs as $j) {
+			$j->executeJob();
 		}
 	}
+	*/
 	
-	public function executeJob(){
-		Events::fire('on_before_job_execute', $this);
-		$db = Loader::db();
-		$timestampH =date('Y-m-d g:i:s A');
-		$timestamp=date('Y-m-d H:i:s');
-		$this->jDateLastRun = $timestampH; 
-		$rs = $db->query( "UPDATE Jobs SET jStatus='RUNNING', jDateLastRun=? WHERE jHandle=?", array( $timestamp, $this->jHandle ) );
+	public function executeJob() {
+		$this->markStarted();
 		try{ 
 			$resultMsg=$this->run();
-			if(strlen($resultMsg)==0) 
+			if(strlen($resultMsg)==0) {
 				$resultMsg= t('The Job was run successfully.');
+			} 
 		}catch(Exception $e){
 			$resultMsg=$e->getMessage();
-			$this->loadError(2);
+			$error = self::JOB_ERROR_EXCEPTION_GENERAL;
 		}
-		
-		if( !$this->isError() ) $jStatus='ENABLED';
-		else $jStatus='DISABLED_ERROR';
-		$rs = $db->query( "UPDATE Jobs SET jStatus=?, jLastStatusText=? WHERE jHandle=?", array( $jStatus, substr($resultMsg, 0, 255), $this->jHandle ) );
-		
-		$enum = 0;
-		if ($this->getError() > 0) {
-			$enum = $this->getError();
-		}
-		$rs = $db->query( "INSERT INTO JobsLog (jID, jlMessage, jlTimestamp, jlError) VALUES(?,?,?,?)", array( $this->jID, substr($resultMsg, 0, 255), $timestamp, $enum ) );
+
 		Events::fire('on_job_execute', $this);
-		
-		return $resultMsg;
+		$obj = $this->markCompleted($error, $resultMsg);
+		return $obj;
 	}
 
 	public function setJobStatus($jStatus='ENABLED'){
@@ -339,6 +385,53 @@ class Concrete5_Model_Job extends Object {
 	public static function clearLog() {
 		$db = Loader::db();
 		$db->Execute("delete from JobsLog");
+	}
+	
+	
+	public function isScheduledForNow() {
+		if(!$this->isScheduled) {
+			return false;
+		}
+		if($this->scheduledValue <= 0) {
+			return false;
+		}
+		
+		$last_run = strtotime($this->jDateLastRun);
+		$seconds = 1;
+		switch($this->scheduledInterval) {
+			case "hours":
+				$seconds = 60*60;
+				break;
+			case "days":
+				$seconds = 60*60*24;
+				break;
+			case "weeks":
+				$seconds = 60*60*24*7;
+				break;
+			case "months":
+				$seconds = 60*60*24*7*30;
+				break;
+		}
+		$gap = $this->scheduledValue * $seconds;
+		if($last_run < (time() - $gap) ) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	public function setSchedule($scheduled, $interval, $value) {
+		$this->isScheduled = ($scheduled?true:false);
+		$this->scheduledInterval = $interval;
+		$this->scheduledValue = $value;
+		if($this->getJobID()) {
+			$db = Loader::db();
+			$db->query("UPDATE Jobs SET isScheduled = ?, scheduledInterval = ?, scheduledValue = ? WHERE jID = ?",
+			array($this->isScheduled, $this->scheduledInterval, $this->scheduledValue, $this->getJobID()));
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 }

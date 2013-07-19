@@ -33,27 +33,16 @@
 			$resetDisplay = 'block';
 			$fileID = 0;
 			
-			if (isset($_POST[$postname])) {
-				$bf = File::getByID($_POST[$postname]);
-			} else {
-				$ah = Loader::helper('array');
-				$key = str_replace(']', '', $postname);
-				$key = explode('[', trim($key, '['));
-				$v2 = $ah->get($_POST, $key);
-				if (isset($v2)) {
-					$bf = File::getByID($v2);
-				}
-			}
-			
-			if (isset($_GET[$postname])) {
-				$bf = File::getByID($_GET[$postname]);
-			} else {
-				$ah = Loader::helper('array');
-				$key = str_replace(']', '', $postname);
-				$key = explode('[', trim($key, '['));
-				$v2 = $ah->get($_GET, $key);
-				if (isset($v2)) {
-					$bf = File::getByID($v2);
+			/**
+			 * If $_POST[$postname] is a valid File ID
+			 * use that file
+			 * If not try to use the $bf parameter passed in
+			 */
+			$vh = Loader::helper('validation/numbers');
+			if (isset($_POST[$postname]) && $vh->integer($_POST[$postname])) {
+				$postFile = File::getByID($_POST[$postname]);
+				if (!$postFile->isError() && $postFile->getFileID() > 0) {
+					$bf = $postFile;
 				}
 			}
 			

@@ -578,7 +578,104 @@ class Concrete5_Model_Page extends Collection {
 			return $cIDRedir;
 		}
 	}
-	
+
+	public function populateRecursivePages($pages, $pageRow, $cParentID, $level, $includeThisPage = true) {
+		$db = Loader::db();
+		$children = $db->GetAll('select cID, cDisplayOrder from Pages where cParentID = ? order by cDisplayOrder asc', array($pageRow['cID']));
+		if ($includeThisPage) {	
+			$pages[] = array(
+				'cID' => $pageRow['cID'],
+				'cDisplayOrder' => $pageRow['cDisplayOrder'],
+				'cParentID' => $cParentID,
+				'level' => $level,
+				'total' => count($children)
+			);
+		}
+		$level++;
+		$cParentID = $pageRow['cID'];
+		if (count($children) > 0) {
+			foreach($children as $pageRow) {
+				$pages = $this->populateRecursivePages($pages, $pageRow, $cParentID, $level);
+			}
+		}
+		return $pages;
+	}
+
+	public function queueForDeletionSort($a, $b) {
+		if ($a['level'] > $b['level']) {
+			return -1;
+		}
+		if ($a['level'] < $b['level']) {
+			return 1;
+		}
+		return 0;
+	}
+
+	public function queueForDuplicationSort($a, $b) {
+		if ($a['level'] > $b['level']) {
+			return 1;
+		}
+		if ($a['level'] < $b['level']) {
+			return -1;
+		}
+		if ($a['cDisplayOrder'] > $b['cDisplayOrder']) {
+			return 1;
+		}
+		if ($a['cDisplayOrder'] < $b['cDisplayOrder']) {
+			return -1;
+		}
+		if ($a['cID'] > $b['cID']) {
+			return 1;
+		}
+		if ($a['cID'] < $b['cID']) {
+			return -1;
+		}		
+		return 0;
+	}
+
+	public function queueForDeletion() {
+		$pages = array();
+		$includeThisPage = true;
+		if ($this->getCollectionPath() == TRASH_PAGE_PATH) {
+			// we're in the trash. we can't delete the trash. we're skipping over the trash node.
+			$includeThisPage = false;
+		}
+		$pages = $this->populateRecursivePages($pages, array('cID' => $this->getCollectionID()), $this->getCollectionParentID(), 0, $includeThisPage);
+		// now, since this is deletion, we want to order the pages by level, which
+		// should get us no funny business if the queue dies.
+		usort($pages, array('Page', 'queueForDeletionSort'));
+		$q = Queue::get('delete_page');
+		foreach($pages as $page) {
+			$q->send(serialize($page));
+		}
+	}
+
+	public function queueForDeletionRequest() {
+		$pages = array();
+		$includeThisPage = true;
+		$pages = $this->populateRecursivePages($pages, array('cID' => $this->getCollectionID()), $this->getCollectionParentID(), 0, $includeThisPage);
+		// now, since this is deletion, we want to order the pages by level, which
+		// should get us no funny business if the queue dies.
+		usort($pages, array('Page', 'queueForDeletionSort'));
+		$q = Queue::get('delete_page_request');
+		foreach($pages as $page) {
+			$q->send(serialize($page));
+		}
+	}
+
+	public function queueForDuplication($destination, $includeParent = true) {
+		$pages = array();
+		$pages = $this->populateRecursivePages($pages, array('cID' => $this->getCollectionID()), $this->getCollectionParentID(), 0, $includeParent);
+		// now, since this is deletion, we want to order the pages by level, which
+		// should get us no funny business if the queue dies.
+		usort($pages, array('Page', 'queueForDuplicationSort'));
+		$q = Queue::get('copy_page');
+		foreach($pages as $page) {
+			$page['destination'] = $destination->getCollectionID();
+			$q->send(serialize($page));
+		}
+	}
+
 	public function export($pageNode) {
 		$p = $pageNode->addChild('page');
 		$p->addAttribute('name', Loader::helper('text')->entities($this->getCollectionName()));
@@ -1343,6 +1440,14 @@ class Concrete5_Model_Page extends Collection {
 		PageStatistics::incrementParents($cID);
 		if (!$this->isActive()) {
 			$this->activate();
+			// if we're moving from the trash, we have to activate recursively
+			if ($this->isInTrash()) {
+				$pages = array();
+				$pages = $this->populateRecursivePages($pages, array('cID' => $this->getCollectionID()), $this->getCollectionParentID(), 0, false);
+				foreach($pages as $page) {
+					$db->Execute('update Pages set cIsActive = 1 where cID = ?', array($page['cID']));
+				}
+			}
 		}
 		
 		$this->rescanSystemPageStatus();
@@ -1431,7 +1536,7 @@ class Concrete5_Model_Page extends Collection {
 		if ($res) {
 			// rescan the collection path
 			$nc2 = Page::getByID($newCID);
-			
+
 			// now with any specific permissions - but only if this collection is set to override
 			if ($this->getCollectionInheritance() == 'OVERRIDE') {
 				$nc2->acquirePagePermissions($this->getPermissionsCollectionID());
@@ -1504,7 +1609,7 @@ class Concrete5_Model_Page extends Collection {
 
 		$q = "delete from Pages where cPointerID = '{$cID}'";
 		$r = $db->query($q);
-		
+
 		$q = "delete from Areas WHERE cID = '{$cID}'";
 		$r = $db->query($q);
 
@@ -1535,6 +1640,12 @@ class Concrete5_Model_Page extends Collection {
 		$trash = Page::getByPath(TRASH_PAGE_PATH);
 		$this->move($trash);
 		$this->deactivate();
+		$pages = array();
+		$pages = $this->populateRecursivePages($pages, array('cID' => $this->getCollectionID()), $this->getCollectionParentID(), 0, false);
+		$db = Loader::db();
+		foreach($pages as $page) {
+			$db->Execute('update Pages set cIsActive = 0 where cID = ?', array($page['cID']));
+		}
 	}
 
 	function rescanChildrenDisplayOrder() {

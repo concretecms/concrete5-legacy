@@ -2,8 +2,17 @@
 <concrete5-cif version="1.0">
     <jobs>
         <job handle="index_search" package=""/>
+        <job handle="index_search_all" package=""/>
         <job handle="generate_sitemap" package=""/>
         <job handle="process_email" package=""/>
         <job handle="remove_old_page_versions" package=""/>
     </jobs>
+    <jobsets>
+        <jobset name="Default" package="">
+            <job handle="index_search"/>
+            <job handle="generate_sitemap"/>
+            <job handle="process_email"/>
+            <job handle="remove_old_page_versions"/>
+        </jobset>
+    </jobsets>
 </concrete5-cif>
