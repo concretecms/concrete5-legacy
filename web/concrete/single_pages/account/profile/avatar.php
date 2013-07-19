@@ -9,7 +9,7 @@
 		<div id="profile-avatar"> 	
 			<?php echo t('You need the Adobe Flash plugin installed on your computer to upload and crop your user profile picture.')?>
 			<br /><br />
-			<a href="http://www.adobe.com/shockwave/download/download.cgi?P1_Prod_Version=ShockwaveFlash">Download the Flash Player here</a>.
+			<a href="http://www.adobe.com/shockwave/download/download.cgi?P1_Prod_Version=ShockwaveFlash"><?php echo t('Download the Flash Player here')?></a>.
 		</div>
 		<? if ($profile->hasAvatar()) { ?>
 			<br/><br/>
@@ -21,7 +21,7 @@
 			window.location.href="<?php echo $this->url('/account/profile/avatar', 'saved')?>";
 		};
 
-		/* <?php /* flashvars - options for the avatar/thumb picker  
+		<?php /* flashvars - options for the avatar/thumb picker  
 		upload -- whether to enable or disable the upload button (default is "true")
 		webcam -- whether to enable or disable the webcam button (default is "true")
 		format -- whether to use "jpg", "png" or "auto" when encoding (default is "auto")
@@ -35,7 +35,7 @@
 		height -- the height of the thumbnail
 		backgroundColor -- the color to use when tinting the background of the editor (default is 0xFFFFFF)
 		tint -- the amount of strength to apply when tinting the background of the editor (default is 0)
-		*/ ?> */
+		*/ ?> 
 		
 		$(function(){   
 			var params = { 

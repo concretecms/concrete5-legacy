@@ -83,7 +83,7 @@ if ($editmode) {
 	} else {
 		?>
 		<fieldset>
-			<legend>Edit <?=$at->getAuthenticationTypeName()?> Authentication</legend>
+            <legend><?php echo t('Edit %s Authentication',$at->getAuthenticationTypeName());?></legend>
 			<br>
 			<?=$at->renderTypeForm()?>
 		</fieldset>
