@@ -22,11 +22,11 @@ var ccmAlert = {
     		$(document.body).append('<div id="ccm-notification" class="ccm-ui"><div id="ccm-notification-inner"></div></div>');
     	}
     	
-    	if (icon == null) {
+    	if (typeof icon === 'undefined') {
     		icon = 'edit_small';
     	}
     	
-    	if (title == null) {	
+    	if (typeof title === 'undefined') {
 	    	var messageText = message;
 	    } else {
 	    	var messageText = '<h3>' + title + '</h3>' + message;
