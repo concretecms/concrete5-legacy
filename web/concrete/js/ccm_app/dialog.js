@@ -68,7 +68,7 @@ jQuery.fn.dialog.open = function(options) {
 			}
 		}
 	} else if (options.width) { 
-		w = parseInt(options.width) + 50;
+		w = parseInt(options.width, 10) + 50;
 	} else {
 		w = 550;
 	}
