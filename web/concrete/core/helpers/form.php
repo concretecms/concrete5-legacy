@@ -250,10 +250,11 @@ class Concrete5_Helper_Form {
 	 * @param string $key Input element's name and id
 	 * @param string|array $valueOrArray Either the default value (subject to be overridden by $_REQUEST) or $miscFields (see below)
 	 * @param array $miscFields A hash array with html attributes as key/value pairs (possibly including "class")
+	 * @param string $inputType Use this variable to get access to HTML5 input types like tel, email..
 	 * @return $html
 	 */
-	public function text($key, $valueOrArray = false, $miscFields = array()) {
-		return $this->inputType($key, 'text', $valueOrArray, $miscFields);
+	public function text($key, $valueOrArray = false, $miscFields = array(), $inputType = 'text') {
+		return $this->inputType($key, $inputType, $valueOrArray, $miscFields);
 	}
 	
 	/**
