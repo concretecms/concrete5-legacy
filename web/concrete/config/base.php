@@ -416,7 +416,6 @@ if (!defined('DIR_FILES_BIN_ZIP')) {
 if(!defined('DIR_FILES_BIN_ASPELL')) define('DIR_FILES_BIN_ASPELL', '/usr/bin/aspell'); // spellchecker
 
 # Gathering
-define('BLOCK_HANDLE_GATHERING', 'core_gathering');
 if (!defined('DIRNAME_GATHERING')) {
 	 define('DIRNAME_GATHERING', 'gathering');
 }

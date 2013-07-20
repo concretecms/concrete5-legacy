@@ -4,7 +4,7 @@
 
 		private static $loc = null;
 
-		public function init() {
+		public static function init() {
 			$loc = Localization::getInstance();
 			$loc->getTranslate();
 		}

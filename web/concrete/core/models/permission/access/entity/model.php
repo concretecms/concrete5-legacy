@@ -11,7 +11,9 @@ abstract class Concrete5_Model_PermissionAccessEntity extends Object {
 	public function getAccessEntityLabel() {return $this->label;}
 	abstract public function getAccessEntityUsers(PermissionAccess $pa);
 	abstract public function getAccessEntityTypeLinkHTML();
-	abstract public static function getAccessEntitiesForUser($user);
+	public static function getAccessEntitiesForUser($user){
+		throw new Exception(t('Method: %s must be overwritten!', __FUNCTION__));
+	}
 	
 	public function validate(PermissionAccess $pae) {
 		return true;	

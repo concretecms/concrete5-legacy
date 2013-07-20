@@ -22,7 +22,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
  */
 class Concrete5_Library_FileTypeList {
 	
-	public function getInstance() {
+	public static function getInstance() {
 		static $instance;
 		if (!isset($instance)) {
 			$v = __CLASS__;
@@ -58,7 +58,7 @@ class Concrete5_Library_FileTypeList {
 		$this->importerAttributes[$akHandle] = $obj;
 	}
 	
-	public function getImporterAttribute($akHandle) {
+	public static function getImporterAttribute($akHandle) {
 		$ftl = FileTypeList::getInstance();
 		return $ftl->importerAttributes[$akHandle];
 	}
