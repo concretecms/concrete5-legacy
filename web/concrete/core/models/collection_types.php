@@ -108,6 +108,15 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			$db->query("DELETE FROM ComposerTypes WHERE ctID = ?",array($this->ctID));
 			$db->query("DELETE FROM ComposerContentLayout WHERE ctID = ?",array($this->ctID));
 		}
+
+		/** Returns the number of pages using this page type.
+		* @return int
+		* @throws Exception Throws an exception in case of errors.
+		*/
+		public function getUsageCount() {
+			$db = Loader::db();
+			return @intval($db->getOne("SELECT COUNT(p.cID) from Pages p inner join CollectionVersions cv on p.cID = cv.cID WHERE p.cIsTemplate = 0 and cv.ctID = ?", array($this->ctID)));
+		}
 		
 		public function getComposerPageTypes() {
 			$db = Loader::db();
