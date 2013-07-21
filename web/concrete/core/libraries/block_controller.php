@@ -435,12 +435,21 @@ defined('C5_EXECUTE') or die("Access Denied.");
 				$this->btHandle = $obj->getBlockTypeHandle();
 			} else if ($obj instanceof Block) {
 				$b = $obj;
-				$this->identifier = 'BLOCK_' . $obj->getBlockID();
+
 				// we either have a blockID passed, or nothing passed, if we're adding a block type				
 				$this->bID = $b->getBlockID();
 				$this->btHandle = $obj->getBlockTypeHandle();
 				$this->bActionCID = $obj->getBlockActionCollectionID();
 				$this->btCachedBlockRecord = $obj->getBlockCachedRecord();
+
+				// In case we have a clipboard block we use its id for identifier
+				$proxyBlock = $obj->getProxyBlock();
+				if ($proxyBlock) {
+					$this->identifier = 'BLOCK_' . $proxyBlock->getInstance()->getIdentifier();
+				} else {
+					$this->identifier = 'BLOCK_' . $obj->getBlockID();
+				}
+
 				$this->load();
 			}
 			parent::__construct();
