@@ -34,20 +34,23 @@ class Concrete5_Helper_Validation_Strings {
 	/**
 	 * Returns true on whether the passed field is completely alpha-numeric
 	 * @param string $field
-	 * @param bool $allow_spaces whether or not spaces are permitted in the field contents
-	 * @param bool $allow_dashes whether or not dashes (-) are permitted in the field contents
+	 * @param bool $allow_spaces [default: false] whether or not spaces are permitted in the field contents
+	 * @param bool $allow_dashes [default: false] whether or not dashes (-) are permitted in the field contents
+	 * @param bool $allow_underscores [default: false] whether or not underscores (_) are permitted in the field contents
 	 * @return bool
 	 */
-	public function alphanum($field, $allow_spaces = false, $allow_dashes = false) {
-		if ($allow_spaces && $allow_dashes) {
-			return !preg_match("/[^A-Za-z0-9 \-]/", $field);
-		} else if ($allow_spaces) {
-			return !preg_match("/[^A-Za-z0-9 ]/", $field);
-		} else if ($allow_dashes) {
-			return !preg_match("/[^A-Za-z0-9\-]/", $field);
-		} else {
-			return !preg_match('/[^A-Za-z0-9]/', $field);
+	public function alphanum($field, $allow_spaces = false, $allow_dashes = false, $allow_underscores = false) {
+		$rx = 'A-Za-z0-9';
+		if($allow_spaces) {
+			$rx .= ' ';
 		}
+		if($allow_dashes) {
+			$rx .= '\-';
+		}
+		if($allow_underscores) {
+			$rx .= '_';
+		}
+		return !preg_match('/[^'.$rx.']/', $field);
 	}
 	
 	/** 
