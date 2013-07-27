@@ -1,7 +1,7 @@
 <?php
 defined('C5_EXECUTE') or die('Access Denied.');
 
-if(ENABLE_JOB_SCHEDULING) {
+if(ENABLE_JOB_SCHEDULING && version_compare(Config::get('SITE_APP_VERSION'), '5.6.1.3', '>')) {
 	$c = Page::getCurrentPage();
 	if($c instanceof Page && !$c->isAdminArea()) {
 		// check for non dashboard page
