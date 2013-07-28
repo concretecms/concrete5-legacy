@@ -14,7 +14,14 @@
  */
 defined('C5_EXECUTE') or die("Access Denied.");
 class Concrete5_Helper_Url { 
-
+	
+	/**
+	* 
+	* @param mixed $variable
+	* @param string $value
+	* @param string $url
+	* @return string
+	*/
 	public function setVariable($variable, $value = false, $url = false) {
 		// either it's key/value as variables, or it's an associative array of key/values
 		
@@ -41,11 +48,15 @@ class Concrete5_Helper_Url {
 			}
 		}
 		
-		// THIS DOES NOT WORK. SOMEONE WILL NEED TO FIX THIS PROPERLY IF THE W3C FOLKS WANT IT TO WORK
-		//$url = str_replace('&', '&amp;', $url);
-		return $url;
+		return $this->smartUrlEncode($url);
 	}
 	
+	/**
+     	* 
+	* @param mixed $variable
+	* @param string $url
+	* @return string
+	*/
 	public function unsetVariable($variable, $url = false) {
 		// either it's key/value as variables, or it's an associative array of key/values
 		
@@ -67,16 +78,20 @@ class Concrete5_Helper_Url {
 		  $url = substr($url, 0, -1); 
 		}
 		
-		
-		// THIS DOES NOT WORK. SOMEONE WILL NEED TO FIX THIS PROPERLY IF THE W3C FOLKS WANT IT TO WORK
-		//$url = str_replace('&', '&amp;', $url);
-		return $url;
-	}	
+		return $this->smartUrlEncode($url);
+	}
+	
+	/**
+	* 
+	* @param string $url
+	* @param array $params
+	* @return string
+	*/
 	public function buildQuery($url, $params) {
 		return $url . '?' . http_build_query($params, '', '&');
 	}
 
-    /**
+    	/**
 	 * Shortens a given url with the tiny url api
 	 * @param string $strURL
 	 * @return string $url
@@ -86,6 +101,29 @@ class Concrete5_Helper_Url {
 		$url = $file->getContents("http://tinyurl.com/api-create.php?url=".$strURL);
 		return $url;
 	}
+	
+	/**
+     	* 
+     	* @param string $url
+     	* @return string
+     	*/
+    	function smartUrlEncode($url) {
+        	if (strpos($url, '=') === false) {
+            		return $url;
+        	} else {
+	            	$startpos = strpos($url, "?");
+	            	$tmpurl = substr($url, 0, $startpos + 1);
+	            	$qryStr = substr($url, $startpos + 1);
+	            	$qryvalues = explode("&", $qryStr);
+	            	foreach ($qryvalues as $value) {
+	                	$buffer = explode("=", $value);
+	                	$buffer[1] = urlencode($buffer[1]);
+	            	}
+	            	$finalqrystr = implode("&amp;", &$qryvalues);
+	            	$finalURL = $tmpurl . $finalqrystr;
+	            	return $finalURL;
+        	}
+    	}
 
 	
 }
