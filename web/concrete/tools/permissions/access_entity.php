@@ -4,7 +4,7 @@ $form = Loader::helper("form");
 $tp = new TaskPermission();
 $dt = Loader::helper('form/date_time');
 if (!$tp->canAccessUserSearch() && !$tp->canAccessGroupSearch()) { 
-	die(t("Access Denied."));
+	die(t("You have no access to search users or groups."));
 }
 $pae = false;
 if ($_REQUEST['peID']) {
