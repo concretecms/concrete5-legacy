@@ -21,9 +21,9 @@ $form = Loader::helper('form');
 		</div>
 	</div>
 	<div class='span3 offset1'>
-		<label class='checkbox'><?=$form->checkbox('uMaintainLogin',1)?> Remain logged in to website.</label>
+		<label class='checkbox'><?=$form->checkbox('uMaintainLogin',1)?> <?=t('Remain logged in to website.')?></label>
 	</div>
 </div>
 <div class='actions'>
-	<button class='btn primary'>Sign In</button>
+	<button class='btn primary'><?=t('Sign In')?></button>
 </div>

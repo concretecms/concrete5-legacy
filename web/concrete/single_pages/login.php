@@ -67,7 +67,7 @@ $form = Loader::helper('form');
 					</div>
 				</div>
 				<div class='actions'>
-					<?=$form->button('resetPassword','Reset and Email Password')?>
+					<?=$form->button('resetPassword', t('Reset and Email Password'))?>
 				</div>
 			</form>
 		</div>
