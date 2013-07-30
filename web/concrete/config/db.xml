@@ -1935,6 +1935,10 @@
     </field>
     <field name="pkgVersion" type="C" size="32"/>
     <field name="pkgAvailableVersion" type="C" size="32"/>
+    <field name="pkgDisplayOrder" type="I" size="10">
+      <NOTNULL/>
+      <DEFAULT value="1"/>
+    </field>
     <index name="pkgHandle">
       <UNIQUE/>
       <col>pkgHandle</col>
