@@ -63,7 +63,7 @@ class Concrete5_Model_PackageList extends Object {
 		}
 		
 		$db = Loader::db();
-		$r = $db->query("select pkgID, pkgName, pkgIsInstalled, pkgDescription, pkgVersion, pkgHandle, pkgDateInstalled from Packages where pkgIsInstalled = ? order by pkgID asc", array($pkgIsInstalled));
+		$r = $db->query("select pkgID, pkgName, pkgIsInstalled, pkgDescription, pkgVersion, pkgHandle, pkgDateInstalled from Packages where pkgIsInstalled = ? order by pkgDisplayOrder asc, pkgID asc", array($pkgIsInstalled));
 		$list = new PackageList();
 		while ($row = $r->fetchRow()) {
 			$pkg = new Package;
@@ -619,7 +619,7 @@ class Concrete5_Model_Package extends Object {
 
 	public static function getInstalledList() {
 		$db = Loader::db();
-		$r = $db->query("select * from Packages where pkgIsInstalled = 1 order by pkgDateInstalled asc");
+		$r = $db->query("select * from Packages where pkgIsInstalled = 1 order by pkgDisplayOrder asc, pkgDateInstalled asc");
 		$pkgArray = array();
 		while ($row = $r->fetchRow()) {
 			$pkg = new Package;
