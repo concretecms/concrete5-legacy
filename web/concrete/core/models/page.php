@@ -1529,6 +1529,10 @@ class Concrete5_Model_Page extends Collection {
 		$v = array($newCID, $cParentID, $uID, $this->overrideTemplatePermissions(), $this->getPermissionsCollectionID(), $this->getCollectionInheritance(), $this->cFilename, $this->cPointerID, $this->cPointerExternalLink, $this->cPointerExternalLinkNewWindow, $this->cDisplayOrder, $this->pkgID);
 		$q = "insert into Pages (cID, cParentID, uID, cOverrideTemplatePermissions, cInheritPermissionsFromCID, cInheritPermissionsFrom, cFilename, cPointerID, cPointerExternalLink, cPointerExternalLinkNewWindow, cDisplayOrder, pkgID) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		$res = $db->query($q, $v);
+		// This is because of a permissions
+		if ($this->getCollectionInheritance() === 'OVERRIDE') {
+			$this->setPermissionsToManualOverride();
+		}
 	
 		Loader::model('page_statistics');
 		PageStatistics::incrementParents($newCID);
