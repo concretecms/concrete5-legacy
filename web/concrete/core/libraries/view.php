@@ -161,6 +161,22 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			}
 		}
 		
+		
+		/** 
+		 * Function responsible for removing header items within the context of a view.
+		 * @access private
+		 */
+
+		public function removeHeaderItem($item, $namespace = 'VIEW') {
+			foreach($this->headerItems[$namespace] as $itemKey => $againstItem) {
+				if($item == $againstItem){
+					unset($this->headerItems[$namespace][$itemKey);
+					break;
+				}
+			}
+		}
+		
+		
 		/** 
 		 * Function responsible for adding footer items within the context of a view.
 		 * @access private
@@ -170,6 +186,22 @@ defined('C5_EXECUTE') or die("Access Denied.");
 				$this->footerItems[$namespace][] = $item;
 			}
 		}
+		
+		
+		/** 
+		 * Function responsible for removing header items within the context of a view.
+		 * @access private
+		 */
+
+		public function removeFooterItem($item, $namespace = 'VIEW') {
+			foreach($this->footerItems[$namespace] as $itemKey => $againstItem) {
+				if($item == $againstItem){
+					unset($this->footerItems[$namespace][$itemKey);
+					break;
+				}
+			}
+		}
+		
 		
 		/**
 		 * Internal helper function for addHeaderItem() and addFooterItem().
