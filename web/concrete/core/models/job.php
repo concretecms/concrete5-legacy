@@ -102,12 +102,12 @@ abstract class Concrete5_Model_Job extends Object {
 		$jobs = Job::getList();
 		if ($jobs) {
 			$jx = $xml->addChild('jobs');
+			foreach($jobs as $job) {
+				$ch = $jx->addChild('job');
+				$ch->addAttribute('handle',$job->getJobHandle());
+				$ch->addAttribute('package',$job->getPackageHandle());
+			}	
 		}
-		foreach($jobs as $job) {
-			$ch = $jx->addChild('job');
-			$ch->addAttribute('handle',$job->getJobHandle());
-			$ch->addAttribute('package',$job->getPackageHandle());
-		}	
 	}
 
 	// Job Retrieval 
