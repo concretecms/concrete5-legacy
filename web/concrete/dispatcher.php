@@ -157,7 +157,7 @@
 			if (ENABLE_LEGACY_CONTROLLER_URLS) {
 				$c = Page::getByPath($req->getRequestCollectionPath(), 'ACTIVE');
 			} else {
-				$c = $req->getRequestedPage();
+				$c = $req->getRequestedPage(true);
 			}
 		} else {
 			$c = Page::getByID($req->getRequestCollectionID(), 'ACTIVE');

@@ -157,7 +157,7 @@ class Concrete5_Library_Request {
 	 * task/param separator in them
 	 * @return Page
 	 */
-	public function getRequestedPage() {
+	public function getRequestedPage($includeHomeTasks = false) {
 		$path = $this->getRequestCollectionPath();
 		$origPath = $path;
 		$r = array();
@@ -172,13 +172,19 @@ class Concrete5_Library_Request {
 			$path = substr($path, 0, strrpos($path, '/'));
 		}		
 		
+		$req = Request::get();
+		$req->setCollectionPath($cPath);	
+			
 		if ($cID && $cPath) { 
-			$req = Request::get();
-			$req->setCollectionPath($cPath);			
 			$c = Page::getByID($cID, 'ACTIVE');
 		} else {
-			$c = new Page();
-			$c->loadError(COLLECTION_NOT_FOUND);
+			if ($includeHomeTasks) {
+				$c = Page::getByID(HOME_CID, 'ACTIVE');
+			}
+			else {
+				$c = new Page();
+				$c->loadError(COLLECTION_NOT_FOUND);
+			}
 		}
 		return $c;
 	}
