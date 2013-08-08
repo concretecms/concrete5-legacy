@@ -178,7 +178,9 @@ class Concrete5_Controller_Profile_Messages extends ProfileEditController {
 	}
 	
 	public function on_before_render() {
-		$this->set('error', $this->error);
+		if ($this->error->has()) {
+			$this->set('error', $this->error);
+		}
 	}
 
 }
