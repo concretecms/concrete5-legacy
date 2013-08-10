@@ -178,7 +178,7 @@ class Concrete5_Model_UserAttributeKey extends AttributeKey {
 		// is NOT in use anywhere else on the same cID, cvID, akID combo, we use it (so we reuse IDs)
 		// otherwise generate new IDs
 		$av = $uo->getAttributeValueObject($this, true);
-		parent::saveAttribute($av, $value);
+		parent::saveAttribute($av, $value, $uo);
 		$db = Loader::db();
 		$v = array($uo->getUserID(), $this->getAttributeKeyID(), $av->getAttributeValueID());
 		$db->Replace('UserAttributeValues', array(
