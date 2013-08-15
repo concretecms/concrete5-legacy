@@ -7,7 +7,7 @@ $previewMode = false;
 
 $fp = FilePermissions::getGlobal();
 if (!$fp->canAccessFileManager()) {
-	die(t("Access Denied."));
+	die(t("Unable to access the file manager."));
 }  
 
 $attribs = FileAttributeKey::getUserAddedList();
@@ -212,7 +212,7 @@ function printFileAttributeRow($ak, $fv, $value) {
 	
 	$html = '
 	<tr class="ccm-attribute-editable-field">
-		<td><strong><a href="javascript:void(0)">' . $ak->getAttributeKeyName() . '</a></strong></td>
+		<td><strong><a href="javascript:void(0)">' . tc('AttributeKeyName', $ak->getAttributeKeyName()) . '</a></strong></td>
 		<td width="100%" class="ccm-attribute-editable-field-central"><div class="ccm-attribute-editable-field-text">' . $text . '</div>
 		<form method="post" action="' . REL_DIR_FILES_TOOLS_REQUIRED . '/files/bulk_properties">
 			<input type="hidden" name="fakID" value="' . $ak->getAttributeKeyID() . '" />
@@ -233,7 +233,7 @@ function printFileAttributeRow($ak, $fv, $value) {
 
 	$html = '
 	<tr>
-		<td><strong>' . $ak->getAttributeKeyName() . '</strong></td>
+		<td><strong>' . tc('AttributeKeyName', $ak->getAttributeKeyName()) . '</strong></td>
 		<td width="100%" colspan="2">' . $text . '</td>
 	</tr>';	
 	}
@@ -268,11 +268,7 @@ table.ccm-grid th {width: 70px}
 </style>
 <div class="ccm-ui">
 <? if ($_REQUEST['uploaded']) { ?>
-	<? if (count($_REQUEST['fID']) == 1) { ?>
-		<div class="block-message alert-message success" style="padding-right: 14px !important"><a class="btn success btn-mini" style="float: right;" onclick="jQuery.fn.dialog.closeTop()"><?=t('Continue')?></a><?=t('1 file uploaded successfully.')?></div>
-	<? } else { ?>
-		<div class="block-message alert-message success" style="padding-right: 14px !important"><a class="btn success btn-mini" style="float: right;" onclick="jQuery.fn.dialog.closeTop()"><?=t('Continue')?></a><?=t('%s files uploaded successfully.', count($_REQUEST['fID']))?></div>
-	<? } ?>
+	<div class="block-message alert-message success" style="padding-right: 14px !important"><a class="btn success btn-mini" style="float: right;" onclick="jQuery.fn.dialog.closeTop()"><?=t('Continue')?></a><?=t2('%d file uploaded successfully.', '%d files uploaded successfully.', count($_REQUEST['fID']), count($_REQUEST['fID']))?></div>
 <? } ?>
 
 <ul class="tabs" id="ccm-file-manager-add-complete-tabs">

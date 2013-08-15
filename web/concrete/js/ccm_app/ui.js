@@ -93,7 +93,7 @@ ccm_showBlockMenu = function(obj, e) {
 			html += '<li><a class="ccm-menu-icon ccm-icon-setup-child-pages-menu" dialog-append-buttons="true" onclick="ccm_hideMenus()" dialog-width="550" dialog-height="450" id="menuBlockAliasOut' + obj.bID + '-' + obj.aID + '" href="' + CCM_TOOLS_PATH + '/edit_block_popup.php?cID=' + obj.cID + '&bID=' + obj.bID + '&arHandle=' + encodeURIComponent(obj.arHandle) + '&btask=child_pages" dialog-title="' + ccmi18n.setBlockAlias + '">' + ccmi18n.setBlockAlias + '</a></li>';
 		}
 		if (obj.canSetupComposer) {
-			html += '<li><a class="ccm-menu-icon ccm-icon-setup-composer-menu" dialog-append-buttons="true" onclick="ccm_hideMenus()" dialog-width="300" dialog-modal="false" dialog-height="130" id="menuBlockSetupComposer' + obj.bID + '-' + obj.aID + '" href="' + CCM_TOOLS_PATH + '/edit_block_popup.php?cID=' + obj.cID + '&bID=' + obj.bID + '&arHandle=' + encodeURIComponent(obj.arHandle) + '&btask=composer" dialog-title="' + ccmi18n.setBlockComposerSettings + '">' + ccmi18n.setBlockComposerSettings + '</a></li>';
+			html += '<li><a class="ccm-menu-icon ccm-icon-setup-composer-menu" dialog-append-buttons="true" onclick="ccm_hideMenus()" dialog-width="450" dialog-modal="false" dialog-height="130" id="menuBlockSetupComposer' + obj.bID + '-' + obj.aID + '" href="' + CCM_TOOLS_PATH + '/edit_block_popup.php?cID=' + obj.cID + '&bID=' + obj.bID + '&arHandle=' + encodeURIComponent(obj.arHandle) + '&btask=composer" dialog-title="' + ccmi18n.setBlockComposerSettings + '">' + ccmi18n.setBlockComposerSettings + '</a></li>';
 		}
 		
 
@@ -633,7 +633,9 @@ ccm_setupGroupSearch = function(callback) {
 	});
 }
 
-ccm_saveArrangement = function(cID) {
+/*
+
+ccm_saveArrangement = function(cID, origin, destination) {
 	
 	if (!cID) {
 		cID = CCM_CID;
@@ -641,10 +643,67 @@ ccm_saveArrangement = function(cID) {
 
 	ccm_mainNavDisableDirectExit();
 	var serial = '';
-	$('div.ccm-area').each(function() {
-		areaStr = '&area[' + $(this).attr('id').substring(1) + '][]=';
+	$.each([origin, destination], function(idx, area) {
+		var $area = $(area);
+		areaStr = '&area[' + $area.attr('id').substring(1) + '][]=';
 		
-		bArray = $(this).sortable('toArray');
+		bArray = $area.sortable('toArray');
+
+		for (i = 0; i < bArray.length; i++ ) {
+			if (bArray[i] != '' && bArray[i].substring(0, 1) == 'b') {
+				// make sure to only go from b to -, meaning b28-9 becomes "28"
+				var bID = bArray[i].substring(1, bArray[i].indexOf('-'));
+				var bObj = $('#' + bArray[i]);
+				if (bObj.attr('custom-style')) {
+					bID += '-' + bObj.attr('custom-style');
+				}
+				serial += areaStr + bID;
+			}
+		}
+	});
+
+ 	$.ajax({
+ 		type: 'POST',
+ 		url: CCM_DISPATCHER_FILENAME,
+ 		dataType: 'json',
+ 		data: 'cID=' + cID + '&ccm_token=' + CCM_SECURITY_TOKEN + '&btask=ajax_do_arrange' + serial,
+ 		success: function(r) {
+ 			ccm_parseJSON(r, function() {
+	 			$("div.ccm-area").removeClass('ccm-move-mode');
+				$('div.ccm-block-arrange').each(function() {
+					$(this).addClass('ccm-block');
+					$(this).removeClass('ccm-block-arrange');
+				});
+				ccm_arrangeMode = false;
+				$(".ccm-main-nav-edit-option").fadeIn(300);
+				ccmAlert.hud(ccmi18n.arrangeBlockMsg, 2000, 'up_down', ccmi18n.arrangeBlock);
+			});
+ 		}});
+}
+
+*/
+
+ccm_saveArrangement = function(cID, block, origin, destination) {
+	if (!cID) {
+		cID = CCM_CID;
+	}
+
+	var bID = block.attr('id').substring(1, block.attr('id').indexOf('-'));
+	var baID = block.attr('id').substring(block.attr('id').indexOf('-')+1);
+	var destinationBlockAreaID = destination.attr('id').substring(1);
+
+	ccm_mainNavDisableDirectExit();
+	var serial = '&sourceBlockID=' + bID + '&sourceBlockAreaID=' + baID + '&destinationBlockAreaID=' + destinationBlockAreaID
+	if (origin.attr('id') == destination.attr('id')) {
+		var areaArray = [origin];
+	} else {
+		var areaArray = [origin, destination];
+	}
+	$.each(areaArray, function(idx, area) {
+		var $area = $(area);
+		areaStr = '&area[' + $area.attr('id').substring(1) + '][]=';
+		
+		bArray = $area.sortable('toArray');
 
 		for (i = 0; i < bArray.length; i++ ) {
 			if (bArray[i] != '' && bArray[i].substring(0, 1) == 'b') {
@@ -681,6 +740,8 @@ ccm_saveArrangement = function(cID) {
 				ccmAlert.hud(ccmi18n.arrangeBlockMsg, 2000, 'up_down', ccmi18n.arrangeBlock);
 			});
  		}});
+
+
 }
 
 ccm_arrangeInit = function() {
@@ -700,18 +761,22 @@ ccm_arrangeInit = function() {
 	});
 	
 	$("div.ccm-area").each(function() {
-		var cID = $(this).attr('cID');
-		$(this).addClass('ccm-move-mode');
-		$(this).sortable({
+		var area = $(this);
+		var cID = area.attr('cID');
+		area.addClass('ccm-move-mode');
+		area.sortable({
 			items: 'div.ccm-block-arrange',
 			connectWith: $("div.ccm-area-move-enabled"),
 			accept: 'div.ccm-block-arrange',
 			opacity: 0.5,
-			stop: function() {
-				ccm_saveArrangement(cID);
-			},
-			start: function(){
-    			$(ccm_selectedDomID).attr("aHandle",$(ccm_selectedDomID).parent().attr("handle"));
+			stop: function(e, ui) {
+				// two possibilities here.
+				// 1, we could be dropping a block into a different area
+				// or are we could be rearranging an existing area. Very
+				// different use cases.
+				var origin = area;
+				var destination = ui.item.closest('.ccm-area');
+				ccm_saveArrangement(cID, ui.item, origin, destination);
 			}
 		});
 	});

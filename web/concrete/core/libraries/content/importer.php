@@ -39,6 +39,7 @@ class Concrete5_Library_Content_Importer {
 		$this->importTaskPermissions($sx);
 		$this->importPermissions($sx);
 		$this->importJobs($sx);
+		$this->importJobSets($sx);
 		// import bare page types first, then import structure, then page types blocks, attributes and composer settings, then page content, because we need the structure for certain attributes and stuff set in master collections (like composer)
 		$this->importPageTypesBase($sx);
 		$this->importPageStructure($sx);
@@ -122,10 +123,16 @@ class Concrete5_Library_Content_Importer {
 	protected function setupPageNodeOrder($pageNodeA, $pageNodeB) {
 		$pathA = (string) $pageNodeA['path'];
 		$pathB = (string) $pageNodeB['path'];
-		$numA = explode('/', $pathA);
-		$numB = explode('/', $pathB);
+		$numA = count(explode('/', $pathA));
+		$numB = count(explode('/', $pathB));
 		if ($numA == $numB) {
-			return 0;
+			if (intval($pageNodeA->originalPos) < intval($pageNodeB->originalPos)) {
+				return -1;
+			} else if (intval($pageNodeA->originalPos) > intval($pageNodeB->originalPos)) {
+				return 1;
+			} else {
+				return 0;
+			}
 		} else {
 			return ($numA < $numB) ? -1 : 1;
 		}
@@ -158,11 +165,13 @@ class Concrete5_Library_Content_Importer {
 	protected function importPageStructure(SimpleXMLElement $sx) {
 		if (isset($sx->pages)) {
 			$nodes = array();
+			$i = 0;
 			foreach($sx->pages->page as $p) {
+				$p->originalPos = $i;
 				$nodes[] = $p;
+				$i++;
 			}
 			usort($nodes, array('ContentImporter', 'setupPageNodeOrder'));
-			
 			$home = Page::getByID(HOME_CID, 'RECENT');
 
 			foreach($nodes as $px) {
@@ -380,6 +389,24 @@ class Concrete5_Library_Content_Importer {
 					Job::installByPackage($jx['handle'], $pkg);
 				} else {
 					Job::installByHandle($jx['handle']);				
+				}
+			}
+		}
+	}
+
+	protected function importJobSets(SimpleXMLElement $sx) {
+		if (isset($sx->jobsets)) {
+			foreach($sx->jobsets->jobset as $js) {
+				$pkg = ContentImporter::getPackageObject($js['package']);
+				$jso = JobSet::getByName((string) $js['name']);
+				if (!is_object($jso)) {
+					$jso = JobSet::add((string) $js['name']);
+				}
+				foreach($js->children() as $jsk) {
+					$j = Job::getByHandle((string) $jsk['handle']);
+					if (is_object($j)) { 	
+						$jso->addJob($j);
+					}
 				}
 			}
 		}

@@ -54,7 +54,7 @@ class ConcreteAvatarHelper {
 		}
 
 		if(Config::get('GRAVATAR_FALLBACK')) {
-		  return $this->get_gravatar( $uo->getUserEmail(), $AVATAR_WIDTH, Config::get('GRAVATAR_IMAGE_SET'), Config::get('GRAVATAR_MAX_LEVEL'), true, $atts = array('alt' => $uo->getUserName()) );
+		  return $this->get_gravatar( $uo->getUserEmail(), AVATAR_WIDTH, Config::get('GRAVATAR_IMAGE_SET'), Config::get('GRAVATAR_MAX_LEVEL'), true, $atts = array('alt' => $uo->getUserName()) );
 		}
 
 		if (!$suppressNone) {
@@ -157,7 +157,7 @@ class ConcreteAvatarHelper {
 		if ($im) {
 			$res = imageCopyResampled($image, $im, 0, 0, 0, 0, $finalWidth, $finalHeight, $oWidth, $oHeight);
 			if ($res) {
-				$res2 = imageJPEG($image, $newPath);
+				$res2 = imageJPEG($image, $newPath, Loader::helper('image')->defaultJpegCompression());
 				if ($res2) {
 					$uHasAvatar = 1;
 				}
@@ -219,7 +219,7 @@ class ConcreteAvatarHelper {
    * @source http://gravatar.com/site/implement/images/php/
    */
   function get_gravatar( $email, $s = 80, $d = 'mm', $r = 'g', $img = false, $atts = array() ) {
-	  $url = 'http://www.gravatar.com/avatar/';
+	  $url = '//www.gravatar.com/avatar/';
 	  $url .= md5( strtolower( trim( $email ) ) );
 	  $url .= "?s=$s&d=$d&r=$r";
 	  if ( $img ) {

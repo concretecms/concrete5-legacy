@@ -135,8 +135,8 @@ abstract class Concrete5_Model_PermissionKey extends Object {
 		$category = PermissionKeyCategory::getByID($this->pkCategoryID)->getPermissionKeyCategoryHandle();
 		$pkey = $axml->addChild('permissionkey');
 		$pkey->addAttribute('handle',$this->getPermissionKeyHandle());
-		$pkey->addAttribute('name', $this->getPermissionKeyName());
-		$pkey->addAttribute('description', $this->getPermissionKeyDescription());
+		$pkey->addAttribute('name', tc('PermissionKeyName', $this->getPermissionKeyName()));
+		$pkey->addAttribute('description', tc('PermissionKeyDescription', $this->getPermissionKeyDescription()));
 		$pkey->addAttribute('package', $this->getPackageHandle());
 		$pkey->addAttribute('category', $category);
 		$this->exportAccess($pkey);
@@ -303,9 +303,18 @@ abstract class Concrete5_Model_PermissionKey extends Object {
 	
 	public function getPermissionAssignmentObject() {
 		if (is_object($this->permissionObject)) {
-			$class = Loader::helper('text')->camelcase(get_class($this->permissionObject) . 'PermissionAssignment');
-			if (!class_exists($class) && $this->permissionObject instanceof Page) {
-				$class = 'PagePermissionAssignment';
+			if (method_exists($this->permissionObject, 'getPermissionObjectPermissionKeyCategoryHandle')) {
+				$objectClass = Loader::helper('text')->camelcase($this->permissionObject->getPermissionObjectPermissionKeyCategoryHandle());
+			} else {
+				$objectClass = get_class($this->permissionObject);
+			}
+			$class = $objectClass . 'PermissionAssignment';
+			if (!class_exists($class)) {
+				if ($this->permissionObject instanceof Page) {
+					$class = 'PagePermissionAssignment';
+				} else if ($this->permissionObject instanceof Area) {
+					$class = 'AreaPermissionAssignment';
+				}
 			}
 			$targ = new $class();
 			$targ->setPermissionObject($this->permissionObject);

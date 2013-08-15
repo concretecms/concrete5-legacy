@@ -1,5 +1,5 @@
 <?php  defined('C5_EXECUTE') or die('Access Denied');?>
-<?php echo Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Bulk SEO Tool'), t('Manage Search Engine Optimization (SEO) Related Page Properties.'), false, false); 
+<?php echo Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Bulk SEO Updater'), t('Manage Search Engine Optimization (SEO) Related Page Properties.'), false, false); 
 $pageSelector = Loader::helper('form/page_selector');
 $nh = Loader::helper('navigation');
 $th = Loader::helper('text');
@@ -66,10 +66,6 @@ $th = Loader::helper('text');
 			min-height: 0;
 		}
 		
-		.pageChecks {
-			float: left;
-		}
-		
 		a.url-path {
 			word-wrap: break-word;
 			width: 300px;
@@ -99,7 +95,7 @@ $th = Loader::helper('text');
 				'50' => '50',
 				'100' => '100',
 				'500' => '500'
-			), $searchRequest['numResults'], array('style' => 'width:65px; margin: 0px 10px 0px 10px;'))?>
+			), Loader::helper('text')->specialchars($searchRequest['numResults']), array('style' => 'width:65px; margin: 0px 10px 0px 10px;'))?>
 			<?php print $concrete_interface->submit(t('Search'), $formID, $buttonAlign = 'left', 'searchSubmit'); ?><br />
 			<a href="javascript:void(0)" class="ccm-icon-option-closed" id="searchUnderParent"><?php echo t('Advanced Search'); ?></a>
 			<div id="parentOptions" style="margin-left: 25px; display: <?php echo $parentDialogOpen ? 'block' : 'none'; ?>">
@@ -113,8 +109,8 @@ $th = Loader::helper('text');
 					<li><label><?=$form->radio('cParentAll', 0, false)?> <span><?=t('First Level')?></span></label></li>
 					<li><label><?=$form->radio('cParentAll', 1, false)?> <span><?=t('All Levels')?></span></label></li>
 				</ul>
-				<div class="pageChecks"><?php echo $form->checkbox('noDescription', 1, $descCheck, array('style' => 'margin-left: 15px;'));  ?><span><?=t(' No Meta Description'); ?></span></div>
-				<div class="pageChecks"><?php echo $form->checkbox('noKeywords', 1, $keywordCheck, array('style' => 'margin-left: 15px;'));  ?><span><?=t(' No Meta Keywords'); ?></span></div>
+				<div class="pageChecks"><label class="checkbox"> <?php echo $form->checkbox('noDescription', 1, $descCheck);  ?> <span><?=t(' No Meta Description'); ?></span></label></div>
+				<div class="pageChecks"><label class="checkbox"> <?php echo $form->checkbox('noKeywords', 1, $keywordCheck);  ?> <span><?=t(' No Meta Keywords'); ?></span></label></div>
 			</div>
 				<div style="clear: both;"></div>
 			</div>

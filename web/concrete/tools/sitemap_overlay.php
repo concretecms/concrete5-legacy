@@ -6,9 +6,16 @@ if (!$sh->canRead()) {
 	die(t('Access Denied'));
 }
 
+$txt = Loader::helper('text');
 $args = $_REQUEST;
 foreach($args as $key => $value) {
-	$args[$key] = Loader::helper('text')->entities($value);
+	if (is_array($value)) {
+		foreach ($value as $index => $id) {
+			$value[$index] = intval($id);
+		}
+	} else {
+		$args[$key] = $txt->entities($value);
+	}
 }
 
 if (isset($select_mode)) {

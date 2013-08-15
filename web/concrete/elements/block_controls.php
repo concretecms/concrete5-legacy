@@ -52,7 +52,7 @@ ccm_menuObj<?=$id?>.canWrite =true;
 <? } else { ?>
 	ccm_menuObj<?=$id?>.hasEditDialog = false;
 <? } ?>
-ccm_menuObj<?=$id?>.btName = "<?=$btOriginal->getBlockTypeName()?>";
+ccm_menuObj<?=$id?>.btName = "<?=t($btOriginal->getBlockTypeName())?>";
 ccm_menuObj<?=$id?>.width = <?=$btOriginal->getBlockTypeInterfaceWidth()?>;
 ccm_menuObj<?=$id?>.height = <?=$btOriginal->getBlockTypeInterfaceHeight()+$heightPlus ?>;
 <? } else if ($btOriginal->getBlockTypeHandle() == BLOCK_HANDLE_STACK_PROXY) { 
@@ -96,7 +96,7 @@ if ($p->canDeleteBlock()) { ?>
 ccm_menuObj<?=$id?>.canDelete = true;
 ccm_menuObj<?=$id?>.deleteMessage = "<?=$deleteMessage?>";
 <? }
-if ($c->isMasterCollection()) { ?>
+if ($c->isMasterCollection() && !$a->isGlobalArea()) { ?>
 ccm_menuObj<?=$id?>.canAliasBlockOut = true;
 <?
 $ct = CollectionType::getByID($c->getCollectionTypeID());

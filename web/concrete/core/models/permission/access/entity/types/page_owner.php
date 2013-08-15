@@ -30,7 +30,7 @@ class Concrete5_Model_PageOwnerPermissionAccessEntity extends PermissionAccessEn
 	}
 	
 	public function getAccessEntityTypeLinkHTML() {
-		$html = '<a href="javascript:void(0)" onclick="ccm_choosePermissionAccessEntityPageOwner()">' . t('Page Owner') . '</a>';
+		$html = '<a href="javascript:void(0)" onclick="ccm_choosePermissionAccessEntityPageOwner()">' . tc('PermissionAccessEntityTypeName', 'Page Owner') . '</a>';
 		return $html;		
 	}
 
@@ -61,7 +61,6 @@ class Concrete5_Model_PageOwnerPermissionAccessEntity extends PermissionAccessEn
 	}
 
 	public function load() {
-		$db = Loader::db();
 		$this->label = t('Page Owner');
 	}
 

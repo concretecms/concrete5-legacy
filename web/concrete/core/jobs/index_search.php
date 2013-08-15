@@ -11,11 +11,11 @@ class Concrete5_Job_IndexSearch extends Job {
 	public $jNotUninstallable=1;
 	
 	public function getJobName() {
-		return t("Index Search Engine");
+		return t("Index Search Engine - Updates");
 	}
 	
 	public function getJobDescription() {
-		return t("Index the site to allow searching to work quickly and accurately.");
+		return t("Index the site to allow searching to work quickly and accurately. Only reindexes pages that have changed since last indexing.");
 	}
 	
 	public function run() {
@@ -44,7 +44,7 @@ class Concrete5_Job_IndexSearch extends Job {
 			if ($result->count == $is->searchBatchSize) {
 				return t('Index partially updated. %s pages indexed (maximum number.) Re-run this job to continue this process.', $result->count);
 			} else {
-				return t('Index updated. %s %s required reindexing.', $result->count, $result->count == 1 ? t('page') : t('pages'));
+				return t('Index updated.').' '.t2('%d page required reindexing.', '%d pages required reindexing.', $result->count, $result->count);
 			}
 		}
 	}

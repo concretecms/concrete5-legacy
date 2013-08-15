@@ -124,7 +124,7 @@ menuHTML += '<form method="post" id="ccm-check-in" action="<?=DIR_REL?>/<?=DISPA
 <? $valt = Loader::helper('validation/token'); ?>
 menuHTML += '<?=$valt->output('', true)?>';
 menuHTML += '<h4><?=t('Version Comments')?></h4>';
-menuHTML += '<p><input type="text" name="comments" id="ccm-check-in-comments" style="width:520px"/></p>';
+menuHTML += '<p><input type="text" name="comments" id="ccm-check-in-comments" style="width:520px" maxlength="255" /></p>';
 <? if ($cp->canApprovePageVersions()) { ?>
 	<? 
 	$publishTitle = t('Publish My Edits');
@@ -315,7 +315,8 @@ $(function() {
 						}
 						?>
 						btn1 = new ccm_statusBarItemButton();
-						btn1.setLabel('<?=$appLabel?> <i class="icon-thumbs-up"></i>');
+						btn1.setCSSClass('btn-success');
+						btn1.setLabel('<?=$appLabel?> <i class="icon-thumbs-up icon-white"></i>');
 						btn1.setURL('<?=DIR_REL . "/" . DISPATCHER_FILENAME . "?cID=" . $c->getCollectionID() . "&ctask=approve-recent" . $token?>');
 						sbitem.addButton(btn1);
 					<? } ?>

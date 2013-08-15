@@ -1,4 +1,5 @@
 <?php
+defined('C5_EXECUTE') or die('Access Denied.');
 
 $classes = array(
 	'Log' => array('library','log'),
@@ -26,6 +27,7 @@ $classes = array(
 	'AttributeTypeView' => array('library','attribute/view'),
 	'AttributeTypeController' => array('library','attribute/controller'),
 	'Marketplace' => array('library', 'marketplace'),
+	'Queue' => array('library','queue'),
 	'Area' => array('model','area'),
 	'GlobalArea' => array('model','global_area'),
 	'AttributeKey' => array('model','attribute/key'),
@@ -35,6 +37,8 @@ $classes = array(
 	'AttributeType' => array('model','attribute/type'),
 	'Block,BlockRecord' => array('model','block'),
 	'Job' => array('model','job'),
+	'JobSet' => array('model','job_set'),
+	'QueueableJob' => array('model','queueable_job'),
 	'CustomStyleRule,CustomStylePreset' => array('model','custom_style'),
 	'File' => array('model','file'),
 	'FileSet,FileSetFile,FileSetList' => array('model','file_set'),
@@ -216,7 +220,10 @@ $classes = array(
 	'SystemCaptchaLibrary' => array('model','system/captcha/library'),
 	'SystemCaptchaTypeController' => array('model','system/captcha/controller'),
 	'SecurimageSystemCaptchaTypeController' => array('model','system/captcha/types/securimage/controller'),
-	'DashboardBaseController' => array('controller', '/dashboard/base')
+	'DashboardBaseController' => array('controller', '/dashboard/base'),
+	'AccountController' => array('controller', '/account'),
+	'AccountProfileEditController' => array('controller', '/account/profile/edit'),
+	'Zend_Queue_Adapter_Concrete5' => array('library', 'Zend/Queue/Adapter/Concrete5')
 );
 
 Loader::registerAutoload($classes);

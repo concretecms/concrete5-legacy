@@ -259,23 +259,25 @@ class Concrete5_Model_Area extends Object {
 		return $str;
 	}
 
-
 	/**
 	 * Gets the Area object for the given page and area handle
 	 * @param Page|Collection $c
 	 * @param string $arHandle
+	 * @param int|null $arIsGlobal
 	 * @return Area
 	 */
-	public static function get(&$c, $arHandle) {
+	public static function get(&$c, $arHandle, $arIsGlobal = null) {
 		if (!is_object($c)) {
 			return false;
 		}
 		
-		$a = CacheLocal::getEntry('area', $c->getCollectionID() . ':' . $arHandle);
+		// Right now we are splitting the cache to deal with times when Areas
+		// get converted to GlobalAreas and back the other way
+		$globalCache = $arIsGlobal ? ':1' : '';
+		$a = CacheLocal::getEntry('area', $c->getCollectionID() . ':' . $arHandle . $globalCache);
 		if ($a instanceof Area) {
 			return $a;
 		}
-		
 		$db = Loader::db();
 		// First, we verify that this is a legitimate area
 		$v = array($c->getCollectionID(), $arHandle);
@@ -291,7 +293,7 @@ class Concrete5_Model_Area extends Object {
 			$area->cID = $c->getCollectionID();
 			$area->c = &$c;
 			
-			CacheLocal::set('area', $c->getCollectionID() . ':' . $arHandle, $area);
+			CacheLocal::set('area', $c->getCollectionID() . ':' . $arHandle . $globalCache, $area);
 			
 			return $area;
 		}
@@ -311,7 +313,7 @@ class Concrete5_Model_Area extends Object {
 			permissions cID / handle combination, we create one. This is to make our lives easier
 		*/
 
-		$area = self::get($c, $arHandle);
+		$area = self::get($c, $arHandle, $arIsGlobal);
 		if (is_object($area)) {
 			if ($area->isGlobalArea() == $arIsGlobal) {
 				return $area;
@@ -334,10 +336,20 @@ class Concrete5_Model_Area extends Object {
 
 		$area = self::get($c, $arHandle); // we're assuming the insert succeeded
 		$area->rescanAreaPermissionsChain();
+
+		// we need to update the local cache
+		$globalCache = $arIsGlobal ? ':1' : '';
+		CacheLocal::set('area', $c->getCollectionID() . ':' . $arHandle . $globalCache, $area);
+
 		return $area;
 
 	}
 
+	public static function getAreaHandleFromID($arID) {
+		$db = Loader::db();
+		return $db->GetOne('select arHandle from Areas where arID = ?', array($arID));
+	}
+	
 	/**
 	 * Get all of the blocks within the current area for a given page
 	 * @param Page|Collection $c
@@ -464,8 +476,10 @@ class Concrete5_Model_Area extends Object {
 				// first, we temporarily set the arInheritPermissionsFromAreaOnCID to whatever the arInheritPermissionsFromAreaOnCID is set to
 				// in the immediate parent collection
 				$arInheritPermissionsFromAreaOnCID = $db->getOne("select a.arInheritPermissionsFromAreaOnCID from Pages c inner join Areas a on (c.cID = a.cID) where c.cID = ? and a.arHandle = ?", array($cIDToCheck, $this->getAreaHandle()));
-				$db->query("update Areas set arInheritPermissionsFromAreaOnCID = ? where arID = ?", array($arInheritPermissionsFromAreaOnCID, $this->getAreaID()));
-				
+				if ($arInheritPermissionsFromAreaOnCID > 0) {
+					$db->query("update Areas set arInheritPermissionsFromAreaOnCID = ? where arID = ?", array($arInheritPermissionsFromAreaOnCID, $this->getAreaID()));
+				}
+
 				// now we do the recursive rescan to see if any areas themselves override collection permissions
 
 				while ($cIDToCheck > 0) {
@@ -478,7 +492,7 @@ class Concrete5_Model_Area extends Object {
 				}
 				
 				if (is_array($row)) {
-					if ($row['arOverrideCollectionPermissions']) {
+					if ($row['arOverrideCollectionPermissions'] && $row['cID'] > 0) {
 						// then that means we have successfully found a parent area record that we can inherit from. So we set
 						// out current area to inherit from that COLLECTION ID (not area ID - from the collection ID)
 						$db->query("update Areas set arInheritPermissionsFromAreaOnCID = ? where arID = ?", array($row['cID'], $this->getAreaID()));
@@ -488,13 +502,12 @@ class Concrete5_Model_Area extends Object {
 			} else if ($areac->getCollectionInheritance() == 'TEMPLATE') {
 				 // we grab an area on the master collection (if it exists)
 				$doOverride = $db->getOne("select arOverrideCollectionPermissions from Pages c inner join Areas a on (c.cID = a.cID) where c.cID = ? and a.arHandle = ?", array($areac->getPermissionsCollectionID(), $this->getAreaHandle()));
-				if ($doOverride) {
+				if ($doOverride && $areac->getPermissionsCollectionID() > 0) {
 					$db->query("update Areas set arInheritPermissionsFromAreaOnCID = ? where arID = ?", array($areac->getPermissionsCollectionID(), $this->getAreaID()));
 					$this->arInheritPermissionsFromAreaOnCID = $areac->getPermissionsCollectionID();
 				}			
 			}
 		}
-		
 	}
 	
 	/**
@@ -516,10 +529,11 @@ class Concrete5_Model_Area extends Object {
 		$r = $db->query("select Areas.arID, Areas.cID from Areas inner join Pages on (Areas.cID = Pages.cID) where Areas.arHandle = ? and cInheritPermissionsFrom = ? and arOverrideCollectionPermissions = 0 and cParentID = ?", $v);
 		while ($row = $r->fetchRow()) {
 			// these are all the areas we need to update.
-			$db->query("update Areas set arInheritPermissionsFromAreaOnCID = " . $this->getAreaCollectionInheritID() . " where arID = " . $row['arID']);
-			$this->rescanSubAreaPermissions($row['cID']);
+			if ($this->getAreaCollectionInheritID() > 0) {
+				$db->query("update Areas set arInheritPermissionsFromAreaOnCID = ? where arID = ?", array($this->getAreaCollectionInheritID(), $row['arID']));
+				$this->rescanSubAreaPermissions($row['cID']);
+			}
 		}
-		
 	}
 	
 	/**

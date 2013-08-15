@@ -183,21 +183,14 @@ class Concrete5_Model_Page extends Collection {
 
 		// this function is called via ajax, so it's a bit wonky, but the format is generally
 		// a{areaID} = array(b1, b2, b3) (where b1, etc... are blocks with ids appended.)
-		$db = Loader::db();
-		
-		$db->Execute('delete from CollectionVersionBlockStyles where cID = ? and cvID = ?', array($this->getCollectionID(), $this->getVersionID()));
-		
+		$db = Loader::db();		
+		$db->Execute('delete from CollectionVersionBlockStyles where cID = ? and cvID = ?', array($this->getCollectionID(), $this->getVersionID()));		
 		foreach($areas as $arID => $blocks) {
 			if (intval($arID) > 0) {
 				// this is a serialized area;
 				$arHandle = $db->getOne("select arHandle from Areas where arID = ?", array($arID));
 				$startDO = 0;
-
-				if (PERMISSIONS_MODEL == 'advanced') { // for performance sake
-					$ao = Area::getOrCreate($this, $arHandle);
-					$ap = new Permissions($ao);
-				}
-
+				
 				foreach($blocks as $bIdentifier) {
 
 					$bID = 0;
@@ -208,18 +201,6 @@ class Concrete5_Model_Page extends Collection {
 					$csrID = $bd2[1];
 
 					if (intval($bID) > 0) {
-	
-						if (PERMISSIONS_MODEL == 'advanced') { // for performance sake
-							$b = Block::getByID($bID);
-							$bt = $b->getBlockTypeObject();
-							if (!$ap->canAddBlockToArea($bt) && (!$bt->isBlockTypeInternal())) {
-								$obj = new stdClass;
-								$obj->error = true;
-								$obj->message = t('You may not add %s to area %s.', $bt->getBlockTypeName(), $arHandle);
-								return $obj;
-							}
-						}
-
 						$v = array($startDO, $arHandle, $bID, $this->getCollectionID(), $this->getVersionID());
 						try {
 							$db->query("update CollectionVersionBlocks set cbDisplayOrder = ?, arHandle = ? where bID = ? and cID = ? and (cvID = ? or cbIncludeAll = 1)", $v);
@@ -238,6 +219,7 @@ class Concrete5_Model_Page extends Collection {
 			}
 		}
 	}
+
 
 	/**
 	 * checks if the page is checked out, if it is return true
@@ -328,6 +310,8 @@ class Concrete5_Model_Page extends Collection {
 			$pa = $pk->getPermissionAccessObject();
 			if (!is_object($pa)) {
 				$pa = PermissionAccess::create($pk);
+			} else if ($pa->isPermissionAccessInUse()) {
+				$pa = $pa->duplicate();
 			}
 			$pa->addListItem($pe, false, $accessType);
 			$pt = $pk->getPermissionAssignmentObject();
@@ -341,6 +325,7 @@ class Concrete5_Model_Page extends Collection {
 		$pkHandles = array();
 		if ($node['canRead'] == '1') {
 			$pkHandles[] = 'view_page';
+			$pkHandles[] = 'view_page_in_sitemap';
 		}
 		if ($node['canWrite'] == '1') {
 			$pkHandles[] = 'view_page_versions';
@@ -596,7 +581,104 @@ class Concrete5_Model_Page extends Collection {
 			return $cIDRedir;
 		}
 	}
-	
+
+	public function populateRecursivePages($pages, $pageRow, $cParentID, $level, $includeThisPage = true) {
+		$db = Loader::db();
+		$children = $db->GetAll('select cID, cDisplayOrder from Pages where cParentID = ? order by cDisplayOrder asc', array($pageRow['cID']));
+		if ($includeThisPage) {	
+			$pages[] = array(
+				'cID' => $pageRow['cID'],
+				'cDisplayOrder' => $pageRow['cDisplayOrder'],
+				'cParentID' => $cParentID,
+				'level' => $level,
+				'total' => count($children)
+			);
+		}
+		$level++;
+		$cParentID = $pageRow['cID'];
+		if (count($children) > 0) {
+			foreach($children as $pageRow) {
+				$pages = $this->populateRecursivePages($pages, $pageRow, $cParentID, $level);
+			}
+		}
+		return $pages;
+	}
+
+	public function queueForDeletionSort($a, $b) {
+		if ($a['level'] > $b['level']) {
+			return -1;
+		}
+		if ($a['level'] < $b['level']) {
+			return 1;
+		}
+		return 0;
+	}
+
+	public function queueForDuplicationSort($a, $b) {
+		if ($a['level'] > $b['level']) {
+			return 1;
+		}
+		if ($a['level'] < $b['level']) {
+			return -1;
+		}
+		if ($a['cDisplayOrder'] > $b['cDisplayOrder']) {
+			return 1;
+		}
+		if ($a['cDisplayOrder'] < $b['cDisplayOrder']) {
+			return -1;
+		}
+		if ($a['cID'] > $b['cID']) {
+			return 1;
+		}
+		if ($a['cID'] < $b['cID']) {
+			return -1;
+		}		
+		return 0;
+	}
+
+	public function queueForDeletion() {
+		$pages = array();
+		$includeThisPage = true;
+		if ($this->getCollectionPath() == TRASH_PAGE_PATH) {
+			// we're in the trash. we can't delete the trash. we're skipping over the trash node.
+			$includeThisPage = false;
+		}
+		$pages = $this->populateRecursivePages($pages, array('cID' => $this->getCollectionID()), $this->getCollectionParentID(), 0, $includeThisPage);
+		// now, since this is deletion, we want to order the pages by level, which
+		// should get us no funny business if the queue dies.
+		usort($pages, array('Page', 'queueForDeletionSort'));
+		$q = Queue::get('delete_page');
+		foreach($pages as $page) {
+			$q->send(serialize($page));
+		}
+	}
+
+	public function queueForDeletionRequest() {
+		$pages = array();
+		$includeThisPage = true;
+		$pages = $this->populateRecursivePages($pages, array('cID' => $this->getCollectionID()), $this->getCollectionParentID(), 0, $includeThisPage);
+		// now, since this is deletion, we want to order the pages by level, which
+		// should get us no funny business if the queue dies.
+		usort($pages, array('Page', 'queueForDeletionSort'));
+		$q = Queue::get('delete_page_request');
+		foreach($pages as $page) {
+			$q->send(serialize($page));
+		}
+	}
+
+	public function queueForDuplication($destination, $includeParent = true) {
+		$pages = array();
+		$pages = $this->populateRecursivePages($pages, array('cID' => $this->getCollectionID()), $this->getCollectionParentID(), 0, $includeParent);
+		// now, since this is deletion, we want to order the pages by level, which
+		// should get us no funny business if the queue dies.
+		usort($pages, array('Page', 'queueForDuplicationSort'));
+		$q = Queue::get('copy_page');
+		foreach($pages as $page) {
+			$page['destination'] = $destination->getCollectionID();
+			$q->send(serialize($page));
+		}
+	}
+
 	public function export($pageNode) {
 		$p = $pageNode->addChild('page');
 		$p->addAttribute('name', Loader::helper('text')->entities($this->getCollectionName()));
@@ -1111,6 +1193,8 @@ class Concrete5_Model_Page extends Collection {
 		$cache = PageCache::getLibrary();
 		$cache->purge($this);
 
+		$this->refreshCache();
+		
 		$ret = Events::fire('on_page_update', $this);
 	}
 	
@@ -1236,9 +1320,9 @@ class Concrete5_Model_Page extends Collection {
 	
 	public function rescanAreaPermissions() {
 		$db = Loader::db();
-		$arHandles = $db->GetCol('select arHandle from Areas where cID = ?', $this->getCollectionID());
-		foreach($arHandles as $arHandle) {
-			$a = Area::getOrCreate($this, $arHandle);
+		$r = $db->Execute('select arHandle, arIsGlobal from Areas where cID = ?', $this->getCollectionID());
+		while ($row = $r->FetchRow()) {
+			$a = Area::getOrCreate($this, $row['arHandle'], $row['arIsGlobal']);
 			$a->rescanAreaPermissionsChain();
 		}
 	}
@@ -1285,8 +1369,19 @@ class Concrete5_Model_Page extends Collection {
 			$q = "insert into AreaPermissionAssignments (cID, arHandle, paID, pkID) values (?, ?, ?, ?)";
 			$db->query($q, $v);
 		}
-	}
 
+		// any areas that were overriding permissions on the current page need to be overriding permissions
+		// on the NEW page as well.
+		$v = array($permissionsCollectionID);
+		$q = "select * from Areas where cID = ?";
+		$r = $db->query($q, $v);
+		while($row = $r->fetchRow()) {
+			$v = array($this->cID, $row['arHandle'], $row['arOverrideCollectionPermissions'], $row['arInheritPermissionsFromAreaOnCID'], $row['arIsGlobal']);
+			$q = "insert into Areas (cID, arHandle, arOverrideCollectionPermissions, arInheritPermissionsFromAreaOnCID, arIsGlobal) values (?, ?, ?, ?, ?)";
+			$db->query($q, $v);
+		}
+	}
+	
 	function acquirePagePermissions($permissionsCollectionID) {
 		$v = array($this->cID);
 		$db = Loader::db();
@@ -1361,6 +1456,14 @@ class Concrete5_Model_Page extends Collection {
 		PageStatistics::incrementParents($cID);
 		if (!$this->isActive()) {
 			$this->activate();
+			// if we're moving from the trash, we have to activate recursively
+			if ($this->isInTrash()) {
+				$pages = array();
+				$pages = $this->populateRecursivePages($pages, array('cID' => $this->getCollectionID()), $this->getCollectionParentID(), 0, false);
+				foreach($pages as $page) {
+					$db->Execute('update Pages set cIsActive = 1 where cID = ?', array($page['cID']));
+				}
+			}
 		}
 		
 		$this->rescanSystemPageStatus();
@@ -1449,11 +1552,15 @@ class Concrete5_Model_Page extends Collection {
 		if ($res) {
 			// rescan the collection path
 			$nc2 = Page::getByID($newCID);
-			
+
 			// now with any specific permissions - but only if this collection is set to override
 			if ($this->getCollectionInheritance() == 'OVERRIDE') {
 				$nc2->acquirePagePermissions($this->getPermissionsCollectionID());
 				$nc2->acquireAreaPermissions($this->getPermissionsCollectionID());
+				// make sure we update the proper permissions pointer to the new page ID
+				$q = "update Pages set cInheritPermissionsFromCID = ? where cID = ?";
+				$v = array($newCID, $newCID);
+				$r = $db->query($q, $v);
 			} else if ($this->getCollectionInheritance() == "PARENT") {
 				// we need to clear out any lingering permissions groups (just in case), and set this collection to inherit from the parent
 				$npID = $nc->getPermissionsCollectionID();
@@ -1494,6 +1601,7 @@ class Concrete5_Model_Page extends Collection {
 		if ($ret < 0) {
 			return false;
 		}
+		Log::addEntry(t('Page "%s" at path "%s" deleted', $this->getCollectionName(), $this->getCollectionPath()),t('Page Action'));
 
 		parent::delete();
 		
@@ -1508,6 +1616,7 @@ class Concrete5_Model_Page extends Collection {
 		$r = $db->query("select cID from Pages where cPointerID = ?", array($cID));
 		while ($row = $r->fetchRow()) {
 			PageStatistics::decrementParents($row['cID']);
+			$db->Execute('DELETE FROM PagePaths WHERE cID=?', array($row['cID']));
 		}
 
 		// Update cChildren for cParentID
@@ -1521,7 +1630,7 @@ class Concrete5_Model_Page extends Collection {
 
 		$q = "delete from Pages where cPointerID = '{$cID}'";
 		$r = $db->query($q);
-		
+
 		$q = "delete from Areas WHERE cID = '{$cID}'";
 		$r = $db->query($q);
 
@@ -1550,8 +1659,15 @@ class Concrete5_Model_Page extends Collection {
 	
 	public function moveToTrash() {
 		$trash = Page::getByPath(TRASH_PAGE_PATH);
+		Log::addEntry(t('Page "%s" at path "%s" Moved to trash', $this->getCollectionName(), $this->getCollectionPath()),t('Page Action'));
 		$this->move($trash);
 		$this->deactivate();
+		$pages = array();
+		$pages = $this->populateRecursivePages($pages, array('cID' => $this->getCollectionID()), $this->getCollectionParentID(), 0, false);
+		$db = Loader::db();
+		foreach($pages as $page) {
+			$db->Execute('update Pages set cIsActive = 0 where cID = ?', array($page['cID']));
+		}
 	}
 
 	function rescanChildrenDisplayOrder() {
@@ -1932,6 +2048,9 @@ class Concrete5_Model_Page extends Collection {
 		$cDatePublic = ($data['cDatePublic']) ? $data['cDatePublic'] : null;		
 		
 		$data['ctID'] = $ct->getCollectionTypeID();
+		if ($ct->getCollectionTypeHandle() == STACKS_PAGE_TYPE) {
+			$data['cvIsNew'] = 0;
+		}
 		$cobj = parent::add($data);		
 		$cID = $cobj->getCollectionID();		
 		$ctID = $ct->getCollectionTypeID();

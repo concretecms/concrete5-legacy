@@ -182,7 +182,8 @@ if (isset($entry)) {
 			$('#ccm-url-slug-loader').show();
 			$.post('<?=REL_DIR_FILES_TOOLS_REQUIRED?>/pages/url_slug', {
 				'token': '<?=Loader::helper('validation/token')->generate('get_url_slug')?>',
-				'name': val
+				'name': val,
+				'parentID' : $("input[name=cPublishParentID]").val()
 			}, function(r) {
 				$('#ccm-url-slug-loader').hide();
 				$('#ccm-dashboard-composer-form input[name=cHandle]').val(r);
@@ -220,7 +221,8 @@ if (isset($entry)) {
 		jQuery.fn.dialog.showLoader();
 		<? $t = PageTheme::getSiteTheme(); ?>
 		ccm_composerDoAutoSave(function() {
-			ccm_previewInternalTheme(<?=$entry->getCollectionID()?>, <?=$t->getThemeID()?>, '<?=addslashes(str_replace(array("\r","\n","\n"),'',$t->getThemeName()))?>');
+			ccm_previewComposerDraft(<?=$entry->getCollectionID()?>,
+				"<?= strlen($entry->getCollectionName())?$entry->getCollectionName():t("New Page")?>");
 		});
 	}
 	

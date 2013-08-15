@@ -4,15 +4,15 @@
      | c5c5c5c5c   c5c5   c5c5c.5c5c5c5c
      | c5c5c5c5c.  c5c5   c5c5  :c5c5c5c
      | c5c- .c5c5   5c5   c5c.  5c5c5c5c
-     | c5c5  :c5c   c5c.  c5c  '5c5c5c5c
-     | c5c5:  c5c:  c5c5 .c5.  c5c5c5c5c
-     | c5c5c. :5c5c-c5c5-5c5:.5c5c5c5c5c
-     | c5c5c5c.5c5:.       .:c5c5c5c5c5c
-     | c5c5c5c5.             .c5c5-.5c5c
-     | c5c5c5c     .c5c5c5c5c5c5.   .c5c                                                        _____
-     | c5c5c5      5c5c5c5c5c5.    c5c5c                                                       / ____]
-     | c5c5c5:     :c5c5c5c5.    :5c5c5c                                          _           / /___
-     | c5c5c5c:      .c5c.     :5c5c5c5c     ___   ___   _ _    ___  _ _   ___  _| |_   ___  / ___  \
+     | c5c5  :c5c   c5c.  c5c  '5c5c5c5c                              .,
+     | c5c5:  c5c:  c5c5 .c5.  c5c5c5c5c                              /c-._
+     | c5c5c. :5c5c-c5c5-5c5:.5c5c5c5c5c                           --/c5c5c\
+     | c5c5c5c.5c5:.       .:c5c5c5c5c5c                       .--/c5c5c5c5c5c\
+     | c5c5c5c5.             .c5c5-.5c5c                   __-"5c5c5c5c5c5c5c5c'-._
+     | c5c5c5c     .c5c5c5c5c5c5.   .c5c                _-/c5c5c5-5.-"'-c5c5c5c5c5c\_           _____
+     | c5c5c5      5c5c5c5c5c5.    c5c5c         _.,-='"c-*-:;   *,      '"*5c5c5c5c5"--__     / ____]
+     | c5c5c5:     :c5c5c5c5.    :5c5c5c     -"""c5; c5c    `      '           '"'_'"""'- "'- / /___
+     | c5c5c5c:      .c5c.     :5c5c5c5c     ___   ___   _ _    ___  _ _   ___  _| |_   _ _  / ___  \
      | c5c5c5c5c5:.         .c5c5c5c5c5c    /  _] /   \ |   \  /  _]|  _] /   \|_   _| /   \ __    \ \
      | c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c   (  (_ (     )| || |(  (_ | /  (  ---  | |_ (  --- \ \ _ / /
      \  c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c    \\___]\\___/||_||_|\\___]|_|  \\___/ \\___]\\___/ \\_____/
@@ -42,3 +42,19 @@ The concrete5 git repository currently uses php "short tags". Pull requests shou
 If short tags are not enabled in your development environment you can enable them either
 * In `php.ini` add `short_open_tag = On`
 * In Apache `.htaccess` add `php_value short_open_tag 1`
+
+### Building Assets
+You *do not* need to build assets in order to run the github master
+This is only needed if you are hacking core javascript and css
+
+Current build scripts require
+* UglifyJS
+  * https://github.com/mishoo/UglifyJS
+  * `sudo npm install -g uglify-js`
+* less v1.3
+  * http://lesscss.org
+  * `sudo npm install -g less@1.3`
+
+From the `build` directory(must be in that directory) run
+  * `sh js.sh`
+  * `sh css.sh`

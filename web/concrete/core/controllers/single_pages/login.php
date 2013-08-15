@@ -30,12 +30,21 @@ class Concrete5_Controller_Login extends Controller {
 			if (count($languages) > 0) {
 				array_unshift($languages, 'en_US');
 			}
-			$locales = array('' => t('** Default'));
+			$locales = array();
 			Zend_Locale_Data::setCache(Cache::getLibrary());
 			foreach($languages as $lang) {
 				$loc = new Zend_Locale($lang);
-				$locales[$lang] = Zend_Locale::getTranslation($loc->getLanguage(), 'language', ACTIVE_LOCALE);
+				$locales[$lang] = Zend_Locale::getTranslation($loc->getLanguage(), 'language', $lang);
+				$locRegion = $loc->getRegion();
+				if($locRegion !== false) {
+					$locRegionName = $loc->getTranslation($loc->getRegion(), 'country', $lang);
+					if($locRegionName !== false) {
+						$locales[$lang] .= ' (' . $locRegionName . ')';
+					}
+				}
 			}
+			asort($locales);
+			$locales = array_merge(array('' => t('** Default')), $locales);
 		}
 		$this->locales = $locales;
 		$this->set('locales', $locales);
@@ -253,7 +262,7 @@ class Concrete5_Controller_Login extends Controller {
 			foreach($unfilledAttributes as $uak) {
 				$e1 = $uak->validateAttributeForm();
 				if ($e1 == false) {
-					$this->error->add(t('The field "%s" is required', $uak->getAttributeKeyName()));
+					$this->error->add(t('The field "%s" is required', tc('AttributeKeyName', $uak->getAttributeKeyName())));
 				} elseif ($e1 instanceof ValidationErrorHelper) {
 					$this->error->add($e1);
 				}

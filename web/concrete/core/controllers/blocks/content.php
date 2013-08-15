@@ -131,10 +131,13 @@
 				$content);
 
 
-			$record->addChild('content', '<![CDATA['.Loader::helper('text')->entities($content).']]>');
+			$cnode = $record->addChild('content');
+			$node = dom_import_simplexml($cnode);
+			$no = $node->ownerDocument;
+			$node->appendChild($no->createCDataSection($content));
+
 		}
-		
-		
+
 
 		function translateFromEditMode($text) {
 			// now we add in support for the links
@@ -290,9 +293,8 @@
 			return $text;
 		}
 		
-		function save($data) {
-			$content = $this->translateTo($data['content']);
-			$args['content'] = $content;
+		function save($args) {
+			$args['content'] = $this->translateTo($args['content']);
 			parent::save($args);
 		}
 		

@@ -343,7 +343,6 @@ class Concrete5_Controller_Block_Form extends BlockController {
 		if(count($errors)){			
 			$this->set('formResponse', t('Please correct the following errors:') );
 			$this->set('errors',$errors);
-			$this->set('Entry',$E);			
 		}else{ //no form errors			
 			//save main survey record	
 			$u = new User();
@@ -381,7 +380,8 @@ class Concrete5_Controller_Block_Form extends BlockController {
 					$answerLong=$txt->sanitize($_POST['Question'.$row['msqID']]);
 					$answer='';
 				}elseif($row['inputType']=='fileupload'){
-					 $answer=intval( $tmpFileIds[intval($row['msqID'])] );
+					$answerLong="";
+					$answer=intval( $tmpFileIds[intval($row['msqID'])] );
 				}elseif($row['inputType']=='url'){
 					$answerLong="";
 					$answer=$txt->sanitize($_POST['Question'.$row['msqID']]);
@@ -428,7 +428,7 @@ class Concrete5_Controller_Block_Form extends BlockController {
 				$q="delete from {$this->btAnswerSetTablename} where asID = ?";
 				$v = array($this->lastAnswerSetId);
 				$db->Execute($q, $v);
-				$db->Execute('delete from {$this->btAnswersTablename} where asID = ?', array($this->lastAnswerSetId));
+				$db->Execute("delete from {$this->btAnswersTablename} where asID = ?", array($this->lastAnswerSetId));
 			}
 			
 			if(intval($this->notifyMeOnSubmission)>0 && !$foundSpam){	

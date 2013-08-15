@@ -33,9 +33,11 @@ if ($controller->hasVoted()) { ?>
 			}
 		}		
 		?>
-		
-		<strong><?=t("Question")?>: <?=$controller->getQuestion()?></strong>
-		
+
+		<div id="surveyQuestion">
+			<strong><?=t("Question")?>: <?=$controller->getQuestion()?></strong>
+		</div>
+
 		<div id="surveyResults" style=" <?=(!$_GET['dontGraphPoll'] && $totalVotes>0)?'float:left; width:45%':''?>">
 			<table style="width:98%">
 			<?	$i = 1; 
@@ -57,7 +59,7 @@ if ($controller->hasVoted()) { ?>
 		//&chl= join('|',$optionNamesAbbrev) 
 		if(count($optionNamesAbbrev) && !$_GET['dontGraphPoll'] && $totalVotes>0){ ?>
 		<div >
-		<img border="" src="http://chart.apis.google.com/chart?cht=p&chd=t:<?=join(',',$optionResults)?>&chs=180x180&chco=<?=join(',',$graphColors)?>" alt="<?php echo t('survey results');?>" />
+		<img border="" src="//chart.apis.google.com/chart?cht=p&chd=t:<?=join(',',$optionResults)?>&chs=180x180&chco=<?=join(',',$graphColors)?>" alt="<?php echo t('survey results');?>" />
 		</div>
 		<? } ?>	
 		<div class="spacer">&nbsp;</div>	
@@ -70,8 +72,10 @@ if ($controller->hasVoted()) { ?>
 	<div class="spacer">&nbsp;</div>
 
 <? } else { ?>
-
-	<?=$controller->getQuestion()?><br/>
+	
+	<div id="surveyQuestion">
+		<?=$controller->getQuestion()?><br/>
+	</div>
 	
 	<? if(!$controller->requiresRegistration() || intval($uID) > 0) { ?>
 	<form method="post" action="<?=$this->action('form_save_vote', '#survey-form-'.$controller->bID)?>">

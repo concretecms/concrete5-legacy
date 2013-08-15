@@ -225,41 +225,56 @@ class ConcreteDashboardHelper {
 	public function addQuickNavToMenus($html) {
 		$recent = '';
 		ob_start();		
-		
+
 			$c = Page::getCurrentPage();
 			if (!is_array($_SESSION['ccmQuickNavRecentPages'])) {
 				$_SESSION['ccmQuickNavRecentPages'] = array();
 			}
-			if (in_array($c->getCollectionID(), $_SESSION['ccmQuickNavRecentPages'])) {
-				unset($_SESSION['ccmQuickNavRecentPages'][array_search($c->getCollectionID(), $_SESSION['ccmQuickNavRecentPages'])]);
-				$_SESSION['ccmQuickNavRecentPages'] = array_values($_SESSION['ccmQuickNavRecentPages']);
-			}
-			
-			$_SESSION['ccmQuickNavRecentPages'][] = $c->getCollectionID();
-	
-			if (count($_SESSION['ccmQuickNavRecentPages']) > 5) {
-				array_shift($_SESSION['ccmQuickNavRecentPages']);
-			}
-			
 
-			if (count($_SESSION['ccmQuickNavRecentPages']) > 0) { ?>
-				<ul class="breadcrumb">
-				<li><strong><?=t('Recent')?></strong> <span class="divider" style="padding-right: 5px; padding-left: 3px;">:</span></li>
-				<?php
-				$i = 0;
-				$recentPages = array_reverse($_SESSION['ccmQuickNavRecentPages']); //display most-recent first
-				foreach($recentPages as $_cID) {
+			$session_pages = array_filter($_SESSION['ccmQuickNavRecentPages']);
+			$session_pages[] = $c->getCollectionID();
+
+			// Remove duplicates, making sure the most recent is kept.
+			$session_pages = array_reverse(array_unique(array_reverse($session_pages)));
+
+			// Tidy and eliminate non-existent collections, prep for later
+			$breadcrumb_map = array();
+			$last = 0;
+			if (count($session_pages) > 0) {
+				foreach($session_pages as $_cID) {
 					$_c = Page::getByID($_cID);
-					$name = t('(No Name)');
-					$divider = '';
-					if (isset($_SESSION['ccmQuickNavRecentPages'][$i+1])) {
-						$divider = '<span class="divider">|</span>';
+					if ($_c->isError()) {
+						continue;
 					}
+					$breadcrumb_map[$_cID] = $_c;
+					$last = $_cID;
+				}
+			}
+			// limit size, keeping numeric keys constant
+			$max_breadcrumb_size = 5;
+			// (NB - by using the above, the way is kept open for the size to be adjustable in the future)
+			if (count($breadcrumb_map) > $max_breadcrumb_size) {
+				$breadcrumb_map = array_slice($breadcrumb_map,-$max_breadcrumb_size, null, true);
+			}
+
+			$_SESSION['ccmQuickNavRecentPages'] = array_keys($breadcrumb_map);
+
+			if (count($breadcrumb_map) > 0) { ?>
+				<ul class="breadcrumb">
+				<li><strong><?php echo t('Recent')?></strong> <span class="divider">:</span></li>
+				<?php 
+				// create links
+				foreach($breadcrumb_map as $_cID=>$_c) {
+					$name = t('(No Name)');
 					if ($_c->getCollectionName()) {
 						$name = $_c->getCollectionName();
 					}
-					?> <li><a id="ccm-recent-page-<?=$_c->getCollectionID()?>" href="<?=Loader::helper('navigation')->getLinkToCollection($_c)?>"><?=t($name)?></a><?=$divider?></li>
-					<? $i++;
+					$divider = '';
+					if ($_cID != $last) {
+						$divider = '<span class="divider">/</span>';
+					}
+					?> <li><a id="ccm-recent-page-<?php echo $_c->getCollectionID()?>" href="<?php echo Loader::helper('navigation')->getLinkToCollection($_c)?>"><?php echo t($name)?></a><?php echo $divider?></li>
+					<?php 
 				}
 				?>
 				</ul>
@@ -273,8 +288,8 @@ class ConcreteDashboardHelper {
 
 	public function getDashboardAndSearchMenus() {
 
-		if (isset($_SESSION['dashboardMenus'])) {
-			return $_SESSION['dashboardMenus'];
+		if (isset($_SESSION['dashboardMenus'][Localization::activeLocale()])) {
+			return $_SESSION['dashboardMenus'][Localization::activeLocale()];
 		}
 				
 		$d = ConcreteDashboardMenu::getMine();
@@ -321,12 +336,12 @@ class ConcreteDashboardHelper {
 				
 				<ul class="ccm-intelligent-search-results-list">
 				<? if (count($ch2) == 0) { ?>
-					<li><a href="<?=Loader::helper('navigation')->getLinkTocollection($page, false, true)?>"><?=t($page->getCollectionName())?></a><span><?=t($page->getCollectionName())?> <?=$page->getAttribute('meta_keywords')?></span></li>
+					<li><a href="<?=Loader::helper('navigation')->getLinkTocollection($page, false, true)?>"><?=t($page->getCollectionName())?></a><span><?=t($page->getCollectionName())?> <?=t($page->getAttribute('meta_keywords'))?></span></li>
 				<? } ?>
 				
 				<?
 				if ($page->getCollectionPath() == '/dashboard/system') { ?>
-					<li><a href="<?=Loader::helper('navigation')->getLinkTocollection($page, false, true)?>"><?=t('View All')?></a><span><?=t($page->getCollectionName())?> <?=$page->getAttribute('meta_keywords')?></span></li>
+					<li><a href="<?=Loader::helper('navigation')->getLinkTocollection($page, false, true)?>"><?=t('View All')?></a><span><?=t($page->getCollectionName())?> <?=t($page->getAttribute('meta_keywords'))?></span></li>
 				<?				
 				}
 				
@@ -342,7 +357,7 @@ class ConcreteDashboardHelper {
 					}
 			
 					?>
-					<li><a href="<?=Loader::helper('navigation')->getLinkTocollection($subpage, false, true)?>"><?=t($subpage->getCollectionName())?></a><span><? if ($page->getCollectionPath() != '/dashboard/system') { ?><?=t($page->getCollectionName())?> <?=$page->getAttribute('meta_keywords')?> <? } ?><?=$subpage->getCollectionName()?> <?=$subpage->getAttribute('meta_keywords')?></span></li>
+					<li><a href="<?=Loader::helper('navigation')->getLinkTocollection($subpage, false, true)?>"><?=t($subpage->getCollectionName())?></a><span><? if ($page->getCollectionPath() != '/dashboard/system') { ?><?=t($page->getCollectionName())?> <?=t($page->getAttribute('meta_keywords'))?> <? } ?><?=t($subpage->getCollectionName())?> <?=t($subpage->getAttribute('meta_keywords'))?></span></li>
 					<? 
 				}
 				?>
@@ -402,9 +417,16 @@ class ConcreteDashboardHelper {
 			<? 
 			$currentHeader = false;
 			$x = 0;
+			$itemsChanged = false;
 			foreach($items as $path) { 
 			
 				$p = Page::getByPath($path, 'ACTIVE');
+				// If page is not found etc, remove it from items
+				if ($p->isError()) {
+					$d->remove($p);
+					$itemsChanged = true;
+					continue;
+				}
 				$pc = new Permissions($p);
 				if ($pc->canViewPage()) {
 					
@@ -441,7 +463,12 @@ class ConcreteDashboardHelper {
 				
 							
 			<? } ?>
-			
+			<?
+			if ($itemsChanged) {
+				$u = new User;
+				$u->saveConfig('QUICK_NAV_BOOKMARKS', serialize($d));
+			}
+			?>
 			<? if ($currentHeader != false) { ?>
 							</ul>
 							</div>

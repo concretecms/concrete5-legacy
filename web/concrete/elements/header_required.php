@@ -5,11 +5,26 @@ if (is_object($c)) {
 	$cp = new Permissions($c);
 }
 
+/** 
+ * Handle page title
+ */
+
 if (is_object($c)) {
-	if(!(isset($pageTitle) && strlen($pageTitle))) {
-		$pageTitle = $c->getCollectionName();
-		if($c->isAdminArea()) {
-			$pageTitle = t($pageTitle);
+	// We can set a title 3 ways:
+	// 1. It comes through programmatically as $pageTitle. If this is the case then we pass it through, no questions asked
+	// 2. It comes from meta title
+	// 3. It comes from getCollectionName()
+	// In the case of 3, we also pass it through page title format.
+
+	if (!isset($pageTitle) || !$pageTitle) {
+		// we aren't getting it dynamically.
+		$pageTitle = $c->getCollectionAttributeValue('meta_title');
+		if (!$pageTitle) {
+			$pageTitle = $c->getCollectionName();
+			if($c->isAdminArea()) {
+				$pageTitle = t($pageTitle);
+			}
+			$pageTitle = sprintf(PAGE_TITLE_FORMAT, SITE, $pageTitle);
 		}
 	}
 	$pageDescription = (!$pageDescription) ? $c->getCollectionDescription() : $pageDescription;
@@ -24,18 +39,11 @@ if (is_object($c)) {
 
 <meta http-equiv="content-type" content="text/html; charset=<?php echo APP_CHARSET?>" />
 <?php
-$akt = $c->getCollectionAttributeValue('meta_title'); 
 $akd = $c->getCollectionAttributeValue('meta_description');
 $akk = $c->getCollectionAttributeValue('meta_keywords');
-
-if ($akt) { 
-	$pageTitle = $akt; 
-	?><title><?php echo htmlspecialchars($akt, ENT_COMPAT, APP_CHARSET)?></title>
-<?php } else { 
-	$pageTitle = htmlspecialchars($pageTitle, ENT_COMPAT, APP_CHARSET);
-	?><title><?php echo sprintf(PAGE_TITLE_FORMAT, SITE, $pageTitle)?></title>
-<? } 
-
+?>
+<title><?php echo htmlspecialchars($pageTitle, ENT_COMPAT, APP_CHARSET)?></title>
+<?
 if ($akd) { ?>
 <meta name="description" content="<?=htmlspecialchars($akd, ENT_COMPAT, APP_CHARSET)?>" />
 <?php } else { ?>
@@ -83,7 +91,8 @@ $this->addHeaderItem($html->javascript('ccm.base.js', false, true), 'CORE');
 
 $favIconFID=intval(Config::get('FAVICON_FID'));
 $appleIconFID =intval(Config::get('IPHONE_HOME_SCREEN_THUMBNAIL_FID'));
-
+$modernIconFID = intval(Config::get('MODERN_TILE_THUMBNAIL_FID'));
+$modernIconBGColor = strval(Config::get('MODERN_TILE_THUMBNAIL_BGCOLOR'));
 
 if($favIconFID) {
 	$f = File::getByID($favIconFID); ?>
@@ -94,9 +103,18 @@ if($favIconFID) {
 if($appleIconFID) {
 	$f = File::getByID($appleIconFID); ?>
 	<link rel="apple-touch-icon" href="<?php echo $f->getRelativePath()?>"  />
-<?php } ?>
+<?php } 
 
-<?php 
+if($modernIconFID) {
+	$f = File::getByID($modernIconFID);
+	?><meta name="msapplication-TileImage" content="<?php echo $f->getRelativePath(); ?>" /><?php
+	echo "\n";
+	if(strlen($modernIconBGColor)) {
+		?><meta name="msapplication-TileColor" content="<?php echo $modernIconBGColor; ?>" /><?php
+		echo "\n";
+	}
+} 
+
 if (is_object($cp)) { 
 
 	if ($this->editingEnabled()) {
