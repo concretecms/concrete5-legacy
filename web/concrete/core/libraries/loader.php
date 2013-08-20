@@ -68,6 +68,7 @@
 					break;
 			}
 		}
+
 		
 		/** 
 		 * @access private
@@ -90,6 +91,17 @@
 			}
 
 			include(Environment::get()->getPath(DIRNAME_ELEMENTS . '/' . $_file . '.php', $_pkgHandle));
+		}
+
+		/** 
+		 * A simple wrapper around the element function that will return the output HTML instead of outputting it
+		 */
+		public function renderElement($file, $args = null, $pkgHandle = null) {
+			ob_start();
+				self::element($file, $args, $pkgHandle);
+				$output = ob_get_contents();
+			ob_end_clean();
+			return $output;
 		}
 
 		 /**
