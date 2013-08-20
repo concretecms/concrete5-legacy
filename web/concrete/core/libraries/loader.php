@@ -96,7 +96,7 @@
 		/** 
 		 * A simple wrapper around the element function that will return the output HTML instead of outputting it
 		 */
-		public function renderElement($file, $args = null, $pkgHandle = null) {
+		public function getElement($file, $args = null, $pkgHandle = null) {
 			ob_start();
 				self::element($file, $args, $pkgHandle);
 				$output = ob_get_contents();
