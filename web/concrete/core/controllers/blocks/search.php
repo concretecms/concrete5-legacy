@@ -52,9 +52,9 @@ class Concrete5_Controller_Block_Search extends BlockController {
 		$text = @preg_replace("#\n|\r#", ' ', $fulltext);
 
 		$matches = array();
-		$highlight = str_replace(array('"',"'","&quot;"),'',$highlight); // strip the quotes as they mess the regex
+		$highlight = str_replace(array('"', "'", "&quot;"), '', $highlight); // strip the quotes as they mess the regex
 
-		if (!$highlight) {
+		if ( ! $highlight) {
 			$text = Loader::helper('text')->shorten($fulltext, 180);
 			if (strlen($fulltext) > 180) {
 				$text . '&hellip;<wbr>';
@@ -62,24 +62,26 @@ class Concrete5_Controller_Block_Search extends BlockController {
 			return $text;
 		}
 
-		$regex = '([[:alnum:]|\'|\.|_|\s]{0,45})'. preg_quote($highlight, '#') .'([[:alnum:]|\.|_|\s]{0,45})';
+		$regex = '([[:alnum:]|\'|\.|_|\s]{0,45})'. preg_quote($highlight, '#') . '([[:alnum:]|\.|_|\s]{0,45})';
 		preg_match_all("#$regex#ui", $text, $matches);
 
-		if(!empty($matches[0])) {
+		if ( ! empty($matches[0])) {
 			$body_length = 0;
 			$body_string = array();
-			foreach($matches[0] as $line) {
+			foreach ($matches[0] as $line) {
 				$body_length += strlen($line);
 
 				$r = $this->highlightedMarkup($line, $highlight);
 				if ($r) {
 					$body_string[] = $r;
 				}
-				if($body_length > 150)
+				if ($body_length > 150) {
 					break;
+				}
 			}
-			if(!empty($body_string))
+			if ( ! empty($body_string)) {
 				return @implode("&hellip;<wbr>", $body_string);
+			}
 		}
 	}
 
