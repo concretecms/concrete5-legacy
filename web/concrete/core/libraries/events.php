@@ -172,6 +172,23 @@ class Concrete5_Library_Events {
 						$eventReturn = call_user_func_array($func, $params);
 					} else {
 						if (method_exists($ev[1], $ev[2])) {
+
+							switch ($event) {
+
+								case 'on_page_output':
+
+									// $response is page content
+									// returned from previous handler.
+									// Not set first time through.
+									if (isset($response)) {
+
+										// $params[0] is page content
+										// passed to current handler.
+										$params[0] = $response;
+									}
+									break;
+							}
+
 							// Note: DO NOT DO RETURN HERE BECAUSE THEN MULTIPLE EVENTS WON'T WORK
 							$response = call_user_func_array(array($ev[1], $ev[2]), $params);
 							if(!is_null($response)) {
