@@ -26,7 +26,7 @@ class Concrete5_Controller_Dashboard_Users_Groups extends DashboardBaseControlle
 		$g1 = Group::getByName($gName);
 		if ($g1 instanceof Group) {
 			if ((!is_object($g)) || $g->getGroupID() != $g1->getGroupID()) {
-				$this->error->add(t('A group named "%s" already exists', $g1->getGroupName()));
+				$this->error->add(t('A group named "%s" already exists', h($g1->getGroupName())));
 			}
 		}
 		
