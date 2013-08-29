@@ -56,12 +56,22 @@ $(function() {
 	</form>
 	
 <?php } elseif ($validated) { ?>
-	<h3><?php echo t('Email Address Verified'); ?></h3>
-	<div class="success alert-message block-message">
-		<p>
-			<?php echo t('The email address <b>%s</b> has been verified and you are now a fully validated member of this website.', $uEmail); ?>
-		</p>
-		<div class="alert-actions"><a class="btn small" href="<?php echo $this->url('/'); ?>"><?php echo t('Continue to Site'); ?></a></div>
+	<div class="row">
+		<div class="span10 offset1">
+			<fieldset>
+				<legend><?php echo t('Email Address Verified'); ?></legend>
+				<div class="success alert-message block-message">
+					<p><?php echo t('The email address <b>%s</b> has been verified and you are now a fully validated member of this website.', $uEmail); ?></p>
+				</div>
+			</fieldset>
+		</div>
+	</div>
+	<div class="row">
+		<div class="span10 offset1">
+			<div class="actions">
+				<a class="btn small" href="<?php echo $this->url('/'); ?>"><?php echo t('Continue to Site'); ?></a>
+			</div>
+		</div>
 	</div>
 
 <?php } elseif (isset($_SESSION['uOpenIDError']) && isset($_SESSION['uOpenIDRequested'])) { ?>
