@@ -289,4 +289,4 @@ $(function() {
 		</div>
 	<?php } ?>
 
-<?php } ?>
+<?php }
