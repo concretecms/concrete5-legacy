@@ -34,7 +34,7 @@ $(function() {
 					<div class="control-group">
 						<label for="uPassword" class="control-label"><?php echo t('New Password'); ?></label>
 						<div class="controls">
-							<input type="password" name="uPassword" id="uPassword" class="ccm-input-text">
+							<input type="password" name="uPassword" id="uPassword" class="ccm-input-text" autofocus>
 						</div>
 					</div>
 					<div class="control-group">
@@ -195,7 +195,7 @@ $(function() {
 							}
 						?></label>
 						<div class="controls">
-							<input type="text" name="uName" id="uName" <?php echo isset($uName) ? ('value="'.$uName.'"') : ''; ?> class="ccm-input-text">
+							<input type="text" name="uName" id="uName" <?php echo isset($uName) ? ('value="'.$uName.'"') : ''; ?> class="ccm-input-text" autofocus>
 						</div>
 					</div>
 					<div class="control-group">
