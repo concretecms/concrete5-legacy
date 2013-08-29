@@ -35,7 +35,20 @@ class Concrete5_Controller_Install extends Controller {
 		foreach($languages as $lang) {
 			$loc = new Zend_Locale($lang);
 			$locales[$lang] = Zend_Locale::getTranslation($loc->getLanguage(), 'language', $lang);
+			$locRegion = $loc->getRegion();
+			if($locRegion !== false) {
+				$locRegionName = Zend_Locale::getTranslation($loc->getRegion(), 'country', $lang);
+				if($locRegionName !== false) {
+					$localeData = Zend_Locale_Data::getList($lang, 'layout');
+					if ( $localeData['characters'] == "right-to-left") {
+						$locales[$lang] = '(' . $locales[$lang] . ' (' . $locRegionName ;
+					} else {
+						$locales[$lang] .= ' (' . $locRegionName . ")";
+					}
+				}
+			}
 		}
+		asort($locales);
 		return $locales;
 	}
 	

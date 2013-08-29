@@ -1,4 +1,4 @@
-<?
+﻿<?
 defined('C5_EXECUTE') or die("Access Denied.");
 class Concrete5_Controller_Dashboard_System_Basics_Multilingual extends DashboardBaseController {
 
@@ -16,7 +16,20 @@ class Concrete5_Controller_Dashboard_System_Basics_Multilingual extends Dashboar
 		foreach($languages as $lang) {
 			$loc = new Zend_Locale($lang);
 			$locales[$lang] = Zend_Locale::getTranslation($loc->getLanguage(), 'language', $lang);
+			$locRegion = $loc->getRegion();
+			if($locRegion !== false) {
+				$locRegionName = Zend_Locale::getTranslation($loc->getRegion(), 'country', $lang);
+				if($locRegionName !== false) {
+					$localeData = Zend_Locale_Data::getList($lang, 'layout');
+					if ( $localeData['characters'] == "right-to-left") {
+						$locales[$lang] = '(' . $locales[$lang] . ' (' . $locRegionName ;
+					} else {
+						$locales[$lang] .= ' (' . $locRegionName . ")";
+					}
+				}
+			}
 		}
+		asort($locales);
 		$this->set('LANGUAGE_CHOOSE_ON_LOGIN', Config::get('LANGUAGE_CHOOSE_ON_LOGIN'));
 		$this->set('LANGUAGE_MULTILINGUAL_CONTENT_ENABLED', Config::get('LANGUAGE_MULTILINGUAL_CONTENT_ENABLED'));
 		$this->set('interfacelocales', $locales);
