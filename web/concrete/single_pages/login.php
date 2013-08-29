@@ -102,7 +102,7 @@ $(function() {
 			<?php } else { ?>
 				<?php echo t('Username'); ?>
 			<?php } ?></label><br/>
-			<input type="text" name="uName" id="uName" <?php echo (isset($uName)?'value="'.$uName.'"':''); ?> class="ccm-input-text">
+			<input type="text" name="uName" id="uName" <?php echo isset($uName) ? ('value="'.$uName.'"') : ''; ?> class="ccm-input-text">
 			</div>			<div>
 
 			<label for="uPassword"><?php echo t('Password'); ?></label><br/>
@@ -176,7 +176,7 @@ $(function() {
 		<?php echo t('Username'); ?>
 	<?php } ?></label>
 	<div class="controls">
-		<input type="text" name="uName" id="uName" <?php echo (isset($uName)?'value="'.$uName.'"':''); ?> class="ccm-input-text">
+		<input type="text" name="uName" id="uName" <?php echo isset($uName) ? ('value="'.$uName.'"') : ''; ?> class="ccm-input-text">
 	</div>
 	
 	</div>
@@ -199,7 +199,7 @@ $(function() {
 	<div class="control-group">
 		<label for="uOpenID" class="control-label"><?php echo t('Login with OpenID'); ?>:</label>
 		<div class="controls">
-			<input type="text" name="uOpenID" id="uOpenID" <?php echo (isset($uOpenID)?'value="'.$uOpenID.'"':''); ?> class="ccm-input-openid">
+			<input type="text" name="uOpenID" id="uOpenID" <?php echo isset($uOpenID) ? ('value="'.$uOpenID.'"') : ''; ?> class="ccm-input-openid">
 		</div>
 	</div>
 	</fieldset>
