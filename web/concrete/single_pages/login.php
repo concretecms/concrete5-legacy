@@ -146,31 +146,39 @@ $(function() {
 		}
 
 } elseif ($invalidRegistrationFields == true) { ?>
-	<div class="ccm-form">
-		<p><?php echo t('You must provide the following information before you may login.'); ?></p>
-		<form method="post" action="<?php echo $this->url('/login', 'do_login'); ?>">
-			<?php 
-			$attribs = UserAttributeKey::getRegistrationList();
-			$af = Loader::helper('form/attribute');
-			$i = 0;
-			foreach($unfilledAttributes as $ak) { 
-				if ($i > 0) { 
-					echo '<br/><br/>';
-				}
-				echo $af->display($ak, $ak->isAttributeKeyRequiredOnRegister());	
-				$i++;
-			}
-			echo $form->hidden('uName', Loader::helper('text')->entities($_POST['uName']));
-			echo $form->hidden('uPassword', Loader::helper('text')->entities($_POST['uPassword']));
-			echo $form->hidden('uOpenID', $uOpenID);
-			echo $form->hidden('completePartialProfile', true);
-			?>
-			<div class="ccm-button">
-				<?php echo $form->submit('submit', t('Sign In')); ?>
-				<?php echo $form->hidden('rcID', $rcID); ?>
+	<form method="post" action="<?php echo $this->url('/login', 'do_login'); ?>" class="form-horizontal">
+		<div class="row">
+			<div class="span10 offset1">
+				<fieldset>
+					<legend><?php echo t('Fill in missing fields'); ?></legend>
+					<p><?php echo t('You must provide the following information before you may login.'); ?></p>
+					<?php 
+					$attribs = UserAttributeKey::getRegistrationList();
+					$af = Loader::helper('form/attribute');
+					$i = 0;
+					foreach($unfilledAttributes as $ak) { 
+						if ($i > 0) { 
+						}
+						echo $af->display($ak, $ak->isAttributeKeyRequiredOnRegister());	
+						$i++;
+					}
+					echo $form->hidden('uName', Loader::helper('text')->entities($_POST['uName']));
+					echo $form->hidden('uPassword', Loader::helper('text')->entities($_POST['uPassword']));
+					echo $form->hidden('uOpenID', $uOpenID);
+					echo $form->hidden('completePartialProfile', true);
+					?>
+				</fieldset>
 			</div>
-		</form>
-	</div>	
+		</div>
+		<div class="row">
+			<div class="span10 offset1">
+				<div class="actions">
+					<?php echo $form->submit('submit', t('Sign In'), array('class' => 'primary')); ?>
+					<?php echo $form->hidden('rcID', $rcID); ?>
+				</div>
+			</div>
+		</div>
+	</form>
 
 <?php } else { ?>
 	<form method="post" action="<?php echo $this->url('/login', 'do_login'); ?>" class="form-horizontal">
