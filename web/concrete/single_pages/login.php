@@ -49,7 +49,7 @@ $(function() {
 		<div class="row">
 			<div class="span10 offset1">
 				<div class="actions">
-					<?php echo $form->submit('submit', t('Sign In') . ' &gt;'); ?>
+					<?php echo $form->submit('submit', t('Sign In') . ' &gt;', array('class' => 'primary')); ?>
 				</div>
 			</div>
 		</div>
@@ -69,7 +69,7 @@ $(function() {
 	<div class="row">
 		<div class="span10 offset1">
 			<div class="actions">
-				<a class="btn small" href="<?php echo $this->url('/'); ?>"><?php echo t('Continue to Site'); ?></a>
+				<a class="btn primary" href="<?php echo $this->url('/'); ?>"><?php echo t('Continue to Site'); ?></a>
 			</div>
 		</div>
 	</div>
