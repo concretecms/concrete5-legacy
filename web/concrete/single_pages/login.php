@@ -25,27 +25,36 @@ $(function() {
 <?php } ?>
 
 <?php if ($changePasswordForm) { ?>
-	<p><?php echo t('Enter your new password below.'); ?></p>
-	<div class="ccm-form">	
-		<form method="post" action="<?php echo $this->url( '/login', 'change_password', $uHash ); ?>"> 
-			<div class="control-group">
-				<label for="uPassword" class="control-label"><?php echo t('New Password'); ?></label>
-				<div class="controls">
-					<input type="password" name="uPassword" id="uPassword" class="ccm-input-text">
+	<form method="post" action="<?php echo $this->url( '/login', 'change_password', $uHash ); ?>" class="form-horizontal">
+		<div class="row">
+			<div class="span10 offset1">
+				<fieldset>
+					<legend><?php echo t('Change Password'); ?></legend>
+					<p><?php echo t('Enter your new password below.'); ?></p>
+					<div class="control-group">
+						<label for="uPassword" class="control-label"><?php echo t('New Password'); ?></label>
+						<div class="controls">
+							<input type="password" name="uPassword" id="uPassword" class="ccm-input-text">
+						</div>
+					</div>
+					<div class="control-group">
+						<label for="uPasswordConfirm" class="control-label"><?php echo t('Confirm Password'); ?></label>
+						<div class="controls">
+							<input type="password" name="uPasswordConfirm" id="uPasswordConfirm" class="ccm-input-text">
+						</div>
+					</div>
+				</fieldset>
+			</div>
+		</div>
+		<div class="row">
+			<div class="span10 offset1">
+				<div class="actions">
+					<?php echo $form->submit('submit', t('Sign In') . ' &gt;'); ?>
 				</div>
 			</div>
-			<div class="control-group">
-				<label for="uPasswordConfirm"  class="control-label"><?php echo t('Confirm Password'); ?></label>
-				<div class="controls">
-					<input type="password" name="uPasswordConfirm" id="uPasswordConfirm" class="ccm-input-text">
-				</div>
-			</div>
-			<div class="actions">
-				<?php echo $form->submit('submit', t('Sign In') . ' &gt;'); ?>
-			</div>
-		</form>
-	</div>
-
+		</div>
+	</form>
+	
 <?php } elseif ($validated) { ?>
 	<h3><?php echo t('Email Address Verified'); ?></h3>
 	<div class="success alert-message block-message">
