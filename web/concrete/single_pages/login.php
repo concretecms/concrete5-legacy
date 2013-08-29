@@ -1,7 +1,7 @@
-<?php defined('C5_EXECUTE') or die("Access Denied."); ?>
-<?php Loader::library('authentication/open_id'); ?>
-<?php $form = Loader::helper('form'); ?>
-
+<?php defined('C5_EXECUTE') or die("Access Denied.");
+Loader::library('authentication/open_id');
+$form = Loader::helper('form');
+?>
 <script type="text/javascript">
 $(function() {
 	$("input[name=uName]").focus();
@@ -80,11 +80,11 @@ $(function() {
 					<br/>
 					<div>
 						<label for="uName"><?php
-							if (USER_REGISTRATION_WITH_EMAIL_ADDRESS == true) { ?>
-								<?php echo t('Email Address'); ?>
-							<?php } else { ?>
-								<?php echo t('Username'); ?>
-							<?php }
+							if (USER_REGISTRATION_WITH_EMAIL_ADDRESS == true) {
+								echo t('Email Address');
+							} else {
+								echo t('Username');
+							}
 						?></label><br/>
 						<input type="text" name="uName" id="uName" <?php echo isset($uName) ? ('value="'.$uName.'"') : ''; ?> class="ccm-input-text">
 					</div>
@@ -111,16 +111,16 @@ $(function() {
 			$i = 0;
 			foreach($unfilledAttributes as $ak) { 
 				if ($i > 0) { 
-					print '<br/><br/>';
+					echo '<br/><br/>';
 				}
-				print $af->display($ak, $ak->isAttributeKeyRequiredOnRegister());	
+				echo $af->display($ak, $ak->isAttributeKeyRequiredOnRegister());	
 				$i++;
 			}
+			echo $form->hidden('uName', Loader::helper('text')->entities($_POST['uName']));
+			echo $form->hidden('uPassword', Loader::helper('text')->entities($_POST['uPassword']));
+			echo $form->hidden('uOpenID', $uOpenID);
+			echo $form->hidden('completePartialProfile', true);
 			?>
-			<?php echo $form->hidden('uName', Loader::helper('text')->entities($_POST['uName'])); ?>
-			<?php echo $form->hidden('uPassword', Loader::helper('text')->entities($_POST['uPassword'])); ?>
-			<?php echo $form->hidden('uOpenID', $uOpenID); ?>
-			<?php echo $form->hidden('completePartialProfile', true); ?>
 			<div class="ccm-button">
 				<?php echo $form->submit('submit', t('Sign In')); ?>
 				<?php echo $form->hidden('rcID', $rcID); ?>
@@ -138,11 +138,11 @@ $(function() {
 							<legend><?php echo t('User Account'); ?></legend>
 							<div class="control-group">
 								<label for="uName" class="control-label"><?php
-									if (USER_REGISTRATION_WITH_EMAIL_ADDRESS == true) { ?>
-										<?php echo t('Email Address'); ?>
-									<?php } else { ?>
-										<?php echo t('Username'); ?>
-									<?php }
+									if (USER_REGISTRATION_WITH_EMAIL_ADDRESS == true) {
+										echo t('Email Address');
+									} else {
+										echo t('Username');
+									}
 								?></label>
 								<div class="controls">
 									<input type="text" name="uName" id="uName" <?php echo isset($uName) ? ('value="'.$uName.'"') : ''; ?> class="ccm-input-text">
