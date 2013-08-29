@@ -79,7 +79,7 @@ class Concrete5_Controller_DownloadFile extends Controller {
 			
 			$this->set('error', t("Password incorrect. Please try again."));
 			
-			$this->set('force',($this->post('force')?1:0));
+			$this->set('force', ($this->post('force') ? 1 : 0));
 			
 			$this->view($fID, $rcID);
 		}

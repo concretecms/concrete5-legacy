@@ -134,7 +134,7 @@ if ($_REQUEST['approveImmediately'] == 1) {
 		<?  if (!$c->isGeneratedCollection()) { ?>
 			<? echo BASE_URL . DIR_REL;?><?  if (URL_REWRITING == false) { ?>/<? echo DISPATCHER_FILENAME?><?  } ?><? 
 			$cPath = substr($c->cPath, strrpos($c->cPath, '/') + 1);
-			print htmlentities(substr($c->cPath, 0, strrpos($c->cPath, '/')),ENT_QUOTES,APP_CHARSET)?>/<input type="text" name="cHandle" value="<?= htmlentities($cPath,ENT_QUOTES,APP_CHARSET)?>" id="cHandle"><input type="hidden" name="oldCHandle" id="oldCHandle" value="<?= htmlentities($c->getCollectionHandle(),ENT_QUOTES,APP_CHARSET)?>"><br /><br />
+			print htmlentities(substr($c->cPath, 0, strrpos($c->cPath, '/')),ENT_QUOTES,APP_CHARSET)?>/<input type="text" name="cHandle" value="<?= htmlentities($cPath,ENT_QUOTES,APP_CHARSET)?>" id="cHandle" maxlength="128"><input type="hidden" name="oldCHandle" id="oldCHandle" value="<?= htmlentities($c->getCollectionHandle(),ENT_QUOTES,APP_CHARSET)?>"><br /><br />
 		<?   } else { ?>
 			<?= $c->getCollectionHandle()?><br /><br />
 		<?   } ?>
