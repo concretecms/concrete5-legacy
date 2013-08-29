@@ -131,63 +131,61 @@ $(function() {
 <?php } else { ?>
 	<form method="post" action="<?php echo $this->url('/login', 'do_login'); ?>" class="form-horizontal">
 		<div class="row">
-			<div class="span10 offset1">
-				<div class="row">
-					<div class="span5">
-						<fieldset>
-							<legend><?php echo t('User Account'); ?></legend>
-							<div class="control-group">
-								<label for="uName" class="control-label"><?php
-									if (USER_REGISTRATION_WITH_EMAIL_ADDRESS == true) {
-										echo t('Email Address');
-									} else {
-										echo t('Username');
-									}
-								?></label>
-								<div class="controls">
-									<input type="text" name="uName" id="uName" <?php echo isset($uName) ? ('value="'.$uName.'"') : ''; ?> class="ccm-input-text">
-								</div>
-							</div>
-							<div class="control-group">
-								<label for="uPassword" class="control-label"><?php echo t('Password'); ?></label>
-								<div class="controls">
-									<input type="password" name="uPassword" id="uPassword" class="ccm-input-text" />
-								</div>
-							</div>
-						</fieldset>
-						<?php if (OpenIDAuth::isEnabled()) { ?>
-							<fieldset>
-								<legend><?php echo t('OpenID'); ?></legend>
-								<div class="control-group">
-									<label for="uOpenID" class="control-label"><?php echo t('Login with OpenID'); ?>:</label>
-									<div class="controls">
-										<input type="text" name="uOpenID" id="uOpenID" <?php echo isset($uOpenID) ? ('value="'.$uOpenID.'"') : ''; ?> class="ccm-input-openid">
-									</div>
-								</div>
-							</fieldset>
-						<?php } ?>
-					</div>
-					<div class="span4 offset1">
-						<fieldset>
-							<legend><?php echo t('Options'); ?></legend>
-							<?php if (isset($locales) && is_array($locales) && count($locales) > 0) { ?>
-								<div class="control-group">
-									<label for="USER_LOCALE" class="control-label"><?php echo t('Language'); ?></label>
-									<div class="controls"><?php echo $form->select('USER_LOCALE', $locales); ?></div>
-								</div>
-							<?php } ?>
-							<div class="control-group">
-								<label class="checkbox"><?php echo $form->checkbox('uMaintainLogin', 1); ?> <span><?php echo t('Remain logged in to website.'); ?></span></label>
-							</div>
-							<?php $rcID = isset($_REQUEST['rcID']) ? Loader::helper('text')->entities($_REQUEST['rcID']) : $rcID; ?>
-							<input type="hidden" name="rcID" value="<?php echo $rcID; ?>" />
-						</fieldset>
-					</div>
-					<div class="span10">
-						<div class="actions">
-							<?php echo $form->submit('submit', t('Sign In') . ' &gt;', array('class' => 'primary')); ?>
+			<div class="span5 offset1">
+				<fieldset>
+					<legend><?php echo t('User Account'); ?></legend>
+					<div class="control-group">
+						<label for="uName" class="control-label"><?php
+							if (USER_REGISTRATION_WITH_EMAIL_ADDRESS == true) {
+								echo t('Email Address');
+							} else {
+								echo t('Username');
+							}
+						?></label>
+						<div class="controls">
+							<input type="text" name="uName" id="uName" <?php echo isset($uName) ? ('value="'.$uName.'"') : ''; ?> class="ccm-input-text">
 						</div>
 					</div>
+					<div class="control-group">
+						<label for="uPassword" class="control-label"><?php echo t('Password'); ?></label>
+						<div class="controls">
+							<input type="password" name="uPassword" id="uPassword" class="ccm-input-text" />
+						</div>
+					</div>
+				</fieldset>
+				<?php if (OpenIDAuth::isEnabled()) { ?>
+					<fieldset>
+						<legend><?php echo t('OpenID'); ?></legend>
+						<div class="control-group">
+							<label for="uOpenID" class="control-label"><?php echo t('Login with OpenID'); ?>:</label>
+							<div class="controls">
+								<input type="text" name="uOpenID" id="uOpenID" <?php echo isset($uOpenID) ? ('value="'.$uOpenID.'"') : ''; ?> class="ccm-input-openid">
+							</div>
+						</div>
+					</fieldset>
+				<?php } ?>
+			</div>
+			<div class="span4 offset1">
+				<fieldset>
+					<legend><?php echo t('Options'); ?></legend>
+					<?php if (isset($locales) && is_array($locales) && count($locales) > 0) { ?>
+						<div class="control-group">
+							<label for="USER_LOCALE" class="control-label"><?php echo t('Language'); ?></label>
+							<div class="controls"><?php echo $form->select('USER_LOCALE', $locales); ?></div>
+						</div>
+					<?php } ?>
+					<div class="control-group">
+						<label class="checkbox"><?php echo $form->checkbox('uMaintainLogin', 1); ?> <span><?php echo t('Remain logged in to website.'); ?></span></label>
+					</div>
+					<?php $rcID = isset($_REQUEST['rcID']) ? Loader::helper('text')->entities($_REQUEST['rcID']) : $rcID; ?>
+					<input type="hidden" name="rcID" value="<?php echo $rcID; ?>" />
+				</fieldset>
+			</div>
+		</div>
+		<div class="row">
+			<div class="span10 offset1">
+				<div class="actions">
+					<?php echo $form->submit('submit', t('Sign In') . ' &gt;', array('class' => 'primary')); ?>
 				</div>
 			</div>
 		</div>
@@ -197,31 +195,43 @@ $(function() {
 	<form method="post" action="<?php echo $this->url('/login', 'forgot_password'); ?>" class="form-horizontal">
 		<div class="row">
 			<div class="span10 offset1">
-				<h3><?php echo t('Forgot Your Password?'); ?></h3>
-				<p><?php echo t("Enter your email address below. We will send you instructions to reset your password."); ?></p>
-				<input type="hidden" name="rcID" value="<?php echo $rcID; ?>" />
-				<div class="control-group">
-					<label for="uEmail" class="control-label"><?php echo t('Email Address'); ?></label>
-					<div class="controls">
-						<input type="text" name="uEmail" value="" class="ccm-input-text" >
+				<fieldset>
+					<legend><?php echo t('Forgot Your Password?'); ?></legend>
+					<p><?php echo t("Enter your email address below. We will send you instructions to reset your password."); ?></p>
+					<input type="hidden" name="rcID" value="<?php echo $rcID; ?>" />
+					<div class="control-group">
+						<label for="uEmail" class="control-label"><?php echo t('Email Address'); ?></label>
+						<div class="controls">
+							<input type="text" name="uEmail" value="" class="ccm-input-text" >
+						</div>
 					</div>
-				</div>
+				</fieldset>
+			</div>
+		</div>
+		<div class="row">
+			<div class="span10 offset1">
 				<div class="actions">
 					<?php echo $form->submit('submit', t('Reset and Email Password') . ' &gt;'); ?>
 				</div>
 			</div>
-		</div>	
+		</div>
 	</form>
 
 	<?php if (ENABLE_REGISTRATION == 1) { ?>
 		<div class="row">
 			<div class="span10 offset1">
 				<div class="control-group">
-					<h3><?php echo t('Not a Member'); ?></h3>
-					<p><?php echo t('Create a user account for use on this website.'); ?></p>
-					<div class="actions">
-						<a class="btn" href="<?php echo $this->url('/register'); ?>"><?php echo t('Register here!'); ?></a>
-					</div>
+					<fieldset>
+						<legend><?php echo t('Not a Member'); ?></legend>
+						<p><?php echo t('Create a user account for use on this website.'); ?></p>
+					</fieldset>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="span10 offset1">
+				<div class="actions">
+					<a class="btn" href="<?php echo $this->url('/register'); ?>"><?php echo t('Register here!'); ?></a>
 				</div>
 			</div>
 		</div>
