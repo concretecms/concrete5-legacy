@@ -22,14 +22,19 @@ class Concrete5_Controller_AttributeType_DateTime extends AttributeTypeControlle
 			'akID' => $ak->getAttributeKeyID(), 
 			'akDateDisplayMode' => $akDateDisplayMode
 		), array('akID'), true);
+		$this->akDateDisplayMode = $akDateDisplayMode;
 	}
 	
 	public function type_form() {
-		$this->load();
+		if(!isset($this->akDateDisplayMode)) {
+			$this->load();
+		}
 	}
 
 	public function getDisplayValue() {
-		$this->load();
+		if(!isset($this->akDateDisplayMode)) {
+			$this->load();
+		}
 		$v = $this->getValue();
 		if ($v == '' || $v == false) {
 			return '';
@@ -59,7 +64,9 @@ class Concrete5_Controller_AttributeType_DateTime extends AttributeTypeControlle
 	}
 	
 	public function form() {
-		$this->load();
+		if(!isset($this->akDateDisplayMode)) {
+			$this->load();
+		}
 		$dt = Loader::helper('form/date_time');
 		$caValue = $this->getValue();
 		$html = Loader::helper('html');
@@ -82,7 +89,9 @@ class Concrete5_Controller_AttributeType_DateTime extends AttributeTypeControlle
 	}
 
 	public function exportKey($akey) {
-		$this->load();
+		if(!isset($this->akDateDisplayMode)) {
+			$this->load();
+		}
 		$type = $akey->addChild('type');
 		$type->addAttribute('mode', $this->akDateDisplayMode);
 		return $akey;
@@ -96,7 +105,25 @@ class Concrete5_Controller_AttributeType_DateTime extends AttributeTypeControlle
 	}
 
 	public function validateForm($data) {
-		return $data['value'] != '';
+		if(!isset($this->akDateDisplayMode)) {
+			$this->load();
+		}
+		switch($this->akDateDisplayMode) {
+			case 'date_time':
+				if(empty($data['value_dt']) || (!is_numeric($data['value_h'])) || (!is_numeric($data['value_m']))) {
+					return false;
+				}
+				switch(DATE_FORM_HELPER_FORMAT_HOUR) {
+					case '12':
+						if(empty($data['value_a'])) {
+							return false;
+						}
+						break;
+				}
+				return true;
+			default:
+				return $data['value'] != '';
+		}
 	}
 
 	public function getValue() {
@@ -125,13 +152,17 @@ class Concrete5_Controller_AttributeType_DateTime extends AttributeTypeControlle
 	}
 
 	public function duplicateKey($newAK) {
-		$this->load();
+		if(!isset($this->akDateDisplayMode)) {
+			$this->load();
+		}
 		$db = Loader::db();
 		$db->Execute('insert into atDateTimeSettings (akID, akDateDisplayMode) values (?, ?)', array($newAK->getAttributeKeyID(), $this->akDateDisplayMode));	
 	}
 	
 	public function saveForm($data) {
-		$this->load();
+		if(!isset($this->akDateDisplayMode)) {
+			$this->load();
+		}
 		$dt = Loader::helper('form/date_time');
 		switch($this->akDateDisplayMode) {
 			case 'text':
