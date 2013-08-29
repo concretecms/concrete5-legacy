@@ -74,17 +74,31 @@ $(function() {
 		</div>
 	</div>
 
-<?php } elseif (isset($_SESSION['uOpenIDError']) && isset($_SESSION['uOpenIDRequested'])) { ?>
-	<div class="ccm-form"><?php
+<?php } elseif (isset($_SESSION['uOpenIDError']) && isset($_SESSION['uOpenIDRequested'])) {
 		switch($_SESSION['uOpenIDError']) {
 			case OpenIDAuth::E_REGISTRATION_EMAIL_INCOMPLETE:
 				?>
-				<form method="post" action="<?php echo $this->url('/login', 'complete_openid_email'); ?>">
-					<p><?php echo t('To complete the signup process, you must provide a valid email address.'); ?></p>
-					<label for="uEmail"><?php echo t('Email Address'); ?></label><br/>
-					<?php echo $form->text('uEmail'); ?>
-					<div class="ccm-button">
-						<?php echo $form->submit('submit', t('Sign In') . ' &gt;'); ?>
+				<form method="post" action="<?php echo $this->url('/login', 'complete_openid_email'); ?>" class="form-horizontal">
+					<div class="row">
+						<div class="span10 offset1">
+							<fieldset>
+								<legend><?php echo t('Specify your OpenID email address'); ?></legend>
+								<p><?php echo t('To complete the signup process, you must provide a valid email address.'); ?></p>
+								<div class="control-group">
+									<label for="uEmail" class="control-label"><?php echo t('Email Address'); ?></label>
+									<div class="controls">
+										<?php echo $form->email('uEmail', array('autofocus' => 'autofocus')); ?>
+									</div>
+								</div>
+							</fieldset>
+						</div>
+					</div>
+					<div class="row">
+						<div class="span10 offset1">
+							<div class="actions">
+								<?php echo $form->submit('submit', t('Sign In') . ' &gt;', array('class' => 'primary')); ?>
+							</div>
+						</div>
 					</div>
 				</form>
 				<?php
@@ -92,35 +106,46 @@ $(function() {
 			case OpenIDAuth::E_REGISTRATION_EMAIL_EXISTS:
 				$ui = UserInfo::getByID($_SESSION['uOpenIDExistingUser']);
 				?>
-				<form method="post" action="<?php echo $this->url('/login', 'do_login'); ?>">
-					<p><?php echo t('The OpenID account returned an email address already registered on this site. To join this OpenID to the existing user account, login below:'); ?></p>
-					<label for="uEmail"><?php echo t('Email Address'); ?></label><br/>
-					<div><strong><?php echo $ui->getUserEmail(); ?></strong></div>
-					<br/>
-					<div>
-						<label for="uName"><?php
-							if (USER_REGISTRATION_WITH_EMAIL_ADDRESS == true) {
-								echo t('Email Address');
-							} else {
-								echo t('Username');
-							}
-						?></label><br/>
-						<input type="text" name="uName" id="uName" <?php echo isset($uName) ? ('value="'.$uName.'"') : ''; ?> class="ccm-input-text">
+				<form method="post" action="<?php echo $this->url('/login', 'do_login'); ?>" class="form-horizontal">
+					<div class="row">
+						<div class="span10 offset1">
+							<fieldset>
+								<legend><?php echo t('Merge local account with OpenID'); ?></legend>
+								<p><?php echo t(/*i18n: %s is an email address */ 'The OpenID account returned an email address already registered on this site (%s). To join this OpenID to the existing user account, login below:', '<strong>' . $ui->getUserEmail() . '</strong>'); ?></p>
+								<div class="control-group">
+									<label for="uName" class="control-label"><?php
+										if (USER_REGISTRATION_WITH_EMAIL_ADDRESS == true) {
+											echo t('Email Address');
+										} else {
+											echo t('Username');
+										}
+									?></label>
+									<div class="controls">
+										<input type="text" name="uName" id="uName" <?php echo isset($uName) ? ('value="'.h($uName).'"') : ''; ?> class="ccm-input-text" autofocus>
+									</div>
+								</div>
+								<div class="control-group">
+									<label for="uPassword" class="control-label"><?php echo t('Password'); ?></label>
+									<div class="controls">
+										<input type="password" name="uPassword" id="uPassword" class="ccm-input-text">
+									</div>
+								</div>
+							</fieldset>
+						</div>
 					</div>
-					<div>
-						<label for="uPassword"><?php echo t('Password'); ?></label><br/>
-						<input type="password" name="uPassword" id="uPassword" class="ccm-input-text">
-					</div>
-					<div class="ccm-button">
-						<?php echo $form->submit('submit', t('Sign In') . ' &gt;'); ?>
+					<div class="row">
+						<div class="span10 offset1">
+							<div class="actions">
+								<?php echo $form->submit('submit', t('Sign In') . ' &gt;', array('class' => 'primary')); ?>
+							</div>
+						</div>
 					</div>
 				</form>
 				<?php
 				break;
 		}
-	?></div>
 
-<?php } elseif ($invalidRegistrationFields == true) { ?>
+} elseif ($invalidRegistrationFields == true) { ?>
 	<div class="ccm-form">
 		<p><?php echo t('You must provide the following information before you may login.'); ?></p>
 		<form method="post" action="<?php echo $this->url('/login', 'do_login'); ?>">
