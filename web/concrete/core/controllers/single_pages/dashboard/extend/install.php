@@ -129,6 +129,8 @@ class Concrete5_Controller_Dashboard_Extend_Install extends Controller {
 					$this->set('showInstallOptionsScreen', true);
 					$this->set('pkg', $p);
 				}
+			} else {
+				$this->set('error', Package::mapError(array(Package::E_PACKAGE_NOT_FOUND)));
 			}
 		} else {
 			$this->error->add(t('You do not have permission to install add-ons.'));
