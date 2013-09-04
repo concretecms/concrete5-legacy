@@ -161,7 +161,6 @@ class URLify {
 		self::$language = $language;
 		self::$map = array();
 		self::$chars = '';
-		self::$regex = '';
 
 		self::$remove_list = self::get_removed_list();
 
