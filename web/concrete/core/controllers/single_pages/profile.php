@@ -40,7 +40,9 @@ class Concrete5_Controller_Profile extends Controller {
 	}
 	
 	public function on_before_render() {
-		$this->set('error', $this->error);
+		if ($this->error->has()) {
+			$this->set('error', $this->error);
+		}
 	}	
 	
 	/*
