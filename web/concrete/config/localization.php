@@ -54,7 +54,6 @@ if (!defined('DATE_APP_GENERIC_MDYT')) {
 }
 
 if (ACTIVE_LOCALE != 'en_US' && (!defined('DATE_APP_GENERIC_MDY'))) {
-	define('DATE_APP_GENERIC_MDY', 'Y-m-d');
 	define('DATE_APP_DATE_PICKER', t('yy-mm-dd'));
 }
 
