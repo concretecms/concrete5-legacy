@@ -37,9 +37,14 @@ class Concrete5_Controller_Login extends Controller {
 				$locales[$lang] = Zend_Locale::getTranslation($loc->getLanguage(), 'language', $lang);
 				$locRegion = $loc->getRegion();
 				if($locRegion !== false) {
-					$locRegionName = $loc->getTranslation($loc->getRegion(), 'country', $lang);
+					$locRegionName = Zend_Locale::getTranslation($loc->getRegion(), 'country', $lang);
 					if($locRegionName !== false) {
-						$locales[$lang] .= ' (' . $locRegionName . ')';
+						$localeData = Zend_Locale_Data::getList($lang, 'layout');
+						if ( $localeData['characters'] == "right-to-left") {
+							$locales[$lang] = '(' . $locales[$lang] . ' (' . $locRegionName ;
+						} else {
+							$locales[$lang] .= ' (' . $locRegionName . ")";
+						}
 					}
 				}
 			}

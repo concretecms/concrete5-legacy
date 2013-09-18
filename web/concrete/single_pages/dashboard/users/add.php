@@ -67,7 +67,15 @@ $languages = Localization::getAvailableInterfaceLanguages();
 						foreach($languages as $lang) {
 							$loc = new Zend_Locale($lang);
 							$locales[$lang] = Zend_Locale::getTranslation($loc->getLanguage(), 'language', ACTIVE_LOCALE);
+							$locRegion = $loc->getRegion();
+							if($locRegion !== false) {
+								$locRegionName = Zend_Locale::getTranslation($loc->getRegion(), 'country', ACTIVE_LOCALE);
+								if($locRegionName !== false) {
+									$locales[$lang] .= ' (' . $locRegionName . ")";
+								}
+							}
 						}
+						asort($locales);
 						print $form->select('uDefaultLanguage', $locales);
 					?>
 					</td>
