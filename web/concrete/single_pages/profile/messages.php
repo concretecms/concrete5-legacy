@@ -2,7 +2,7 @@
 <div id="ccm-profile-wrapper">
     <? Loader::element('profile/sidebar', array('profile'=> $ui)); ?>    
     <div id="ccm-profile-body">
-    	<?=$error->output(); ?>
+    	<?php Loader::element('system_errors', array('format' => 'block', 'error' => $error)); ?>
     	<? switch($this->controller->getTask()) { 
     		case 'view_message': ?>
 
