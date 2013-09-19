@@ -4,12 +4,14 @@ defined('C5_EXECUTE') or die("Access Denied.");
 $u = new User();
 Config::getOrDefine('SITE_LOCALE', 'en_US');
 
-if ($u->getUserDefaultLanguage() != '') {
-	define('ACTIVE_LOCALE', $u->getUserDefaultLanguage());
-} else if (defined('LOCALE')) {
-	define('ACTIVE_LOCALE', LOCALE);
-} else {
-	define('ACTIVE_LOCALE', SITE_LOCALE);
+if(!defined('ACTIVE_LOCALE')) {
+	if ($u->getUserDefaultLanguage() != '') {
+		define('ACTIVE_LOCALE', $u->getUserDefaultLanguage());
+	} else if (defined('LOCALE')) {
+		define('ACTIVE_LOCALE', LOCALE);
+	} else {
+		define('ACTIVE_LOCALE', SITE_LOCALE);
+	}
 }
 
 if (strpos(ACTIVE_LOCALE, '_') > -1) {
