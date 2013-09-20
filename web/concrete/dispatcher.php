@@ -88,7 +88,7 @@
 
 	## Localization ##
 	## This MUST be run before packages start - since they check ACTIVE_LOCALE which is defined here ##
-	require($cdir . '/config/localization.php');
+	Localization::init();
 
 	## Security helpers
 	require($cdir . '/startup/security.php');
