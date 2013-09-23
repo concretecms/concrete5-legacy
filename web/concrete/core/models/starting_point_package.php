@@ -127,9 +127,9 @@ class Concrete5_Model_StartingPointPackage extends Package {
 		// create the groups our site users
 		// have to add these in the right order so their IDs get set
 		// starting at 1 w/autoincrement
-		$g1 = Group::add(t("Guest"), t("The guest group represents unregistered visitors to your site."));
-		$g2 = Group::add(t("Registered Users"), t("The registered users group represents all user accounts."));
-		$g3 = Group::add(t("Administrators"), "");
+		$g1 = Group::add(tc("GroupName", "Guest"), tc("GroupDescription", "The guest group represents unregistered visitors to your site."));
+		$g2 = Group::add(tc("GroupName", "Registered Users"), tc("GroupDescription", "The registered users group represents all user accounts."));
+		$g3 = Group::add(tc("GroupName", "Administrators"), "");
 		
 		// insert admin user into the user table
 		if (defined('INSTALL_USER_PASSWORD')) {
