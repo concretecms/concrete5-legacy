@@ -129,7 +129,7 @@ class Concrete5_Controller_Dashboard_System_BackupRestore_Backup extends Dashboa
 	}
 
 	public function backup_successful() {
-		$this->set('message', 'Restoration Successful');
+		$this->set('message', t('Restoration Successful'));
 		$this->view();
 	}
 
