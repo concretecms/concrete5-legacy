@@ -32,5 +32,5 @@ Simply with `grunt`
 
 ## Debugging JavaScript with source maps
 
-If you have installed concrete5 in a sub-directory and you want to debug JavaScript with sourcemaps, you should update the `Gruntfile.js` file, changing the line `rootWeb: '',`.
-For instance, if your concrete5 installation is at http://www.domain.com/c5subfolder, you should have `rootWeb: '/c5subfolder',`.
+If you have installed concrete5 in a sub-directory and you want to debug JavaScript with sourcemaps, you should update the `Gruntfile.js` file, changing the line `config.rootWeb = '';`.
+For instance, if your concrete5 installation is at http://www.domain.com/c5subfolder, you should have `config.rootWeb = '/c5subfolder';`.
