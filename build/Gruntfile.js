@@ -120,7 +120,7 @@ module.exports = function(grunt) {
 		},
 		production: {
 			options: {
-				compress: false,
+				compress: true,
 				yuicompress: true
 			},
 			files: lessFiles
