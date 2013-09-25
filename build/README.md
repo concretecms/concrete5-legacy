@@ -16,21 +16,31 @@ Once you have installed the grunt client, you need to install the project depend
 
 ## Building .css files
 
-For production: `grunt less:production`
-For debugging: `grunt less:debug`
+- For debugging: `grunt less:debug`
+	- The generated .css files are more readable, but are a bit bigger
+- For production: `grunt less:production`
+	-  The generated .css files are slightly smaller, but are hard to read from a human point of view
 
 
 ## Building .js files
 
-`grunt uglify`
+- For debugging: `grunt uglify:debug`
+	- Building for debug will generate JavaScript SourceMap files, that greatly improve the debugging of scripts with modern browsers. 
+- For production: `grunt uglify:production`
+	- SourceMap files won't be generated.  
 
 
 ## Building everything
 
-Simply with `grunt`
+- For debugging: `grunt debug`
+	- it's the same as calling `grunt less:debug` and `grunt uglify:debug`
+- For production: `grunt production` (or simply `grunt`)
+	- it's the same as calling `grunt less:production` and `grunt uglify:production`
 
 
 ## Debugging JavaScript with source maps
 
-If you have installed concrete5 in a sub-directory and you want to debug JavaScript with sourcemaps, you should update the `Gruntfile.js` file, changing the line `config.rootWeb = '';`.
-For instance, if your concrete5 installation is at http://www.domain.com/c5subfolder, you should have `config.rootWeb = '/c5subfolder';`.
+If you have installed concrete5 in a sub-directory and you want to debug JavaScript with SourceMaps, you should update the `Gruntfile.js` file, changing the following line:
+`config.rootWeb = '';`
+For instance, if your concrete5 installation is at http://www.domain.com/c5subfolder, you should change it to:
+`config.rootWeb = '/c5subfolder';`

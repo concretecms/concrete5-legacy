@@ -1,20 +1,10 @@
 module.exports = function(grunt) {
-	var config = {};
+	var config = {}, extend = require('util')._extend;
 
 	config.rootWeb = '';
 	config.rootPath = '../web';
 
-	config.uglify = {
-		options: {
-			mangle: false,
-			compress: true,
-			beautify: false,
-			report: 'min',
-			preserveComments: false,
-			banner: '',
-			footer: '',
-			sourceMapPrefix: 4
-		},
+	var uglifyTargets = {
 		bootstrap: {
 			options: {
 				sourceMap: '<%= rootPath %>/concrete/js/bootstrap.map',
@@ -89,6 +79,28 @@ module.exports = function(grunt) {
 			}
 		}
 	};
+	config.uglify = {
+		options: {
+			mangle: false,
+			compress: true,
+			beautify: false,
+			report: 'min',
+			preserveComments: false,
+			banner: '',
+			footer: '',
+			sourceMapPrefix: 4
+		}
+	};
+	var uglifyTargets_debug = [], uglifyTargets_production = []
+	for(var uglifyTarget in uglifyTargets) {
+		var uglifyTargetDebug = extend({}, uglifyTargets[uglifyTarget]);
+		uglifyTargets_debug.push('uglify:' + uglifyTarget + '_debug');
+		config.uglify[uglifyTarget + '_debug'] = uglifyTargetDebug;
+		var uglifyTargetProduction = extend({}, uglifyTargets[uglifyTarget]);
+		delete uglifyTargetProduction.options;
+		uglifyTargets_production.push('uglify:' + uglifyTarget + '_production');
+		config.uglify[uglifyTarget + '_production'] = uglifyTargetProduction;
+	}
 	
 	var lessFiles = {
 		'<%= rootPath %>/concrete/css/jquery.ui.css': '<%= rootPath %>/concrete/css/ccm_app/build/jquery.ui.less',
@@ -103,6 +115,7 @@ module.exports = function(grunt) {
 	config.less = {
 		options: {
 			compress: false,
+			yuicompress: false,
 			ieCompat: true,
 			optimization: null,
 			strictImports: false,
@@ -132,5 +145,9 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-cssmin');
 	grunt.loadNpmTasks('grunt-contrib-less');
 	grunt.initConfig(config);
-	grunt.registerTask('default', ['uglify', 'less:production']);
+	grunt.registerTask('uglify:debug', uglifyTargets_debug);
+	grunt.registerTask('uglify:production', uglifyTargets_production);
+	grunt.registerTask('debug', ['less:debug', 'uglify:debug']);
+	grunt.registerTask('production', ['less:production', 'uglify:production']);
+	grunt.registerTask('default', 'production');
 };
