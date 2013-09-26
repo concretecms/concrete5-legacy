@@ -16,31 +16,31 @@ Once you have installed the grunt client, you need to install the project depend
 
 ## Building .css files
 
-- For debugging: `grunt less:debug`
-	- The generated .css files are more readable, but are a bit bigger
-- For production: `grunt less:production`
-	-  The generated .css files are slightly smaller, but are hard to read from a human point of view
+- For debugging: `grunt css:debug`
+	- The generated .css files are more readable, but they have a slightly bigger size
+- For production: `grunt css:release` (or simply `grunt css`)
+	-  The generated .css files are slightly smaller, but they are harder to read from a human point of view
 
 
 ## Building .js files
 
-- For debugging: `grunt uglify:debug`
-	- Building for debug will generate JavaScript SourceMap files, that greatly improve the debugging of scripts with modern browsers. 
-- For production: `grunt uglify:production`
+- For debugging: `grunt js:debug`
+	- Building for debug will generate JavaScript SourceMap files, that greatly improve the debugging of scripts with modern browsers.
+- For production: `grunt js:release` (or simply `grunt js`)
 	- SourceMap files won't be generated.  
 
 
 ## Building everything
 
 - For debugging: `grunt debug`
-	- it's the same as calling `grunt less:debug` and `grunt uglify:debug`
-- For production: `grunt production` (or simply `grunt`)
-	- it's the same as calling `grunt less:production` and `grunt uglify:production`
+	- it's the same as calling `grunt css:debug` and `grunt js:debug`
+- For production: `grunt release` (or simply `grunt`)
+	- it's the same as calling `grunt css:release` and `grunt js:release`
 
 
 ## Debugging JavaScript with source maps
 
 If you have installed concrete5 in a sub-directory and you want to debug JavaScript with SourceMaps, you should update the `Gruntfile.js` file, changing the following line:
-`config.rootWeb = '';`
+`config.DIR_REL = '';`
 For instance, if your concrete5 installation is at http://www.domain.com/c5subfolder, you should change it to:
-`config.rootWeb = '/c5subfolder';`
+`config.DIR_REL = '/c5subfolder';`

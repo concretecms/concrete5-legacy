@@ -44,9 +44,8 @@ error_log
 /.settings/
 /.buildpath
 
-# ignore npm modules used to build
-/build/node_modules/
+# ignore JavaScript source maps
+/web/concrete/js/*.js.map
 
-# ignore javascript map files
-/web/concrete/js/*.map
-
+# ignore node modules used for building
+/build/node_modules
