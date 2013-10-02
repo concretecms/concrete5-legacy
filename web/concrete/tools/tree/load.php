@@ -1,5 +1,5 @@
-<?php
-defined('C5_EXECUTE') or die(_("Access Denied."));
+<?php defined('C5_EXECUTE') or die('Access Denied.');
+
 $form = Loader::helper('form');
 $c = Page::getByPath('/dashboard/system/attributes/topics');
 $cp = new Permissions($c);
