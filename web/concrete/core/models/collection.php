@@ -364,6 +364,9 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		}
 
 		function getVersionObject() {
+			if (!$this->vObj) {
+				$this->loadVersionObject();
+			}
 			return $this->vObj;
 		}
 
@@ -519,7 +522,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 	public function getAreaCustomStyleRule($area) {
 		$db = Loader::db();
 
-		$styles = $this->vObj->getCustomAreaStyles();		
+		$styles = $this->getVersionObject()->getCustomAreaStyles();
 		$csrID = $styles[$area->getAreaHandle()];
 		
 		if ($csrID > 0) {
