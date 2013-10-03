@@ -22,9 +22,9 @@ tinyMCE.init({
 	<? if (is_object($theme)) { ?>
 		content_css : "<?=$theme->getThemeEditorCSS()?>",
 	<? } ?>
-	<? if(LANGUAGE != "en"){ ?>
+	<? if(EDITOR_LANGUAGE != "en"){ ?>
 	translate_mode : true,
-	language : "<?=LANGUAGE?>",
+	language : "<?=EDITOR_LANGUAGE?>",
 	<?
 	}
 	$txtEditorMode=Config::get('CONTENTS_TXT_EDITOR_MODE');
