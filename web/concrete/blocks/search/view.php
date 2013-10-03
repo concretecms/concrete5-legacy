@@ -35,10 +35,8 @@ if ($do_search) {
 					<? if ($r->getDescription()) { ?>
 						<?php  echo $this->controller->highlightedMarkup($tt->shortText($r->getDescription()),$query)?><br/>
 					<? } ?>
-					<?php echo $currentPageBody; 
-    					$_c = Page::getByID($r->cID);
-					?>
-					<a href="<?php  echo $r->getPath(); ?>" class="pageLink"><?php  echo BASE_URL.$this->controller->highlightedMarkup($_c->cPath,$query)?></a>
+					<?php echo $currentPageBody; ?>
+					<a href="<?php  echo $r->getPath(); ?>" class="pageLink"><?php  echo $this->controller->highlightedMarkup(rawurldecode($r->getPath()),$query)?></a>
 				</p>
 			</div>
 		<? 	}//foreach search result ?>
