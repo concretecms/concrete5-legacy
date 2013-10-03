@@ -4,7 +4,7 @@
         <blocktype handle="date_archive" package=""/>
     </blocktypes>
     <attributekeys>
-        <attributekey handle="tags" name="タグ" package="" searchable="1" indexed="1" type="select" category="collection">
+        <attributekey handle="tags" name="Tags" package="" searchable="1" indexed="1" type="select" category="collection">
             <type allow-multiple-values="1" display-order="display_asc" allow-other-values="1">
                 <options>
                     <option value="composer" is-end-user-added="1"/>
