@@ -22,7 +22,7 @@ if (Page::getCurrentPage()->isEditMode()) { ?>
 <? } elseif ($vPlayer == 1) { ?>
 
 	<div id="youtube<?= $bID; ?>" class="youtubeBlock">
-		<iframe class="youtube-player" width="<?= $vWidth; ?>" height="<?= $vHeight; ?>" src="http://www.youtube.com/embed/<?= $videoID; ?>" frameborder="0" allowfullscreen></iframe>
+		<iframe class="youtube-player" width="<?= $vWidth; ?>" height="<?= $vHeight; ?>" src="http://www.youtube.com/embed/<?= $videoID; ?>?wmode=transparent" frameborder="0" allowfullscreen></iframe>
 	</div>
 	
 <? } else { ?>
