@@ -34,7 +34,7 @@ if (Page::getCurrentPage()->isEditMode()) { ?>
 		wmode: "transparent"
 	};
 	flashvars = {};
-	swfobject.embedSWF('http://www.youtube.com/v/<?= $videoID; ?>&amp;hl=en', 'youtube<?= $bID; ?>_video', '<?= $vWidth; ?>', '<?= $vHeight; ?>', '8.0.0', false, flashvars, params);
+	swfobject.embedSWF('http://www.youtube.com/v/<?= $videoID; ?>', 'youtube<?= $bID; ?>_video', '<?= $vWidth; ?>', '<?= $vHeight; ?>', '8.0.0', false, flashvars, params);
 	//]]>
 	</script>
 	
