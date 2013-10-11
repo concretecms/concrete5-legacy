@@ -305,6 +305,7 @@ class Concrete5_Controller_Block_Form extends BlockController {
 		
 		//try importing the file if everything else went ok	
 		$tmpFileIds=array();	
+		$attachmentFileIds = array();
 		if(!count($errors))	foreach($rows as $row){
 			if( $row['inputType']!='fileupload' ) continue;
 			$questionName='Question'.$row['msqID']; 			
@@ -382,6 +383,12 @@ class Concrete5_Controller_Block_Form extends BlockController {
 				}elseif($row['inputType']=='fileupload'){
 					$answerLong="";
 					$answer=intval( $tmpFileIds[intval($row['msqID'])] );
+					if (!empty($row['options'])) {
+						$settings = unserialize($row['options']);
+						if (is_array($settings) && array_key_exists('add_file_as_attachment', $settings) && $settings['add_file_as_attachment'] == 1) {
+							$attachmentFileIds[] = $answer;
+						}
+					}
 				}elseif($row['inputType']=='url'){
 					$answerLong="";
 					$answer=$txt->sanitize($_POST['Question'.$row['msqID']]);
@@ -451,6 +458,14 @@ class Concrete5_Controller_Block_Form extends BlockController {
 				$mh->load('block_form_submission');
 				$mh->setSubject(t('%s Form Submission', $this->surveyName));
 				//echo $mh->body.'<br>';
+				if (!empty($attachmentFileIds)) {
+					foreach ($attachmentFileIds as $id) {
+						$file = File::getByID($id);
+						if ($file instanceof File) {
+							$mh->addAttachment($file);
+						}
+					}
+				}
 				@$mh->sendMail(); 
 			} 
 			
