@@ -68,6 +68,7 @@ else {
 <script type="text/javascript">
 <?php
 	echo("var CCM_DISPATCHER_FILENAME = '" . DIR_REL . '/' . DISPATCHER_FILENAME . "';\r");
+	echo("var CCM_BASE_PATH = '" . DIR_REL . ((!defined('URL_REWRITING_ALL') || URL_REWRITING_ALL == false) ? '/' . DISPATCHER_FILENAME : '') . "';\r");
 	echo("var CCM_CID = ".($cID?$cID:0).";\r");
 	if (isset($isEditMode)) {
 		echo("var CCM_EDIT_MODE = {$isEditMode};\r");

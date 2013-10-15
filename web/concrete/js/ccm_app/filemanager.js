@@ -82,7 +82,7 @@ ccm_activateFileManager = function(altype, searchInstance) {
 	
 	$("form#ccm-" + searchInstance + "-advanced-search select[name=fssID]").change(function() {
 		if (altype == 'DASHBOARD') { 
-			window.location.href = CCM_DISPATCHER_FILENAME + '/dashboard/files/search?fssID=' + $(this).val();
+			window.location.href = CCM_BASE_PATH + '/dashboard/files/search?fssID=' + $(this).val();
 		} else {
 			jQuery.fn.dialog.showLoader();
 			var url = $("div#ccm-" + searchInstance + "-overlay-wrapper input[name=dialogAction]").val() + "&refreshDialog=1&fssID=" + $(this).val();
