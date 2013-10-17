@@ -201,13 +201,11 @@ class Concrete5_Library_BlockViewTemplate {
 
 			$blockTypePath = $bt->getBlockTypePath();
 
-			$css = array();
 			$css = $dh->getDirectoryContents($blockTypePath . '/' . DIRNAME_CSS);
 			if ($blockTypePath != $this->basePath) {
 				$css = array_unique(array_merge($css, $dh->getDirectoryContents($this->basePath . '/' . DIRNAME_CSS)));
 			}
 
-			$js = array();
 			$js = $dh->getDirectoryContents($blockTypePath . '/' . DIRNAME_JAVASCRIPT);
 			if ($blockTypePath != $this->basePath) {
 				$js = array_unique(array_merge($js, $dh->getDirectoryContents($this->basePath . '/' . DIRNAME_JAVASCRIPT)));
