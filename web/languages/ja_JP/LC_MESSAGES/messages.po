@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: concrete5\n"
 "Report-Msgid-Bugs-To: http://www.concrete5.org/developers/bugs/\n"
 "POT-Creation-Date: 2013-08-29 05:59+0000\n"
-"PO-Revision-Date: 2013-10-03 22:56+0900\n"
+"PO-Revision-Date: 2013-10-24 22:59+0900\n"
 "Last-Translator: \n"
 "Language-Team: Japanese (Japan) (http://www.transifex.com/projects/p/concrete5/language/ja_JP/)\n"
 "MIME-Version: 1.0\n"
@@ -3916,11 +3916,11 @@ msgstr "無効なフォームのトークンです。再読み込みして送信
 
 #: concrete/core/jobs/generate_sitemap.php:20
 msgid "Generate the sitemap.xml file"
-msgstr "sitemap.xmlにファイルを生成する"
+msgstr "sitemap.xmlファイルを生成する"
 
 #: concrete/core/jobs/generate_sitemap.php:27
 msgid "Generate the sitemap.xml file that search engines use to crawl your site."
-msgstr "sitemap.xmlを生成します。これを検索サイトに巡回させる事により、検索サイトへの登録がスムーズになる可能性があります。"
+msgstr "検索エンジンがあなたのサイトをクロールする際に使われるsitemap.xmlファイルを生成します。"
 
 #: concrete/core/jobs/generate_sitemap.php:56
 #, php-format
@@ -4895,7 +4895,7 @@ msgstr "コメント: \"%s\""
 #: concrete/core/models/workflow/types/basic.php:60
 #, php-format
 msgid "On %s, user %s submitted the following request: %s"
-msgstr "%s に、%s さんが、%s リクエストを申請しました。"
+msgstr "%s に %s さんが次のリクエストを申請しました：%s"
 
 #: concrete/core/models/workflow/types/basic.php:69
 #, php-format
@@ -7039,7 +7039,7 @@ msgstr "現在の状態"
 
 #: concrete/elements/workflow/progress/categories/page/pending.php:30
 msgid "Click for history."
-msgstr "履歴にクリックしてください。"
+msgstr "クリックで履歴を表示します。"
 
 #: concrete/elements/workflow/progress/categories/page/pending.php:68
 msgid "There is nothing currently waiting for you."
@@ -14081,7 +14081,7 @@ msgstr "表示"
 #: concrete/config/install/base/permissions.xml:22
 msgctxt "PermissionKeyDescription"
 msgid "Can see a page exists and read its content."
-msgstr "存在するページがわかりそのコンテンツを読むことができます。"
+msgstr "ページが存在することがわかり、そのコンテンツを読むことができます。"
 
 #: concrete/config/install/base/permissions.xml:23
 msgctxt "PermissionKeyName"
@@ -14091,17 +14091,17 @@ msgstr "バージョンを表示"
 #: concrete/config/install/base/permissions.xml:23
 msgctxt "PermissionKeyDescription"
 msgid "Can view the page versions dialog and read past versions of a page."
-msgstr "ページバージョンダイアログを表示し、ページの過去のバージョンを読むことができます。"
+msgstr "ページバージョンダイアログを表示し、ページの過去のバージョンを見ることができます。"
 
 #: concrete/config/install/base/permissions.xml:24
 msgctxt "PermissionKeyName"
 msgid "View Page in Sitemap"
-msgstr "サイトマップ中のページを閲覧"
+msgstr "サイトマップでページを表示"
 
 #: concrete/config/install/base/permissions.xml:24
 msgctxt "PermissionKeyDescription"
 msgid "Controls whether a user can see a page in the sitemap or intelligent search."
-msgstr "サイトマップや検索でユーザーがページを見ることができるか設定できます、"
+msgstr "ユーザーがサイトマップや検索でページを見ることができるかどうかを設定できます。"
 
 #: concrete/config/install/base/permissions.xml:25
 msgctxt "PermissionKeyName"
