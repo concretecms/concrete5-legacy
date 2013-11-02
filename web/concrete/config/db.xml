@@ -1462,8 +1462,6 @@
   </table>
 
   <table name="FileVersions">
-    <opt platform="MYSQL">ENGINE=MYISAM</opt>
-    <opt platform="MYSQLT">ENGINE=MYISAM</opt>
     <field name="fID" type="I" size="10">
       <KEY/>
       <DEFAULT value="0"/>
@@ -1964,8 +1962,6 @@
     </index>
   </table>
 <table name="PageSearchIndex">
-    <opt platform="MYSQL">ENGINE=MYISAM</opt>
-    <opt platform="MYSQLT">ENGINE=MYISAM</opt>
     <field name="cID" type="I" size="10">
       <KEY/>
       <DEFAULT value="0"/>
@@ -1982,24 +1978,6 @@
       <DEFAULT value="0"/>
       <UNSIGNED/>
     </field>
-    <index name="cName">
-      <col>cName</col>
-      <FULLTEXT />
-  </index>
-    <index name="cDescription">
-      <col>cDescription</col>
-      <FULLTEXT />
-  </index>
-    <index name="content">
-      <col>content</col>
-      <FULLTEXT />
-  </index>
-    <index name="content2">
-      <col>cName</col>
-      <col>cDescription</col>
-      <col>content</col>
-      <FULLTEXT />
-  </index>
     <index name="cDateLastIndexed">
       <col>cDateLastIndexed</col>
   </index>
@@ -2011,8 +1989,6 @@
   </index>
   </table>
   <table name="PageStatistics">
-    <opt platform="MYSQL">ENGINE=MYISAM</opt>
-    <opt platform="MYSQLT">ENGINE=MYISAM</opt>
     <field name="pstID" type="I8" size="20">
       <KEY/>
       <AUTOINCREMENT/>
