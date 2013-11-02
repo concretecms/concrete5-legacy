@@ -105,7 +105,7 @@ class Concrete5_Controller_Dashboard_Extend_Install extends Controller {
 						}
 						try {
 							$u = new User();
-							$pkg = $p->install($this->post());
+							$pkg = $p->install();
 							if ($u->isSuperUser() && $p->allowsFullContentSwap() && $this->post('pkgDoFullContentSwap')) { 
 								$p->swapContent($this->post());
 							}
