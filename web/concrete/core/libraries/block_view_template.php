@@ -186,30 +186,42 @@ class Concrete5_Library_BlockViewTemplate {
 			return $items;
 		} else {
 			foreach($this->itemsToCheck as $t => $i) {
-				if (file_exists($this->basePath . '/' . $i)) {
+				$assetsFileUrl = $uh->getBlockTypeAssetsURL($bt, $i, $this->bFilename);
+				if ($assetsFileUrl) {
 					switch($t) {
 						case 'CSS':
-							$items[] = $h->css($uh->getBlockTypeAssetsURL($bt, $i));
+							$items[] = $h->css($assetsFileUrl);
 							break;
 						case 'JAVASCRIPT':
-							$items[] = $h->javascript($uh->getBlockTypeAssetsURL($bt, $i));
+							$items[] = $h->javascript($assetsFileUrl);
 							break;
 					}
 				}
 			}
-			$css = $dh->getDirectoryContents($this->basePath . '/' . DIRNAME_CSS);
-			$js = $dh->getDirectoryContents($this->basePath . '/' . DIRNAME_JAVASCRIPT);
+
+			$blockTypePath = $bt->getBlockTypePath();
+
+			$css = $dh->getDirectoryContents($blockTypePath . '/' . DIRNAME_CSS);
+			if ($blockTypePath != $this->basePath) {
+				$css = array_unique(array_merge($css, $dh->getDirectoryContents($this->basePath . '/' . DIRNAME_CSS)));
+			}
+
+			$js = $dh->getDirectoryContents($blockTypePath . '/' . DIRNAME_JAVASCRIPT);
+			if ($blockTypePath != $this->basePath) {
+				$js = array_unique(array_merge($js, $dh->getDirectoryContents($this->basePath . '/' . DIRNAME_JAVASCRIPT)));
+			}
+			
 			if (count($css) > 0) {
 				foreach($css as $i) {
 					if(substr($i,-4)=='.css') {
-						$items[] = $h->css($uh->getBlockTypeAssetsURL($bt, DIRNAME_CSS . '/' . $i));
+						$items[] = $h->css($uh->getBlockTypeAssetsURL($bt, DIRNAME_CSS . '/' . $i, $this->bFilename));
 					}
 				}
 			}
 			if (count($js) > 0) {
 				foreach($js as $i) {
 					if (substr($i,-3)=='.js') {
-						$items[] = $h->javascript($uh->getBlockTypeAssetsURL($bt, DIRNAME_JAVASCRIPT . '/' . $i));
+						$items[] = $h->javascript($uh->getBlockTypeAssetsURL($bt, DIRNAME_JAVASCRIPT . '/' . $i, $this->bFilename));
 					}
 				}
 			}
