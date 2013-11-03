@@ -200,7 +200,7 @@ function printFileAttributeRow($ak, $fv, $value) {
 		$text = '<div class="ccm-attribute-field-none">' . t('Multiple Values') . '</div>';
 		$vo = '';
 	} else { 
-		$text = $value;
+		$text = h($value);
 	}
 
 	if ($ak->isAttributeKeyEditable() && $fp->canEditFileProperties() && (!$previewMode)) { 
