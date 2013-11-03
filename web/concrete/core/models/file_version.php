@@ -475,7 +475,7 @@ class Concrete5_Model_FileVersion extends Object {
 	 * This will run any type-based import routines, and store those attributes, generate thumbnails,
 	 * etc...
 	 */
-	public function refreshAttributes($firstRun = false) {
+	public function refreshAttributes() {
 		$fh = Loader::helper('file');
 		$ext = $fh->getExtension($this->fvFilename);
 		$ftl = FileTypeList::getType($ext);
@@ -487,7 +487,7 @@ class Concrete5_Model_FileVersion extends Object {
 
 		$size = filesize($this->getPath());
 
-		$title = ($firstRun) ? $this->getFilename() : $this->getTitle();
+		$title = $this->getTitle();
 
 		$db->Execute('update FileVersions set fvExtension = ?, fvType = ?, fvTitle = ?, fvSize = ? where fID = ? and fvID = ?',
 			array($ext, $ftl->getGenericType(), $title, $size, $this->getFileID(), $this->getFileVersionID())
