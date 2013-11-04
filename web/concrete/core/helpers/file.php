@@ -266,7 +266,8 @@ class Concrete5_Helper_File {
 		$fh = Loader::helper('file');
 		$ext = '.'.$fh->getExtension($file);
 		$file = str_replace($ext, '', $file);
-		$file_sanitized = preg_replace(array("/[\s]/","/[^0-9A-Z_a-z-.]/"),array("_",""), $file);
+		$file_sanitized = Loader::helper('text')->translit($file);
+		$file_sanitized = preg_replace(array("/[\s]/","/[^0-9A-Z_a-z-.]/"),array("_",""), $file_sanitized);
 		// if no text remains after sanitized, make file name by using md5 hash
 		$file = (strlen($file_sanitized) > 0) ? $file_sanitized . $ext : md5($file) . $ext;
 		return trim($file);
