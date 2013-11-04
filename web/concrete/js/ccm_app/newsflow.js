@@ -119,7 +119,7 @@ ccm_setupTrickleUpNewsflowStyles = function() {
 
 ccm_showDashboardNewsflowWelcome = function() {
 	jQuery.fn.dialog.showLoader(ccmi18n.newsflowLoading);
-	ccm_showNewsflowOverlayWindow(CCM_DISPATCHER_FILENAME + '/dashboard/home?_ccm_dashboard_external=1', function() {
+	ccm_showNewsflowOverlayWindow(CCM_BASE_PATH + '/dashboard/home?_ccm_dashboard_external=1', function() {
 		jQuery.fn.dialog.hideLoader();
 	});
 }
@@ -132,7 +132,7 @@ ccm_showNewsflowOffsite = function(id) {
 }
 
 ccm_showAppIntroduction = function() {
-	ccm_showNewsflowOverlayWindow(CCM_DISPATCHER_FILENAME + '/dashboard/welcome?_ccm_dashboard_external=1');
+	ccm_showNewsflowOverlayWindow(CCM_BASE_PATH + '/dashboard/welcome?_ccm_dashboard_external=1');
 }
 
 ccm_getNewsflowByPath = function(path) {
