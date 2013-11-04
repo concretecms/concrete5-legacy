@@ -1,4 +1,3 @@
-
 var ImageEditor = function (settings) {
   "use strict";
   if (settings === undefined) return this;
@@ -72,3 +71,4 @@ var ImageEditor = function (settings) {
     warn('setting draggable to '+v);
     return im.stage._setDraggable(v);
   }
+}
