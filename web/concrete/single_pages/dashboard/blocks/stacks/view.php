@@ -8,6 +8,10 @@
 		ccm_openAreaAddBlock("Main", true, <?=$stack->getCollectionID()?>);
 	}
 	
+	ccm_stacksPasteBlockFromClipboard = function() {
+		ccm_openAreaPasteBlockFromClipboard("Main", true, <?= $stack->getCollectionID(); ?>);
+	}
+	
 	ccm_parseBlockResponsePost = function(r) {
 		if (r.task != 'update_groups') {
 			$(".ccm-main-nav-edit-option").fadeIn(300);
@@ -32,6 +36,7 @@
 	<?=Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper($stack->getCollectionName(), false, 'span10 offset1', false)?>
 	<div class="ccm-pane-options">
 		<a href="javascript:void(0)" onclick="ccm_stacksAddBlock()" class="btn small ccm-main-nav-edit-option"><?=t('Add Block')?></a>
+		<a href="javascript:void(0)" onclick="ccm_stacksPasteBlockFromClipboard()" class="btn small ccm-main-nav-edit-option"><?=t('Paste from Clipboard')?></a>
 		<a class="btn small ccm-main-nav-edit-option" dialog-width="640" dialog-height="340" id="stackVersions" dialog-title="<?=t('Version History')?>" href="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/versions.php?rel=SITEMAP&cID=<?=$stack->getCollectionID()?>"><?=t('Version History')?></a>
 
 		<? $cpc = new Permissions($stack); ?>

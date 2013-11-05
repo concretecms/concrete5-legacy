@@ -143,7 +143,7 @@ ccm_reloadAreaMenuPermissions = function(aID, cID) {
 	}
 }
 
-ccm_openAreaAddBlock = function(arHandle, addOnly, cID) {
+ccm_openAreaAddBlock = function(arHandle, addOnly, cID, task) {
 	if (!addOnly) {	
 		addOnly = 0;
 	}
@@ -152,13 +152,21 @@ ccm_openAreaAddBlock = function(arHandle, addOnly, cID) {
 		cID = CCM_CID;
 	}
 	
+	if (!task) {
+		task = 'add';
+	}
+	
 	$.fn.dialog.open({
 		title: ccmi18n.blockAreaMenu,
-		href: CCM_TOOLS_PATH + '/edit_area_popup.php?cID=' + cID + '&atask=add&arHandle=' + arHandle + '&addOnly=' + addOnly,
+		href: CCM_TOOLS_PATH + '/edit_area_popup.php?cID=' + cID + '&atask=' + task + '&arHandle=' + arHandle + '&addOnly=' + addOnly,
 		width: 550,
 		modal: false,
 		height: 380
 	});
+}
+
+ccm_openAreaPasteBlockFromClipboard = function(arHandle, addOnly, cID) {
+	return ccm_openAreaAddBlock(arHandle, addOnly, cID, 'paste');
 }
 
 ccm_showAreaMenu = function(obj, e) {
