@@ -17,7 +17,7 @@ class Concrete5_Controller_AttributeType_ImageFile extends AttributeTypeControll
 	public function getDisplayValue() {
 		$f = $this->getValue();
 		if (is_object($f)) {
-			return '<a href="' . $f->getDownloadURL() . '">' . $f->getTitle() . '</a>';
+			return '<a href="' . $f->getDownloadURL() . '">' . h($f->getTitle()) . '</a>';
 		}
 	}
 

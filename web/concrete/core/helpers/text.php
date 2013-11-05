@@ -321,4 +321,11 @@ class Concrete5_Helper_Text {
 		}
 	}
 	
+	public function translit($string) {
+		if(function_exists('iconv')) {
+			return iconv(APP_CHARSET, 'ASCII//TRANSLIT//IGNORE', $string);
+		}
+		return $string;
+	}
+	
 }

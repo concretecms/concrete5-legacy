@@ -97,7 +97,7 @@
 		<li id="fID_<?=$f->getFileID()?>">
 			<div>
 				<?=$f->getThumbnail(1)?>				
-				<span style="word-wrap: break-word"><?=$f->getTitle()?></span>
+				<span style="word-wrap: break-word"><?=h($f->getTitle())?></span>
 			</div>
 		</li>
 			
