@@ -156,13 +156,11 @@ class URLify {
 			$m = self::$maps[$language];
 			unset(self::$maps[$language]);
 			self::$maps[$language] = $m;
-			
-			/* Reset static vars */
-			self::$language = $language;
-			self::$map = array();
-			self::$chars = '';
-			self::$regex = '';
 		}
+		/* Reset static vars */
+		self::$language = $language;
+		self::$map = array();
+		self::$chars = '';
 
 		self::$remove_list = self::get_removed_list();
 
