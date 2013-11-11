@@ -1,20 +1,9 @@
 <?
 defined('C5_EXECUTE') or die("Access Denied.");
-Loader::controller('/dashboard/base');
 
 class Concrete5_Controller_Page_Dashboard_System_Registration_Postlogin extends DashboardController {
 
 	public $helpers = array('form'); 
-	
-	public function __construct() { 
-		$this->token = Loader::helper('validation/token');
-
-		//login redirection
-		$this->set('site_login_redirect', Config::get('LOGIN_REDIRECT') );
-		$this->set('login_redirect_cid', intval(Config::get('LOGIN_REDIRECT_CID')) ); 
-		$adminToDash=Config::get('LOGIN_ADMIN_TO_DASHBOARD');
-		$this->set('site_login_admin_to_dashboard', intval($adminToDash) );		
-	}
 
 	public function update_login_redirect(){ 
 		if ($this->token->validate("update_login_redirect")) {	
@@ -32,12 +21,19 @@ class Concrete5_Controller_Page_Dashboard_System_Registration_Postlogin extends 
 	
 	public function view($message = NULL) {
 		if($message) {
-			if($message=='login_redirect_saved'){
+			if($message == 'login_redirect_saved'){
 				$this->set('message', t('Login redirection saved.'));
 			}else{
-				$this->set('message',$message);
+				$this->set('message', $message);
 			}
 		}
-		$u = new User();
-	}
+
+    $this->token = Loader::helper('validation/token');
+
+    //login redirection
+    $this->set('site_login_redirect', Config::get('LOGIN_REDIRECT') );
+    $this->set('login_redirect_cid', intval(Config::get('LOGIN_REDIRECT_CID')) );
+    $adminToDash=Config::get('LOGIN_ADMIN_TO_DASHBOARD');
+    $this->set('site_login_admin_to_dashboard', intval($adminToDash) );
+  }
 }
