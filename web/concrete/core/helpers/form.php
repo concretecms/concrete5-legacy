@@ -322,9 +322,9 @@ class Concrete5_Helper_Form {
 			$valueOrArray = $val[0];
 		}
 
-		if ((strpos($key, '[]') + 2) == strlen($key)) {
+		if (preg_match("/[^A-Za-z0-9._:-]/", $key)) {
 			$_key = substr($key, 0, strpos($key, '[]'));
-			$id = $_key . $this->selectIndex;
+			$id = preg_replace("/[^A-Za-z0-9._:-]/",'', $key) . $this->selectIndex;
 		} else {
 			$_key = $key;
 			$id = $key;
