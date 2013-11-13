@@ -117,8 +117,13 @@ if (is_object($b)) {
 				
 				} ?>
 				</script>
-				<? }
-				
+                <?php  } ?>
+                <script type="text/javascript">
+                if (typeof <?php print $b->btHandle; ?>EditCallBack == 'function') {
+                    <?php print $b->btHandle; ?>EditCallBack(<?php print $b->bID; ?>);
+                }
+                </script>
+                <?php
 				$bv->renderElement('block_controls', array(
 					'a' => $a,
 					'b' => $b,
