@@ -240,6 +240,9 @@
 			}
 		}
 
+		## Fire the on_before_process Eventclass
+		Events::fire('on_before_process', $c);
+
 		## Any custom site-related process
 		if (file_exists(DIR_BASE . '/config/site_process.php')) {
 			require(DIR_BASE . '/config/site_process.php');
