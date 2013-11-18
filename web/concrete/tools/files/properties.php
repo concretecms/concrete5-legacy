@@ -369,7 +369,7 @@ foreach($attribs as $at) {
 				</td>
 				<td> 
 					<div style="width: 150px; word-wrap: break-word">
-						<?=$fvv->getTitle()?>
+						<?=h($fvv->getTitle())?>
 					</div>
 				</td>
 				<td><?

@@ -7,7 +7,7 @@
 			$cID = $c->getCollectionID();
 		}
 ?>
-<a href="<?= View::url('/download_file', $controller->getFileID(),$cID) ?>"><?= stripslashes($controller->getLinkText()) ?></a>
+<a href="<?= View::url('/download_file', $controller->getFileID(),$cID) ?>"><?= h($controller->getLinkText()) ?></a>
  
 <?
 }

@@ -121,8 +121,8 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		}
 		?>
 	<tr>
-		<td class='ccm-site-statistics-downloads-title'><a href="<?=$f->getDownloadURL()?>" title="<?=$f->getTitle();?>"><?php
-		$title = $f->getTitle();
+		<td class='ccm-site-statistics-downloads-title'><a href="<?=$f->getDownloadURL()?>" title="<?=h($f->getTitle())?>"><?php
+		$title = h($f->getTitle());
 		$maxlen = 20;
 		if (strlen($title) > ($maxlen-4)) {
 			$ext = substr($title,strrpos($title, '.'));

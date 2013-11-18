@@ -89,7 +89,7 @@ if (isset($_REQUEST['searchInstance'])) {
 			<? foreach($columns->getColumns() as $col) { ?>
 				<? // special one for keywords ?>				
 				<? if ($col->getColumnKey() == 'fvTitle') { ?>
-					<td class="ccm-file-list-filename"><?=$txt->highlightSearch($fv->getTitle(), $keywords)?></td>		
+					<td class="ccm-file-list-filename"><?=$txt->highlightSearch(h($fv->getTitle()), $keywords)?></td>		
 				<? } else { ?>
 					<td><?=$col->getColumnValue($f)?></td>
 				<? } ?>

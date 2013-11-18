@@ -8,7 +8,7 @@
 			</div>
 			<div style="margin-top:4px"><a onclick="SlideshowBlock.removeImage('<?=$imgInfo['slideshowImgId']?>')"><img src="<?=ASSETS_URL_IMAGES?>/icons/delete_small.png" /></a></div>
 		</div>
-		<strong><?=$imgInfo['fileName']?></strong><br/><br/>
+		<strong><?=h($imgInfo['fileName'])?></strong><br/><br/>
 		<?=t('Duration')?>: <input type="text" name="duration[]" value="<?=intval($imgInfo['duration'])?>" style="vertical-align: middle; width: 30px" />
 		&nbsp;
 		<?=t('Fade Duration')?>: <input type="text" name="fadeDuration[]" value="<?=intval($imgInfo['fadeDuration'])?>" style="vertical-align: middle; width: 30px" />

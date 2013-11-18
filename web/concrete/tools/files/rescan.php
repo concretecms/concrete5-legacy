@@ -7,7 +7,7 @@ function shutdownRescan() {
 	$error = error_get_last();
 	if ($error != false) {
 		if ($error['type'] == E_ERROR) {
-			print '<li><div class="ccm-error">' . t('Unable to rescan %s. Error encountered: %s. Rescan halted.', $fv->getTitle(), $error['message']) . '</div></li>';
+			print '<li><div class="ccm-error">' . t('Unable to rescan %s. Error encountered: %s. Rescan halted.', h($fv->getTitle()), $error['message']) . '</div></li>';
 		}
 	}
 }
