@@ -118,7 +118,6 @@ defined('C5_EXECUTE') or die("Access Denied.");
 				return REL_DIR_FILES_TOOLS . '/css/' . DIRNAME_THEMES . '/' . $this->getThemeHandle() . '/' . $stylesheet . '?mode=preview&time=' . time();
 			}
 			$pt = PageTheme::getByHandle($this->getThemeHandle());
-			$file = $this->getThemePath() . '/' . $stylesheet;
 			$cacheFile = DIR_FILES_CACHE . '/' . DIRNAME_CSS . '/' . $this->getThemeHandle() . '/' . $stylesheet;
 			$env = Environment::get();
 			$themeRec = $env->getUncachedRecord(DIRNAME_THEMES . '/' . $this->getThemeHandle() . '/' . $stylesheet, $pt->getPackageHandle());
@@ -128,15 +127,12 @@ defined('C5_EXECUTE') or die("Access Denied.");
 				}
 			}
 			if ($themeRec->exists()) {
-				$themeFile = $themeRec->file;
 				if (!file_exists(DIR_FILES_CACHE . '/' . DIRNAME_CSS)) {
 					@mkdir(DIR_FILES_CACHE . '/' . DIRNAME_CSS);
 				}
 				if (!file_exists(DIR_FILES_CACHE . '/' . DIRNAME_CSS . '/' . $this->getThemeHandle())) {
 					@mkdir(DIR_FILES_CACHE . '/' . DIRNAME_CSS . '/' . $this->getThemeHandle());
 				}
-				$fh = Loader::helper('file');
-				$stat = filemtime($themeFile);
 				if (!file_exists(dirname($cacheFile))) {
 					@mkdir(dirname($cacheFile), DIRECTORY_PERMISSIONS_MODE, true);
 				}
@@ -810,7 +806,6 @@ defined('C5_EXECUTE') or die("Access Denied.");
 				
 				
 				// now, we output all the custom style records for the design tab in blocks/areas on the page
-				$c = $this->getCollectionObject();
 				$view->outputCustomStyleHeaderItems(); 	
 				
 				$viewPath = $view->getCollectionPath();
@@ -818,7 +813,6 @@ defined('C5_EXECUTE') or die("Access Denied.");
 				
 				$cFilename = $view->getCollectionFilename();
 				$ctHandle = $view->getCollectionTypeHandle();
-				$editMode = $view->isEditMode();
 				$c = $view;
 				$this->c = $c;
 				
