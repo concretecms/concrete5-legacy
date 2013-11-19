@@ -36,6 +36,7 @@ error_log
 .htaccess
 .ftpquota
 /.idea/
+phpunit.xml
 
 # ignore Aptana and Eclipse project files
 .project
@@ -50,3 +51,6 @@ error_log
 # ignore node modules used for building
 /build/node_modules
 /build/Gruntfile.parameters.js
+
+# ignore dependencies
+/vendor
