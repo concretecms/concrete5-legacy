@@ -68,7 +68,7 @@ if ($this->controller->getTask() == 'install_package' && $showInstallOptionsScre
 				continue;
 			}
 			?>
-			<h5><?=$text->unhandle($k)?></h5>
+			<h5><?= t($text->unhandle($k))?></h5>
 			<? foreach($itemArray as $item) { ?>
 				<?=$pkg->getItemName($item)?><br/>
 			<? } ?>
