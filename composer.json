@@ -1,0 +1,7 @@
+{
+	"name" : "concrete5/concrete5",
+	"require-dev" : {
+		"concrete5/concrete5-cli" : "dev-master",
+		"phpunit/phpunit" : "~3.7"
+	}
+}

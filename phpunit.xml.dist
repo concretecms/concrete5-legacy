@@ -1,0 +1,21 @@
+<phpunit
+	bootstrap="tests/tests/bootstrap.php">
+	<testsuites>
+		<testsuite name="all_models">
+			<directory>tests/tests/concrete/models/</directory>
+		</testsuite>
+		<testsuite name="all_page_tests">
+			<file>tests/tests/concrete/models/PageTest.php</file>
+			<file>tests/tests/concrete/models/PageAttributesExistenceTest.php</file>
+		</testsuite>
+		<testsuite name="page_model">
+			<file>tests/tests/concrete/models/PageTest.php</file>
+		</testsuite>
+		<testsuite name="page_attributes_exist">
+			<file>tests/tests/concrete/models/PageAttributesExistenceTest.php</file>
+		</testsuite>
+		<testsuite name="all_helpers">
+			<directory>tests/tests/concrete/helpers/</directory>
+		</testsuite>
+	</testsuites>
+</phpunit>
