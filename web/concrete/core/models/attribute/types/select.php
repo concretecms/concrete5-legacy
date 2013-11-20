@@ -276,7 +276,7 @@ class Concrete5_Controller_AttributeType_Select extends AttributeTypeController 
 		$list = $this->getSelectedOptions();
 		$html = '';
 		foreach($list as $l) {
-			$html .= $l->getSelectAttributeOptionValue() . '<br/>';
+			$html .= h(tc('SelectAttributeValue', $l->getSelectAttributeOptionValue(false))) . '<br/>';
 		}
 		return $html;
 	}
