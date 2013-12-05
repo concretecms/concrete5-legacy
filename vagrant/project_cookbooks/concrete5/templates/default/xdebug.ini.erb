@@ -1,0 +1,13 @@
+; http://stackoverflow.com/questions/15339165/cannot-debug-with-phpstorm-vagrant-xdebug
+; http://walkah.net/blog/debugging-php-with-vagrant/
+; https://github.com/walkah/chef-repo/blob/master/site-cookbooks/drupal/templates/default/xdebug.ini.erb
+
+zend_extension=<%= %x[find /usr/lib/php5 -name 'xdebug.so' 2> /dev/null] %>
+
+xdebug.default_enable=0
+xdebug.remote_enable=1
+xdebug.remote_handler=dbgp
+xdebug.remote_host=33.33.33.1
+xdebug.remote_port=9000
+xdebug.remote_autostart=0
+xdebug.remote_connect_back=1

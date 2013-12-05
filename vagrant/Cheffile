@@ -1,0 +1,15 @@
+# encoding: utf-8
+
+site 'http://community.opscode.com/api/v1'
+
+cookbook "apt"
+cookbook "mysql", {}
+cookbook "redis", {:github=>"ctrabold/chef-redis"}
+cookbook "git", {}
+cookbook "openssl", {}
+cookbook "apache2", {}
+cookbook "nodejs", {:github=>"mdxp/nodejs-cookbook"}
+cookbook "build-essential", {}
+cookbook "rvm", {:github=>"fnichol/chef-rvm", :ref=>"v0.9.0"}
+cookbook "php", {}
+cookbook "database", {:github=>"opscode-cookbooks/database"}

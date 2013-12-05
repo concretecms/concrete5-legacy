@@ -1,0 +1,13 @@
+language: ruby
+gemfile:
+   - test/support/Gemfile
+rvm:
+  - 1.9.2
+  - 1.9.3
+install: bundle install
+gemfile:
+  - Gemfile
+script:
+  - bundle exec rake knife
+  - bundle exec rake foodcritic
+  - bundle exec rake spec

@@ -1,0 +1,167 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# References and such...
+# http://vagrantup.com - START HERE IF YOU'RE A NOOB
+# Self-signed certs for testing SSL:
+#  - http://blog.didierstevens.com/2008/12/30/howto-make-your-own-cert-with-openssl/
+#  - http://www.digicert.com/ssl-support/pem-ssl-creation.htm
+
+def build_cli_args( _hash )
+  _hash.map{|k,v| "#{k}=#{v} "}.join(' ')
+end
+
+Vagrant.configure("2") do |config|
+
+  # The precise64-pristine box is a bare-bones Ubuntu installation with just Ruby 1.9.3
+  # and Chef 11.6 installed; just enough to allow the machine to provision itself.
+  # Base box name
+  config.vm.box = "precise64-pristine"
+  # Box URL
+  config.vm.box_url = "http://focus-43.com/files/1913/8670/0974/precise64-pristine.box"
+  # Apache
+  config.vm.network :forwarded_port, guest: 80, host: 8080, auto_correct: true
+  # MySQL
+  config.vm.network :forwarded_port, guest: 3306, host: 3307, auto_correct: true
+  # Apache SSL port
+  config.vm.network :forwarded_port, guest: 443, host:4433, auto_correct: true
+  # Mount shared folder
+  config.vm.synced_folder "../", "/home/vagrant/app"
+  # Vagrant port forwarding
+  config.ssh.forward_agent = true
+
+  # Make VirtualBox GUI display the VM name as root project folder
+  begin
+    config.vm.provider "virtualbox" do |v|
+      v.name = File.basename(File.expand_path("../"))
+    end
+  rescue 
+    $stdout.puts "Unable to rename Concrete5 VM; VirtualBox will display a generic name..." 
+  end
+
+  # Resource usage caps for VM
+  begin
+    config.vm.provider "virtualbox" do |v|
+      v.customize ['modifyvm', :id, '--memory', '384']
+    end
+  rescue 
+    $stdout.puts "Unable to set resource usage for VirtualBox; proceeding with defaults..." 
+  end
+
+  _configs = {
+    :mysql => {
+      :server_root_password   => "root",
+      :server_repl_password   => "root",
+      :server_debian_password => "root",
+      :service_name           => "mysql",
+      :basedir                => "/usr",
+      :data_dir               => "/var/lib/mysql",
+      :root_group             => "root",
+      :mysqladmin_bin         => "/usr/bin/mysqladmin",
+      :mysql_bin              => "/usr/bin/mysql",
+      :conf_dir               => "/etc/mysql",
+      :confd_dir              => "/etc/mysql/conf.d",
+      :socket                 => "/var/run/mysqld/mysqld.sock",
+      :pid_file               => "/var/run/mysqld/mysqld.pid",
+      :grants_path            => "/etc/mysql/grants.sql",
+      :bind_address           => "0.0.0.0",
+      :allow_remote_root      => "1"
+    },
+    :redis => {
+      :bind        => "127.0.0.1",
+      :port        => "6379",
+      :config_path => "/etc/redis/redis.conf",
+      :daemonize   => "yes",
+      :timeout     => "300",
+      :loglevel    => "notice"
+    },
+    :git => {
+      :prefix => "/usr/local"
+    },
+    :apache => {
+      :default_site_enabled => "true",
+      :dir                  => "/etc/apache2",
+      :log_dir              => "/var/log/apache2",
+      :error_log            => "error.log",
+      :user                 => 'vagrant', # "www-data",
+      :group                => 'vagrant', # "www-data",
+      :binary               => "/usr/sbin/apache2",
+      :cache_dir            => "/var/cache/apache2",
+      :pid_file             => "/var/run/apache2.pid",
+      :lib_dir              => "/usr/lib/apache2",
+      :listen_ports         => ["80", "443"],
+      :contact              => "ops@example.com",
+      :timeout              => "300",
+      :keepalive            => "On",
+      :keepaliverequests    => "100",
+      :keepalivetimeout     => "5",
+      :default_modules      => ['mod_mime', 
+        'mod_expires', 
+        'mod_php5', 
+        'mod_rewrite', 
+        'mod_deflate', 
+        'mod_headers', 
+        'mod_ssl'
+      ]
+    },
+    # Concrete5 CLI installer settings (* don't change unless you know what you're doing *)
+    :concrete5 => {
+      :admin_pass => 'c5@dmin',
+      :core       => '/home/vagrant/app/web/concrete/',
+      :target     => '/home/vagrant/app/web/',
+      :database   => {
+        :name     => 'concrete5_site',
+        :server   => '127.0.0.1',
+        :username => 'root'
+      },
+      # Auto-enable pretty urls? Set to "false" to disable
+      :prettyurls => true
+    }
+  }
+
+  # Magical rainbows and unicorns from Chef...
+  config.vm.provision :chef_solo do |chef|
+    chef.cookbooks_path = ["cookbooks", "project_cookbooks"]
+    chef.add_recipe :apt
+    chef.add_recipe 'openssl'
+    chef.add_recipe 'database::mysql'
+    chef.add_recipe 'mysql::server'
+    chef.add_recipe 'redis'
+    chef.add_recipe 'git'
+    chef.add_recipe 'nodejs'
+    chef.add_recipe 'nodejs::npm'
+    chef.add_recipe 'apache2'
+    chef.add_recipe 'php'
+    chef.add_recipe 'concrete5'
+    chef.add_recipe 'concrete5::php_resources'
+    chef.add_recipe 'concrete5::web_server'
+    chef.add_recipe 'concrete5::database'
+    #chef.add_recipe 'concrete5::install' # see notes in project_cookbooks/concrete5/recipes/install.rb
+
+    # attributes
+    chef.json = _configs
+  end
+
+  # Install timezone tables for MySQL (push CLI output to dev/null to hide warnings)
+  config.vm.provision :shell, :inline => "echo Installing MySQL timezone tables from Ubuntu zoneinfo; mysql_tzinfo_to_sql 2>/dev/null /usr/share/zoneinfo | mysql -u root --password=root mysql 2>/dev/null"
+
+  # Install Concrete5 (do this with inline provisioner so we can see output)
+  config.vm.provision :shell do |s|
+    s.inline = "echo Installing Concrete5 via CLI tools...;"
+    s.inline << "php /home/vagrant/app/cli/install-concrete5.php " << build_cli_args({
+      '--admin-password'  => _configs[:concrete5][:admin_pass],
+      '--db-server'       => _configs[:concrete5][:database][:server],
+      '--db-username'     => _configs[:concrete5][:database][:username],
+      '--db-password'     => _configs[:mysql][:server_root_password],
+      '--db-database'     => _configs[:concrete5][:database][:name],
+      '--core'            => _configs[:concrete5][:core],
+      '--target'          => _configs[:concrete5][:target]
+    })
+  end
+
+  # Auto-enable pretty URLs?
+  if _configs[:concrete5][:prettyurls]
+    config.vm.provision :shell, :path => "_pretty-urls.sh"
+  end
+
+end
