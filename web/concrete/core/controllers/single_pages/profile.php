@@ -23,8 +23,13 @@ class Concrete5_Controller_Profile extends Controller {
 		if ($userID > 0) {
 			$profile = UserInfo::getByID($userID);
 			if (!is_object($profile)) {
-				throw new Exception('Invalid User ID.');
+				throw new Exception(t('Invalid User ID.'));
 			}
+		}  else if (is_string($userID)) {
+      			$profile = UserInfo::getByUsername($userID);
+      			if (!is_object($profile)) {
+      				throw new Exception(t('Invalid User Name.'));
+      			}	
 		} else if ($u->isRegistered()) {
 			$profile = UserInfo::getByID($u->getUserID());
 			$canEdit = true;
