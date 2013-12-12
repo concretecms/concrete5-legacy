@@ -50,7 +50,7 @@
 					{
 						lineNumbers: true,
 						mode: 'application/x-ejs',
-						indentUnit: 3,
+						indentUnit: 4,
 						indentWithTabs: true,
 						enterMode: 'keep',
 						tabMode: 'shift'
