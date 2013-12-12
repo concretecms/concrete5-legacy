@@ -64,6 +64,15 @@ class Concrete5_Controller_Block_Html extends BlockController {
 			"&lt;\\1<font color=\"#800080\">\\2\\3\\4</font>&gt;",$s);
 		return nl2br($s);
 	}
+	public function add() {
+		$this->addHeaderItem(Loader::helper('html')->javascript('require.js'));
+	}
+	public function edit() {
+		$this->addHeaderItem(Loader::helper('html')->javascript('require.js'));
+	}
+	public function getJavaScriptStrings() {
+		return array(
+			'codeMirrorPath' => ASSETS_URL_JAVASCRIPT . '/codemirror'
+		);
+	}
 }
-
-?>
