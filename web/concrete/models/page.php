@@ -4,19 +4,18 @@ class Page extends Concrete5_Model_Page {
     
     //URLエンコード対応
 	function getCollectionPath() {
-		return $this->getEncodePath($this->cPath);
+		return self::getEncodePath($this->cPath);
 	}
 
 	public static function getCollectionPathFromID($cID) {
 		$db = Loader::db();
 		$path = $db->GetOne("select cPath from PagePaths inner join CollectionVersions on (PagePaths.cID = CollectionVersions.cID and CollectionVersions.cvIsApproved = 1) where PagePaths.cID = ?", array($cID));
 		$path .= '/';
-		$c = new Page();
-		return $c->getEncodePath($path);
+		return self::getEncodePath($path);
 	}
 	
 	//PagePathのエンコード処理
-	function getEncodePath($path){
+	public static function getEncodePath($path){
 	    if(mb_strpos($path,"/") !== false){
 	      $path = explode("/",$path);
 	      $path = array_map("rawurlencode",$path);
