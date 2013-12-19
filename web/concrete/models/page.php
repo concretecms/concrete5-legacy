@@ -11,7 +11,8 @@ class Page extends Concrete5_Model_Page {
 		$db = Loader::db();
 		$path = $db->GetOne("select cPath from PagePaths inner join CollectionVersions on (PagePaths.cID = CollectionVersions.cID and CollectionVersions.cvIsApproved = 1) where PagePaths.cID = ?", array($cID));
 		$path .= '/';
-		return $this->getEncodePath($path);
+		$c = new Page();
+		return $c->getEncodePath($path);
 	}
 	
 	//PagePathのエンコード処理
