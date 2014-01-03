@@ -664,6 +664,7 @@
           my.dragPosition(pep);
         }
       }});
+      CCMPanelManager.exitPanelMode();
       _.defer(function(){
         Concrete.event.fire('EditModeBlockDragStart', {block: my, pep: pep, event: event});
       });
@@ -753,8 +754,6 @@
             area_id = area.getId(),
             is_inline = !!elem.data('supports-inline-add'),
             has_add = !!elem.data('has-add-template');
-
-        CCMPanelManager.exitPanelMode();
 
         if (!has_add) {
           $.get(CCM_DISPATCHER_FILENAME, {
