@@ -75,16 +75,7 @@ class Concrete5_Library_Router {
 	 * @return string $theme
 	*/
 	public function getThemeByRoute($path) {
-		// there's probably a more efficient way to do this
-		$theme = false;
-		$txt = Loader::helper('text');
-		foreach($this->themePaths as $lp => $layout) {
-			if ($txt->fnmatch($lp, $path)) {
-				$theme = $layout;
-				break;
-			}
-		}
-		return $theme;
+		return array_search($path, array_flip($this->themePaths));
 	}
 
 
