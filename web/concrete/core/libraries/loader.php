@@ -86,10 +86,9 @@
 					throw new Exception(t("Illegal variable name '%s' in element args.", implode(', ', $collisions)));
 				}
 				$collisions = null;
-				extract($args);
 			}
 
-			View::getInstance()->includeFileInScope(Environment::get()->getPath(DIRNAME_ELEMENTS . '/' . $_file . '.php', $_pkgHandle));
+			View::getInstance()->includeFileInScope(Environment::get()->getPath(DIRNAME_ELEMENTS . '/' . $_file . '.php', $_pkgHandle), (array) $args);
 		}
 
 		 /**
