@@ -89,7 +89,7 @@
 				extract($args);
 			}
 
-			include(Environment::get()->getPath(DIRNAME_ELEMENTS . '/' . $_file . '.php', $_pkgHandle));
+			View::getInstance()->includeFileInScope(Environment::get()->getPath(DIRNAME_ELEMENTS . '/' . $_file . '.php', $_pkgHandle));
 		}
 
 		 /**
