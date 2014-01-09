@@ -36,8 +36,8 @@ define('DIRECTORY_PERMISSIONS_MODE', 0777);
 define('APP_VERSION_CLI_MINIMUM', '5.5.1');
 define('BASE_URL', 'http://localhost');
 
-error_reporting(0);
-ini_set('display_errors', 0);
+error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT & ~E_DEPRECATED);
+ini_set('display_errors', 1);
 define('C5_EXECUTE', true);
 
 $defaults = array(
@@ -155,7 +155,7 @@ require($corePath . '/config/theme_paths.php');
 
 ## Load session handlers
 require($corePath . '/startup/session.php');
-if ($reinstall === 'yes') {
+if ($config['reinstall'] === 'yes') {
 	require($corePath . '/config/app.php');
 
 	// Remove all files from the files directory
