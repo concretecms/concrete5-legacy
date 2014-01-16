@@ -1,6 +1,4 @@
-<?
-
-defined('C5_EXECUTE') or die("Access Denied.");
+<?php defined('C5_EXECUTE') or die("Access Denied.");
 if (!ini_get('safe_mode')) {
 	@set_time_limit(0);
 }
@@ -9,6 +7,7 @@ $json = Loader::helper('json');
 if (Job::authenticateRequest($_REQUEST['auth'])) {
 
 	$list = Job::getList();
+	$jobs = array();
 	foreach($list as $job) {
 		if ($job->supportsQueue()) {
 			$q = $job->getQueueObject();
@@ -20,7 +19,7 @@ if (Job::authenticateRequest($_REQUEST['auth'])) {
 					$job->processQueueItem($p);
 					$q->deleteMessage($p);
 				}
-				$totalItems = $q->count();	
+				$totalItems = $q->count();
 				$obj->totalItems = $totalItems;
 				if ($q->count() == 0) {
 					$result = $job->finish($q);
@@ -31,8 +30,9 @@ if (Job::authenticateRequest($_REQUEST['auth'])) {
 				$obj = $job->markCompleted(Job::JOB_ERROR_EXCEPTION_GENERAL, $e->getMessage());
 				$obj->message = $obj->result; // needed for progressive library.
 			}
-			print $js->encode($obj);
+			$array[] = $obj;
 		}
 	}
+	print $js->encode($array);
 }
 
