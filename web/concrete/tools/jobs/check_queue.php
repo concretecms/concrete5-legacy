@@ -7,7 +7,7 @@ $json = Loader::helper('json');
 if (Job::authenticateRequest($_REQUEST['auth'])) {
 
 	$list = Job::getList();
-	$jobs = array();
+	$array = array();
 	foreach($list as $job) {
 		if ($job->supportsQueue()) {
 			$q = $job->getQueueObject();
