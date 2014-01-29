@@ -31,7 +31,7 @@ class Concrete5_Controller_Dashboard_Files_Search extends Controller {
 		
 		// first thing, we check to see if a saved search is being used
 		if (isset($_REQUEST['fssID'])) {
-			$fs = FileSet::getByID($_REQUEST['fssID']);
+			$fs = FileSet::getByID(h($_REQUEST['fssID']));
 			if ($fs->getFileSetType() == FileSet::TYPE_SAVED_SEARCH) {
 				$req = $fs->getSavedSearchRequest();
 				$columns = $fs->getSavedSearchColumns();
