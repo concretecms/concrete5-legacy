@@ -31,6 +31,7 @@
 		if (count($_REQUEST['cvID']) > 0) {
 			$tabs = array();
 			foreach($_REQUEST['cvID'] as $cvID) {
+				$cvID = h($cvID);
 				$tabs[] = array('view-version-' . $cvID, t('Version %s', $cvID), ($i == 0));
 				$i++;
 			}
@@ -38,7 +39,10 @@
 		}
 
 
-		foreach($_REQUEST['cvID'] as $cvID) { ?>
+		foreach($_REQUEST['cvID'] as $cvID) { 
+			$cvID = h($cvID);
+?>
+
 		
 		<div id="ccm-tab-content-view-version-<?=$cvID?>" style="display: <?=$display?>; height: 100%">
 		<iframe border="0" id="v<?=time()?>" frameborder="0" height="100%" width="100%" src="<?=BASE_URL . DIR_REL?>/<?=DISPATCHER_FILENAME?>?cvID=<?=$cvID?>&cID=<?=$_REQUEST['cID']?>&vtask=view_versions" />
@@ -68,6 +72,7 @@
 						$cvIDs = explode('_', $_REQUEST['cvIDs']);
 						if (is_array($cvIDs)) {
 							foreach($cvIDs as $cvID) {
+								$cvID = h($cvID);
 								$v = CollectionVersion::get($c, $cvID);
 								if (!$v->isApproved()) {
 									$v->delete();							
@@ -80,7 +85,7 @@
 					break;
 				case 'copy_version':
 					$u = new User();
-					$c->loadVersionObject($_REQUEST['cvID']);
+					$c->loadVersionObject(h($_REQUEST['cvID']));
 					$c->cloneVersion(t('Copy of Version: %s', $c->getVersionID()));
 					header("Location: " . REL_DIR_FILES_TOOLS_REQUIRED . "/versions.php?forcereload=1&cID=" . $cID);
 					exit;
@@ -90,7 +95,7 @@
 						$u = new User();
 						$pkr = new ApprovePagePageWorkflowRequest();
 						$pkr->setRequestedPage($c);
-						$v = CollectionVersion::get($c, $_GET['cvID']);
+						$v = CollectionVersion::get($c, h($_GET['cvID']));
 						$pkr->setRequestedVersionID($v->getVersionID());
 						$pkr->setRequesterUserID($u->getUserID());
 						$u->unloadCollectionEdit($c);

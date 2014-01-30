@@ -71,11 +71,11 @@ class Concrete5_Controller_Dashboard_System_Seo_BulkSeoTool extends Controller {
 
 		if ($req['cParentIDSearchField'] > 0) {
 			if ($req['cParentAll'] == 1) {
-				$pc = Page::getByID($req['cParentIDSearchField']);
+				$pc = Page::getByID(h($req['cParentIDSearchField']));
 				$cPath = $pc->getCollectionPath();
 				$pageList->filterByPath($cPath);
 			} else {
-				$pageList->filterByParentID($req['cParentIDSearchField']);
+				$pageList->filterByParentID(h($req['cParentIDSearchField']));
 			}
 			$parentDialogOpen = 1;
 		}
