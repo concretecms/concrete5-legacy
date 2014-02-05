@@ -46,12 +46,7 @@ if (is_object($a)) {
 			$pa->removeListItem($pe);
 		}
 	
-		if ($_REQUEST['task'] == 'save_permission' && Loader::helper("validation/token")->validate('save_permission')) {
-			$pk = BlockPermissionKey::getByID($_REQUEST['pkID']);
-			$pk->setPermissionObject($b);
-			$pa = PermissionAccess::getByID($_REQUEST['paID'], $pk);
-			$pa->save($_POST);
-		}
+		if ($_REQUEST['task'] == 'save_permission' && Loader::helper("validation/token")->validate('save_permission')) {}
 
 		if ($_REQUEST['task'] == 'display_access_cell' && Loader::helper("validation/token")->validate('display_access_cell')) {
 			$pk = PermissionKey::getByID($_REQUEST['pkID']);
