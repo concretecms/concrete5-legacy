@@ -27,7 +27,7 @@ class Concrete5_Helper_File {
 		$env = Environment::get();
 		return $env->getDirectoryContents($dir, $ignoreFilesArray, $recursive);
 	}
-	
+
 	/** 
 	 * Removes the extension of a filename, uncamelcases it.
 	 * @param string $filename
@@ -38,7 +38,7 @@ class Concrete5_Helper_File {
 		$txt = Loader::helper('text');
 		return substr($txt->unhandle($filename), 0, strrpos($filename, '.'));
 	}
-	
+
 	/** 
 	 * Recursively copies all items in the source directory or file to the target directory
 	 * @param string $source Source to copy
@@ -61,7 +61,7 @@ class Concrete5_Helper_File {
 				if (substr($entry, 0, 1) === '.') {
 					continue;
 				}
-			
+
 				$Entry = $source . '/' . $entry;            
 				if (is_dir($Entry)) {
 					$this->copyAll($Entry, $target . '/' . $entry, $mode);
@@ -87,21 +87,28 @@ class Concrete5_Helper_File {
 	}
 
 	/** 
-	 * Removes all files from within a specified directory
-	 * @param string $source Directory
-	 */
-	public function removeAll($source) {
-		$r = @glob($source);
-		if (is_array($r)) {
-			foreach($r as $file) {
-				if (is_dir($file)) {
-					$this->removeAll("$file/*");
-					rmdir($file);
-				} else {
-					unlink($file);
-				}
+	  * Removes all files from within a specified directory
+	  * @param string $source Directory
+	  * @param bool $inc Remove the passed directory as well or leave it alone
+	  * @return bool Whether the methods succeeds or fails
+	  */
+	public function removeAll($source, $inc = false) {
+		if(!is_dir($source)) {
+			return false;
+		}
+		$iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($source, FilesystemIterator::SKIP_DOTS), RecursiveIteratorIterator::CHILD_FIRST);
+
+		foreach ($iterator as $path) {
+			if ($path->isDir()) {
+				rmdir($path->__toString());
+			} else {
+				unlink($path->__toString());
 			}
 		}
+		if($inc) {
+			rmdir($source);
+		}
+		return true;
 	}
 
 	/** 
@@ -130,7 +137,7 @@ class Concrete5_Helper_File {
 		header('Content-type: ' . $mimeType);
 		*/
 		
-	
+
 		$buffer = '';
 		$chunk = 1024*1024;
 		$handle = fopen($file, 'rb');
@@ -145,7 +152,7 @@ class Concrete5_Helper_File {
 		fclose($handle);
 		exit;		
 	}
-	
+
 	/** 
 	 * Returns the full path to the temporary directory
 	 * @return string
@@ -182,7 +189,6 @@ class Concrete5_Helper_File {
 		}
 	}
 
-	
 	/**
 	 * Adds content to a new line in a file. If a file is not there it will be created
 	 * @param string $filename
@@ -191,8 +197,7 @@ class Concrete5_Helper_File {
 	public function append($filename, $content) {
 		file_put_contents($filename, $content, FILE_APPEND);
 	}
-	
-	
+
 	/**
 	 * Just a consistency wrapper for file_get_contents
 	 * Should use curl if it exists and fopen isn't allowed (thanks Remo)
@@ -206,7 +211,7 @@ class Concrete5_Helper_File {
 			if (ini_get('allow_url_fopen')) {
 				$ctx = stream_context_create(array( 
 					'http' => array( 'timeout' => $timeout ) 
-				)); 
+					)); 
 				if ($contents = @file_get_contents($file, 0, $ctx)) {
 					return $contents;
 				}
@@ -214,7 +219,7 @@ class Concrete5_Helper_File {
 			
 			if (function_exists('curl_init')) {
 				$curl_handle = curl_init();
-			
+
 				// Check to see if there are proxy settings
 				if (Config::get('HTTP_PROXY_HOST') != null) {
 					@curl_setopt($curl_handle, CURLOPT_PROXY, Config::get('HTTP_PROXY_HOST'));
@@ -247,7 +252,7 @@ class Concrete5_Helper_File {
 		
 		return false;
 	}
-	
+
 	/** 
 	 * Removes contents of the file
 	 * @param $filename
@@ -255,8 +260,7 @@ class Concrete5_Helper_File {
 	public function clear($file) {
 		file_put_contents($file, '');
 	}
-	
-	
+
 	/** 
 	 * Cleans up a filename and returns the cleaned up version
 	 * @param string $file
@@ -279,7 +283,7 @@ class Concrete5_Helper_File {
 		}
 		return $asciiName;
 	}
-	
+
 	/** 
 	* Returns the extension for a file name
 	* @param string $filename
@@ -289,7 +293,7 @@ class Concrete5_Helper_File {
 		$extension = end(explode(".",$filename));
 		return $extension;
 	}
-	
+
 	/** 
 	 * Takes a path and replaces the files extension in that path with the specified extension
 	 * @param string $filename
@@ -300,8 +304,7 @@ class Concrete5_Helper_File {
 		$newFileName = substr($filename, 0, strrpos($filename, '.')) . '.' . $extension;
 		return $newFileName;
 	}
-	
-	
+
 	/**
 	 * returns an object with two permissions modes (octal):
 	 * one for files: $res->file
@@ -344,5 +347,5 @@ class Concrete5_Helper_File {
 		
 		return $res;
 	}
-		
+
 }
