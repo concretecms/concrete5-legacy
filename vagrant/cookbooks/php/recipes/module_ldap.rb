@@ -21,10 +21,10 @@
 
 pkg = value_for_platform(
   %w(centos redhat scientific fedora amazon) => {
-    el5_range => "php53-ldap",
-    "default" => "php-ldap"
+    el5_range => 'php53-ldap',
+    'default' => 'php-ldap'
   },
-  "default" => "php5-ldap"
+  'default' => 'php5-ldap'
 )
 
 package pkg do

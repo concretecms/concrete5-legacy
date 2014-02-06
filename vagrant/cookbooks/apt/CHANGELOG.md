@@ -2,6 +2,17 @@ apt Cookbook CHANGELOG
 ======================
 This file is used to list changes made in each version of the apt cookbook.
 
+v2.3.4
+------
+No change. Version bump for toolchain sanity
+
+
+v2.3.2
+------
+- [COOK-3905] apt-get-update-periodic: configuration for the update period
+- Updating style for rubocops
+- Updating test-kitchen harness
+
 
 v2.3.0
 ------

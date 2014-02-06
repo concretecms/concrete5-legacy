@@ -4,7 +4,7 @@ service git
         socket_type     = stream
         wait            = no
         user            = nobody
-        server          = /usr/libexec/git-core/git-daemon
+        server          = <%= @git_daemon_binary %>
         server_args     = --base-path=<%= node["git"]["server"]["base_path"] %> <% if node["git"]["server"]["export_all"] == "true" %>--export-all <% end %>--syslog --inetd --verbose
         log_on_failure  += USERID
 }

@@ -1,6 +1,7 @@
 #
 # Author:: Seth Chisamore (<schisamo@opscode.com>)
 # Author:: Lamont Granquist (<lamont@opscode.com>)
+# Author:: Marco Betti (<m.betti@gmail.com>)
 # Copyright:: Copyright (c) 2011 Opscode, Inc.
 # License:: Apache License, Version 2.0
 #
@@ -59,6 +60,17 @@ class Chef
           begin
             # FIXME: grants on individual tables
             grant_statement = "GRANT #{@new_resource.privileges.join(', ')} ON DATABASE \"#{@new_resource.database_name}\" TO \"#{@new_resource.username}\""
+            Chef::Log.info("#{@new_resource}: granting access with statement [#{grant_statement}]")
+            db(@new_resource.database_name).query(grant_statement)
+            @new_resource.updated_by_last_action(true)
+          ensure
+            close
+          end
+        end
+
+        def action_grant_schema
+          begin
+            grant_statement = "GRANT #{@new_resource.privileges.join(', ')} ON SCHEMA \"#{@new_resource.schema_name}\" TO \"#{@new_resource.username}\""
             Chef::Log.info("#{@new_resource}: granting access with statement [#{grant_statement}]")
             db(@new_resource.database_name).query(grant_statement)
             @new_resource.updated_by_last_action(true)

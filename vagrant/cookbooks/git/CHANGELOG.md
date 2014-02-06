@@ -3,6 +3,29 @@ git Cookbook CHANGELOG
 This file is used to list changes made in each version of the git cookbook.
 
 
+v2.9.0
+------
+Updating to depend on cookbook yum ~> 3
+Fixing style to pass rubocop
+Updating test scaffolding
+
+
+v2.8.4
+------
+fixing metadata version error. locking to 3.0
+
+
+v2.8.1
+------
+Locking yum dependency to '< 3'
+
+
+v2.8.0
+------
+### Bug
+- [COOK-3433] - git::server does not correctly set git-daemon's base-path on Debian
+
+
 v2.7.0
 ------
 ### Bug

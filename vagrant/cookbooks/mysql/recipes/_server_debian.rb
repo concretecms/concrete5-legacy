@@ -57,6 +57,14 @@ execute 'install-grants' do
   action :nothing
 end
 
+template '/etc/mysql/debian.cnf' do
+  source 'debian.cnf.erb'
+  owner 'root'
+  group 'root'
+  mode '0600'
+  notifies :reload, 'service[mysql]'
+end
+
 #----
 # data_dir
 #----
@@ -76,6 +84,7 @@ end
 
 template '/etc/init/mysql.conf' do
   source 'init-mysql.conf.erb'
+  only_if { node['platform_family'] == 'ubuntu' }
 end
 
 template '/etc/apparmor.d/usr.sbin.mysqld' do

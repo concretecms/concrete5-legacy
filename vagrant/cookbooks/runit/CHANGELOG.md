@@ -2,6 +2,38 @@ runit Cookbook CHANGELOG
 ========================
 This file is used to list changes made in each version of the runit cookbook.
 
+v1.5.8
+------
+Fixing string interpolation bug
+
+
+v1.5.3
+------
+Fixing assignment/compare error
+
+
+v1.5.1
+------
+### Bug
+- **[COOK-3950](https://tickets.opscode.com/browse/COOK-3950)** - runit cookbook should use full service path when checking running status
+
+
+v1.5.0
+------
+### Improvement
+- **[COOK-3267] - Improve testing suite in runit cookbook
+- Updating test-kitchen harness
+- Cleaning up style for rubocop
+
+
+v1.4.4
+------
+fixing metadata version error. locking to < 3.0
+
+
+v1.4.2
+------
+Locking yum dependency to '< 3'
 
 v1.4.0
 ------
@@ -15,7 +47,6 @@ v1.3.0
 
 ### Bug
 - **[COOK-3271](https://tickets.opscode.com/browse/COOK-3271)** - Fix an issue where runit fails to install rpm package on rehl systems
-
 
 v1.2.0
 ------

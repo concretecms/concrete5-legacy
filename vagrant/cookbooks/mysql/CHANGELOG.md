@@ -3,6 +3,41 @@ mysql Cookbook CHANGELOG
 This file is used to list changes made in each version of the mysql cookbook.
 
 
+v4.0.20 (2014-01-18)
+--------------------
+* [COOK-3931] - MySQL Server Recipe Regression for Non-LTS Ubuntu Versions
+* [COOK-3945] - MySQL cookbook fails on Ubuntu 13.04/13.10
+* [COOK-3966] - mysql::server recipe can't find a template with debian 7.x
+* [COOK-3985] - Missing /etc/mysql/debian.cnf template on mysql::_server_debian.rb recipe (mysql 4.0.4)
+* [COOK-3974] - debian.cnf not updated
+* [COOK-4001] - Pull request: Fixes for broken mysql::server on Debian
+* [COOK-4071] - Mysql cookbook doesn't work on debian 7.2
+
+
+v4.0.14
+-------
+Fixing style cops
+
+
+v4.0.12
+-------
+### Bug
+- **[COOK-4068](https://tickets.opscode.com/browse/COOK-4068)** - rework MySQL Windows recipe
+
+### Improvement
+- **[COOK-3801](https://tickets.opscode.com/browse/COOK-3801)** - Add innodb_adaptive_flushing_method and innodb_adaptive_checkpoint
+
+
+v4.0.10
+-------
+fixing metadata version error. locking to 3.0
+
+
+v4.0.8
+------
+Locking yum dependency to '< 3'
+
+
 v4.0.6
 ------
 # Bug

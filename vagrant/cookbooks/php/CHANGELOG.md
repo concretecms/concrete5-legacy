@@ -2,6 +2,42 @@ php Cookbook CHANGELOG
 ======================
 This file is used to list changes made in each version of the php cookbook.
 
+v1.3.12 (2014-01-28)
+--------------------
+Fix github issue 'Cannot find a resource for preferred_state'
+
+
+v1.3.10
+-------
+Fixing my stove
+
+
+v1.3.8
+------
+Version bump to ensure artifact sanity
+
+
+v1.3.6
+------
+Version bump for toolchain
+
+
+v1.3.4
+------
+Adding platform_family check to include_recipe in source.rb
+
+
+v1.3.2
+------
+Fixing style cops. Updating test harness
+
+
+v1.3.0
+------
+### Bug
+- **[COOK-3479](https://tickets.opscode.com/browse/COOK-3479)** - Added Windows support to PHP
+- **[COOK-2909](https://tickets.opscode.com/browse/COOK-2909)** - Warnings about Chef::Exceptions::ShellCommandFailed is deprecated
+
 
 v1.2.6
 ------

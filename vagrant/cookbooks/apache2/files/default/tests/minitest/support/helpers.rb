@@ -61,6 +61,5 @@ module Helpers
       end
       recipes.include?(recipe)
     end
-
   end
 end

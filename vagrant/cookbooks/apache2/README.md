@@ -416,6 +416,7 @@ the definition is used. See __Examples__.
 ### Parameters:
 
 * `name` - Name of the module enabled or disabled with the `a2enmod` or `a2dismod` scripts.
+* `identifier` - String to identify the module for the `LoadModule` directive. Not typically needed, defaults to `#{name}_module`
 * `enable` - Default true, which uses `a2enmod` to enable the module. If false, the module will be disabled with `a2dismod`.
 * `conf` - Default false. Set to true if the module has a config file, which will use `apache_conf` for the file.
 * `filename` - specify the full name of the file, e.g.

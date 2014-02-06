@@ -7,11 +7,37 @@
 #  - http://blog.didierstevens.com/2008/12/30/howto-make-your-own-cert-with-openssl/
 #  - http://www.digicert.com/ssl-support/pem-ssl-creation.htm
 
+# Function for building call to Concrete5 CLI installer
 def build_cli_args( _hash )
   _hash.map{|k,v| "#{k}=#{v} "}.join(' ')
 end
 
 Vagrant.configure("2") do |config|
+
+  # Settings for your Vagrant installation - you should only need to adjust these; but
+  # feel free to tinker around below if you feel so inclined. You can always rebuild it :)
+  box_settings = {
+    :c5_login_password  => 'c5@dmin', # username=admin, password={yourchoice}
+    :enable_pretty_urls => true,      # have pretty urls enabled automatically?
+    :http_port          => 8080,      # port to access the site from non-ssl; eg: http://localhost:8080
+    :http_ssl_port      => 4433,      # port to access the site from with ssl; eg: http://localhost:4433
+    :mysql_port         => 3307,      # want to use a MySQL GUI?
+    :vm_memory          => '384',     # how much memory can this VM use?
+    :use_rbenv          => false,      # *developers*: if you want a different ruby version, rbenv will install
+    :rbenv_settings     => {          # only valid if :use_rbenv is set to true
+      :user_installs => [{
+        :user        => "vagrant",
+        :rubies      => ["2.1.0"],
+        :global      => '2.1.0',
+        :gems        => {
+          "2.1.0"    => [
+            {:name   => 'bundler'},
+            {:name   => 'sass'}
+          ]
+        }
+      }]
+    }
+  }
 
   # The precise64-pristine box is a bare-bones Ubuntu installation with just Ruby 1.9.3
   # and Chef 11.6 installed; just enough to allow the machine to provision itself.
@@ -20,11 +46,11 @@ Vagrant.configure("2") do |config|
   # Box URL
   config.vm.box_url = "http://focus-43.com/files/1913/8670/0974/precise64-pristine.box"
   # Apache
-  config.vm.network :forwarded_port, guest: 80, host: 8080, auto_correct: true
-  # MySQL
-  config.vm.network :forwarded_port, guest: 3306, host: 3307, auto_correct: true
+  config.vm.network :forwarded_port, guest: 80, host: box_settings[:http_port], auto_correct: true
   # Apache SSL port
-  config.vm.network :forwarded_port, guest: 443, host:4433, auto_correct: true
+  config.vm.network :forwarded_port, guest: 443, host: box_settings[:http_ssl_port], auto_correct: true
+  # MySQL
+  config.vm.network :forwarded_port, guest: 3306, host: box_settings[:mysql_port], auto_correct: true
   # Mount shared folder
   config.vm.synced_folder "../", "/home/vagrant/app"
   # Vagrant port forwarding
@@ -42,13 +68,14 @@ Vagrant.configure("2") do |config|
   # Resource usage caps for VM
   begin
     config.vm.provider "virtualbox" do |v|
-      v.customize ['modifyvm', :id, '--memory', '384']
+      v.customize ['modifyvm', :id, '--memory', box_settings[:vm_memory]]
     end
   rescue 
     $stdout.puts "Unable to set resource usage for VirtualBox; proceeding with defaults..." 
   end
 
-  _configs = {
+  # Set base attributes for Chef cookbooks
+  _attributes = {
     :mysql => {
       :server_root_password   => "root",
       :server_repl_password   => "root",
@@ -83,8 +110,8 @@ Vagrant.configure("2") do |config|
       :dir                  => "/etc/apache2",
       :log_dir              => "/var/log/apache2",
       :error_log            => "error.log",
-      :user                 => 'vagrant', # "www-data",
-      :group                => 'vagrant', # "www-data",
+      :user                 => 'vagrant',
+      :group                => 'vagrant',
       :binary               => "/usr/sbin/apache2",
       :cache_dir            => "/var/cache/apache2",
       :pid_file             => "/var/run/apache2.pid",
@@ -95,7 +122,8 @@ Vagrant.configure("2") do |config|
       :keepalive            => "On",
       :keepaliverequests    => "100",
       :keepalivetimeout     => "5",
-      :default_modules      => ['mod_mime', 
+      :default_modules      => [
+        'mod_mime', 
         'mod_expires', 
         'mod_php5', 
         'mod_rewrite', 
@@ -104,9 +132,9 @@ Vagrant.configure("2") do |config|
         'mod_ssl'
       ]
     },
-    # Concrete5 CLI installer settings (* don't change unless you know what you're doing *)
+    # Concrete5 node settings
     :concrete5 => {
-      :admin_pass => 'c5@dmin',
+      :admin_pass => box_settings[:c5_login_password],
       :core       => '/home/vagrant/app/web/concrete/',
       :target     => '/home/vagrant/app/web/',
       :database   => {
@@ -114,13 +142,13 @@ Vagrant.configure("2") do |config|
         :server   => '127.0.0.1',
         :username => 'root'
       },
-      # Auto-enable pretty urls? Set to "false" to disable
-      :prettyurls => true
+      :prettyurls => box_settings[:enable_pretty_urls]
     }
   }
 
   # Magical rainbows and unicorns from Chef...
   config.vm.provision :chef_solo do |chef|
+    # Standard cookbooks
     chef.cookbooks_path = ["cookbooks", "project_cookbooks"]
     chef.add_recipe :apt
     chef.add_recipe 'openssl'
@@ -138,8 +166,17 @@ Vagrant.configure("2") do |config|
     chef.add_recipe 'concrete5::database'
     #chef.add_recipe 'concrete5::install' # see notes in project_cookbooks/concrete5/recipes/install.rb
 
+    # Use rbenv cookbooks?
+    if( box_settings[:use_rbenv] )
+      # Include chef recipes
+      chef.add_recipe 'ruby_build'
+      chef.add_recipe 'rbenv::user'
+      # Include rbenv settings
+      _attributes[:rbenv] = box_settings[:rbenv_settings]
+    end
+
     # attributes
-    chef.json = _configs
+    chef.json = _attributes
   end
 
   # Install timezone tables for MySQL (push CLI output to dev/null to hide warnings)
@@ -149,18 +186,18 @@ Vagrant.configure("2") do |config|
   config.vm.provision :shell do |s|
     s.inline = "echo Installing Concrete5 via CLI tools...;"
     s.inline << "php /home/vagrant/app/cli/install-concrete5.php " << build_cli_args({
-      '--admin-password'  => _configs[:concrete5][:admin_pass],
-      '--db-server'       => _configs[:concrete5][:database][:server],
-      '--db-username'     => _configs[:concrete5][:database][:username],
-      '--db-password'     => _configs[:mysql][:server_root_password],
-      '--db-database'     => _configs[:concrete5][:database][:name],
-      '--core'            => _configs[:concrete5][:core],
-      '--target'          => _configs[:concrete5][:target]
+      '--admin-password'  => _attributes[:concrete5][:admin_pass],
+      '--db-server'       => _attributes[:concrete5][:database][:server],
+      '--db-username'     => _attributes[:concrete5][:database][:username],
+      '--db-password'     => _attributes[:mysql][:server_root_password],
+      '--db-database'     => _attributes[:concrete5][:database][:name],
+      '--core'            => _attributes[:concrete5][:core],
+      '--target'          => _attributes[:concrete5][:target]
     })
   end
 
   # Auto-enable pretty URLs?
-  if _configs[:concrete5][:prettyurls]
+  if box_settings[:enable_pretty_urls]
     config.vm.provision :shell, :path => "_pretty-urls.sh"
   end
 

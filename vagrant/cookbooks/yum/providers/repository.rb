@@ -1,10 +1,9 @@
-# Encoding: utf-8
 #
 # Cookbook Name:: yum
 # Provider:: repository
 #
-# Copyright 2010, Tippr Inc.
-# Copyright 2011, Opscode, Inc..
+# Author:: Sean OMeara <someara@getchef.com>
+# Copyright 2013, Chef
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,113 +18,51 @@
 # limitations under the License.
 #
 
-# note that deletion does not remove GPG keys, either from the repo or
-# /etc/pki/rpm-gpg; this is a design decision.
+# In Chef 11 and above, calling the use_inline_resources method will
+# make Chef create a new "run_context". When an action is called, any
+# nested resources are compiled and converged in isolation from the
+# recipe that calls it.
+
+# Allow for Chef 10 support
+use_inline_resources if defined?(use_inline_resources)
 
 def whyrun_supported?
   true
 end
 
-action :add do
-  unless ::File.exists?("/etc/yum.repos.d/#{new_resource.repo_name}.repo")
-    Chef::Log.info "Adding #{new_resource.repo_name} repository to /etc/yum.repos.d/#{new_resource.repo_name}.repo"
-    repo_config
-  end
-end
+action :create  do
+  # Hack around the lack of "use_inline_resources" before Chef 11 by
+  # uniquely naming the execute[yum-makecache] resources. Set the
+  # notifies timing to :immediately for the same reasons. Remove both
+  # of these when dropping Chef 10 support.
 
-action :create do
-  Chef::Log.info "Adding and updating #{new_resource.repo_name} repository in /etc/yum.repos.d/#{new_resource.repo_name}.repo"
-  repo_config
-end
-
-action :remove do
-  if ::File.exists?("/etc/yum.repos.d/#{new_resource.repo_name}.repo")
-    Chef::Log.info "Removing #{new_resource.repo_name} repository from /etc/yum.repos.d/"
-    file "/etc/yum.repos.d/#{new_resource.repo_name}.repo" do
-      action :delete
-    end
-    new_resource.updated_by_last_action(true)
-  end
-end
-
-action :update do
-  repos ||= {}
-  # If the repo is already enabled/disabled as per the resource, we don't want to converge the template resource.
-  if ::File.exists?("/etc/yum.repos.d/#{new_resource.repo_name}.repo")
-    ::File.open("/etc/yum.repos.d/#{new_resource.repo_name}.repo") do |file|
-      repo_name ||= nil
-      file.each_line do |line|
-        case line
-        when /^\[(\S+)\]/
-          repo_name = Regexp.last_match[1]
-          repos[repo_name] ||= {}
-        when /^(\S+?)=(.*)$/
-          param, value = Regexp.last_match[1], Regexp.last_match[2]
-          repos[repo_name][param] = value
-        else
-        end
-      end
-    end
-  else
-    Chef::Log.error "Repo /etc/yum.repos.d/#{new_resource.repo_name}.repo does not exist, you must create it first"
-  end
-  if !repos.key?(new_resource.repo_name) || repos[new_resource.repo_name]['enabled'].to_i != new_resource.enabled
-    Chef::Log.info "Updating #{new_resource.repo_name} repository in /etc/yum.repos.d/#{new_resource.repo_name}.repo (setting enabled=#{new_resource.enabled})"
-    repo_config
-  else
-    Chef::Log.debug "Repository /etc/yum.repos.d/#{new_resource.repo_name}.repo is already set to enabled=#{new_resource.enabled}, skipping"
-  end
-end
-
-private
-
-def repo_config
-  # import the gpg key. If it needs to be downloaded or imported from a cookbook
-  # that can be done in the calling recipe
-  if new_resource.key then
-    yum_key "#{new_resource.repo_name}-key" do
-      key new_resource.key
-    end
-  end
-  # get the metadata for this repo only
-  execute "yum-makecache-#{new_resource.repo_name}" do
-    command "yum -q makecache --disablerepo=* --enablerepo=#{new_resource.repo_name}"
-    action :nothing
-  end
-  # reload internal Chef yum cache
-  ruby_block "reload-internal-yum-cache-for-#{new_resource.repo_name}" do
-    block do
-      Chef::Provider::Package::Yum::YumCache.instance.reload
-    end
-    action :nothing
-  end
-  # write out the file
-  template "/etc/yum.repos.d/#{new_resource.repo_name}.repo" do
-    cookbook 'yum'
+  template "/etc/yum.repos.d/#{new_resource.repositoryid}.repo" do
     source 'repo.erb'
+    cookbook 'yum'
     mode '0644'
-    variables(
-      repo_name: new_resource.repo_name,
-      description: new_resource.description,
-      url: new_resource.url,
-      mirrorlist: new_resource.mirrorlist,
-      key: new_resource.key,
-      enabled: new_resource.enabled,
-      type: new_resource.type,
-      failovermethod: new_resource.failovermethod,
-      bootstrapurl: new_resource.bootstrapurl,
-      includepkgs: new_resource.includepkgs,
-      exclude: new_resource.exclude,
-      priority: new_resource.priority,
-      metadata_expire: new_resource.metadata_expire,
-      type: new_resource.type,
-      proxy: new_resource.proxy,
-      proxy_username: new_resource.proxy_username,
-      proxy_password: new_resource.proxy_password
-      )
-    if new_resource.make_cache
-      notifies :run, "execute[yum-makecache-#{new_resource.repo_name}]", :immediately
-      notifies :create, "ruby_block[reload-internal-yum-cache-for-#{new_resource.repo_name}]", :immediately
-    end
+    variables(:config => new_resource)
+    notifies :run, "execute[yum-makecache-#{new_resource.repositoryid}]", :immediately
+    notifies :create, "ruby_block[yum-cache-reload-#{new_resource.repositoryid}]", :immediately
+  end
+
+  # get the metadata for this repo only
+  execute "yum-makecache-#{new_resource.repositoryid}" do
+    command "yum -q makecache --disablerepo=* --enablerepo=#{new_resource.repositoryid}"
+    action :nothing
+  end
+
+  # reload internal Chef yum cache
+  ruby_block "yum-cache-reload-#{new_resource.repositoryid}" do
+    block { Chef::Provider::Package::Yum::YumCache.instance.reload }
+    action :nothing
   end
 end
+
+action :delete do
+  file "/etc/yum.repos.d/#{new_resource.repositoryid}.repo" do
+    action :delete
+  end
+end
+
+alias_method :action_add, :action_create
+alias_method :action_remove, :action_delete

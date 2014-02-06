@@ -1,0 +1,8 @@
+Gemfile.lock
+Berksfile.lock
+.vagrant
+.bundle/
+tmp/
+.vagrant
+.jamie/
+.jamie.local.yml

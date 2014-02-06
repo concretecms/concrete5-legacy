@@ -16,21 +16,31 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-if node["platform"] == "windows"
-  return "#{node['platform']} is not supported by the #{cookbook_name}::#{recipe_name} recipe"
+return "#{node['platform']} is not supported by the #{cookbook_name}::#{recipe_name} recipe" if node['platform'] == 'windows'
+
+include_recipe 'build-essential'
+include_recipe 'yum-epel' if node['platform_family'] == 'rhel'
+
+# move this to attributes.
+case node['platform_family']
+when 'rhel'
+  case node['platform_version'].to_i
+  when 5
+    pkgs = %w{ expat-devel gettext-devel curl-devel openssl-devel zlib-devel }
+  when 6
+    pkgs = %w{ expat-devel gettext-devel curl-devel openssl-devel perl-ExtUtils-MakeMaker zlib-devel }
+  else
+    pkgs = %w{ expat-devel gettext-devel curl-devel openssl-devel perl-ExtUtils-MakeMaker zlib-devel } if node['platform'] == 'amazon'
+  end
+when 'debian'
+  pkgs = %w{ libcurl4-gnutls-dev libexpat1-dev gettext libz-dev libssl-dev }
 end
-
-include_recipe "build-essential"
-
-pkgs = value_for_platform_family(
-  ["rhel"] => %w{ expat-devel gettext-devel libcurl-devel openssl-devel perl-ExtUtils-MakeMaker zlib-devel },
-  ["debian"] => %w{ libcurl4-gnutls-dev libexpat1-dev gettext libz-dev libssl-dev }
-)
 
 pkgs.each do |pkg|
   package pkg
 end
 
+# reduce line-noise-eyness
 remote_file "#{Chef::Config['file_cache_path']}/git-#{node['git']['version']}.tar.gz" do
   source    node['git']['url']
   checksum  node['git']['checksum']
@@ -38,6 +48,7 @@ remote_file "#{Chef::Config['file_cache_path']}/git-#{node['git']['version']}.ta
   not_if "test -f #{Chef::Config['file_cache_path']}/git-#{node['git']['version']}.tar.gz"
 end
 
+# reduce line-noise-eyness
 execute "Extracting and Building Git #{node['git']['version']} from Source" do
   cwd Chef::Config['file_cache_path']
   command <<-COMMAND

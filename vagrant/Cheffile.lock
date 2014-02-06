@@ -1,0 +1,102 @@
+SITE
+  remote: http://community.opscode.com/api/v1
+  specs:
+    apache2 (1.8.14)
+    apt (2.3.4)
+    aws (1.0.0)
+    build-essential (1.4.2)
+    chef_handler (1.1.4)
+    dmg (2.1.4)
+    git (2.9.0)
+      build-essential (>= 0.0.0)
+      dmg (>= 0.0.0)
+      runit (>= 1.0.0)
+      windows (>= 0.0.0)
+      yum (~> 3.0)
+      yum-epel (>= 0.0.0)
+    iis (2.0.0)
+      windows (>= 1.2.6)
+    mysql (4.0.20)
+      build-essential (~> 1.4)
+      openssl (~> 1.1)
+    openssl (1.1.0)
+    php (1.3.12)
+      build-essential (>= 0.0.0)
+      iis (>= 0.0.0)
+      mysql (>= 0.0.0)
+      windows (>= 0.0.0)
+      xml (>= 0.0.0)
+      yum-epel (>= 0.0.0)
+    postgresql (3.3.4)
+      apt (>= 0.0.0)
+      build-essential (>= 0.0.0)
+      openssl (>= 0.0.0)
+    runit (1.5.8)
+      build-essential (>= 0.0.0)
+      yum (~> 3.0)
+      yum-epel (>= 0.0.0)
+    windows (1.12.8)
+      chef_handler (>= 0.0.0)
+    xfs (1.1.0)
+    xml (1.2.0)
+      build-essential (>= 0.0.0)
+    yum (3.0.6)
+    yum-epel (0.2.0)
+      yum (~> 3.0)
+
+GIT
+  remote: https://github.com/ctrabold/chef-redis
+  ref: master
+  sha: e3a89f34d0f5b81867ae9e07a9404ac89e1ff61c
+  specs:
+    redis (0.0.4)
+
+GIT
+  remote: https://github.com/fnichol/chef-rbenv
+  ref: v0.7.2
+  sha: f2b53292e810dd2b43f6121f9958f5f29979dcb1
+  specs:
+    rbenv (0.7.2)
+
+GIT
+  remote: https://github.com/fnichol/chef-ruby_build
+  ref: v0.8.0
+  sha: ed2d3841784ecf60c1de808946307b588efe644f
+  specs:
+    ruby_build (0.8.0)
+
+GIT
+  remote: https://github.com/mdxp/nodejs-cookbook
+  ref: master
+  sha: 4c685529e7a8db0222b17407367e8b309afd3137
+  specs:
+    nodejs (1.3.0)
+      apt (>= 0.0.0)
+      build-essential (>= 0.0.0)
+      yum (>= 0.0.0)
+
+GIT
+  remote: https://github.com/opscode-cookbooks/database
+  ref: master
+  sha: 01d623040bace2eb148aecb7e79889557b43453b
+  specs:
+    database (1.6.1)
+      aws (>= 0.0.0)
+      mysql (>= 1.3.0)
+      postgresql (>= 1.0.0)
+      xfs (>= 0.0.0)
+
+DEPENDENCIES
+  apache2 (>= 0)
+  apt (>= 0)
+  build-essential (>= 0)
+  database (>= 0)
+  git (>= 0)
+  mysql (>= 0)
+  nodejs (>= 0)
+  openssl (>= 0)
+  php (>= 0)
+  rbenv (>= 0)
+  redis (>= 0)
+  ruby_build (>= 0)
+

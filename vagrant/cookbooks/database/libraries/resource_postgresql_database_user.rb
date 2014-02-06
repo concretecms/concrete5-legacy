@@ -1,6 +1,7 @@
 #
 # Author:: Seth Chisamore (<schisamo@opscode.com>)
 # Author:: Lamont Granquist (<lamont@opscode.com>)
+# Author:: Marco Betti (<m.betti@gmail.com>)
 # Copyright:: Copyright (c) 2011 Opscode, Inc.
 # License:: Apache License, Version 2.0
 #
@@ -28,6 +29,16 @@ class Chef
         super
         @resource_name = :postgresql_database_user
         @provider = Chef::Provider::Database::PostgresqlUser
+        @schema_name = nil
+        @allowed_actions.push(:create, :drop, :grant, :grant_schema)
+      end
+
+      def schema_name(arg=nil)
+        set_or_return(
+          :schema_name,
+          arg,
+          :kind_of => String
+        )
       end
 
     end

@@ -22,12 +22,13 @@ define :apache_module, :enable => true, :conf => false do
 
   params[:filename]    = params[:filename] || "mod_#{params[:name]}.so"
   params[:module_path] = params[:module_path] || "#{node['apache']['libexecdir']}/#{params[:filename]}"
+  params[:identifier]  = params[:identifier] || "#{params[:name]}_module"
 
   apache_conf params[:name] if params[:conf]
 
   if platform_family?('rhel', 'fedora', 'arch', 'suse', 'freebsd')
     file "#{node['apache']['dir']}/mods-available/#{params[:name]}.load" do
-      content "LoadModule #{params[:name]}_module #{params[:module_path]}\n"
+      content "LoadModule #{params[:identifier]} #{params[:module_path]}\n"
       mode    '0644'
     end
   end

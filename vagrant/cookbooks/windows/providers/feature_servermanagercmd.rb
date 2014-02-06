@@ -33,7 +33,7 @@ end
 def installed?
   @installed ||= begin
     cmd = shell_out("#{servermanagercmd} -query", {:returns => [0,42,127]})
-    cmd.stderr.empty? && (cmd.stdout =~ /^\s*?\[X\]\s.+?\s\[#{@new_resource.feature_name}\]$/i)
+    cmd.stderr.empty? && (cmd.stdout =~ /^\s*?\[X\]\s.+?\s\[#{@new_resource.feature_name}\]\s*$/i)
   end
 end
 

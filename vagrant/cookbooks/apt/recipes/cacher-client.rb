@@ -21,11 +21,11 @@ class ::Chef::Recipe
   include ::Apt
 end
 
-#remove Acquire::http::Proxy lines from /etc/apt/apt.conf since we use 01proxy
-#these are leftover from preseed installs
+# remove Acquire::http::Proxy lines from /etc/apt/apt.conf since we use 01proxy
+# these are leftover from preseed installs
 execute 'Remove proxy from /etc/apt/apt.conf' do
   command "sed --in-place '/^Acquire::http::Proxy/d' /etc/apt/apt.conf"
-  only_if "grep Acquire::http::Proxy /etc/apt/apt.conf"
+  only_if 'grep Acquire::http::Proxy /etc/apt/apt.conf'
 end
 
 servers = []
@@ -43,8 +43,8 @@ if node['apt']
   end
 end
 
-unless (Chef::Config[:solo] || servers.length > 0)
-  query = "apt_caching_server:true"
+unless Chef::Config[:solo] || servers.length > 0
+  query = 'apt_caching_server:true'
   query += " AND chef_environment:#{node.chef_environment}" if node['apt']['cacher-client']['restrict_environment']
   Chef::Log.debug("apt::cacher-client searching for '#{query}'")
   servers += search(:node, query)
@@ -67,7 +67,7 @@ if servers.length > 0
       :port => servers[0]['apt']['cacher_port'],
       :bypass => node['apt']['cache_bypass']
       )
-    action( node['apt']['compiletime'] ? :nothing : :create )
+    action(node['apt']['compiletime'] ? :nothing : :create)
     notifies :run, 'execute[apt-get update]', :immediately
   end
   t.run_action(:create) if node['apt']['compiletime']

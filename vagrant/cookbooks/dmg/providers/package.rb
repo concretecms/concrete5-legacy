@@ -17,6 +17,8 @@
 # limitations under the License.
 #
 
+include Chef::Mixin::ShellOut
+
 use_inline_resources if defined?(use_inline_resources)
 
 def load_current_resource
@@ -44,10 +46,11 @@ action :install do
     passphrase_cmd = new_resource.dmg_passphrase ? "-passphrase #{new_resource.dmg_passphrase}" : ''
     ruby_block "attach #{dmg_file}" do
       block do
-        software_license_agreement = system("hdiutil imageinfo #{passphrase_cmd} '#{dmg_file}' | grep -q 'Software License Agreement: true'")
-        raise "Requires EULA Acceptance; add 'accept_eula true' to package resource" if software_license_agreement && !new_resource.accept_eula
+        cmd = shell_out("hdiutil imageinfo #{passphrase_cmd} '#{dmg_file}' | grep -q 'Software License Agreement: true'")
+        software_license_agreement = (cmd.exitstatus == 0)
+        fail "Requires EULA Acceptance; add 'accept_eula true' to package resource" if software_license_agreement && !new_resource.accept_eula
         accept_eula_cmd = new_resource.accept_eula ? 'echo Y |' : ''
-        system "#{accept_eula_cmd} hdiutil attach #{passphrase_cmd} '#{dmg_file}'"
+        shell_out!("#{accept_eula_cmd} hdiutil attach #{passphrase_cmd} '#{dmg_file}' -quiet")
       end
       not_if "hdiutil info #{passphrase_cmd} | grep -q 'image-path.*#{dmg_file}'"
     end
@@ -79,7 +82,7 @@ def installed?
   if ::File.directory?("#{new_resource.destination}/#{new_resource.app}.app")
     Chef::Log.info "Already installed; to upgrade, remove \"#{new_resource.destination}/#{new_resource.app}.app\""
     true
-  elsif system("pkgutil --pkgs='#{new_resource.package_id}'")
+  elsif shell_out("pkgutil --pkgs='#{new_resource.package_id}'").exitstatus == 0
     Chef::Log.info "Already installed; to upgrade, try \"sudo pkgutil --forget '#{new_resource.package_id}'\""
     true
   else

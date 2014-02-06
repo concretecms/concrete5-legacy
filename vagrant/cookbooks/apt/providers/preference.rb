@@ -25,21 +25,23 @@ end
 action :add do
   new_resource.updated_by_last_action(false)
 
-  preference = build_pref(new_resource.glob || new_resource.package_name,
-                          new_resource.pin,
-                          new_resource.pin_priority)
+  preference = build_pref(
+    new_resource.glob || new_resource.package_name,
+    new_resource.pin,
+    new_resource.pin_priority
+    )
 
-  preference_dir = directory "/etc/apt/preferences.d" do
-    owner "root"
-    group "root"
+  preference_dir = directory '/etc/apt/preferences.d' do
+    owner 'root'
+    group 'root'
     mode 00755
     recursive true
     action :nothing
   end
 
   preference_file = file "/etc/apt/preferences.d/#{new_resource.name}" do
-    owner "root"
-    group "root"
+    owner 'root'
+    group 'root'
     mode 00644
     content preference
     action :nothing

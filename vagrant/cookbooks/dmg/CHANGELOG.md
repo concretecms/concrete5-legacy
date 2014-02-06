@@ -3,6 +3,24 @@ dmg Cookbook CHANGELOG
 This file is used to list changes made in each version of the dmg ookbook.
 
 
+v2.1.4 (2014-01-26)
+-------------------
+* [COOK-4157] - dmg_package LWRP broken due to "puts" instead of "system"
+* [COOK-4065] - dmg cookbook outputs the name of packages when checking if they are installed
+
+
+v2.1.2
+------
+Cleaning up merge errors
+
+
+v2.1.0
+------
+### Bug
+- **[COOK-3946](https://tickets.opscode.com/browse/COOK-3946)** - Syntax error in resources/package.rb
+- **[COOK-2672](https://tickets.opscode.com/browse/COOK-2672)** - EULA for package is displayed instead accepted
+
+
 v2.0.8
 ------
 Adding a Chef 10 compatibility check in provider

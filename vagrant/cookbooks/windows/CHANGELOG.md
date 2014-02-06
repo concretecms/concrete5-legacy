@@ -2,6 +2,35 @@ windows Cookbook CHANGELOG
 =======================
 This file is used to list changes made in each version of the windows cookbook.
 
+v1.12.8 (2014-01-21)
+--------------------
+[COOK-3988] Don't unescape URI before constructing it.
+
+
+v1.12.6 (2014-01-03)
+--------------------
+[COOK-4168] Circular dep on powershell - moving powershell libraries into windows. removing dependency on powershell
+
+
+v1.12.4
+-------
+Fixing depend/depends typo in metadata.rb
+
+
+v1.12.2
+-------
+### Bug
+- **[COOK-4110](https://tickets.opscode.com/browse/COOK-4110)** - feature_servermanager installed? method regex bug
+
+
+v1.12.0
+-------
+### Bug
+- **[COOK-3793](https://tickets.opscode.com/browse/COOK-3793)** - parens inside parens of README.md don't render
+
+### New Feature
+- **[COOK-3714](https://tickets.opscode.com/browse/COOK-3714)** - Powershell features provider and delete support.
+
 
 v1.11.0
 -------

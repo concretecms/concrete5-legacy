@@ -22,9 +22,7 @@ module ::Apt
     if interface
       addresses = host['network']['interfaces'][interface]['addresses']
       addresses.select do |ip, data|
-        if data['family'].eql?('inet')
-          return ip
-        end
+        return ip if data['family'].eql?('inet')
       end
     else
       return host.ipaddress

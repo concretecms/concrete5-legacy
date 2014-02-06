@@ -18,6 +18,7 @@
 #
 
 module Apt
+  # Helpers for apt
   module Helpers
     # Determines if apt is installed on a system.
     #

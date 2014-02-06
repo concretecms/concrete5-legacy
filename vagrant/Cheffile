@@ -10,6 +10,7 @@ cookbook "openssl", {}
 cookbook "apache2", {}
 cookbook "nodejs", {:github=>"mdxp/nodejs-cookbook"}
 cookbook "build-essential", {}
-cookbook "rvm", {:github=>"fnichol/chef-rvm", :ref=>"v0.9.0"}
 cookbook "php", {}
 cookbook "database", {:github=>"opscode-cookbooks/database"}
+cookbook "ruby_build", {:github=>"fnichol/chef-ruby_build", :ref=>"v0.8.0"}
+cookbook "rbenv", {:github=>"fnichol/chef-rbenv", :ref=>"v0.7.2"}
