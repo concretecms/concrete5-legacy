@@ -27,7 +27,7 @@ class Concrete5_Controller_Dashboard_Pages_Types_Add extends DashboardBaseContro
 		
 		if (!$ctName) {
 			$this->error->add(t("Name required."));
-		} else if (preg_match('/[<>{};?"`]/i', $ctName)) {
+		} else if (preg_match('/[\'<>{};?"`]/i', $ctName)) {
 			$this->error->add(t('Invalid characters in page type name.'));
 		}
 
