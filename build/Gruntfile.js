@@ -165,5 +165,9 @@ module.exports = function(grunt) {
 		require('./tasks/remove-short-tags.js')(grunt, config, parameters, this.async());
 	});
 
+	grunt.registerTask('localize', 'Extracts translatable strings from a package and create .pot/.po files.', function() {
+		require('./tasks/localize.js')(grunt, config, parameters, this.async());
+	});
+
 	grunt.registerTask('default', 'release');
 };
