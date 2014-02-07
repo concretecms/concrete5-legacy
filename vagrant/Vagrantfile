@@ -168,11 +168,12 @@ Vagrant.configure("2") do |config|
 
     # Use rbenv cookbooks?
     if( box_settings[:use_rbenv] )
-      # Include chef recipes
-      chef.add_recipe 'ruby_build'
-      chef.add_recipe 'rbenv::user'
       # Include rbenv settings
       _attributes[:rbenv] = box_settings[:rbenv_settings]
+      # Include chef recipes
+      chef.add_recipe 'build-essential'
+      chef.add_recipe 'ruby_build'
+      chef.add_recipe 'rbenv::user'
     end
 
     # attributes
