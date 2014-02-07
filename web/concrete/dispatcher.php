@@ -195,7 +195,7 @@
 			switch($cp->getError()) {
 				case COLLECTION_FORBIDDEN:
 					$v = View::getInstance();
-					$v->setCollectionObject($c);
+					$v->setCollectionObject(Page::getByPath('/page_forbidden'));
 					$v->render('/page_forbidden');
 					break;
 			}
