@@ -494,9 +494,10 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		
 		/**
 		 * Gets the custom templates available for the current BlockType
-		 * @return array an array of strings
+		 * @param bool $withNames=false If false you'll get a list of template file names, if true the resulting array keys are the template file names and the values are their shown name 
+		 * @return array
 		 */
-		function getBlockTypeCustomTemplates() {
+		function getBlockTypeCustomTemplates($withNames = false) {
 			$btHandle = $this->getBlockTypeHandle();
 			$pkgHandle = $this->getPackageHandle();
 
@@ -532,18 +533,34 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			}
 
 			$templates = array_unique($templates);
-			asort($templates);
-	
-			return $templates;
+			if($withNames) {
+				/* @var $th TextHelper */
+				$th = Loader::helper('text');
+				$templateWithNames = array();
+				foreach($templates as $templateFile) {
+					$baseName = $templateFile;
+					if (strpos($baseName, '.') !== false) {
+						$baseName = substr($baseName, 0, strrpos($baseName, '.'));
+					}
+					$templateWithNames[$templateFile] = tc('BlockTypeCustomTemplateName', $th->unhandle($baseName));
+				}
+				natcasesort($templateWithNames);
+				return $templateWithNames;
+			}				
+			else {
+				asort($templates);
+				return $templates;
+			}
 		}
 
 		
 		/** 
 		 * gets the available composer templates 
 		 * used for editing instances of the BlockType while in the composer ui in the dashboard
+		 * @param bool $withNames=false If false you'll get a list of template file names, if true the resulting array keys are the template file names and the values are their shown name
 		 * @return array array of strings
 		 */
-		function getBlockTypeComposerTemplates() {
+		function getBlockTypeComposerTemplates($withNames = false) {
 			$btHandle = $this->getBlockTypeHandle();
 			$pkgHandle = $this->getPackageHandle();
 
@@ -559,8 +576,24 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			}
 
 			$templates = array_unique($templates);
-	
-			return $templates;
+			if($withNames) {
+				/* @var $th TextHelper */
+				$th = Loader::helper('text');
+				$templateWithNames = array();
+				foreach($templates as $templateFile) {
+					$baseName = $templateFile;
+					if (strpos($baseName, '.') !== false) {
+						$baseName = substr($baseName, 0, strrpos($baseName, '.'));
+					}
+					$templateWithNames[$templateFile] = tc('BlockTypeComposerTemplateName', $th->unhandle($baseName));
+				}
+				natcasesort($templateWithNames);
+				return $templateWithNames;
+			}
+			else {
+				asort($templates);
+				return $templates;
+			}
 		}
 		
 		function setBlockTypeDisplayOrder($displayOrder) {

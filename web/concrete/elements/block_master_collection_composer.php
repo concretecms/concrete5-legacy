@@ -4,8 +4,7 @@ global $c;?>
 <?
 $form = Loader::helper('form');
 $bt = BlockType::getByID($b->getBlockTypeID());
-$templates = $bt->getBlockTypeComposerTemplates();
-$txt = Loader::helper('text');
+$templates = $bt->getBlockTypeComposerTemplates(true);
 ?>
 <div class="ccm-ui">
 
@@ -34,14 +33,8 @@ $txt = Loader::helper('text');
 	<div class="input">
 		<select name="cbFilename">
 			<option value="">(<?=t('None selected')?>)</option>
-			<? foreach($templates as $tpl) { ?>
-				<option value="<?=$tpl?>" <? if ($b->getBlockComposerFilename() == $tpl) { ?> selected <? } ?>><?	
-					if (strpos($tpl, '.') !== false) {
-						print substr($txt->unhandle($tpl), 0, strrpos($tpl, '.'));
-					} else {
-						print $txt->unhandle($tpl);
-					}
-					?></option>		
+			<? foreach($templates as $tplHandle => $tplName) { ?>
+				<option value="<?=$tplHandle?>" <? if ($b->getBlockComposerFilename() == $tplHandle) { ?> selected <? } ?>><?php echo h($tplName); ?></option>		
 			<? } ?>
 		</select>
 	</div>
