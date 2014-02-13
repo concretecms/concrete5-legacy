@@ -89,6 +89,25 @@
 	## Determines whether we can use the more efficient permission local caching
 	require($cdir . '/startup/permission_cache_check.php');
 
+	if (C5_ENVIRONMENT_ONLY == false) {
+		// figure out where we need to go
+		$req = Request::get();
+		if ($req->getRequestCollectionPath() != '') {
+			if (ENABLE_LEGACY_CONTROLLER_URLS) {
+				$c = Page::getByPath($req->getRequestCollectionPath(), 'ACTIVE');
+			}
+			else {
+				$c = $req->getRequestedPage();
+			}
+		}
+		else {
+			$c = Page::getByID($req->getRequestCollectionID(), 'ACTIVE');
+		}
+		$req = Request::get();
+		$req->setCurrentPage($c);
+		## Let's call the warmup method of packages, so that they can define the  
+		require($cdir . '/startup/packages-warmup.php');
+	}
 	## Localization ##
 	## This MUST be run before packages start - since they check ACTIVE_LOCALE which is defined here ##
 	require($cdir . '/config/localization.php');
@@ -149,22 +168,6 @@
 	require($cdir . '/startup/user.php');
 
 	if (C5_ENVIRONMENT_ONLY == false) {
-
-		// figure out where we need to go
-		$req = Request::get();
-		if ($req->getRequestCollectionPath() != '') {
-			if (ENABLE_LEGACY_CONTROLLER_URLS) {
-				$c = Page::getByPath($req->getRequestCollectionPath(), 'ACTIVE');
-			} else {
-				$c = $req->getRequestedPage();
-			}
-		} else {
-			$c = Page::getByID($req->getRequestCollectionID(), 'ACTIVE');
-		}
-
-		$req = Request::get();
-		$req->setCurrentPage($c);
-
 		if ($c->isError()) {
 			// if we've gotten an error getting information about this particular collection
 			// than we load up the Content class, and get prepared to fire away
