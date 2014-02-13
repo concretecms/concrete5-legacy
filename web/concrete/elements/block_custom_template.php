@@ -9,8 +9,7 @@ if ($b->getBlockTypeHandle() == BLOCK_HANDLE_SCRAPBOOK_PROXY) {
 } else {
 	$bt = BlockType::getByID($b->getBlockTypeID());
 }
-$templates = $bt->getBlockTypeCustomTemplates();
-$txt = Loader::helper('text');
+$templates = $bt->getBlockTypeCustomTemplates(true);
 ?>
 <div class="ccm-ui" style="padding-top:10px;">
 <form method="post" id="ccmCustomTemplateForm" action="<?=$b->getBlockUpdateInformationAction()?>&amp;rcID=<?=intval($rcID) ?>" class="form-vertical">
@@ -26,14 +25,8 @@ $txt = Loader::helper('text');
             <div class="controls">
                 <select id="bFilename" name="bFilename" class="xlarge">
                     <option value="">(<?=t('None selected')?>)</option>
-                    <? foreach($templates as $tpl) { ?>
-                        <option value="<?=$tpl?>" <? if ($b->getBlockFilename() == $tpl) { ?> selected <? } ?>><?	
-                            if (strpos($tpl, '.') !== false) {
-                                print substr($txt->unhandle($tpl), 0, strrpos($tpl, '.'));
-                            } else {
-                                print $txt->unhandle($tpl);
-                            }
-                            ?></option>		
+                    <? foreach($templates as $tplHandle => $tplName) { ?>
+                        <option value="<?=$tplHandle?>" <? if ($b->getBlockFilename() == $tplHandle) { ?> selected <? } ?>><?	echo h($tplName); ?></option>		
                     <? } ?>
                 </select>
             </div>
