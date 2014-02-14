@@ -2,7 +2,7 @@
 
 /** Helper class to handle unhandled errors/exceptions */
 class Concrete5_Problems_Handler {
-	/** Do we have already handled the unhandler error/exception?
+	/** Do we have already handled the unhandled error/exception?
 	* @var bool
 	*/
 	private static $handled = false;
