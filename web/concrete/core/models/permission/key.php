@@ -29,6 +29,23 @@ abstract class Concrete5_Model_PermissionKey extends Object {
 	 */
 	public function getPermissionKeyName() { return t($this->pkName);}
 
+	/** Returns the display name for this permission key (localized and escaped accordingly to $format)
+	* @param string $format = 'html'
+	*	Escape the result in html format (if $format is 'html').
+	*	If $format is 'text' or any other value, the display name won't be escaped.
+	* @return string
+	*/
+	public function getPermissionKeyDisplayName($format = 'html') {
+		$value = tc('PermissionKeyName', $this->getPermissionKeyName());
+		switch($format) {
+			case 'html':
+				return h($value);
+			case 'text':
+			default:
+				return $value;
+		}
+	}
+
 	/** 
 	 * Returns the handle for this permission key
 	 */
@@ -37,8 +54,25 @@ abstract class Concrete5_Model_PermissionKey extends Object {
 	/** 
 	 * Returns the description for this permission key
 	 */
-	public function getPermissionKeyDescription() { return t($this->pkDescription);}
-	
+	public function getPermissionKeyDescription() { return $this->pkDescription;}
+
+	/** Returns the display description for this permission key (localized and escaped accordingly to $format)
+	* @param string $format = 'html'
+	*	Escape the result in html format (if $format is 'html').
+	*	If $format is 'text' or any other value, the display description won't be escaped.
+	* @return string
+	*/
+	public function getPermissionKeyDisplayDescription($format = 'html') {
+		$value = tc('PermissionKeyDescription', $this->getPermissionKeyDescription());
+		switch($format) {
+			case 'html':
+				return h($value);
+			case 'text':
+			default:
+				return $value;
+		}
+	}
+
 	/** 
 	 * Returns the ID for this permission key
 	 */
@@ -135,8 +169,8 @@ abstract class Concrete5_Model_PermissionKey extends Object {
 		$category = PermissionKeyCategory::getByID($this->pkCategoryID)->getPermissionKeyCategoryHandle();
 		$pkey = $axml->addChild('permissionkey');
 		$pkey->addAttribute('handle',$this->getPermissionKeyHandle());
-		$pkey->addAttribute('name', tc('PermissionKeyName', $this->getPermissionKeyName()));
-		$pkey->addAttribute('description', tc('PermissionKeyDescription', $this->getPermissionKeyDescription()));
+		$pkey->addAttribute('name', $this->getPermissionKeyName());
+		$pkey->addAttribute('description', $this->getPermissionKeyDescription());
 		$pkey->addAttribute('package', $this->getPackageHandle());
 		$pkey->addAttribute('category', $category);
 		$this->exportAccess($pkey);
@@ -216,7 +250,7 @@ abstract class Concrete5_Model_PermissionKey extends Object {
 	/** 
 	 * Adds an permission key. 
 	 */
-	public function add($pkCategoryHandle, $pkHandle, $pkName, $pkDescription, $pkCanTriggerWorkflow, $pkHasCustomClass, $pkg = false) {
+	public static function add($pkCategoryHandle, $pkHandle, $pkName, $pkDescription, $pkCanTriggerWorkflow, $pkHasCustomClass, $pkg = false) {
 		
 		$vn = Loader::helper('validation/numbers');
 		$txt = Loader::helper('text');
@@ -241,8 +275,6 @@ abstract class Concrete5_Model_PermissionKey extends Object {
 		$pkCategoryID = $db->GetOne("select pkCategoryID from PermissionKeyCategories where pkCategoryHandle = ?", $pkCategoryHandle);
 		$a = array($pkHandle, $pkName, $pkDescription, $pkCategoryID, $pkCanTriggerWorkflow, $pkHasCustomClass, $pkgID);
 		$r = $db->query("insert into PermissionKeys (pkHandle, pkName, pkDescription, pkCategoryID, pkCanTriggerWorkflow, pkHasCustomClass, pkgID) values (?, ?, ?, ?, ?, ?, ?)", $a);
-		
-		$category = PermissionKeyCategory::getByID($pkCategoryID);
 		
 		if ($r) {
 			$pkID = $db->Insert_ID();

@@ -121,6 +121,8 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			$db = Loader::db();
 			$dh = Loader::helper('date');
 			$uDateAdded = $dh->getSystemDateTime();
+			Loader::library('3rdparty/phpass/PasswordHash');
+			$hasher = new PasswordHash(PASSWORD_HASH_COST_LOG2, PASSWORD_HASH_PORTABLE);
 			
 			if ($data['uIsValidated'] == 1) {
 				$uIsValidated = 1;
@@ -138,13 +140,13 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			
 			$password_to_insert = $data['uPassword'];
 			if (!in_array(self::ADD_OPTIONS_NOHASH, $options)) {
-				$password_to_insert = User::encryptPassword($password_to_insert);			
+				$hash = $hasher->HashPassword($password_to_insert);
 			}	
 			
 			if (isset($data['uDefaultLanguage']) && $data['uDefaultLanguage'] != '') {
 				$uDefaultLanguage = $data['uDefaultLanguage'];
 			}
-			$v = array($data['uName'], $data['uEmail'], $password_to_insert, $uIsValidated, $uDateAdded, $uIsFullRecord, $uDefaultLanguage, 1);
+			$v = array($data['uName'], $data['uEmail'], $hash, $uIsValidated, $uDateAdded, $uIsFullRecord, $uDefaultLanguage, 1);
 			$r = $db->prepare("insert into Users (uName, uEmail, uPassword, uIsValidated, uDateAdded, uIsFullRecord, uDefaultLanguage, uIsActive) values (?, ?, ?, ?, ?, ?, ?, ?)");
 			$res = $db->execute($r, $v);
 			if ($res) {
@@ -352,8 +354,8 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			if (is_object($ak)) {
 				$av = $this->getAttributeValueObject($ak);
 				if (is_object($av)) {
-					$args = func_get_args();
-					if (count($args) > 1) {
+					if(func_num_args() > 2) {
+						$args = func_get_args();
 						array_shift($args);
 						return call_user_func_array(array($av, 'getValue'), $args);						
 					} else {
@@ -394,7 +396,9 @@ defined('C5_EXECUTE') or die("Access Denied.");
 				}
 				
 				if ((!is_object($av)) || ($cnt > 1)) {
-					$av = $ak->addAttributeValue();
+					$newAV = $ak->addAttributeValue();
+					$av = UserAttributeValue::getByID($newAV->getAttributeValueID());
+					$av->setUser($this);
 				}
 			}
 			
@@ -433,8 +437,8 @@ defined('C5_EXECUTE') or die("Access Denied.");
 				$testChange = false;
 				
 				if ($data['uPassword'] != null) {
-					if (User::encryptPassword($data['uPassword']) == User::encryptPassword($data['uPasswordConfirm'])) {
-						$v = array($uName, $uEmail, User::encryptPassword($data['uPassword']), $uHasAvatar, $uTimezone, $uDefaultLanguage, $this->uID);
+					if ($data['uPassword'] == $data['uPasswordConfirm']) {
+						$v = array($uName, $uEmail, $this->getUserObject()->getUserPasswordHasher()->HashPassword($data['uPassword']), $uHasAvatar, $uTimezone, $uDefaultLanguage, $this->uID);
 						$r = $db->prepare("update Users set uName = ?, uEmail = ?, uPassword = ?, uHasAvatar = ?, uTimezone = ?, uDefaultLanguage = ? where uID = ?");
 						$res = $db->execute($r, $v);
 						
@@ -477,7 +481,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			}
 
 			$dh = Loader::helper('date');
-				
+
 			$datetime = $dh->getSystemDateTime();
 			if (is_array($groupArray)) {
 				foreach ($groupArray as $gID) {
@@ -487,13 +491,29 @@ defined('C5_EXECUTE') or die("Access Denied.");
 						unset($existingGIDArray[$key]);
 					} else {
 						// this item is new, so we add it.
+						// Fire on_user_enter_group for each group entered
+						$group = Group::getByID($gID);
+						if ($group) {
+							Events::fire('on_user_enter_group', $this->getUserObject(), $group);
+						}
 						$q = "insert into UserGroups (uID, gID, ugEntered) values ({$this->uID}, $gID, '{$datetime}')";
 						$r = $db->query($q);
 					}
 				}
 			}
 
-				// now we go through the existing GID Array, and remove everything, since whatever is left is not wanted.
+
+			// now we go through the existing GID Array, and remove everything, since whatever is left is not wanted.
+
+			// Fire on_user_exit_group event for each group exited
+			foreach ($existingGIDArray as $gID) {
+				$group = Group::getByID($gID);
+				if ($group) {
+					Events::fire('on_user_exit_group', $this->getUserObject(), $group);
+				}
+			}
+
+			// Remove from db
 			if (count($existingGIDArray) > 0) {
 				$inStr = implode(',', $existingGIDArray);
 				$q2 = "delete from UserGroups where uID = '{$this->uID}' and gID in ({$inStr})";
@@ -542,7 +562,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		function changePassword($newPassword) { 
 			$db = Loader::db();
 			if ($this->uID) {
-				$v = array(User::encryptPassword($newPassword), $this->uID);
+				$v = array($this->getUserObject()->getUserPasswordHasher()->HashPassword($newPassword), $this->uID);
 				$q = "update Users set uPassword = ? where uID = ?";
 				$r = $db->prepare($q);
 				$res = $db->execute($r, $v);
@@ -573,16 +593,12 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			$db = Loader::db();
 			if ($this->uID > 0) {
 				$newPassword = '';
-				$salt = "abcdefghijklmnpqrstuvwxyzABCDEFGHIJKLMNPQRSTUVWXYZ123456789";
+				$chars = "abcdefghijklmnpqrstuvwxyzABCDEFGHIJKLMNPQRSTUVWXYZ123456789";
 				for ($i = 0; $i < 7; $i++) {
-					$newPassword .= substr($salt, rand() %strlen($salt), 1);
+					$newPassword .= substr($chars, rand() %strlen($chars), 1);
 				}
-				$v = array(User::encryptPassword($newPassword), $this->uID);
-				$q = "update Users set uPassword = ? where uID = ?";
-				$r = $db->query($q, $v);
-				if ($r) {
-					return $newPassword;
-				}
+				$this->changePassword($newPassword);
+				return $newPassword;
 			}
 		}
 		
@@ -766,4 +782,5 @@ defined('C5_EXECUTE') or die("Access Denied.");
 				return $this->upEndDate;
 			}
 		}
+
 	}

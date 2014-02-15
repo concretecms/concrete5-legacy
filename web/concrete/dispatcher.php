@@ -80,6 +80,9 @@
 	## Startup check ##
 	require($cdir . '/startup/encoding_check.php');
 
+	## Security helpers
+	require($cdir . '/startup/security.php');
+
 	# Startup check, install ##
 	require($cdir . '/startup/config_check_complete.php');
 
@@ -89,9 +92,6 @@
 	## Localization ##
 	## This MUST be run before packages start - since they check ACTIVE_LOCALE which is defined here ##
 	require($cdir . '/config/localization.php');
-
-	## Security helpers
-	require($cdir . '/startup/security.php');
 
 	## File types ##
 	## Note: these have to come after config/localization.php ##
@@ -217,7 +217,7 @@
 
 		$vp = new Permissions($c->getVersionObject());
 
-		if ($_REQUEST['ccm-disable-controls'] == true || intval($cvID) > 0) {
+		if (isset($_REQUEST['ccm-disable-controls']) && ($_REQUEST['ccm-disable-controls'] == true || $cvID > 0)) {
 			$v = View::getInstance();
 			$v->disableEditing();
 			$v->disableLinks();

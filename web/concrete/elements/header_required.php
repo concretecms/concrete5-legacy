@@ -21,13 +21,13 @@ if (is_object($c)) {
 		$pageTitle = $c->getCollectionAttributeValue('meta_title');
 		if (!$pageTitle) {
 			$pageTitle = $c->getCollectionName();
-			if($c->isAdminArea()) {
+			if($c->isSystemPage()) {
 				$pageTitle = t($pageTitle);
 			}
 			$pageTitle = sprintf(PAGE_TITLE_FORMAT, SITE, $pageTitle);
 		}
 	}
-	$pageDescription = (!$pageDescription) ? $c->getCollectionDescription() : $pageDescription;
+	$pageDescription = (!isset($pageDescription) || !$pageDescription) ? $c->getCollectionDescription() : $pageDescription;
 	$cID = $c->getCollectionID(); 
 	$isEditMode = ($c->isEditMode()) ? "true" : "false";
 	$isArrangeMode = ($c->isArrangeMode()) ? "true" : "false";

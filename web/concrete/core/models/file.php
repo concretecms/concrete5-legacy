@@ -11,9 +11,8 @@ class Concrete5_Model_File extends Object {
 	 * @param int $fID
 	 * @return File
 	 */
-	public function getByID($fID) {
+	public static function getByID($fID) {
 		
-		Loader::model('file_set');
 		$db = Loader::db();
 		$f = new File();
 		$row = $db->GetRow("SELECT Files.*, FileVersions.fvID

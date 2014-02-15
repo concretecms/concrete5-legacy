@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.org/concrete5/concrete5.png?branch=master)](https://travis-ci.org/concrete5/concrete5)
+
+
         c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c
        c5c5c5c5c5c5c5c5c-c5c5c5c5c5c5c5c
      | c5c5c5c5c5--c5c5   5c5c5c5c5c5c5c
@@ -36,6 +39,10 @@ For the latest fully supported release, check out http://www.concrete5.org/downl
 
 http://concrete5.org/documentation/
 
+# Code Submissions
+
+http://www.concrete5.org/developers/submitting_code_to_concrete/
+
 ### Short Tags
 The concrete5 git repository currently uses php "short tags". Pull requests should maintain this convention. Final release versions have short tags converted to long tags. _Note:_ This issue has thoroughly discussed. Currently the shed is red but may be painted green in the future.
 
@@ -45,16 +52,5 @@ If short tags are not enabled in your development environment you can enable the
 
 ### Building Assets
 You *do not* need to build assets in order to run the github master
-This is only needed if you are hacking core javascript and css
-
-Current build scripts require
-* UglifyJS
-  * https://github.com/mishoo/UglifyJS
-  * `sudo npm install -g uglify-js`
-* less v1.3
-  * http://lesscss.org
-  * `sudo npm install -g less@1.3`
-
-From the `build` directory(must be in that directory) run
-  * `sh js.sh`
-  * `sh css.sh`
+This is only needed if you are hacking core javascript and css.
+For further details see the `build` folder.

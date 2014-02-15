@@ -63,7 +63,6 @@ if (!defined('DATE_APP_GENERIC_MDYT')) {
 
 if (ACTIVE_LOCALE != 'en_US' && (!defined('DATE_APP_GENERIC_MDY'))) {
 	define('DATE_APP_GENERIC_MDY', 'Y-m-d');
-	define('DATE_APP_DATE_PICKER', t('yy-mm-dd'));
 }
 
 if (!defined('DATE_APP_GENERIC_MDY')) {
@@ -118,7 +117,7 @@ if (!defined('DATE_APP_DATE_ATTRIBUTE_TYPE_T')) {
 	define('DATE_APP_DATE_ATTRIBUTE_TYPE_T', DATE_APP_GENERIC_TS);
 }
 if (!defined('DATE_APP_DATE_PICKER')) {
-	define('DATE_APP_DATE_PICKER', 'm/d/yy');
+	define('DATE_APP_DATE_PICKER', t(/*i18n http://api.jqueryui.com/datepicker/#utility-formatDate */'m/d/yy'));
 }
 
 
@@ -129,7 +128,11 @@ if (!defined('DATE_APP_SURVEY_RESULTS')) {
 if (!defined('DATE_FORM_HELPER_FORMAT_HOUR')) {
 	define('DATE_FORM_HELPER_FORMAT_HOUR', tc(/*i18n: can be 12 or 24 */'Time format', '12'));
 }
+/** @deprecated */
 define('BLOCK_NOT_AVAILABLE_TEXT', t('This block is no longer available.'));
-define('GUEST_GROUP_NAME', t('Guest'));
-define('REGISTERED_GROUP_NAME', t('Registered Users'));
-define('ADMIN_GROUP_NAME', t('Admin'));
+/** @deprecated */
+define('GUEST_GROUP_NAME', tc('GroupName', 'Guest'));
+/** @deprecated */
+define('REGISTERED_GROUP_NAME', tc('GroupName', 'Registered Users'));
+/** @deprecated */
+define('ADMIN_GROUP_NAME', tc('GroupName', 'Administrators'));

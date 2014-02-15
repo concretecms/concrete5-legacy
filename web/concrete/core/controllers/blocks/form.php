@@ -183,8 +183,9 @@ class Concrete5_Controller_Block_Form extends BlockController {
 		$pendingDeleteQIDs=array();
 		foreach($pendingDeleteQIDsDirty as $msqID)
 			$pendingDeleteQIDs[]=intval($msqID);		
-		$vals=array( $this->bID, intval($data['qsID']), join(',',$pendingDeleteQIDs) );  
-		$unchangedQuestions=$db->query('DELETE FROM btFormQuestions WHERE bID=? AND questionSetId=? AND msqID IN (?)',$vals);			
+		$vals = array($this->bID, intval($data['qsID']));
+		$pendingDeleteQIDs = implode(',', $pendingDeleteQIDs);
+		$unchangedQuestions = $db->query('DELETE FROM btFormQuestions WHERE bID=? AND questionSetId=? AND msqID IN ('.$pendingDeleteQIDs.')', $vals);
 	} 
 	
 	//Duplicate will run when copying a page with a block, or editing a block for the first time within a page version (before the save).
@@ -367,6 +368,7 @@ class Concrete5_Controller_Block_Form extends BlockController {
 			//loop through each question and get the answers 
 			foreach( $rows as $row ){	
 				//save each answer
+				$answerDisplay = '';
 				if($row['inputType']=='checkboxlist'){
 					$answer = Array();
 					$answerLong="";
@@ -382,6 +384,12 @@ class Concrete5_Controller_Block_Form extends BlockController {
 				}elseif($row['inputType']=='fileupload'){
 					$answerLong="";
 					$answer=intval( $tmpFileIds[intval($row['msqID'])] );
+					if($answer > 0) {
+						$answerDisplay = File::getByID($answer)->getVersion()->getDownloadURL();
+					}
+					else {
+						$answerDisplay = t('No file specified');
+					}
 				}elseif($row['inputType']=='url'){
 					$answerLong="";
 					$answer=$txt->sanitize($_POST['Question'.$row['msqID']]);
@@ -410,6 +418,7 @@ class Concrete5_Controller_Block_Form extends BlockController {
 									
 				$questionAnswerPairs[$row['msqID']]['question']=$row['question'];
 				$questionAnswerPairs[$row['msqID']]['answer']=$txt->sanitize( $answer.$answerLong );
+				$questionAnswerPairs[$row['msqID']]['answerDisplay'] = strlen($answerDisplay) ? $answerDisplay : $questionAnswerPairs[$row['msqID']]['answer'];
 				
 				$v=array($row['msqID'],$answerSetID,$answer,$answerLong);
 				$q="insert into {$this->btAnswersTablename} (msqID,asID,answer,answerLong) values (?,?,?,?)";
@@ -432,9 +441,7 @@ class Concrete5_Controller_Block_Form extends BlockController {
 			}
 			
 			if(intval($this->notifyMeOnSubmission)>0 && !$foundSpam){	
-				if ($this->sendEmailFrom !== false) {
-					$formFormEmailAddress = $this->sendEmailFrom;
-				} else if( strlen(FORM_BLOCK_SENDER_EMAIL)>1 && strstr(FORM_BLOCK_SENDER_EMAIL,'@') ){
+				if( strlen(FORM_BLOCK_SENDER_EMAIL)>1 && strstr(FORM_BLOCK_SENDER_EMAIL,'@') ){
 					$formFormEmailAddress = FORM_BLOCK_SENDER_EMAIL;  
 				}else{ 
 					$adminUserInfo=UserInfo::getByID(USER_SUPER_ID);

@@ -218,8 +218,8 @@ define('DIRNAME_SYSTEM_ANTISPAM', 'antispam');
 define('DIRNAME_SYSTEM', 'system');
 
 # Blocks
-define('DIR_FILES_BLOCK_TYPES', DIR_BASE . '/blocks');
-define('DIR_FILES_BLOCK_TYPES_CORE', DIR_BASE_CORE . '/blocks');
+define('DIR_FILES_BLOCK_TYPES', DIR_BASE . '/' . DIRNAME_BLOCKS);
+define('DIR_FILES_BLOCK_TYPES_CORE', DIR_BASE_CORE . '/' . DIRNAME_BLOCKS);
 define('FILENAME_BLOCK_VIEW', 'view.php');
 define('FILENAME_BLOCK_COMPOSER', 'composer.php');
 define('FILENAME_BLOCK_VIEW_SCRAPBOOK', 'scrapbook.php');
@@ -425,13 +425,14 @@ define('IMAGE_MAX_HEIGHT','1200');
 define('USER_USERNAME_MINIMUM', 3);
 define('USER_PASSWORD_MINIMUM', 5);
 define('USER_USERNAME_MAXIMUM', 64);
-define('USER_PASSWORD_MAXIMUM', 64);
+define('USER_PASSWORD_MAXIMUM', 128);
 define('USER_SUPER', 'admin');
 define('USER_SUPER_ID', 1);
 define('GUEST_GROUP_ID', '1');
 define('REGISTERED_GROUP_ID', '2');
 define('ADMIN_GROUP_ID', '3');
 define('SESSION_MAX_LIFETIME', 7200); // 2 hours
+define('USER_FOREVER_COOKIE_LIFETIME', 1209600); // 14 days
 define('USER_CHANGE_PASSWORD_URL_LIFETIME',  7200);
 define('NEWSFLOW_VIEWED_THRESHOLD', 86400); // once a day
 
@@ -597,4 +598,16 @@ if(!defined('SITEMAPXML_BASE_URL')) {
 
 if(!defined('APP_VERSION_DISPLAY_IN_HEADER')) {
 	define('APP_VERSION_DISPLAY_IN_HEADER', true);
+}
+
+// If set to false, passwords may become invalid when downgrading the server to PHP older than 5.3
+// If set to true then a less secure password hashing algorithm based on MD5 will be used instead 
+// of bcrypt or DES.
+if(!defined('PASSWORD_HASH_PORTABLE')) {
+	define('PASSWORD_HASH_PORTABLE', false);
+}
+
+// The higher this is the longer it will take to create password hashes, to check them, and to crack them.
+if(!defined('PASSWORD_HASH_COST_LOG2')) {
+	define('PASSWORD_HASH_COST_LOG2', 12);
 }

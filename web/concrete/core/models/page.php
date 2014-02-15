@@ -178,17 +178,40 @@ class Concrete5_Model_Page extends Collection {
 	 * Format is like: $area[10][0] = 2, $area[10][1] = 8, $area[15][0] = 27, with the area ID being the 
 	 * key and the block IDs being 1-n values inside it
 	 * @param array $areas
+	 * @param array $affectedAreaIDs
+	 *		IDs of the areas affected by the process arrangement (source and destination when moving blocks between areas, only source if moving in the same area).
+	 *		If specified, we'll sort out only the blocks in the specified areas.
+	 *		If not specified, $areas must contain all the blocks from all the areas of the current collection.
 	 */
-	public function processArrangement($areas) {
+	public function processArrangement($areas, $affectedAreaIDs = array()) {
 
 		// this function is called via ajax, so it's a bit wonky, but the format is generally
 		// a{areaID} = array(b1, b2, b3) (where b1, etc... are blocks with ids appended.)
 		$db = Loader::db();		
-		$db->Execute('delete from CollectionVersionBlockStyles where cID = ? and cvID = ?', array($this->getCollectionID(), $this->getVersionID()));		
+		$s = 'delete from CollectionVersionBlockStyles where cID = ? and cvID = ?';
+		$q = array($this->getCollectionID(), $this->getVersionID());
+		$onlySpecificAreas = false;
+		if(!empty($affectedAreaIDs)) {
+			foreach($affectedAreaIDs as $arID) {
+				if(!$onlySpecificAreas) {
+					$onlySpecificAreas = true;
+					$s .= ' and (';
+				}
+				else {
+					$s .= ' or ';
+				}
+				$s .= 'arHandle = ?';
+				$q[] = Area::getAreaHandleFromID($arID);
+			}
+		}
+		if($onlySpecificAreas) {
+			$s .= ')';
+		}
+		$db->Execute($s, $q);
 		foreach($areas as $arID => $blocks) {
 			if (intval($arID) > 0) {
 				// this is a serialized area;
-				$arHandle = $db->getOne("select arHandle from Areas where arID = ?", array($arID));
+				$arHandle =  Area::getAreaHandleFromID($arID);
 				$startDO = 0;
 				
 				foreach($blocks as $bIdentifier) {
@@ -735,7 +758,7 @@ class Concrete5_Model_Page extends Collection {
 	 */	
 	public static function getCollectionPathFromID($cID) {
 		$db = Loader::db();
-		$path = $db->GetOne("select cPath from PagePaths inner join CollectionVersions on (PagePaths.cID = CollectionVersions.cID and CollectionVersions.cvIsApproved = 1) where PagePaths.cID = ?", array($cID));
+		$path = $db->GetOne("select cPath from PagePaths inner join CollectionVersions on (PagePaths.cID = CollectionVersions.cID and CollectionVersions.cvIsApproved = 1) where PagePaths.cID = ? order by PagePaths.ppIsCanonical desc", array($cID));
 		return $path;
 	}
 
@@ -794,21 +817,22 @@ class Concrete5_Model_Page extends Collection {
 	
 	/**
 	 * Check if a block is an alias from a page default
-	 * @param array $b
+	 * @param Block $b
 	 * @return bool
 	 */	
-	function isBlockAliasedFromMasterCollection(&$b) {
+	function isBlockAliasedFromMasterCollection($b) {
+		if(!$b->isAlias()) {
+			return false;
+		}
 		//Retrieve info for all of this page's blocks at once (and "cache" it)
 		// so we don't have to query the database separately for every block on the page.
 		if (is_null($this->blocksAliasedFromMasterCollection)) {
 			$db = Loader::db();
 			$q = 'SELECT bID FROM CollectionVersionBlocks WHERE cID = ? AND isOriginal = 0 AND cvID = ? AND bID IN (SELECT bID FROM CollectionVersionBlocks AS cvb2 WHERE cvb2.cid = ?)';
 			$v = array($this->getCollectionID(), $this->getVersionObject()->getVersionID(), $this->getMasterCollectionID());
-			$r = $db->execute($q, $v);
 			$this->blocksAliasedFromMasterCollection = $db->GetCol($q, $v);
 		}
-		
-		return ($b->isAlias() && in_array($b->getBlockID(), $this->blocksAliasedFromMasterCollection));
+		return in_array($b->getBlockID(), $this->blocksAliasedFromMasterCollection);
 	}
 
 	/**
@@ -894,20 +918,21 @@ class Concrete5_Model_Page extends Collection {
 	/**
 	 * Gets the date a the current version was made public, 
 	 * if user is specified, returns in the current user's timezone
-	 * @param string $dateFormat
+	 * @param string $mask
 	 * @param string $type (system || user)
-	 * @return string date formated like: 2009-01-01 00:00:00 
+	 * @return string 
 	*/
-	function getCollectionDatePublic($dateFormat = null, $type='system') {
-		if(!$dateFormat) {
-			$dateFormat = 'Y-m-d H:i:s';
-		}
+	function getCollectionDatePublic($mask = null, $type='system') {
 		$dh = Loader::helper('date');
 		if(ENABLE_USER_TIMEZONES && $type == 'user') {
-			$dh = Loader::helper('date');
-			return $dh->getLocalDateTime($this->vObj->cvDatePublic, $dateFormat);
+			$cDatePublic = $dh->getLocalDateTime($this->vObj->cvDatePublic);
 		} else {
-			return $dh->date($dateFormat, strtotime($this->vObj->cvDatePublic));
+			$cDatePublic = $this->vObj->cvDatePublic;
+		}
+		if ($mask == null) {
+			return $cDatePublic;
+		} else {
+			return $dh->date($mask, strtotime($cDatePublic));
 		}
 	}
 

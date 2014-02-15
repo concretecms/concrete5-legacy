@@ -1,7 +1,7 @@
 <?
 	defined('C5_EXECUTE') or die("Access Denied.");
 	# Filename: _process.php
-	# Author: Andrew Embler (andrew@bluepavo.com)
+	# Author: Andrew Embler (andrew@concrete5.org)
 	# -------------------
 	# _process.php is included at the top of the dispatcher and basically
 	# checks to see if a any submits are taking place. If they are, then
@@ -9,7 +9,7 @@
 	
 	
 	// Modification for step editing
-	$step = ($_REQUEST['step']) ? '&step=' . $_REQUEST['step'] : '';
+	$step = (isset($_REQUEST['step']) && $_REQUEST['step']) ? '&step=' . $_REQUEST['step'] : '';
 	
 	// if we don't have a valid token we die
 	$valt = Loader::helper('validation/token');
@@ -23,7 +23,7 @@
 
 	$securityHelper = Loader::helper('security');
 
-	if ($_REQUEST['btask'] && $valt->validate()) {
+	if (isset($_REQUEST['btask']) && $_REQUEST['btask'] && $valt->validate()) {
 	
 		// these are tasks dealing with blocks (moving up, down, removing)
 		
@@ -32,9 +32,16 @@
 				if ($cp->canEditPageContents()) {
 					$nvc = $c->getVersionToModify();
 					$doProcessArrangement = true;
+					$sourceAreaID = intval($_POST['sourceBlockAreaID']);
+					$destinationAreaID = intval($_POST['destinationBlockAreaID']);
+					$affectedAreaIDs = array();
+					$affectedAreaIDs[] = $sourceAreaID;
+					if ($sourceAreaID != $destinationAreaID) {
+						$affectedAreaIDs[] = $destinationAreaID;
+					}
 					if (PERMISSIONS_MODEL == 'advanced') {
 						// first, we check to see if we have permissions to edit the area contents for the source area.
-						$arHandle = Area::getAreaHandleFromID($_POST['sourceBlockAreaID']);
+						$arHandle = Area::getAreaHandleFromID($sourceAreaID);
 						$ar = Area::getOrCreate($nvc, $arHandle);
 						$ap = new Permissions($ar);
 						if (!$ap->canEditAreaContents()) {
@@ -45,8 +52,8 @@
 						} else {
 							// now we get further in. We check to see if we're dealing with both a source AND a destination area.
 							// if so, we check the area permissions for the destination area.
-							if ($_POST['sourceBlockAreaID'] != $_POST['destinationBlockAreaID']) {
-								$destAreaHandle = Area::getAreaHandleFromID($_POST['destinationBlockAreaID']);
+							if ($sourceAreaID != $destinationAreaID) {
+								$destAreaHandle = Area::getAreaHandleFromID($destinationAreaID);
 								$destArea = Area::getOrCreate($nvc, $destAreaHandle);
 								$destAP = new Permissions($destArea);
 								if (!$destAP->canEditAreaContents()) {
@@ -74,7 +81,7 @@
 					}
 
 					if ($doProcessArrangement) {
-						$nvc->processArrangement($_POST['area']);
+						$nvc->processArrangement($_POST['area'], $affectedAreaIDs);
 					}
 
 					if (!is_object($r)) {
@@ -357,7 +364,7 @@
 		}
 	}
 	
-	if ($_GET['atask'] && $valt->validate()) {
+	if (isset($_GET['atask']) && $_GET['atask'] && $valt->validate()) {
 		switch($_GET['atask']) { 		
 			case 'add_stack':
 				$a = Area::get($c, $_GET['arHandle']);
@@ -533,7 +540,7 @@
 		}
 	}
 	
-	if ($_REQUEST['ctask'] && $valt->validate()) {
+	if (isset($_REQUEST['ctask']) && $_REQUEST['ctask'] && $valt->validate()) {
 		
 		switch ($_REQUEST['ctask']) {
 			case 'delete':
@@ -657,7 +664,7 @@
 		}
 	}			
 	
-	if ($_REQUEST['ptask'] && $valt->validate()) {
+	if (isset($_REQUEST['ptask']) && $_REQUEST['ptask'] && $valt->validate()) {
 		Loader::model('pile');
 
 		// piles !
@@ -696,7 +703,7 @@
 		}
 	}
 	
-	if ($_REQUEST['processBlock'] && $valt->validate()) {
+	if (isset($_REQUEST['processBlock']) && $_REQUEST['processBlock'] && $valt->validate()) {
 		
 		// some admin (or unscrupulous person) is doing something to a block of content on the site
 		$edit = ($_REQUEST['enterViewMode']) ? "" : "&mode=edit";
@@ -922,7 +929,7 @@
 		}	
 	}
 
-	if ($_POST['processCollection'] && $valt->validate()) { 
+	if (isset($_POST['processCollection']) && $_POST['processCollection'] && $valt->validate()) {
 
 		if ($_POST['update_theme']) { 
 		

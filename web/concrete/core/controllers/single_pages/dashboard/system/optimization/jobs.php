@@ -22,7 +22,7 @@ class Concrete5_Controller_Dashboard_System_Optimization_Jobs extends DashboardB
 		if ($handle) {
 			Loader::model("job");
 			Job::installByHandle($handle);
-			$this->redirect('/dashboard/system/optimization/jobs', 'job_uninstalled');
+			$this->redirect('/dashboard/system/optimization/jobs', 'job_installed');
 		} else {
 			$this->error->add(t('No job specified.'));
 		}
@@ -50,12 +50,12 @@ class Concrete5_Controller_Dashboard_System_Optimization_Jobs extends DashboardB
 	}
 
 	public function job_uninstalled() {
-		$this->set('message', t('Job succesfully uninstalled.'));
+		$this->set('message', t('Job successfully uninstalled.'));
 		$this->view();
 	}
 
 	public function job_installed() {
-		$this->set('message', t('Job succesfully installed.'));
+		$this->set('message', t('Job successfully installed.'));
 		$this->view();
 	}
 	
@@ -193,7 +193,7 @@ class Concrete5_Controller_Dashboard_System_Optimization_Jobs extends DashboardB
 	public function update_job_schedule() {
 		$jID = $this->post('jID');
 		$J = Job::getByID($jID);
-		$J->setSchedule($this->post('isScheduled'), $this->post('unit'), $this->post('value'));
+		$J->setSchedule($this->post('isScheduled'), $this->post('unit'), max(0,(int)$this->post('value')));
 		
 		$this->redirect('/dashboard/system/optimization/jobs', 'job_scheduled');
 	}

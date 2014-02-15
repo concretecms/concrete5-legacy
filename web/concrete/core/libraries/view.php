@@ -291,21 +291,12 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		 * @access private
 		 */
 		public function outputHeaderItems() {
-			
 			$items = $this->getHeaderItems();
-			
-			// Loop through all items
-			// If it is a header output object, place each item in a separate array for its container directory
-			// Otherwise, put it in the outputPost array
-			
-			$outputPost = array();
-			$output = array();
 			
 			foreach($items as $hi) {
 				print $hi; // caled on two seperate lines because of pre php 5.2 __toString issues
 				print "\n";
 			}			
-			
 		}
 		
 		/** 
@@ -555,9 +546,9 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		 * @param string $task
 		 * @return string $url
 		*/	
-		public function url($action, $task = null) {
+		public static function url($action, $task = null) {
 			$dispatcher = '';
-			if ((!URL_REWRITING_ALL) || !defined('URL_REWRITING_ALL')) {
+			if ((!defined('URL_REWRITING_ALL')) || (!URL_REWRITING_ALL)) {
 				$dispatcher = '/' . DISPATCHER_FILENAME;
 			}
 			
@@ -950,9 +941,11 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			if (ob_get_level() > OB_INITIAL_LEVEL) {
 				ob_end_clean();
 			}
-			
-			Events::fire('on_before_render', $this);
-			
+
+			if (defined('DB_DATABASE') && ($view !== '/upgrade')) {
+				Events::fire('on_before_render', $this);
+			}
+						
 			if (defined('APP_CHARSET')) {
 				header("Content-Type: text/html; charset=" . APP_CHARSET);
 			}
@@ -988,7 +981,9 @@ defined('C5_EXECUTE') or die("Access Denied.");
 				throw new Exception(t('File %s not found. All themes need default.php and view.php files in them. Consult concrete5 documentation on how to create these files.', $this->theme));
 			}
 			
-			Events::fire('on_render_complete', $this);
+			if (defined('DB_DATABASE') && ($view !== '/upgrade')) {
+				Events::fire('on_render_complete', $this);
+			}
 			
 			if (ob_get_level() == OB_INITIAL_LEVEL) {
 				require(DIR_BASE_CORE . '/startup/jobs.php');

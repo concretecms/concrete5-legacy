@@ -125,16 +125,17 @@ class Concrete5_Model_StartingPointPackage extends Package {
 	public function add_users() {
 		// insert the default groups
 		// create the groups our site users
-		// have to add these in the right order so their IDs get set
-		// starting at 1 w/autoincrement
-		$g1 = Group::add(t("Guest"), t("The guest group represents unregistered visitors to your site."));
-		$g2 = Group::add(t("Registered Users"), t("The registered users group represents all user accounts."));
-		$g3 = Group::add(t("Administrators"), "");
+		// specify the ID's since auto increment may not always be +1
+		$g1 = Group::add(tc("GroupName", "Guest"), tc("GroupDescription", "The guest group represents unregistered visitors to your site."), GUEST_GROUP_ID);
+		$g2 = Group::add(tc("GroupName", "Registered Users"), tc("GroupDescription", "The registered users group represents all user accounts."), REGISTERED_GROUP_ID);
+		$g3 = Group::add(tc("GroupName", "Administrators"), "", ADMIN_GROUP_ID);
 		
 		// insert admin user into the user table
 		if (defined('INSTALL_USER_PASSWORD')) {
+			Loader::library('3rdparty/phpass/PasswordHash');
+			$hasher = new PasswordHash(PASSWORD_HASH_COST_LOG2, PASSWORD_HASH_PORTABLE);
 			$uPassword = INSTALL_USER_PASSWORD;
-			$uPasswordEncrypted = User::encryptPassword($uPassword, PASSWORD_SALT);
+			$uPasswordEncrypted = $hasher->HashPassword($uPassword);
 		} else {
 			$uPasswordEncrypted = INSTALL_USER_PASSWORD_HASH;
 		}
@@ -213,6 +214,10 @@ class Concrete5_Model_StartingPointPackage extends Package {
 		$home = Page::getByID(1, "RECENT");
 		$home->assignPermissions($g1, array('view_page'));
 		$home->assignPermissions($g3, array('view_page_versions', 'view_page_in_sitemap', 'preview_page_as_user', 'edit_page_properties', 'edit_page_contents', 'edit_page_speed_settings', 'edit_page_theme', 'edit_page_type', 'edit_page_permissions', 'delete_page', 'delete_page_versions', 'approve_page_versions', 'add_subpage', 'move_or_copy_page', 'schedule_page_contents_guest_access'));
+
+		Config::save('SECURITY_TOKEN_JOBS', Loader::helper('validation/identifier')->getString(64));
+		Config::save('SECURITY_TOKEN_ENCRYPTION', Loader::helper('validation/identifier')->getString(64));
+		Config::save('SECURITY_TOKEN_VALIDATION', Loader::helper('validation/identifier')->getString(64));
 	}
 	
 	public static function hasCustomList() {

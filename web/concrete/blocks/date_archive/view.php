@@ -1,5 +1,5 @@
 <?php defined('C5_EXECUTE') or die("Access Denied.");
-$dh = Loader::helper("Date");
+$dh = Loader::helper("date");
 ?>
 <div class="grid_4 alpha omega" id="main-content-sidebar-archives">
 	<h3><?php echo $title ?></h3>
@@ -8,7 +8,7 @@ $dh = Loader::helper("Date");
 		$startDt = new DateTime();
 		$firstPost = new DateTime($firstPost->format('m/01/Y'));
 		$first = date_diff($startDt,$firstPost);
-		$first = $first->m;
+		$first = $first->m + $first->y * 12;
 		
 		if($first > $numMonths) {
 			$first = $numMonths;
