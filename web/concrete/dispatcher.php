@@ -247,6 +247,20 @@
 		if (file_exists(DIR_BASE . '/config/site_process.php')) {
 			require(DIR_BASE . '/config/site_process.php');
 		}
+		
+		## Make sure we can switch the current language before process.php
+		## is executed. By default, the on_start event is fired too late for
+		## block actions which are processed in process.php
+		$pkgMultilingual = Package::getByHandle('multilingual');
+		if (is_object($pkgMultilingual)) {
+			Loader::helper('default_language', 'multilingual');
+			
+			// checks to see if the user should be redirected to the default language home page instead of the / home page.
+			DefaultLanguageHelper::setupSiteInterfaceLocalization();
+			
+			// adds the site translation files to the translation library so strings wrapped in t('') will be translated
+			DefaultLanguageHelper::setupSiteInterfaceLocalization();
+		}
 
 		## Make sure that any submitted forms, etc... are handled correctly
 		## This is legacy cms specific stuff, like adding pages
