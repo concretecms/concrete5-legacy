@@ -459,7 +459,7 @@ $(function() {
 	
 	<label for="locale"><?=t('Language')?></label>
 	<div class="input">
-		<?=$form->select('locale', $locales, 'en_US', array('size' => 15, 'onchange' => htmlspecialchars('
+		<?=$form->select('locale', $locales, 'en_US', array('autofocus' => 'autofocus', 'size' => 15, 'onchange' => htmlspecialchars('
 			var $f = $(\'<form method="post"><input type="hidden" name="keep_language_selection" value="1" /></form>\');
  			$f.append($(\'<input type="hidden" name="locale" />\').val($("#locale").val()));
  			$(document.body).append($f);
