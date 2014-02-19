@@ -753,6 +753,89 @@
 				header('Location: ' . URL_SITEMAP);
 				exit;
 			}
+		} else if ($_POST['update_metadata']) {
+			// updating a collection
+			if ($cp->canEditPageProperties()) {
+				$nvc = $c->getVersionToModify();
+				
+				$data = array();
+				$pk = PermissionKey::getByHandle('edit_page_properties');
+				$pk->setPermissionObject($c);
+				$asl = $pk->getMyAssignment();
+				if ($asl->allowEditName()) { 
+					$data['cName'] = $_POST['cName'];
+				}
+				if ($asl->allowEditDescription()) { 
+					$data['cDescription'] = $_POST['cDescription'];
+				}
+				if ($asl->allowEditPaths()) { 
+					$data['cHandle'] = $_POST['cHandle'];
+					$data['ppURL'] = array();
+					foreach ($_POST as $key=>$value) {
+						if (strpos($key, 'ppURL-') === 0) {
+							$subkey = substr($key, 6);
+							$data['ppURL'][$subkey] = $value;
+						}
+					}
+				}
+				if ($asl->allowEditDateTime()) { 
+					$dt = Loader::helper('form/date_time');
+					$dh = Loader::helper('date');
+					$data['cDatePublic'] = $dh->getSystemDateTime($dt->translate('cDatePublic'));
+				}
+				if ($asl->allowEditUserID()) { 
+					$data['uID'] = $_POST['uID'];
+				}
+				
+				$nvc->update($data);
+				
+				// First, we check out the attributes we need to clear.
+				$setAttribs = $nvc->getSetCollectionAttributes();
+				$processedAttributes = array();
+				$selectedAKIDs = $_POST['selectedAKIDs'];
+				if (!is_array($selectedAKIDs)) {
+					$selectedAKIDs = array();					
+				}
+				foreach($setAttribs as $ak) {
+					// do I have the ability to edit this attribute?
+					if (in_array($ak->getAttributeKeyID(), $asl->getAttributesAllowedArray())) {
+						// Is this item in the selectedAKIDs array? If so then it is being saved
+						if (in_array($ak->getAttributeKeyID(), $_POST['selectedAKIDs'])) {
+							$ak->saveAttributeForm($nvc);
+						} else {
+							// it is being removed
+							$nvc->clearAttribute($ak);
+						}
+						$processedAttributes[] = $ak->getAttributeKeyID();
+					}					
+				}
+				$newAttributes = array_diff($selectedAKIDs, $processedAttributes);
+				foreach($newAttributes as $akID) {
+					if ($akID > 0 && in_array($akID, $asl->getAttributesAllowedArray())) {
+						$ak = CollectionAttributeKey::getByID($akID);
+						$ak->saveAttributeForm($nvc);
+					}
+				}
+
+				
+				$obj = new stdClass;
+
+				if (($_POST['rel'] == 'SITEMAP' || $_POST['approveImmediately']) && ($cp->canApprovePageVersions())) {
+					$pkr = new ApprovePagePageWorkflowRequest();
+					$u = new User();
+					$pkr->setRequestedPage($c);
+					$v = CollectionVersion::get($c, "RECENT");
+					$pkr->setRequestedVersionID($v->getVersionID());
+					$pkr->setRequesterUserID($u->getUserID());
+					$u->unloadCollectionEdit($c);
+					$response = $pkr->trigger();
+					$obj->rel = $_POST['rel'];
+					$obj->name = $v->getVersionName();
+				}
+				$obj->cID = $c->getCollectionID();
+				print Loader::helper('json')->encode($obj);
+				exit;
+			}	
 		}
 	}
 
