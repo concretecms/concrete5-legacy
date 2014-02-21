@@ -62,7 +62,7 @@ class Concrete5_Library_Request {
 				break;
 			
 			case 'REQUEST_URI':
-				$path = str_replace($_SERVER['QUERY_STRING'], '', $path);
+				$path = rawurldecode(str_replace($_SERVER['QUERY_STRING'], '', $path));
 				$path = trim($path, '?');
 			default:
 				// if the path starts off with dir_rel, we remove it:
