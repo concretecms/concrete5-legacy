@@ -2,19 +2,34 @@
 
 /** Helper class to handle unhandled errors/exceptions */
 class Concrete5_Library_ProblemsHandler {
+	/** The previous exception handler
+	* @var callable|null
+	*/
+	protected static $previousExceptionHandler;
 	/** Do we have already handled the unhandled error/exception?
 	* @var bool
 	*/
 	protected static $handled = false;
+	/** Initializes the ProblemsHandler library. */
+	public static function initialize() {
+		self::$previousExceptionHandler = set_exception_handler('ProblemsHandler::handleException');
+		register_shutdown_function('ProblemsHandler::handleShutdown');
+	}
 	/** Handler for unhandled exceptions
 	* @param Exception $e
 	*/
 	public static function handleException($e) {
 		if(self::$handled) {
+			if(is_callable(self::$previousExceptionHandler)) {
+				call_user_func(self::$previousExceptionHandler, $e);
+			}
 			return;
 		}
 		self::$handled = true;
-		self::logError($e->getMessage(), $e->getFile(), $e->getLine(), $e->getCode(), $e->getTraceAsString());
+		self::handleProblem($e->getMessage(), $e->getFile(), $e->getLine(), $e->getCode(), $e->getTraceAsString());
+		if(is_callable(self::$previousExceptionHandler)) {
+			call_user_func(self::$previousExceptionHandler, $e);
+		}
 		if (Config::get('SITE_DEBUG_LEVEL') == DEBUG_DISPLAY_ERRORS) {
 			View::renderError(t('An unexpected error occurred.'), $e->getMessage(), $e);
 		} else {
@@ -31,60 +46,59 @@ class Concrete5_Library_ProblemsHandler {
 		if(is_array($lastError)) {
 			switch($lastError['type']) {
 				case E_ERROR:
-					self::logError($lastError['message'], $lastError['file'], $lastError['line'], 'E_ERROR');
+					self::handleProblem($lastError['message'], $lastError['file'], $lastError['line'], 'E_ERROR');
 					break;
 			}
 		}
 	}
-	/** Save an unhandled exception to the system log (or to a file if the log system failed)
+	/** Handles a problem (exception/fatal error)
 	* @param string $message
 	* @param string $file
 	* @param int|null $line
 	* @param int|string $code
 	* @param string $stackTrace
 	*/
-	protected static function logError($message, $file = '', $line = null, $code = '', $stackTrace = '') {
-		if(!ENABLE_LOG_ERRORS) {
-			return;
-		}
-		$full = t('Exception Occurred: ');
-		if(strlen($file)) {
-			$full .= $file;
-			if(!empty($line)) {
-				$full .= ':' . $line;
+	protected static function handleProblem($message, $file = '', $line = null, $code = '', $stackTrace = '') {
+		if(ENABLE_LOG_ERRORS) {
+			$full = function_exists('t') ? t('Exception Occurred: ') : 'Exception Occurred: ';
+			if(strlen($file)) {
+				$full .= $file;
+				if(!empty($line)) {
+					$full .= ':' . $line;
+				}
+				$full .= "\n";
 			}
-			$full .= "\n";
-		}
-		$full .= $message;
-		if(!empty($code)) {
-			$full .= " ($code)";
-		}
-		if(strlen($stackTrace)) {
-			$full .= "\n\n" . $stackTrace;
-		}
-		$savedToDB = false;
-		try {
-			$db = Loader::db();
-			$tables = $db->MetaTables();
-			if(in_array('Logs', $tables)) {
-				$l = new Log(LOG_TYPE_EXCEPTIONS, true, true);
-				$l->write($full);
-				$l->close();
-				$savedToDB = true;
+			$full .= $message;
+			if(!empty($code)) {
+				$full .= " ($code)";
 			}
-		}
-		catch(Exception $foo) {
-		}
-		if(!$savedToDB) {
-			if(!is_dir(DIR_BASE . '/files/tmp')) {
-				@mkdir(DIR_BASE . '/files/tmp', DIRECTORY_PERMISSIONS_MODE, true);
+			if(strlen($stackTrace)) {
+				$full .= "\n\n" . $stackTrace;
 			}
-			$hFile = @fopen(DIR_BASE . '/files/tmp/unhandled-exceptions.log', 'a');
-			if($hFile != false) {
-				@fwrite($hFile, sprintf("%s\t%s", date('Y-m-d H.i.s'), $full));
-				@fflush($hFile);
-				@fclose($hFile);
+			$savedToDB = false;
+			if(class_exists('Database', false)) {
+				try {
+					$db = Loader::db();
+					$tables = $db->MetaTables();
+					if(in_array('Logs', $tables)) {
+						$l = new Log(LOG_TYPE_EXCEPTIONS, true, true);
+						$l->write($full);
+						$l->close();
+						$savedToDB = true;
+					}
+				}
+				catch(Exception $foo) {
+				}
+			}
+			if(!$savedToDB && defined('EMERGENCY_LOG_FILENAME') && strlen(EMERGENCY_LOG_FILENAME)) {
+				$hFile = @fopen(EMERGENCY_LOG_FILENAME, 'a');
+				if($hFile) {
+					@fwrite($hFile, sprintf("%s\n%s\t%s\n\n", str_repeat('#', 20), @date('Y-m-d H.i.s'), $full));
+					@fflush($hFile);
+					@fclose($hFile);
+				}
 			}
 		}
+		Events::fire('on_problem', $message, $file,  $line, $code, $stackTrace);
 	}
 }
