@@ -71,6 +71,12 @@ class TextHelperTest extends PHPUnit_Framework_TestCase
         $this->assertEquals("The lazy fox jumps over the quick brown dog", $this->object->wordSafeShortText("The lazy fox jumps over the quick brown dog",0));
         $this->assertEquals("This_is_a_simple_test_ca…", $this->object->wordSafeShortText("This_is_a_simple_test_case",24,"…"));
     }
-    
+   
+    public function testAutolink() {
+        $this->assertEquals('<a href="https://www.google.com" rel="nofollow">https://www.google.com</a>', Loader::helper('text')->autolink('https://www.google.com'));
+        $this->assertEquals('<a href="http://www.google.com" rel="nofollow">http://www.google.com</a>', Loader::helper('text')->autolink('http://www.google.com'));
+        $this->assertEquals('<a href="https://www.google.com" target="_blank" rel="nofollow">https://www.google.com</a>', Loader::helper('text')->autolink('https://www.google.com', true));
+        $this->assertEquals('<a href="http://www.google.com" target="_blank" rel="nofollow">http://www.google.com</a>', Loader::helper('text')->autolink('http://www.google.com', true));
+    }
 
 }
