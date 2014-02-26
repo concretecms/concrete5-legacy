@@ -30,8 +30,8 @@ class Concrete5_Controller_Dashboard_System_Registration_PublicRegistration exte
 					Config::save('USER_VALIDATE_EMAIL', false);	
 					Config::save('USER_VALIDATE_EMAIL_REQUIRED', false);
 					Config::save('USER_REGISTRATION_APPROVAL_REQUIRED', false);
-					Config::save('REGISTER_NOTIFICATION', $this->post('register_notification'));
-					Config::save('EMAIL_ADDRESS_REGISTER_NOTIFICATION', $this->post('register_notification_email'));
+					Config::save('REGISTER_NOTIFICATION', h($this->post('register_notification')));
+					Config::save('EMAIL_ADDRESS_REGISTER_NOTIFICATION', h($this->post('register_notification_email')));
 				break;
 				
 				case "validate_email":
@@ -39,8 +39,8 @@ class Concrete5_Controller_Dashboard_System_Registration_PublicRegistration exte
 					Config::save('USER_VALIDATE_EMAIL', true);	
 					Config::save('USER_VALIDATE_EMAIL_REQUIRED', true);
 					Config::save('USER_REGISTRATION_APPROVAL_REQUIRED', false);
-					Config::save('REGISTER_NOTIFICATION', $this->post('register_notification'));
-					Config::save('EMAIL_ADDRESS_REGISTER_NOTIFICATION', $this->post('register_notification_email'));
+					Config::save('REGISTER_NOTIFICATION', h($this->post('register_notification')));
+					Config::save('EMAIL_ADDRESS_REGISTER_NOTIFICATION', h($this->post('register_notification_email')));
 				break;
 				
 				case "manual_approve":
@@ -48,8 +48,8 @@ class Concrete5_Controller_Dashboard_System_Registration_PublicRegistration exte
 					Config::save('USER_REGISTRATION_APPROVAL_REQUIRED', true);
 					Config::save('USER_VALIDATE_EMAIL', false);	
 					Config::save('USER_VALIDATE_EMAIL_REQUIRED', false);
-					Config::save('REGISTER_NOTIFICATION', $this->post('register_notification'));
-					Config::save('EMAIL_ADDRESS_REGISTER_NOTIFICATION', $this->post('register_notification_email'));
+					Config::save('REGISTER_NOTIFICATION', h($this->post('register_notification')));
+					Config::save('EMAIL_ADDRESS_REGISTER_NOTIFICATION', h($this->post('register_notification_email')));
 				break;
 				
 				default: // disabled
@@ -57,7 +57,7 @@ class Concrete5_Controller_Dashboard_System_Registration_PublicRegistration exte
 					Config::save('REGISTER_NOTIFICATION', false);
 				break;
 			}
-			Config::save('REGISTRATION_TYPE',$this->post('registration_type'));
+			Config::save('REGISTRATION_TYPE',h($this->post('registration_type')));
 			
 			$this->redirect('/dashboard/system/registration/public_registration',1);
 		}

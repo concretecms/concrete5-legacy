@@ -27,7 +27,7 @@ class Concrete5_Controller_Dashboard_Pages_Themes extends Controller {
 	}
 	
 	public function save_mobile_theme() {
-		Config::save('MOBILE_THEME_ID', $this->post('MOBILE_THEME_ID'));
+		Config::save('MOBILE_THEME_ID', h($this->post('MOBILE_THEME_ID')));
 		$this->redirect('/dashboard/pages/themes', 'mobile_theme_saved');
 	}
 	
