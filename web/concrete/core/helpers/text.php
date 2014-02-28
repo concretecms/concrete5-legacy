@@ -217,16 +217,67 @@ class Concrete5_Helper_Text {
 		return Object::camelcase($string);
 	}
 	
+
 	/** 
 	 * Scans passed text and automatically hyperlinks any URL inside it
 	 * @param string $input
-	 * @param int $newWindow
+	 * @param bool $newWindow
+	 * @param bool $noFollow
 	 * @return string $output
 	 */
-	public function autolink($input,$newWindow=0) {
-		$target=($newWindow)?' target="_blank"':'';
-		$output = preg_replace("/(http:\/\/|https:\/\/|(www\.))(([^\s<]{4,80})[^\s<]*)/", '<a href="$1$2$3"'.$target.' rel="nofollow">$1$2$4</a>', $input);
-		return ($output);
+	public function autolink($input, $newWindow = false, $noFollow = true) {
+                $pattern  = '#\b(([\w-]+://?|www[.])[^\s()<>]+(?:\([\w\d]+\)|([^[:punct:]\s]|/)))#';                
+
+                return preg_replace_callback($pattern, function ($matches) use ($newWindow, $noFollow) {
+		    $max_url_length = 50;
+                    $max_depth_if_over_length = 2;
+                    $ellipsis = '&hellip;';
+
+                    $url_full = $matches[0];
+                    $url_short = '';
+		    
+		    if ($matches[2] == "www.") {
+			$url_full = "http://" . $url_full;			
+		    }
+
+                    if (strlen($url_full) > $max_url_length) {
+                        $parts = parse_url($url_full);
+                        $url_short = $parts['scheme'] . '://' . preg_replace('/^www\./', '', $parts['host']) . '/';
+
+                        $path_components = explode('/', trim($parts['path'], '/'));
+                        foreach ($path_components as $dir) {
+                            $url_string_components[] = $dir . '/';
+                        }
+
+                        if (!empty($parts['query'])) {
+                            $url_string_components[] = '?' . $parts['query'];
+                        }
+
+                        if (!empty($parts['fragment'])) {
+                            $url_string_components[] = '#' . $parts['fragment'];
+                        }
+
+                        for ($k = 0; $k < count($url_string_components); $k++) {
+                            $curr_component = $url_string_components[$k];
+                            if ($k >= $max_depth_if_over_length || strlen($url_short) + strlen($curr_component) > $max_url_length) {
+                                if ($k == 0 && strlen($url_short) < $max_url_length) {
+                                    // Always show a portion of first directory
+                                    $url_short .= substr($curr_component, 0, $max_url_length - strlen($url_short));
+                                }
+                                $url_short .= $ellipsis;
+                                break;
+                            }
+                            $url_short .= $curr_component;
+                        }
+                    } else {
+                        $url_short = $url_full;
+                    }    
+		    
+		    $rel = $noFollow ? ' rel="nofollow"' : '';
+		    $target = $newWindow ? ' target="_blank"':'';
+
+		    return "<a href=\"{$url_full}\"{$target}{$rel}>{$url_short}</a>";
+                }, $input);
 	}
 	
 	/** 

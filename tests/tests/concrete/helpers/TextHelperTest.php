@@ -77,6 +77,10 @@ class TextHelperTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('<a href="http://www.google.com" rel="nofollow">http://www.google.com</a>', Loader::helper('text')->autolink('http://www.google.com'));
         $this->assertEquals('<a href="https://www.google.com" target="_blank" rel="nofollow">https://www.google.com</a>', Loader::helper('text')->autolink('https://www.google.com', true));
         $this->assertEquals('<a href="http://www.google.com" target="_blank" rel="nofollow">http://www.google.com</a>', Loader::helper('text')->autolink('http://www.google.com', true));
+        $this->assertEquals('<a href="http://www.google.com" target="_blank" rel="nofollow">http://www.google.com</a>', Loader::helper('text')->autolink('www.google.com', true));
+        $this->assertEquals('<a href="http://www.google.com" rel="nofollow">http://www.google.com</a>', Loader::helper('text')->autolink('www.google.com'));
+        $this->assertEquals('<a href="http://www.google.com" target="_blank">http://www.google.com</a>', Loader::helper('text')->autolink('http://www.google.com', true, false));
+        $this->assertEquals('<a href="http://www.google.com">http://www.google.com</a>', Loader::helper('text')->autolink('http://www.google.com', false, false));
     }
 
 }
