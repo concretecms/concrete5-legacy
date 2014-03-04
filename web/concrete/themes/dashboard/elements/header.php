@@ -57,6 +57,7 @@ if (LANGUAGE != 'en') {
 // Require CSS
 $v->addHeaderItem($html->css('ccm.app.css'));
 if ($md->isMobile() == true) {
+	$v->addHeaderItem('<meta name="viewport" content="width=device-width,initial-scale=1"/>');
 	$v->addHeaderItem($html->css('ccm.app.mobile.css')); ?>
 	<?		
 }
