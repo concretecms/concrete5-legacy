@@ -2,10 +2,14 @@ tinyMCEPopup.requireLangPack();
 tinyMCEPopup.onInit.add(onLoadInit);
 
 function saveContent() {
+	if(codeMirror) {
+		codeMirror.save();
+	}
 	tinyMCEPopup.editor.setContent(document.getElementById('htmlSource').value, {source_view : true});
 	tinyMCEPopup.close();
 }
 
+var codeMirror = null;
 function onLoadInit() {
 	tinyMCEPopup.resizeToInnerSize();
 
@@ -21,42 +25,98 @@ function onLoadInit() {
 	}
 
 	resizeInputs();
+	loadCodeMirror(
+		'../../../codemirror',
+		['xml', 'javascript', 'css', 'htmlmixed', 'htmlembedded'],
+		function() {
+			codeMirror = CodeMirror.fromTextArea(
+				document.getElementById('htmlSource'),
+				{
+					lineNumbers: true,
+					mode: 'application/x-ejs',
+					indentUnit: 4,
+					indentWithTabs: true,
+					enterMode: 'keep',
+					tabMode: 'shift'
+				}
+			);
+			resizeInputs();
+			toggleWordWrap()
+		}
+	);
 }
 
 function setWrap(val) {
-	var v, n, s = document.getElementById('htmlSource');
-
-	s.wrap = val;
-
-	if (!tinymce.isIE) {
-		v = s.value;
-		n = s.cloneNode(false);
-		n.setAttribute("wrap", val);
-		s.parentNode.replaceChild(n, s);
-		n.value = v;
+	if(codeMirror) {
+		codeMirror.setOption('lineWrapping', val != 'off');
+	}
+	else {
+		var v, n, s = document.getElementById('htmlSource');
+	
+		s.wrap = val;
+	
+		if (!tinymce.isIE) {
+			v = s.value;
+			n = s.cloneNode(false);
+			n.setAttribute("wrap", val);
+			s.parentNode.replaceChild(n, s);
+			n.value = v;
+		}
 	}
 }
 
-function toggleWordWrap(elm) {
-	if (elm.checked)
+function toggleWordWrap() {
+	if (document.getElementById('wraped').checked)
 		setWrap('soft');
 	else
 		setWrap('off');
 }
 
-var wHeight=0, wWidth=0, owHeight=0, owWidth=0;
-
 function resizeInputs() {
-	var el = document.getElementById('htmlSource');
+	var vp = tinyMCEPopup.dom.getViewPort(window), width = Math.max(50, vp.w - 20), height = Math.max(50, vp.h - 100);
 
-	if (!tinymce.isIE) {
-		 wHeight = self.innerHeight - 120;
-		 wWidth = self.innerWidth - 16;
-	} else {
-		 wHeight = document.body.clientHeight - 100;
-		 wWidth = document.body.clientWidth - 16;
+	if(codeMirror) {
+		codeMirror.setSize(null, height);
 	}
+	else {
+		var el = document.getElementById('htmlSource');
+		el.style.width =  + 'px';
+		el.style.height =  + 'px';
+	}
+}
 
-	el.style.height = Math.abs(wHeight) + 'px';
-	el.style.width  = Math.abs(wWidth) + 'px';
+function loadCodeMirror(codeMirrorPath, modes, callback) {
+	function loadModes() {
+		var scripts = [];
+		if(modes) {
+			$.each(modes, function(_, mode) {
+				if(!(mode in CodeMirror.modes)) {
+					switch(mode) {
+						default:
+							scripts.push(codeMirrorPath + '/mode/' + mode + '/' + mode + '.js');
+							break;
+					}
+				}
+			});
+		}
+		if(!scripts.length) {
+			callback();
+			return;
+		}
+		require(scripts, function() {
+			callback();
+		});
+	}
+	function loadMain() {
+		$('head').append($('<link rel="stylesheet" type="text/css" />').attr('href', codeMirrorPath + '/lib/codemirror.css'));
+		require([codeMirrorPath + '/lib/codemirror.js'], function() {
+			loadModes();
+		});
+	}
+	if($.type(window.CoreMirror) != 'function') {
+		loadMain();
+	}
+	else {
+		loadModes();
+	}
 }
