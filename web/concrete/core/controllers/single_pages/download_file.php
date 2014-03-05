@@ -32,6 +32,13 @@ class Concrete5_Controller_DownloadFile extends Controller {
 				if (!$fp->canViewFile()) {
 					return false;
 				}
+				
+				// if guest cannot view the file, hide the url from internet
+				$req = Request::get();
+				$req->setCustomRequestUser(false);
+				if (!$fp->canViewFile()) {
+					$this->force = 1;
+				}
 
 				// if block password is blank download
 				if (!$file->getPassword()) {
