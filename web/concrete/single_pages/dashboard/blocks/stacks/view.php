@@ -243,7 +243,7 @@
 	</div>
 		
 	<h4><?=t('Other Stacks')?></h4>
-	<div class="ccm-stack-content-wrapper">
+	<div class="ccm-stack-content-wrapper<?=$canMoveUserAdded ? ' movable' : ''?>">
 	<?
 	if (count($useradded) > 0) { 
 		foreach($useradded as $st) { 
