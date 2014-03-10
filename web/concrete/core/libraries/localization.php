@@ -98,6 +98,9 @@
 				}
 				$this->translate->setLocale($locale);
 			}
+			foreach(PackageList::get(1)->getPackages() as $p) {
+				$p->setupPackageLocalization($locale, null, $this->translate);
+			}
 			if($localeNeededLoading) {
 				Events::fire('on_locale_load', $locale);
 			}
