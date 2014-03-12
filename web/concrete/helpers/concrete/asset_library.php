@@ -46,6 +46,10 @@
 				}
 			}
 			
+			if(!is_object($bf) && $bf){
+				$bf = File::getByID($bf);
+			}		
+
 			if (is_object($bf) && (!$bf->isError()) && $bf->getFileID() > 0) {
 				$fileID = $bf->getFileID();
 				$selectedDisplay = 'block';
