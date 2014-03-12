@@ -84,6 +84,9 @@
 		}
 		
 		public function mapSystemPath($prefix, $filename, $createDirectories = false, $base = DIR_FILES_UPLOADED) {
+			if ($base == DIR_FILES_UPLOADED && ! is_dir($base)) {
+				trigger_error("File base path does not exist '".$base."'",E_USER_WARNING);
+			}
 			if ($prefix == null) {
 				$path = $base . '/' . $filename;
 			} else {
