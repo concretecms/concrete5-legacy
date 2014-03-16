@@ -84,7 +84,7 @@ class Concrete5_Helper_Form_DateTime {
 		$dfhe = (DATE_FORM_HELPER_FORMAT_HOUR == '12') ? '12' : '23';
 		$dfhs = (DATE_FORM_HELPER_FORMAT_HOUR == '12') ? '1' : '0';
 		if ($value != null) {
-			$defaultDateJs = 'new Date(' . strtotime($value) * 1000 . ')';
+			$defaultDateJs = 'new Date(' . strtotime($value) . ')';
 			$h = date($dfh, strtotime($value));
 			$m = date('i', strtotime($value));
 			$a = date('A', strtotime($value));
@@ -196,7 +196,7 @@ EOS;
 		if (isset($_REQUEST[$field])) {
 			$defaultDateJs = 'new Date(' .  preg_replace('/[^0-9]/', '', $_REQUEST[$field]) .')' ;
 		} else if ($value != "") {
-			$defaultDateJs = 'new Date(' . (int) strtotime($value) * 1000 . ')';
+			$defaultDateJs = 'new Date(' . (int) strtotime($value) . ')';
 		} else if ($value === '') {
 			$defaultDateJs = '""';
 		} else {
