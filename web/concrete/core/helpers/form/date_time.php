@@ -35,8 +35,7 @@ class Concrete5_Helper_Form_DateTime {
             		if ($arr[$field . '_dt'] == '') {
                 		return '';
 			}
-			// Timestamp is in ms - so "/ 1000" is needed
-			$dt = date('Y-m-d', floor( $arr[$field . '_dt'] / 1000) );
+			$dt = $arr[$field . '_dt'];
             if (DATE_FORM_HELPER_FORMAT_HOUR == '12') {
 				$str = $dt . ' ' . $arr[$field . '_h'] . ':' . $arr[$field . '_m'] . ' ' . $arr[$field . '_a'];
 			} else {
@@ -47,7 +46,7 @@ class Concrete5_Helper_Form_DateTime {
             		if ($arr[$field] == '') {
                 		return '';
 			}
-			$dt = date('Y-m-d', floor( $arr[$field] / 1000) );
+			$dt = $arr[$field];
 			return $dt;
 		} else {
 			return false;
@@ -84,7 +83,7 @@ class Concrete5_Helper_Form_DateTime {
 		$dfhe = (DATE_FORM_HELPER_FORMAT_HOUR == '12') ? '12' : '23';
 		$dfhs = (DATE_FORM_HELPER_FORMAT_HOUR == '12') ? '1' : '0';
 		if ($value != null) {
-			$defaultDateJs = 'new Date(' . strtotime($value) . ')';
+			$defaultDateJs = 'new Date(' . strtotime($value) * 1000 . ')';
 			$h = date($dfh, strtotime($value));
 			$m = date('i', strtotime($value));
 			$a = date('A', strtotime($value));
@@ -196,7 +195,7 @@ EOS;
 		if (isset($_REQUEST[$field])) {
 			$defaultDateJs = 'new Date(' .  preg_replace('/[^0-9]/', '', $_REQUEST[$field]) .')' ;
 		} else if ($value != "") {
-			$defaultDateJs = 'new Date(' . (int) strtotime($value) . ')';
+			$defaultDateJs = 'new Date(' . (int) strtotime($value) * 1000 . ')';
 		} else if ($value === '') {
 			$defaultDateJs = '""';
 		} else {
@@ -207,7 +206,7 @@ EOS;
 		$html .= '<span class="ccm-input-date-wrapper" id="' . $id . '_dw"><input id="' . $id . '_pub" name="' . $field . '_pub" class="ccm-input-date"  /><input id="' . $id . '" name="' . $field . '" type="hidden"  /></span>';
 
 		if ($calendarAutoStart) { 
-			$html .= '<script type="text/javascript">$(function() { $("#' . $id . '_pub").datepicker({ dateFormat: \'' . DATE_APP_DATE_PICKER . '\', altFormat: "yy-mm-dd", altField: "#' . $id . '", changeYear: true, showAnim: \'fadeIn\' }).datepicker( "setDate" , ' . $defaultDateJs . ' ); });</script>';
+			$html .= '<script type="text/javascript">$(function() { $("#' . $id . '_pub").datepicker({ dateFormat: \'' . DATE_APP_DATE_PICKER . '\', altFormat: "@", altField: "#' . $id . '", changeYear: true, showAnim: \'fadeIn\' }).datepicker( "setDate" , ' . $defaultDateJs . ' ); });</script>';
 		}
 		return $html;
 	
