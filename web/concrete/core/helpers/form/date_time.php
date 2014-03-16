@@ -206,7 +206,7 @@ EOS;
 		$html .= '<span class="ccm-input-date-wrapper" id="' . $id . '_dw"><input id="' . $id . '_pub" name="' . $field . '_pub" class="ccm-input-date"  /><input id="' . $id . '" name="' . $field . '" type="hidden"  /></span>';
 
 		if ($calendarAutoStart) { 
-			$html .= '<script type="text/javascript">$(function() { $("#' . $id . '_pub").datepicker({ dateFormat: \'' . DATE_APP_DATE_PICKER . '\', altFormat: "@", altField: "#' . $id . '", changeYear: true, showAnim: \'fadeIn\' }).datepicker( "setDate" , ' . $defaultDateJs . ' ); });</script>';
+			$html .= '<script type="text/javascript">$(function() { $("#' . $id . '_pub").datepicker({ dateFormat: \'' . DATE_APP_DATE_PICKER . '\', altFormat: "yy-mm-dd", altField: "#' . $id . '", changeYear: true, showAnim: \'fadeIn\' }).datepicker( "setDate" , ' . $defaultDateJs . ' ); });</script>';
 		}
 		return $html;
 	
