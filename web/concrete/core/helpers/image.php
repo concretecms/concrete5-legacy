@@ -67,6 +67,7 @@ class Concrete5_Helper_Image {
 	 * @return bool
 	 * @example Resizing from 200x200 to 100x50 with $crop = false will result in a 50 x 50 image (same aspect ratio as source, scaled down to a quarter of size)
 	 * @example Resizing from 200x200 to 100x50 with $crop = true will result in a 100 x 50 image (same aspect ratio as source, scaled down to a half of size and cropped in height)
+	 * @example Resizing from 200x200 to 1000x1000 with either $crop = false or $crop = true in a copy of the original image (200x200)
 	 */
 	public function create($originalPath, $newPath, $width, $height, $crop = false) {
 		// first, we grab the original image. We shouldn't ever get to this function unless the image is valid
