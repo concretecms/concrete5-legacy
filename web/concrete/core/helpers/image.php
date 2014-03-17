@@ -59,9 +59,15 @@ class Concrete5_Helper_Image {
 	/**
 	 * Creates a new image given an original path, a new path, a target width and height.
 	 * Optionally crops image to exactly match given width and height.
-	 * @params string $originalPath, string $newpath, int $width, int $height, bool $crop
+	 * @param string $originalPath The path to the original image
+	 * @param string $newpath The path to the new image to be created
+	 * @param int $width The maximum width of the new image
+	 * @param int $height The maximum height of the new image
+	 * @param bool $crop = false Set to true to resize and crop the image, set to false to just resize the image 
 	 * @return bool
-	 */		
+	 * @example Resizing from 200x200 to 100x50 with $crop = false will result in a 50 x 50 image (same aspect ratio as source, scaled down to a quarter of size)
+	 * @example Resizing from 200x200 to 100x50 with $crop = true will result in a 100 x 50 image (same aspect ratio as source, scaled down to a half of size and cropped in height)
+	 */
 	public function create($originalPath, $newPath, $width, $height, $crop = false) {
 		// first, we grab the original image. We shouldn't ever get to this function unless the image is valid
 		$imageSize = @getimagesize($originalPath);
