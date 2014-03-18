@@ -155,10 +155,10 @@ menuHTML += '</div>';
 
 menuHTML += '<div class="ccm-edit-overlay-actions">';
 <? if ($cp->canEditPageContents()) { ?>
-	menuHTML += '<a id="ccm-nav-check-out" href="<? if (!$cantCheckOut) { ?><?=DIR_REL?>/<?=DISPATCHER_FILENAME?>?cID=<?=$c->getCollectionID()?>&ctask=check-out<?=$token?><? } else { ?>javascript:void(0);<? } ?>" class="btn primary <? if ($cantCheckOut) { ?> disabled <? } ?> launch-tooltip" <? if ($cantCheckOut) { ?>title="<?=h(t('Someone has already checked this page out for editing.'))?>"<? } ?>>' + <?=$jh->encode(t('Edit this Page'))?> + '</a>';
+	menuHTML += "<a id=\"ccm-nav-check-out\" href=\"<? if (!$cantCheckOut) { ?><?= DIR_REL?>/<?= DISPATCHER_FILENAME?>?cID=<?= $c->getCollectionID()?>&ctask=check-out<?= $token?><? } else { ?>javascript:void(0);<? } ?>\" class=\"btn primary <? if ($cantCheckOut) { ?> disabled <? } ?> launch-tooltip\" <? if ($cantCheckOut) { ?>title=\"<?= h(t('Someone has already checked this page out for editing.'))?>\"<? } ?>>" + <?= $jh->encode(t('Edit this Page'))?> + "</a>";
 <? } ?>
 <? if ($cp->canAddSubpage()) { ?>
-	menuHTML += '<a id="ccm-toolbar-add-subpage" dialog-width="645" dialog-modal="false" dialog-append-buttons="true" dialog-height="345" dialog-title="<?=h(t('Add a Sub-Page'))?>" href="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/edit_collection_popup.php?cID=<?=$cID?>&ctask=add"class="btn">' + <?=$jh->encode(t('Add a Sub-Page'))?> + '</a>';
+	menuHTML += "<a id=\"ccm-toolbar-add-subpage\" dialog-width=\"645\" dialog-modal=\"false\" dialog-append-buttons=\"true\" dialog-height=\"345\" dialog-title=\"<?= h(t('Add a Sub-Page'))?>\" href=\"<?= REL_DIR_FILES_TOOLS_REQUIRED?>/edit_collection_popup.php?cID=<?= $cID?>&ctask=add\" class=\"btn\">" + <?= $jh->encode(t('Add a Sub-Page'))?> + "</a>";
 <? } ?>
 menuHTML += '</div>';
 menuHTML += '<span class="label notice">' + <?=$jh->encode(t('Version %s', $c->getVersionID()))?> + '</span>';
