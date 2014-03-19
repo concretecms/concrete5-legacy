@@ -193,7 +193,7 @@ EOS;
 	public function date($field, $value = null, $calendarAutoStart = true) {
 		$id = preg_replace("/[^0-9A-Za-z-]/", "_", $field);
 		if (isset($_REQUEST[$field])) {
-			$defaultDateJs = 'new Date(' .  preg_replace('/[^0-9]/', '', $_REQUEST[$field]) .')' ;
+			$defaultDateJs = 'new Date(' . (int) strtotime(preg_replace('/[^0-9-]/', '', $_REQUEST[$field])) * 1000 .')' ;
 		} else if ($value != "") {
 			$defaultDateJs = 'new Date(' . (int) strtotime($value) * 1000 . ')';
 		} else if ($value === '') {
