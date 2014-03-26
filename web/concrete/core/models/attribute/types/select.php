@@ -310,7 +310,7 @@ class Concrete5_Controller_AttributeType_Select extends AttributeTypeController 
 		}
 		$optionQuery = array();
 		foreach($options as $id) {
-			if ($id > 0) {
+			if (Loader::helper('validation/numbers')->integer($id) && $id > 0) {
 				$opt = SelectAttributeTypeOption::getByID($id);
 				if (is_object($opt)) {
 					$optionQuery[] = $opt->getSelectAttributeOptionValue(false);
