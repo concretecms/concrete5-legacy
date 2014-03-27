@@ -232,7 +232,7 @@ $(function() {
 			sbitem.setCSSClass('info');
 			sbitem.setDescription(<?=$jh->encode(t("This page is an alias of one that actually appears elsewhere."))?>);
 			btn1 = new ccm_statusBarItemButton();
-			btn1.setLabel(<?=$jh->encode(t('View/Edit Original'))?>');
+			btn1.setLabel(<?=$jh->encode(t('View/Edit Original'))?>);
 			btn1.setURL('<?=DIR_REL . "/" . DISPATCHER_FILENAME . "?cID=" . $c->getCollectionID()?>');
 			sbitem.addButton(btn1);
 			<? if ($cp->canApprovePageVersions()) { ?>
