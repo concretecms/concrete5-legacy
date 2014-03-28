@@ -20,10 +20,20 @@
 			$loc = Localization::getInstance();
 			$loc->setLocale($locale);
 		}
-
+		/** Returns the currently active locale
+		* @return string
+		* @example 'en_US'
+		*/
 		public static function activeLocale() {
 			$loc = Localization::getInstance();
 			return $loc->getLocale();
+		}
+		/** Returns the language for the currently active locale
+		* @return string
+		* @example 'en'
+		*/
+		public static function activeLanguage() {
+			return current(explode('_', self::activeLocale()));
 		}
 
 		protected $translate;
@@ -162,7 +172,7 @@
 			foreach($languages as $lang) {
 				$locales[$lang] = self::getLanguageDescription($lang,$displayLocale);
 			}
-			asort($locales);
+			natcasesort($locales);
 			return $locales;
 		}
 		
@@ -183,7 +193,10 @@
 				$displayLocale = NULL;
 			} 
 			
-			Zend_Locale_Data::setCache(Cache::getLibrary());
+			$cacheLibrary = Cache::getLibrary();
+			if (is_object($cacheLibrary)) {
+				Zend_Locale_Data::setCache($cacheLibrary);
+			}		
 			
 			$displayLocale = $displayLocale?$displayLocale:$locale;
 			
