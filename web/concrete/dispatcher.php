@@ -71,7 +71,7 @@
 
 	## Load the database ##
 	Loader::database();
-
+	
 	## User level config ##
 	if (!$config_check_failed) {
 		require($cdir . '/config/app.php');
