@@ -166,21 +166,24 @@
 		$req->setCurrentPage($c);
                 
 		$u = new User();
+		
+		## Check maintenance mode
+		require($cdir . '/startup/maintenance_mode_check.php');
 
+		## Fire the on_page_view Eventclass
+		Events::fire('on_page_view', $c, $u);
+		
 		if ($c->isError()) {
 			// if we've gotten an error getting information about this particular collection
 			// than we load up the Content class, and get prepared to fire away
 			switch($c->getError()) {
-				case COLLECTION_NOT_FOUND:
-					Events::fire('on_page_view', $c, $u);
+				case COLLECTION_NOT_FOUND:					
 					$v = View::getInstance();
 					$v->render('/page_not_found');
 					break;
 			}
 		}
 
-		## Check maintenance mode
-		require($cdir . '/startup/maintenance_mode_check.php');
 
 		## Check to see whether this is an external alias or a header 301 redirect. If so we go there.
 		include($cdir . '/startup/external_link.php');
@@ -197,7 +200,6 @@
 
 			switch($cp->getError()) {
 				case COLLECTION_FORBIDDEN:
-					Events::fire('on_page_view', $c, $u);
 					$v = View::getInstance();
 					$v->setCollectionObject($c);
 					$v->render('/page_forbidden');
@@ -206,7 +208,6 @@
 		}
 
 		if (!$c->isActive() && (!$cp->canViewPageVersions())) {
-			Events::fire('on_page_view', $c, $u);
 			$v = View::getInstance();
 			$v->render('/page_not_found');
 		}
@@ -234,21 +235,16 @@
 			// than we load up the Content class, and get prepared to fire away
 			switch($vp->getError()) {
 				case COLLECTION_NOT_FOUND:
-					Events::fire('on_page_view', $c, $u);
 					$v = View::getInstance();
 					$v->render('/page_not_found');
 					break;
 				case COLLECTION_FORBIDDEN:
-					Events::fire('on_page_view', $c, $u);
 					$v = View::getInstance();
 					$v->setCollectionObject($c);
 					$v->render('/page_forbidden');
 					break;
 			}
 		}
-
-		## Fire the on_page_view Eventclass
-		Events::fire('on_page_view', $c, $u);
 
 		## Any custom site-related process
 		if (file_exists(DIR_BASE . '/config/site_process.php')) {
