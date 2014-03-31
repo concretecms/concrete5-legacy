@@ -164,12 +164,15 @@
 
 		$req = Request::get();
 		$req->setCurrentPage($c);
+                
+		$u = new User();
 
 		if ($c->isError()) {
 			// if we've gotten an error getting information about this particular collection
 			// than we load up the Content class, and get prepared to fire away
 			switch($c->getError()) {
 				case COLLECTION_NOT_FOUND:
+					Events::fire('on_page_view', $c, $u);
 					$v = View::getInstance();
 					$v->render('/page_not_found');
 					break;
@@ -194,6 +197,7 @@
 
 			switch($cp->getError()) {
 				case COLLECTION_FORBIDDEN:
+					Events::fire('on_page_view', $c, $u);
 					$v = View::getInstance();
 					$v->setCollectionObject($c);
 					$v->render('/page_forbidden');
@@ -202,6 +206,7 @@
 		}
 
 		if (!$c->isActive() && (!$cp->canViewPageVersions())) {
+			Events::fire('on_page_view', $c, $u);
 			$v = View::getInstance();
 			$v->render('/page_not_found');
 		}
@@ -229,10 +234,12 @@
 			// than we load up the Content class, and get prepared to fire away
 			switch($vp->getError()) {
 				case COLLECTION_NOT_FOUND:
+					Events::fire('on_page_view', $c, $u);
 					$v = View::getInstance();
 					$v->render('/page_not_found');
 					break;
 				case COLLECTION_FORBIDDEN:
+					Events::fire('on_page_view', $c, $u);
 					$v = View::getInstance();
 					$v->setCollectionObject($c);
 					$v->render('/page_forbidden');
@@ -252,8 +259,7 @@
 		## This is legacy cms specific stuff, like adding pages
 		require($cdir . '/startup/process.php');
 
-		## Record the view
-		$u = new User();
+		## Record the view		
 		if (STATISTICS_TRACK_PAGE_VIEWS == 1) {
 			$u->recordView($c);
 		}
