@@ -170,6 +170,9 @@
 		## Check maintenance mode
 		require($cdir . '/startup/maintenance_mode_check.php');
 
+		## Check to see whether this is an external alias or a header 301 redirect. If so we go there.
+		include($cdir . '/startup/external_link.php');
+
 		## Fire the on_page_view Eventclass
 		Events::fire('on_page_view', $c, $u);
 		
@@ -183,10 +186,6 @@
 					break;
 			}
 		}
-
-
-		## Check to see whether this is an external alias or a header 301 redirect. If so we go there.
-		include($cdir . '/startup/external_link.php');
 
 		## Get a permissions object for this particular collection.
 		$cp = new Permissions($c);
