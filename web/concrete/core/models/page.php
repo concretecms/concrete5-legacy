@@ -1628,7 +1628,7 @@ class Concrete5_Model_Page extends Collection {
 		}
 		Log::addEntry(t('Page "%s" at path "%s" deleted', $this->getCollectionName(), $this->getCollectionPath()),t('Page Action'));
 
-		if($this->isAlias() && ($this->getCollectionPointerExternalLink() <> '')) {
+		if($this->isAlias() && ($this->getCollectionPointerExternalLink() = '')) {
 			$this->removeThisAlias();
 		}
 		else {
