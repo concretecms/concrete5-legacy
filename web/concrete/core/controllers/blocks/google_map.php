@@ -123,6 +123,9 @@
 		}
 		
 		public function lookupLatLong($address) {
+			if(preg_match('/^\\s*([+\\-]?\\d+(\\.\\d*)?)[\\s,;]+([+\\-]?\\d+(\\.\\d*)?)\\s*$/', $address, $matches)) {
+				return array('lat' => floatval($matches[1]), 'lng' => floatval($matches[3]));
+			}
 			$json = Loader::helper('json');
 			$fh = Loader::helper('file');
 			
