@@ -39,9 +39,7 @@ if (empty($_SESSION)) {
 }
 
 // avoid session fixation; check IP and UA
-if (!empty($_SESSION['client']['REMOTE_ADDR']) && ($_SESSION['client']['REMOTE_ADDR'] != $_SERVER['REMOTE_ADDR']) ||
-   !empty($_SESSION['client']['HTTP_USER_AGENT']) && ($_SESSION['client']['HTTP_USER_AGENT'] != $_SERVER['HTTP_USER_AGENT'])
-) {
+if (!empty($_SESSION['client']['REMOTE_ADDR']) && ($_SESSION['client']['REMOTE_ADDR'] != $_SERVER['REMOTE_ADDR'])) {
    // provide new session id and leave the old one
    session_regenerate_id(false);
    // wipe new session
