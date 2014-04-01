@@ -10,7 +10,12 @@ defined('C5_EXECUTE') or die("Access Denied.");
 abstract class Concrete5_Model_PageWorkflowRequest extends WorkflowRequest {  
 	
 	public function setRequestedPage($c) {
-		$this->cID = $c->getCollectionID();
+		if(($c instanceof Page) && $c->isAlias() && (!$c->isExternalLink()) && ($c->getCollectionPointerOriginalID() > 0)) {
+			$this->cID = $c->getCollectionPointerOriginalID();
+		}
+		else {
+			$this->cID = $c->getCollectionID();
+		}
 	}
 	
 	public function getRequestedPageID() {
