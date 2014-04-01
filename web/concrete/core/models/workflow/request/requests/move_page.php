@@ -19,7 +19,12 @@ class Concrete5_Model_MovePagePageWorkflowRequest extends PageWorkflowRequest {
 	}
 	
 	public function setRequestedTargetPage($c) {
-		$this->targetCID = $c->getCollectionID();
+		if(($c instanceof Page) && $c->isAlias() && (!$c->isExternalLink()) && ($c->getCollectionPointerOriginalID() > 0)) {
+			$this->targetCID = $c->getCollectionPointerOriginalID();
+		}
+		else {
+			$this->targetCID = $c->getCollectionID();
+		}
 	}
 	
 	public function getRequestedTargetPageID() {
