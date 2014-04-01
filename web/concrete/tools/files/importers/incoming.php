@@ -15,6 +15,10 @@ $error = "";
 if (isset($_POST['fID'])) {
 	// we are replacing a file
 	$fr = File::getByID($_REQUEST['fID']);
+	$file_permissions = new Permissions($fr);
+	if (!$file_permissions->canEditFileContents()) {
+		die(t("Unable to add files."));
+	}
 } else {
 	$fr = false;
 }
@@ -34,13 +38,13 @@ if ($valt->validate('import_incoming')) {
 				}
 				if (!($resp instanceof FileVersion)) {
 					$error .= $name . ': ' . FileImporter::getErrorMessage($resp) . "\n";
-				
+
 				} else {
 					$files[] = $resp;
 					if ($_POST['removeFilesAfterPost'] == 1) {
 						unlink(DIR_FILES_INCOMING .'/'. $name);
 					}
-					
+
 					if (!is_object($fr)) {
 						// we check $fr because we don't want to set it if we are replacing an existing file
 						$respf = $resp->getFile();
@@ -50,7 +54,7 @@ if ($valt->validate('import_incoming')) {
 			}
 		}
 	}
-	
+
 	if (count($files) == 0) {
 		$error = t('You must select at least one file.');
 	}
@@ -72,8 +76,8 @@ if ($valt->validate('import_incoming')) {
 			window.parent.ccm_uploadedFiles.push(<?=intval($resp->getFileID())?>);
 		<? } ?>
 		window.parent.jQuery.fn.dialog.closeTop();
-		setTimeout(function() { 
-			window.parent.ccm_filesUploadedDialog('<?=$searchInstance?>');		
+		setTimeout(function() {
+			window.parent.ccm_filesUploadedDialog('<?=$searchInstance?>');
 		}, 100);
 	<? } ?>
 </script>
