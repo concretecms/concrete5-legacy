@@ -235,7 +235,7 @@ class Concrete5_Controller_AttributeType_Select extends AttributeTypeController 
 		$this->load();
 		$options = array();		
 		
-		if (is_array($value) && $this->akSelectAllowMultipleValues) {
+		if ((is_array($value) || $value instanceof Iterator) && $this->akSelectAllowMultipleValues) {
 			foreach($value as $v) {
 				$opt = SelectAttributeTypeOption::getByValue($v, $this->attributeKey);
 				if (is_object($opt)) {
