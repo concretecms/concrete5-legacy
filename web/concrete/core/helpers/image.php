@@ -148,8 +148,38 @@ class Concrete5_Helper_Image {
 			*/
 			$crop_src_y = round(($oHeight - ($height * $oWidth / $width)) * 0.5);
 		}
-		
-		if(!class_exists("Imagick")) {
+		$processed = false;
+		if(class_exists('Imagick')) {
+			try {
+				$image = new Imagick();
+				$imageRead = false;
+				if ($crop) {
+					$image->setSize($finalWidth, $finalHeight);
+					if($image->readImage($originalPath) === true) {
+						$image->cropThumbnailImage($width, $height);
+						$imageRead = true;
+					}
+					
+				} else {
+					$image->setSize($width, $height);
+					if($image->readImage($originalPath) === true) {
+						$image->thumbnailImage($width, $height, true);
+						$imageRead = true;
+					}
+				}
+				if($imageRead) {
+					if($image->getCompression() == imagick::COMPRESSION_JPEG) {
+						$image->setCompressionQuality($this->jpegCompression);
+					}
+					if($image->writeImage($newPath) === true) {
+						$processed = true;
+					}
+				}
+			}
+			catch(Exception $x) {
+			}
+		}
+		if(!$processed) {
 			//create "canvas" to put new resized and/or cropped image into
 			if ($crop) {
 				$image = @imageCreateTrueColor($width, $height);
@@ -235,27 +265,6 @@ class Concrete5_Helper_Image {
 			}
 			@imagedestroy($image);
 			if($res2 === false) {
-				return false;
-			}
-		} else {
-			$image = new Imagick();
-			if ($crop) {
-				$image->setSize($finalWidth, $finalHeight);
-				if($image->readImage($originalPath) !== true) {
-					return false;
-				}
-				$image->cropThumbnailImage($width, $height);
-			} else {
-				$image->setSize($width, $height);
-				if($image->readImage($originalPath) !== true) {
-					return false;
-				}
-				$image->thumbnailImage($width, $height, true);
-			}
-			if($image->getCompression() == imagick::COMPRESSION_JPEG) {
-				$image->setCompressionQuality($this->jpegCompression);
-			}
-			if($image->writeImage($newPath) !== true) {
 				return false;
 			}
 		}
