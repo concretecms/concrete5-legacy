@@ -300,7 +300,7 @@ $(function() {
 		
 		if (!$c->getCollectionPointerID() && !$hasPendingPageApproval) {
 			if (is_object($vo)) {
-				if (!$vo->isApproved() && !$c->isEditMode()) { ?>
+				if (!$vo->isApproved() && !$c->isEditMode() && $cp->canViewToolbar()) { ?>
 				
 					sbitem = new ccm_statusBarItem();
 					sbitem.setCSSClass('info');
