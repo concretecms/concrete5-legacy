@@ -6,7 +6,7 @@ if(isset($editor_selector)) {
 	$textEditorOptions['editor_selector'] = $editor_selector;
 }
 if(isset($editor_width)) {
-	$textEditorOptions['width'] = $editor_height;
+	$textEditorOptions['width'] = $editor_width;
 }
 if(isset($editor_height)) {
 	$textEditorOptions['height'] = $editor_height;
