@@ -284,12 +284,12 @@ class Concrete5_Library_Content_Importer {
 	protected function importBlockTypes(SimpleXMLElement $sx) {
 		if (isset($sx->blocktypes)) {
 			foreach($sx->blocktypes->blocktype as $bt) {
-				if (!is_object(BlockType::getByHandle($bt['handle']))) {
+				if (!is_object(BlockType::getByHandle((string) $bt['handle']))) {
 					$pkg = ContentImporter::getPackageObject($bt['package']);
 					if (is_object($pkg)) {
-						BlockType::installBlockTypeFromPackage($bt['handle'], $pkg);
+						BlockType::installBlockTypeFromPackage((string) $bt['handle'], $pkg);
 					} else {
-						BlockType::installBlockType($bt['handle']);				
+						BlockType::installBlockType((string) $bt['handle']);				
 					}
 				}
 			}
