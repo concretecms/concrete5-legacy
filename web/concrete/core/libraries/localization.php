@@ -43,17 +43,14 @@
 			Loader::library('3rdparty/Zend/Translate');
 			Loader::library('3rdparty/Zend/Locale');
 			Loader::library('3rdparty/Zend/Locale/Data');
-			
+			$cache = Cache::getLibrary();
+			if (is_object($cache)) {
+				Zend_Translate::setCache($cache);
+				Zend_Date::setOptions(array('cache'=>$cache));
+			}
 			$locale = defined('ACTIVE_LOCALE') ? ACTIVE_LOCALE : 'en_US';
 			$this->setLocale($locale);
 			Zend_Date::setOptions(array('format_type' => 'php'));
-			if (ENABLE_TRANSLATE_LOCALE_EN_US || $locale != 'en_US') {
-				$cache = Cache::getLibrary();
-				if (is_object($cache)) {
-					Zend_Translate::setCache($cache);
-					Zend_Date::setOptions(array('cache'=>$cache));
-				}
-			}
 		}
 
 		public function setLocale($locale) {
