@@ -18,7 +18,11 @@ class Concrete5_Model_WorkflowProgressHistory extends Object {
 		if ($this->object instanceof WorkflowRequest) {
 			$d = $this->object->getWorkflowRequestDescriptionObject();
 			$ui = UserInfo::getByID($this->object->getRequesterUserID());
-			return $d->getDescription() . ' ' . t('Originally requested by %s.', $ui->getUserName());
+			$userName = t('Unknown User');
+			if (is_object($ui)) {
+				$userName = $ui->getUserName();
+			}
+			return $d->getDescription() . ' ' . t('Originally requested by %s.', $userName);
 		}
 		if ($this->object instanceof WorkflowHistoryEntry) {
 			$d = $this->object->getWorkflowProgressHistoryDescription();
