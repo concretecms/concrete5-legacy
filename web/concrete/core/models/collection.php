@@ -826,9 +826,26 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			return $blocks;
 		}
 
-		
+		/**
+		 * Adds a new block the collection. Specify the block type with
+		 * $bt by either the BlockType object or a string with the handle
+		 * of the type.
+		 * 
+		 * Specify the area where the block should be added with $a and
+		 * pass all block specific date to the block controller with the
+		 * array $data.
+		 * 
+		 * @param BlockType/string $bt
+		 * @param string $a
+		 * @param array $data
+		 * @return Block
+		 */
 		public function addBlock($bt, $a, $data) {
 			$db = Loader::db();
+			
+			if (!is_object($bt)) {
+				$bt = BlockType::getByHandle($bt);
+			}
 			
 			// first we add the block to the system
 			$nb = $bt->add($data, $this, $a);
