@@ -832,7 +832,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		 * of the type.
 		 * 
 		 * Specify the area where the block should be added with $a and
-		 * pass all block specific date to the block controller with the
+		 * pass all block specific data to the block controller with the
 		 * array $data.
 		 * 
 		 * @param BlockType/string $bt
