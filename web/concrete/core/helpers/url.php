@@ -20,7 +20,7 @@ class Concrete5_Helper_Url {
 		
 		if ($url == false) {
 			$url = Loader::helper('security')->sanitizeString($_SERVER['REQUEST_URI']);
-		} elseif(!strstr($url,'?')) {
+		} elseif(!strstr($url,'?') && strlen($_SERVER['QUERY_STRING']) > 0) {
 			$url = $url . '?' . Loader::helper('security')->sanitizeString($_SERVER['QUERY_STRING']);
 		}
 

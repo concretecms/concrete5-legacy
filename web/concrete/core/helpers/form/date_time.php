@@ -31,13 +31,13 @@ class Concrete5_Helper_Form_DateTime {
 		if ($arr == null) {
 			$arr = $_POST;
 		}
+		
 		if (isset($arr[$field . '_dt'])) {
             		if ($arr[$field . '_dt'] == '') {
                 		return '';
-			}
-			// Timestamp is in ms - so "/ 1000" is needed
-			$dt = date('Y-m-d', floor( $arr[$field . '_dt'] / 1000) );
-            if (DATE_FORM_HELPER_FORMAT_HOUR == '12') {
+			} 			
+			$dt = date('Y-m-d', strtotime($arr[$field . '_dt']));
+			if (DATE_FORM_HELPER_FORMAT_HOUR == '12') {
 				$str = $dt . ' ' . $arr[$field . '_h'] . ':' . $arr[$field . '_m'] . ' ' . $arr[$field . '_a'];
 			} else {
 				$str = $dt . ' ' . $arr[$field . '_h'] . ':' . $arr[$field . '_m'];
@@ -47,7 +47,7 @@ class Concrete5_Helper_Form_DateTime {
             		if ($arr[$field] == '') {
                 		return '';
 			}
-			$dt = date('Y-m-d', floor( $arr[$field] / 1000) );
+			$dt = date('Y-m-d', strtotime($arr[$field]));
 			return $dt;
 		} else {
 			return false;
@@ -84,12 +84,12 @@ class Concrete5_Helper_Form_DateTime {
 		$dfhe = (DATE_FORM_HELPER_FORMAT_HOUR == '12') ? '12' : '23';
 		$dfhs = (DATE_FORM_HELPER_FORMAT_HOUR == '12') ? '1' : '0';
 		if ($value != null) {
-			$defaultDateJs = 'new Date(' . strtotime($value) * 1000 . ')';
+			$dt = date(DATE_APP_GENERIC_MDY, strtotime($value));
 			$h = date($dfh, strtotime($value));
 			$m = date('i', strtotime($value));
 			$a = date('A', strtotime($value));
 		} else {
-			$defaultDateJs = "new Date()";
+			$dt = date(DATE_APP_GENERIC_MDY);
 			$h = date($dfh);
 			$m = date('i');
 			$a = date('A');
@@ -106,7 +106,7 @@ class Concrete5_Helper_Form_DateTime {
 			
 			$html .= '<input type="checkbox" id="' . $id . '_activate" class="ccm-activate-date-time" ccm-date-time-id="' . $id . '" name="' . $_activate . '" ' . $activated . ' />';
 		}
-		$html .= '<span class="ccm-input-date-wrapper" id="' . $id . '_dw"><input id="' . $id . '_dt_pub" name="' . $_dt . '_pub" class="ccm-input-date"  ' . $disabled . ' /><input id="' . $id . '_dt" name="' . $_dt . '" type="hidden" ' . $disabled . ' /></span>';
+		$html .= '<span class="ccm-input-date-wrapper" id="' . $id . '_dw"><input id="' . $id . '_dt" name="' . $_dt . '" class="ccm-input-date" value="' . $dt . '" ' . $disabled . ' /></span>';
 		$html .= '<span class="ccm-input-time-wrapper" id="' . $id . '_tw">';
 		$html .= '<select id="' . $id . '_h" name="' . $_h . '" ' . $disabled . '>';
 		for ($i = $dfhs; $i <= $dfhe; $i++) {
@@ -150,7 +150,7 @@ class Concrete5_Helper_Form_DateTime {
 		}
 		$html .= '</span>';
 		if ($calendarAutoStart) { 
-			$html .= '<script type="text/javascript">$(function() { $("#' . $id . '_dt_pub").datepicker({ dateFormat: \'' . DATE_APP_DATE_PICKER . '\', altFormat: "@", altField: "#' . $id . '_dt", changeYear: true, showAnim: \'fadeIn\' }).datepicker( "setDate" , ' . $defaultDateJs . ' ) })</script>';
+			$html .= '<script type="text/javascript">$(function() { $("#' . $id . '_dt").datepicker({ dateFormat: \'' . DATE_APP_DATE_PICKER . '\', changeYear: true, showAnim: \'fadeIn\' }); });</script>';
 		}
 		// first we add a calendar input
 		
@@ -194,24 +194,23 @@ EOS;
 	public function date($field, $value = null, $calendarAutoStart = true) {
 		$id = preg_replace("/[^0-9A-Za-z-]/", "_", $field);
 		if (isset($_REQUEST[$field])) {
-			$defaultDateJs = 'new Date(' .  preg_replace('/[^0-9]/', '', $_REQUEST[$field]) .')' ;
+			$dt = $_REQUEST[$field];
 		} else if ($value != "") {
-			$defaultDateJs = 'new Date(' . (int) strtotime($value) * 1000 . ')';
-		} else if ($value === '') {
-			$defaultDateJs = '""';
+			$dt = date(DATE_APP_GENERIC_MDY, strtotime($value));
+		} else if ($value == '') {
+			$dt = '';
 		} else {
-			$defaultDateJs = 'new Date()';
+			$dt = date(DATE_APP_GENERIC_MDY);
 		}
 		//$id = preg_replace("/[^0-9A-Za-z-]/", "_", $prefix);
 		$html = '';
-		$html .= '<span class="ccm-input-date-wrapper" id="' . $id . '_dw"><input id="' . $id . '_pub" name="' . $field . '_pub" class="ccm-input-date"  /><input id="' . $id . '" name="' . $field . '" type="hidden"  /></span>';
+		$html .= '<span class="ccm-input-date-wrapper" id="' . $id . '_dw"><input id="' . $id . '" name="' . $field . '" class="ccm-input-date" value="' . $dt . '"  /></span>';
 
 		if ($calendarAutoStart) { 
-			$html .= '<script type="text/javascript">$(function() { $("#' . $id . '_pub").datepicker({ dateFormat: \'' . DATE_APP_DATE_PICKER . '\', altFormat: "@", altField: "#' . $id . '", changeYear: true, showAnim: \'fadeIn\' }).datepicker( "setDate" , ' . $defaultDateJs . ' ); });</script>';
+			$html .= '<script type="text/javascript">$(function() { $("#' . $id . '").datepicker({ dateFormat: \'' . DATE_APP_DATE_PICKER . '\', changeYear: true, showAnim: \'fadeIn\' }); });</script>';
 		}
 		return $html;
 	
 	}	
 
 }
-

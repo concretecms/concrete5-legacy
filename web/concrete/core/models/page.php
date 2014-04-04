@@ -1628,55 +1628,59 @@ class Concrete5_Model_Page extends Collection {
 		}
 		Log::addEntry(t('Page "%s" at path "%s" deleted', $this->getCollectionName(), $this->getCollectionPath()),t('Page Action'));
 
-		parent::delete();
-		
-		$cID = $this->getCollectionID();
-		$cParentID = $this->getCollectionParentID();
-
-		// Now that all versions are gone, we can delete the collection information
-		$q = "delete from PagePaths where cID = '{$cID}'";
-		$r = $db->query($q);
-		
-		// remove all pages where the pointer is this cID
-		$r = $db->query("select cID from Pages where cPointerID = ?", array($cID));
-		while ($row = $r->fetchRow()) {
-			PageStatistics::decrementParents($row['cID']);
-			$db->Execute('DELETE FROM PagePaths WHERE cID=?', array($row['cID']));
+		if($this->isAlias() && ($this->getCollectionPointerExternalLink() == '')) {
+			$this->removeThisAlias();
 		}
-
-		// Update cChildren for cParentID
-		PageStatistics::decrementParents($cID);
-		
-		$q = "delete from PagePermissionAssignments where cID = '{$cID}'";
-		$r = $db->query($q);
-
-		$q = "delete from Pages where cID = '{$cID}'";
-		$r = $db->query($q);
-
-		$q = "delete from Pages where cPointerID = '{$cID}'";
-		$r = $db->query($q);
-
-		$q = "delete from Areas WHERE cID = '{$cID}'";
-		$r = $db->query($q);
-
-		$q = "delete from ComposerDrafts WHERE cID = '{$cID}'";
-		$r = $db->query($q);
-
-		$db->query('delete from PageSearchIndex where cID = ?', array($cID));
-		
-		$q = "select cID from Pages where cParentID = '{$cID}'";
-		$r = $db->query($q);
-		if ($r) {
+		else {
+			parent::delete();
+			
+			$cID = $this->getCollectionID();
+			$cParentID = $this->getCollectionParentID();
+	
+			// Now that all versions are gone, we can delete the collection information
+			$q = "delete from PagePaths where cID = '{$cID}'";
+			$r = $db->query($q);
+			
+			// remove all pages where the pointer is this cID
+			$r = $db->query("select cID from Pages where cPointerID = ?", array($cID));
 			while ($row = $r->fetchRow()) {
-				if ($row['cID'] > 0) {
-					$nc = Page::getByID($row['cID']);  
-					if( $nc->isAlias() )
-						 $nc->removeThisAlias(); 
-					else $nc->delete();
+				PageStatistics::decrementParents($row['cID']);
+				$db->Execute('DELETE FROM PagePaths WHERE cID=?', array($row['cID']));
+			}
+	
+			// Update cChildren for cParentID
+			PageStatistics::decrementParents($cID);
+			
+			$q = "delete from PagePermissionAssignments where cID = '{$cID}'";
+			$r = $db->query($q);
+	
+			$q = "delete from Pages where cID = '{$cID}'";
+			$r = $db->query($q);
+	
+			$q = "delete from Pages where cPointerID = '{$cID}'";
+			$r = $db->query($q);
+	
+			$q = "delete from Areas WHERE cID = '{$cID}'";
+			$r = $db->query($q);
+	
+			$q = "delete from ComposerDrafts WHERE cID = '{$cID}'";
+			$r = $db->query($q);
+	
+			$db->query('delete from PageSearchIndex where cID = ?', array($cID));
+			
+			$q = "select cID from Pages where cParentID = '{$cID}'";
+			$r = $db->query($q);
+			if ($r) {
+				while ($row = $r->fetchRow()) {
+					if ($row['cID'] > 0) {
+						$nc = Page::getByID($row['cID']);  
+						if( $nc->isAlias() )
+							 $nc->removeThisAlias(); 
+						else $nc->delete();
+					}
 				}
 			}
 		}
-
 		$cache = PageCache::getLibrary();
 		$cache->purge($this);
 

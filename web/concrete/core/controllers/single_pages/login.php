@@ -355,8 +355,8 @@ class Concrete5_Controller_Login extends Controller {
 
 	public function forward($cID = 0) {
 		$nh = Loader::helper('validation/numbers');
-		if ($nh->integer($cID)) {
-			$this->set('rcID', $cID);
+		if ($nh->integer($cID) && intval($cID) > 0) {
+			$this->set('rcID', intval($cID));
 		}
 	}
 

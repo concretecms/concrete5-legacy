@@ -2603,7 +2603,7 @@
     <field name="uName" type="C" size="64">
       <NOTNULL/>
     </field>
-    <field name="uEmail" type="C" size="64">
+    <field name="uEmail" type="C" size="255">
       <NOTNULL/>
     </field>
     <field name="uPassword" type="C" size="255">

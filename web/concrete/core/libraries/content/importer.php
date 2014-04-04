@@ -284,11 +284,13 @@ class Concrete5_Library_Content_Importer {
 	protected function importBlockTypes(SimpleXMLElement $sx) {
 		if (isset($sx->blocktypes)) {
 			foreach($sx->blocktypes->blocktype as $bt) {
-				$pkg = ContentImporter::getPackageObject($bt['package']);
-				if (is_object($pkg)) {
-					BlockType::installBlockTypeFromPackage($bt['handle'], $pkg);
-				} else {
-					BlockType::installBlockType($bt['handle']);				
+				if (!is_object(BlockType::getByHandle((string) $bt['handle']))) {
+					$pkg = ContentImporter::getPackageObject($bt['package']);
+					if (is_object($pkg)) {
+						BlockType::installBlockTypeFromPackage((string) $bt['handle'], $pkg);
+					} else {
+						BlockType::installBlockType((string) $bt['handle']);				
+					}
 				}
 			}
 		}
@@ -391,11 +393,14 @@ class Concrete5_Library_Content_Importer {
 		if (isset($sx->jobs)) {
 			foreach($sx->jobs->job as $jx) {
 				$pkg = ContentImporter::getPackageObject($jx['package']);
-				if (is_object($pkg)) {
-					Job::installByPackage($jx['handle'], $pkg);
-				} else {
-					Job::installByHandle($jx['handle']);				
-				}
+                                $job = Job::getByHandle($jx['handle']);
+                                if (!is_object($job)) {
+                                    if (is_object($pkg)) {
+                                            Job::installByPackage($jx['handle'], $pkg);
+                                    } else {
+                                            Job::installByHandle($jx['handle']);				
+                                    }
+                                }
 			}
 		}
 	}

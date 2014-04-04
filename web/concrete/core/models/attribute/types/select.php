@@ -233,9 +233,9 @@ class Concrete5_Controller_AttributeType_Select extends AttributeTypeController 
 	public function saveValue($value) {
 		$db = Loader::db();
 		$this->load();
-		$options = array();		
+		$options = array();
 		
-		if (is_array($value) && $this->akSelectAllowMultipleValues) {
+		if ((is_array($value) || $value instanceof Traversable) && $this->akSelectAllowMultipleValues) {
 			foreach($value as $v) {
 				$opt = SelectAttributeTypeOption::getByValue($v, $this->attributeKey);
 				if (is_object($opt)) {
@@ -310,7 +310,7 @@ class Concrete5_Controller_AttributeType_Select extends AttributeTypeController 
 		}
 		$optionQuery = array();
 		foreach($options as $id) {
-			if ($id > 0) {
+			if (Loader::helper('validation/numbers')->integer($id) && $id > 0) {
 				$opt = SelectAttributeTypeOption::getByID($id);
 				if (is_object($opt)) {
 					$optionQuery[] = $opt->getSelectAttributeOptionValue(false);
