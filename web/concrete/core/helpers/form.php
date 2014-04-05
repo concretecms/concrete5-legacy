@@ -87,13 +87,14 @@ class Concrete5_Helper_Form {
 	 * Creates a hidden form field. 
 	 * @param string $key
 	 * @param string $value
+	 * @param array $miscFields Additional fields appended at the end of the input
 	 */
-	public function hidden($key, $value = null) {
+	public function hidden($key, $value = null, $miscFields = array()) {
 		$val = $this->getRequestValue($key);
 		if ($val !== false && (!is_array($val))) {
 			$value = $val;
 		}
-		$str = '<input type="hidden" name="' . $key . '" id="' . $key . '" value="' . $value . '" />';
+		$str = '<input type="hidden" name="' . $key . '" id="' . $key . '" value="' . $value . '"' . $this->parseMiscFields('ccm-input-hidden ', $miscFields) . ' />';
 		return $str;
 	}
 
