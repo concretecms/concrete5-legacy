@@ -282,7 +282,7 @@ class Concrete5_Controller_Install extends Controller {
 					}
 					if (is_array($_POST['SITE_CONFIG'])) {
 						foreach($_POST['SITE_CONFIG'] as $key => $value) { 
-							$configuration .= "define('" . $key . "', '" . $value . "');\n";
+							$configuration .= "define('" . addslashes($key) . "', '" . addslashes($value) . "');\n";
 						}
 					}
 					$res = fwrite($this->fp, $configuration);
