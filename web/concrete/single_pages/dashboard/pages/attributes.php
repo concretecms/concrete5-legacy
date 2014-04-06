@@ -36,22 +36,18 @@
 	$attribs = CollectionAttributeKey::getList();
 	Loader::element('dashboard/attributes_table', array('category' => $category, 'attribs'=> $attribs, 'editURL' => '/dashboard/pages/attributes')); ?>
 
-	<div class="ccm-pane-body ccm-pane-body-footer">
-	
 	<form method="get" class="form-inline" action="<?=$this->action('select_type')?>" id="ccm-attribute-type-form">
-	<div class="control-group">
-	<?=$form->label('atID', t('Add Attribute'))?>
-	<div class="controls">
-	
-	<?=$form->select('atID', $types)?>
-	<?=$form->submit('submit', t('Add'))?>
-	
-	</div>
-	</div>
-	
+		<fieldset>
+			<legend><?php echo t("Add Attribute");?></legend>	
+			<div class="form-group">
+				<?=$form->label('atID', t('Add Attribute'), array("class" => "sr-only"))?>
+				<?=$form->select('atID', $types, array("style" => "width: 400px; margin-right: 10px;"))?>
+			</div>
+			<div class="form-group">
+				<?=$form->submit('submit', t('Add'))?>
+			</div>
+		</fieldset>
 	</form>
-
-	</div>
 	
 	<?=Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper(false);?>
 

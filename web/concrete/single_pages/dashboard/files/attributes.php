@@ -25,14 +25,17 @@
 	$attribs = FileAttributeKey::getList();
 	Loader::element('dashboard/attributes_table', array('category' => $category, 'attribs'=> $attribs, 'editURL' => '/dashboard/files/attributes')); ?>
 
-	<form method="get" action="<?=$this->action('select_type')?>" id="ccm-attribute-type-form">
-		<label for="atID"><?=t('Add Attribute')?></label>
-		<div class="form-inline">
-		<div class="form-group">
-			<?=$form->select('atID', $types)?>
-		</div>
-		<button type="submit" class="btn btn-default"><?=t('Go')?></button>
-		</div>
+	<form method="get" class="form-inline" action="<?=$this->action('select_type')?>" id="ccm-attribute-type-form">
+		<fieldset>
+			<legend><?php echo t("Add Attribute");?></legend>	
+			<div class="form-group">
+				<?=$form->label('atID', t('Add Attribute'), array("class" => "sr-only"))?>
+				<?=$form->select('atID', $types, array("style" => "width: 400px; margin-right: 10px;"))?>
+			</div>
+			<div class="form-group">
+				<?=$form->submit('submit', t('Add'))?>
+			</div>
+		</fieldset>
 	</form>
 
 <? } ?>
