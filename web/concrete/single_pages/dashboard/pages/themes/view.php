@@ -51,6 +51,17 @@ $alreadyActiveMessage = t('This theme is currently active on your site.');
     
     <?=Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Themes'), false, 'span10 offset1');?>
 	
+	<? if (ENABLE_MARKETPLACE_SUPPORT == true) { ?>
+ 	<div class="ccm-dashboard-header-buttons">
+ 		<h4 style="margin-top: 0;">
+ 			<?= t("More Themes Online") ?>&ensp;
+ 			<a class="btn btn-success btn-mini" href="<?= $this->url('/dashboard/extend/themes') ?>">
+ 				<?= t("Go") ?>&ensp;<span class="glyphicon glyphicon-chevron-right"></span>
+ 			</a>
+		</h4>
+	</div>
+	<? } ?>
+
 	<h3><?=t('Currently Installed')?></h3>
 	
 	<table width="100%" border="0" cellspacing="0" cellpadding="0" class="table">
@@ -105,24 +116,26 @@ $alreadyActiveMessage = t('This theme is currently active on your site.');
 	<? } ?>
     
     </table>
-    
-    
-    <form method="post" action="<?=$this->action('save_mobile_theme')?>" class="form-horizontal">
-    <h3><?=t("Mobile Theme")?></h3>
-    <p><?=t("To use a separate theme for mobile browsers, specify it below.")?></p>
-    
-    <div class="control-group">
-    <?=$form->label('MOBILE_THEME_ID', t('Mobile Theme'))?>
-    <div class="controls">
-    	<? $themes[0] = t('** Same as website (default)'); ?>
-    	<? foreach($tArray as $pt) {
-    		$themes[$pt->getThemeID()] = $pt->getThemeDisplayName();
-    	} ?>
-    	<?=$form->select('MOBILE_THEME_ID', $themes, Config::get('MOBILE_THEME_ID'))?>
-    	<?=$form->submit('save_mobile_theme', t('Save'))?>
-    </div>
-    </div>
-    </form>
+	
+    <div class="mobile-theme-wrap" style="margin: 0 8px;">
+		<h3><?= t("Mobile Theme") ?></h3>
+		<p><?= t("To use a separate theme for mobile browsers, specify it below.") ?></p>
+		<form method="post" action="<?= $this->action('save_mobile_theme') ?>" class="form-inline">
+			<div class="form-group">
+				<?= $form->label('MOBILE_THEME_ID', t('Mobile Theme'), array("class" => "sr-only")) ?>
+				<? $themes[0] = t('** Same as website (default)'); ?>
+				<?
+				foreach ($tArray as $pt) {
+					$themes[$pt->getThemeID()] = $pt->getThemeDisplayName();
+				}
+				?>
+				<?= $form->select('MOBILE_THEME_ID', $themes, Config::get('MOBILE_THEME_ID'), array("style" => "width: 400px; margin-right: 10px;")); ?>
+			</div>
+			<div class="form-group">
+				<?= $form->submit('save_mobile_theme', t('Save')) ?>
+			</div>
+		</form>
+	</div>
     <br/><br/>
     
     
@@ -161,16 +174,6 @@ $alreadyActiveMessage = t('This theme is currently active on your site.');
     <!-- END AVAILABLE TO INSTALL -->
 			
 	<? } // END 'IF AVAILABLE' CHECK ?>
-    
-    <? if (ENABLE_MARKETPLACE_SUPPORT == true) { ?>
-
-	<div class="well" style="padding:10px 20px;">
-        <h3><?=t('Want more themes?')?></h3>
-        <p><?=t('You can download themes and add-ons from the concrete5 marketplace.')?></p>
-        <p><a class="btn btn-success" href="<?=$this->url('/dashboard/extend/themes')?>"><?=t("Get More Themes")?></a></p>
-    </div>
-    
-    <? } ?>
 
 	<?=Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper()?>
 	
