@@ -34,6 +34,7 @@
 	<?
 	$attribs = CollectionAttributeKey::getList();
 	Loader::element('dashboard/attributes_table', array('category' => $category, 'attribs'=> $attribs, 'editURL' => '/dashboard/pages/attributes')); ?>
+<div class="ccm-pane-body ccm-pane-body-footer">
 	<form method="get" 
 		 class="form-inline" 
 		 action="<?=$this->action('select_type')?>" 
@@ -49,6 +50,7 @@
 			</div>
 		</fieldset>
 	</form>
+</div>
 	<?=Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper(false);?>
 
 <? } ?>

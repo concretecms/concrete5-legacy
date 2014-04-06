@@ -24,7 +24,7 @@
 	<?
 	$attribs = FileAttributeKey::getList();
 	Loader::element('dashboard/attributes_table', array('category' => $category, 'attribs'=> $attribs, 'editURL' => '/dashboard/files/attributes')); ?>
-
+<div class="ccm-pane-body ccm-pane-body-footer">
 	<form method="get" action="<?=$this->action('select_type')?>" id="ccm-attribute-type-form" class="form-inline">
 		<fieldset>
 			<legend><?=t('Add Attribute')?></legend>
@@ -37,5 +37,5 @@
 			</div>
 		</fieldset>
 	</form>
-
+</div>
 <? } ?>
