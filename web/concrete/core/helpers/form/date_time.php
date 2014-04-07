@@ -96,7 +96,11 @@ class Concrete5_Helper_Form_DateTime {
 				$m = date('i');
 				$a = date('A');
 			} else {
-				$h= 12; //workaround since 1 is first element
+				$dt = null;
+				$h = 12; //workaround since 1 is first element
+				$m = null;
+				$a = null;
+				
 			}
 		}
 		$id = preg_replace("/[^0-9A-Za-z-]/", "_", $prefix);
