@@ -76,7 +76,8 @@
 				'adapter' => 'gettext',
 				'content' => $languageDir,
 				'locale'  => $locale,
-				'disableNotices'  => true
+				'disableNotices'  => true,
+				'ignore' => 'messages.po'
 			);
 			if (defined('TRANSLATE_OPTIONS')) {
 				$_options = unserialize(TRANSLATE_OPTIONS);
