@@ -957,7 +957,7 @@ class Concrete5_Model_Page extends Collection {
 	 * @param int $cID
 	 * @return int
 	 */		
-	function getCollectionParentIDFromChildID($cID) {
+	public static function getCollectionParentIDFromChildID($cID) {
 		$db = Loader::db();
 		$q = "select cParentID from Pages where cID = ?";
 		$cParentID = $db->GetOne($q, array($cID));
