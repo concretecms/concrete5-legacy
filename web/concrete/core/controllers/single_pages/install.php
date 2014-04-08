@@ -280,11 +280,6 @@ class Concrete5_Controller_Install extends Controller {
 					if (isset($setPermissionsModel)) {
 						$configuration .= "define('PERMISSIONS_MODEL', '" . addslashes($setPermissionsModel) . "');\n";
 					}
-					if (is_array($_POST['SITE_CONFIG'])) {
-						foreach($_POST['SITE_CONFIG'] as $key => $value) { 
-							$configuration .= "define('" . $key . "', '" . $value . "');\n";
-						}
-					}
 					$res = fwrite($this->fp, $configuration);
 					fclose($this->fp);
 					chmod(DIR_CONFIG_SITE . '/site_install.php', 0700);
