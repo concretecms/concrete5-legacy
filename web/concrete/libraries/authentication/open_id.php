@@ -65,7 +65,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		}
 		
 		public function reinstatePreviousRequest() {
-			$preq = unserialize($_SESSION['uOpenIDPreviousPostArray']);
+			$preq = json_decode($_SESSION['uOpenIDPreviousPostArray']);
 			if (is_array($preq)) {
 				foreach($preq as $key => $value) {
 					$_POST[$key] = $value;
@@ -97,7 +97,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		}
 		
     	public function request($identifier) {
-    		$_SESSION['uOpenIDPreviousPostArray'] = serialize($_POST);
+    		$_SESSION['uOpenIDPreviousPostArray'] = json_encode($_POST);
     		$response = $this->consumer->begin($identifier);
 			if (!$response) {
 				$this->response->code = OpenIDAuth::E_INVALID_OPENID;
