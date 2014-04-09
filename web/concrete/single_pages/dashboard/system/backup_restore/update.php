@@ -3,7 +3,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 $h = Loader::helper('concrete/dashboard');
 $ih = Loader::helper('concrete/interface');
 $form = Loader::helper('form');
-if ($downloadableUpgradeAvailable) { ?>
+if ($showDownloadBox && $downloadableUpgradeAvailable) { ?>
 	<?=$h->getDashboardPaneHeaderWrapper(t('Download Update'), false, 'span8 offset2');?>
 	<? if (!defined('MULTI_SITE') || MULTI_SITE == false) { ?>
 		<a href="<?=$this->action('check_for_updates')?>" class="btn" style="float: right"><?=t('Check For Updates')?></a>
