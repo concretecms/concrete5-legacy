@@ -7,6 +7,6 @@
 		"grunt-contrib-less": "~0.7.0",
 		"grunt-contrib-cssmin": "~0.6.2",
 		"shelljs": "0.2.6",
-		"download": "0.1.10"
+		"download": "0.1.15"
 	}
 }
