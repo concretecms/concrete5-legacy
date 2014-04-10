@@ -232,12 +232,15 @@ class Concrete5_Model_Package extends Object {
 	
 	/**
 	 * Loads package translation files into zend translate 
-	 * @param string $locale
-	 * @param string $key
+	 * @param string $locale = null
+	 * @param string $key = null
+	 * @param string|Zend_Translate = 'current'
 	 * @return void
 	*/
-	public function setupPackageLocalization($locale = NULL, $key = NULL) {
-		$translate = Localization::getTranslate();
+	public function setupPackageLocalization($locale = NULL, $key = NULL, $translate = 'current') {
+		if($translate === 'current') {
+			$translate = Localization::getTranslate();
+		}
 		if (is_object($translate)) {
 			$path = $this->getPackagePath() . '/' . DIRNAME_LANGUAGES;
 			if(!isset($locale) || !strlen($locale)) {
