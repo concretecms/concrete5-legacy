@@ -426,13 +426,70 @@ class Concrete5_Controller_AttributeType_Select extends AttributeTypeController 
 		switch($this->akSelectOptionDisplayOrder) {
 			case 'popularity_desc':
 				if(isset($like) && strlen($like)) {
-					$r = $db->Execute('select ID, value, displayOrder, count(atSelectOptionsSelected.atSelectOptionID) as total 
-						from atSelectOptions left join atSelectOptionsSelected on (atSelectOptions.ID = atSelectOptionsSelected.atSelectOptionID) 
-						where akID = ? AND atSelectOptions.value LIKE ? group by ID order by total desc, value asc', array($this->attributeKey->getAttributeKeyID(),$like));
+					$r = $db->Execute('
+						select 
+							atSelectOptions.ID as ID,
+							atSelectOptions.value as value,
+							atSelectOptions.displayOrder as displayOrder,
+							count(asos.atSelectOptionID) as total,
+							cv.cID as cID
+
+						from
+							atSelectOptions
+
+						left join (
+							atSelectOptionsSelected asos, 
+							CollectionAttributeValues cav, 
+							CollectionVersions cv)
+
+						on (
+							atSelectOptions.ID = asos.atSelectOptionID and
+							cav.avID = asos.avID and
+							cav.cID = cv.cID and
+							cav.cvID = cv.cvID and
+							cv.cvIsApproved = 1)
+
+						where 
+							atSelectOptions.akID = ? and
+							atSelectOptions.value LIKE ?
+							
+						group by ID
+
+						order by
+							total desc,
+							value asc', array($this->attributeKey->getAttributeKeyID(),$like));
 				} else {
-					$r = $db->Execute('select ID, value, displayOrder, count(atSelectOptionsSelected.atSelectOptionID) as total 
-						from atSelectOptions left join atSelectOptionsSelected on (atSelectOptions.ID = atSelectOptionsSelected.atSelectOptionID) 
-						where akID = ? group by ID order by total desc, value asc', array($this->attributeKey->getAttributeKeyID()));
+					$r = $db->Execute('
+						select 
+							atSelectOptions.ID as ID,
+							atSelectOptions.value as value,
+							atSelectOptions.displayOrder as displayOrder,
+							count(asos.atSelectOptionID) as total,
+							cv.cID as cID
+
+						from
+							atSelectOptions
+
+						left join (
+							atSelectOptionsSelected asos, 
+							CollectionAttributeValues cav, 
+							CollectionVersions cv)
+
+						on (
+							atSelectOptions.ID = asos.atSelectOptionID and
+							cav.avID = asos.avID and
+							cav.cID = cv.cID and
+							cav.cvID = cv.cvID and
+							cv.cvIsApproved = 1)
+
+						where 
+							atSelectOptions.akID = ?
+
+						group by ID
+
+						order by
+							total desc,
+							value asc', array($this->attributeKey->getAttributeKeyID()));
 				}
 				break;
 			case 'alpha_asc':
