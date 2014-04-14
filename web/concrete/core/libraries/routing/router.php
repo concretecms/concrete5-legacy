@@ -33,7 +33,7 @@ class Concrete5_Library_Router {
 	 * @param string $sting
 	 * @param callable|string $callback
 	 * @param null|string $rtHandle optional
-	 * @param array $additionalAttribtues optional
+	 * @param array $additionalAttributes optional
 	 */
 	public function register($rtPath, $callback, $rtHandle = null, $additionalAttributes = array()) {
 		$attributes = array();
