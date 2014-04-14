@@ -29,8 +29,34 @@ class Concrete5_Library_Router {
 		return self::$instance;
 	}
 
+	/**
+	 * @param string $sting
+	 * @param callable|string $callback
+	 * @param null|string $rtHandle optional
+	 * @param array $additionalAttribtues optional
+	 */
 	public function register($rtPath, $callback, $rtHandle = null, $additionalAttributes = array()) {
-		// setup up standard concrete5 routing.
+		$attributes = array();
+		if ($callback instanceof Closure) {
+			$attributes = ClosureRouteCallback::getRouteAttributes($callback);
+		} else if ($callback === 'dispatcher') {
+			$attributes = DispatcherRouteCallback::getRouteAttributes($callback);
+		} else {
+			$attributes = ControllerRouteCallback::getRouteAttributes($callback);
+		}
+		$attributes['path'] = $this->getStandardRoutingPath($rtPath, $rtHandle);
+		$route = new Route($rtPath, $attributes, $additionalAttributes);
+		$this->collection->add($rtHandle, $route);
+	}
+
+	/**
+	 * Setup up standard concrete5 routing.
+	 *
+	 * @param string $rtPath
+	 * @param string $rtHandle
+	 * @return string
+	 */
+	protected function getStandardRoutingPath($rtPath, $rtHandle) {
 		$rtPathTrimmed = trim($rtPath, '/');
 		if (!$rtHandle) {
 			$rtHandle = preg_replace('/[^A-Za-z0-9\_]/', '_', $rtPathTrimmed);
@@ -38,17 +64,7 @@ class Concrete5_Library_Router {
 			$rtHandle = trim($rtHandle, '_');
 		}
 		$rtPath = '/' . $rtPathTrimmed . '/';
-		$attributes = array();
-		if ($callback instanceof Closure) {
-			$attributes = ClosureRouteCallback::getRouteAttributes($callback);
-		} else if ($callback == 'dispatcher') {
-			$attributes = DispatcherRouteCallback::getRouteAttributes($callback);
-		} else {
-			$attributes = ControllerRouteCallback::getRouteAttributes($callback);
-		}
-		$attributes['path'] = $rtPath;
-		$route = new Route($rtPath, $attributes, $additionalAttributes);
-		$this->collection->add($rtHandle, $route);
+		return $rtPath;
 	}
 
 	public function execute(Route $route, $parameters) {
