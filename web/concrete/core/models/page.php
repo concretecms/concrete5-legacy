@@ -1992,6 +1992,9 @@ class Concrete5_Model_Page extends Collection {
 	function getNextSubPageDisplayOrder() {
 		$db = Loader::db();
 		$max = $db->getOne("select max(cDisplayOrder) from Pages where cParentID = " . $this->getCollectionID());
+		if ($max === '0') {
+			return 1;
+		}
 		if ($max) {
 			return $max + 1;
 		}
