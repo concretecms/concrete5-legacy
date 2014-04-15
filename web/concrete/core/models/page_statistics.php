@@ -33,9 +33,8 @@ class Concrete5_Model_PageStatistics {
 		$db = Loader::db();
 		if ($date != null) {
 			return $db->GetOne("select count(pstID) from PageStatistics where date = ?", array($date));
-		} else {
-			return $db->GetOne("select count(pstID) from PageStatistics");
 		}
+		return $db->GetOne("select count(pstID) from PageStatistics");
 	}
 
 	/**
@@ -49,10 +48,9 @@ class Concrete5_Model_PageStatistics {
 		if ($date != null) {
 			$v = array($u->getUserID(), $date);
 			return $db->GetOne("select count(pstID) from PageStatistics where uID <> ? and date = ?", $v);
-		} else {
-			$v = array($u->getUserID());
-			return $db->GetOne("select count(pstID) from PageStatistics where uID <> ?", $v);
 		}
+		$v = array($u->getUserID());
+		return $db->GetOne("select count(pstID) from PageStatistics where uID <> ?", $v);
 	}
 
 	/**
@@ -75,9 +73,8 @@ class Concrete5_Model_PageStatistics {
 		if(ENABLE_USER_TIMEZONES && $type == 'user') {
 			$dh = Loader::helper('date');
 			return $dh->getLocalDateTime($cDateModified);
-		} else {
-			return $cDateModified;
 		}
+		return $cDateModified;
 	}
 	
 	/**
