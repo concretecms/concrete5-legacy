@@ -1,5 +1,11 @@
 <?  defined('C5_EXECUTE') or die("Access Denied.");
 
+$valt = Loader::helper('validation/token');
+if(!$valt->validate('marketplace_token', $_REQUEST['ccm_token'])) { ?>
+	<p><?=$valt->getErrorMessage()?></p>
+	<? exit;
+}
+
 $tp = new TaskPermission();
 if (!$tp->canInstallPackages()) { ?>
 	<p><?=t('You do not have permission to download packages from the marketplace.')?></p>
@@ -15,9 +21,9 @@ $install = isset($_REQUEST['install']) ? $_REQUEST['install'] : false;
 $error = Loader::helper('validation/error');
 
 if (!empty($mpID)) {
-	
+
 	$mri = MarketplaceRemoteItem::getByID($mpID);
-	if (is_object($mri)) { 
+	if (is_object($mri)) {
 		$r = $mri->download();
 		if ($r != false) {
 			if (is_array($r)) {
@@ -57,14 +63,14 @@ if (!$error->has()) { ?>
 	<p>
 	<? if ($install) {
 		$_pkg = Package::getByHandle($p->getPackageHandle());
-		if ($_pkg->hasInstallPostScreen()) { 
+		if ($_pkg->hasInstallPostScreen()) {
 			Loader::element('dashboard/install_post', false, $_pkg->getPackageHandle());
 		} else {
 	 		echo t('The package was successfully installed.');
 	 	}
 	} else {
 		echo t('The package was successfully downloaded and decompressed on your server.');
-	} 
+	}
 	print '<div class="dialog-buttons">';
 	print Loader::helper('concrete/interface')->button_js(t('Return'), 'javascript:ccm_getMarketplaceItem.onComplete()', 'right');
 	print '</div>';

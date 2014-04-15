@@ -36,7 +36,7 @@ ccm_testMarketplaceConnection = function(onComplete, task, mpID) {
 		} else {
 			$.fn.dialog.open({
 				title: ccmi18n.community,
-				href:  CCM_TOOLS_PATH + '/marketplace/frame?task=' + task + mpIDStr + 'ccm_token=' + resp.token,
+				href:  CCM_TOOLS_PATH + '/marketplace/frame?task=' + task + mpIDStr + '&ccm_token=' + resp.token,
 				width: '90%',
 				modal: false,
 				height: '70%'
@@ -143,7 +143,7 @@ ccm_getMarketplaceItem = function(args) {
 			if (!resp.purchaseRequired) {
 				$.fn.dialog.open({
 					title: ccmi18n.community,
-					href:  CCM_TOOLS_PATH + '/marketplace/download?install=1&mpID=' + mpID,
+					href:  CCM_TOOLS_PATH + '/marketplace/download?install=1&mpID=' + mpID + '&ccm_token=' + resp.token,
 					width: 500,
 					appendButtons: true,
 					modal: false,
