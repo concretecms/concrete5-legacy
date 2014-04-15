@@ -1695,11 +1695,6 @@ class Concrete5_Model_Page extends Collection {
 		}
 	}
 
-	public function __destruct() {
-		parent::__destruct();
-	}
-
-
 	function updateGroupsSubCollection($cParentIDString) {
 		// now we iterate through
 		$db = Loader::db();
