@@ -352,7 +352,7 @@ class Concrete5_Model_Page extends Collection {
 	 */
 	function isGeneratedCollection() {
 		// generated collections are collections without types, that have special cFilename attributes
-		return $this->cFilename != null && $this->vObj->ptID == 0;
+		return $this->cFilename && !$this->vObj->ptID;
 	}
 
 	public function assignPermissions($userOrGroup, $permissions = array(), $accessType = PagePermissionKey::ACCESS_TYPE_INCLUDE) {
