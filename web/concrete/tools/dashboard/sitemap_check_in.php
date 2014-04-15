@@ -5,7 +5,10 @@ if (Loader::helper('validation/token')->validate()) {
 	if ($_REQUEST['cID'] && Loader::helper('validation/numbers')->integer($_REQUEST['cID'])) {
 		$c = Page::getByID($_REQUEST['cID'], 'RECENT');
 		if (is_object($c) && !$c->isError()) {
-			$c->forceCheckIn();
+			$cp = new Permissions($c);
+			if($cp->canViewToolbar()) {
+				$c->forceCheckIn();
+			}
 		}
 	}
 }
