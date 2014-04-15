@@ -149,7 +149,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 					array_pop($parts); // pop the filename out of the array
 					while (sizeof($parts) > 0) {
 						$dir .= '/' . array_shift($parts);
-						@chmod($base, DIRECTORY_PERMISSIONS_MODE);
+						@chmod($dir, DIRECTORY_PERMISSIONS_MODE);
 					}
 				}
 				$style = $pt->parseStyleSheet($stylesheet);
