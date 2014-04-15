@@ -5,9 +5,11 @@ Loader::model('marketplace_remote_item');
 
 $js = Loader::helper('json');
 $mi = Marketplace::getInstance();
+$valt = Loader::helper('validation/token');
 
 $obj = new stdClass;
 $obj->isConnected = $mi->isConnected();
+$obj->token = $valt->generate('marketplace_token');
 $obj->connectionError = $mi->getConnectionError();
 if ($mi->isConnected() && isset($_REQUEST['mpID'])) {
 	// we also perform the "does the user need to buy it?" query here to save some requests
