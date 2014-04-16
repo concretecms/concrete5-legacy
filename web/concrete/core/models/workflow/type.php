@@ -4,7 +4,7 @@ class Concrete5_Model_WorkflowType extends Object {
 
 	public function getWorkflowTypeID() {return $this->wftID;}
 	public function getWorkflowTypeHandle() {return $this->wftHandle;}
-	public function getWorkflowTypeName() {return $this->wftName;}
+	public function getWorkflowTypeName() {return t($this->wftName);}
 	
 	public static function getByID($wftID) {
 		$db = Loader::db();

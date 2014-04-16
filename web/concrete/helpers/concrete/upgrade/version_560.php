@@ -142,6 +142,7 @@ class ConcreteUpgradeVersion560Helper {
 		$sp = Page::getByPath('/dashboard/workflow/list');
 		if ($sp->isError()) {
 			$d1a = SinglePage::add('/dashboard/workflow/list');
+			$d1a->update(array('cName'=>t('Workflow List')));
 		}
 		$sp = Page::getByPath('/dashboard/workflow/me');
 		if ($sp->isError()) {

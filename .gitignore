@@ -22,7 +22,6 @@ __MACOSX
 /web/css/*
 /web/js/*
 /web/blocks/*
-/web/languages/*
 /web/tools/*
 /web/controllers/*
 /web/single_pages/*

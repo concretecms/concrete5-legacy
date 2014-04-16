@@ -432,7 +432,7 @@ $(function() {
 </div>
 
 <div class="block-message alert-message info">
-<?=t('Having trouble? Check the <a href="%s">installation help forums</a>, or <a href="%s">have us host a copy</a> for you.', 'http://www.concrete5.org/community/forums/installation', 'http://www.concrete5.org/services/hosting')?>
+<?=t('Having trouble? Check the <a href="%s">installation help forums</a>, or <a href="%s">have us host a copy</a> for you.', 'http://concrete5-japan.org/community/forums/install/', 'http://www.concrete5.org/services/hosting')?>
 </div>
 </div>
 </div>

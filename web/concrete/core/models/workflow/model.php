@@ -16,7 +16,7 @@ abstract class Concrete5_Model_Workflow extends Object {
 	public function getAllowedTasks() {return $this->allowedTasks;}
 	
 	public function getWorkflowID() {return $this->wfID;}
-	public function getWorkflowName() {return $this->wfName;}
+	public function getWorkflowName() {return t($this->wfName);}
 	public function getWorkflowTypeObject() {
 		return WorkflowType::getByID($this->wftID);
 	}

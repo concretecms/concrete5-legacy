@@ -300,7 +300,7 @@ $(function() {
 	$("#cHandle").blur(function() {
 		$(".ccm-meta-path input").each(function() {
 			if ($(this).val() == "") {
-				$(this).val('<?=$c->getCollectionPath()?>');
+				$(this).val('<?=$c->cPath?>');
 			}
 		});
 	});

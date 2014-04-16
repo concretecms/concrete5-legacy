@@ -23,7 +23,7 @@ $dh = Loader::helper('date');
 
 		<div class="clearfix">
 			<?=$form->label('cName', t('Name'))?>
-			<div class="input"><input type="text" name="cName" value="" class="text span6" onKeyUp="ccm_updateAddPageHandle()" ></div>
+			<div class="input"><input type="text" name="cName" value="" class="text span6" ></div>
 		</div>
 
 		

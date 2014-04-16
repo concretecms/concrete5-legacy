@@ -131,14 +131,14 @@ if ($_REQUEST['approveImmediately'] == 1) {
 		<div class="clearfix">
 		<label for="cHandle"><?= t('Canonical URL')?></label>
 		<div class="input">
-		<?php if (!$c->isGeneratedCollection()) { ?>
-			<?=BASE_URL . DIR_REL;?><? if (URL_REWRITING == false) { ?>/<?=DISPATCHER_FILENAME?><? } ?><?
-			$cPath = substr($c->getCollectionPath(), strrpos($c->getCollectionPath(), '/') + 1);
-			print substr($c->getCollectionPath(), 0, strrpos($c->getCollectionPath(), '/'))?>/<input type="text" name="cHandle" value="<?php echo $cPath?>" id="cHandle" maxlength="128"><input type="hidden" name="oldCHandle" id="oldCHandle" value="<?php echo $c->getCollectionHandle()?>"><br /><br />
-		<?php  } else { ?>
-			<?php echo $c->getCollectionHandle()?><br /><br />
-		<?php  } ?>
-			<span class="help-block"><?=t('This page must always be available from at least one URL. That URL is listed above.')?></span>
+		<?  if (!$c->isGeneratedCollection()) { ?>
+			<? echo BASE_URL . DIR_REL;?><?  if (URL_REWRITING == false) { ?>/<? echo DISPATCHER_FILENAME?><?  } ?><? 
+			$cPath = substr($c->cPath, strrpos($c->cPath, '/') + 1);
+			print htmlentities(substr($c->cPath, 0, strrpos($c->cPath, '/')),ENT_QUOTES,APP_CHARSET)?>/<input type="text" name="cHandle" value="<?= htmlentities($cPath,ENT_QUOTES,APP_CHARSET)?>" id="cHandle" maxlength="128"><input type="hidden" name="oldCHandle" id="oldCHandle" value="<?= htmlentities($c->getCollectionHandle(),ENT_QUOTES,APP_CHARSET)?>"><br /><br />
+		<?   } else { ?>
+			<?= $c->getCollectionHandle()?><br /><br />
+		<?   } ?>
+			<span class="help-block"><? echo t('This page must always be available from at least one URL. That URL is listed above.')?></span>
 		</div>
 		</div>
 		<?php } ?>
@@ -154,7 +154,7 @@ if ($_REQUEST['approveImmediately'] == 1) {
 						$ppID = $path['ppID'];
 						$cPath = $path['cPath'];
 						echo '<div class="input ccm-meta-path">' .
-			     			'<input type="text" name="ppURL-' . $ppID . '" class="ccm-input-text" value="' . $cPath . '" id="ppID-'. $ppID . '"> ' .
+			     			'<input type="text" name="ppURL-' . $ppID . '" class="ccm-input-text" value="' . htmlentities($cPath,ENT_QUOTES,APP_CHARSET) . '" id="ppID-'. $ppID . '"> ' .
 			     			'<a href="javascript:void(0)" class="ccm-meta-path-del">' . t('Remove Path') . '</a></div>'."\n";
 					}
 				}

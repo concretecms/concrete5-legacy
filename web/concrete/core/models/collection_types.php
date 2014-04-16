@@ -555,7 +555,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		
 		
 		public function getCollectionTypeID() { return $this->ctID; }
-		public function getCollectionTypeName() { return $this->ctName; }
+		public function getCollectionTypeName() { return t($this->ctName); }
 		public function getCollectionTypeHandle() { return $this->ctHandle; }
 		public function isCollectionTypeIncludedInComposer() {return $this->ctIncludeInComposer;}
 		public function isCollectionTypeInternal() {return $this->ctIsInternal;}
