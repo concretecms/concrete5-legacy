@@ -17,7 +17,7 @@ module.exports = function(grunt, config, parameters, done) {
 		}
 		version = version[1];
 		process.stdout.write(version + '\n');
-		var directory = 'concrete' + version;
+		var directory = 'concrete' + version + '.ja';
 		fs.renameSync('./release/concrete5-master/web', './release/' + directory);
 		shell.pushd('release');
 		process.stdout.write('Creating zip file... ');
