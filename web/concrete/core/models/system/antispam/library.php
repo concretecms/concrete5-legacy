@@ -3,7 +3,7 @@
 class Concrete5_Model_SystemAntispamLibrary extends Object {
 
 	public function getSystemAntispamLibraryHandle() { return $this->saslHandle;}
-	public function getSystemAntispamLibraryName() { return t($this->saslName);}
+	public function getSystemAntispamLibraryName() { return $this->saslName;}
 	public function isSystemAntispamLibraryActive() { return $this->saslIsActive;}
 	public function getPackageID() { return $this->pkgID;}
 	public function getPackageHandle() {

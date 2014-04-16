@@ -45,7 +45,7 @@ class Concrete5_Model_AttributeSet extends Object {
 	
 	public function getAttributeSetID() {return $this->asID;}
 	public function getAttributeSetHandle() {return $this->asHandle;}
-	public function getAttributeSetName() {return t($this->asName);}
+	public function getAttributeSetName() {return $this->asName;}
 	public function getPackageID() {return $this->pkgID;}
 	public function getPackageHandle() {return PackageList::getHandle($this->pkgID);}
 	public function getAttributeSetKeyCategoryID() {return $this->akCategoryID;}

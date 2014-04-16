@@ -18,7 +18,7 @@ class Concrete5_Model_FileVersion extends Object {
 	public function getFileName() {return $this->fvFilename;}
 	public function getTitle() {return $this->fvTitle;}
 	public function getTags() {return $this->fvTags;}
-	public function getDescription() {return t($this->fvDescription);}
+	public function getDescription() {return $this->fvDescription;}
 	public function isApproved() {return $this->fvIsApproved;}
 
 	public function getGenericTypeText() {

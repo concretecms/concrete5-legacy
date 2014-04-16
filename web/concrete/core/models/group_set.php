@@ -54,7 +54,7 @@ class Concrete5_Model_GroupSet extends Object {
 	}
 	
 	public function getGroupSetID() {return $this->gsID;}
-	public function getGroupSetName() {return t($this->gsName);}
+	public function getGroupSetName() {return $this->gsName;}
 	public function getPackageID() {return $this->pkgID;}
 
 	/** Returns the display name for this group set (localized and escaped accordingly to $format)

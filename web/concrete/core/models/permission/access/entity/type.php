@@ -4,7 +4,7 @@ class Concrete5_Model_PermissionAccessEntityType extends Object {
 
 	public function getAccessEntityTypeID() {return $this->petID;}
 	public function getAccessEntityTypeHandle() {return $this->petHandle;}
-	public function getAccessEntityTypeName() {return t($this->petName);}
+	public function getAccessEntityTypeName() {return $this->petName;}
 	public function getAccessEntityTypeClass() {
 		$class = Loader::helper('text')->camelcase($this->petHandle) . 'PermissionAccessEntity';
 		return $class;
