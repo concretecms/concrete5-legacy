@@ -3,7 +3,7 @@
 class Concrete5_Model_SystemCaptchaLibrary extends Object {
 
 	public function getSystemCaptchaLibraryHandle() { return $this->sclHandle;}
-	public function getSystemCaptchaLibraryName() { return t($this->sclName);}
+	public function getSystemCaptchaLibraryName() { return $this->sclName;}
 	public function isSystemCaptchaLibraryActive() { return $this->sclIsActive;}
 	public function getPackageID() { return $this->pkgID;}
 	public function getPackageHandle() {

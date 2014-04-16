@@ -8,7 +8,7 @@ abstract class Concrete5_Model_PermissionAccessEntity extends Object {
 	}
 	public function getAccessEntityTypeHandle() {return $this->petHandle;}
 	public function getAccessEntityID() {return $this->peID;}
-	public function getAccessEntityLabel() {return t($this->label);}
+	public function getAccessEntityLabel() {return $this->label;}
 	abstract public function getAccessEntityUsers(PermissionAccess $pa);
 	abstract public function getAccessEntityTypeLinkHTML();
 	abstract public static function getAccessEntitiesForUser($user);

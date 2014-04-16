@@ -9,7 +9,7 @@ class Concrete5_Model_AttributeKey extends Object {
 	/** 
 	 * Returns the name for this attribute key
 	 */
-	public function getAttributeKeyName() { return t($this->akName);}
+	public function getAttributeKeyName() { return $this->akName;}
 
 	/** Returns the display name for this attribute (localized and escaped accordingly to $format)
 	* @param string $format = 'html'

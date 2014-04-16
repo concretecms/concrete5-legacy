@@ -199,7 +199,7 @@
 		}
 		
 		function getGroupName() {
-			return t($this->gName);
+			return $this->gName;
 		}
 
 		/** Returns the display name for this group (localized and escaped accordingly to $format)
@@ -220,7 +220,7 @@
 		}
 
 		function getGroupDescription() {
-			return t($this->gDescription);
+			return $this->gDescription;
 		}
 
 		/** Returns the display description for this group (localized and escaped accordingly to $format)

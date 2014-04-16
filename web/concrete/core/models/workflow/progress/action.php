@@ -54,7 +54,7 @@ class Concrete5_Model_WorkflowProgressAction extends Object {
 		return $this->wrActionStyleInnerButtonRight;
 	}
 	public function getWorkflowProgressActionLabel() {
-		return t($this->wrActionLabel);
+		return $this->wrActionLabel;
 	}
 	public function getWorkflowProgressActionTask() {
 		return $this->wrActionTask;

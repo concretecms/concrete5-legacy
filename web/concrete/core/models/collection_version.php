@@ -107,7 +107,7 @@
 		function isNew() {return $this->cvIsNew;}
 		function getVersionID() {return $this->cvID;}
 		function getCollectionID() {return $this->cID;}
-		function getVersionName() {return t($this->cvName);}
+		function getVersionName() {return $this->cvName;}	
 		function getVersionComments() {return $this->cvComments;}
 		function getVersionAuthorUserID() {return $this->cvAuthorUID;}
 		function getVersionApproverUserID() {return $this->cvApproverUID;}

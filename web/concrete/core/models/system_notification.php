@@ -14,7 +14,7 @@ class Concrete5_Model_SystemNotification extends Object {
 	public function getSystemNotificationURL() {return $this->snURL;}
 	public function getSystemNotificationAlternateURL() {return $this->snURL2;}
 	public function getSystemNotificationTitle() {return $this->snTitle;}
-	public function getSystemNotificationDescription() {return t($this->snDescription);}
+	public function getSystemNotificationDescription() {return $this->snDescription;}
 	public function getSystemNotificationBody() {return $this->snBody;}
 	public function getSystemNotificationDateTime() {return $this->snDateTime;}
 	public function isSystemNotificationNew() {return $this->snIsNew;}

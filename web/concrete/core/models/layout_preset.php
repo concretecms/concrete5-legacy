@@ -16,7 +16,7 @@ class Concrete5_Model_LayoutPreset extends Object{
 	protected $layoutID=0;
 	 
 	public function getLayoutPresetID(){ return $this->lpID; }
-	public function getLayoutPresetName(){ return t($this->lpName); }
+	public function getLayoutPresetName(){ return $this->lpName; }
 	public function getLayoutID(){ return $this->layoutID; }
 	public function getLayoutObject() { return Layout::getById($this->layoutID); }	 
  	
