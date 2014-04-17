@@ -21,6 +21,10 @@ defined('C5_EXECUTE') or die("Access Denied.");
 class Concrete5_Helper_Image {
 
 	public $jpegCompression = 80;
+	
+	public function construct() {
+		return $this;
+	}
 
 	/**
 	 * Resets the compression level to the system default
