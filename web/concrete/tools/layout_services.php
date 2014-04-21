@@ -1,19 +1,27 @@
 <?
 defined('C5_EXECUTE') or die("Access Denied.");
 
+$json = Loader::helper('json');
+
 $c = Page::getByID($_REQUEST['cID']);
 $a = Area::get($c, $_GET['arHandle']);
+
+if(!is_object($c) || !is_object($a)) {
+	$jsonData = array();
+	$jsonData['msg']=t('Access Denied.');
+	echo $json->encode($jsonData);
+	exit;
+}
 
 $nvc = $c->getVersionToModify();
 
 $cp = new Permissions($c);
 $ap = new Permissions($a);
-$json = Loader::helper('json');
 
 if(!$cp->canEditPageContents() || !$ap->canAddLayoutToArea()) {
 	$jsonData = array();
 	$jsonData['msg']=t('Access Denied.');
-	$json->encode($jsonData);
+	echo $json->encode($jsonData);
 	exit;
 }
 
