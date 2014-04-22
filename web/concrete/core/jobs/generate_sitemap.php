@@ -32,6 +32,8 @@ class Concrete5_Job_GenerateSitemap extends Job {
 	* @throws Exception Throws an exception in case of errors.
 	*/
 	public function run() {
+		setlocale(LC_NUMERIC, "en_US");
+		
 		Cache::disableCache();
 		Cache::disableLocalCache();
 		try {
