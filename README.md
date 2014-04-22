@@ -21,9 +21,9 @@
      \  c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c    \\___]\\___/||_||_|\\___]|_|  \\___/ \\___]\\___/ \\_____/
        ------------------------------        --    --   -- --   --  --     --     --    --     ----
 
-# Looking for concrete5 5.7 Development? It has its own repository!
+# Version 5.7 Development
 
-http://github.com/concrete5/concrete5-5.7.0/
+Looking for concrete5 5.7 development? It has its own repository: http://github.com/concrete5/concrete5-5.7.0/
 
 # Note
 
