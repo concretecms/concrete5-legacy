@@ -21,6 +21,10 @@
      \  c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c    \\___]\\___/||_||_|\\___]|_|  \\___/ \\___]\\___/ \\_____/
        ------------------------------        --    --   -- --   --  --     --     --    --     ----
 
+# Looking for concrete5 5.7 Development? It has its own repository!
+
+http://github.com/concrete5/concrete5-5.7.0/
+
 # Note
 
 This is the development distribution of concrete5. It is bleeding edge. The latest development build can be downloaded from https://github.com/concrete5/concrete5/zipball/master. 
