@@ -61,6 +61,8 @@
 				(strpos($ip, '192.168.') === 0)
 				||
 				(preg_match('/^172\.(\d+)\./', $ip, $m) && (intval($m[1]) >= 16) && (intval($m[1]) <= 31))
+				||
+				(stripos($ip, 'fe80::') === 0)
 			) {
 				return true;
 			}
