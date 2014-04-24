@@ -27,7 +27,7 @@ class Concrete5_Helper_Mail {
 	protected $data = array();
 	protected $subject = '';
 	public $body = '';
-	protected $template; 
+	protected $template = ''; 
 	protected $bodyHTML = false;
 	protected $testing = false;
 	
