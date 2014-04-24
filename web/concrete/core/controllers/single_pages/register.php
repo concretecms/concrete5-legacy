@@ -92,7 +92,7 @@ class Concrete5_Controller_Register extends Controller {
 			}		
 		//}
 		
-		if ($username == USER_SUPER) {
+		if (strcasecmp($username, USER_SUPER) === 0) {
 			$e->add(t('Invalid Username'));
 		}
 		
