@@ -108,6 +108,9 @@ class Concrete5_Model_Config extends Object {
 	* @param string $defaultValue
 	*/
 	public function getAndDefine($key, $defaultValue) {
+		if (defined($key)) {
+			return;
+		}
 		$val = Config::get($key, true);
 		if (!$val) {
 			$val = $defaultValue;
