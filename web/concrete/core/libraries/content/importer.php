@@ -519,14 +519,19 @@ class Concrete5_Library_Content_Importer {
 	
 	protected function importAttributes(SimpleXMLElement $sx) {
 		if (isset($sx->attributekeys)) {
+			$db = Loader::db();
 			foreach($sx->attributekeys->attributekey as $ak) {
-				$akc = AttributeKeyCategory::getByHandle($ak['category']);
-				$pkg = ContentImporter::getPackageObject($ak['package']);
-				$type = AttributeType::getByHandle($ak['type']);
-				$txt = Loader::helper('text');
-				$className = $txt->camelcase($akc->getAttributeKeyCategoryHandle());
-				$c1 = $className . 'AttributeKey';
-				$ak = call_user_func(array($c1, 'import'), $ak);				
+				$akID = $db->GetOne('select akID from AttributeKeys where akHandle = ?', array($ak['handle']));
+				
+				if (!$akID) {
+					$akc = AttributeKeyCategory::getByHandle($ak['category']);
+					$pkg = ContentImporter::getPackageObject($ak['package']);
+					$type = AttributeType::getByHandle($ak['type']);
+					$txt = Loader::helper('text');
+					$className = $txt->camelcase($akc->getAttributeKeyCategoryHandle());
+					$c1 = $className . 'AttributeKey';
+					$ak = call_user_func(array($c1, 'import'), $ak);
+				}
 			}
 		}
 	}
