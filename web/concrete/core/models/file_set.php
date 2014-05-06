@@ -375,7 +375,7 @@
 				$file_set_file->fsfID = null;
 				$file_set_file->fID =  $f_id;			
 				$file_set_file->fsID = $fs_id;
-				$file_set_file->timestamp = null;
+				$file_set_file->timestamp = date('Y-m-d H:i:s');
 				$file_set_file->fsDisplayOrder = $fsDisplayOrder;
 				$file_set_file->Save();
 				return $file_set_file;
