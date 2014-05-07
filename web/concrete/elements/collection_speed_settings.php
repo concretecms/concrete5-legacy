@@ -103,7 +103,7 @@ if ($_REQUEST['reload_and_remove_cache']) {
 				$globalSettingLifetime = Loader::helper('date')->timeSince($time);
 				break;
 			case 'custom':
-				$custom = Config::get('FULL_PAGE_CACHE_LIFETIME_CUSTOM');
+				$custom = Config::get('FULL_PAGE_CACHE_LIFETIME_CUSTOM') * 60;
 				$time = time() - $custom;
 				$globalSettingLifetime = Loader::helper('date')->timeSince($time);
 				break;
