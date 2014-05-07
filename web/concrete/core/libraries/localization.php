@@ -9,6 +9,9 @@
 			$loc->getTranslate();
 		}
 
+		/**
+		* @return Localization
+		*/
 		public static function getInstance() {
 			if (null === self::$loc) {
 				self::$loc = new self;
@@ -16,9 +19,13 @@
 			return self::$loc;
 		}
 
-		public static function changeLocale($locale) {
+		/** Changes the currently active locale
+		* @param string $locale The locale to activate (for example: 'en_US')
+		* @param bool $coreOnly = false Set to true to load only the core translation files, set to false (default) to load also packages and site locale translations
+		*/
+		public static function changeLocale($locale, $coreOnly = false) {
 			$loc = Localization::getInstance();
-			$loc->setLocale($locale);
+			$loc->setLocale($locale, $coreOnly);
 		}
 		/** Returns the currently active locale
 		* @return string
@@ -36,6 +43,9 @@
 			return current(explode('_', self::activeLocale()));
 		}
 
+		/** The current Zend_Translate instance (null if and only if locale is en_US)
+		* @var Zend_Translate|null
+		*/
 		protected $translate;
 
 		public function __construct() {
@@ -53,22 +63,25 @@
 			Zend_Date::setOptions(array('format_type' => 'php'));
 		}
 
-		public function setLocale($locale) {
+		/** Changes the currently active locale
+		* @param string $locale The locale to activate (for example: 'en_US')
+		* @param bool $coreOnly = false Set to true to load only the core translation files, set to false (default) to load also packages and site locale translations
+		*/
+		public function setLocale($locale, $coreOnly = false) {
 			$localeNeededLoading = false;
-			if (!ENABLE_TRANSLATE_LOCALE_EN_US && $locale == 'en_US' && isset($this->translate)) {
-				unset($this->translate);
+			if (($locale == 'en_US') && (!ENABLE_TRANSLATE_LOCALE_EN_US)) {
+				if(isset($this->translate)) {
+					unset($this->translate);
+				}
 				return;
 			}
-			if (!(ENABLE_TRANSLATE_LOCALE_EN_US || $locale != 'en_US')) {
-				return;
-			}
-
 			if (is_dir(DIR_LANGUAGES . '/' . $locale)) {
 				$languageDir = DIR_LANGUAGES . '/' . $locale;
-			} elseif (is_dir(DIR_LANGUAGES_CORE . '/' . $locale)) {
+			}
+			elseif (is_dir(DIR_LANGUAGES_CORE . '/' . $locale)) {
 				$languageDir = DIR_LANGUAGES_CORE . '/' . $locale;
 			}
-			if (!$languageDir) {
+			else {
 				return;
 			}
 
@@ -95,6 +108,15 @@
 				}
 				$this->translate->setLocale($locale);
 			}
+			if(!$coreOnly) {
+				$this->addSiteInterfaceLanguage($locale);
+				foreach(PackageList::get(1)->getPackages() as $p) {
+					$pkg = Loader::package($p->getPackageHandle());
+					if (is_object($pkg)) {
+						$pkg->setupPackageLocalization($locale, null, $this->translate);
+					}
+				}
+			}
 			if($localeNeededLoading) {
 				Events::fire('on_locale_load', $locale);
 			}
@@ -104,23 +126,31 @@
 			return isset($this->translate) ? $this->translate->getLocale() : 'en_US';
 		}
 
+		/** Returns the current Zend_Translate instance (null if and only if locale is en_US)
+		* @var Zend_Translate|null
+		*/
 		public function getActiveTranslateObject() {
 			return $this->translate;
 		}
 
-		public function addSiteInterfaceLanguage($language) {
+		/** Loads the site interface locale.
+		* @param string $locale = null The locale to load (for instance: 'en_US'). If empty we'll use the currently active locale
+		*/
+		public function addSiteInterfaceLanguage($locale = null) {
 			if (is_object($this->translate)) {
-				$this->translate->addTranslation(DIR_LANGUAGES_SITE_INTERFACE . '/' . $language . '.mo', $language);
-			} else {
-				Loader::library('3rdparty/Zend/Translate');
-				$cache = Cache::getLibrary();
-				if (is_object($cache)) {
-					Zend_Translate::setCache($cache);
+				if(!(is_string($locale) && strlen($locale))) {
+					$locale = $this->translate->getLocale();
 				}
-				$this->translate = new Zend_Translate(array('adapter' => 'gettext', 'content' => DIR_LANGUAGES_SITE_INTERFACE . '/' . $language . '.mo', 'locale' => $language, 'disableNotices' => true));
+				$path = DIR_LANGUAGES_SITE_INTERFACE . '/' . $locale . '.mo';
+				if(is_file($path)) {
+					$this->translate->addTranslation($path, $locale);
+				}
 			}
 		}
 
+		/** Returns the current Zend_Translate instance (null if and only if locale is en_US)
+		* @var Zend_Translate|null
+		*/
 		public static function getTranslate() {
 			$loc = Localization::getInstance();
 			return $loc->getActiveTranslateObject();
@@ -154,7 +184,7 @@
 		 * Generates a list of all available languages and returns an array like
 		 * [ "de_DE" => "Deutsch (Deutschland)",
 		 *   "en_US" => "English (United States)",
-		 *   "fr_FR" => "Francais (France)"]
+		 *   "fr_FR" => "Français (France)"]
 		 * The result will be sorted by the key.
 		 * If the $displayLocale is set, the language- and region-names will be returned in that language 
 		 * @param string $displayLocale Language of the description
