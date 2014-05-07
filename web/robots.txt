@@ -17,4 +17,5 @@ Disallow: /page_types
 Disallow: /single_pages 
 Disallow: /themes 
 Disallow: /tools
+Disallow: /index.php/tools
 Disallow: /updates
