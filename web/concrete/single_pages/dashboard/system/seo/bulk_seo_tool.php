@@ -202,7 +202,7 @@ if (count($pages) > 0) {
 								<?php echo $form->textarea('meta_keywords', $cobj->getAttribute('meta_keywords'), array('title' => $cID)); ?>
 							</div>
 								
-							<? if ($cobj->getCollectionID() != HOME_CID) { ?>
+							<?php if ($cobj->getCollectionID() != HOME_CID && !$cobj->isGeneratedCollection()) { ?>
 							
 							<div style="margin-left: 30px;">
 								<strong><?php echo t('Slug'); ?></strong>
