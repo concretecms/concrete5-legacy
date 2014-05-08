@@ -192,6 +192,8 @@ defined('C5_EXECUTE') or die("Access Denied.");
 				return false;
 			}
 			
+			Events::fire('on_user_deleted', $this);
+
 			$db = Loader::db();  
 
 			$r = $db->Execute('select avID, akID from UserAttributeValues where uID = ?', array($this->uID));
@@ -216,7 +218,6 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			
 			$r = $db->query("UPDATE Blocks set uID=? WHERE uID = ?",array( intval(USER_SUPER_ID), intval($this->uID)));
 			$r = $db->query("UPDATE Pages set uID=? WHERE uID = ?",array( intval(USER_SUPER_ID), intval($this->uID)));
-			Events::fire('on_user_deleted', $this->uID, $this->uName, $this->uEmail);
 		}
 
 		/**
