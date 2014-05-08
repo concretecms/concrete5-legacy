@@ -214,7 +214,7 @@ module.exports = function(grunt, config, parameters, done) {
 		if (parameters.destination) {
 			destinationFolder = path.resolve(__dirname, '..', parameters.destination);
 		} else {
-			destinationFolder = path.resolve(__dirname, config.DIR_BASE);
+			destinationFolder = path.resolve(__dirname, '..', config.DIR_BASE);
 		}
 
 		process.stdout.write('Locale ' + locale.name + '... ');
