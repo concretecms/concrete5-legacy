@@ -111,10 +111,10 @@ class Concrete5_Library_Backup_BackupTable {
 		
 		if (!$this->rs_table->EOF) {
 			// figure out field types once
-			$arr_fieldtype = Array();
+			$arr_fieldtype_quoted = Array();
 			for ($int_cflds = 0; $int_cflds < $this->rs_table->FieldCount(); $int_cflds++) {
 				$obj_fld = $this->rs_table->FetchField($int_cflds);
-				$arr_fieldtype[$int_cflds] = $this->rs_table->MetaType($obj_fld->type);
+				$arr_fieldtype_quoted[$int_cflds] = $this->isQuotedType($this->rs_table->MetaType($obj_fld->type));
 			}
 		}
 		
@@ -122,7 +122,7 @@ class Concrete5_Library_Backup_BackupTable {
 			$arr_rowData = Array();
 			for($int_cflds = 0;$int_cflds < $this->rs_table->FieldCount();$int_cflds++) {
 				$obj_fld = $this->rs_table->FetchField($int_cflds);
-				if ($this->isQuotedType($arr_fieldtype[$int_cflds])) {
+				if ($arr_fieldtype_quoted[$int_cflds]) {
 					$str_fieldData = $this->db->qstr($this->rs_table->fields[$obj_fld->name]);
 					if ($str_fieldData == "") {
 					   $str_fieldData = "''";
