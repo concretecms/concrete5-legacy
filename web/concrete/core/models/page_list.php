@@ -303,8 +303,7 @@ class Concrete5_Model_PageList extends DatabaseItemList {
 			$cth .= ')';
 			$this->filter(false, "(pt.ctHandle in {$cth})");
 		} else {
-			$qctHandle = $db->quote($ctHandle);
-			$this->filter('pt.ctHandle', $qctHandle);
+			$this->filter('pt.ctHandle', $ctHandle);
 		}
 	}
 
