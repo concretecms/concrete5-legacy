@@ -62,6 +62,9 @@ class Concrete5_Model_UserList extends DatabaseItemList {
 	}
 
 	public function filterByGroupID($gID){ 
+		if (!Loader::helper('validation/numbers')->integer($gID)) {
+			$gID = 0;
+		}
 		$tbl='ug_'.$gID;
 		$this->addToQuery("left join UserGroups $tbl on {$tbl}.uID = u.uID ");			
 		$this->filter(false, "{$tbl}.gID=".$gID);
