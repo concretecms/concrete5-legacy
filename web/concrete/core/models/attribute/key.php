@@ -132,7 +132,7 @@ class Concrete5_Model_AttributeKey extends Object {
 		foreach($filters as $key => $value) {
 			$q .= ' and ' . $key . ' = ' . $value . ' ';
 		}
-		$q .= ' ORDER BY (s.asID IS NULL), s.asDisplayorder, sk.displayOrder';
+		$q .= ' ORDER BY (s.asID IS NULL), s.asDisplayorder, sk.displayOrder, k.akName';
 		$r = $db->Execute($q, array($akCategoryHandle));
 		$list = array();
 		$txt = Loader::helper('text');
