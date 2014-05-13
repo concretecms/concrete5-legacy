@@ -75,6 +75,18 @@ class Localization extends Concrete5_Library_Localization {
 		
 		return $languages;
 	}
-	
+        
+	public static function getAvailableInterfaceLanguageDescriptions($displayLocale = null) {
+		$languages = Localization::getAvailableInterfaceLanguages();
+		if (count($languages) > 0) {
+			array_unshift($languages, 'en_US');
+		}
+		$locales = array();
+		foreach($languages as $lang) {
+			$locales[$lang] = self::getLanguageDescription($lang,$displayLocale);
+		}
+		natcasesort($locales);
+		return $locales;
+	}
 	
 }
