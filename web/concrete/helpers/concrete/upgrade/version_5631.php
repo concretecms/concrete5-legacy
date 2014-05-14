@@ -6,11 +6,6 @@ class ConcreteUpgradeVersion5631Helper {
 		'Users'
 	);
 
-	public function run() {
-		$bt = BlockType::getByHandle('google_map');
-		if(is_object($bt) && (!$bt->isError())) {
-			$bt->refresh();
-		}
-	}
+	public function run() {}
 
 }
