@@ -311,6 +311,28 @@ class Concrete5_Helper_Form {
 	public function search($key, $valueOrArray = false, $miscFields = array()) {
 		return $this->inputType($key, 'search', $valueOrArray, $miscFields);
 	}
+	
+	/**
+	 * Renders a image input field.
+	 * @param string $key Input element's name and id
+	 * @param int|string $image Image fID or relative path to image
+	 * @param string|array $valueOrArray Either the default value (subject to be overridden by $_REQUEST) or $miscFields (see below)
+	 * @param array $miscFields A hash array with html attributes as key/value pairs (possibly including "class")
+	 * @return $html
+	 */
+	public function image($key, $image, $valueOrArray = false, $miscFields = array()) {
+		if(is_numeric($image)){
+			$image_path = File::getRelativePathFromID($image);
+		} else {
+			$image_path = $image;
+		}
+		if(is_array($valueOrArray)|| $valueOrArray===false){
+			$valueOrArray['src'] = $image_path;
+		} else {
+			$miscFields['src'] = $image_path;
+		}
+		return $this->inputType($key, 'image', $valueOrArray, $miscFields);
+	}
 
 	/**
 	 * Renders a select field. First argument is the name of the field. Second is an associative array of key => display. Third argument is either the value of the field to be selected (and if it's blank we check post) or a misc. array of fields
