@@ -29,7 +29,7 @@ class Concrete5_Model_GroupSearch extends DatabaseItemList {
 		$locale = Localization::activeLocale();
 		if(!array_key_exists($locale, $reverseLookup)) {
 			$reverseLookup[$locale] = false;
-			if(Localization::activeLocale() != 'en_US') {
+			if((Localization::activeLocale() != 'en_US') || ENABLE_TRANSLATE_LOCALE_EN_US) {
 				$limit = defined('GROUPNAME_REVERSELOOKUP_LIMIT') ? GROUPNAME_REVERSELOOKUP_LIMIT : 100;
 				$count = $db->GetOne('select count(*) from Groups');
 				if(($count > 0) && ($count <= $limit)) {
