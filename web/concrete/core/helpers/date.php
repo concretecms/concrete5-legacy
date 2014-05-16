@@ -1,18 +1,20 @@
 <?php defined('C5_EXECUTE') or die('Access Denied.');
 
-/** Functions useful functions for working with dates.
-* @package Helpers
-* @category Concrete
-* @author Andrew Embler <andrew@concrete5.org>
-* @copyright Copyright (c) 2003-2008 Concrete5. (http://www.concrete5.org)
-* @license http://www.concrete5.org/documentation/background/license/ MIT License
-*/
+/**
+ * Functions useful functions for working with dates.
+ * @package Helpers
+ * @category Concrete
+ * @author Andrew Embler <andrew@concrete5.org>
+ * @copyright Copyright (c) 2003-2008 Concrete5. (http://www.concrete5.org)
+ * @license http://www.concrete5.org/documentation/background/license/ MIT License
+ */
 class Concrete5_Helper_Date {
-	/** Gets the date time for the local time zone/area if user timezones are enabled, if not returns system datetime
-	* @param string $systemDateTime
-	* @param string $format
-	* @return string $datetime
-	*/
+	/**
+	 * Gets the date time for the local time zone/area if user timezones are enabled, if not returns system datetime
+	 * @param string $systemDateTime
+	 * @param string $format
+	 * @return string $datetime
+	 */
 	public function getLocalDateTime($systemDateTime = 'now', $mask = NULL) {
 		if(!isset($mask) || !strlen($mask)) {
 			$mask = 'Y-m-d H:i:s';
@@ -47,11 +49,12 @@ class Concrete5_Helper_Date {
 			return $datetime->format($mask);
 		}
 	}
-	/** Converts a user entered datetime to the system datetime
-	* @param string $userDateTime
-	* @param string $systemDateTime
-	* @return string $datetime
-	*/
+	/**
+	 * Converts a user entered datetime to the system datetime
+	 * @param string $userDateTime
+	 * @param string $systemDateTime
+	 * @return string $datetime
+	 */
 	public function getSystemDateTime($userDateTime = 'now', $mask = NULL) {
 		if(!isset($mask) || !strlen($mask)) {
 			$mask = 'Y-m-d H:i:s';
@@ -89,11 +92,12 @@ class Concrete5_Helper_Date {
 			return $datetime->format($mask);
 		}
 	}
-	/** Gets the localized date according to a specific mask
-	* @param object $datetime A PHP DateTime Object
-	* @param string $mask
-	* @return string
-	*/
+	/**
+	 * Gets the localized date according to a specific mask
+	 * @param object $datetime A PHP DateTime Object
+	 * @param string $mask
+	 * @return string
+	 */
 	public function dateTimeFormatLocal(&$datetime,$mask) {
 		$locale = new Zend_Locale(Localization::activeLocale());
 
@@ -101,12 +105,13 @@ class Concrete5_Helper_Date {
 		$date->setTimeZone($datetime->format('e'));
 		return $date->toString($mask);
 	}
-	/** Subsitute for the native date() function that adds localized date support
-	* This uses Zend's Date Object {@link http://framework.zend.com/manual/en/zend.date.constants.html#zend.date.constants.phpformats}
-	* @param string $mask
-	* @param int $timestamp
-	* @return string
-	*/
+	/**
+	 * Subsitute for the native date() function that adds localized date support
+	 * This uses Zend's Date Object {@link http://framework.zend.com/manual/en/zend.date.constants.html#zend.date.constants.phpformats}
+	 * @param string $mask
+	 * @param int $timestamp
+	 * @return string
+	 */
 	public function date($mask,$timestamp=false) {
 		$loc = Localization::getInstance();
 		if($timestamp === false) {
@@ -124,19 +129,21 @@ class Concrete5_Helper_Date {
 		$date = new Zend_Date($timestamp, false, $locale);
 		return $date->toString($mask);
 	}
-	/** Returns a keyed array of timezone identifiers
-	* see: http://www.php.net/datetimezone.listidentifiers.php
-	* @return array
-	*/
+	/**
+	 * Returns a keyed array of timezone identifiers
+	 * see: http://www.php.net/datetimezone.listidentifiers.php
+	 * @return array
+	 */
 	public function getTimezones() {
 		return array_combine(DateTimeZone::listIdentifiers(),DateTimeZone::listIdentifiers());
 	}
-	/** Describe the difference in time between now and a date/time in the past.
-	* If the date/time is in the future or if it's more than one year old, you'll get the date representation of $posttime
-	* @param int $posttime The timestamp to analyze
-	* @param bool $precise = false Set to true to a more verbose and precise result, false for a more rounded result
-	* @return string
-	*/
+	/**
+	 * Describe the difference in time between now and a date/time in the past.
+	 * If the date/time is in the future or if it's more than one year old, you'll get the date representation of $posttime
+	 * @param int $posttime The timestamp to analyze
+	 * @param bool $precise = false Set to true to a more verbose and precise result, false for a more rounded result
+	 * @return string
+	 */
 	public function timeSince($posttime, $precise = false) {
 		$diff = time() - $posttime;
 		if(($diff < 0) || ($diff > 365 * 24 * 60 * 60)) {
@@ -146,11 +153,12 @@ class Concrete5_Helper_Date {
 			return $this->describeInterval($diff, $precise);
 		}
 	}
-	/** Returns the localized representation of a time interval specified as seconds.
-	* @param int $diff The time difference in seconds
-	* @param bool $precise = false Set to true to a more verbose and precise result, false for a more rounded result
-	* @return string
-	*/
+	/**
+	 * Returns the localized representation of a time interval specified as seconds.
+	 * @param int $diff The time difference in seconds
+	 * @param bool $precise = false Set to true to a more verbose and precise result, false for a more rounded result
+	 * @return string
+	 */
 	public function describeInterval($diff, $precise = false) {
 		$secondsPerMinute = 60;
 		$secondsPerHour = 60 * $secondsPerMinute;
@@ -184,22 +192,23 @@ class Concrete5_Helper_Date {
 		}
 		return $description;
 	}
-	/** Convert a date to a Zend_Date instance.
-	* @param string|DateTime|Zend_Date|int $value It can be:<ul>
-	*	<li>the special value 'now' (default) to return the current date/time</li>
-	*	<li>a DateTime instance</li>
-	*	<li>a Zend_Date instance</li>
-	*	<li>a string parsable by strtotime</li>
-	*	<li>a timestamp</li>
-	* </ul>
-	* @param string $timezone The timezone to set. Special values are:<ul>
-	*	<li>'system' (default) for the current system timezone</li>
-	*	<li>'user' for the user's timezone</li>
-	*	<li>'app' for the app's timezone</li>
-	*	<li>Other values: one of the PHP supported time zones (see http://us1.php.net/manual/en/timezones.php )</li>
-	* </ul>
-	* @return Zend_Date|null Returns the Zend_Date instance (or null if $value couldn't be parsed)
-	*/
+	/**
+	 * Convert a date to a Zend_Date instance.
+	 * @param string|DateTime|Zend_Date|int $value It can be:<ul>
+	 *	<li>the special value 'now' (default) to return the current date/time</li>
+	 *	<li>a DateTime instance</li>
+	 *	<li>a Zend_Date instance</li>
+	 *	<li>a string parsable by strtotime</li>
+	 *	<li>a timestamp</li>
+	 * </ul>
+	 * @param string $timezone The timezone to set. Special values are:<ul>
+	 *	<li>'system' (default) for the current system timezone</li>
+	 *	<li>'user' for the user's timezone</li>
+	 *	<li>'app' for the app's timezone</li>
+	 *	<li>Other values: one of the PHP supported time zones (see http://us1.php.net/manual/en/timezones.php )</li>
+	 * </ul>
+	 * @return Zend_Date|null Returns the Zend_Date instance (or null if $value couldn't be parsed)
+	 */
 	public function toZendDate($value = 'now', $timezone = 'system') {
 		$zendDate = null;
 		if(is_int($value)) {
@@ -263,11 +272,12 @@ class Concrete5_Helper_Date {
 		$zendDate->setTimezone($tz);
 		return $zendDate;
 	}
-	/** Render the date part of a date/time as a localized string
-	* @param mixed $value The date/time representation (one of the values accepted by toZendDate)
-	* @param bool $longDate Set to true for the long date format (eg 'December 31, 2000'), false (default) for the short format (eg '12/31/2000')
-	* @return string Returns an empty string if $value couldn't be parsed, the localized string otherwise
-	*/
+	/**
+	 * Render the date part of a date/time as a localized string
+	 * @param mixed $value The date/time representation (one of the values accepted by toZendDate)
+	 * @param bool $longDate Set to true for the long date format (eg 'December 31, 2000'), false (default) for the short format (eg '12/31/2000')
+	 * @return string Returns an empty string if $value couldn't be parsed, the localized string otherwise
+	 */
 	public function formatDate($value = 'now', $longDate = false) {
 		$zendDate = $this->toZendDate($value, 'user');
 		if(is_null(toZendDate)) {
@@ -280,11 +290,12 @@ class Concrete5_Helper_Date {
 				t(/*i18n: Short date format: see http://www.php.net/manual/en/function.date.php */ 'n/j/Y')
 		);
 	}
-	/** Render the time part of a date/time as a localized string
-	* @param mixed $value The date/time representation (one of the values accepted by toZendDate)
-	* @param bool $withSeconds Set to true to include seconds (eg '11:59:59 PM'), false (default) otherwise (eg '11:59 PM');
-	* @return string Returns an empty string if $value couldn't be parsed, the localized string otherwise
-	*/
+	/**
+	 * Render the time part of a date/time as a localized string
+	 * @param mixed $value The date/time representation (one of the values accepted by toZendDate)
+	 * @param bool $withSeconds Set to true to include seconds (eg '11:59:59 PM'), false (default) otherwise (eg '11:59 PM');
+	 * @return string Returns an empty string if $value couldn't be parsed, the localized string otherwise
+	 */
 	public function formatTime($value = 'now', $withSeconds = false) {
 		$zendDate = $this->toZendDate($value, 'user');
 		if(is_null(toZendDate)) {
@@ -297,11 +308,12 @@ class Concrete5_Helper_Date {
 				t(/*i18n: Time format without seconds: see http://www.php.net/manual/en/function.date.php */ 'g:i A')
 		);
 	}
-	/** Render both the date and time parts of a date/time as a localized string
-	* @param mixed $value The date/time representation (one of the values accepted by toZendDate)
-	* @param bool $longDate Set to true for the long date format (eg 'December 31, 2000 at ...'), false (default) for the short format (eg '12/31/2000 at ...')
-	* @param bool $withSeconds Set to true to include seconds (eg '... at 11:59:59 PM'), false (default) otherwise (eg '... at 11:59 PM');
-	* @return string Returns an empty string if $value couldn't be parsed, the localized string otherwise
+	/**
+	 * Render both the date and time parts of a date/time as a localized string
+	 * @param mixed $value The date/time representation (one of the values accepted by toZendDate)
+	 * @param bool $longDate Set to true for the long date format (eg 'December 31, 2000 at ...'), false (default) for the short format (eg '12/31/2000 at ...')
+	 * @param bool $withSeconds Set to true to include seconds (eg '... at 11:59:59 PM'), false (default) otherwise (eg '... at 11:59 PM');
+	 * @return string Returns an empty string if $value couldn't be parsed, the localized string otherwise
 	*/
 	public function formatDateTime($value = 'now', $longDate = false, $withSeconds = false) {
 		$zendDate = $this->toZendDate($value, 'user');
@@ -324,11 +336,12 @@ class Concrete5_Helper_Date {
 		}
 		return $zendDate->toString($format);
 	}
-	/** Render a date/time as a localized string, by specifying a custom format
-	* @param string $format The custom format (see http://www.php.net/manual/en/function.date.php for applicable formats)
-	* @param bool $withSeconds Set to true to include seconds (eg '11:59:59 PM'), false (default) otherwise (eg '11:59 PM');
-	* @return string Returns an empty string if $value couldn't be parsed, the localized string otherwise
-	*/
+	/**
+	 * Render a date/time as a localized string, by specifying a custom format
+	 * @param string $format The custom format (see http://www.php.net/manual/en/function.date.php for applicable formats)
+	 * @param bool $withSeconds Set to true to include seconds (eg '11:59:59 PM'), false (default) otherwise (eg '11:59 PM');
+	 * @return string Returns an empty string if $value couldn't be parsed, the localized string otherwise
+	 */
 	public function formatCustom($format, $value = 'now') {
 		$zendDate = $this->toZendDate($value, 'user');
 		if(is_null(toZendDate)) {
