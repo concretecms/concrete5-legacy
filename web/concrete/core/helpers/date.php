@@ -317,7 +317,7 @@ class Concrete5_Helper_Date {
 		}
 		else {
 			$format = $withSeconds ?
-				t(/*i18n: Short date format and time with seconds: see http://www.php.net/manual/en/function.date.php */ 'n/j/Y \\a\\t g:i::s A')
+				t(/*i18n: Short date format and time with seconds: see http://www.php.net/manual/en/function.date.php */ 'n/j/Y \\a\\t g:i:s A')
 				:
 				t(/*i18n: Short date format and time without seconds: see http://www.php.net/manual/en/function.date.php */ 'n/j/Y \\a\\t g:i A')
 			;
