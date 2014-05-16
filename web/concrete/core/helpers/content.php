@@ -182,6 +182,11 @@ class Concrete5_Helper_Content {
 				$imgHelper = Loader::helper('image');
 				$maxWidth = ($matchWidth[1]) ? $matchWidth[1] : $file->getAttribute('width');
 				$maxHeight = ($matchHeight[1]) ? $matchHeight[1] : $file->getAttribute('height');
+				if (defined('IMAGE_MAX_WIDTH')) {
+                    			if ($maxWidth > IMAGE_MAX_WIDTH) {
+                        		$maxWidth = IMAGE_MAX_WIDTH;
+                    			}
+                		}
 				if ($file->getAttribute('width') > $maxWidth || $file->getAttribute('height') > $maxHeight) {
 					$thumb = $imgHelper->getThumbnail($file, $maxWidth, $maxHeight);
 					return preg_replace('/{CCM:FID_([0-9]+)}/i', $thumb->src, $match[0]);
