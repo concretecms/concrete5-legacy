@@ -16,36 +16,33 @@ class Concrete5_Helper_Date {
 	 * @return string $datetime
 	 */
 	public function getLocalDateTime($systemDateTime = 'now', $mask = NULL) {
-		if(!isset($mask) || !strlen($mask)) {
+		if (!isset($mask) || !strlen($mask)) {
 			$mask = 'Y-m-d H:i:s';
 		}
 		$req = Request::get();
-		if($req->hasCustomRequestUser() && $req->getCustomRequestDateTime()) {
+		if ($req->hasCustomRequestUser() && $req->getCustomRequestDateTime()) {
 			return date($mask, strtotime($req->getCustomRequestDateTime()));
 		}
-		if(!isset($systemDateTime) || !strlen($systemDateTime)) {
+		if (!isset($systemDateTime) || !strlen($systemDateTime)) {
 			return null; // if passed a null value, pass it back
-		}
-		elseif(strlen($systemDateTime)) {
+		} elseif (strlen($systemDateTime)) {
 			$datetime = new DateTime($systemDateTime);
-		}
-		else {
+		} else {
 			$datetime = new DateTime();
 		}
-		if(defined('ENABLE_USER_TIMEZONES') && ENABLE_USER_TIMEZONES) {
+		if (defined('ENABLE_USER_TIMEZONES') && ENABLE_USER_TIMEZONES) {
 			$u = new User();
-			if($u && $u->isRegistered()) {
+			if ($u && $u->isRegistered()) {
 				$utz = $u->getUserTimezone();
-				if($utz) {
+				if ($utz) {
 					$tz = new DateTimeZone($utz);
 					$datetime->setTimezone($tz);
 				}
 			}
 		}
-		if(Localization::activeLocale() != 'en_US') {
+		if (Localization::activeLocale() != 'en_US') {
 			return $this->dateTimeFormatLocal($datetime, $mask);
-		}
-		else {
+		} else {
 			return $datetime->format($mask);
 		}
 	}
@@ -56,28 +53,28 @@ class Concrete5_Helper_Date {
 	 * @return string $datetime
 	 */
 	public function getSystemDateTime($userDateTime = 'now', $mask = NULL) {
-		if(!isset($mask) || !strlen($mask)) {
+		if (!isset($mask) || !strlen($mask)) {
 			$mask = 'Y-m-d H:i:s';
 		}
 		$req = Request::get();
-		if($req->hasCustomRequestUser()) {
+		if ($req->hasCustomRequestUser()) {
 			return date($mask, strtotime($req->getCustomRequestDateTime()));
 		}
-		if(!isset($userDateTime) || !strlen($userDateTime)) {
+		if (!isset($userDateTime) || !strlen($userDateTime)) {
 			return null; // if passed a null value, pass it back
 		}
 		$datetime = new DateTime($userDateTime);
-		if(defined('APP_TIMEZONE')) {
+		if (defined('APP_TIMEZONE')) {
 			$tz = new DateTimeZone(APP_TIMEZONE_SERVER);
 			$datetime = new DateTime($userDateTime, $tz); // create the in the user's timezone
 			$stz = new DateTimeZone(date_default_timezone_get()); // grab the default timezone
 			$datetime->setTimeZone($stz); // convert the datetime object to the current timezone
 		}
-		if(defined('ENABLE_USER_TIMEZONES') && ENABLE_USER_TIMEZONES) {
+		if (defined('ENABLE_USER_TIMEZONES') && ENABLE_USER_TIMEZONES) {
 			$u = new User();
-			if($u && $u->isRegistered()) {
+			if ($u && $u->isRegistered()) {
 				$utz = $u->getUserTimezone();
-				if($utz) {
+				if ($utz) {
 					$tz = new DateTimeZone($utz);
 					$datetime = new DateTime($userDateTime, $tz); // create the in the user's timezone
 					$stz = new DateTimeZone(date_default_timezone_get()); // grab the default timezone
@@ -85,10 +82,9 @@ class Concrete5_Helper_Date {
 				}
 			}
 		}
-		if(Localization::activeLocale() != 'en_US') {
+		if (Localization::activeLocale() != 'en_US') {
 			return $this->dateTimeFormatLocal($datetime, $mask);
-		}
-		else {
+		} else {
 			return $datetime->format($mask);
 		}
 	}
@@ -114,16 +110,16 @@ class Concrete5_Helper_Date {
 	 */
 	public function date($mask,$timestamp=false) {
 		$loc = Localization::getInstance();
-		if($timestamp === false) {
+		if ($timestamp === false) {
 			$timestamp = time();
 		}
-		if($loc->getLocale() == 'en_US') {
+		if ($loc->getLocale() == 'en_US') {
 			return date($mask, $timestamp);
 		}
 		$locale = new Zend_Locale(Localization::activeLocale());
 		Zend_Date::setOptions(array('format_type' => 'php'));
 		$cache = Cache::getLibrary();
-		if(is_object($cache)) {
+		if (is_object($cache)) {
 			Zend_Date::setOptions(array('cache'=>$cache));
 		}
 		$date = new Zend_Date($timestamp, false, $locale);
@@ -146,10 +142,9 @@ class Concrete5_Helper_Date {
 	 */
 	public function timeSince($posttime, $precise = false) {
 		$diff = time() - $posttime;
-		if(($diff < 0) || ($diff > 365 * 24 * 60 * 60)) {
+		if (($diff < 0) || ($diff > 365 * 24 * 60 * 60)) {
 			return $this->formatDate($posttime, false);
-		}
-		else {
+		} else {
 			return $this->describeInterval($diff, $precise);
 		}
 	}
@@ -169,25 +164,22 @@ class Concrete5_Helper_Date {
 		$diff = $diff - $hours * $secondsPerHour;
 		$minutes = floor($diff / $secondsPerMinute);
 		$seconds = $diff - $minutes * $secondsPerMinute;
-		if($days > 0) {
+		if ($days > 0) {
 			$description = t2('%d day', '%d days', $days, $days);
-			if($precise) {
+			if ($precise) {
 				$description .= ', ' . t2('%d hour', '%d hours', $hours, $hours);
 			}
-		}
-		elseif($hours > 0) {
+		} elseif ($hours > 0) {
 			$description = t2('%d hour', '%d hours', $hours, $hours);
-			if($precise) {
+			if ($precise) {
 				$description .= ', ' . t2('%d minute', '%d minutes', $minutes, $minutes);
 			}
-		}
-		elseif($minutes > 0) {
+		} elseif ($minutes > 0) {
 			$description = t2('%d minute', '%d minutes', $minutes, $minutes);
-			if($precise) {
+			if ($precise) {
 				$description .= ', '.t2('%d second', '%d seconds', $seconds, $seconds);
 			}
-		}
-		else {
+		} else {
 			$description = t2('%d second', '%d seconds', $seconds, $seconds);
 		}
 		return $description;
@@ -211,31 +203,26 @@ class Concrete5_Helper_Date {
 	 */
 	public function toZendDate($value = 'now', $timezone = 'system') {
 		$zendDate = null;
-		if(is_int($value)) {
+		if (is_int($value)) {
 			$zendDate = new Zend_Date($value, Zend_Date::TIMESTAMP);
-		}
-		elseif($value instanceof DateTime) {
+		} elseif ($value instanceof DateTime) {
 			$zendDate = new Zend_Date($value->format(DATE_ATOM), DATE_ATOM);
 			$zendDate->setTimeZone($value->format('e'));
-		}
-		elseif(is_a($value, 'Zend_Date')) {
+		} elseif (is_a($value, 'Zend_Date')) {
 			$zendDate = clone $value;
-		}
-		elseif(is_string($value) && strlen($value)) {
-			if($value === 'now') {
+		} elseif (is_string($value) && strlen($value)) {
+			if ($value === 'now') {
 				$zendDate = new Zend_Date();
-			}
-			elseif(is_numeric($value)) {
+			} elseif (is_numeric($value)) {
 				$zendDate = new Zend_Date($value, Zend_Date::TIMESTAMP);
-			}
-			else {
+			} else {
 				$timestamp = @strtotime($value);
-				if($timestamp === false) {
+				if ($timestamp === false) {
 					$zendDate = new Zend_Date($timestamp, Zend_Date::TIMESTAMP);
 				}
 			}
 		}
-		if(is_null($zendDate)) {
+		if (is_null($zendDate)) {
 			return null;
 		}
 		$zendDate->setLocale(Localization::activeLocale());
@@ -248,20 +235,19 @@ class Concrete5_Helper_Date {
 				break;
 			case 'user':
 				$tz = null;
-				if(defined('ENABLE_USER_TIMEZONES') && ENABLE_USER_TIMEZONES) {
+				if (defined('ENABLE_USER_TIMEZONES') && ENABLE_USER_TIMEZONES) {
 					$u = null;
 					$request = C5_ENVIRONMENT_ONLY ? Request::get() : null;
-					if($request && $request->hasCustomRequestUser()) {
+					if ($request && $request->hasCustomRequestUser()) {
 						$u = $request->getCustomRequestUser();
-					}
-					elseif(User::isLoggedIn()) {
+					} elseif (User::isLoggedIn()) {
 						$u = new User();
 					}
-					if($u) {
+					if ($u) {
 						$tz = $u->getUserTimezone();
 					}
 				}
-				if(!$tz) {
+				if (!$tz) {
 					$tz = defined('APP_TIMEZONE') ? APP_TIMEZONE : date_default_timezone_get();
 				}
 				break;
@@ -280,7 +266,7 @@ class Concrete5_Helper_Date {
 	 */
 	public function formatDate($value = 'now', $longDate = false) {
 		$zendDate = $this->toZendDate($value, 'user');
-		if(is_null(toZendDate)) {
+		if (is_null(toZendDate)) {
 			return '';
 		}
 		return $zendDate->toString(
@@ -298,7 +284,7 @@ class Concrete5_Helper_Date {
 	 */
 	public function formatTime($value = 'now', $withSeconds = false) {
 		$zendDate = $this->toZendDate($value, 'user');
-		if(is_null(toZendDate)) {
+		if (is_null(toZendDate)) {
 			return '';
 		}
 		return $zendDate->toString(
@@ -317,17 +303,16 @@ class Concrete5_Helper_Date {
 	*/
 	public function formatDateTime($value = 'now', $longDate = false, $withSeconds = false) {
 		$zendDate = $this->toZendDate($value, 'user');
-		if(is_null($zendDate)) {
+		if (is_null($zendDate)) {
 			return '';
 		}
-		if($longDate) {
+		if ($longDate) {
 			$format = $withSeconds ?
 				t(/*i18n: Long date format and time with seconds: see http://www.php.net/manual/en/function.date.php */ 'F j, Y \\a\\t g:i:s A')
 				:
 				t(/*i18n: Long date format and time without seconds: see http://www.php.net/manual/en/function.date.php */ 'F j, Y \\a\\t g:i A')
 			;
-		}
-		else {
+		} else {
 			$format = $withSeconds ?
 				t(/*i18n: Short date format and time with seconds: see http://www.php.net/manual/en/function.date.php */ 'n/j/Y \\a\\t g:i:s A')
 				:
@@ -344,7 +329,7 @@ class Concrete5_Helper_Date {
 	 */
 	public function formatCustom($format, $value = 'now') {
 		$zendDate = $this->toZendDate($value, 'user');
-		if(is_null(toZendDate)) {
+		if (is_null(toZendDate)) {
 			return '';
 		}
 		return $zendDate->toString($format);
