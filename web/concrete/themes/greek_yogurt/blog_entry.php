@@ -61,8 +61,8 @@ $nav = Loader::helper('navigation');
 						'Posted by <span class="post-author">%1$s at <a href="%2$s">%3$s on %4$s</a></span>',
 						$profileLink,
 						$c->getLinkToCollection,
-						$c->getCollectionDatePublic(DATE_APP_GENERIC_T),
-						$c->getCollectionDatePublic(DATE_APP_GENERIC_MDY_FULL)
+						Loader::helper('date')->formatTime($c->getCollectionDatePublic(), false),
+						Loader::helper('date')->formatDate($c->getCollectionDatePublic(), true)
 					); ?>
 				</p>
 

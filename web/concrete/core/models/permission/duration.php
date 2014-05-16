@@ -153,14 +153,16 @@ class Concrete5_Model_PermissionDuration extends Object {
 	}
 	
 	public function getTextRepresentation() {
+		$dh = Loader::helper('date');
+		/* @var $dh DateHelper */
 		$text = '';
 		if ($this->getStartDate() != '') { 
-			$text .= t('Starts %s. ', date(DATE_APP_GENERIC_MDYT, strtotime($this->getStartDate())));
+			$text .= t('Starts %s. ', $dh->formatDateTime($this->getStartDate(), false, false));
 		} else {
 			$text .= t('Already Started. ');
 		} 
 		if ($this->getEndDate() != '') { 
-			$text .= t('Ends %s. ', date(DATE_APP_GENERIC_MDYT, strtotime($this->getEndDate())));
+			$text .= t('Ends %s. ', $dh->formatDateTime($this->getEndDate(), false, false));
 		} else {
 			$text .= t('No End Date. ');
 		} 

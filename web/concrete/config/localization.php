@@ -40,32 +40,38 @@ if (!defined('ENABLE_TRANSLATE_LOCALE_EN_US')) {
 // initialize localization immediately following defining locale
 Localization::init();
 
-# New date constants
 if (!defined('DATE_APP_GENERIC_MDYT_FULL')) {
+	/** @deprecated Use Loader::helper('date')->formatDateTime($date, true, false) instead */
 	define('DATE_APP_GENERIC_MDYT_FULL', t('F d, Y \a\t g:i A'));
 }
 
 if (!defined('DATE_APP_GENERIC_MDYT_FULL_SECONDS')) {
+	/** @deprecated Use Loader::helper('date')->formatDateTime($date, true, true) instead */
 	define('DATE_APP_GENERIC_MDYT_FULL_SECONDS', t('F d, Y \a\t g:i:s A'));
 }
 
 if (!defined('DATE_APP_GENERIC_MDYT')) {
+	/** @deprecated Use Loader::helper('date')->formatDateTime($date, false, false) instead */
 	define('DATE_APP_GENERIC_MDYT', t('n/j/Y \a\t g:i A'));
 }
 
 if (!defined('DATE_APP_GENERIC_MDY')) {
+	/** @deprecated Use Loader::helper('date')->formatDate($date, false) instead */
 	define('DATE_APP_GENERIC_MDY', t('n/j/Y'));
 }
 
 if (!defined('DATE_APP_GENERIC_MDY_FULL')) {
+	/** @deprecated Use Loader::helper('date')->formatDate($date, true) instead */
 	define('DATE_APP_GENERIC_MDY_FULL', t('F j, Y'));
 }
 
 if (!defined('DATE_APP_GENERIC_T')) {
+	/** @deprecated Use Loader::helper('date')->formatTime($date, false) instead */
 	define('DATE_APP_GENERIC_T', t('g:i A'));
 }
 
 if (!defined('DATE_APP_GENERIC_TS')) {
+	/** @deprecated Use Loader::helper('date')->formatTime($date, true) instead */
 	define('DATE_APP_GENERIC_TS', t('g:i:s A'));
 }
 

@@ -14,11 +14,11 @@ class Concrete5_Controller_Dashboard_Reports_Surveys extends Controller {
 		$timestamp = strtotime($inputTime);
 		if ($timestamp >= strtotime(date('n/d/y'))) {
 			// Today
-			return t(/*i18n %s is a time */'Today at %s', $dh->date(DATE_APP_GENERIC_T, $timestamp));
+			return t(/*i18n %s is a time */'Today at %s', $dh->formatTime($timestamp, false));
 		}
 		else {
 			// If day in past
-			return $dh->date(DATE_APP_GENERIC_MDYT, $timestamp);
+			return $dh->formatDateTime($timestamp, false, false);
 		}
 	}
 

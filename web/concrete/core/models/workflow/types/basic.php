@@ -57,7 +57,7 @@ class Concrete5_Model_BasicWorkflow extends Workflow  {
 		$ui = UserInfo::getByID($req->getRequesterUserID());
 		
 		// let's get all the people who are set to be notified on entry
-		$message = t('On %s, user %s submitted the following request: %s', date(DATE_APP_GENERIC_MDYT_FULL, strtotime($wp->getWorkflowProgressDateAdded())), $ui->getUserName(), $req->getWorkflowRequestDescriptionObject()->getEmailDescription());
+		$message = t('On %s, user %s submitted the following request: %s', Loader::helper('date')->formatDateTime($wp->getWorkflowProgressDateAdded(), true, false), $ui->getUserName(), $req->getWorkflowRequestDescriptionObject()->getEmailDescription());
 		$this->notify($wp, $message, 'notify_on_basic_workflow_entry');
 	}
 	
@@ -66,7 +66,7 @@ class Concrete5_Model_BasicWorkflow extends Workflow  {
 		$ux = UserInfo::getByID($bdw->getUserStartedID());
 		$req = $wp->getWorkflowRequestObject();
 		$description = $req->getWorkflowRequestDescriptionObject()->getInContextDescription();
-		return t('%s Submitted by <strong>%s</strong> on %s.', $description, $ux->getUserName(), date(DATE_APP_GENERIC_MDYT_FULL, strtotime($wp->getWorkflowProgressDateAdded())));
+		return t('%s Submitted by <strong>%s</strong> on %s.', $description, $ux->getUserName(), Loader::helper('date')->formatDateTime($wp->getWorkflowProgressDateAdded(), true, false));
 	}
 
 	public function getWorkflowProgressStatusDescription(WorkflowProgress $wp) {
@@ -106,7 +106,7 @@ class Concrete5_Model_BasicWorkflow extends Workflow  {
 			
 			$ux = UserInfo::getByID($bdw->getUserCompletedID());
 
-			$message = t("On %s, user %s cancelled the following request: \n\n---\n%s\n---\n\n", date(DATE_APP_GENERIC_MDYT_FULL, strtotime($bdw->getDateCompleted())), $ux->getUserName(), $req->getWorkflowRequestDescriptionObject()->getEmailDescription());
+			$message = t("On %s, user %s cancelled the following request: \n\n---\n%s\n---\n\n", Loader::helper('date')->formatDateTime($bdw->getDateCompleted(), true, false), $ux->getUserName(), $req->getWorkflowRequestDescriptionObject()->getEmailDescription());
 			$this->notify($wp, $message, 'notify_on_basic_workflow_deny');
 			
 			$hist = new BasicWorkflowHistoryEntry();
@@ -133,7 +133,7 @@ class Concrete5_Model_BasicWorkflow extends Workflow  {
 			
 			$ux = UserInfo::getByID($bdw->getUserCompletedID());
 
-			$message = t("On %s, user %s approved the following request: \n\n---\n%s\n---\n\n", date(DATE_APP_GENERIC_MDYT_FULL, strtotime($bdw->getDateCompleted())), $ux->getUserName(), $req->getWorkflowRequestDescriptionObject()->getEmailDescription());
+			$message = t("On %s, user %s approved the following request: \n\n---\n%s\n---\n\n", Loader::helper('date')->formatDateTime($bdw->getDateCompleted(), true, false), $ux->getUserName(), $req->getWorkflowRequestDescriptionObject()->getEmailDescription());
 			$this->notify($wp, $message, 'notify_on_basic_workflow_approve');
 
 			$wpr = $req->runTask('approve', $wp);

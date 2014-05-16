@@ -8,6 +8,8 @@ $ctID = $c->getCollectionTypeID();
 $ct = CollectionType::getByID($ctID);
 
 $cList = $ct->getPages();
+$dh = Loader::helper('date');
+/* @var $dh DateHelper */
 ?>
 <div class="ccm-ui">
 <form method="post" id="ccmBlockMasterCollectionForm" action="<?=$b->getBlockMasterCollectionAliasAction()?>">
@@ -36,8 +38,8 @@ $cList = $ct->getPages();
 			<tr class="active">
 			<td><?=$p->getCollectionID()?></td>
 			<td><a href="<?=DIR_REL?>/<?=DISPATCHER_FILENAME?>?cID=<?=$p->getCollectionID()?>" target="_blank"><?=$p->getCollectionName()?></a></td>
-			<td ><?=$p->getCollectionDateAdded(DATE_APP_GENERIC_MDY, 'user')?></td>
-			<td ><? if ($b->isAlias($p)) { ?> <input type="hidden" name="checkedCIDs[]" value="<?=$p->getCollectionID()?>" /><? } ?><?=$p->getCollectionDateLastModified(DATE_APP_GENERIC_MDY, 'user')?></td>
+			<td ><?=$dh->formatDate($p->getCollectionDateAdded(), false)?></td>
+			<td ><? if ($b->isAlias($p)) { ?> <input type="hidden" name="checkedCIDs[]" value="<?=$p->getCollectionID()?>" /><? } ?><?=$dh->formatDate($p->getCollectionDateLastModified(), false)?></td>
 			<td ><input class="mc-cb" type="checkbox" name="cIDs[]" value="<?=$p->getCollectionID()?>" <? if ($b->isAlias($p)) { ?> checked <? } ?> /></td>
 			</tr>
 		

@@ -64,10 +64,10 @@ $areEntries = count($entries) > 0 ? true : false;
                 <tr>
                     <td valign="top" style="white-space: nowrap" class="active"><?php
                         if (date('m-d-y') == date('m-d-y', strtotime($ent->getTimestamp('user')))) {
-                            echo t(/*i18n %s is a time*/'Today at %s', $dh->date(DATE_APP_GENERIC_TS, strtotime($ent->getTimestamp('user'))));
+                            echo t(/*i18n %s is a time*/'Today at %s', $dh->formatTime($ent->getTimestamp(), true))
                         }
                         else {
-                            echo $dh->date(DATE_APP_GENERIC_MDYT, strtotime($ent->getTimestamp('user')));
+                            echo $dh->formatDateTime($ent->getTimestamp(), false, false);
                         }
                         
                     ?></td>
