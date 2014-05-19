@@ -74,6 +74,8 @@ foreach($pages as $c) {
 
 $searchInstance = Loader::helper('text')->entities($_REQUEST['searchInstance']);
 
+$dh = Loader::helper('date');
+/* @var $dh DateHelper */
 ?>
 <div class="ccm-ui">
 
@@ -103,7 +105,7 @@ $searchInstance = Loader::helper('text')->entities($_REQUEST['searchInstance']);
 		<tr>
 			<td class="ccm-page-list-name"><?=$c->getCollectionName()?></td>
 			<td><?=$c->getCollectionTypeName()?></td>
-			<td><?=$c->getCollectionDatePublic(DATE_APP_DASHBOARD_SEARCH_RESULTS_PAGES)?></td>
+			<td><?=$dh->formatSpecial('DASHBOARD_SEARCH_RESULTS_PAGES', $c->getCollectionDatePublic())?></td>
 			<td><?
 				$ui = UserInfo::getByID($c->getCollectionUserID());
 				if (is_object($ui)) {

@@ -494,11 +494,11 @@ class Concrete5_Model_PageSearchDefaultColumnSet extends DatabaseItemListColumnS
 	protected $attributeClass = 'CollectionAttributeKey';	
 
 	public static function getCollectionDatePublic($c) {
-		return $c->getCollectionDatePublic(DATE_APP_DASHBOARD_SEARCH_RESULTS_PAGES);
+		return Loader::helper('date')->formatSpecial('DASHBOARD_SEARCH_RESULTS_PAGES', $c->getCollectionDatePublic());
 	}
 
 	public static function getCollectionDateModified($c) {
-		return $c->getCollectionDateLastModified(DATE_APP_DASHBOARD_SEARCH_RESULTS_PAGES);
+		return Loader::helper('date')->formatSpecial('DASHBOARD_SEARCH_RESULTS_PAGES', $c->getCollectionDateLastModified());
 	}
 	
 	public function getCollectionAuthor($c) {
