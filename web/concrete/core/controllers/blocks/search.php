@@ -23,7 +23,7 @@ class Concrete5_Controller_Block_Search extends BlockController {
 	public $resultsURL = "";
 	public $postTo_cID = "";
 
-	protected $hColor = '#EFE795';
+	protected $hColor = null;
 
 	public function highlightedMarkup($fulltext, $highlight) {
 		if (!$highlight) {
@@ -32,7 +32,12 @@ class Concrete5_Controller_Block_Search extends BlockController {
 
 		$this->hText = $fulltext;
 		$this->hHighlight  = $highlight;
-		$this->hText = @preg_replace('#' . preg_quote($this->hHighlight, '#') . '#ui', '<span style="background-color:'. $this->hColor .';">$0</span>', $this->hText );
+
+		$highlightAttributes = null;
+		if (!empty($this->hColor)) {
+			$highlightAttributes = ' style="background-color: '.$this->hColor.'"';
+		}
+		$this->hText = @preg_replace('#' . preg_quote($this->hHighlight, '#') . '#ui', '<strong'.$highlightAttributes.'>$0</strong>', $this->hText );
 		return $this->hText;
 	}
 	
@@ -83,6 +88,9 @@ class Concrete5_Controller_Block_Search extends BlockController {
 		}
 	}
 
+	/** 
+	 * @deprecated It is preferable to specify the highlight color in your CSS file
+	 */
 	public function setHighlightColor($color) {
 		$this->hColor = $color;
 	}
@@ -145,7 +153,7 @@ class Concrete5_Controller_Block_Search extends BlockController {
 		$args['baseSearchPath'] = isset($data['baseSearchPath']) ? $data['baseSearchPath'] : '';
 		if( $args['baseSearchPath']=='OTHER' && intval($data['searchUnderCID'])>0 ){
 			$customPathC = Page::getByID( intval($data['searchUnderCID']) );
-			if( !$customPathC )	$args['baseSearchPath']='';
+			if( !$customPathC ) $args['baseSearchPath']='';
 			else $args['baseSearchPath'] = $customPathC->getCollectionPath();
 		}
 		if( trim($args['baseSearchPath'])=='/' || strlen(trim($args['baseSearchPath']))==0 )
