@@ -354,7 +354,7 @@ class Concrete5_Helper_Date {
 	/**
 	 * Render a date/time as a localized string, by specifying a custom format
 	 * @param string $format The custom format (see http://www.php.net/manual/en/function.date.php for applicable formats)
-	 * @param bool $withSeconds Set to true to include seconds (eg '11:59:59 PM'), false (default) otherwise (eg '11:59 PM');
+	 * @param mixed $value The date/time representation (one of the values accepted by toZendDate)
 	 * @return string Returns an empty string if $value couldn't be parsed, the localized string otherwise
 	 */
 	public function formatCustom($format, $value = 'now') {
@@ -363,5 +363,78 @@ class Concrete5_Helper_Date {
 			return '';
 		}
 		return $zendDate->toString($format);
+	}
+	/**
+	 * Render a date/time as a localized string, by specifying the name of one of the format accepted by getSpecialFormat
+	 * @param string $formatName The name of the custom format (@see getSpecialFormat)
+	 * @param mixed $value The date/time representation (one of the values accepted by toZendDate)
+	 * @return string Returns an empty string if $value couldn't be parsed, the localized string otherwise
+	 */
+	public function formatSpecial($formatName, $value = 'now') {
+		return $this->formatCustom($this->getSpecialFormat($formatName), $value);
+	}
+	/**
+	 * Return the date/time format for special items
+	 * @param string $formatName One of the following:
+	 * <ul>
+	 * 	<li><b>'FILENAME'</b> date/time format in PHP format</li>
+	 * 	<li><b>'FILE_PROPERTIES'</b> date/time format in PHP format</li>
+	 * 	<li><b>'FILE_VERSIONS'</b> date/time format in PHP format</li>
+	 * 	<li><b>'FILE_DOWNLOAD'</b> date/time format in PHP format</li>
+	 * 	<li><b>'PAGE_VERSIONS'</b> date/time format in PHP format</li>
+	 * 	<li><b>'DASHBOARD_SEARCH_RESULTS_USERS'</b> date/time format in PHP format</li>
+	 * 	<li><b>'DASHBOARD_SEARCH_RESULTS_FILES'</b> date/time format in PHP format</li>
+	 * 	<li><b>'DASHBOARD_SEARCH_RESULTS_PAGES'</b> date/time format in PHP format</li>
+	 * 	<li><b>'DATE_ATTRIBUTE_TYPE_MDY'</b> date/time format in PHP format</li>
+	 * 	<li><b>'DATE_ATTRIBUTE_TYPE_T'</b> date/time format in PHP format</li>
+	 * 	<li><b>'DATE_PICKER'</b> date/time format in jQueryUI datepicker format</li>
+	 * </ul>
+	 * @return string
+	 */
+	public function getSpecialFormat($formatName) {
+		switch($formatName) {
+			case 'FILENAME':
+				return defined("CUSTOM_DATE_APP_$formatName") ?
+					constant("CUSTOM_DATE_APP_$formatName")
+					:
+					t(/*i18n: Used when dates are used to start filenames: see http://www.php.net/manual/en/function.date.php */ 'd-m-Y_H:i_')
+				;
+			case 'FILE_PROPERTIES':
+			case 'FILE_VERSIONS':
+			case 'FILE_DOWNLOAD':
+				return defined("CUSTOM_DATE_APP_$formatName") ?
+					constant("CUSTOM_DATE_APP_$formatName")
+					:
+					t(/*i18n: Long date format and time without seconds: see http://www.php.net/manual/en/function.date.php */ 'F d, Y \\a\\t g:i A')
+				;
+			case 'PAGE_VERSIONS':
+			case 'DASHBOARD_SEARCH_RESULTS_USERS':
+			case 'DASHBOARD_SEARCH_RESULTS_FILES':
+			case 'DASHBOARD_SEARCH_RESULTS_PAGES':
+				return defined("CUSTOM_DATE_APP_$formatName") ?
+					constant("CUSTOM_DATE_APP_$formatName")
+					:
+					t(/*i18n: Short date format and time without seconds: see http://www.php.net/manual/en/function.date.php */ 'n/j/Y \\a\\t g:i A')
+				;
+			case 'DATE_ATTRIBUTE_TYPE_MDY':
+				return defined("CUSTOM_DATE_APP_$formatName") ?
+					constant("CUSTOM_DATE_APP_$formatName")
+					:
+					t(/*i18n: Short date format: see http://www.php.net/manual/en/function.date.php */ 'n/j/Y')
+				;
+			case 'DATE_ATTRIBUTE_TYPE_T':
+				return defined("CUSTOM_DATE_APP_$formatName") ?
+					constant("CUSTOM_DATE_APP_$formatName")
+					:
+					t(/*i18n: Time format with seconds: see http://www.php.net/manual/en/function.date.php */ 'g:i:s A')
+				;
+			case 'DATE_PICKER':
+				return defined("CUSTOM_DATE_APP_$formatName") ?
+					constant("CUSTOM_DATE_APP_$formatName")
+					:
+					t(/*i18n: Date format for the date picker: see http://api.jqueryui.com/datepicker/#utility-formatDate */ 'm/d/yy')
+				;
+		}
+		return '';
 	}
 }

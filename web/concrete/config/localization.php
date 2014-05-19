@@ -89,42 +89,75 @@ if (defined('DATE_APP_GENERIC_TS')) {
 	define('DATE_APP_GENERIC_TS', t('g:i:s A'));
 }
 
-if (!defined('DATE_APP_FILENAME')) {
+if (defined('DATE_APP_FILENAME')) {
+	define('CUSTOM_DATE_APP_FILENAME', DATE_APP_FILENAME);
+} else {
+	/** @deprecated Use Loader::helper('date')->formatSpecial('FILENAME', $date) instead */
 	define('DATE_APP_FILENAME', t('d-m-Y_H:i_')); // used when dates are used to start filenames
 }
 
-if (!defined('DATE_APP_FILE_PROPERTIES')) {
+if (defined('DATE_APP_FILE_PROPERTIES')) {
+	define('CUSTOM_DATE_APP_FILE_PROPERTIES', DATE_APP_FILE_PROPERTIES);
+} else {
+	/** @deprecated Use Loader::helper('date')->formatSpecial('FILE_PROPERTIES', $date) instead */
 	define('DATE_APP_FILE_PROPERTIES', DATE_APP_GENERIC_MDYT_FULL);
 }
-if (!defined('DATE_APP_FILE_VERSIONS')) {
+if (defined('DATE_APP_FILE_VERSIONS')) {
+	define('CUSTOM_DATE_APP_FILE_VERSIONS', DATE_APP_FILE_VERSIONS);
+} else {
+	/** @deprecated Use Loader::helper('date')->formatSpecial('FILE_VERSIONS', $date) instead */
 	define('DATE_APP_FILE_VERSIONS', DATE_APP_GENERIC_MDYT_FULL);
 }
-if (!defined('DATE_APP_FILE_DOWNLOAD')) {
+if (defined('DATE_APP_FILE_DOWNLOAD')) {
+	define('CUSTOM_DATE_APP_FILE_DOWNLOAD', DATE_APP_FILE_DOWNLOAD);
+} else {
+	/** @deprecated Use Loader::helper('date')->formatSpecial('FILE_DOWNLOAD', $date) instead */
 	define('DATE_APP_FILE_DOWNLOAD', DATE_APP_GENERIC_MDYT_FULL);
 }
 
-if (!defined('DATE_APP_PAGE_VERSIONS')) {
+if (defined('DATE_APP_PAGE_VERSIONS')) {
+	define('CUSTOM_DATE_APP_PAGE_VERSIONS', DATE_APP_PAGE_VERSIONS);
+} else {
+	/** @deprecated Use Loader::helper('date')->formatSpecial('PAGE_VERSIONS', $date) instead */
 	define('DATE_APP_PAGE_VERSIONS', DATE_APP_GENERIC_MDYT);
 }
-if (!defined('DATE_APP_DASHBOARD_SEARCH_RESULTS_USERS')) {
+if (defined('DATE_APP_DASHBOARD_SEARCH_RESULTS_USERS')) {
+	define('CUSTOM_DATE_APP_DASHBOARD_SEARCH_RESULTS_USERS', DATE_APP_DASHBOARD_SEARCH_RESULTS_USERS);
+} else {
+	/** @deprecated Use Loader::helper('date')->formatSpecial('DASHBOARD_SEARCH_RESULTS_USERS', $date) instead */
 	define('DATE_APP_DASHBOARD_SEARCH_RESULTS_USERS', DATE_APP_GENERIC_MDYT);
 }
 
-if (!defined('DATE_APP_DASHBOARD_SEARCH_RESULTS_FILES')) {
+if (defined('DATE_APP_DASHBOARD_SEARCH_RESULTS_FILES')) {
+	define('CUSTOM_DATE_APP_DASHBOARD_SEARCH_RESULTS_FILES', DATE_APP_DASHBOARD_SEARCH_RESULTS_FILES);
+} else {
+	/** @deprecated Use Loader::helper('date')->formatSpecial('DASHBOARD_SEARCH_RESULTS_FILES', $date) instead */
 	define('DATE_APP_DASHBOARD_SEARCH_RESULTS_FILES', DATE_APP_GENERIC_MDYT);
 }
 
-if (!defined('DATE_APP_DASHBOARD_SEARCH_RESULTS_PAGES')) {
+if (defined('DATE_APP_DASHBOARD_SEARCH_RESULTS_PAGES')) {
+	define('CUSTOM_DATE_APP_DASHBOARD_SEARCH_RESULTS_PAGES', DATE_APP_DASHBOARD_SEARCH_RESULTS_PAGES);
+} else {
+	/** @deprecated Use Loader::helper('date')->formatSpecial('DASHBOARD_SEARCH_RESULTS_PAGES', $date) instead */
 	define('DATE_APP_DASHBOARD_SEARCH_RESULTS_PAGES', DATE_APP_GENERIC_MDYT);
 }
 
-if (!defined('DATE_APP_DATE_ATTRIBUTE_TYPE_MDY')) {
+if (defined('DATE_APP_DATE_ATTRIBUTE_TYPE_MDY')) {
+	define('CUSTOM_DATE_APP_DATE_ATTRIBUTE_TYPE_MDY', DATE_APP_DATE_ATTRIBUTE_TYPE_MDY);
+} else {
+	/** @deprecated Use Loader::helper('date')->formatSpecial('DATE_ATTRIBUTE_TYPE_MDY', $date) instead */
 	define('DATE_APP_DATE_ATTRIBUTE_TYPE_MDY', DATE_APP_GENERIC_MDY);
 }
-if (!defined('DATE_APP_DATE_ATTRIBUTE_TYPE_T')) {
+if (defined('DATE_APP_DATE_ATTRIBUTE_TYPE_T')) {
+	define('CUSTOM_DATE_APP_DATE_ATTRIBUTE_TYPE_T', DATE_APP_DATE_ATTRIBUTE_TYPE_T);
+} else {
+	/** @deprecated Use Loader::helper('date')->formatSpecial('DATE_ATTRIBUTE_TYPE_T', $date) instead */
 	define('DATE_APP_DATE_ATTRIBUTE_TYPE_T', DATE_APP_GENERIC_TS);
 }
-if (!defined('DATE_APP_DATE_PICKER')) {
+if (defined('DATE_APP_DATE_PICKER')) {
+	define('CUSTOM_DATE_APP_DATE_PICKER', DATE_APP_DATE_PICKER);
+} else {
+	/** @deprecated Use Loader::helper('date')->formatSpecial('DATE_PICKER', $date) instead */
 	define('DATE_APP_DATE_PICKER', t(/*i18n http://api.jqueryui.com/datepicker/#utility-formatDate */'m/d/yy'));
 }
 

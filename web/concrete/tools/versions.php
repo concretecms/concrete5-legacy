@@ -368,6 +368,8 @@ $("button[name=vRemove]").click(function() {
 		</th>
 	</tr>
 	<? 
+	$dh = Loader::helper('date');
+	/* @var $dh DateHelper */
 	$vIsPending = true;
 	foreach ($vArray as $v) { 
 		if ($v->isApproved()) {
@@ -401,7 +403,7 @@ $("button[name=vRemove]").click(function() {
 			print $v->getVersionApproverUserName();
 			
 			?></td>
-		<td colspan="2"><?=date(DATE_APP_PAGE_VERSIONS, strtotime($v->getVersionDateCreated('user')))?></td>
+		<td colspan="2"><?=$dh->formatSpecial('PAGE_VERSIONS', $v->getVersionDateCreated())?></td>
 	</tr>	
 	<? } ?>
 	</table>

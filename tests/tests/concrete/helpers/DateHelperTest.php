@@ -156,4 +156,33 @@ class DateHelperTest extends PHPUnit_Framework_TestCase {
 			$this->object->formatDateTime($timestamp, true, true)
 		);
 	}
+	public function testSpecialFormats() {
+		Localization::changeLocale('en_US');
+		$timestamp = time();
+		foreach(array(
+			'FILENAME',
+			'FILE_PROPERTIES',
+			'FILE_VERSIONS',
+			'FILE_DOWNLOAD',
+			'PAGE_VERSIONS',
+			'DASHBOARD_SEARCH_RESULTS_USERS',
+			'DASHBOARD_SEARCH_RESULTS_FILES',
+			'DASHBOARD_SEARCH_RESULTS_PAGES',
+			'DATE_ATTRIBUTE_TYPE_MDY',
+			'DATE_ATTRIBUTE_TYPE_T'
+		) as $formatName) {
+			$this->assertEquals(
+				$this->object->date(constant("DATE_APP_$formatName"), $timestamp),
+				$this->object->formatSpecial($formatName, $timestamp)
+			);
+		}
+		foreach(array(
+			'DATE_PICKER'
+		) as $formatName) {
+			$this->assertEquals(
+				constant("DATE_APP_$formatName"),
+				$this->object->getSpecialFormat($formatName)
+			);
+		}
+	}
 }

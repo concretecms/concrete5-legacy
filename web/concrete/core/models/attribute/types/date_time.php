@@ -34,13 +34,18 @@ class Concrete5_Controller_AttributeType_DateTime extends AttributeTypeControlle
 		if ($v == '' || $v == false) {
 			return '';
 		}
-		$v2 = date('H:i:s', strtotime($v));
-		$r = '';
-		if ($v2 != '00:00:00' && $this->akDateDisplayMode != 'date') {
-			$r .= date(DATE_APP_DATE_ATTRIBUTE_TYPE_T, strtotime($v));
-			$r .= t(' on ' );
+		$dh = Loader::helper('date');
+		/* @var $dh DateHelper */
+		$timestamp = strtotime($v);
+		if ($this->akDateDisplayMode != 'date' && $dh->formatCustom('H:i:s', $v) != '00:00:00') {
+			$r = t(
+				/*i18n: %1$s is a date, %2$s is a time*/ '%1$s on %2$s',
+				$dh->formatSpecial('DATE_ATTRIBUTE_TYPE_MDY', $timestamp),
+				$dh->formatSpecial('DATE_ATTRIBUTE_TYPE_T', $timestamp)
+			);
+		} else {
+			$r = $dh->formatSpecial('DATE_ATTRIBUTE_TYPE_MDY', $timestamp);
 		}
-		$r .= date(DATE_APP_DATE_ATTRIBUTE_TYPE_MDY, strtotime($v));
 		return $r;
 	}
 	
