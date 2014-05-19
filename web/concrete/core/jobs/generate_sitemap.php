@@ -69,7 +69,7 @@ class Concrete5_Job_GenerateSitemap extends Job {
 			if(!$hFile = @fopen($osName, 'w')) {
 				throw new Exception(t('Cannot open file %s', $osName));
 			}
-			if(!@fprintf($hFile, $dom->saveXML())) {
+			if(!@fwrite($hFile, $dom->saveXML())) {
 				throw new Exception(t('Error writing to file %s', $osName));
 			}
 			@fflush($hFile);
