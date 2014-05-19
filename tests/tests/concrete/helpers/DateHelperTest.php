@@ -79,19 +79,36 @@ class DateHelperTest extends PHPUnit_Framework_TestCase {
 		$u = User::getByUserID(TESTUSER_JP_ID, true);
 		Localization::changeLocale('en_US');
 		$this->assertEquals(
-			'JP: February 14, 2009 at 6:20:00 AM',
-			'JP: ' . $this->object->formatDateTime($timestamp, true, true)
+			'Asia/Tokyo: February 14, 2009 at 6:20:00 AM',
+			'Asia/Tokyo: ' . $this->object->formatDateTime($timestamp, true, true)
 		);
 		$u = User::getByUserID(TESTUSER_IT_ID, true);
 		Localization::changeLocale('en_US');
 		$this->assertEquals(
-			'IT: February 13, 2009 at 10:20:00 PM',
-			'IT: ' . $this->object->formatDateTime($timestamp, true, true)
+			'Europe/Rome: February 13, 2009 at 10:20:00 PM',
+			'Europe/Rome: ' . $this->object->formatDateTime($timestamp, true, true)
+		);
+		Localization::changeLocale('en_US');
+		if($activeUser) {
+			User::getByUserID($activeUser->getUserID(), true);
+		}
+		else {
+			$u->logout();
+		}
+	}
+	public function testTranslations() {
+		$timestamp = 1234560000; // 2009-02-13 21:20:00 UTC
+		$activeUser = User::isLoggedIn() ? new User() : null;
+		$u = User::getByUserID(TESTUSER_IT_ID, true);
+		Localization::changeLocale('en_US');
+		$this->assertEquals(
+			'February 13, 2009 at 10:20:00 PM',
+			$this->object->formatDateTime($timestamp, true, true)
 		);
 		Localization::changeLocale('it_IT');
 		$this->assertEquals(
-			'IT: 13 febbraio 2009 alle 22:20:00',
-			'IT: ' . $this->object->formatDateTime($timestamp, true, true)
+			'13 febbraio 2009 alle 22:20:00',
+			$this->object->formatDateTime($timestamp, true, true)
 		);
 		Localization::changeLocale('en_US');
 		if($activeUser) {
