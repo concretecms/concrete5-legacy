@@ -29,6 +29,10 @@ define('ENABLE_USER_TIMEZONES', true);
 //since we can't define/redefine this for individual tests, we set to a value that's most likely to cause errors (vs '')
 define('DIR_REL', '/blog');
 
+// Force tests to start in en_US
+define('SITE_LOCALE', 'en_US');
+define('ACTIVE_LOCALE', 'en_US');
+
 //this is where the magic happens
 require(DIR_BASE . '/concrete/dispatcher.php');
 
