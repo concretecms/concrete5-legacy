@@ -40,37 +40,51 @@ if (!defined('ENABLE_TRANSLATE_LOCALE_EN_US')) {
 // initialize localization immediately following defining locale
 Localization::init();
 
-if (!defined('DATE_APP_GENERIC_MDYT_FULL')) {
+if (defined('DATE_APP_GENERIC_MDYT_FULL')) {
+	define('CUSTOM_DATE_APP_GENERIC_MDYT_FULL', DATE_APP_GENERIC_MDYT_FULL);
+} else {
 	/** @deprecated Use Loader::helper('date')->formatDateTime($date, true, false) instead */
 	define('DATE_APP_GENERIC_MDYT_FULL', t('F d, Y \a\t g:i A'));
 }
 
-if (!defined('DATE_APP_GENERIC_MDYT_FULL_SECONDS')) {
+if (defined('DATE_APP_GENERIC_MDYT_FULL_SECONDS')) {
+	define('CUSTOM_DATE_APP_GENERIC_MDYT_FULL_SECONDS', DATE_APP_GENERIC_MDYT_FULL_SECONDS);
+} else {
 	/** @deprecated Use Loader::helper('date')->formatDateTime($date, true, true) instead */
 	define('DATE_APP_GENERIC_MDYT_FULL_SECONDS', t('F d, Y \a\t g:i:s A'));
 }
 
-if (!defined('DATE_APP_GENERIC_MDYT')) {
+if (defined('DATE_APP_GENERIC_MDYT')) {
+	define('CUSTOM_DATE_APP_GENERIC_MDYT', DATE_APP_GENERIC_MDYT);
+} else {
 	/** @deprecated Use Loader::helper('date')->formatDateTime($date, false, false) instead */
 	define('DATE_APP_GENERIC_MDYT', t('n/j/Y \a\t g:i A'));
 }
 
-if (!defined('DATE_APP_GENERIC_MDY')) {
+if (defined('DATE_APP_GENERIC_MDY')) {
+	define('CUSTOM_DATE_APP_GENERIC_MDY', DATE_APP_GENERIC_MDY);
+} else {
 	/** @deprecated Use Loader::helper('date')->formatDate($date, false) instead */
 	define('DATE_APP_GENERIC_MDY', t('n/j/Y'));
 }
 
-if (!defined('DATE_APP_GENERIC_MDY_FULL')) {
+if (defined('DATE_APP_GENERIC_MDY_FULL')) {
+	define('CUSTOM_DATE_APP_GENERIC_MDY_FULL', DATE_APP_GENERIC_MDY_FULL);
+} else {
 	/** @deprecated Use Loader::helper('date')->formatDate($date, true) instead */
 	define('DATE_APP_GENERIC_MDY_FULL', t('F j, Y'));
 }
 
-if (!defined('DATE_APP_GENERIC_T')) {
+if (defined('DATE_APP_GENERIC_T')) {
+	define('CUSTOM_DATE_APP_GENERIC_T', DATE_APP_GENERIC_T);
+} else {
 	/** @deprecated Use Loader::helper('date')->formatTime($date, false) instead */
 	define('DATE_APP_GENERIC_T', t('g:i A'));
 }
 
-if (!defined('DATE_APP_GENERIC_TS')) {
+if (defined('DATE_APP_GENERIC_TS')) {
+	define('CUSTOM_DATE_APP_GENERIC_TS', DATE_APP_GENERIC_TS);
+} else {
 	/** @deprecated Use Loader::helper('date')->formatTime($date, true) instead */
 	define('DATE_APP_GENERIC_TS', t('g:i:s A'));
 }

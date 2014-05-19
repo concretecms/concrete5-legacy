@@ -269,12 +269,20 @@ class Concrete5_Helper_Date {
 		if (is_null(toZendDate)) {
 			return '';
 		}
-		return $zendDate->toString(
-			$longDate ?
+		if($longDate) {
+			$format = defined('CUSTOM_DATE_APP_GENERIC_MDY_FULL') ?
+				CUSTOM_DATE_APP_GENERIC_MDY_FULL
+				:
 				t(/*i18n: Long date format: see http://www.php.net/manual/en/function.date.php */ 'F j, Y')
+			;
+		} else {
+			$format = defined('CUSTOM_DATE_APP_GENERIC_MDY') ?
+				CUSTOM_DATE_APP_GENERIC_MDY
 				:
 				t(/*i18n: Short date format: see http://www.php.net/manual/en/function.date.php */ 'n/j/Y')
-		);
+			;
+		}
+		return $zendDate->toString($format);
 	}
 	/**
 	 * Render the time part of a date/time as a localized string
@@ -287,12 +295,21 @@ class Concrete5_Helper_Date {
 		if (is_null(toZendDate)) {
 			return '';
 		}
-		return $zendDate->toString(
-			$withSeconds ?
+		if($withSeconds) {
+			$format = defined('CUSTOM_DATE_APP_GENERIC_TS') ?
+				CUSTOM_DATE_APP_GENERIC_TS
+				:
 				t(/*i18n: Time format with seconds: see http://www.php.net/manual/en/function.date.php */ 'g:i:s A')
+			;
+		} else {
+			$format =
+				defined('CUSTOM_DATE_APP_GENERIC_T') ?
+				CUSTOM_DATE_APP_GENERIC_T
 				:
 				t(/*i18n: Time format without seconds: see http://www.php.net/manual/en/function.date.php */ 'g:i A')
-		);
+			;
+		}
+		return $zendDate->toString($format);
 	}
 	/**
 	 * Render both the date and time parts of a date/time as a localized string
@@ -307,17 +324,30 @@ class Concrete5_Helper_Date {
 			return '';
 		}
 		if ($longDate) {
-			$format = $withSeconds ?
-				t(/*i18n: Long date format and time with seconds: see http://www.php.net/manual/en/function.date.php */ 'F j, Y \\a\\t g:i:s A')
-				:
-				t(/*i18n: Long date format and time without seconds: see http://www.php.net/manual/en/function.date.php */ 'F j, Y \\a\\t g:i A')
-			;
+			if($withSeconds) {
+				$format = defined('CUSTOM_DATE_APP_GENERIC_MDYT_FULL_SECONDS') ?
+					CUSTOM_DATE_APP_GENERIC_MDYT_FULL_SECONDS
+					:
+					t(/*i18n: Long date format and time with seconds: see http://www.php.net/manual/en/function.date.php */ 'F d, Y \\a\\t g:i:s A')
+				;
+			} else {
+				$format = defined('CUSTOM_DATE_APP_GENERIC_MDYT_FULL') ?
+					CUSTOM_DATE_APP_GENERIC_MDYT_FULL
+					:
+					t(/*i18n: Long date format and time without seconds: see http://www.php.net/manual/en/function.date.php */ 'F d, Y \\a\\t g:i A')
+				;
+			}
 		} else {
-			$format = $withSeconds ?
-				t(/*i18n: Short date format and time with seconds: see http://www.php.net/manual/en/function.date.php */ 'n/j/Y \\a\\t g:i:s A')
-				:
-				t(/*i18n: Short date format and time without seconds: see http://www.php.net/manual/en/function.date.php */ 'n/j/Y \\a\\t g:i A')
-			;
+			if($withSeconds) {
+				$format = t(/*i18n: Short date format and time with seconds: see http://www.php.net/manual/en/function.date.php */ 'n/j/Y \\a\\t g:i:s A');
+			}
+			else {
+				$format = defined('CUSTOM_DATE_APP_GENERIC_MDYT') ?
+					CUSTOM_DATE_APP_GENERIC_MDYT
+					:
+					t(/*i18n: Short date format and time without seconds: see http://www.php.net/manual/en/function.date.php */ 'n/j/Y \\a\\t g:i A')
+				;
+			}
 		}
 		return $zendDate->toString($format);
 	}
