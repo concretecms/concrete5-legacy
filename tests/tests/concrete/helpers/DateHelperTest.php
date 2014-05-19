@@ -118,4 +118,42 @@ class DateHelperTest extends PHPUnit_Framework_TestCase {
 			$u->logout();
 		}
 	}
+	public function testFormatDates() {
+		Localization::changeLocale('en_US');
+		$timestamp = time();
+		$this->assertEquals(
+			$this->object->date(DATE_APP_GENERIC_MDY, $timestamp),
+			$this->object->formatDate($timestamp, false)
+		);
+		$this->assertEquals(
+			$this->object->date(DATE_APP_GENERIC_MDY_FULL, $timestamp),
+			$this->object->formatDate($timestamp, true)
+		);
+		$this->assertEquals(
+			$this->object->date(DATE_APP_GENERIC_T, $timestamp),
+			$this->object->formatTime($timestamp, false)
+		);
+		$this->assertEquals(
+			$this->object->date(DATE_APP_GENERIC_TS, $timestamp),
+			$this->object->formatTime($timestamp, true)
+		);
+		$this->assertEquals(
+			$this->object->date(DATE_APP_GENERIC_MDYT, $timestamp),
+			$this->object->formatDateTime($timestamp, false, false)
+		);
+		/*
+		$this->assertEquals(
+			$this->object->date(, $timestamp),
+			$this->object->formatDateTime($timestamp, false, true)
+		);
+		*/
+		$this->assertEquals(
+			$this->object->date(DATE_APP_GENERIC_MDYT_FULL, $timestamp),
+			$this->object->formatDateTime($timestamp, true, false)
+		);
+		$this->assertEquals(
+			$this->object->date(DATE_APP_GENERIC_MDYT_FULL_SECONDS, $timestamp),
+			$this->object->formatDateTime($timestamp, true, true)
+		);
+	}
 }
