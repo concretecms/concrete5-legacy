@@ -120,6 +120,10 @@ class DateHelperTest extends PHPUnit_Framework_TestCase {
 	}
 	public function testFormatDates() {
 		Localization::changeLocale('en_US');
+		$activeUser = User::isLoggedIn() ? new User() : null;
+		if($activeUser) {
+			$activeUser->logout();
+		}
 		$timestamp = time();
 		$this->assertEquals(
 			$this->object->date(DATE_APP_GENERIC_MDY, $timestamp),
@@ -155,9 +159,16 @@ class DateHelperTest extends PHPUnit_Framework_TestCase {
 			$this->object->date(DATE_APP_GENERIC_MDYT_FULL_SECONDS, $timestamp),
 			$this->object->formatDateTime($timestamp, true, true)
 		);
+		if($activeUser) {
+			User::getByUserID($activeUser->getUserID(), true);
+		}
 	}
 	public function testSpecialFormats() {
 		Localization::changeLocale('en_US');
+		$activeUser = User::isLoggedIn() ? new User() : null;
+		if($activeUser) {
+			$activeUser->logout();
+		}
 		$timestamp = time();
 		foreach(array(
 			'FILENAME',
@@ -183,6 +194,9 @@ class DateHelperTest extends PHPUnit_Framework_TestCase {
 				constant("DATE_APP_$formatName"),
 				$this->object->getSpecialFormat($formatName)
 			);
+		}
+		if($activeUser) {
+			User::getByUserID($activeUser->getUserID(), true);
 		}
 	}
 }
