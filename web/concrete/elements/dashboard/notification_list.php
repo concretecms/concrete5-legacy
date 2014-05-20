@@ -34,21 +34,16 @@ function getNotificationClassName($n) {
 <? 
 $lastDate = false;
 $txt = Loader::helper('text');
+$dh = Loader::helper('date');
+/* @var $dh DateHelper */
 foreach($notifications as $n) { 
-	$date = date('Y-m-d', strtotime($n->getSystemNotificationDateTime()));
-	$time = date('g:i A', strtotime($n->getSystemNotificationDateTime()));
+	$date = $dh->formatPrettyDate($n->getSystemNotificationDateTime(), true);
+	$time = $dh->formatTime($n->getSystemNotificationDateTime(), false);
 	
-	if ($date != $lastDate) { ?>
-		<li class="ccm-dashboard-notification-list-date"><h2><? 
-			if (date('Y-m-d') == $date) { 
-				print t('Today');
-			} else if (date('Y-m-d', strtotime('-1 days')) == $date) { 
-				print t('Yesterday');
-			} else {
-				print date('F jS', strtotime($date));
-			}
-		?></h2></li>
-	<? } ?>
+	if ($date != $lastDate) {
+		?><li class="ccm-dashboard-notification-list-date"><h2><?=$date?></h2></li><?
+		$lastDate = $date;
+	} ?>
 	
 	<li class="<?=getNotificationClassName($n)?>">
 	
@@ -85,9 +80,7 @@ foreach($notifications as $n) {
 	if ($n->isSystemNotificationNew()) {
 		$n->markSystemNotificationAsRead();
 	}
-	$lastDate = $date; ?>
-	
-<? } ?>
+} ?>
 </ul>
 
 <script type="text/javascript">

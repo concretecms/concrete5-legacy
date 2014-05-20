@@ -11,15 +11,8 @@ class Concrete5_Controller_Dashboard_Reports_Surveys extends Controller {
 		$inputTime = $dh->getLocalDateTime($inputTime);
 		if (defined('DATE_APP_SURVEY_RESULTS')) {
 			return $dh->formatCustom(DATE_APP_SURVEY_RESULTS, $inputTime);
-		}
-		$timestamp = strtotime($inputTime);
-		if ($timestamp >= strtotime(date('n/d/y'))) {
-			// Today
-			return t(/*i18n %s is a time */'Today at %s', $dh->formatTime($timestamp, false));
-		}
-		else {
-			// If day in past
-			return $dh->formatDateTime($timestamp, false, false);
+		} else {
+			return $dh->formatPrettyDateTime($inputTime, false, false);
 		}
 	}
 
