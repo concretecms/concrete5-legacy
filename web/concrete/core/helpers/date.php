@@ -262,10 +262,16 @@ class Concrete5_Helper_Date {
 	 * Render the date part of a date/time as a localized string
 	 * @param mixed $value The date/time representation (one of the values accepted by toZendDate)
 	 * @param bool $longDate Set to true for the long date format (eg 'December 31, 2000'), false (default) for the short format (eg '12/31/2000')
+	 * @param string $timezone The timezone to set. Special values are:<ul>
+	 *	<li>'system' for the current system timezone</li>
+	 *	<li>'user' (default) for the user's timezone</li>
+	 *	<li>'app' for the app's timezone</li>
+	 *	<li>Other values: one of the PHP supported time zones (see http://us1.php.net/manual/en/timezones.php )</li>
+	 * </ul>
 	 * @return string Returns an empty string if $value couldn't be parsed, the localized string otherwise
 	 */
-	public function formatDate($value = 'now', $longDate = false) {
-		$zendDate = $this->toZendDate($value, 'user');
+	public function formatDate($value = 'now', $longDate = false, $timezone = 'user') {
+		$zendDate = $this->toZendDate($value, $timezone);
 		if (is_null(toZendDate)) {
 			return '';
 		}
@@ -288,10 +294,16 @@ class Concrete5_Helper_Date {
 	 * Render the time part of a date/time as a localized string
 	 * @param mixed $value The date/time representation (one of the values accepted by toZendDate)
 	 * @param bool $withSeconds Set to true to include seconds (eg '11:59:59 PM'), false (default) otherwise (eg '11:59 PM');
+	 * @param string $timezone The timezone to set. Special values are:<ul>
+	 *	<li>'system' for the current system timezone</li>
+	 *	<li>'user' (default) for the user's timezone</li>
+	 *	<li>'app' for the app's timezone</li>
+	 *	<li>Other values: one of the PHP supported time zones (see http://us1.php.net/manual/en/timezones.php )</li>
+	 * </ul>
 	 * @return string Returns an empty string if $value couldn't be parsed, the localized string otherwise
 	 */
-	public function formatTime($value = 'now', $withSeconds = false) {
-		$zendDate = $this->toZendDate($value, 'user');
+	public function formatTime($value = 'now', $withSeconds = false, $timezone = 'user') {
+		$zendDate = $this->toZendDate($value, $timezone);
 		if (is_null(toZendDate)) {
 			return '';
 		}
@@ -316,10 +328,16 @@ class Concrete5_Helper_Date {
 	 * @param mixed $value The date/time representation (one of the values accepted by toZendDate)
 	 * @param bool $longDate Set to true for the long date format (eg 'December 31, 2000 at ...'), false (default) for the short format (eg '12/31/2000 at ...')
 	 * @param bool $withSeconds Set to true to include seconds (eg '... at 11:59:59 PM'), false (default) otherwise (eg '... at 11:59 PM');
+	 * @param string $timezone The timezone to set. Special values are:<ul>
+	 *	<li>'system' for the current system timezone</li>
+	 *	<li>'user' (default) for the user's timezone</li>
+	 *	<li>'app' for the app's timezone</li>
+	 *	<li>Other values: one of the PHP supported time zones (see http://us1.php.net/manual/en/timezones.php )</li>
+	 * </ul>
 	 * @return string Returns an empty string if $value couldn't be parsed, the localized string otherwise
 	*/
-	public function formatDateTime($value = 'now', $longDate = false, $withSeconds = false) {
-		$zendDate = $this->toZendDate($value, 'user');
+	public function formatDateTime($value = 'now', $longDate = false, $withSeconds = false, $timezone = 'user') {
+		$zendDate = $this->toZendDate($value, $timezone);
 		if (is_null($zendDate)) {
 			return '';
 		}
@@ -355,10 +373,16 @@ class Concrete5_Helper_Date {
 	 * Render a date/time as a localized string, by specifying a custom format
 	 * @param string $format The custom format (see http://www.php.net/manual/en/function.date.php for applicable formats)
 	 * @param mixed $value The date/time representation (one of the values accepted by toZendDate)
+	 * @param string $timezone The timezone to set. Special values are:<ul>
+	 *	<li>'system' for the current system timezone</li>
+	 *	<li>'user' (default) for the user's timezone</li>
+	 *	<li>'app' for the app's timezone</li>
+	 *	<li>Other values: one of the PHP supported time zones (see http://us1.php.net/manual/en/timezones.php )</li>
+	 * </ul>
 	 * @return string Returns an empty string if $value couldn't be parsed, the localized string otherwise
 	 */
-	public function formatCustom($format, $value = 'now') {
-		$zendDate = $this->toZendDate($value, 'user');
+	public function formatCustom($format, $value = 'now', $timezone = 'user') {
+		$zendDate = $this->toZendDate($value, $timezone);
 		if (is_null(toZendDate)) {
 			return '';
 		}
@@ -368,10 +392,16 @@ class Concrete5_Helper_Date {
 	 * Render a date/time as a localized string, by specifying the name of one of the format accepted by getSpecialFormat
 	 * @param string $formatName The name of the custom format (@see getSpecialFormat)
 	 * @param mixed $value The date/time representation (one of the values accepted by toZendDate)
+	 * @param string $timezone The timezone to set. Special values are:<ul>
+	 *	<li>'system' for the current system timezone</li>
+	 *	<li>'user' (default) for the user's timezone</li>
+	 *	<li>'app' for the app's timezone</li>
+	 *	<li>Other values: one of the PHP supported time zones (see http://us1.php.net/manual/en/timezones.php )</li>
+	 * </ul>
 	 * @return string Returns an empty string if $value couldn't be parsed, the localized string otherwise
 	 */
-	public function formatSpecial($formatName, $value = 'now') {
-		return $this->formatCustom($this->getSpecialFormat($formatName), $value);
+	public function formatSpecial($formatName, $value = 'now', $timezone = 'user') {
+		return $this->formatCustom($this->getSpecialFormat($formatName), $value, $timezone);
 	}
 	/**
 	 * Return the date/time format for special items
