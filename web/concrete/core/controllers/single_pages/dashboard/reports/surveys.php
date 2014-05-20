@@ -3,12 +3,8 @@
 class Concrete5_Controller_Dashboard_Reports_Surveys extends Controller {
 
 	public function formatDate($inputTime) {
-		if(empty($inputTime)) {
-			return '';
-		}
 		$dh = Loader::helper('date');
 		/* @var $dh DateHelper */
-		$inputTime = $dh->getLocalDateTime($inputTime);
 		if (defined('DATE_APP_SURVEY_RESULTS')) {
 			return $dh->formatCustom(DATE_APP_SURVEY_RESULTS, $inputTime);
 		} else {
