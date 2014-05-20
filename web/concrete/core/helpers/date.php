@@ -190,7 +190,7 @@ class Concrete5_Helper_Date {
 	 *	<li>the special value 'now' (default) to return the current date/time</li>
 	 *	<li>a DateTime instance</li>
 	 *	<li>a Zend_Date instance</li>
-	 *	<li>a string parsable by strtotime</li>
+	 *	<li>a string parsable by strtotime (the current system timezone is used)</li>
 	 *	<li>a timestamp</li>
 	 * </ul>
 	 * @param string $timezone The timezone to set. Special values are:<ul>
