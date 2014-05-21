@@ -497,10 +497,8 @@ if (is_object($uo)) {
 					<?
 					$dateTime = $g->getGroupDateTimeEntered();
 					if ($dateTime != '0000-00-00 00:00:00') {
-						echo($dateTime . '<br>');
-					} else {
-						echo('<br>');
-					}?>
+						echo $dh->formatDateTime($dateTime, false, true);
+					}?><br />
 					</p></div>
 				</div>
 			<? } ?>
