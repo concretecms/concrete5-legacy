@@ -28,7 +28,7 @@ if (count($drafts) > 0) { ?>
 			print $dh->formatTime($dr->getCollectionDateLastModified(), false);
 		}
 		else {
-			print $dh->formatDateTime($dr->getCollectionDateLastModified(), false, false)
+			print $dh->formatDateTime($dr->getCollectionDateLastModified(), false, false);
 		}
 	?></td>
 <? } ?>
