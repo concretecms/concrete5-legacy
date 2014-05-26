@@ -2,8 +2,11 @@
 
 <?=Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Composer Drafts'))?>
 
-<? 
-$today = Loader::helper('date')->getLocalDateTime('now', 'Y-m-d');
+<?
+$dh = Loader::helper('date');
+/* @var $dh DateHelper */
+
+$today = $dh->getLocalDateTime('now', 'Y-m-d');
 if (count($drafts) > 0) { ?>
 
 <table class="table table-striped">
@@ -21,11 +24,13 @@ if (count($drafts) > 0) { ?>
 	} ?></a></td>
 	<td><?=$dr->getCollectionTypeName()?></td>
 	<td><?
-		$mask = DATE_APP_GENERIC_MDYT;
 		if ($today == $dr->getCollectionDateLastModified("Y-m-d")) {
-			$mask = DATE_APP_GENERIC_T;
+			print $dh->formatTime($dr->getCollectionDateLastModified(), false);
 		}
-		print $dr->getCollectionDateLastModified($mask)?></td>
+		else {
+			print $dh->formatDateTime($dr->getCollectionDateLastModified(), false, false);
+		}
+	?></td>
 <? } ?>
 </table>
 

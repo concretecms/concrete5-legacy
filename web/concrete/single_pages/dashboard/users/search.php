@@ -431,7 +431,7 @@ if (is_object($uo)) {
 		<h3><?=t('Basic Details')?></h3><br/>
 		<p><strong><?=$uo->getUserName()?></strong></p>
 		<p><a href="mailto:<?=$uo->getUserEmail()?>"><?=$uo->getUserEmail()?></a></p>
-		<p><?=t('Account created on %s. Last logged in from IP: %s.', date(DATE_APP_GENERIC_MDYT, strtotime($uo->getUserDateAdded('user'))), $uo->getLastIPAddress())?></p>
+		<p><?=t('Account created on %s. Last logged in from IP: %s.', $dh->formatDateTime($uo->getUserDateAdded(), false, false), $uo->getLastIPAddress())?></p>
 		<?=(ENABLE_USER_TIMEZONES && strlen($uo->getUserTimezone())?"<p>".t('Timezone').": ".$uo->getUserTimezone() . '</p>':"")?>
 		<? if (USER_VALIDATE_EMAIL) { ?>
 			<p>
@@ -497,10 +497,8 @@ if (is_object($uo)) {
 					<?
 					$dateTime = $g->getGroupDateTimeEntered();
 					if ($dateTime != '0000-00-00 00:00:00') {
-						echo($dateTime . '<br>');
-					} else {
-						echo('<br>');
-					}?>
+						echo $dh->formatDateTime($dateTime, false, true);
+					}?><br />
 					</p></div>
 				</div>
 			<? } ?>

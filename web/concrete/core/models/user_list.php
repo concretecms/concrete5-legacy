@@ -138,7 +138,7 @@ class UserSearchDefaultColumnSet extends DatabaseItemListColumnSet {
 	}
 	
 	public static function getUserDateAdded($ui) {
-		return date(DATE_APP_DASHBOARD_SEARCH_RESULTS_USERS, strtotime($ui->getUserDateAdded()));
+		return Loader::helper('date')->formatSpecial('DASHBOARD_SEARCH_RESULTS_USERS', $ui->getUserDateAdded());
 	}
 	
 	public function __construct() {

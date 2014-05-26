@@ -107,7 +107,7 @@ if ($tp->canBackup()) {
 				<tbody>
 					<?php foreach ($backups as $arr_bkupInf) { ?>
 						<tr> 
-							<td width="50%" style="white-space: nowrap"><?= $dh->date(DATE_APP_GENERIC_MDYT_FULL, strtotime($arr_bkupInf['date'])) ?></td>
+							<td width="50%" style="white-space: nowrap"><?= $dh->formatDateTime($arr_bkupInf['date'], true, false) ?></td>
 							<td width="50%"><?= $arr_bkupInf['file']; ?></td>
 							<td style="white-space: nowrap">
 								<?= $interface->button_js(t('Download'), 'window.location.href=\'' . $this->action('download', $arr_bkupInf['file']) . '\'', 'left', 'small'); ?>
