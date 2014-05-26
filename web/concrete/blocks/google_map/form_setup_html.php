@@ -3,7 +3,7 @@
 .ccm-googleMapBlock-pane>table { width: 100%; }
 .ccm-googleMapBlock-pane>table>tbody>tr>th { font-weight: bold; text-style: normal; padding-right: 8px; vertical-align:top ; padding-bottom:8px; width: 130px; }
 .ccm-googleMapBlock-pane>table>tbody>tr>td { font-size: 12px; vertical-align: top; padding-bottom: 8px; }
-.ccm-googleMapBlock-pane>table>tbody>tr>td>input[type="text"] { width: 100%; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; }
+.ccm-googleMapBlock-pane>table>tbody>tr>td>input[type="text"] { width: 100%; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; height:28px; }
 .ccm-googleMapBlock-pane>table>tbody>tr>td>input[type="number"] { width: 50px; }
 </style>
 
