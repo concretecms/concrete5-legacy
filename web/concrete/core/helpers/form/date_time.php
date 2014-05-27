@@ -103,14 +103,14 @@ class Concrete5_Helper_Form_DateTime {
 		$dfhe = (DATE_FORM_HELPER_FORMAT_HOUR == '12') ? '12' : '23';
 		$dfhs = (DATE_FORM_HELPER_FORMAT_HOUR == '12') ? '1' : '0';
 		$dateHelper = Loader::helper('date'); /* @var $dateHelper DateHelper */
-		$zendDate = $dateHelper->toZendDate($value, 'user');
+		$zendDate = $dateHelper->toZendDate($value);
 		if(is_null($zendDate)) {
-			$zendDate = $dateHelper->toZendDate('now', 'user');
+			$zendDate = $dateHelper->toZendDate('now');
 		}
-		$dt = $dateHelper->formatDate($zendDate, false);
-		$h = $dateHelper->formatCustom($dfh, $zendDate);
-		$m = $dateHelper->formatCustom('i', $zendDate);
-		$a = $dateHelper->formatCustom('A', $zendDate);
+		$dt = $dateHelper->formatDate($zendDate, false, 'user');
+		$h = $dateHelper->formatCustom($dfh, $zendDate, 'user');
+		$m = $dateHelper->formatCustom('i', $zendDate, 'user');
+		$a = $dateHelper->formatCustom('A', $zendDate, 'user');
 		$id = preg_replace("/[^0-9A-Za-z-]/", "_", $prefix);
 		$html = '';
 		$disabled = false;
@@ -218,8 +218,7 @@ EOS;
 			$dt = $_REQUEST[$field];
 		}
 		elseif ($value != "") {
-			$zendDate = $dateHelper->toZendDate($value, 'system');
-			$dt = $dateHelper->formatDate($zendDate, false);
+			$dt = $dateHelper->formatDate($value, false, 'system');
 		}
 		else {
 			$dt = '';
