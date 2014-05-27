@@ -229,7 +229,7 @@ EOS;
 		$html .= '<span class="ccm-input-date-wrapper" id="' . $id . '_dw"><input id="' . $id . '" name="' . $field . '" class="ccm-input-date" value="' . $dt . '"  /></span>';
 
 		if ($calendarAutoStart) { 
-			$html .= '<script type="text/javascript">$(function() { $("#' . $id . '").datepicker({ dateFormat: ' . Loader::helper('json')->encode($dateHelper->getJQueryUIDatePickerFormat()) . '\', changeYear: true, showAnim: \'fadeIn\' }); });</script>';
+			$html .= '<script type="text/javascript">$(function() { $("#' . $id . '").datepicker({ dateFormat: ' . Loader::helper('json')->encode($dateHelper->getJQueryUIDatePickerFormat()) . ', changeYear: true, showAnim: \'fadeIn\' }); });</script>';
 		}
 		return $html;
 	
