@@ -44,9 +44,9 @@ class Concrete5_Controller_AttributeType_DateTime extends AttributeTypeControlle
 			default:
 				if ($dh->formatCustom('H:i:s', $v) != '00:00:00') {
 					$r = t(
-						/*i18n: %1$s is a date, %2$s is a time*/ '%1$s on %2$s',
-						$dh->formatSpecial('DATE_ATTRIBUTE_TYPE_MDY', $timestamp),
-						$dh->formatSpecial('DATE_ATTRIBUTE_TYPE_T', $timestamp)
+						/*i18n: %1$s is a time, %2$s is a date*/ '%1$s on %2$s',
+						$dh->formatSpecial('DATE_ATTRIBUTE_TYPE_T', $timestamp),
+						$dh->formatSpecial('DATE_ATTRIBUTE_TYPE_MDY', $timestamp)
 					);
 				}
 				else {
