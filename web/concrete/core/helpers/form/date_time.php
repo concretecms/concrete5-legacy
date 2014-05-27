@@ -23,33 +23,52 @@ class Concrete5_Helper_Form_DateTime {
 
 	/** 
 	 * Takes a "field" and grabs all the corresponding disparate fields from $_POST and translates into a timestamp
-	 * @param string $field
-	 * @param array $arr
-	 * @return string $dateTime
+	 * @param string $field The name of the field to translate
+	 * @param array $arr = null The array containing the value. If null (default) we'll use $_POST
+	 * @return string|false $dateTime In case of success returns the timestamp (in the format 'Y-m-d H:i:s' or 'Y-m-d'), otherwise returns false ($field value is not in the array) or '' (if $field value is empty).
+	 * If $field has both date and time, the resulting value will be converted fro user timezone to system timezone.
+	 * If $field has only date and not time, no timezone conversion will occur. 
 	 */
 	public function translate($field, $arr = null) {
 		if ($arr == null) {
 			$arr = $_POST;
 		}
-		
+		/* @var $dateHelper DateHelper */
+		$dateHelper = Loader::helper('date');
 		if (isset($arr[$field . '_dt'])) {
-            		if ($arr[$field . '_dt'] == '') {
-                		return '';
-			} 			
-			$dt = date('Y-m-d', strtotime($arr[$field . '_dt']));
-			if (DATE_FORM_HELPER_FORMAT_HOUR == '12') {
-				$str = $dt . ' ' . $arr[$field . '_h'] . ':' . $arr[$field . '_m'] . ' ' . $arr[$field . '_a'];
-			} else {
-				$str = $dt . ' ' . $arr[$field . '_h'] . ':' . $arr[$field . '_m'];
+			$value = $arr[$field . '_dt'];
+			if (strlen(trim($value)) === 0) {
+				return '';
 			}
-			return date('Y-m-d H:i:s', strtotime($str));
-		} else if (isset($arr[$field])) {
-            		if ($arr[$field] == '') {
-                		return '';
+			$format = defined('CUSTOM_DATE_APP_GENERIC_MDY') ? CUSTOM_DATE_APP_GENERIC_MDY : t(/*i18n: Short date format: see http://www.php.net/manual/en/function.date.php */ 'n/j/Y');
+			$h = is_numeric($arr[$field . '_h']) ? $arr[$field . '_h'] : '00';
+			$m = is_numeric($arr[$field . '_m']) ? $arr[$field . '_m'] : '00';
+			if(isset($arr[$field . '_a']) && ($arr[$field . '_a'] === 'PM')) {
+				$a = $dateHelper->date('A', mktime(13));
+				$value .= " $h:$m $a";
+				$format .= ' h:i A';
 			}
-			$dt = date('Y-m-d', strtotime($arr[$field]));
-			return $dt;
-		} else {
+			else {
+				$value .= " $h:$m";
+				$format .= ' H:i';
+			}
+			$d = new Zend_Date();
+			$d->setTimezone($dateHelper->getTimezone('user'));
+			$d->set($value, $format, Localization::activeLocale());
+			return $dateHelper->formatCustom('Y-m-d H:i:s', $d, 'system');
+		}
+		elseif (isset($arr[$field])) {
+			$value = $arr[$field];
+			if (strlen(trim($value)) === 0) {
+				return '';
+			}
+			$format = defined('CUSTOM_DATE_APP_GENERIC_MDY') ? CUSTOM_DATE_APP_GENERIC_MDY : t(/*i18n: Short date format: see http://www.php.net/manual/en/function.date.php */ 'n/j/Y');
+			$d = new Zend_Date();
+			$d->setTimezone($dateHelper->getTimezone('system'));
+			$d->set($value, $format, Localization::activeLocale());
+			return $dateHelper->formatCustom('Y-m-d', $d, 'system');
+		}
+		else {
 			return false;
 		}
 	}
@@ -57,7 +76,7 @@ class Concrete5_Helper_Form_DateTime {
 	/** 
 	 * Creates form fields and JavaScript calendar includes for a particular item
 	 * <code>
-	 *     $dh->datetime('yourStartDate', '2008-07-12 3:00:00');
+	 *     $dateHelper->datetime('yourStartDate', '2008-07-12 3:00:00');
 	 * </code>
 	 * @param string $prefix
 	 * @param string $value
@@ -83,17 +102,15 @@ class Concrete5_Helper_Form_DateTime {
 		$dfh = (DATE_FORM_HELPER_FORMAT_HOUR == '12') ? 'h' : 'H';
 		$dfhe = (DATE_FORM_HELPER_FORMAT_HOUR == '12') ? '12' : '23';
 		$dfhs = (DATE_FORM_HELPER_FORMAT_HOUR == '12') ? '1' : '0';
-		if ($value != null) {
-			$dt = date(DATE_APP_GENERIC_MDY, strtotime($value));
-			$h = date($dfh, strtotime($value));
-			$m = date('i', strtotime($value));
-			$a = date('A', strtotime($value));
-		} else {
-			$dt = date(DATE_APP_GENERIC_MDY);
-			$h = date($dfh);
-			$m = date('i');
-			$a = date('A');
+		$dateHelper = Loader::helper('date'); /* @var $dateHelper DateHelper */
+		$zendDate = $dateHelper->toZendDate($value, 'user');
+		if(is_null($zendDate)) {
+			$zendDate = $dateHelper->toZendDate('now', 'user');
 		}
+		$dt = $dateHelper->formatDate($zendDate, false);
+		$h = $dateHelper->formatCustom($dfh, $zendDate);
+		$m = $dateHelper->formatCustom('i', $zendDate);
+		$a = $dateHelper->formatCustom('A', $zendDate);
 		$id = preg_replace("/[^0-9A-Za-z-]/", "_", $prefix);
 		$html = '';
 		$disabled = false;
@@ -128,8 +145,8 @@ class Concrete5_Helper_Form_DateTime {
 			$html .= '<option value="' . sprintf('%02d', $i) . '" ' . $selected . '>' . sprintf('%02d', $i) . '</option>';
 		}
 		$html .= '</select>';
-		$dh = Loader::helper('date');
-		/* @var $dh DateHelper */
+		$dateHelper = Loader::helper('date');
+		/* @var $dateHelper DateHelper */
 		if (DATE_FORM_HELPER_FORMAT_HOUR == '12') {
 			$html .= '<select id="' . $id . '_a" name="' . $_a . '" ' . $disabled . '>';
 			$html .= '<option value="AM" ';
@@ -138,7 +155,7 @@ class Concrete5_Helper_Form_DateTime {
 			}
 			$html .= '>';
 			// This prints out the translation of "AM" in the current language
-			$html .= $dh->date('A', mktime(1));
+			$html .= $dateHelper->date('A', mktime(1));
 			$html .= '</option>';
 			$html .= '<option value="PM" ';
 			if ($a == 'PM') {
@@ -146,13 +163,13 @@ class Concrete5_Helper_Form_DateTime {
 			}
 			$html .= '>';
 			// This prints out the translation of "PM" in the current language
-			$html .= $dh->date('A', mktime(13));
+			$html .= $dateHelper->date('A', mktime(13));
 			$html .= '</option>';
 			$html .= '</select>';
 		}
 		$html .= '</span>';
 		if ($calendarAutoStart) { 
-			$html .= '<script type="text/javascript">$(function() { $("#' . $id . '_dt").datepicker({ dateFormat: \'' . $dh->getSpecialFormat('DATE_PICKER') . '\', changeYear: true, showAnim: \'fadeIn\' }); });</script>';
+			$html .= '<script type="text/javascript">$(function() { $("#' . $id . '_dt").datepicker({ dateFormat: ' . Loader::helper('json')->encode($dateHelper->getJQueryUIDatePickerFormat()) . ', changeYear: true, showAnim: \'fadeIn\' }); });</script>';
 		}
 		// first we add a calendar input
 		
@@ -186,7 +203,7 @@ EOS;
 	/** 
 	 * Creates form fields and JavaScript calendar includes for a particular item but includes only calendar controls (no time.)
 	 * <code>
-	 *     $dh->date('yourStartDate', '2008-07-12 3:00:00');
+	 *     $dateHelper->date('yourStartDate', '2008-07-12 3:00:00');
 	 * </code>
 	 * @param string $prefix
 	 * @param string $value
@@ -194,24 +211,25 @@ EOS;
 	 * @param bool $calendarAutoStart
 	 */
 	public function date($field, $value = null, $calendarAutoStart = true) {
-		$dh = Loader::helper('date');
-		/* @var $dh DateHelper */
+		$dateHelper = Loader::helper('date');
+		/* @var $dateHelper DateHelper */
 		$id = preg_replace("/[^0-9A-Za-z-]/", "_", $field);
 		if (isset($_REQUEST[$field])) {
 			$dt = $_REQUEST[$field];
-		} else if ($value != "") {
-			$dt = date(DATE_APP_GENERIC_MDY, strtotime($value));
-		} else if ($value == '') {
+		}
+		elseif ($value != "") {
+			$zendDate = $dateHelper->toZendDate($value, 'system');
+			$dt = $dateHelper->formatDate($zendDate, false);
+		}
+		else {
 			$dt = '';
-		} else {
-			$dt = date(DATE_APP_GENERIC_MDY);
 		}
 		//$id = preg_replace("/[^0-9A-Za-z-]/", "_", $prefix);
 		$html = '';
 		$html .= '<span class="ccm-input-date-wrapper" id="' . $id . '_dw"><input id="' . $id . '" name="' . $field . '" class="ccm-input-date" value="' . $dt . '"  /></span>';
 
 		if ($calendarAutoStart) { 
-			$html .= '<script type="text/javascript">$(function() { $("#' . $id . '").datepicker({ dateFormat: \'' . $dh->getSpecialFormat('DATE_PICKER') . '\', changeYear: true, showAnim: \'fadeIn\' }); });</script>';
+			$html .= '<script type="text/javascript">$(function() { $("#' . $id . '").datepicker({ dateFormat: ' . Loader::helper('json')->encode($dateHelper->getJQueryUIDatePickerFormat()) . '\', changeYear: true, showAnim: \'fadeIn\' }); });</script>';
 		}
 		return $html;
 	

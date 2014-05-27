@@ -157,7 +157,7 @@ if (defined('DATE_APP_DATE_ATTRIBUTE_TYPE_T')) {
 if (defined('DATE_APP_DATE_PICKER')) {
 	define('CUSTOM_DATE_APP_DATE_PICKER', DATE_APP_DATE_PICKER);
 } else {
-	/** @deprecated Use Loader::helper('date')->formatSpecial('DATE_PICKER', $date) instead */
+	/** @deprecated Use Loader::helper('date')->getJQueryUIDatePickerFormat() instead */
 	define('DATE_APP_DATE_PICKER', t(/*i18n http://api.jqueryui.com/datepicker/#utility-formatDate */'m/d/yy'));
 }
 
