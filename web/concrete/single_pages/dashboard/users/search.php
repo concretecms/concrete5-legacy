@@ -26,7 +26,7 @@ function printAttributeRow($ak, $uo, $assignment) {
 		$value = $vo->getValue('displaySanitized', 'display');
 	}
 	
-	if ($value == '') {
+	if (($value === '') || is_null($value)) {
 		$text = '<div class="ccm-attribute-field-none">' . t('None') . '</div>';
 	} else {
 		$text = $value;
