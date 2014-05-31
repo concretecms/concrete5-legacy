@@ -192,7 +192,7 @@ class Concrete5_Helper_Pagination {
 		return $this->current_page-1;
 	}		
 
-	function getPages($wrapper = 'span', $shownElements = 11)
+	function getPages($wrapper = 'span', $shownElements = 9)
 	{
 		if ($this->number_of_pages == 1) {
 			return;
@@ -200,9 +200,6 @@ class Concrete5_Helper_Pagination {
 		if ($shownElements < 7) {
 			$shownElements = 7;
 		} //not equipped to handle less than 7 elements
-		if ($shownElements % 2 == 0) {
-			$shownElements++;
-		} //not equipped to handle even numbers
 		$elementsMade = 0;
 
 		$pages = '';
@@ -226,10 +223,7 @@ class Concrete5_Helper_Pagination {
 		}
 
 		$pageEnd = '';
-		if ($this->number_of_pages > $shownElements && $this->current_page + 1 < $this->number_of_pages - ceil(
-				$shownElements / 2
-			) + 1
-		) {
+		if ($this->number_of_pages > $shownElements && $this->current_page + 1 < $this->number_of_pages - ceil($shownElements / 2) + ($shownElements%2)) {
 			$linkURL = str_replace("%pageNum%", $this->number_of_pages, $this->URL);
 			if ($wrapper == 'li') {
 				$pageEnd .= '<li class="ccm-pagination-ellipses disabled"><a href="#">...</a></li>';
