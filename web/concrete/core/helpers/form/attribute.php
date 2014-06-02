@@ -38,7 +38,7 @@ class Concrete5_Helper_Form_Attribute {
 		
 	        $controlGroupCssClass = preg_replace('/\W+/','',strtolower(strip_tags($obj->atHandle))) . ' '.$obj->akHandle;
 		
-		$html = '<div class="control-group" '.$controlGroupCssClass.'>';
+		$html = '<div class="control-group '.$controlGroupCssClass.'">';
 		if ($includeLabel) {
 			$html .= $obj->render('label', false, true);
 		}
