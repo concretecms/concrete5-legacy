@@ -6,10 +6,11 @@ class Concrete5_Controller_AttributeType_Boolean extends AttributeTypeController
 	// Field definition in the ADODB Format. We omit the first column (name) though, since it's
 	// automatically generated
 	
-	protected $searchIndexFieldDefinition = 'I1 DEFAULT 0 NULL';
+	protected $searchIndexFieldDefinition = 'I1 NULL';
 	
 	public function searchForm($list) {
-		$list->filterByAttribute($this->attributeKey->getAttributeKeyHandle(), $this->request('value'));
+		$val = $this->request('value');
+		$list->filterByAttribute($this->attributeKey->getAttributeKeyHandle(), is_null($val) ? 0 : $val);
 		return $list;
 	}	
 
