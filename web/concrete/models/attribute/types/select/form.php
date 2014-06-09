@@ -1,4 +1,4 @@
-<?php defined('C5_EXECUTE') or die("Access Denied."); 
+<?php defined('C5_EXECUTE') or die("Access Denied.");
 
 $form = Loader::helper('form');
 $json = Loader::helper('json');
@@ -82,6 +82,7 @@ if ($akSelectAllowMultipleValues && $akSelectAllowOtherValues) { // display auto
 		$("#newAttrValueRows<?php echo $attrKeyID?>").autocomplete({
 			source: "<?=$this->action('load_autocomplete_values')?>",
 			select: function( event, ui ) {
+
 				ccmAttributeTypeSelectTagHelper<?php echo $attrKeyID?>.add(ui.item.value);
 				$(this).val('');
 				return false;
@@ -121,9 +122,12 @@ if ($akSelectAllowMultipleValues && $akSelectAllowOtherValues) { // display auto
 			add:function(value){
 				var newRow=document.createElement('div');
 				newRow.className='newAttrValue';
-				newRow.innerHTML='<input name="<?=$this->field('atSelectNewOption')?>[]" type="hidden" value="'+value+'" /> ';
-				newRow.innerHTML+='<span class="badge">'+value+'</span>';
+				newRow.innerHTML='<input class="input" name="<?=$this->field('atSelectNewOption')?>[]" type="hidden" /> ';
+				newRow.innerHTML+='<span class="badge"></span>';
 				newRow.innerHTML+=' <a class="text-error" title="<?=$removeOptionText?>" onclick="ccmAttributeTypeSelectTagHelper<?php echo $attrKeyID?>.remove(this)" href="javascript:void(0)">x</a>';
+                newRow = $(newRow);
+                newRow.find('span.badge').text(value);
+                newRow.find('input.input').val(value);
 				$('#selectedAttrValueRows_<?php echo $attrKeyID;?>').append(newRow);
 			},
 			remove:function(a){
