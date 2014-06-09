@@ -52,7 +52,6 @@ class Concrete5_Controller_Dashboard_Pages_Types extends DashboardBaseController
 
     public function update()
     {
-
         $valt = Loader::helper('validation/token');
 
         $ct = CollectionType::getByID($_REQUEST['ctID']);
