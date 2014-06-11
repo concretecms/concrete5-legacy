@@ -180,7 +180,6 @@ module.exports = function(grunt) {
 	buildTranslationParameters.destination = './release/concrete5-master/web';
 
 	var buildTagParameters = extend({}, parameters);
-	buildTagParameters = parameters;
 	buildTagParameters.source = './release/concrete5-master/web';
 
 	grunt.registerTask('build-release-translations', 'Downloading Translations.', function() {
