@@ -12,7 +12,23 @@ echo Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Attr
 		<tr>
 			<th><?=t('Name')?></th>
 			<? foreach($categories as $cat) { ?>
-				<th><?=$txt->unhandle($cat->getAttributeKeyCategoryHandle())?></th>
+				<th><?
+					$akcHandle = $cat->getAttributeKeyCategoryHandle();
+					switch($akcHandle) {
+						case 'collection':
+							echo t('Page');
+							break;
+						case 'user':
+							echo t('User');
+							break;
+						case 'file':
+							echo t('File');
+							break;
+						default:
+							echo t($txt->unhandle($akcHandle));
+							break;
+					}
+				?></th>
 			<? } ?>
 		</tr>
 		<?php foreach($types as $at) { ?>
