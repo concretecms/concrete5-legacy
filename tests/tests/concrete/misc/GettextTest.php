@@ -2,8 +2,6 @@
 
 class GettextTest extends PHPUnit_Framework_TestCase {
 
-	const TEST_LOCALE = 'it_IT';
-
 	public function testGeneratedPO() {
 		// Create the .pot file with the strings taken from the source code
 		$potFile = DIR_BASE . '/' . DIRNAME_LANGUAGES . '/messages.pot';
