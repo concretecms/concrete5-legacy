@@ -12,6 +12,7 @@ class GettextTest extends PHPUnit_Framework_TestCase {
 		$cmd[] = '--createpo=no';
 		$cmd[] = '--compile=no';
 		$cmd[] = '2>&1';
+		$output = array();
 		exec(implode(' ', $cmd), $output, $rc);
 		$this->assertSame(0, $rc, "i18n.php output:\n" . implode("\n", $output));
 		$this->assertFileExists($potFile);
@@ -24,6 +25,7 @@ class GettextTest extends PHPUnit_Framework_TestCase {
 		$cmd[] = '--output-file=' . escapeshellarg($poFile);
 		$cmd[] = escapeshellarg($potFile);
 		$cmd[] = '2>&1';
+		$output = array();
 		exec(implode(' ', $cmd), $output, $rc);
 		$this->assertSame(0, $rc, "msgen output:\n" . implode("\n", $output));
 		$this->assertFileExists($poFile);
@@ -56,6 +58,7 @@ class GettextTest extends PHPUnit_Framework_TestCase {
 		$cmd[] = '--output-file=' . escapeshellarg($moFile);
 		$cmd[] = escapeshellarg($poFile);
 		$cmd[] = '2>&1';
+		$output = array();
 		exec(implode(' ', $cmd), $output, $rc);
 		$this->assertSame(0, $rc, "msgfmt output:\n" . implode("\n", $output));
 		$this->assertFileExists($moFile);
