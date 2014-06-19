@@ -17,6 +17,11 @@ if(!is_dir(DIR_BASE . '/languages/it_IT/LC_MESSAGES')) {
 }
 copy(dirname(__FILE__) . '/../assets/it_IT.mo', DIR_BASE . '/languages/it_IT/LC_MESSAGES/messages.mo');
 
+define('DIR_BUILDTOOLS', dirname(dirname(__FILE__)) . '/build-tools');
+if(!is_dir(DIR_BUILDTOOLS)) {
+	exec('git clone --depth 1 --single-branch --branch master https://github.com/mlocati/concrete5-build ' . escapeshellarg(DIR_BUILDTOOLS));
+}
+
 //causes dispatcher to skip the page rendering
 define('C5_ENVIRONMENT_ONLY', true);
 
