@@ -119,22 +119,22 @@ class Concrete5_Helper_Content {
 	*/
 	public function import($text) {
 		$text = preg_replace_callback(
-			'/\{ccm:export:page:([^\}]+)\}/i',
+			'/\{ccm:export:page:(.*?)\}/i',
 			array($this, 'replacePagePlaceHolderOnImport'),
 			$text
 		);
 		$text = preg_replace_callback(
-			'/\{ccm:export:image:([^\}]+)\}/i',
+			'/\{ccm:export:image:(.*?)\}/i',
 			array($this, 'replaceImagePlaceHolderOnImport'),
 			$text
 		);
 		$text = preg_replace_callback(
-			'/\{ccm:export:file:([^\}]+)\}/i',
+			'/\{ccm:export:file:(.*?)\}/i',
 			array($this, 'replaceFilePlaceHolderOnImport'),
 			$text
 		);
 		$text = preg_replace_callback(
-			'/\{ccm:export:define:([^\}]+)\}/i',
+			'/\{ccm:export:define:(.*?)\}/i',
 			array($this, 'replaceDefineOnImport'),
 			$text
 		);
