@@ -19,9 +19,9 @@ if (!defined('ENABLE_APPLICATION_EVENTS')) {
 /* https patch applied here */
 if (!defined('BASE_URL')) { 
 	if(isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == 'on')) {
-		define('BASE_URL', 'https://' . $_SERVER['HTTP_HOST']);
+		define('BASE_URL', 'https://' . urlencode($_SERVER['HTTP_HOST']));
 	} else {
-		define('BASE_URL', 'http://' . $_SERVER['HTTP_HOST']);
+		define('BASE_URL', 'http://' . urlencode($_SERVER['HTTP_HOST']));
 	}
 }
 
