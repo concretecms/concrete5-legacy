@@ -1570,6 +1570,10 @@ class Concrete5_Model_Page extends Collection {
 		$v = array($newCID, $cParentID, $uID, $this->overrideTemplatePermissions(), $this->getPermissionsCollectionID(), $this->getCollectionInheritance(), $this->cFilename, $this->cPointerID, $this->cPointerExternalLink, $this->cPointerExternalLinkNewWindow, $this->cDisplayOrder, $this->pkgID);
 		$q = "insert into Pages (cID, cParentID, uID, cOverrideTemplatePermissions, cInheritPermissionsFromCID, cInheritPermissionsFrom, cFilename, cPointerID, cPointerExternalLink, cPointerExternalLinkNewWindow, cDisplayOrder, pkgID) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		$res = $db->query($q, $v);
+		
+		// Increment the cDisplayOrder columns by one for pages after the original one in sorting order.
+		// This is to avoid sorting issues for equal sorting numbers.
+		$db->query("UPDATE Pages SET cDisplayOrder = cDisplayOrder+1 WHERE cDisplayOrder >= ? AND cID != ?", array($this->cDisplayOrder, $this->cID));
 	
 		Loader::model('page_statistics');
 		PageStatistics::incrementParents($newCID);

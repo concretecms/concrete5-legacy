@@ -69,7 +69,7 @@
                 <div class="controls">
                 <label class="radio">
                     <input type="radio" name="FULL_PAGE_CACHE_LIFETIME" value="default" <?php  if (FULL_PAGE_CACHE_LIFETIME == 'default') { ?> checked <?php  } ?> />
-                    <span><?php echo t('Every %s (default setting).', Loader::helper('date')->timeSince(time()-CACHE_LIFETIME))?></span>
+                    <span><?php echo t(/*i18n: %s is a time interval, eg '5 minutes' */'Every %s (default setting).', Loader::helper('date')->describeInterval(CACHE_LIFETIME))?></span>
                 </label>
                 </div>
                 <div class="controls">

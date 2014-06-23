@@ -1,8 +1,10 @@
-<?php  defined('C5_EXECUTE') or die('Access Denied');?>
+<php  defined('C5_EXECUTE') or die('Access Denied');?>
 <?php echo Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Bulk SEO Updater'), t('Manage Search Engine Optimization (SEO) Related Page Properties.'), false, false); 
 $pageSelector = Loader::helper('form/page_selector');
 $nh = Loader::helper('navigation');
 $th = Loader::helper('text');
+$dh = Loader::helper('date');
+/* @var $dh DateHelper */
 ?>
 <style type="text/css">
 		.rowHolder {
@@ -154,7 +156,7 @@ if (count($pages) > 0) {
 							<div class="headings"><strong><?php echo t('Modified'); ?></strong>
 								<br />
 								<br />
-								<?php echo $cobj->getCollectionDateLastModified() ? $cobj->getCollectionDateLastModified(DATE_APP_GENERIC_MDYT) : ''; ?>
+								<?php echo $cobj->getCollectionDateLastModified() ? $dh->formatDateTime($cobj->getCollectionDateLastModified(), false, false) : ''; ?>
 								<br />
 								<br />
 							</div>
@@ -202,7 +204,7 @@ if (count($pages) > 0) {
 								<?php echo $form->textarea('meta_keywords', $cobj->getAttribute('meta_keywords'), array('title' => $cID)); ?>
 							</div>
 								
-							<? if ($cobj->getCollectionID() != HOME_CID) { ?>
+							<?php if ($cobj->getCollectionID() != HOME_CID && !$cobj->isGeneratedCollection()) { ?>
 							
 							<div style="margin-left: 30px;">
 								<strong><?php echo t('Slug'); ?></strong>

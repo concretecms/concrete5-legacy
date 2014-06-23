@@ -128,6 +128,8 @@ class Concrete5_Helper_Form_DateTime {
 			$html .= '<option value="' . sprintf('%02d', $i) . '" ' . $selected . '>' . sprintf('%02d', $i) . '</option>';
 		}
 		$html .= '</select>';
+		$dh = Loader::helper('date');
+		/* @var $dh DateHelper */
 		if (DATE_FORM_HELPER_FORMAT_HOUR == '12') {
 			$html .= '<select id="' . $id . '_a" name="' . $_a . '" ' . $disabled . '>';
 			$html .= '<option value="AM" ';
@@ -136,7 +138,7 @@ class Concrete5_Helper_Form_DateTime {
 			}
 			$html .= '>';
 			// This prints out the translation of "AM" in the current language
-			$html .= Loader::helper("date")->date("A",mktime(1));
+			$html .= $dh->date('A', mktime(1));
 			$html .= '</option>';
 			$html .= '<option value="PM" ';
 			if ($a == 'PM') {
@@ -144,13 +146,13 @@ class Concrete5_Helper_Form_DateTime {
 			}
 			$html .= '>';
 			// This prints out the translation of "PM" in the current language
-			$html .= Loader::helper("date")->date("A",mktime(13));
+			$html .= $dh->date('A', mktime(13));
 			$html .= '</option>';
 			$html .= '</select>';
 		}
 		$html .= '</span>';
 		if ($calendarAutoStart) { 
-			$html .= '<script type="text/javascript">$(function() { $("#' . $id . '_dt").datepicker({ dateFormat: \'' . DATE_APP_DATE_PICKER . '\', changeYear: true, showAnim: \'fadeIn\' }); });</script>';
+			$html .= '<script type="text/javascript">$(function() { $("#' . $id . '_dt").datepicker({ dateFormat: \'' . $dh->getSpecialFormat('DATE_PICKER') . '\', changeYear: true, showAnim: \'fadeIn\' }); });</script>';
 		}
 		// first we add a calendar input
 		
@@ -192,6 +194,8 @@ EOS;
 	 * @param bool $calendarAutoStart
 	 */
 	public function date($field, $value = null, $calendarAutoStart = true) {
+		$dh = Loader::helper('date');
+		/* @var $dh DateHelper */
 		$id = preg_replace("/[^0-9A-Za-z-]/", "_", $field);
 		if (isset($_REQUEST[$field])) {
 			$dt = $_REQUEST[$field];
@@ -207,7 +211,7 @@ EOS;
 		$html .= '<span class="ccm-input-date-wrapper" id="' . $id . '_dw"><input id="' . $id . '" name="' . $field . '" class="ccm-input-date" value="' . $dt . '"  /></span>';
 
 		if ($calendarAutoStart) { 
-			$html .= '<script type="text/javascript">$(function() { $("#' . $id . '").datepicker({ dateFormat: \'' . DATE_APP_DATE_PICKER . '\', changeYear: true, showAnim: \'fadeIn\' }); });</script>';
+			$html .= '<script type="text/javascript">$(function() { $("#' . $id . '").datepicker({ dateFormat: \'' . $dh->getSpecialFormat('DATE_PICKER') . '\', changeYear: true, showAnim: \'fadeIn\' }); });</script>';
 		}
 		return $html;
 	

@@ -1,11 +1,11 @@
-<?php 
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 $c = $this->getCollectionObject();
 if (is_object($c)) {
 	$cp = new Permissions($c);
 }
 
-/** 
+/**
  * Handle page title
  */
 
@@ -28,10 +28,10 @@ if (is_object($c)) {
 		}
 	}
 	$pageDescription = (!isset($pageDescription) || !$pageDescription) ? $c->getCollectionDescription() : $pageDescription;
-	$cID = $c->getCollectionID(); 
+	$cID = $c->getCollectionID();
 	$isEditMode = ($c->isEditMode()) ? "true" : "false";
 	$isArrangeMode = ($c->isArrangeMode()) ? "true" : "false";
-	
+
 } else {
 	$cID = 1;
 }
@@ -51,14 +51,14 @@ if ($akd) { ?>
 <?php }
 if ($akk) { ?>
 <meta name="keywords" content="<?=htmlspecialchars($akk, ENT_COMPAT, APP_CHARSET)?>" />
-<?php } 
+<?php }
 if($c->getCollectionAttributeValue('exclude_search_index')) { ?>
     <meta name="robots" content="noindex" />
 <?php } ?>
 <?php
 if (defined('APP_VERSION_DISPLAY_IN_HEADER') && APP_VERSION_DISPLAY_IN_HEADER) {
     echo '<meta name="generator" content="concrete5 - ' . APP_VERSION . '" />';
-}    
+}
 else {
     echo '<meta name="generator" content="concrete5" />';
 }
@@ -98,12 +98,12 @@ if($favIconFID) {
 	$f = File::getByID($favIconFID); ?>
 	<link rel="shortcut icon" href="<?php echo $f->getRelativePath()?>" type="image/x-icon" />
 	<link rel="icon" href="<?php echo $f->getRelativePath()?>" type="image/x-icon" />
-<?php } 
+<?php }
 
 if($appleIconFID) {
 	$f = File::getByID($appleIconFID); ?>
 	<link rel="apple-touch-icon" href="<?php echo $f->getRelativePath()?>"  />
-<?php } 
+<?php }
 
 if($modernIconFID) {
 	$f = File::getByID($modernIconFID);
@@ -113,21 +113,21 @@ if($modernIconFID) {
 		?><meta name="msapplication-TileColor" content="<?php echo $modernIconBGColor; ?>" /><?php
 		echo "\n";
 	}
-} 
+}
 
-if (is_object($cp)) { 
+if (is_object($cp)) {
 
 	if ($this->editingEnabled()) {
 		Loader::element('page_controls_header', array('cp' => $cp, 'c' => $c));
 	}
 
-	if ($this->areLinksDisabled()) { 
+	if ($this->areLinksDisabled()) {
 		$this->addHeaderItem('<script type="text/javascript">window.onload = function() {ccm_disableLinks()}</script>', 'CORE');
 	}
 	$cih = Loader::helper('concrete/interface');
 	if ($cih->showNewsflowOverlay()) {
 		$this->addFooterItem('<script type="text/javascript">$(function() { ccm_showDashboardNewsflowWelcome(); });</script>');
-	}	
+	}
 
 }
 

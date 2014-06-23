@@ -15,6 +15,8 @@ if (count($items) > 0) { ?>
 	<th>&nbsp;</th>
 </tr>
 <? 
+$dh = Loader::helper('date');
+/* @var $dh DateHelper */
 $noitems = true;
 	foreach($items as $it) { 
 	$p = $it->getPageObject();
@@ -26,7 +28,7 @@ $noitems = true;
 <tr class="ccm-workflow-waiting-for-me-row<?=$wp->getWorkflowProgressID()?>">
 	<td><?=$p->getCollectionName()?></td>
 	<td><a href="<?=Loader::helper('navigation')->getLinkToCollection($p)?>"><?=$p->getCollectionPath()?></a>
-	<td><?=date(DATE_APP_GENERIC_MDYT_FULL, strtotime($wp->getWorkflowProgressDateLastAction()))?></td>
+	<td><?=$dh->formatDateTime($wp->getWorkflowProgressDateLastAction(), true, false)?></td>
 	<td><a href="javascript:void(0)" title="<?=t('Click for history.')?>" onclick="$(this).parentsUntil('tr').parent().next().show()"><?=$wf->getWorkflowProgressStatusDescription($wp)?></a></td>
 	<td class="ccm-workflow-progress-actions">
 	<form action="<?=$wp->getWorkflowProgressFormAction()?>" method="post">

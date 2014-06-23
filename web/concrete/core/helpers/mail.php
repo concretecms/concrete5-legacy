@@ -364,6 +364,8 @@ class Concrete5_Helper_Mail {
 			if ($this->bodyHTML != false) {
 				$mail->setBodyHTML($this->bodyHTML);
 			}
+			$mail->clearMessageId();
+			$mail->setMessageId();
 			try {
 				$mail->send($transport);
 					

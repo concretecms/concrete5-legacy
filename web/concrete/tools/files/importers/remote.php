@@ -91,10 +91,12 @@ if (count($errors) < 1) {
 				if ($fextension === false)
 					$errors[] = t('Unknown mime-type: ') . $response->getHeader('Content-Type');
 				else {
+					$dh = Loader::helper('date');
+					/* @var $dh DateHelper */
 					// make sure we're coming up with a unique filename
 					do {
 						// make up a filename based on the current date/time, a random int, and the extension from the mime-type
-						$fname = date(DATE_APP_FILENAME) . mt_rand(100, 999) . '.' . $fextension;
+						$fname = $dh->formatSpecial('FILENAME') . mt_rand(100, 999) . '.' . $fextension;
 					} while (file_exists($fpath.'/'.$fname));
 				}
 			} //else {

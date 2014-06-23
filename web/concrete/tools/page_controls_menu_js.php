@@ -7,6 +7,8 @@ var menuHTML = '';
 <?
 /* @var $jh JsonHelper */
 $jh = Loader::helper('json');
+/* @var $datehelper DateHelper */
+$datehelper = Loader::helper('date');
 
 Loader::library('3rdparty/mobile_detect');
 $md = new Mobile_Detect();
@@ -117,7 +119,7 @@ menuHTML += '<div class="ccm-edit-overlay-actions">';
 menuHTML += '<a href="javascript:void(0)" onclick="window.location.href=\'<?=DIR_REL?>/<?=DISPATCHER_FILENAME?>?cID=<?=$c->getCollectionID()?>&ctask=check-in<?=$token?>\'" id="ccm-nav-exit-edit-direct" class="btn primary">' + <?=$jh->encode(t('Exit Edit Mode'))?> + '</a>';
 menuHTML += '</div>';
 menuHTML += '<span class="label notice">' + <?=$jh->encode(t('Version %s', $c->getVersionID()))?> + '</span>';
-menuHTML += <?=$jh->encode(t('Page currently in edit mode on %s', date(DATE_APP_GENERIC_MDYT)))?>;
+menuHTML += <?=$jh->encode(t('Page currently in edit mode on %s', $datehelper->formatDateTime('now', false, false)))?>;
 
 menuHTML += '</div>';
 
@@ -147,7 +149,7 @@ menuHTML += '</form><br/>';
 
 menuHTML += '</div>';
 menuHTML += '<span class="label notice">' + <?=$jh->encode(t('Version %s', $c->getVersionID()))?> + '</span>';
-menuHTML += <?=$jh->encode(t('Page currently in edit mode on %s', date(DATE_APP_GENERIC_MDYT)))?>;
+menuHTML += <?=$jh->encode(t('Page currently in edit mode on %s', $datehelper->formatDateTime('now', false, false)))?>;
 
 menuHTML += '</div>';
 
@@ -162,7 +164,7 @@ menuHTML += '<div class="ccm-edit-overlay-actions">';
 <? } ?>
 menuHTML += '</div>';
 menuHTML += '<span class="label notice">' + <?=$jh->encode(t('Version %s', $c->getVersionID()))?> + '</span>';
-menuHTML += <?=$jh->encode(t('Page last edited on %s', $c->getCollectionDateLastModified(DATE_APP_GENERIC_MDYT)))?>;
+menuHTML += <?=$jh->encode(t('Page last edited on %s', $datehelper->formatDateTime($c->getCollectionDateLastModified(), false, false)))?>;
 
 
 <? } ?>

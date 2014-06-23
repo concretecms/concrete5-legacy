@@ -3,22 +3,12 @@
 class Concrete5_Controller_Dashboard_Reports_Surveys extends Controller {
 
 	public function formatDate($inputTime) {
-		if(empty($inputTime)) {
-			return '';
-		}
 		$dh = Loader::helper('date');
-		$inputTime = $dh->getLocalDateTime($inputTime);
+		/* @var $dh DateHelper */
 		if (defined('DATE_APP_SURVEY_RESULTS')) {
-			return $dh->date(DATE_APP_SURVEY_RESULTS, strtotime($inputTime));
-		}
-		$timestamp = strtotime($inputTime);
-		if ($timestamp >= strtotime(date('n/d/y'))) {
-			// Today
-			return t(/*i18n %s is a time */'Today at %s', $dh->date(DATE_APP_GENERIC_T, $timestamp));
-		}
-		else {
-			// If day in past
-			return $dh->date(DATE_APP_GENERIC_MDYT, $timestamp);
+			return $dh->formatCustom(DATE_APP_SURVEY_RESULTS, $inputTime);
+		} else {
+			return $dh->formatPrettyDateTime($inputTime, false, false);
 		}
 	}
 

@@ -1,5 +1,6 @@
-<?
-defined('C5_EXECUTE') or die("Access Denied.");
+<? defined('C5_EXECUTE') or die("Access Denied.");
+$dh = Loader::helper('date');
+/* @var $dh DateHelper */
 ?>
 
 <?=Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Recent Activity'))?>
@@ -146,7 +147,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			}
 			?>
 		</td>
-		<td><?=date(DATE_APP_GENERIC_MDYT, strtotime($download['timestamp']))?></td>
+		<td><?=$dh->formatDateTime($download['timestamp'], false, false)?></td>
 	</tr>
 	<? } ?>
 <? } ?>

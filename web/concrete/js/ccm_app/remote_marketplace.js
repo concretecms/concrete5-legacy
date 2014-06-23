@@ -1,4 +1,4 @@
-/** 
+/**
  * Remote Marketplace
  */
 
@@ -22,21 +22,21 @@ ccm_testMarketplaceConnection = function(onComplete, task, mpID) {
 	} else {
 		mpIDStr = '';
 	}
-	
+
 	if (!task) {
 		task = '';
 	}
-	
+
 	params = {'mpID': mpID};
 
-	
+
 	$.getJSON(CCM_TOOLS_PATH + '/marketplace/connect', params, function(resp) {
 		if (resp.isConnected) {
 			onComplete();
 		} else {
 			$.fn.dialog.open({
 				title: ccmi18n.community,
-				href:  CCM_TOOLS_PATH + '/marketplace/frame?task=' + task + mpIDStr,
+				href:  CCM_TOOLS_PATH + '/marketplace/frame?task=' + task + mpIDStr + '&ccm_token=' + resp.token,
 				width: '90%',
 				modal: false,
 				height: '70%'
@@ -73,7 +73,7 @@ ccm_setupMarketplaceDialogForm = function() {
 		});
 		return false;
 	});
-	ccm_marketplaceBrowserInit(); 
+	ccm_marketplaceBrowserInit();
 	$("#ccm-marketplace-browser-form").ajaxForm({
 		beforeSubmit: function() {
 			jQuery.fn.dialog.showLoader();
@@ -82,14 +82,14 @@ ccm_setupMarketplaceDialogForm = function() {
 			jQuery.fn.dialog.hideLoader();
 			$('#ccm-marketplace-browser-form').closest('.ui-dialog-content').html(resp);
 		}
-	});		
+	});
 }
 
 ccm_marketplaceBrowserInit = function() {
 	$(".ccm-marketplace-item").click(function() {
 		ccm_getMarketplaceItemDetails($(this).attr('mpID'));
 	});
-	
+
 	$(".ccm-marketplace-item-thumbnail").mouseover(function() {
 		var img = $(this).parent().find('div.ccm-marketplace-results-image-hover').clone().addClass('ccm-marketplace-results-image-hover-displayed').appendTo(document.body);
 		var t = $(this).offset().top;
@@ -98,7 +98,7 @@ ccm_marketplaceBrowserInit = function() {
 		img.css('top', t).css('left', l);
 		img.show();
 	});
-	
+
 	$(".ccm-marketplace-item-thumbnail").mouseout(function() {
 		$('.ccm-marketplace-results-image-hover-displayed').hide().remove();
 	});
@@ -122,13 +122,14 @@ ccm_getMarketplaceItemDetails = function(mpID) {
 ccm_getMarketplaceItem = function(args) {
 	var mpID = args.mpID;
 	var closeTop = args.closeTop;
-	
+	var token = args.token;
+
 	this.onComplete = function() { }
 
 	if (args.onComplete) {
 		ccm_getMarketplaceItem.onComplete = args.onComplete;
 	}
-	
+
 	if (closeTop) {
 		jQuery.fn.dialog.closeTop(); // this is here due to a weird safari behavior
 	}
@@ -142,7 +143,7 @@ ccm_getMarketplaceItem = function(args) {
 			if (!resp.purchaseRequired) {
 				$.fn.dialog.open({
 					title: ccmi18n.community,
-					href:  CCM_TOOLS_PATH + '/marketplace/download?install=1&mpID=' + mpID,
+					href:  CCM_TOOLS_PATH + '/marketplace/download?install=1&mpID=' + mpID + '&ccm_token=' + resp.token,
 					width: 500,
 					appendButtons: true,
 					modal: false,
@@ -162,7 +163,7 @@ ccm_getMarketplaceItem = function(args) {
 		} else {
 			$.fn.dialog.open({
 				title: ccmi18n.community,
-				href:  CCM_TOOLS_PATH + '/marketplace/frame?task=get&mpID=' + mpID,
+				href:  CCM_TOOLS_PATH + '/marketplace/frame?task=get&mpID=' + mpID + '&ccm_token=' + token,
 				width: '90%',
 				modal: false,
 				height: '70%'

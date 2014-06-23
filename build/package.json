@@ -2,11 +2,11 @@
 	"name": "concrete5",
 	"version": "5.6.2",
 	"devDependencies": {
-		"grunt": "~0.4.1",
-		"grunt-contrib-uglify": "~0.2.4",
-		"grunt-contrib-less": "~0.7.0",
-		"grunt-contrib-cssmin": "~0.6.2",
-		"shelljs": "0.2.6",
-		"download": "0.1.10"
+		"grunt": "~0.4",
+		"grunt-contrib-uglify": "~0.2",
+		"grunt-contrib-less": "~0.7",
+		"grunt-contrib-cssmin": "~0.6",
+		"shelljs": "~0.2",
+		"download": "~0.1"
 	}
 }

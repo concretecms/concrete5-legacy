@@ -197,6 +197,7 @@ activateReorder = function() {
 				height: 350, 
 				onClose: function() {
 					showBranch(origCID);
+					SITEMAP_LAST_DIALOGUE_URL='';
 				}
 			});
 			hideBranch(origCID);
@@ -446,6 +447,7 @@ activateLabels = function(instance_id, display_mode, select_mode) {
 					appendButtons: true,
 					onClose: function() {
 						showBranch(origCID);
+						SITEMAP_LAST_DIALOGUE_URL='';
 					}
 				});
 				//hideBranch(origCID);

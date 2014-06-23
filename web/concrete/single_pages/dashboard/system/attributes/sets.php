@@ -114,7 +114,24 @@ $txt = Loader::helper('text');?>
 
 <?php } else if($this->controller->getTask() == 'category' || $this->controller->getTask() == 'add_set'){ ?>
 
-	<?php echo Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper($txt->unHandle($this->controller->category->getAttributeKeyCategoryHandle()).' '.t('Attribute Sets'), false, 'span6 offset3');?>
+	<?php
+	$akcHandle = $this->controller->category->getAttributeKeyCategoryHandle();
+	switch($akcHandle) {
+		case 'collection':
+			$paneTitle = t('Page Attribute Sets');
+			break;
+		case 'user':
+			$paneTitle = t('User Attribute Sets');
+			break;
+		case 'file':
+			$paneTitle = t('File Attribute Sets');
+			break;
+		default:
+			$paneTitle = t(/*i18n: %s is an attribute category name */'%s Attribute Sets', $txt->unHandle($akcHandle));
+			break;
+		}
+		echo Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper($paneTitle, false, 'span6 offset3');
+	?>
 	<form method="post" action="<?php echo $this->action('add_set')?>">
 
 
@@ -175,7 +192,23 @@ $txt = Loader::helper('text');?>
 			if(count($categories) > 0) {
 				foreach($categories as $cat) { ?>
 					<div class="ccm-group" id="acID_<?php echo $cat->getAttributeKeyCategoryID()?>">
-						<a class="ccm-group-inner" href="<?php echo $this->url('/dashboard/system/attributes/sets/', 'category', $cat->getAttributeKeyCategoryID())?>" style="background-image: url(<?php echo ASSETS_URL_IMAGES?>/icons/group.png)"><?php echo $txt->unhandle($cat->getAttributeKeyCategoryHandle())?></a>
+						<a class="ccm-group-inner" href="<?php echo $this->url('/dashboard/system/attributes/sets/', 'category', $cat->getAttributeKeyCategoryID())?>" style="background-image: url(<?php echo ASSETS_URL_IMAGES?>/icons/group.png)"><?php
+							$akcHandle = $cat->getAttributeKeyCategoryHandle();
+							switch($akcHandle) {
+								case 'collection':
+									echo t('Page');
+									break;
+								case 'user':
+									echo t('User');
+									break;
+								case 'file':
+									echo t('File');
+									break;
+								default:
+									echo t($txt->unhandle($akcHandle));
+									break;
+							}
+						?></a>
 					</div>
 				<?php } 
 			} else {

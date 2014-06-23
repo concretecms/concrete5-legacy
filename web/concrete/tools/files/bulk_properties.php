@@ -297,6 +297,10 @@ table.ccm-grid th {width: 70px}
 	<td><strong><?=t('URL to File')?></strong></td>
 	<td width="100%" colspan="2"><?=$fv->getRelativePath(true)?></td>
 </tr>
+<tr>
+	<td><strong><?=t('Download URL')?></strong></td>
+	<td width="100%" colspan="2"><?=h(BASE_URL . View::url('/download_file', $fv->getFileID()))?></td>
+</tr>
 
 <tr>
 	<td><strong><?=t('Type')?></strong></td>

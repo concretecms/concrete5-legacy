@@ -63,13 +63,7 @@ $areEntries = count($entries) > 0 ? true : false;
 				<? foreach($entries as $ent) { ?>
                 <tr>
                     <td valign="top" style="white-space: nowrap" class="active"><?php
-                        if (date('m-d-y') == date('m-d-y', strtotime($ent->getTimestamp('user')))) {
-                            echo t(/*i18n %s is a time*/'Today at %s', $dh->date(DATE_APP_GENERIC_TS, strtotime($ent->getTimestamp('user'))));
-                        }
-                        else {
-                            echo $dh->date(DATE_APP_GENERIC_MDYT, strtotime($ent->getTimestamp('user')));
-                        }
-                        
+                        echo $dh->formatPrettyDateTime($ent->getTimestamp(), false, true);
                     ?></td>
                     <td valign="top"><strong><?=$ent->getType()?></strong></td>
                     <td valign="top"><strong><?php

@@ -62,6 +62,9 @@ class Concrete5_Model_UserList extends DatabaseItemList {
 	}
 
 	public function filterByGroupID($gID){ 
+		if (!Loader::helper('validation/numbers')->integer($gID)) {
+			$gID = 0;
+		}
 		$tbl='ug_'.$gID;
 		$this->addToQuery("left join UserGroups $tbl on {$tbl}.uID = u.uID ");			
 		$this->filter(false, "{$tbl}.gID=".$gID);
@@ -135,7 +138,7 @@ class UserSearchDefaultColumnSet extends DatabaseItemListColumnSet {
 	}
 	
 	public static function getUserDateAdded($ui) {
-		return date(DATE_APP_DASHBOARD_SEARCH_RESULTS_USERS, strtotime($ui->getUserDateAdded()));
+		return Loader::helper('date')->formatSpecial('DASHBOARD_SEARCH_RESULTS_USERS', $ui->getUserDateAdded());
 	}
 	
 	public function __construct() {
