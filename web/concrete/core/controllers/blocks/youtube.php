@@ -22,7 +22,7 @@
 
 		public $title = '';
 		public $videoURL = "";
-		public $vHeight = "344";
+		public $vHeight = "239";
 		public $vWidth = "425";
 		public $vPlayer ='1';
 		public $mode = "youtube";
