@@ -22,8 +22,8 @@
 
 		public $title = '';
 		public $videoURL = "";
-		public $vHeight = "239";
-		public $vWidth = "425";
+		public $vWidth = "560";
+		public $vHeight = "315";
 		public $vPlayer ='1';
 		public $mode = "youtube";
 		
