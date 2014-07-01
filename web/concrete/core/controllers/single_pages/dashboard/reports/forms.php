@@ -49,7 +49,11 @@ class Concrete5_Controller_Dashboard_Reports_Forms extends DashboardBaseControll
 			echo "rowspan=\"2\" valign='bottom'";
 		}
 		echo "><b>Submitted Date</b></td>\r\n";
-		echo "<td><b>User</b></td>\r\n";
+		echo "<td ";
+		if ($hasCBRow) {
+			echo "rowspan=\"2\" valign='bottom'";
+		}                
+                echo "><b>User</b></td>\r\n";
 		
 		foreach($questions as $questionId=>$question){ 
             if ($question['inputType'] == 'checkboxlist')
