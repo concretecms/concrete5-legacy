@@ -1,6 +1,6 @@
 {
     "name": "concrete5/concrete5",
-    "description": "An awesome, relatively new, open source CMS for developers and bloggers.",
+    "description": "concrete5 is an open source content management system",
     "keywords": ["CMS", "concrete5", "concrete"],
     "homepage": "http://www.concrete5.org/",
     "type": "library",
