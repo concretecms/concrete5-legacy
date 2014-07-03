@@ -12,7 +12,7 @@
     "repositories": [
         {
             "type": "vcs",
-            "url": "https://github.com/LukeXF/concrete5/"
+            "url": "https://github.com/concrete5/concrete5"
         }
     ]
 }
