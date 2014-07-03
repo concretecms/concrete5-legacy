@@ -1,0 +1,9 @@
+{
+    "name": "Concrete 5 Main repo",
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/LukeXF/concrete5/"
+        }
+    ],
+}
