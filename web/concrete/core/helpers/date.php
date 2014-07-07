@@ -40,7 +40,7 @@ class Concrete5_Helper_Date {
 				}
 			}
 		}
-		if (Localization::activeLocale() != 'en_US') {
+		if (Localization::activeLocale() != 'en_US' && $mask != 'Y-m-d H:i:s') {
 			return $this->dateTimeFormatLocal($datetime, $mask);
 		} else {
 			return $datetime->format($mask);
@@ -82,7 +82,7 @@ class Concrete5_Helper_Date {
 				}
 			}
 		}
-		if (Localization::activeLocale() != 'en_US') {
+		if (Localization::activeLocale() != 'en_US' && $mask != 'Y-m-d H:i:s') {
 			return $this->dateTimeFormatLocal($datetime, $mask);
 		} else {
 			return $datetime->format($mask);
