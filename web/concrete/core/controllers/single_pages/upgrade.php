@@ -245,6 +245,11 @@ class Concrete5_Controller_Upgrade extends Controller {
 	private function do_upgrade() {
 		$runMessages = array();
 		$prepareMessages = array();
+		$currentLocale = Localization::activeLocale();
+		if ($currentLocale != 'en_US') {
+			// Prevent the database records being stored in wrong language
+			Localization::changeLocale('en_US');
+		}
 		try {
 			Cache::flush();
 			$this->set_upgrades();
@@ -286,8 +291,14 @@ class Concrete5_Controller_Upgrade extends Controller {
 			
 			}			
 			$upgrade = true;
+			if ($currentLocale != 'en_US') {
+				Localization::changeLocale($currentLocale);
+			}
 		} catch(Exception $e) {
 			$upgrade = false;
+			if ($currentLocale != 'en_US') {
+				Localization::changeLocale($currentLocale);
+			}
 			$message .= '<div class="alert-message block-message error"><p>' . t('An Unexpected Error occurred while upgrading: %s', $e->getTraceAsString()) . '</p></div>';
 		}
 		
