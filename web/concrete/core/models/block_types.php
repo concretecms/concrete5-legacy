@@ -428,7 +428,10 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		 * @return string
 		 */
 		public function getPackageHandle() {
-			return PackageList::getHandle($this->pkgID);
+			if ($this->pkgHandle === null) {
+				return PackageList::getHandle($this->pkgID);
+			}
+			return $this->pkgHandle;
 		}
 		
 		
