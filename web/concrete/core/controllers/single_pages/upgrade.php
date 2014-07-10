@@ -53,7 +53,12 @@ class Concrete5_Controller_Upgrade extends Controller {
 				$message .= t('Your current website uses a version of concrete5 greater than this one. You cannot upgrade.');
 				$this->set('message', $message);
 			} else if (version_compare($sav, APP_VERSION, '=')) {
-				$this->set('message', t('Your site is already up to date! The current version of concrete5 is <b>%s</b>. You should remove this file for security.', APP_VERSION));
+				$message = t('Your site is already up to date!');
+				if(defined('APP_VERSION_DISPLAY_IN_HEADER') && APP_VERSION_DISPLAY_IN_HEADER) {
+					$message .= ' ' . t('The current version of concrete5 is %s.', sprintf('<b>%s</b>', APP_VERSION));
+				}
+				$message .= ' ' . t('You should remove this file for security.');
+				$this->set('message', $message);
 			} else {
 				if ($this->post('do_upgrade')) {
 					$this->do_upgrade();
@@ -303,7 +308,14 @@ class Concrete5_Controller_Upgrade extends Controller {
 		}
 		
 		if ($upgrade) {
-			$completeMessage .= '<div class="alert-message block-message success"><p>' . t('Upgrade to <b>%s</b> complete!', APP_VERSION) . '</p></div>';
+			$completeMessage .= '<div class="alert-message block-message success"><p>';
+			if(defined('APP_VERSION_DISPLAY_IN_HEADER') && APP_VERSION_DISPLAY_IN_HEADER) {
+				$completeMessage .= t(/*i18n: %s is the concrete5 version number*/'Upgrade to %s complete!', sprintf('<b>%s</b>', APP_VERSION));
+			}
+			else {
+				$completeMessage .= t('Upgrade to latest version complete!');
+			}
+			$completeMessage .= '</p></div>';
 			Config::save('SITE_APP_VERSION', APP_VERSION);
 		}
 		$this->set('completeMessage',$completeMessage);	
