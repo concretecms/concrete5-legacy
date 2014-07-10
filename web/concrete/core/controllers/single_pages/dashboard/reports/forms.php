@@ -87,9 +87,8 @@ class Concrete5_Controller_Dashboard_Reports_Forms extends DashboardBaseControll
 			echo "</tr>";
 		}
 
-		foreach ($answerSets as $answerSetId => $answerSet) {
+		foreach ($answerSets as $answerSet) {
 			$questionNumber = 0;
-			$numQuestionsToShow = 2;
 			echo "\t<tr>\r\n";
 			echo "\t\t<td>". $dateHelper->getSystemDateTime($answerSet['created']) . "</td>\r\n";
 			echo "\t\t<td>";
@@ -147,7 +146,6 @@ class Concrete5_Controller_Dashboard_Reports_Forms extends DashboardBaseControll
 
 	private function loadSurveyResponses() {
 		$c=$this->getCollectionObject();
-		$db = Loader::db();
 		$tempMiniSurvey = new MiniSurvey();
 		$pageBase = DIR_REL . '/' . DISPATCHER_FILENAME . '?cID=' . $c->getCollectionID();
 
@@ -235,10 +233,10 @@ class Concrete5_Controller_Dashboard_Reports_Forms extends DashboardBaseControll
 		$db = Loader::db();
 		$v = array(intval($asID));
 		$q = 'DELETE FROM btFormAnswers WHERE asID = ?';
-		$r = $db->query($q, $v);
+		$db->query($q, $v);
 
 		$q = 'DELETE FROM btFormAnswerSet WHERE asID = ?';
-		$r = $db->query($q, $v);
+		$db->query($q, $v);
 	}
 	//DELETE A FORM ANSWERS
 	private function deleteFormAnswers($qsID) {
@@ -259,13 +257,13 @@ class Concrete5_Controller_Dashboard_Reports_Forms extends DashboardBaseControll
 
 		$v = array(intval($bID));
 		$q = 'DELETE FROM btFormQuestions WHERE bID = ?';
-		$r = $db->query($q, $v);
+		$db->query($q, $v);
 
 		$q = 'DELETE FROM btForm WHERE bID = ?';
-		$r = $db->query($q, $v);
+		$db->query($q, $v);
 
 		$q = 'DELETE FROM Blocks WHERE bID = ?';
-		$r = $db->query($q, $v);
+		$db->query($q, $v);
 
 	}
 }
