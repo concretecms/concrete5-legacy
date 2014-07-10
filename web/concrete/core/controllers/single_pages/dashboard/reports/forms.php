@@ -101,39 +101,40 @@ class Concrete5_Controller_Dashboard_Reports_Forms extends DashboardBaseControll
 			echo "</td>\r\n";
 			foreach ($questions as $questionId => $question) {
 				$questionNumber++;
-				if ($question['inputType'] == 'checkboxlist') {
-					$options = explode('%%', $question['options']);
-					$subanswers = explode(',', $answerSet['answers'][$questionId]['answer']);
-					for ($i = 1; $i <= count($options); $i++) {
-						echo "\t\t<td align='center'>\r\n";
-						if (in_array(trim($options[$i - 1]), $subanswers)) {
-							// echo "\t\t\t".$options[$i-1]."\r\n";
-							echo "x";
+				switch ($question['inputType']) {
+					case 'checkboxlist':
+						$options = explode('%%', $question['options']);
+						$subanswers = explode(',', $answerSet['answers'][$questionId]['answer']);
+						for ($i = 1; $i <= count($options); $i++) {
+							echo "\t\t<td align='center'>\r\n";
+							if (in_array(trim($options[$i - 1]), $subanswers)) {
+								// echo "\t\t\t".$options[$i-1]."\r\n";
+								echo "x";
+							}
+							else {
+								echo "\t\t\t&nbsp;\r\n";
+							}
+							echo "\t\t</td>\r\n";
+						}
+						break;
+					case 'fileupload':
+						echo "\t\t<td>\r\n";
+						$fID = intval($answerSet['answers'][$questionId]['answer']);
+						$file = File::getByID($fID);
+						if ($fID && $file) {
+							$fileVersion = $file->getApprovedVersion();
+							echo "\t\t\t".'<a href="'. $fileVersion->getDownloadURL() . '">' . $fileVersion->getFileName() . '</a>'."\r\n";
 						}
 						else {
-							echo "\t\t\t&nbsp;\r\n";
+							echo "\t\t\t" . t('File not found') . "\r\n";
 						}
 						echo "\t\t</td>\r\n";
-					}
-
-				}
-				elseif ($question['inputType'] == 'fileupload') {
-					echo "\t\t<td>\r\n";
-					$fID = intval($answerSet['answers'][$questionId]['answer']);
-					$file = File::getByID($fID);
-					if ($fID && $file) {
-						$fileVersion = $file->getApprovedVersion();
-						echo "\t\t\t".'<a href="'. $fileVersion->getDownloadURL() . '">' . $fileVersion->getFileName() . '</a>'."\r\n";
-					}
-					else {
-						echo "\t\t\t" . t('File not found') . "\r\n";
-					}
-					echo "\t\t</td>\r\n";
-				}
-				else {
-					echo "\t\t<td>\r\n";
-					echo "\t\t\t" . $answerSet['answers'][$questionId]['answer'].$answerSet['answers'][$questionId]['answerLong'] . "\r\n";
-					echo "\t\t</td>\r\n";
+						break;
+					default:
+						echo "\t\t<td>\r\n";
+						echo "\t\t\t" . $answerSet['answers'][$questionId]['answer'].$answerSet['answers'][$questionId]['answerLong'] . "\r\n";
+						echo "\t\t</td>\r\n";
+						break;
 				}
 			}
 			echo "\t</tr>\r\n";
