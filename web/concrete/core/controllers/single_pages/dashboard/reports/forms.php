@@ -32,10 +32,10 @@ class Concrete5_Controller_Dashboard_Reports_Forms extends DashboardBaseControll
 		header("Pragma: public");
 		$date = date('Ymd');
 		header("Content-Disposition: inline; filename=" . $fileName . "_form_data_{$date}.xls");
-		header("Content-Title: " . $surveys[$questionSet]['surveyName'] . " Form Data Output - Run on {$date}");
-		echo "<html>\r\n";
-		echo "<head><META http-equiv=Content-Type content=\"text/html; charset=" . APP_CHARSET . "\"></head>\r\n";
-		echo "<body>\r\n";
+		echo "<html>\r\n<head>\r\n";
+		echo "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=" . APP_CHARSET . "\">\r\n";
+		echo "<title>" . $textHelper->entities(t(/*i18n: %1$s is the survey name, %2$s is the date. */ '%1$s Form Data Output - Run on %2$s', $surveys[$questionSet]['surveyName'], $date)) . "</title>\r\n";
+		echo "</head>\r\n<body>\r\n";
 		echo "<table>\r\n";
 		$hasCBRow = false;
 		foreach ($questions as $questionId => $question) {
