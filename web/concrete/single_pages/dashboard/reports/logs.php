@@ -67,12 +67,18 @@ $areEntries = count($entries) > 0 ? true : false;
                     ?></td>
                     <td valign="top"><strong><?=$ent->getType()?></strong></td>
                     <td valign="top"><strong><?php
-                    if($ent->getUserID() == NULL){
+                    $uID = $ent->getUserID();
+                    if(empty($uID)) {
                         echo t("Guest");
                     }
-                    else{
-                        $u = User::getByUserID($ent->getUserID());
-                        echo $u->getUserName();
+                    else {
+                        $u = User::getByUserID($uID);
+                        if(is_object($u)) {
+                            echo $u->getUserName();
+                        }
+                        else {
+                            echo tc('Deleted user', 'Deleted (id: %s)', $uID);
+                        }
                     }
                     ?></strong></td>
                     <td style="width: 100%"><?=$th->makenice($ent->getText())?></td>
