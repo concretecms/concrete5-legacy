@@ -43,33 +43,33 @@ class Concrete5_Controller_Dashboard_Reports_Forms extends DashboardBaseControll
 				$hasCBRow = true;
 			}
 		}
-
+		echo "<thead>\r\n\t<tr>\r\n";
 		echo "<tr>";
-		echo "\t\t<td ";
+		echo "\t\t<th ";
 		if ($hasCBRow) {
 			echo "rowspan=\"2\" valign='bottom'";
 		}
-		echo "><b>Submitted Date</b></td>\r\n";
-		echo "<td ";
+		echo "><b>Submitted Date</b></th>\r\n";
+		echo "<th ";
 		if ($hasCBRow) {
 			echo "rowspan=\"2\" valign='bottom'";
 		}
-		echo "><b>User</b></td>\r\n";
+		echo "><b>User</b></th>\r\n";
 
 		foreach ($questions as $questionId => $question) {
 			if ($question['inputType'] == 'checkboxlist') {
 				$options = explode('%%', $question['options']);
-				echo "\t\t".'<td colspan="' . count($options) . '"><b>'."\r\n";
+				echo "\t\t".'<th colspan="' . count($options) . '"><b>'."\r\n";
 			}
 			else {
-				echo "\t\t<td ";
+				echo "\t\t<th ";
 				if ($hasCBRow) {
 					echo "rowspan=\"2\" valign='bottom'>";
 				}
 				echo "<b>\r\n";
 			}
 			echo "\t\t\t" . $questions[$questionId]['question'] . "\r\n";
-			echo "\t\t</b></td>\r\n";
+			echo "\t\t</b></th>\r\n";
 		}
 		echo "</tr>";
 
@@ -80,13 +80,14 @@ class Concrete5_Controller_Dashboard_Reports_Forms extends DashboardBaseControll
 				if ($question['inputType'] == 'checkboxlist') {
 					$options = explode('%%', $question['options']);
 					foreach ($options as $opt) {
-						echo "<td><b>{$opt}</b></td>";
+						echo "<th><b>{$opt}</b></th>";
 					}
 				}
 			}
 			echo "</tr>";
 		}
 
+		echo "</thead>\r\n<tbody>\r\n";
 		foreach ($answerSets as $answerSet) {
 			$questionNumber = 0;
 			echo "\t<tr>\r\n";
@@ -139,7 +140,7 @@ class Concrete5_Controller_Dashboard_Reports_Forms extends DashboardBaseControll
 			}
 			echo "\t</tr>\r\n";
 		}
-		echo "</table>\r\n";
+		echo "</tbody>\r\n</table>\r\n";
 		echo "</body>\r\n";
 		echo "</html>\r\n";
 		die;
