@@ -44,7 +44,6 @@ class Concrete5_Controller_Dashboard_Reports_Forms extends DashboardBaseControll
 			}
 		}
 		echo "<thead>\r\n\t<tr>\r\n";
-		echo "<tr>";
 		echo "\t\t<th ";
 		if ($hasCBRow) {
 			echo "rowspan=\"2\" valign='bottom'";
