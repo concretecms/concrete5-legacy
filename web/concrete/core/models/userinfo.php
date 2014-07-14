@@ -192,6 +192,8 @@ defined('C5_EXECUTE') or die("Access Denied.");
 				return false;
 			}
 			
+			Events::fire('on_user_deleted', $this);
+
 			$db = Loader::db();  
 
 			$r = $db->Execute('select avID, akID from UserAttributeValues where uID = ?', array($this->uID));
