@@ -54,7 +54,7 @@ class Concrete5_Controller_Dashboard_Users_Add extends Controller {
 					$this->error->add(t("The username '%s' already exists. Please choose another",$username));
 				}		
 			
-				if ($username == USER_SUPER) {
+				if (strcasecmp($username, USER_SUPER) === 0) {
 					$this->error->add(t('Invalid Username'));
 				}
 			
