@@ -2080,16 +2080,23 @@ class Concrete5_Model_Page extends Collection {
 		$cID = $cobj->getCollectionID();		
 		$ctID = $ct->getCollectionTypeID();
 
-		$q = "select p.cID from Pages p inner join CollectionVersions cv on p.cID = cv.cID where cv.ctID = '$ctID' and cIsTemplate = '1'";
-		$masterCID = $db->getOne($q);
+		$masterCID = $ct->getMasterCollectionID();
+		$masterCollection = Page::getByID($masterCID);
+		
 		//$this->rescanChildrenDisplayOrder();
 		$cDisplayOrder = $this->getNextSubPageDisplayOrder();
 
 		$cInheritPermissionsFromCID = ($this->overrideTemplatePermissions()) ? $this->getPermissionsCollectionID() : $masterCID;
 		$cInheritPermissionsFrom = ($this->overrideTemplatePermissions()) ? "PARENT" : "TEMPLATE";
+		
+		// inherit cache settings from collection type
+		$cCacheFullPageContent = $masterCollection->getCollectionFullPageCaching();
+		$cCacheFullPageContentOverrideLifetime = $masterCollection->getCollectionFullPageCachingLifetime();
+		$cCacheFullPageContentLifetimeCustom = $masterCollection->getCollectionFullPageCachingLifetimeCustomValue();
+		
 		$ptID = $this->getCollectionThemeID();
-		$v = array($cID, $cParentID, $uID, $cInheritPermissionsFrom, $this->overrideTemplatePermissions(), $cInheritPermissionsFromCID, $cDisplayOrder, $pkgID);
-		$q = "insert into Pages (cID, cParentID, uID, cInheritPermissionsFrom, cOverrideTemplatePermissions, cInheritPermissionsFromCID, cDisplayOrder, pkgID) values (?, ?, ?, ?, ?, ?, ?, ?)";
+		$v = array($cID, $cParentID, $uID, $cInheritPermissionsFrom, $this->overrideTemplatePermissions(), $cInheritPermissionsFromCID, $cDisplayOrder, $pkgID, $cCacheFullPageContent, $cCacheFullPageContentOverrideLifetime, $cCacheFullPageContentLifetimeCustom);
+		$q = "insert into Pages (cID, cParentID, uID, cInheritPermissionsFrom, cOverrideTemplatePermissions, cInheritPermissionsFromCID, cDisplayOrder, pkgID, cCacheFullPageContent, cCacheFullPageContentOverrideLifetime, cCacheFullPageContentLifetimeCustom) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		$r = $db->prepare($q);
 		$res = $db->execute($r, $v);
 
