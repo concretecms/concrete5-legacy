@@ -63,9 +63,9 @@ class Concrete5_Controller_Dashboard_Reports_Forms extends DashboardBaseControll
 			else {
 				echo "\t\t<th ";
 				if ($hasCBRow) {
-					echo "rowspan=\"2\" valign='bottom'>";
+					echo "rowspan=\"2\" valign='bottom'";
 				}
-				echo "<b>\r\n";
+				echo "><b>\r\n";
 			}
 			echo "\t\t\t" . $questions[$questionId]['question'] . "\r\n";
 			echo "\t\t</b></th>\r\n";
