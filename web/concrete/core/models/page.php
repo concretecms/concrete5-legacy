@@ -2094,7 +2094,6 @@ class Concrete5_Model_Page extends Collection {
 		$cCacheFullPageContentOverrideLifetime = $masterCollection->getCollectionFullPageCachingLifetime();
 		$cCacheFullPageContentLifetimeCustom = $masterCollection->getCollectionFullPageCachingLifetimeCustomValue();
 		
-		$ptID = $this->getCollectionThemeID();
 		$v = array($cID, $cParentID, $uID, $cInheritPermissionsFrom, $this->overrideTemplatePermissions(), $cInheritPermissionsFromCID, $cDisplayOrder, $pkgID, $cCacheFullPageContent, $cCacheFullPageContentOverrideLifetime, $cCacheFullPageContentLifetimeCustom);
 		$q = "insert into Pages (cID, cParentID, uID, cInheritPermissionsFrom, cOverrideTemplatePermissions, cInheritPermissionsFromCID, cDisplayOrder, pkgID, cCacheFullPageContent, cCacheFullPageContentOverrideLifetime, cCacheFullPageContentLifetimeCustom) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		$r = $db->prepare($q);
