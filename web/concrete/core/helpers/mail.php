@@ -38,7 +38,6 @@ class Concrete5_Helper_Mail {
 	 * @return void
 	*/
 	public function reset() {
-		$this->body = '';
 		$this->headers = array();
 		$this->to = array();
 		$this->cc = array();
