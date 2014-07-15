@@ -35,7 +35,10 @@ class Concrete5_Helper_Form_Attribute {
 		if (is_object($this->obj)) {
 			$value = $this->obj->getAttributeValueObject($obj);
 		}
-		$html = '<div class="control-group">';
+		
+	        $controlGroupCssClass = preg_replace('/\W+/','',strtolower(strip_tags($obj->atHandle))) . ' '.$obj->akHandle;
+		
+		$html = '<div class="control-group '.$controlGroupCssClass.'">';
 		if ($includeLabel) {
 			$html .= $obj->render('label', false, true);
 		}
