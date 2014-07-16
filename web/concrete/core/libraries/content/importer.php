@@ -461,7 +461,7 @@ class Concrete5_Library_Content_Importer {
 	protected function importPermissionCategories(SimpleXMLElement $sx) {
 		if (isset($sx->permissioncategories)) {
 			foreach($sx->permissioncategories->category as $pkc) {
-				$pkg = ContentImporter::getPackageObject($akc['package']);
+				$pkg = ContentImporter::getPackageObject($pkc['package']);
 				$pkx = PermissionKeyCategory::add((string) $pkc['handle'], $pkg);
 			}
 		}
