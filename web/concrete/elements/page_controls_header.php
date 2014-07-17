@@ -42,7 +42,8 @@ if (!$dh->inDashboard()) {
 	$cih = Loader::helper('concrete/interface');
 	if (LANGUAGE != 'en') {
 		$this->addFooterItem($html->javascript('i18n/ui.datepicker-' . LANGUAGE . '.js'));
-		$this->addFooterItem('<script type="text/javascript">$(function() { jQuery.datepicker.setDefaults({dateFormat: \'yy-mm-dd\'}); });</script>');
+		$this->addFooterItem('<script type="text/javascript">$(function() { jQuery.datepicker.setDefaults({dateFormat: \'' . ( defined('DATE_APP_DATE_PICKER') ? DATE_APP_DATE_PICKER : 'yy-mm-dd') . '\'}); });</script>');
+
 	}
 	if (!Config::get('SEEN_INTRODUCTION')) {
 		$this->addHeaderItem('<script type="text/javascript">$(function() { ccm_showAppIntroduction(); });</script>');
