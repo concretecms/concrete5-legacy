@@ -137,7 +137,7 @@ class Concrete5_Controller_Block_FormMinisurvey {
 			return $db->getOne( 'SELECT count(*) FROM btFormAnswerSet WHERE questionSetId='.intval($qsID) );
 		}		
 		
-		function loadSurvey( $qsID, $showEdit=false, $bID=0, $hideQIDs=array(), $showPending=0 ){
+		function loadSurvey( $qsID, $showEdit=false, $bID=0, $hideQIDs=array(), $showPending=0, $forPreview = false ){
 		
 			//loading questions	
 			$questionsRS=$this->loadQuestions( $qsID, $bID, $showPending);
@@ -163,7 +163,7 @@ class Concrete5_Controller_Block_FormMinisurvey {
 						$requiredSymbol=($questionRow['required'])?'&nbsp;<span class="required">*</span>':'';
 						echo '<tr>
 						        <td valign="top" class="question"><label for="Question'.intval($questionRow['msqID']).'">'.$questionRow['question'].''.$requiredSymbol.'</label></td>
-						        <td valign="top">'.$this->loadInputType($questionRow, $showEdit).'</td>
+						        <td valign="top">'.$this->loadInputType($questionRow, $showEdit, $questionRow['required'] && (!$forPreview)).'</td>
 						      </tr>';
 					//}
 				}			
@@ -214,11 +214,13 @@ class Concrete5_Controller_Block_FormMinisurvey {
 			}
 		}
 		
-		function loadInputType($questionData,$showEdit){
+		function loadInputType($questionData,$showEdit, $required = false){
 			$options=explode('%%',$questionData['options']);
 			$msqID=intval($questionData['msqID']);
-			$datetime = loader::helper('form/date_time');
+			$datetime = Loader::helper('form/date_time');
+			/* @var $datetime FormDateTimeHelper */
 			$html = '';
+			$requiredAttribute = $required ? ' required="required"' : '';
 			switch($questionData['inputType']){			
 				case 'checkboxlist': 
 					// this is looking really crappy so i'm going to make it behave the same way all the time - andrew
@@ -248,32 +250,32 @@ class Concrete5_Controller_Block_FormMinisurvey {
 						$checked=($_REQUEST['Question'.$msqID]==trim($option))?'selected="selected"':'';
 						$html.= '<option '.$checked.'>'.trim($option).'</option>';
 					}
-					return '<select name="Question'.$msqID.'" id="Question'.$msqID.'" >'.$html.'</select>';
+					return '<select name="Question'.$msqID.'" id="Question'.$msqID.'"' . $requiredAttribute . '>'.$html.'</select>';
 								
 				case 'radios':
 					foreach($options as $option){
 						if(strlen(trim($option))==0) continue;
 						$checked=($_REQUEST['Question'.$msqID]==trim($option))?'checked':'';
-						$html.= '<div class="radioPair"><input name="Question'.$msqID.'" type="radio" value="'.trim($option).'" '.$checked.' />&nbsp;'.$option.'</div>';
+						$html.= '<div class="radioPair"><input name="Question'.$msqID.'" type="radio" value="'.trim($option).'" '.$checked . $requiredAttribute.' />&nbsp;'.$option.'</div>';
 					}
 					return $html;
 					
 				case 'fileupload': 
-					$html='<input type="file" name="Question'.$msqID.'" id="Question'.$msqID.'" />'; 				
+					$html='<input type="file" name="Question'.$msqID.'" id="Question'.$msqID.'"' . $requiredAttribute . ' />'; 				
 					return $html;
 					
 				case 'text':
 					$val=($_REQUEST['Question'.$msqID])?Loader::helper('text')->entities($_REQUEST['Question'.$msqID]):'';
-					return '<textarea name="Question'.$msqID.'" id="Question'.$msqID.'" cols="'.$questionData['width'].'" rows="'.$questionData['height'].'">'.$val.'</textarea>';
+					return '<textarea name="Question'.$msqID.'" id="Question'.$msqID.'" cols="'.$questionData['width'].'" rows="'.$questionData['height'].'"' . $requiredAttribute . '>'.$val.'</textarea>';
 				case 'url':
 					$val=($_REQUEST['Question'.$msqID])?$_REQUEST['Question'.$msqID]:'';
-					return '<input name="Question'.$msqID.'" id="Question'.$msqID.'" type="url" value="'.stripslashes(htmlspecialchars($val)).'" />';
+					return '<input name="Question'.$msqID.'" id="Question'.$msqID.'" type="url" value="'.stripslashes(htmlspecialchars($val)).'"' . $requiredAttribute . ' />';
 				case 'telephone':
 					$val=($_REQUEST['Question'.$msqID])?$_REQUEST['Question'.$msqID]:'';
-					return '<input name="Question'.$msqID.'" id="Question'.$msqID.'" type="tel" value="'.stripslashes(htmlspecialchars($val)).'" />';
+					return '<input name="Question'.$msqID.'" id="Question'.$msqID.'" type="tel" value="'.stripslashes(htmlspecialchars($val)).'"' . $requiredAttribute . ' />';
 				case 'email':
 					$val=($_REQUEST['Question'.$msqID])?$_REQUEST['Question'.$msqID]:'';
-					return '<input name="Question'.$msqID.'" id="Question'.$msqID.'" type="email" value="'.stripslashes(htmlspecialchars($val)).'" />';	
+					return '<input name="Question'.$msqID.'" id="Question'.$msqID.'" type="email" value="'.stripslashes(htmlspecialchars($val)).'"' . $requiredAttribute . ' />';	
 				case 'date':
 					$val=($_REQUEST['Question'.$msqID])?$_REQUEST['Question'.$msqID]:'';
 					return $datetime->date('Question'.$msqID,($val!==''?$val:'now'));
@@ -283,7 +285,7 @@ class Concrete5_Controller_Block_FormMinisurvey {
 				case 'field':
 				default:
 					$val=($_REQUEST['Question'.$msqID])?$_REQUEST['Question'.$msqID]:'';
-					return '<input name="Question'.$msqID.'" id="Question'.$msqID.'" type="text" value="'.stripslashes(htmlspecialchars($val)).'" />';
+					return '<input name="Question'.$msqID.'" id="Question'.$msqID.'" type="text" value="'.stripslashes(htmlspecialchars($val)).'"' . $requiredAttribute . ' />';
 			}
 		}
 		
