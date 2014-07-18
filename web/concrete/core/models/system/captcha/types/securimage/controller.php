@@ -57,7 +57,7 @@ class Concrete5_Model_SecurimageSystemCaptchaTypeController extends SystemCaptch
 				$attribs .= $key . '="' . $value . '" ';
 			}
 		}
-	  echo '<div><input type="text" name="ccmCaptchaCode" class="ccm-input-captcha" ' . $attribs . ' /></div><br/>';
+	  echo '<div><input type="text" name="ccmCaptchaCode" class="ccm-input-captcha" required="required" ' . $attribs . ' /></div><br/>';
 	}
 	
 	/** 
