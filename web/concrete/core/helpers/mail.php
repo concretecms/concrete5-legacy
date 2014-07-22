@@ -27,7 +27,7 @@ class Concrete5_Helper_Mail {
 	protected $data = array();
 	protected $subject = '';
 	public $body = '';
-	protected $template; 
+	protected $template = ''; 
 	protected $bodyHTML = false;
 	protected $testing = false;
 	
@@ -47,7 +47,7 @@ class Concrete5_Helper_Mail {
 		$this->data = array();
 		$this->subject = '';
 		$this->body = '';
-		$this->template; 
+		$this->template = ''; 
 		$this->bodyHTML = false;
 		$this->testing = false;
 	}
