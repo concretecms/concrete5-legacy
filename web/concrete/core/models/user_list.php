@@ -144,7 +144,7 @@ class UserSearchDefaultColumnSet extends DatabaseItemListColumnSet {
 	public function __construct() {
 		$this->addColumn(new DatabaseItemListColumn('uName', t('Username'), array('UserSearchDefaultColumnSet', 'getUserName')));
 		$this->addColumn(new DatabaseItemListColumn('uEmail', t('Email'), array('UserSearchDefaultColumnSet', 'getUserEmail')));
-		$this->addColumn(new DatabaseItemListColumn('uDateAdded', t('Last Modified'), array('UserSearchDefaultColumnSet', 'getUserDateAdded')));
+		$this->addColumn(new DatabaseItemListColumn('uDateAdded', t('Signup Date'), array('UserSearchDefaultColumnSet', 'getUserDateAdded')));
 		$this->addColumn(new DatabaseItemListColumn('uNumLogins', t('# Logins'), 'getNumLogins')); 
 		$date = $this->getColumnByKey('uDateAdded');
 		$this->setDefaultSortColumn($date, 'desc');
