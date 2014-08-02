@@ -63,8 +63,9 @@ class Concrete5_Helper_Form_DateTime {
 	 * @param string $value
 	 * @param bool $includeActivation
 	 * @param bool $calendarAutoStart
+	 * @param bool $presetToCurrentDateTime Turns off autofill of fields
 	 */
-	public function datetime($prefix, $value = null, $includeActivation = false, $calendarAutoStart = true) {
+	public function datetime($prefix, $value = null, $includeActivation = false, $calendarAutoStart = true, $presetToCurrentDateTime=true) {
 		if (substr($prefix, -1) == ']') {
 			$prefix = substr($prefix, 0, strlen($prefix) -1);
 			$_activate = $prefix . '_activate]';
@@ -89,10 +90,18 @@ class Concrete5_Helper_Form_DateTime {
 			$m = date('i', strtotime($value));
 			$a = date('A', strtotime($value));
 		} else {
-			$dt = date(DATE_APP_GENERIC_MDY);
-			$h = date($dfh);
-			$m = date('i');
-			$a = date('A');
+			if($presetToCurrentDateTime){
+				$dt = date(DATE_APP_GENERIC_MDY);
+				$h = date($dfh);
+				$m = date('i');
+				$a = date('A');
+			} else {
+				$dt = null;
+				$h = 12; //workaround since 1 is first element
+				$m = null;
+				$a = null;
+				
+			}
 		}
 		$id = preg_replace("/[^0-9A-Za-z-]/", "_", $prefix);
 		$html = '';
