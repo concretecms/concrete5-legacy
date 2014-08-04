@@ -187,14 +187,6 @@ class DateHelperTest extends PHPUnit_Framework_TestCase {
 				$this->object->formatSpecial($formatName, $timestamp)
 			);
 		}
-		foreach(array(
-			'DATE_PICKER'
-		) as $formatName) {
-			$this->assertEquals(
-				constant("DATE_APP_$formatName"),
-				$this->object->getSpecialFormat($formatName)
-			);
-		}
 		if($activeUser) {
 			User::getByUserID($activeUser->getUserID(), true);
 		}

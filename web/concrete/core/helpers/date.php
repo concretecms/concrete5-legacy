@@ -226,7 +226,20 @@ class Concrete5_Helper_Date {
 			return null;
 		}
 		$zendDate->setLocale(Localization::activeLocale());
-		switch($timezone) {
+		$zendDate->setTimezone($this->getTimezone($timezone));
+		return $zendDate;
+	}
+	/** Returns the current timezone.
+	* @param string $for Which timezone to get. It may be:<ul>
+	 *	<li>'system' (default) for the current system timezone</li>
+	 *	<li>'user' for the user's timezone</li>
+	 *	<li>'app' for the app's timezone</li>
+	 *	<li>Other values: they'll be returned as is</li>
+	 * </ul>
+	* @return string
+	 */
+	public function getTimezone($for) {
+		switch($for) {
 			case 'system':
 				$tz = defined('APP_TIMEZONE_SERVER') ? APP_TIMEZONE_SERVER : date_default_timezone_get();
 				break;
@@ -252,11 +265,10 @@ class Concrete5_Helper_Date {
 				}
 				break;
 			default:
-				$tz = $timezone;
+				$tz = $for;
 				break;
 		}
-		$zendDate->setTimezone($tz);
-		return $zendDate;
+		return $tz;
 	}
 	/**
 	 * Returns the difference in days between to dates.
@@ -504,7 +516,6 @@ class Concrete5_Helper_Date {
 	 * 	<li><b>'DASHBOARD_SEARCH_RESULTS_PAGES'</b> date/time format in PHP format</li>
 	 * 	<li><b>'DATE_ATTRIBUTE_TYPE_MDY'</b> date/time format in PHP format</li>
 	 * 	<li><b>'DATE_ATTRIBUTE_TYPE_T'</b> date/time format in PHP format</li>
-	 * 	<li><b>'DATE_PICKER'</b> date/time format in jQueryUI datepicker format</li>
 	 * </ul>
 	 * @return string
 	 */
@@ -545,13 +556,69 @@ class Concrete5_Helper_Date {
 					:
 					t(/*i18n: Time format with seconds: see http://www.php.net/manual/en/function.date.php */ 'g:i:s A')
 				;
-			case 'DATE_PICKER':
-				return defined("CUSTOM_DATE_APP_$formatName") ?
-					constant("CUSTOM_DATE_APP_$formatName")
-					:
-					t(/*i18n: Date format for the date picker: see http://api.jqueryui.com/datepicker/#utility-formatDate */ 'm/d/yy')
-				;
 		}
 		return '';
+	}
+	/** Returns the format string for the jQueryUI DatePicker widget
+	* The format corresponds to the one used by DateHelper->formatDate($value, false)
+	* @return string
+	*/
+	public function getJQueryUIDatePickerFormat() {
+		if(defined('CUSTOM_DATE_APP_DATE_PICKER')) {
+			return CUSTOM_DATE_APP_DATE_PICKER;
+		}
+		// Determine the format used to represent the date value in PHP
+		if(defined('CUSTOM_DATE_APP_GENERIC_MDY')) {
+			$phpFormat = CUSTOM_DATE_APP_GENERIC_MDY;
+		}
+		else {
+			$phpFormat = t(/*i18n: Short date format: see http://www.php.net/manual/en/function.date.php */ 'n/j/Y');
+		}
+		// Special chars that need to be escaped in the DatePicker format string
+		$datepickerSpecials = array('d', 'o', 'D', 'm', 'M', 'y', '@', '!', '\'');
+		// Map from php to DatePicker format 
+		$map = array(
+			'j' => 'd',
+			'd' => 'dd',
+			'z' => 'o',
+			'D' => 'D',
+			'l' => 'DD',
+			'n' => 'm',
+			'm' => 'mm',
+			'M' => 'M',
+			'F' => 'MM',
+			'y' => 'y',
+			'Y' => 'yy'
+		);
+		$datepickerFormat = '';
+		$escaped = false;
+		for($i = 0; $i < strlen($phpFormat); $i++) {
+			$c = substr($phpFormat, $i, 1);
+			if($escaped) {
+				if(in_array($c, $datepickerSpecials)) {
+					$datepickerFormat .= '\'' . $c;
+				}
+				else {
+					$datepickerFormat .= $c;
+				}
+				$escaped = false;
+			}
+			elseif($c === '\\') {
+				$escaped = true;
+			}
+			elseif(array_key_exists($c, $map)) {
+				$datepickerFormat .= $map[$c];
+			}
+			elseif(in_array($c, $datepickerSpecials)) {
+				$datepickerFormat .= '\'' . $c;
+			}
+			else {
+				$datepickerFormat .= $c;
+			}
+		}
+		if($escaped) {
+			$datepickerFormat .= '\\';
+		}
+		return $datepickerFormat;
 	}
 }
