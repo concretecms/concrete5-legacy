@@ -142,7 +142,7 @@ $(function() {
 	<? $s1 = FileSet::getMySets(); ?>
 	<? if (count($s1) > 0) { ?>
 	<div class="clearfix">
-		<ul class="inputs-list">
+		<ul id="ccm-file-search-add-to-sets-list" class="inputs-list">
 	
 	
 	<? foreach($sets as $s) { 
