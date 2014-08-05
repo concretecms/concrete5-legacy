@@ -128,8 +128,8 @@ class Concrete5_Job_GenerateSitemap extends Job {
 			return;
 		}
 		$lastmod = new DateTime($page->getCollectionDateLastModified());
-		$changefreq = $page->getAttribute($instances['ak_sitemap_changefreq']);
-		$priority = $page->getAttribute($instances['ak_sitemap_priority']);
+		$changefreq = (string) $page->getAttribute($instances['ak_sitemap_changefreq']);
+		$priority = (string) $page->getAttribute($instances['ak_sitemap_priority']);
 		$xmlNode = $xmlDoc->addChild('url');
 		$xmlNode->addChild('loc', SITEMAPXML_BASE_URL . $instances['navigation']->getLinkToCollection($page));
 		$xmlNode->addChild('lastmod', $lastmod->format(DateTime::ATOM));
