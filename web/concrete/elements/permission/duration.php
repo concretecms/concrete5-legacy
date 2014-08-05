@@ -207,9 +207,9 @@ ccm_accessEntityCalculateRepeatOptions = function() {
 		return false;
 	}
        
-	var sdf = ($("#pdStartDate_dt_pub").datepicker('option', 'altFormat'));
+	var sdf = ($("#pdStartDate_dt").datepicker('option', 'dateFormat'));
 	var sdfr = $.datepicker.parseDate(sdf, $("#pdStartDate_dt").val());
-	var edf = ($("#pdEndDate_dt_pub").datepicker('option', 'altFormat'));
+	var edf = ($("#pdEndDate_dt").datepicker('option', 'dateFormat'));
 	var edfr = $.datepicker.parseDate(edf, $("#pdEndDate_dt").val());
 	var sh = $("select[name=pdStartDate_h]").val();
 	var eh = $("select[name=pdEndDate_h]").val();
@@ -233,7 +233,7 @@ ccm_accessEntityCalculateRepeatOptions = function() {
 		$('select[name=pdRepeatPeriod] option[value=daily]').attr('disabled', false);
 		$("#ccm-permissions-access-entity-dates-repeat-weekly-dow").show();
 	}
-	$('input[name=pdStartRepeatDate]').val($("#pdStartDate_dt_pub").val());
+	$('input[name=pdStartRepeatDate]').val($("#pdStartDate_dt").val());
 	switch(sdfr.getDay()) {
 		case 0:
 			$("#ccm-permissions-access-entity-dates-repeat-weekly-dow input[value=0]").attr('checked', true);
