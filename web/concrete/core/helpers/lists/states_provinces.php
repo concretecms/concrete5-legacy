@@ -19,6 +19,11 @@
 defined('C5_EXECUTE') or die("Access Denied.");
 class Concrete5_Helper_Lists_StatesProvinces {
 
+	/** Locale for which we currently loaded the data.
+	* @var string
+	*/
+	protected $locale = null;
+
 	protected $stateProvinces = array(
 	'US' => array(
 		'AL' => 'Alabama',
@@ -508,6 +513,11 @@ class Concrete5_Helper_Lists_StatesProvinces {
 	);
 
 	public function reset() {
+		$locale = Localization::activeLocale();
+		if($locale === $this->locale) {
+			return;
+		}
+		$this->locale = $locale;
 		$this->stateProvinces['GB'] = $this->stateProvinces['UK'];
 		$stateProvincesFromEvent = Events::fire('on_get_states_provinces_list', $this->stateProvinces);
 		if(is_array($stateProvincesFromEvent)) {
