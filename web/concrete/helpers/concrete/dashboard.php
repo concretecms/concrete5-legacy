@@ -211,7 +211,6 @@ class ConcreteDashboardHelper {
 				$image = '';
 			}
 		} else {
-			$obj->checkData = true;
 			$imageSetting = Config::get('DASHBOARD_BACKGROUND_IMAGE');
 			if ($imageSetting == 'custom') {
 				$fo = File::getByID(Config::get('DASHBOARD_BACKGROUND_IMAGE_CUSTOM_FILE_ID'));
@@ -227,6 +226,7 @@ class ConcreteDashboardHelper {
 					$image = DASHBOARD_BACKGROUND_FEED . '/' . $filename;
 				}
 				$obj->displayCaption = true;
+				$obj->checkData = true;
 			}
 		}
 		$obj->filename = $filename;
