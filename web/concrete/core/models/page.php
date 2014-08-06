@@ -1609,6 +1609,7 @@ class Concrete5_Model_Page extends Collection {
 			$ret = Events::fire('on_page_duplicate', $nc2, $this);
 			
 			$nc2->rescanCollectionPath();
+			$nc2->movePageDisplayOrderToBottom();
 
 			return $nc2;
 		}
