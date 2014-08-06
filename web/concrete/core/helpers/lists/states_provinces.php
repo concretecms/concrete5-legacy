@@ -507,7 +507,7 @@ class Concrete5_Helper_Lists_StatesProvinces {
 
 	);
 
-	public function __construct() {
+	public function reset() {
 		$this->stateProvinces['GB'] = $this->stateProvinces['UK'];
 		$stateProvincesFromEvent = Events::fire('on_get_states_provinces_list', $this->stateProvinces);
 		if(is_array($stateProvincesFromEvent)) {

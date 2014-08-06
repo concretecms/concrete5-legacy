@@ -21,7 +21,7 @@ class Concrete5_Helper_Lists_Countries {
 
 	protected $countries = array();
 
-	public function __construct() {
+	public function reset() {
 		Loader::library('3rdparty/Zend/Locale');
 		$countries = Zend_Locale::getTranslationList('territory', Localization::activeLocale(), 2);
 		unset(
