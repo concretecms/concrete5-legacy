@@ -1468,7 +1468,7 @@
   <table name="FileVersions">
     <opt platform="MYSQL">ENGINE=MYISAM</opt>
     <opt platform="MYSQLT">ENGINE=MYISAM</opt>
-    <opt platform="MYSQLI">ENGINE=INNODB</opt>
+    <opt platform="MYSQLI">ENGINE=MYISAM</opt>
     <field name="fID" type="I" size="10">
       <KEY/>
       <DEFAULT value="0"/>
