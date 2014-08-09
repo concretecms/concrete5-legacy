@@ -774,7 +774,7 @@ closeSub = function(instanceID, nodeID, display_mode, select_mode) {
 		$("#ccm-tree-search-trigger" + cID).show();
 	}
 	
-	$.get(CCM_TOOLS_PATH + "/dashboard/sitemap_data.php?instance_id=" + instanceID + "&select_mode=" + select_mode + "&display_mode=" + display_mode + "&node=" + nodeID +'&display_mode=full&ctask=close-node');
+	$.get(CCM_TOOLS_PATH + "/dashboard/sitemap_data.php?instance_id=" + instanceID + "&select_mode=" + select_mode + "&display_mode=" + display_mode + "&node=" + nodeID +' &ctask=close-node');
 }
 
 toggleMove = function() {
