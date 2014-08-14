@@ -155,7 +155,7 @@ $txt = Loader::helper('text');?>
 	
 	<h3><?=t('Add Set')?></h3>
 
-	<input type="hidden" name="categoryID" value="<?php echo $categoryID?>" />
+	<?php echo $form->hidden('categoryID', intval($categoryID)); ?>
 	<?php echo Loader::helper('validation/token')->output('add_set')?>
 	<div class="clearfix">
 		<?php echo $form->label('asHandle', t('Handle'))?>

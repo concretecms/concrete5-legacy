@@ -164,55 +164,58 @@ class ConcreteDashboardSitemapHelper {
 	function getSubNodes($cID, $level = 0, $keywords = '', $autoOpenNodes = true) {
 		$db = Loader::db();
 		
-		$obj = new stdClass;
-		if ($keywords != '' && $keywords != false) {
-			$nc = Page::getByID($cID, 'RECENT');
-			$pl = new PageList();
-			if (PERMISSIONS_MODEL != 'simple') {
-				$pl->setViewPagePermissionKeyHandle('view_page_in_sitemap');
+		if (isset($cID) && Loader::helper('validation/numbers')->integer($cID)) {
+			
+			$obj = new stdClass;
+			if ($keywords != '' && $keywords != false) {
+				$nc = Page::getByID($cID, 'RECENT');
+				$pl = new PageList();
+				if (PERMISSIONS_MODEL != 'simple') {
+					$pl->setViewPagePermissionKeyHandle('view_page_in_sitemap');
+				}
+				$obj->keywords = $keywords;
+				$pl->filterByName($keywords);
+				$pl->ignoreAliases();
+				$pl->filterByPath($nc->getCollectionPath());
+				$pl->displayUnapprovedPages();
+				$pl->sortByDisplayOrder();
+				$results = $pl->get(SITEMAP_PAGES_LIMIT);
+				$total = $pl->getTotal();
+			} else {			
+				$pl = new PageList();
+				if (PERMISSIONS_MODEL != 'simple') {
+					$pl->setViewPagePermissionKeyHandle('view_page_in_sitemap');
+				}
+				$pl->sortByDisplayOrder();
+				if (ConcreteDashboardSitemapHelper::showSystemPages()) {
+					$pl->includeSystemPages();
+					$pl->includeInactivePages();
+				}
+				$pl->filterByParentID($cID);
+				$pl->displayUnapprovedPages();
+				$total = $pl->getTotal();
+				if ($cID == 1) {
+					$results = $pl->get();			
+				} else {
+					$pl->setItemsPerPage(SITEMAP_PAGES_LIMIT);
+					$results = $pl->getPage();
+				}
 			}
-			$obj->keywords = $keywords;
-			$pl->filterByName($keywords);
-			$pl->ignoreAliases();
-			$pl->filterByPath($nc->getCollectionPath());
-			$pl->displayUnapprovedPages();
-			$pl->sortByDisplayOrder();
-			$results = $pl->get(SITEMAP_PAGES_LIMIT);
-			$total = $pl->getTotal();
-		} else {			
-			$pl = new PageList();
-			if (PERMISSIONS_MODEL != 'simple') {
-				$pl->setViewPagePermissionKeyHandle('view_page_in_sitemap');
+			
+			$nodes = array();
+			foreach($results as $c) {
+				$n = ConcreteDashboardSitemapHelper::getNode($c, $level+1, $autoOpenNodes);
+				if ($n != false) {
+					$nodes[] = $n;
+				}
 			}
-			$pl->sortByDisplayOrder();
-			if (ConcreteDashboardSitemapHelper::showSystemPages()) {
-				$pl->includeSystemPages();
-				$pl->includeInactivePages();
-			}
-			$pl->filterByParentID($cID);
-			$pl->displayUnapprovedPages();
-			$total = $pl->getTotal();
-			if ($cID == 1) {
-				$results = $pl->get();			
-			} else {
-				$pl->setItemsPerPage(SITEMAP_PAGES_LIMIT);
-				$results = $pl->getPage();
-			}
+			
+			$obj->total = $total;
+			$obj->nodeID = $cID;
+			$obj->pageList = $pl;
+			$obj->results = $nodes;
+			return $obj;
 		}
-		
-		$nodes = array();
-		foreach($results as $c) {
-			$n = ConcreteDashboardSitemapHelper::getNode($c, $level+1, $autoOpenNodes);
-			if ($n != false) {
-				$nodes[] = $n;
-			}
-		}
-		
-		$obj->total = $total;
-		$obj->nodeID = $cID;
-		$obj->pageList = $pl;
-		$obj->results = $nodes;
-		return $obj;
 	}
 	
 	public function getPermissionsNodes($obj) {
@@ -269,7 +272,7 @@ class ConcreteDashboardSitemapHelper {
 			$this->html .= '</ul></div>';
 		}
 		if ($display_mode == 'full' || $display_mode == '') {
-			$this->html .= '<div class="dropzone tree-dz' . $nodeID . '" tree-parent="' . $nodeID . '" id="tree-dz' . $nodeID . '-sub"></div>';
+			$this->html .= '<div class="dropzone tree-dz' . h($nodeID) . '" tree-parent="' . h($nodeID) . '" id="tree-dz' . h($nodeID) . '-sub"></div>';
 		}
 		$moveableClass = '';
 		for ($i = 0; $i < count($req->results); $i++) {
@@ -296,7 +299,7 @@ class ConcreteDashboardSitemapHelper {
 				$canDrag = "false";
 			}*/
 			
-			$this->html .= '<li ' . $this->getPermissionsNodes($ri) . ' tree-node-intrash="' . $ri['isInTrash'] . '" tree-node-istrash="' . $ri['isTrash'] . '" tree-node-cancompose="' . $ri['canCompose'] . '" tree-node-type="' . $treeNodeType . '" draggable="' . $canDrag . '" class="tree-node ' . $typeClass . ' tree-branch' . $nodeID . '" id="tree-node' . $ri['id'] . '"' . $customIconSrc . '>';
+			$this->html .= '<li ' . $this->getPermissionsNodes($ri) . ' tree-node-intrash="' . $ri['isInTrash'] . '" tree-node-istrash="' . $ri['isTrash'] . '" tree-node-cancompose="' . $ri['canCompose'] . '" tree-node-type="' . $treeNodeType . '" draggable="' . $canDrag . '" class="tree-node ' . $typeClass . ' tree-branch' . h($nodeID) . '" id="tree-node' . $ri['id'] . '"' . $customIconSrc . '>';
 			
 			if ($ri['numSubpages'] > 0) {
 				$subPageStr = ($ri['id'] == 1) ? '' : ' <span class="ccm-sitemap-num-subpages">(' . $ri['numSubpages'] . ')</span>';
@@ -360,7 +363,7 @@ class ConcreteDashboardSitemapHelper {
 			
 			$this->html .= '</li>';
 			if ($display_mode == 'full' || $display_mode == '') {
-				$this->html .= '<div class="dropzone tree-dz' . $nodeID . '" tree-parent="' . $nodeID . '" id="tree-dz' . $ri['id'] . '"></div>';
+				$this->html .= '<div class="dropzone tree-dz' . h($nodeID) . '" tree-parent="' . h($nodeID) . '" id="tree-dz' . $ri['id'] . '"></div>';
 			}
 		}
 		
