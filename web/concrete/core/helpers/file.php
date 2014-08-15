@@ -189,7 +189,7 @@ class Concrete5_Helper_File {
 	 * @param string $content
 	 */
 	public function append($filename, $content) {
-		file_put_contents($filename, $content, FILE_APPEND);
+		return file_put_contents($filename, $content, FILE_APPEND);
 	}
 	
 	
@@ -253,7 +253,7 @@ class Concrete5_Helper_File {
 	 * @param $filename
 	 */
 	public function clear($file) {
-		file_put_contents($file, '');
+		return file_put_contents($file, '');
 	}
 	
 	
