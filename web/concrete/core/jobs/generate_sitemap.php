@@ -108,6 +108,9 @@ class Concrete5_Job_GenerateSitemap extends Job {
 		if($page->isInTrash()) {
 			return;
 		}
+		if($page->isMasterCollection()) {
+			return;
+		}
 		$pageVersion = $page->getVersionObject();
 		if($pageVersion && !$pageVersion->isApproved()) {
 			return;
