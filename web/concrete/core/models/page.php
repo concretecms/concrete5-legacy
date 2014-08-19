@@ -422,6 +422,7 @@ class Concrete5_Model_Page extends Collection {
 		$cDate = $dh->getSystemDateTime();
 		$cDatePublic = $dh->getSystemDateTime();
 		$handle = $this->getCollectionHandle();
+		$cDisplayOrder = $c->getNextSubPageDisplayOrder();
 
 		$_cParentID = $c->getCollectionID();
 		$q = "select PagePaths.cPath from PagePaths where cID = '{$_cParentID}'";
@@ -436,8 +437,8 @@ class Concrete5_Model_Page extends Collection {
 		$cobj = parent::add($data);
 		$newCID = $cobj->getCollectionID();
 		
-		$v = array($newCID, $cParentID, $uID, $this->getCollectionID());
-		$q = "insert into Pages (cID, cParentID, uID, cPointerID) values (?, ?, ?, ?)";
+		$v = array($newCID, $cParentID, $uID, $this->getCollectionID(), $cDisplayOrder);
+		$q = "insert into Pages (cID, cParentID, uID, cPointerID, cDisplayOrder) values (?, ?, ?, ?, ?)";
 		$r = $db->prepare($q);
 		
 		$res = $db->execute($r, $v);
