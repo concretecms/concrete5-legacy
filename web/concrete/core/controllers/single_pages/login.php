@@ -7,7 +7,7 @@ class Concrete5_Controller_Login extends Controller {
 	private $openIDReturnTo;
 	protected $locales = array();
 	protected $supportsPageCache = true;
-	
+
 	public function on_start() {
 		$this->error = Loader::helper('validation/error');
 		if (USER_REGISTRATION_WITH_EMAIL_ADDRESS) {
@@ -128,7 +128,7 @@ class Concrete5_Controller_Login extends Controller {
 			if(!$_COOKIE[SESSION]) {
 				throw new Exception(t('Your browser\'s cookie functionality is turned off. Please turn it on.'));
 			}
-		
+
 			if (!$ip->check()) {
 				throw new Exception($ip->getErrorMessage());
 			}
@@ -445,15 +445,8 @@ class Concrete5_Controller_Login extends Controller {
 			$mh->to($oUser->getUserEmail());
 
 			//generate hash that'll be used to authenticate user, allowing them to change their password
-			$uHash = UserValidationHash::add($oUser->getUserID(), UVTYPE_CHANGE_PASSWORD);
-			/*
-			$h = Loader::helper('validation/identifier');
-			$uHash = $h->generate('UserValidationHashes', 'uHash');
-			$db = Loader::db();
-			$db->Execute("DELETE FROM UserValidationHashes WHERE uID=?", array( $oUser->uID ) );
-			$db->Execute("insert into UserValidationHashes (uID, uHash, uDateGenerated, type) values (?, ?, ?, ?)", array($oUser->uID, $uHash, time(),intval(UVTYPE_CHANGE_PASSWORD)));
-			*/
-			
+			$uHash = UserValidationHash::add($oUser->getUserID(), UVTYPE_CHANGE_PASSWORD, true);
+
 			$changePassURL=BASE_URL . View::url('/login', 'change_password', $uHash);
 			$mh->addParameter('changePassURL', $changePassURL);
 
