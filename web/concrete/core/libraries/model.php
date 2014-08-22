@@ -20,7 +20,8 @@ class Concrete5_Library_Model extends ADOdb_Active_Record {
 	}
 
     /**
-     * Override the default `doquote` method to better sanitize.
+     * Override the default `doquote` method to better sanitize numeric values.
+     *
      * @param ADOConnection $db
      * @param mixed $value
      * @param string $type
