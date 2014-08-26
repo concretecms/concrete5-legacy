@@ -38,6 +38,9 @@ class Concrete5_Library_Model extends ADOdb_Active_Record {
             case 'F':
             case 'N':
                 if (!is_numeric($value)) {
+                    if (!$value) {
+                        return null;
+                    }
                     $db->outp_throw('Numeric field type "' . $type . '" requires numeric value.', 'DOQUOTE');
                     return 0;
                 }
