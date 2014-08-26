@@ -92,7 +92,7 @@ class Concrete5_Controller_Install extends Controller {
 				}
 				$this->set('installPackage', $spl->getPackageHandle());
 				$this->set('installRoutines', $spl->getInstallRoutines());
-				$this->set('successMessage', t('Congratulations. concrete5 has been installed. You have been logged in as <b>%s</b> with the password you chose. If you wish to change this password, you may do so from the users area of the dashboard.', USER_SUPER, $uPassword));
+				$this->set('successMessage', t('Congratulations. concrete5 has been installed. You have been logged in as <b>%s</b> with the password you chose. If you wish to change this password, you may do so from the users area of the dashboard.', USER_SUPER));
 			}
 		}
 	}
