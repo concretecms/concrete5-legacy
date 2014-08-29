@@ -52,6 +52,7 @@ class Concrete5_Controller_Dashboard_Users_Search extends Controller {
 		
 		
 		$vals = Loader::helper('validation/strings');
+		$vu=Loader::helper('concrete/user');
 		$valt = Loader::helper('validation/token');
 		$valc = Loader::helper('concrete/validation');
 
@@ -65,12 +66,11 @@ class Concrete5_Controller_Dashboard_Users_Search extends Controller {
 			$password = $_POST['uPassword'];
 			$passwordConfirm = $_POST['uPasswordConfirm'];
 
-			if ($password) {
-				if ((strlen($password) < USER_PASSWORD_MINIMUM) || (strlen($password) > USER_PASSWORD_MAXIMUM)) {
-					$this->error->add( t('A password must be between %s and %s characters',USER_PASSWORD_MINIMUM,USER_PASSWORD_MAXIMUM));
-				}
-			}
-		}		
+		}
+        if($password)
+        {
+            $vu->validNewPassword($password,$this->error);
+        }		
 		
 		if ($assignment->allowEditEmail()) { 
 			if (!$vals->email($_POST['uEmail'])) {
@@ -104,9 +104,9 @@ class Concrete5_Controller_Dashboard_Users_Search extends Controller {
 				
 				if (strlen($username) >= USER_USERNAME_MINIMUM && !$valc->username($username)) {
 					if(USER_USERNAME_ALLOW_SPACES) {
-						$this->error->add(t('A username may only contain letters, numbers and spaces.'));
+						$this->error->add(t('A username may only contain letters, numbers, spaces, dots (not at the beginning/end), underscores (not at the beginning/end).'));
 					} else {
-						$this->error->add(t('A username may only contain letters or numbers.'));
+						$this->error->add(t('A username may only contain letters, numbers, dots (not at the beginning/end), underscores (not at the beginning/end).'));
 					}
 				}
 				if (strcasecmp($uo->getUserName(), $username) && !$valc->isUniqueUsername($username)) {
