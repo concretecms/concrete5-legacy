@@ -324,13 +324,30 @@
 			// loads and instantiates the object
 			$env = Environment::get();
 			$path = $env->getPath(FILENAME_PACKAGE_CONTROLLER, $pkgHandle);
+
 			if (file_exists($path)) {
 				require_once($path);
+				$isValidPkgHandle = true;
 			}
+			else {
+				$msg = "Warning - failed to load package with pkgHandle '$pkgHandle'. "
+				     . "Could not find package controller file: '$path'";
+				Log::addEntry(t($msg), 'packages');
+			}
+
 			$class = Object::camelcase($pkgHandle) . "Package";
 			if (class_exists($class)) {
 				$cl = new $class;
 				return $cl;
+			}
+			else {
+				// $class might not exist due to an invalid $pkgHandle (thus a wrong 
+				// $class value), in which case a more relevant message will already be logged.
+				if ($isValidPkgHandle) {
+					$msg = "Warning - failed to load package in directory '$pkgHandle'. "
+					     . "The package controller does not define the expected class: '$class'";
+					Log::addEntry(t($msg), 'packages');
+				}
 			}
 		}
 		
