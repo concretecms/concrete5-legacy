@@ -330,9 +330,9 @@
 				$isValidPkgHandle = true;
 			}
 			else {
-				$msg = "Warning - failed to load package with pkgHandle '$pkgHandle'. "
-				     . "Could not find package controller file: '$path'";
-				Log::addEntry(t($msg), 'packages');
+				$msg = t('Warning - failed to load package with pkgHandle \'%1$s\'. Could not find package controller file: \'%2$s\'',
+					$pkgHandle, $path);
+				Log::addEntry($msg, 'packages');
 			}
 
 			$class = Object::camelcase($pkgHandle) . "Package";
@@ -344,9 +344,9 @@
 				// $class might not exist due to an invalid $pkgHandle (thus a wrong 
 				// $class value), in which case a more relevant message will already be logged.
 				if ($isValidPkgHandle) {
-					$msg = "Warning - failed to load package in directory '$pkgHandle'. "
-					     . "The package controller does not define the expected class: '$class'";
-					Log::addEntry(t($msg), 'packages');
+					$msg = t('Warning - failed to load package in directory \'%1$s\'. The package controller does not define the expected class: \'%2$s\'',
+						$pkgHandle, $class);
+					Log::addEntry($msg, 'packages');
 				}
 			}
 		}
