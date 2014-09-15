@@ -114,7 +114,7 @@ class Concrete5_Model_PageList extends DatabaseItemList {
 		if ($u->isSuperUser() || ($this->ignorePermissions)) {
 			return; // super user always sees everything. no need to limit
 		}
-		
+
 		$accessEntities = $u->getUserAccessEntityObjects();
 		foreach($accessEntities as $pae) {
 			$peIDs[] = $pae->getAccessEntityID();
