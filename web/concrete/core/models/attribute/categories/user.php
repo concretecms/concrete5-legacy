@@ -280,19 +280,29 @@ class Concrete5_Model_UserAttributeKey extends AttributeKey {
 	}
 
 	public static function getColumnHeaderList() {
-		return parent::getList('user', array('akIsColumnHeader' => 1));	
+		$list = parent::getList('user', array('akIsColumnHeader' => 1));
+		usort($list, array('UserAttributeKey', 'sortListByDisplayOrder'));
+		return $list;
 	}
 	public static function getEditableList() {
-		return parent::getList('user', array('akIsEditable' => 1));	
+		$list = parent::getList('user', array('akIsEditable' => 1));
+		usort($list, array('UserAttributeKey', 'sortListByDisplayOrder'));
+		return $list;
 	}
 	public static function getSearchableList() {
-		return parent::getList('user', array('akIsSearchable' => 1));	
+		$list = parent::getList('user', array('akIsSearchable' => 1));
+		usort($list, array('UserAttributeKey', 'sortListByDisplayOrder'));
+		return $list;
 	}
 	public static function getSearchableIndexedList() {
-		return parent::getList('user', array('akIsSearchableIndexed' => 1));	
+		$list = parent::getList('user', array('akIsSearchableIndexed' => 1));
+		usort($list, array('UserAttributeKey', 'sortListByDisplayOrder'));
+		return $list;
 	}
 	public static function getImporterList() {
-		return parent::getList('user', array('akIsAutoCreated' => 1));	
+		$list = parent::getList('user', array('akIsAutoCreated' => 1));	
+		usort($list, array('UserAttributeKey', 'sortListByDisplayOrder'));
+		return $list;
 	}
 	
 	public static function getPublicProfileList() {
