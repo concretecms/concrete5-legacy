@@ -255,7 +255,7 @@ if (is_object($oc)) {
 </tr>
 <tr>
 	<td><strong><?=t('Date Added')?></strong></td>
-	<td colspan="2"><?=t('Added by <strong>%s</strong> on %s', $fv->getAuthorName(), $dateHelper->date(DATE_APP_FILE_PROPERTIES, strtotime($f->getDateAdded())))?></td>
+	<td colspan="2"><?=t('Added by <strong>%s</strong> on %s', $fv->getAuthorName(), $dateHelper->formatSpecial('FILE_PROPERTIES', $f->getDateAdded()))?></td>
 </tr>
 <?
 Loader::model("file_storage_location");
@@ -394,7 +394,7 @@ foreach($attribs as $at) {
 					?>
 					</td>
 				<td><?=$fvv->getAuthorName()?></td>
-				<td><?=$dateHelper->date(DATE_APP_FILE_VERSIONS, strtotime($fvv->getDateAdded()))?></td>
+				<td><?=$dateHelper->formatSpecial('FILE_VERSIONS', $fvv->getDateAdded())?></td>
 				<? if ($fp->canEditFileContents()) { ?>
 					<? if ($fvv->getFileVersionID() == $fv->getFileVersionID()) { ?>
 						<td>&nbsp;</td>
@@ -448,7 +448,7 @@ foreach($attribs as $at) {
 				} 
 				?>
 			</td>
-			<td><?=$dateHelper->date(DATE_APP_FILE_DOWNLOAD, strtotime($download['timestamp']))?></td>
+			<td><?=$dateHelper->formatSpecial('FILE_DOWNLOAD', $download['timestamp'])?></td>
 			<td><?=intval($download['fvID'])?></td>
 		</tr>
 		<? } ?>

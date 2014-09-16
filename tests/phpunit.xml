@@ -17,5 +17,8 @@
 		<testsuite name="all_helpers">
 			<directory>tests/concrete/helpers/</directory>
 		</testsuite>
+		<testsuite name="misc">
+			<directory>tests/concrete/misc/</directory>
+		</testsuite>
 	</testsuites>
 </phpunit>

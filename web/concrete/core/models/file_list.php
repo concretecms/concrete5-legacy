@@ -405,12 +405,12 @@ class Concrete5_Model_FileManagerDefaultColumnSet extends DatabaseItemListColumn
 	protected $attributeClass = 'FileAttributeKey';	
 	
 	public static function getFileDateAdded($f) {
-		return date(DATE_APP_DASHBOARD_SEARCH_RESULTS_FILES, strtotime($f->getDateAdded()));
+		return Loader::helper('date')->formatSpecial('DASHBOARD_SEARCH_RESULTS_FILES', $f->getDateAdded());
 	}
 
 	public static function getFileDateActivated($f) {
 		$fv = $f->getVersion();
-		return date(DATE_APP_DASHBOARD_SEARCH_RESULTS_FILES, strtotime($fv->getDateAdded()));
+		return Loader::helper('date')->formatSpecial('DASHBOARD_SEARCH_RESULTS_FILES', $fv->getDateAdded());
 	}
 	
 	public function __construct() {

@@ -2,10 +2,12 @@
 
 <?
 $records = WorkflowProgressHistory::getList($wp);
+$dh = Loader::helper('date');
+/* @var $dh DateHelper */
 foreach($records as $r) { ?>
 	
 	<div>
-		<strong><?=date(DATE_APP_GENERIC_MDYT_FULL, strtotime($r->getWorkflowProgressHistoryTimestamp()))?></strong>. 
+		<strong><?=$dh->formatDateTime($r->getWorkflowProgressHistoryTimestamp(), true, false)?></strong>. 
 		<?=$r->getWorkflowProgressHistoryDescription();?>
 	</div>	
 	

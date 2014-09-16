@@ -87,13 +87,14 @@ class Concrete5_Helper_Form {
 	 * Creates a hidden form field. 
 	 * @param string $key
 	 * @param string $value
+	 * @param array $miscFields Additional fields appended at the end of the input
 	 */
-	public function hidden($key, $value = null) {
+	public function hidden($key, $value = null, $miscFields = array()) {
 		$val = $this->getRequestValue($key);
 		if ($val !== false && (!is_array($val))) {
 			$value = $val;
 		}
-		$str = '<input type="hidden" name="' . $key . '" id="' . $key . '" value="' . $value . '" />';
+		$str = '<input type="hidden" name="' . $key . '" id="' . $key . '" value="' . $value . '"' . $this->parseMiscFields('ccm-input-hidden ', $miscFields) . ' />';
 		return $str;
 	}
 
@@ -309,6 +310,28 @@ class Concrete5_Helper_Form {
 	 */
 	public function search($key, $valueOrArray = false, $miscFields = array()) {
 		return $this->inputType($key, 'search', $valueOrArray, $miscFields);
+	}
+	
+	/**
+	 * Renders a image input field.
+	 * @param string $key Input element's name and id
+	 * @param int|string $image Image fID or relative path to image
+	 * @param string|array $valueOrArray Either the default value (subject to be overridden by $_REQUEST) or $miscFields (see below)
+	 * @param array $miscFields A hash array with html attributes as key/value pairs (possibly including "class")
+	 * @return $html
+	 */
+	public function image($key, $image, $valueOrArray = false, $miscFields = array()) {
+		if(is_numeric($image)){
+			$image_path = File::getRelativePathFromID($image);
+		} else {
+			$image_path = $image;
+		}
+		if(is_array($valueOrArray)|| $valueOrArray===false){
+			$valueOrArray['src'] = $image_path;
+		} else {
+			$miscFields['src'] = $image_path;
+		}
+		return $this->inputType($key, 'image', $valueOrArray, $miscFields);
 	}
 
 	/**

@@ -31,14 +31,14 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			Loader::block('form');
 			$dh = Loader::helper('date');
 			if (is_object($ui)) { 
-				$this->set('uLastLogin', $dh->date(DATE_APP_GENERIC_MDYT, $ui->getLastLogin('user')));
+				$this->set('uLastLogin', $dh->formatDateTime($ui->getLastLogin(), false, false));
 				$this->set('uName', $ui->getUserName());
-				$this->set('lastEditSite', $dh->date(DATE_APP_GENERIC_MDYT, strtotime(PageStatistics::getSiteLastEdit('user'))));
+				$this->set('lastEditSite', $dh->formatDateTime(PageStatistics::getSiteLastEdit(), false, false));
 				$llu = UserStatistics::getLastLoggedInUser();
 				if ($llu->getUserID() == $u->getUserID()) {
 					$this->set('lastLoginSite', t('Your login is the most recent.'));		
 				} else { 
-					$this->set('lastLoginSite', $dh->date(DATE_APP_GENERIC_MDYT, $llu->getLastLogin()));
+					$this->set('lastLoginSite', $dh->formatDateTime($llu->getLastLogin(), false, false));
 				}
 			}				
 			$this->set('totalFormSubmissions', FormBlockStatistics::getTotalSubmissions());

@@ -69,7 +69,7 @@ class Concrete5_Job_GenerateSitemap extends Job {
 			if(!$hFile = @fopen($osName, 'w')) {
 				throw new Exception(t('Cannot open file %s', $osName));
 			}
-			if(!@fprintf($hFile, $dom->saveXML())) {
+			if(!@fwrite($hFile, $dom->saveXML())) {
 				throw new Exception(t('Error writing to file %s', $osName));
 			}
 			@fflush($hFile);
@@ -108,6 +108,9 @@ class Concrete5_Job_GenerateSitemap extends Job {
 		if($page->isInTrash()) {
 			return;
 		}
+		if($page->isMasterCollection()) {
+			return;
+		}
 		$pageVersion = $page->getVersionObject();
 		if($pageVersion && !$pageVersion->isApproved()) {
 			return;
@@ -128,8 +131,8 @@ class Concrete5_Job_GenerateSitemap extends Job {
 			return;
 		}
 		$lastmod = new DateTime($page->getCollectionDateLastModified());
-		$changefreq = $page->getAttribute($instances['ak_sitemap_changefreq']);
-		$priority = $page->getAttribute($instances['ak_sitemap_priority']);
+		$changefreq = (string) $page->getAttribute($instances['ak_sitemap_changefreq']);
+		$priority = (string) $page->getAttribute($instances['ak_sitemap_priority']);
 		$xmlNode = $xmlDoc->addChild('url');
 		$xmlNode->addChild('loc', SITEMAPXML_BASE_URL . $instances['navigation']->getLinkToCollection($page));
 		$xmlNode->addChild('lastmod', $lastmod->format(DateTime::ATOM));

@@ -49,7 +49,7 @@ class Concrete5_Controller_Dashboard_Blocks_Types extends Controller {
 				$this->set('message', t('Block Type Refreshed. Any database schema changes have been applied.'));
 
 			} catch(Exception $e) {
-				$this->set('error', $e);
+				$this->error->add($e);
 			}
 			$this->inspect($btID);
 		}

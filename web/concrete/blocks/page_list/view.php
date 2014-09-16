@@ -21,7 +21,7 @@ $th = Loader::helper('text');
 		
 		//Other useful page data...
 		
-		//$date = $page->getCollectionDatePublic(DATE_APP_GENERIC_MDY_FULL);
+		//$date = Loader::helper('date')->formatDate($page->getCollectionDatePublic(), true);
 		
 		//$last_edited_by = $page->getVersionObject()->getVersionAuthorUserName();
 		

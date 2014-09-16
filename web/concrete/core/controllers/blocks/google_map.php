@@ -14,8 +14,8 @@
 	class Concrete5_Controller_Block_GoogleMap extends BlockController {
 		
 		protected $btTable = 'btGoogleMap';
-		protected $btInterfaceWidth = "400";
-		protected $btInterfaceHeight = "200";
+		protected $btInterfaceWidth = 750;
+		protected $btInterfaceHeight = 460;
 		protected $btCacheBlockRecord = true;
 		protected $btCacheBlockOutput = true;
 		protected $btCacheBlockOutputOnPost = true;
@@ -54,14 +54,26 @@
 		
 		
 		public function on_page_view() {
+			$balloonHtml = '';
+			if($this->balloonShow) {
+				$balloonHtml = '<div style="overflow:hidden;white-space:nowrap;">';
+				if(strlen($this->balloonContent)) {
+					$balloonHtml .= Loader::helper('content')->translateFrom($this->balloonContent);
+				}
+				if($this->balloonWithLinkToMaps) {
+					$balloonHtml .= '<div style="font-size: smaller"><a href="//maps.google.com?' . h('ll=' . $this->latitude . ',' . $this->longitude . '&daddr=' . $this->latitude . ',' . $this->longitude . '&z=' . $this->zoom) . '" target="blank">' . h(t('Get Directions')) . '</a>&nbsp;&nbsp;</div>';
+				}
+				$balloonHtml .= '</div>'; 
+				$this->set('balloonHtml', $balloonHtml);
+			}
 			$html = Loader::helper('html');
 			$c = Page::getCurrentPage();
 			if (!$c->isEditMode()) {
-				$this->addFooterItem('<script type="text/javascript" src="//maps.google.com/maps/api/js?sensor=true"></script>');
+				$this->addFooterItem('<script type="text/javascript" src="//maps.google.com/maps/api/js?sensor=true&language=' . rawurlencode(str_replace('_', '-', Localization::activeLocale())) . '"></script>');
 				$this->addFooterItem('<script type="text/javascript"> 
 				function googleMapInit' . $this->bID . '() { 
 				   try{
-					  var latlng = new google.maps.LatLng(' . $this->latitude . ', ' . $this->longitude . ');
+					  var latlng = new google.maps.LatLng(' . $this->latitude . ', ' . $this->longitude . '), balloonHtml = ' . Loader::helper('json')->encode($balloonHtml) . ', balloon;
 					   var mapOptions = {
 						 zoom: ' . $this->zoom . ',
 						 center: latlng,
@@ -74,6 +86,15 @@
 						   position: latlng, 
 						   map: map
 					   });
+						if(balloonHtml) {
+							balloon = new google.maps.InfoWindow({content: balloonHtml});
+							google.maps.event.addListener(marker, "click", function() {
+								balloon.open(map, marker);
+							});
+							setTimeout(function() {
+								balloon.open(map, marker);
+							}, 500);
+						}
 				   }catch(e){
 				   $("#googleMapCanvas'. $this->bID .'").replaceWith("<p>Unable to display map: "+e.message+"</p>")}
 				}
@@ -102,7 +123,7 @@
 			$this->set('location', $this->location);
 			$this->set('latitude', $this->latitude);
 			$this->set('longitude', $this->longitude);
-			$this->set('zoom', $this->zoom);			
+			$this->set('zoom', $this->zoom);
 		}
 		
 		public function save($data) { 
@@ -118,6 +139,9 @@
 				$args['latitude']=0;
 				$args['longitude']=0;
 			}
+			$args['balloonShow'] = empty($data['balloonShow']) ? 0 : 1;
+			$args['balloonContent'] = Loader::helper('content')->translateTo($data['balloonContent']);
+			$args['balloonWithLinkToMaps'] = empty($data['balloonWithLinkToMaps']) ? 0 : 1;
 			
 			parent::save($args);
 		}

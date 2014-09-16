@@ -173,7 +173,7 @@ class Concrete5_Library_Marketplace {
 				$csiURL = urlencode(BASE_URL . DIR_REL);
 				$csiBaseURL = urlencode(BASE_URL);
 				$csToken = $this->getSiteToken();
-				$url = $url . '/' . $mp->getProductBlockID() . '?ts=' . time() . '&csiBaseURL=' . $csiBaseURL . '&csiURL=' . $csiURL . '&csToken=' . $csToken;
+				$url = $url . '/' . intval($mp->getProductBlockID(), 10) . '?ts=' . time() . '&csiBaseURL=' . $csiBaseURL . '&csiURL=' . $csiURL . '&csToken=' . $csToken;
 			}
 			$time = time();
 			$ifr = '<script type="text/javascript">$(function() { $.receiveMessage(function(e) { 

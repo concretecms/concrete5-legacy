@@ -71,14 +71,14 @@ $dh = Loader::helper('date');
 			<td><i class="icon-question-sign" title="<?=$j->getJobDescription()?>"></i> <?=$j->getJobName()?></td>
 			<td class="jDateLastRun"><?
 				if ($j->getJobStatus() == 'RUNNING') {
-					$runtime = $dh->date(DATE_APP_GENERIC_MDYT_FULL_SECONDS, strtotime($j->getJobDateLastRun()));
+					$runtime = $dh->formatTime($j->getJobDateLastRun(), true, true);
 					echo ("<strong>");
 					echo t("Running since %s", $runtime);
 					echo ("</strong>");
 				} else if($j->getJobDateLastRun() == '' || substr($j->getJobDateLastRun(), 0, 4) == '0000') {
 					echo t('Never');
 				} else {
-					$runtime = $dh->date(DATE_APP_GENERIC_MDYT_FULL_SECONDS, strtotime($j->getJobDateLastRun()) );
+					$runtime = $dh->formatTime($j->getJobDateLastRun(), true, true);
 					echo $runtime;
 				}
 			?></td>

@@ -187,9 +187,10 @@ class Concrete5_Helper_File {
 	 * Adds content to a new line in a file. If a file is not there it will be created
 	 * @param string $filename
 	 * @param string $content
+	 * @return {@link http://php.net/manual/en/function.file-put-contents.php#refsect1-function.file-put-contents-returnvalues}
 	 */
 	public function append($filename, $content) {
-		file_put_contents($filename, $content, FILE_APPEND);
+		return file_put_contents($filename, $content, FILE_APPEND);
 	}
 	
 	
@@ -251,9 +252,10 @@ class Concrete5_Helper_File {
 	/** 
 	 * Removes contents of the file
 	 * @param $filename
+	 * @return {@link http://php.net/manual/en/function.file-put-contents.php#refsect1-function.file-put-contents-returnvalues}
 	 */
 	public function clear($file) {
-		file_put_contents($file, '');
+		return file_put_contents($file, '');
 	}
 	
 	

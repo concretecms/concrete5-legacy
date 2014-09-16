@@ -131,17 +131,30 @@ defined('C5_EXECUTE') or die("Access Denied.");
 				$themeFile = $themeRec->file;
 				if (!file_exists(DIR_FILES_CACHE . '/' . DIRNAME_CSS)) {
 					@mkdir(DIR_FILES_CACHE . '/' . DIRNAME_CSS);
+					@chmod(DIR_FILES_CACHE . '/' . DIRNAME_CSS, DIRECTORY_PERMISSIONS_MODE);
 				}
 				if (!file_exists(DIR_FILES_CACHE . '/' . DIRNAME_CSS . '/' . $this->getThemeHandle())) {
 					@mkdir(DIR_FILES_CACHE . '/' . DIRNAME_CSS . '/' . $this->getThemeHandle());
+					@chmod(DIR_FILES_CACHE . '/' . DIRNAME_CSS . '/' . $this->getThemeHandle(), DIRECTORY_PERMISSIONS_MODE);
 				}
 				$fh = Loader::helper('file');
 				$stat = filemtime($themeFile);
 				if (!file_exists(dirname($cacheFile))) {
 					@mkdir(dirname($cacheFile), DIRECTORY_PERMISSIONS_MODE, true);
+					
+					// Make sure the file permissions are correct for the created subfolders
+					$dir = DIR_FILES_CACHE . '/' . DIRNAME_CSS . '/' . $this->getThemeHandle();
+					$end = substr($cacheFile, strlen($dir)+1);
+					$parts = explode('/', $end);
+					array_pop($parts); // pop the filename out of the array
+					while (sizeof($parts) > 0) {
+						$dir .= '/' . array_shift($parts);
+						@chmod($dir, DIRECTORY_PERMISSIONS_MODE);
+					}
 				}
 				$style = $pt->parseStyleSheet($stylesheet);
 				$r = @file_put_contents($cacheFile, $style);
+				@chmod($cacheFile, Loader::helper('file')->getCreateFilePermissions(DIR_FILES_CACHE)->file);
 				if ($r) {
 					return REL_DIR_FILES_CACHE . '/' . DIRNAME_CSS . '/' . $this->getThemeHandle() . '/' . $stylesheet;
 				} else {

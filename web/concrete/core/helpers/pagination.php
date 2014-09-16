@@ -192,63 +192,91 @@ class Concrete5_Helper_Pagination {
 		return $this->current_page-1;
 	}		
 
-	function getPages($wrapper='span'){
-		if($this->number_of_pages==1) return;
-		$pages_made=0;
-		for ($i=0;$i<$this->number_of_pages;$i++){
-			//preceeding dots for high number of pages
-			if($i<($this->current_page-5) && $i!=0){
-				if($predotted!=1){
-					
-					if($wrapper == 'li'){
-						$pages.='<li class="ccm-pagination-ellipses disabled"><a href="#">...</a></li>';
-					} else {
-						$pages.='<span class="ccm-pagination-ellipses">...</span>';
-					}
-					
-				   $predotted=1;
-				   
-				}
-				continue;
-			}
-			//following dots for high number of pages
-			if($i>($this->current_page+5) && $i!=($this->number_of_pages-1)){
-				if($postdotted!=1){
-				   
-				   if($wrapper == 'li'){
-						$pages.='<li class="ccm-pagination-ellipses disabled"><a href="#">...</a></li>';
-					} else {
-						$pages.='<span class="ccm-pagination-ellipses">...</span>';
-					}
-				   
-				   $postdotted=1;
-				}
-				continue;
-			}						
-			
-			//if not current page
-			if ($this->current_page==$i){ 
-			
-					if($wrapper == 'li'){
-						$pages.="<li class=\"{$this->classCurrent} numbers disabled\"><a href=\"#\">".($i+1)."</a></li>";
-					} else {
-						$pages.="<span class=\"{$this->classCurrent} numbers\"><strong>".($i+1)."</strong></span>";
-					}
-					
-			} else {
-				   
-				   $linkURL=str_replace("%pageNum%", $i+1, $this->URL);
-				   
-					if($wrapper == 'li'){
-						$pages.="<li class=\"{$this->classOn} numbers\"><a href=\"{$linkURL}\" ".$this->getJSFunctionCall($i+1).">".($i+1)."</a></li>";
-					} else {
-						$pages.="<span class=\"{$this->classOn} numbers\"><a href=\"{$linkURL}\" ".$this->getJSFunctionCall($i+1).">".($i+1)."</a></span>";
-					}
-					
-			} //end if not current page
-			$pages_made++;
+	function getPages($wrapper = 'span', $shownElements = 9)
+	{
+		if ($this->number_of_pages == 1) {
+			return;
 		}
-		return $pages;		
+		if ($shownElements < 7) {
+			$shownElements = 7;
+		} //not equipped to handle less than 7 elements
+		$elementsMade = 0;
+
+		$pages = '';
+		$hasStartEllipses = false;
+		$hasEndEllipses = false;
+		if ($this->number_of_pages > $shownElements && $this->current_page + 1 > ceil($shownElements / 2)) {
+			$linkURL = str_replace("%pageNum%", 1, $this->URL);
+			if ($wrapper == 'li') {
+				$pages .= "<li class=\"{$this->classOn} numbers\"><a href=\"{$linkURL}\" " . $this->getJSFunctionCall(
+						1
+					) . ">" . (1) . "</a></li>";
+				$pages .= '<li class="ccm-pagination-ellipses disabled"><a href="#">...</a></li>';
+			} else {
+				$pages .= "<span class=\"{$this->classOn} numbers\"><a href=\"{$linkURL}\" " . $this->getJSFunctionCall(
+						1
+					) . ">" . (1) . "</a></span>";
+				$pages .= '<span class="ccm-pagination-ellipses">...</span>';
+			}
+			$elementsMade += 2;
+			$hasStartEllipses = true;
+		}
+
+		$pageEnd = '';
+		if ($this->number_of_pages > $shownElements && $this->current_page + 1 < $this->number_of_pages - ceil($shownElements / 2) + ($shownElements%2)) {
+			$linkURL = str_replace("%pageNum%", $this->number_of_pages, $this->URL);
+			if ($wrapper == 'li') {
+				$pageEnd .= '<li class="ccm-pagination-ellipses disabled"><a href="#">...</a></li>';
+				$pageEnd .= "<li class=\"{$this->classOn} numbers\"><a href=\"{$linkURL}\" " . $this->getJSFunctionCall(
+						$this->number_of_pages
+					) . ">" . ($this->number_of_pages) . "</a></li>";
+			} else {
+				$pageEnd .= '<span class="ccm-pagination-ellipses">...</span>';
+				$pageEnd .= "<span class=\"{$this->classOn} numbers\"><a href=\"{$linkURL}\" " . $this->getJSFunctionCall(
+						$this->number_of_pages
+					) . ">" . ($this->number_of_pages) . "</a></span>";
+			}
+			$elementsMade += 2;
+			$hasEndEllipses = true;
+		}
+
+		if ($hasStartEllipses) {
+			$startPosition = $this->current_page - ceil($shownElements / 2) + ($elementsMade / 2) + 1;
+			if ($hasEndEllipses) {
+				$startPosition -= 0;
+			} else {
+				$startPosition = $this->number_of_pages - ($shownElements - 2);
+			}
+		} else {
+			$startPosition = 0;
+		}
+
+		for ($i = $startPosition; $i < $this->number_of_pages && $elementsMade < $shownElements; $i++) {
+			//if not current page
+			if ($this->current_page == $i) {
+				if ($wrapper == 'li') {
+					$pages .= "<li class=\"{$this->classCurrent} numbers disabled\"><a href=\"#\">" . ($i + 1) . "</a></li>";
+				} else {
+					$pages .= "<span class=\"{$this->classCurrent} numbers\"><strong>" . ($i + 1) . "</strong></span>";
+				}
+			} else {
+				$linkURL = str_replace("%pageNum%", $i + 1, $this->URL);
+				if ($wrapper == 'li') {
+					$pages .= "<li class=\"{$this->classOn} numbers\"><a href=\"{$linkURL}\" " . $this->getJSFunctionCall(
+							$i + 1
+						) . ">" . ($i + 1) . "</a></li>";
+				} else {
+					$pages .= "<span class=\"{$this->classOn} numbers\"><a href=\"{$linkURL}\" " . $this->getJSFunctionCall(
+							$i + 1
+						) . ">" . ($i + 1) . "</a></span>";
+				}
+			} //end if not current page
+			$elementsMade++;
+		}
+
+		$pages .= $pageEnd;
+
+		return $pages;
 	}
 			
 	//for turning an array into a pagable set (for use with lucene, rss, etc)

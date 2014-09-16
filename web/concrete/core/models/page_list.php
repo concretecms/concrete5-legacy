@@ -114,7 +114,7 @@ class Concrete5_Model_PageList extends DatabaseItemList {
 		if ($u->isSuperUser() || ($this->ignorePermissions)) {
 			return; // super user always sees everything. no need to limit
 		}
-		
+
 		$accessEntities = $u->getUserAccessEntityObjects();
 		foreach($accessEntities as $pae) {
 			$peIDs[] = $pae->getAccessEntityID();
@@ -263,7 +263,9 @@ class Concrete5_Model_PageList extends DatabaseItemList {
 	 */
 	public function filterByUserID($uID) {
 		if ($this->includeAliases) {
-			$this->filter(false, "(p1.uID = $uID or p2.uID = $uID)");
+			$db = Loader::db();
+			$quID = $db->quote($uID);
+			$this->filter(false, "(p1.uID = {$quID} or p2.uID = {$quID})");
 		} else {
 			$this->filter('p1.uID', $uID);
 		}
@@ -492,11 +494,11 @@ class Concrete5_Model_PageSearchDefaultColumnSet extends DatabaseItemListColumnS
 	protected $attributeClass = 'CollectionAttributeKey';	
 
 	public static function getCollectionDatePublic($c) {
-		return $c->getCollectionDatePublic(DATE_APP_DASHBOARD_SEARCH_RESULTS_PAGES);
+		return Loader::helper('date')->formatSpecial('DASHBOARD_SEARCH_RESULTS_PAGES', $c->getCollectionDatePublic());
 	}
 
 	public static function getCollectionDateModified($c) {
-		return $c->getCollectionDateLastModified(DATE_APP_DASHBOARD_SEARCH_RESULTS_PAGES);
+		return Loader::helper('date')->formatSpecial('DASHBOARD_SEARCH_RESULTS_PAGES', $c->getCollectionDateLastModified());
 	}
 	
 	public function getCollectionAuthor($c) {

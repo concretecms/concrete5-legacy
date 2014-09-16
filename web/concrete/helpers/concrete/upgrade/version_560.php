@@ -28,6 +28,7 @@ class ConcreteUpgradeVersion560Helper {
 	public $dbRefreshTables = array(
 		'AttributeKeys',
 		'CollectionVersions',
+		'Blocks',
 		'BlockTypes',
 		'BlockTypePermissionBlockTypeAccessList',
 		'BlockTypePermissionBlockTypeAccessListCustom',

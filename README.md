@@ -21,6 +21,10 @@
      \  c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c    \\___]\\___/||_||_|\\___]|_|  \\___/ \\___]\\___/ \\_____/
        ------------------------------        --    --   -- --   --  --     --     --    --     ----
 
+# Version 5.7 Development
+
+Looking for concrete5 5.7 development? It has its own repository: http://github.com/concrete5/concrete5-5.7.0/
+
 # Note
 
 This is the development distribution of concrete5. It is bleeding edge. The latest development build can be downloaded from https://github.com/concrete5/concrete5/zipball/master. 
@@ -41,7 +45,7 @@ http://concrete5.org/documentation/
 
 # Code Submissions
 
-http://www.concrete5.org/developers/submitting_code_to_concrete/
+http://www.concrete5.org/developers/submitting-code/submitting_code_to_concrete/
 
 ### Short Tags
 The concrete5 git repository currently uses php "short tags". Pull requests should maintain this convention. Final release versions have short tags converted to long tags. _Note:_ This issue has thoroughly discussed. Currently the shed is red but may be painted green in the future.

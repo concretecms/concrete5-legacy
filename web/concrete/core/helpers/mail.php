@@ -27,7 +27,7 @@ class Concrete5_Helper_Mail {
 	protected $data = array();
 	protected $subject = '';
 	public $body = '';
-	protected $template; 
+	protected $template = ''; 
 	protected $bodyHTML = false;
 	protected $testing = false;
 	
@@ -38,7 +38,6 @@ class Concrete5_Helper_Mail {
 	 * @return void
 	*/
 	public function reset() {
-		$this->body = '';
 		$this->headers = array();
 		$this->to = array();
 		$this->cc = array();
@@ -48,7 +47,7 @@ class Concrete5_Helper_Mail {
 		$this->data = array();
 		$this->subject = '';
 		$this->body = '';
-		$this->template; 
+		$this->template = ''; 
 		$this->bodyHTML = false;
 		$this->testing = false;
 	}
@@ -364,6 +363,8 @@ class Concrete5_Helper_Mail {
 			if ($this->bodyHTML != false) {
 				$mail->setBodyHTML($this->bodyHTML);
 			}
+			$mail->clearMessageId();
+			$mail->setMessageId();
 			try {
 				$mail->send($transport);
 					

@@ -6,9 +6,11 @@ defined('C5_EXECUTE') or die("Access Denied.");
 	$isFirst = true; //So first item in list can have a different css class (e.g. no top border)
 	$excerptBlocks = ($controller->truncateSummaries ? 1 : null); //1 is the number of blocks to include in the excerpt
 	$truncateChars = ($controller->truncateSummaries ? $controller->truncateChars : 0);
+	$dateHelper = Loader::helper('date');
+	/* @var $dateHelper DateHelper */
 	foreach ($cArray as $cobj):
 		$title = $cobj->getCollectionName();
-		$date = $cobj->getCollectionDatePublic(DATE_APP_GENERIC_MDY_FULL);
+		$date = $dateHelper->formatDate($cobj->getCollectionDatePublic(), true);
 		$author = $cobj->getVersionObject()->getVersionAuthorUserName();
 		$link = $nh->getLinkToCollection($cobj);
 		$firstClass = $isFirst ? 'first-entry' : '';

@@ -9,7 +9,8 @@ class Concrete5_Controller_AttributeType_Boolean extends AttributeTypeController
 	protected $searchIndexFieldDefinition = 'I1 DEFAULT 0 NULL';
 	
 	public function searchForm($list) {
-		$list->filterByAttribute($this->attributeKey->getAttributeKeyHandle(), 1);
+		$val = $this->request('value');
+		$list->filterByAttribute($this->attributeKey->getAttributeKeyHandle(), is_null($val) ? 0 : $val);
 		return $list;
 	}	
 

@@ -1567,9 +1567,13 @@ class Concrete5_Model_Page extends Collection {
 		$newC = $cobj->duplicate();
 		$newCID = $newC->getCollectionID();
 		
-		$v = array($newCID, $cParentID, $uID, $this->overrideTemplatePermissions(), $this->getPermissionsCollectionID(), $this->getCollectionInheritance(), $this->cFilename, $this->cPointerID, $this->cPointerExternalLink, $this->cPointerExternalLinkNewWindow, $this->cDisplayOrder, $this->pkgID);
-		$q = "insert into Pages (cID, cParentID, uID, cOverrideTemplatePermissions, cInheritPermissionsFromCID, cInheritPermissionsFrom, cFilename, cPointerID, cPointerExternalLink, cPointerExternalLinkNewWindow, cDisplayOrder, pkgID) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		$v = array($newCID, $cParentID, $uID, $this->overrideTemplatePermissions(), $this->getPermissionsCollectionID(), $this->getCollectionInheritance(), $this->cFilename, $this->cPointerID, $this->cPointerExternalLink, $this->cPointerExternalLinkNewWindow, $this->cDisplayOrder, $this->pkgID, $this->cCacheFullPageContent, $this->cCacheFullPageContentOverrideLifetime, $this->cCacheFullPageContentLifetimeCustom);
+		$q = "insert into Pages (cID, cParentID, uID, cOverrideTemplatePermissions, cInheritPermissionsFromCID, cInheritPermissionsFrom, cFilename, cPointerID, cPointerExternalLink, cPointerExternalLinkNewWindow, cDisplayOrder, pkgID, cCacheFullPageContent, cCacheFullPageContentOverrideLifetime, cCacheFullPageContentLifetimeCustom) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		$res = $db->query($q, $v);
+		
+		// Increment the cDisplayOrder columns by one for pages after the original one in sorting order.
+		// This is to avoid sorting issues for equal sorting numbers.
+		$db->query("UPDATE Pages SET cDisplayOrder = cDisplayOrder+1 WHERE cDisplayOrder >= ? AND cID != ?", array($this->cDisplayOrder, $this->cID));
 	
 		Loader::model('page_statistics');
 		PageStatistics::incrementParents($newCID);
@@ -1605,6 +1609,7 @@ class Concrete5_Model_Page extends Collection {
 			$ret = Events::fire('on_page_duplicate', $nc2, $this);
 			
 			$nc2->rescanCollectionPath();
+			$nc2->movePageDisplayOrderToBottom();
 
 			return $nc2;
 		}
@@ -2080,16 +2085,22 @@ class Concrete5_Model_Page extends Collection {
 		$cID = $cobj->getCollectionID();		
 		$ctID = $ct->getCollectionTypeID();
 
-		$q = "select p.cID from Pages p inner join CollectionVersions cv on p.cID = cv.cID where cv.ctID = '$ctID' and cIsTemplate = '1'";
-		$masterCID = $db->getOne($q);
+		$masterCID = $ct->getMasterCollectionID();
+		$masterCollection = Page::getByID($masterCID);
+		
 		//$this->rescanChildrenDisplayOrder();
 		$cDisplayOrder = $this->getNextSubPageDisplayOrder();
 
 		$cInheritPermissionsFromCID = ($this->overrideTemplatePermissions()) ? $this->getPermissionsCollectionID() : $masterCID;
 		$cInheritPermissionsFrom = ($this->overrideTemplatePermissions()) ? "PARENT" : "TEMPLATE";
-		$ptID = $this->getCollectionThemeID();
-		$v = array($cID, $cParentID, $uID, $cInheritPermissionsFrom, $this->overrideTemplatePermissions(), $cInheritPermissionsFromCID, $cDisplayOrder, $pkgID);
-		$q = "insert into Pages (cID, cParentID, uID, cInheritPermissionsFrom, cOverrideTemplatePermissions, cInheritPermissionsFromCID, cDisplayOrder, pkgID) values (?, ?, ?, ?, ?, ?, ?, ?)";
+		
+		// inherit cache settings from collection type
+		$cCacheFullPageContent = $masterCollection->getCollectionFullPageCaching();
+		$cCacheFullPageContentOverrideLifetime = $masterCollection->getCollectionFullPageCachingLifetime();
+		$cCacheFullPageContentLifetimeCustom = $masterCollection->getCollectionFullPageCachingLifetimeCustomValue();
+		
+		$v = array($cID, $cParentID, $uID, $cInheritPermissionsFrom, $this->overrideTemplatePermissions(), $cInheritPermissionsFromCID, $cDisplayOrder, $pkgID, $cCacheFullPageContent, $cCacheFullPageContentOverrideLifetime, $cCacheFullPageContentLifetimeCustom);
+		$q = "insert into Pages (cID, cParentID, uID, cInheritPermissionsFrom, cOverrideTemplatePermissions, cInheritPermissionsFromCID, cDisplayOrder, pkgID, cCacheFullPageContent, cCacheFullPageContentOverrideLifetime, cCacheFullPageContentLifetimeCustom) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		$r = $db->prepare($q);
 		$res = $db->execute($r, $v);
 
