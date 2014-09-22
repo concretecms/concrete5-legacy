@@ -51,7 +51,7 @@ class ConcreteDashboardHelper {
 			$request = Request::get();
 			$path = $request->getRequestCollectionPath();
 		}
-		return strpos($path, '/dashboard') === 0;
+		return ($path == '/dashboard' || strpos($path, '/dashboard/') === 0);
 	}
 	
 	public function getDashboardPaneFooterWrapper($includeDefaultBody = true) {
