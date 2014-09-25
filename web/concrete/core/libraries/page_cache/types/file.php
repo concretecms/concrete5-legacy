@@ -17,15 +17,10 @@ class Concrete5_Library_FilePageCache extends PageCache {
 
 	protected function getCacheFile($mixed) {
 		$key = $this->getCacheKey($mixed);
-		$filename = $key . '.cache';
 		if ($key) {
-			if (strlen($key) == 1) {
-				$dir = DIR_FILES_PAGE_CACHE . '/' . $key;
-			} else if (strlen($key) == 2) {
-				$dir = DIR_FILES_PAGE_CACHE . '/' . $key[0] . '/' . $key[1];
-			} else {
-				$dir = DIR_FILES_PAGE_CACHE . '/' . $key[0] . '/' . $key[1] . '/' . $key[2];
-			}
+			$key = hash('sha256',$key);
+			$filename = $key . '.cache';
+			$dir = DIR_FILES_PAGE_CACHE . '/' . $key[0] . '/' . $key[1] . '/' . $key[2];
 			if ($dir && (!is_dir($dir))) {
 				@mkdir($dir, DIRECTORY_PERMISSIONS_MODE, true);
 			}
