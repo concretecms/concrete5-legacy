@@ -175,7 +175,7 @@ class Concrete5_Controller_Block_FormMinisurvey {
 				echo $captcha->label();
    				echo '</td></tr><tr><td>&nbsp;</td><td>';
    				
-   				$captcha->showInput();
+   				$captcha->showInput( false, $forPreview );
    				$captcha->display();
    
    				//echo isset($errors['captcha'])?'<span class="error">' . $errors['captcha'] . '</span>':'';
