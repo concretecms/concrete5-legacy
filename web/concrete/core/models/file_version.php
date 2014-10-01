@@ -497,7 +497,6 @@ class Concrete5_Model_FileVersion extends Object {
 			array($ext, $ftl->getGenericType(), $title, $size, $this->getFileID(), $this->getFileVersionID())
 		);
 		if (is_object($ftl)) {
-			$a = $ftl->getCustomImporter();
 			if ($ftl->getCustomImporter() != false) {
 				Loader::library('file/inspector');
 
