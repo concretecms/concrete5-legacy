@@ -19,11 +19,21 @@
 defined('C5_EXECUTE') or die("Access Denied.");
 class Concrete5_Helper_Lists_Countries {
 
+	/** Locale for which we currently loaded the data.
+	* @var string
+	*/
+	protected $locale = null;
+
 	protected $countries = array();
 
-	public function __construct() {
+	public function reset() {
+		$locale = Localization::activeLocale();
+		if($locale === $this->locale) {
+			return;
+		}
+		$this->locale = $locale;
 		Loader::library('3rdparty/Zend/Locale');
-		$countries = Zend_Locale::getTranslationList('territory', Localization::activeLocale(), 2);
+		$countries = Zend_Locale::getTranslationList('territory', $locale, 2);
 		unset(
 			// Fake countries
 			$countries['FX'], // Metropolitan France (it's not a country, but its the part of France located in Europe, but we've already FR - France)
