@@ -84,7 +84,7 @@ class Concrete5_Helper_Lists_StatesProvinces {
 		'BC' => 'British Columbia',
 		'MB' => 'Manitoba',
 		'NB' => 'New Brunswick',
-		'NF' => 'Newfoundland',
+		'NL' => 'Newfoundland and Labrador',
 		'NT' => 'Northwest Territories',
 		'NS' => 'Nova Scotia',
 		'NU' => 'Nunavut',
