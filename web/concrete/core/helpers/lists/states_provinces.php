@@ -352,7 +352,7 @@ class Concrete5_Helper_Lists_StatesProvinces {
 	),
 
 	'NL' => array(
-		'DR' => 'Drente',
+		'DR' => 'Drenthe',
 		'FL' => 'Flevoland',
 		'FR' => 'Friesland',
 		'GL' => 'Gelderland',
