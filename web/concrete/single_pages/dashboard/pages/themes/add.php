@@ -13,6 +13,6 @@
 </form>
 <br/>
 
-<a href="<?=$this->url('/dashboard/themes')?>">&lt; <?=t('Return to Template List')?></a>
+<a href="<?=$this->url('/dashboard/pages/themes')?>">&lt; <?=t('Return to Template List')?></a>
 
 </div>
