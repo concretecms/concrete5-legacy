@@ -204,7 +204,7 @@ class Concrete5_Model_StartingPointPackage extends Package {
 		if (defined('ACTIVE_LOCALE') && ACTIVE_LOCALE != '' && ACTIVE_LOCALE != 'en_US') {
 			Config::save('SITE_LOCALE', ACTIVE_LOCALE);
 		}
-		Config::save('SITE', h(SITE));
+		Config::save('SITE', SITE);
 		Config::save('SITE_APP_VERSION', APP_VERSION);
 		Config::save('SITE_INSTALLED_APP_VERSION', APP_VERSION);
 
