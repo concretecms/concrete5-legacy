@@ -1,21 +1,21 @@
 <?  defined('C5_EXECUTE') or die("Access Denied.");
 
 class Concrete5_Model_StartingPointPackage extends Package {
-	
+
 
 	protected $DIR_PACKAGES_CORE = DIR_STARTING_POINT_PACKAGES_CORE;
 	protected $DIR_PACKAGES = DIR_STARTING_POINT_PACKAGES;
 	protected $REL_DIR_PACKAGES_CORE = REL_DIR_STARTING_POINT_PACKAGES_CORE;
 	protected $REL_DIR_PACKAGES = REL_DIR_STARTING_POINT_PACKAGES;
-	
+
 	protected $routines = array();
-	
+
 	public function getInstallRoutines() {
 		return $this->routines;
 	}
-	
+
 	// default routines
-	
+
 	public function __construct() {
 		Loader::library('content/importer');
 		$this->routines = array(
@@ -38,11 +38,11 @@ class Concrete5_Model_StartingPointPackage extends Package {
 		new StartingPointInstallRoutine('finish', 95, t('Finishing.'))
 		);
 	}
-	
+
 	public function add_home_page() {
 		Page::addHomePage();
 	}
-	
+
 	public function precache() {
 		$c = Page::getByPath('/dashboard/home');
 		$blocks = $c->getBlocks();
@@ -52,7 +52,7 @@ class Concrete5_Model_StartingPointPackage extends Package {
 		}
 		Loader::helper('concrete/interface')->cacheInterfaceItems();
 	}
-	
+
 	public function install_attributes() {
 		$ci = new ContentImporter();
 		$ci->importContentFile(DIR_BASE_CORE. '/config/install/base/attributes.xml');
@@ -89,19 +89,19 @@ class Concrete5_Model_StartingPointPackage extends Package {
 		$ci = new ContentImporter();
 		$ci->importContentFile(DIR_BASE_CORE. '/config/install/base/config.xml');
 	}
-	
+
 	public function import_files() {
 		if (is_dir($this->getPackagePath() . '/files')) {
 			Loader::library('file/importer');
 			$fh = new FileImporter();
 			$contents = Loader::helper('file')->getDirectoryContents($this->getPackagePath() . '/files');
-	
+
 			foreach($contents as $filename) {
 				$f = $fh->import($this->getPackagePath() . '/files/' . $filename, $filename);
 			}
-		}	
+		}
 	}
-	
+
 	public function install_content() {
 		Loader::library('content/importer');
 		$installDirectory = DIR_BASE_CORE . '/config';
@@ -109,15 +109,15 @@ class Concrete5_Model_StartingPointPackage extends Package {
 		$ci->importContentFile($this->getPackagePath() . '/content.xml');
 
 	}
-	
+
 
 	public function install_database() {
-		$db = Loader::db();			
+		$db = Loader::db();
 		$installDirectory = DIR_BASE_CORE. '/config';
 		try {
 			Database::ensureEncoding();
 			Package::installDB($installDirectory . '/db.xml');
-		} catch (Exception $e) { 
+		} catch (Exception $e) {
 			throw new Exception(t('Unable to install database: %s', $db->ErrorMsg()));
 		}
 	}
@@ -129,7 +129,7 @@ class Concrete5_Model_StartingPointPackage extends Package {
 		$g1 = Group::add(tc("GroupName", "Guest"), tc("GroupDescription", "The guest group represents unregistered visitors to your site."), GUEST_GROUP_ID);
 		$g2 = Group::add(tc("GroupName", "Registered Users"), tc("GroupDescription", "The registered users group represents all user accounts."), REGISTERED_GROUP_ID);
 		$g3 = Group::add(tc("GroupName", "Administrators"), "", ADMIN_GROUP_ID);
-		
+
 		// insert admin user into the user table
 		if (defined('INSTALL_USER_PASSWORD')) {
 			Loader::library('3rdparty/phpass/PasswordHash');
@@ -142,14 +142,14 @@ class Concrete5_Model_StartingPointPackage extends Package {
 		$uEmail = INSTALL_USER_EMAIL;
 		UserInfo::addSuperUser($uPasswordEncrypted, $uEmail);
 		$u = User::getByUserID(USER_SUPER_ID, true, false);
-		
+
 		Loader::library('mail/importer');
 		MailImporter::add(array('miHandle' => 'private_message'));
 	}
-	
+
 	public function make_directories() {
 		Cache::flush();
-		
+
 		if (!is_dir(DIR_FILES_UPLOADED_THUMBNAILS)) {
 			mkdir(DIR_FILES_UPLOADED_THUMBNAILS, DIRECTORY_PERMISSIONS_MODE);
 			chmod(DIR_FILES_UPLOADED_THUMBNAILS, DIRECTORY_PERMISSIONS_MODE);
@@ -175,7 +175,7 @@ class Concrete5_Model_StartingPointPackage extends Package {
 			chmod(DIR_FILES_AVATARS, DIRECTORY_PERMISSIONS_MODE);
 		}
 	}
-	
+
 	public function finish() {
 		rename(DIR_CONFIG_SITE . '/site_install.php', DIR_CONFIG_SITE . '/site.php');
 		@unlink(DIR_CONFIG_SITE . '/site_install_user.php');
@@ -185,32 +185,32 @@ class Concrete5_Model_StartingPointPackage extends Package {
 		Cache::flush();
 
 	}
-	
-	public function install_permissions() { 
+
+	public function install_permissions() {
 		$ci = new ContentImporter();
 		$ci->importContentFile(DIR_BASE_CORE. '/config/install/base/permissions.xml');
 	}
-	
+
 	public function set_site_permissions() {
-		
+
 		Loader::model('file_set');
 		$fs = FileSet::getGlobal();
 		$g1 = Group::getByID(GUEST_GROUP_ID);
 		$g2 = Group::getByID(REGISTERED_GROUP_ID);
 		$g3 = Group::getByID(ADMIN_GROUP_ID);
-		
+
 		$fs->assignPermissions($g1, array('view_file_set_file'));
 		$fs->assignPermissions($g3, array('view_file_set_file', 'search_file_set', 'edit_file_set_file_properties', 'edit_file_set_file_contents', 'copy_file_set_files', 'edit_file_set_permissions', 'delete_file_set_files', 'delete_file_set', 'add_file'));
 		if (defined('ACTIVE_LOCALE') && ACTIVE_LOCALE != '' && ACTIVE_LOCALE != 'en_US') {
 			Config::save('SITE_LOCALE', ACTIVE_LOCALE);
 		}
-		Config::save('SITE', SITE);
+		Config::save('SITE', h(SITE));
 		Config::save('SITE_APP_VERSION', APP_VERSION);
 		Config::save('SITE_INSTALLED_APP_VERSION', APP_VERSION);
 
 		$u = new User();
 		$u->saveConfig('NEWSFLOW_LAST_VIEWED', 'FIRSTRUN');
-		
+
 		$home = Page::getByID(1, "RECENT");
 		$home->assignPermissions($g1, array('view_page'));
 		$home->assignPermissions($g3, array('view_page_versions', 'view_page_in_sitemap', 'preview_page_as_user', 'edit_page_properties', 'edit_page_contents', 'edit_page_speed_settings', 'edit_page_theme', 'edit_page_type', 'edit_page_permissions', 'delete_page', 'delete_page_versions', 'approve_page_versions', 'add_subpage', 'move_or_copy_page', 'schedule_page_contents_guest_access'));
@@ -219,18 +219,18 @@ class Concrete5_Model_StartingPointPackage extends Package {
 		Config::save('SECURITY_TOKEN_ENCRYPTION', Loader::helper('validation/identifier')->getString(64));
 		Config::save('SECURITY_TOKEN_VALIDATION', Loader::helper('validation/identifier')->getString(64));
 	}
-	
+
 	public static function hasCustomList() {
 		$fh = Loader::helper('file');
 		if (is_dir(DIR_STARTING_POINT_PACKAGES)) {
 			$available = $fh->getDirectoryContents(DIR_STARTING_POINT_PACKAGES);
-			if (count($available) > 0) { 
+			if (count($available) > 0) {
 				return true;
 			}
 		}
 		return false;
 	}
-	
+
 	public static function getAvailableList() {
 		$fh = Loader::helper('file');
 		// first we check the root install directory. If it exists, then we only include stuff from there. Otherwise we get it from the core.
@@ -247,22 +247,22 @@ class Concrete5_Model_StartingPointPackage extends Package {
 		}
 		return $availableList;
 	}
-	
+
 }
 
 
 class Concrete5_Model_StartingPointInstallRoutine {
-	
+
 	public function __construct($method, $progress, $text = '') {
 		$this->method = $method;
 		$this->progress = $progress;
 		$this->text = $text;
 	}
-	
+
 	public function getMethod() {
 		return $this->method;
 	}
-	
+
 	public function getText() {
 		return $this->text;
 	}
@@ -270,6 +270,6 @@ class Concrete5_Model_StartingPointInstallRoutine {
 	public function getProgress() {
 		return $this->progress;
 	}
-	
-	
+
+
 }
