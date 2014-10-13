@@ -24,7 +24,7 @@ if (is_object($c)) {
 			if($c->isSystemPage()) {
 				$pageTitle = t($pageTitle);
 			}
-			$pageTitle = sprintf(PAGE_TITLE_FORMAT, SITE, $pageTitle);
+			$pageTitle = sprintf(PAGE_TITLE_FORMAT, SITE, h($pageTitle));
 		}
 	}
 	$pageDescription = (!isset($pageDescription) || !$pageDescription) ? $c->getCollectionDescription() : $pageDescription;
@@ -42,7 +42,7 @@ if (is_object($c)) {
 $akd = $c->getCollectionAttributeValue('meta_description');
 $akk = $c->getCollectionAttributeValue('meta_keywords');
 ?>
-<title><?php echo htmlspecialchars($pageTitle, ENT_COMPAT, APP_CHARSET)?></title>
+<title><?php echo $pageTitle?></title>
 <?
 if ($akd) { ?>
 <meta name="description" content="<?=htmlspecialchars($akd, ENT_COMPAT, APP_CHARSET)?>" />
