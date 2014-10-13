@@ -181,7 +181,7 @@ $(function() {
 	</form>
 
 <?php } else { ?>
-	<form method="post" action="<?php echo $this->url('/login', 'do_login'); ?>" class="form-horizontal">
+	<form method="post" action="<?php echo $this->url('/login', 'do_login'); ?>" class="form-horizontal ccm-login-form">
 		<div class="row">
 			<div class="span5 offset1">
 				<fieldset>
@@ -244,7 +244,7 @@ $(function() {
 	</form>
 
 	<a name="forgot_password"></a>
-	<form method="post" action="<?php echo $this->url('/login', 'forgot_password'); ?>" class="form-horizontal">
+	<form method="post" action="<?php echo $this->url('/login', 'forgot_password'); ?>" class="form-horizontal ccm-forgot-password-form">
 		<div class="row">
 			<div class="span10 offset1">
 				<fieldset>
