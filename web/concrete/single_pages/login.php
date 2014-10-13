@@ -25,7 +25,7 @@ $(function() {
 <?php } ?>
 
 <?php if ($changePasswordForm) { ?>
-	<form method="post" action="<?php echo $this->url( '/login', 'change_password', $uHash ); ?>" class="form-horizontal">
+	<form method="post" action="<?php echo $this->url( '/login', 'change_password', $uHash ); ?>" class="form-horizontal ccm-change-password-form">
 		<div class="row">
 			<div class="span10 offset1">
 				<fieldset>
@@ -78,7 +78,7 @@ $(function() {
 		switch($_SESSION['uOpenIDError']) {
 			case OpenIDAuth::E_REGISTRATION_EMAIL_INCOMPLETE:
 				?>
-				<form method="post" action="<?php echo $this->url('/login', 'complete_openid_email'); ?>" class="form-horizontal">
+				<form method="post" action="<?php echo $this->url('/login', 'complete_openid_email'); ?>" class="form-horizontal ccm-openid-login-form">
 					<div class="row">
 						<div class="span10 offset1">
 							<fieldset>
@@ -106,7 +106,7 @@ $(function() {
 			case OpenIDAuth::E_REGISTRATION_EMAIL_EXISTS:
 				$ui = UserInfo::getByID($_SESSION['uOpenIDExistingUser']);
 				?>
-				<form method="post" action="<?php echo $this->url('/login', 'do_login'); ?>" class="form-horizontal">
+				<form method="post" action="<?php echo $this->url('/login', 'do_login'); ?>" class="form-horizontal ccm-openid-merge-form">
 					<div class="row">
 						<div class="span10 offset1">
 							<fieldset>
@@ -146,7 +146,7 @@ $(function() {
 		}
 
 } elseif ($invalidRegistrationFields == true) { ?>
-	<form method="post" action="<?php echo $this->url('/login', 'do_login'); ?>" class="form-horizontal">
+	<form method="post" action="<?php echo $this->url('/login', 'do_login'); ?>" class="form-horizontal ccm-missing-login-fields-form">
 		<div class="row">
 			<div class="span10 offset1">
 				<fieldset>
