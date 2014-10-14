@@ -25,7 +25,11 @@ if (is_object($c)) {
 				$pageTitle = t($pageTitle);
 			}
 			$pageTitle = sprintf(PAGE_TITLE_FORMAT, SITE, h($pageTitle));
+		} else {
+			$pageTitle = h($pageTitle);
 		}
+	} else {
+		$pageTitle = h($pageTitle);
 	}
 	$pageDescription = (!isset($pageDescription) || !$pageDescription) ? $c->getCollectionDescription() : $pageDescription;
 	$cID = $c->getCollectionID();
