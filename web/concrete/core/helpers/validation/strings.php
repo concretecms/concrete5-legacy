@@ -20,7 +20,7 @@ class Concrete5_Helper_Validation_Strings {
 	 */
 	public function email($em, $testMXRecord = false) {
 		if (preg_match('/^([a-zA-Z0-9\._\+-]+)\@((\[?)[a-zA-Z0-9\-\.]+\.([a-zA-Z]{2,7}|[0-9]{1,3})(\]?))$/', $em, $matches)) {
-			if ($testMXRecord) {
+			if ($testMXRecord && function_exists('getmxrr')) {
 				list($username, $domain) = split("@", $em);
 				return getmxrr($domain, $mxrecords);
 			} else {
