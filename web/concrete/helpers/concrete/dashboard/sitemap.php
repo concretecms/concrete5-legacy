@@ -164,9 +164,8 @@ class ConcreteDashboardSitemapHelper {
 	function getSubNodes($cID, $level = 0, $keywords = '', $autoOpenNodes = true) {
 		$db = Loader::db();
 		
+		$obj = new stdClass;
 		if (isset($cID) && Loader::helper('validation/numbers')->integer($cID)) {
-			
-			$obj = new stdClass;
 			if ($keywords != '' && $keywords != false) {
 				$nc = Page::getByID($cID, 'RECENT');
 				$pl = new PageList();
@@ -214,8 +213,13 @@ class ConcreteDashboardSitemapHelper {
 			$obj->nodeID = $cID;
 			$obj->pageList = $pl;
 			$obj->results = $nodes;
-			return $obj;
+		} else {
+			$obj->total = 0;
+			$obj->nodeID = 0;
+			$obj->pageList = null;
+			$obj->results = null;
 		}
+		return $obj;
 	}
 	
 	public function getPermissionsNodes($obj) {
