@@ -19,7 +19,7 @@ $form = Loader::helper('form');
 <div class="control-group">
 <?=$form->label('gName', t('Name'))?>
 <div class="controls">
-	<input type="text" name="gName" class="span6" value="<?=htmlentities($_POST['gName'])?>" />
+	<input type="text" name="gName" class="span6" value="<?=Loader::helper('text')->entities($_POST['gName'])?>" />
 </div>
 </div>
 

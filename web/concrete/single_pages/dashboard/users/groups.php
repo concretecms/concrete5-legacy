@@ -65,7 +65,7 @@ if ($tp->canAccessGroupSearch()) { ?>
 <? $form = Loader::helper('form'); ?>
 <?=$form->label('gKeywords', t('Keywords'))?>
 <div class="controls">
-	<input type="text" name="gKeywords" value="<?=htmlentities($_REQUEST['gKeywords'])?>"  />
+	<input type="text" name="gKeywords" value="<?=Loader::helper('text')->entities($_REQUEST['gKeywords'])?>"  />
 	<input class="btn" type="submit" value="<?=t('Search')?>" />
 </div>
 <input type="hidden" name="group_submit_search" value="1" />
