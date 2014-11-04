@@ -40,10 +40,10 @@ ccm_editorSetupFilePicker = function() {
 				href : obj.filePath,
 				title : obj.title,
 				target : null,
-				'class' :  null
+				'class' :  obj.filePathDirect.split('.').pop()
 			});
 		} else { // insert a normal link
-			var html = '<a href="' + obj.filePath + '">' + obj.title + '<\/a>';
+			var html = '<a href="' + obj.filePath + '" class="file-' + obj.filePathDirect.split('.').pop() + '">' + obj.title + '<\/a>';
 			tinyMCE.execCommand('mceInsertRawHTML', false, html, true); 
 		}
 	}
