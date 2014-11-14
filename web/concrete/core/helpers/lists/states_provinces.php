@@ -565,6 +565,11 @@ class Concrete5_Helper_Lists_StatesProvinces {
 	protected $sortedCountries = array('JP');
 
 	public function reset() {
+		$locale = Localization::activeLocale();
+		if($locale === $this->locale) {
+			return;
+		}
+		$this->locale = $locale;
 		$this->stateProvinces['GB'] = $this->stateProvinces['UK'];
 		$stateProvincesFromEvent = Events::fire('on_get_states_provinces_list', $this->stateProvinces);
 		if(is_array($stateProvincesFromEvent)) {
