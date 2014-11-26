@@ -20,7 +20,17 @@ class Concrete5_Controller_Dashboard_System_Registration_Profiles extends Dashbo
 
 	public function update_profiles() { 
 		if ($this->isPost()) {
-			Config::save('ENABLE_USER_PROFILES', ($this->post('public_profiles')?true:false));
+            $publicProfilesEnabled = $this->post('public_profiles') ? true : false;
+			Config::save('ENABLE_USER_PROFILES', $publicProfilesEnabled);
+            if ($publicProfilesEnabled) {
+                SinglePage::add('/members');
+            }
+            else {
+                $membersPage = Page::getByPath('/members');
+                if ($membersPage instanceof Page && !$membersPage->isError()) {
+                    $membersPage->delete();
+                }
+            }
 			Config::save('GRAVATAR_FALLBACK', ($this->post('gravatar_fallback')?true:false));
 			Config::save('GRAVATAR_MAX_LEVEL', Loader::helper('security')->sanitizeString($this->post('gravatar_max_level')));
 			Config::save('GRAVATAR_IMAGE_SET', Loader::helper('security')->sanitizeString($this->post('gravatar_image_set')));
