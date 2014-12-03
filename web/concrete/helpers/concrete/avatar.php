@@ -36,19 +36,20 @@ class ConcreteAvatarHelper {
 	function outputUserAvatar($uo, $suppressNone = false, $aspectRatio = 1.0) {
 		if (is_object($uo) && $uo->hasAvatar()) {
 			if (file_exists(DIR_FILES_AVATARS . '/' . $uo->getUserID() . '.jpg')) {
-				$size = DIR_FILES_AVATARS . '/' . $uo->getUserID() . '.jpg';
+				$fileName = DIR_FILES_AVATARS . '/' . $uo->getUserID() . '.jpg';
 				$src = REL_DIR_FILES_AVATARS . '/' . $uo->getUserID() . '.jpg';
 			} else {
 				// legacy
-				$size = DIR_FILES_AVATARS . '/' . $uo->getUserID() . '.gif';
+				$fileName = DIR_FILES_AVATARS . '/' . $uo->getUserID() . '.gif';
 				$src = REL_DIR_FILES_AVATARS . '/' . $uo->getUserID() . '.gif';
 			}
-			if (file_exists($size)) {
-				$isize = getimagesize($size);
+			if (file_exists($fileName)) {
+				$fileMtime = filemtime( $fileName );
+				$isize = getimagesize($fileName);
 				$isize[0] = round($isize[0]*$aspectRatio);
 				$isize[1] = round($isize[1]*$aspectRatio);
 
-				$str = '<img class="u-avatar" src="' . $src . '" width="' . $isize[0] . '" height="' . $isize[1] . '" alt="' . $uo->getUserName() . '" />';
+				$str = '<img class="u-avatar" src="' . $src . '?' . $fileMtime . '" width="' . $isize[0] . '" height="' . $isize[1] . '" alt="' . $uo->getUserName() . '" />';
 				return $str;
 			}
 		}
