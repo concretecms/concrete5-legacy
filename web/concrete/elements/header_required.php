@@ -44,8 +44,10 @@ if (is_object($c)) {
 
 <meta http-equiv="content-type" content="text/html; charset=<?php echo APP_CHARSET?>" />
 <?php
-$akd = $c->getCollectionAttributeValue('meta_description');
-$akk = $c->getCollectionAttributeValue('meta_keywords');
+if (is_object($c)) {
+	$akd = $c->getCollectionAttributeValue('meta_description');
+	$akk = $c->getCollectionAttributeValue('meta_keywords');
+}
 ?>
 <title><?php echo $escapedPageTitle?></title>
 <?
@@ -57,7 +59,7 @@ if ($akd) { ?>
 if ($akk) { ?>
 <meta name="keywords" content="<?=htmlspecialchars($akk, ENT_COMPAT, APP_CHARSET)?>" />
 <?php }
-if($c->getCollectionAttributeValue('exclude_search_index')) { ?>
+if(is_object($c) && $c->getCollectionAttributeValue('exclude_search_index')) { ?>
     <meta name="robots" content="noindex" />
 <?php } ?>
 <?php
@@ -141,4 +143,4 @@ $_trackingCodePosition = Config::get('SITE_TRACKING_CODE_POSITION');
 if (empty($disableTrackingCode) && $_trackingCodePosition === 'top') {
 	echo Config::get('SITE_TRACKING_CODE');
 }
-echo $c->getCollectionAttributeValue('header_extra_content');
+echo ( is_object($c) ) ? $c->getCollectionAttributeValue('header_extra_content') : '';
