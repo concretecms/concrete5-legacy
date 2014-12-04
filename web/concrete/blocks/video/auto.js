@@ -11,6 +11,6 @@ ccm_chooseAsset = function(obj) {
 		$("#ccm-block-video-width").val(obj.width);
 	}
 	if (obj.height) {
-		$("#ccm-block-video-height").val(obj.width);
+		$("#ccm-block-video-height").val(obj.height);
 	}
 }
