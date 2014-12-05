@@ -218,7 +218,7 @@ class Concrete5_Library_Content_Importer {
 						// we check this because you might just get a block node with only an mc-block-id, if it's an alias
 						$bt = BlockType::getByHandle($bx['type']);
 						if(!is_object($bt)) {
-							throw new Exception(t('Invalid block type handle: %s' . strval($bx['type'])));
+							throw new Exception(t('Invalid block type handle: %s', strval($bx['type'])));
 						}
 						$btc = $bt->getController();
 						$btc->import($page, (string) $ax['name'], $bx);

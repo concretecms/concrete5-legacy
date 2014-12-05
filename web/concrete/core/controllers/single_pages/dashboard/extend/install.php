@@ -129,6 +129,10 @@ class Concrete5_Controller_Dashboard_Extend_Install extends Controller {
 					$this->set('showInstallOptionsScreen', true);
 					$this->set('pkg', $p);
 				}
+			} else {
+				$msg = t('Install failed - invalid package. Check log for details');
+				$this->error->add($msg);
+				$this->set('error', $this->error);
 			}
 		} else {
 			$this->error->add(t('You do not have permission to install add-ons.'));

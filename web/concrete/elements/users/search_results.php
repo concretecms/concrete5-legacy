@@ -32,7 +32,9 @@ if (!$mode) {
 	<div style="margin-bottom: 10px">
 		<? $form = Loader::helper('form'); ?>
 
-		<a href="<?=View::url('/dashboard/users/add')?>" style="float: right" class="btn primary"><?=t("Add User")?></a>
+		<?php if ($ek->validate()) { ?>
+			<a href="<?=View::url('/dashboard/users/add')?>" style="float: right" class="btn primary"><?=t("Add User")?></a>
+		<?php } ?>
 		<select id="ccm-<?=$searchInstance?>-list-multiple-operations" class="span3" disabled>
 					<option value="">** <?=t('With Selected')?></option>
 					<? if ($ek->validate()) { ?>

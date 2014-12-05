@@ -127,7 +127,6 @@ defined('C5_EXECUTE') or die("Access Denied.");
 	
 	<h3><?=t('Add Set')?></h3>
 
-	<input type="hidden" name="categoryID" value="<?php echo $categoryID?>" />
 	<?php echo Loader::helper('validation/token')->output('add_set')?>
 	<div class="control-group">
 		<?php echo $form->label('gsName', t('Name'))?>

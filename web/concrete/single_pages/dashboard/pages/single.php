@@ -16,7 +16,7 @@ echo Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Sing
 			<label for="pageURL" class="control-label"><?php echo t('The page you want to add is available at:')?></label>
 			<div class="controls">
 			<div class="input-prepend">
-				<span class="add-on"><?php echo $base?>/</span><input type="text" name="pageURL" value="<?php echo $this->post('pageURL')?>" class="span4" />
+				<span class="add-on"><?php echo $base?>/</span><?php echo $form->text('pageURL', $this->post('pageURL'), array('class'=>'span4')); ?>
 			</div>
 				<button class="btn" type="submit"><?=t('Add')?></button>
 			</div>
