@@ -162,8 +162,8 @@ class Concrete5_Controller_Block_FormMinisurvey {
 					} else { */
 						$requiredSymbol=($questionRow['required'])?'&nbsp;<span class="required">*</span>':'';
 						echo '<tr>
-						        <td class="question"><label for="Question'.intval($questionRow['msqID']).'">'.$questionRow['question'].''.$requiredSymbol.'</label></td>
-						        <td>'.$this->loadInputType($questionRow, $showEdit, $questionRow['required'] && (!$forPreview)).'</td>
+						        <td style="vertical-align:top" class="question"><label for="Question'.intval($questionRow['msqID']).'">'.$questionRow['question'].''.$requiredSymbol.'</label></td>
+						        <td style="vertical-align:top">'.$this->loadInputType($questionRow, $showEdit, $questionRow['required'] && (!$forPreview)).'</td>
 						      </tr>';
 					//}
 				}			
