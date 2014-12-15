@@ -197,6 +197,11 @@ class Concrete5_Library_Cache {
 			$cache->setOption('caching', true);
 			$cache->clean(Zend_Cache::CLEANING_MODE_ALL);
 		}
+
+		if (function_exists('apc_clear_cache')) {
+			apc_clear_cache();
+		}        
+
 		Events::fire('on_cache_flush', $cache);
 		return true;
 	}
