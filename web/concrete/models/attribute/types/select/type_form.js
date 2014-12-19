@@ -57,10 +57,14 @@ var ccmAttributesHelper={
 		var ts = 't' + new Date().getTime();
 		var template=document.getElementById('akSelectValueWrapTemplate');
 		var newRowEl=document.createElement('div');
-		newRowEl.innerHTML=template.innerHTML.replace(/template_clean/ig,ts).replace(/template/ig,val);
+		newRowEl.innerHTML=template.innerHTML.replace(/template_clean/ig,ts);
 		newRowEl.id="akSelectValueWrap_"+ts;
 		newRowEl.className='akSelectValueWrap';
-		$('#attributeValuesWrap').append(newRowEl);
+
+		$element = $(newRowEl);
+		$element.find('input[value="TEMPLATE"]').val(val).end().find('.ccm-select-option-value').text(val);
+
+		$('#attributeValuesWrap').append($element);
 		newValF.val('');
 	},
 
