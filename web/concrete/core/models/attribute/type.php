@@ -239,7 +239,11 @@ class Concrete5_Model_AttributeType extends Object {
 		$atHandle = $this->atHandle;
 		$txt = Loader::helper('text');
 		$className = $txt->camelcase($this->atHandle) . 'AttributeTypeController';
-		$file = $this->mapAttributeTypeFilePath(FILENAME_ATTRIBUTE_CONTROLLER);
+        $file = CacheLocal::getEntry('attribute_type_controller', $atHandle);
+        if (!$file) {
+            $file = $this->mapAttributeTypeFilePath(FILENAME_ATTRIBUTE_CONTROLLER);
+            CacheLocal::set('attribute_type_controller', $atHandle, $file);
+        }
 		if (!$file) {
 			$cont = DIR_MODELS_CORE . '/' . DIRNAME_ATTRIBUTES . '/' .  DIRNAME_ATTRIBUTE_TYPES . '/default/' . FILENAME_ATTRIBUTE_CONTROLLER;
 			$className = 'DefaultAttributeTypeController';
