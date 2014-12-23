@@ -25,11 +25,20 @@ class Concrete5_Model_AttributeType extends Object {
 	}
 
 	public static function getByID($atID) {
-		$db = Loader::db();
-		$row = $db->GetRow('select atID, pkgID, atHandle, atName from AttributeTypes where atID = ?', array($atID));
-		$at = new AttributeType();
-		$at->setPropertiesFromArray($row);
-		$at->loadController();
+        $at = CacheLocal::getEntry('attribute_type', $atID);
+
+        if (!$at) {
+            $db = Loader::db();
+            $row = $db->GetRow('select atID, pkgID, atHandle, atName from AttributeTypes where atID = ?', array($atID));
+            $at = new AttributeType();
+            $at->setPropertiesFromArray($row);
+
+            CacheLocal::set('attribute_type', $atID, $at);
+        }
+
+        // for some reason we can't cache the controller
+        $at->loadController();
+
 		return $at;
 	}
 	
