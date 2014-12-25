@@ -1,13 +1,23 @@
 #
 # Translators:
-# Fumito Mizuno <ounziw@gmail.com>, 2014
+# acliss19xx <acliss19xx@gmail.com>, 2013-2014
+# acliss19xx <acliss19xx@gmail.com>, 2012
+# Takuro Hishikawa <hishikawa@concrete5.co.jp>, 2012
+# Katz Ueno <katzueno@deerstudio.com>, 2012-2014
+# Katz Ueno <katzueno@deerstudio.com>, 2014
+# Fumito Mizuno <ounziw@gmail.com>, 2012
+# Takuro Hishikawa <hishikawa@concrete5.co.jp>, 2012-2014
+# Tao Sasaki <tao@xross-cube.com>, 2014
+# 吉川 智 <tomoac@gmail.com>, 2012
+# Takuro Hishikawa <hishikawa@concrete5.co.jp>, 2012
+# 橋本 英樹 <hdk0016@gmail.com>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: concrete5\n"
 "Report-Msgid-Bugs-To: http://www.concrete5.org/developers/bugs/\n"
-"POT-Creation-Date: 2014-04-04 05:51+0000\n"
-"PO-Revision-Date: 2014-12-18 18:36+0900\n"
-"Last-Translator: Fumito Mizuno <ounziw@gmail.com>\n"
+"POT-Creation-Date: 2014-12-25 05:00+0000\n"
+"PO-Revision-Date: 2014-12-25 23:05+0900\n"
+"Last-Translator: Takuro Hishikawa <hishikawa@concrete5.co.jp>\n"
 "Language-Team: Japanese (Japan) (http://www.transifex.com/projects/p/"
 "concrete5/language/ja_JP/)\n"
 "MIME-Version: 1.0\n"
@@ -31,6 +41,7 @@ msgstr ""
 #: concrete/tools/edit_collection_popup.php:6
 #: concrete/tools/files/selector_data.php:5
 #: concrete/tools/jobs/run_single.php:61
+#: concrete/tools/marketplace/connect.php:8
 #: concrete/tools/pages/bulk_metadata_update.php:6
 #: concrete/tools/pages/customize_search_columns.php:7
 #: concrete/tools/pages/delete.php:7 concrete/tools/pages/design.php:7
@@ -112,11 +123,11 @@ msgstr "降順"
 #: concrete/elements/attribute/type_form_required.php:126
 #: concrete/elements/block_custom_template.php:49
 #: concrete/elements/block_footer_edit.php:19
-#: concrete/elements/block_master_collection_alias.php:52
+#: concrete/elements/block_master_collection_alias.php:54
 #: concrete/elements/collection_attribute_values.php:25
 #: concrete/elements/collection_metadata.php:194
 #: concrete/elements/collection_permissions_simple.php:86
-#: concrete/elements/collection_speed_settings.php:189
+#: concrete/elements/collection_speed_settings.php:187
 #: concrete/elements/collection_theme.php:135
 #: concrete/elements/custom_style.php:116
 #: concrete/elements/files/edit/image.php:18
@@ -136,7 +147,7 @@ msgstr "降順"
 #: concrete/single_pages/dashboard/pages/types/view.php:191
 #: concrete/single_pages/dashboard/scrapbook/view.php:182
 #: concrete/single_pages/dashboard/scrapbook/view.php:295
-#: concrete/single_pages/dashboard/system/attributes/types.php:32
+#: concrete/single_pages/dashboard/system/attributes/types.php:48
 #: concrete/single_pages/dashboard/system/basics/editor.php:125
 #: concrete/single_pages/dashboard/system/basics/interface.php:45
 #: concrete/single_pages/dashboard/system/basics/multilingual/view.php:40
@@ -160,7 +171,7 @@ msgstr "降順"
 #: concrete/single_pages/dashboard/system/registration/postlogin.php:67
 #: concrete/single_pages/dashboard/system/registration/profiles.php:47
 #: concrete/single_pages/dashboard/system/registration/public_registration.php:74
-#: concrete/single_pages/dashboard/system/seo/bulk_seo_tool.php:228
+#: concrete/single_pages/dashboard/system/seo/bulk_seo_tool.php:230
 #: concrete/single_pages/dashboard/system/seo/excluded.php:17
 #: concrete/single_pages/dashboard/system/seo/search_index.php:33
 #: concrete/single_pages/dashboard/system/seo/statistics.php:19
@@ -199,7 +210,8 @@ msgstr "保存"
 #: concrete/tools/files/permissions.php:10
 #: concrete/tools/files/properties.php:12 concrete/tools/files/replace.php:12
 #: concrete/tools/files/selector_data.php:22 concrete/tools/files/star.php:8
-#: concrete/tools/files/view.php:18 concrete/tools/layout_services.php:40
+#: concrete/tools/files/view.php:18 concrete/tools/layout_services.php:11
+#: concrete/tools/layout_services.php:23 concrete/tools/layout_services.php:56
 #: concrete/tools/pile_manager.php:10
 #: concrete/tools/sitemap_search_selector.php:5
 #: concrete/tools/user_group_selector.php:14
@@ -339,7 +351,7 @@ msgstr "アップロード開始"
 #: concrete/elements/block_custom_template.php:48
 #: concrete/elements/block_footer_add.php:16
 #: concrete/elements/block_footer_edit.php:20
-#: concrete/elements/block_master_collection_alias.php:51
+#: concrete/elements/block_master_collection_alias.php:53
 #: concrete/elements/block_master_collection_composer.php:53
 #: concrete/elements/collection_add.php:109
 #: concrete/elements/collection_add_external.php:37
@@ -351,7 +363,7 @@ msgstr "アップロード開始"
 #: concrete/elements/collection_edit_external.php:37
 #: concrete/elements/collection_metadata.php:193
 #: concrete/elements/collection_permissions_simple.php:85
-#: concrete/elements/collection_speed_settings.php:188
+#: concrete/elements/collection_speed_settings.php:186
 #: concrete/elements/collection_theme.php:134
 #: concrete/elements/custom_style.php:115
 #: concrete/elements/permission/detail.php:93
@@ -377,13 +389,13 @@ msgstr "アップロード開始"
 #: concrete/single_pages/dashboard/users/groups.php:240
 #: concrete/single_pages/dashboard/workflow/list.php:16
 #: concrete/single_pages/dashboard/workflow/list.php:75
-#: concrete/single_pages/profile/messages.php:153
+#: concrete/single_pages/profile/messages.php:157
 #: concrete/tools/dashboard/sitemap_drag_request.php:152
 #: concrete/tools/dashboard/sitemap_drag_request.php:205
 #: concrete/tools/dashboard/sitemap_drag_request.php:207
-#: concrete/tools/files/delete.php:92 concrete/tools/files/delete_set.php:48
-#: concrete/tools/files/duplicate.php:114 concrete/tools/files/import.php:221
-#: concrete/tools/files/import.php:231 concrete/tools/pages/delete.php:121
+#: concrete/tools/files/delete.php:94 concrete/tools/files/delete_set.php:48
+#: concrete/tools/files/duplicate.php:116 concrete/tools/files/import.php:221
+#: concrete/tools/files/import.php:231 concrete/tools/pages/delete.php:123
 #: concrete/tools/pages/design.php:208
 #: concrete/tools/pages/permissions.php:150
 #: concrete/tools/pages/permissions.php:165
@@ -412,7 +424,7 @@ msgstr "ファイル名"
 #: concrete/core/models/file_list.php:421
 #: concrete/elements/custom_style/fonts.php:23
 #: concrete/elements/files/search_form_advanced.php:7
-#: concrete/tools/files/bulk_properties.php:307
+#: concrete/tools/files/bulk_properties.php:311
 #: concrete/tools/files/import.php:273 concrete/tools/files/properties.php:253
 msgid "Size"
 msgstr "サイズ"
@@ -462,13 +474,13 @@ msgstr "<strong>%s</strong> が再スキャンされました。"
 msgid "You do not have permission to rescan any of the selected files."
 msgstr "選択されたファイルを再スキャンする権限がありません。"
 
-#: concrete/core/models/package.php:331
+#: concrete/core/models/package.php:330
 #: concrete/single_pages/dashboard/blocks/stacks/view.php:60
 #: concrete/single_pages/dashboard/composer/write.php:148
 #: concrete/single_pages/dashboard/composer/write.php:267
 #: concrete/single_pages/dashboard/scrapbook/view.php:267
 #: concrete/tools/files/permissions.php:39
-#: concrete/tools/page_controls_menu_js.php:187
+#: concrete/tools/page_controls_menu_js.php:189
 msgid "Permissions"
 msgstr "権限"
 
@@ -536,7 +548,7 @@ msgstr "場所を保存"
 #: concrete/single_pages/dashboard/system/mail/method.php:6
 #: concrete/single_pages/dashboard/system/permissions/ip_blacklist.php:44
 #: concrete/single_pages/dashboard/users/search.php:30
-#: concrete/single_pages/dashboard/users/search.php:510
+#: concrete/single_pages/dashboard/users/search.php:508
 #: concrete/tools/files/bulk_properties.php:142
 #: concrete/tools/files/bulk_properties.php:150
 #: concrete/tools/files/bulk_properties.php:198
@@ -560,7 +572,7 @@ msgid "Details"
 msgstr "詳細"
 
 #: concrete/tools/files/properties.php:181 concrete/tools/i18n_js.php:109
-#: concrete/tools/page_controls_menu_js.php:190
+#: concrete/tools/page_controls_menu_js.php:192
 msgid "Versions"
 msgstr "バージョン"
 
@@ -603,6 +615,7 @@ msgstr "バージョン"
 msgid "URL to File"
 msgstr "ファイルのURL"
 
+#: concrete/tools/files/bulk_properties.php:301
 #: concrete/tools/files/properties.php:226
 msgid "Download URL"
 msgstr "ダウンロードURL"
@@ -617,7 +630,7 @@ msgstr "使用ページ"
 
 #: concrete/blocks/slideshow/form_setup_html.php:21
 #: concrete/core/models/file_list.php:417
-#: concrete/core/models/page_list.php:511
+#: concrete/core/models/page_list.php:513
 #: concrete/elements/files/search_form_advanced.php:8
 #: concrete/elements/workflow/type_form_required.php:35
 #: concrete/single_pages/dashboard/files/sets.php:164
@@ -625,13 +638,13 @@ msgstr "使用ページ"
 #: concrete/single_pages/dashboard/reports/logs.php:41
 #: concrete/single_pages/dashboard/reports/logs.php:57
 #: concrete/single_pages/dashboard/workflow/list.php:52
-#: concrete/tools/files/bulk_properties.php:302
+#: concrete/tools/files/bulk_properties.php:306
 #: concrete/tools/files/properties.php:249
 msgid "Type"
 msgstr "タイプ"
 
 #: concrete/elements/pages/search_form_advanced.php:7
-#: concrete/tools/files/properties.php:257 concrete/tools/pages/delete.php:92
+#: concrete/tools/files/properties.php:257 concrete/tools/pages/delete.php:94
 msgid "Date Added"
 msgstr "登録日"
 
@@ -640,7 +653,7 @@ msgstr "登録日"
 msgid "Added by <strong>%s</strong> on %s"
 msgstr "<strong>%s</strong>が%sに追加"
 
-#: concrete/blocks/google_map/form_setup_html.php:13
+#: concrete/blocks/google_map/form_setup_html.php:23
 #: concrete/tools/files/properties.php:275
 msgid "Location"
 msgstr "場所"
@@ -649,7 +662,7 @@ msgstr "場所"
 #: concrete/blocks/youtube/form_setup_html.php:20
 #: concrete/core/models/file_list.php:418
 #: concrete/core/models/file_version.php:235
-#: concrete/tools/files/bulk_properties.php:313
+#: concrete/tools/files/bulk_properties.php:317
 #: concrete/tools/files/properties.php:279
 #: concrete/tools/files/properties.php:353
 msgid "Title"
@@ -662,7 +675,7 @@ msgstr "タイトル"
 #: concrete/single_pages/dashboard/system/optimization/jobs.php:172
 #: concrete/single_pages/dashboard/users/add_group.php:27
 #: concrete/single_pages/dashboard/users/groups.php:159
-#: concrete/tools/files/bulk_properties.php:314
+#: concrete/tools/files/bulk_properties.php:318
 #: concrete/tools/files/properties.php:280
 msgid "Description"
 msgstr "説明"
@@ -670,7 +683,7 @@ msgstr "説明"
 #: concrete/config/install/packages/standard/content.xml:600
 #: concrete/core/controllers/blocks/tags.php:40
 #: concrete/core/models/file_version.php:241
-#: concrete/tools/files/bulk_properties.php:315
+#: concrete/tools/files/bulk_properties.php:319
 #: concrete/tools/files/properties.php:281
 msgid "Tags"
 msgstr "タグ"
@@ -685,7 +698,7 @@ msgstr "%s ファイル情報"
 msgid "Other Properties"
 msgstr "その他の情報"
 
-#: concrete/tools/files/bulk_properties.php:320
+#: concrete/tools/files/bulk_properties.php:324
 #: concrete/tools/files/properties.php:335
 msgid "File Preview"
 msgstr "ファイル プレビュー"
@@ -694,7 +707,7 @@ msgstr "ファイル プレビュー"
 msgid "File Versions"
 msgstr "ファイルバージョン"
 
-#: concrete/blocks/page_list/templates/blog_index.php:18
+#: concrete/blocks/page_list/templates/blog_index.php:20
 #: concrete/tools/files/properties.php:354 concrete/tools/versions.php:353
 msgid "Comments"
 msgstr "コメント"
@@ -718,24 +731,24 @@ msgstr "更新日時"
 #: concrete/elements/collection_attribute_values.php:18
 #: concrete/elements/collection_delete.php:59
 #: concrete/elements/files/search_results.php:33
-#: concrete/elements/pages/search_results.php:45
-#: concrete/elements/users/search_results.php:50
+#: concrete/elements/pages/search_results.php:48
+#: concrete/elements/users/search_results.php:52
 #: concrete/models/attribute/types/select/type_form.php:19
 #: concrete/single_pages/dashboard/files/sets.php:116
 #: concrete/single_pages/dashboard/pages/types/view.php:192
-#: concrete/single_pages/dashboard/reports/forms.php:127
-#: concrete/single_pages/dashboard/reports/forms.php:217
+#: concrete/single_pages/dashboard/reports/forms.php:128
+#: concrete/single_pages/dashboard/reports/forms.php:229
 #: concrete/single_pages/dashboard/scrapbook/view.php:193
 #: concrete/single_pages/dashboard/scrapbook/view.php:275
 #: concrete/single_pages/dashboard/system/backup_restore/backup.php:117
 #: concrete/single_pages/dashboard/users/groups.php:239
-#: concrete/single_pages/profile/messages.php:43
-#: concrete/tools/files/delete.php:91 concrete/tools/files/delete_set.php:47
+#: concrete/single_pages/profile/messages.php:47
+#: concrete/tools/files/delete.php:93 concrete/tools/files/delete_set.php:47
 #: concrete/tools/files/properties.php:402 concrete/tools/i18n_js.php:9
 #: concrete/tools/i18n_js.php:23 concrete/tools/i18n_js.php:81
 #: concrete/tools/i18n_js.php:90 concrete/tools/i18n_js.php:110
-#: concrete/tools/i18n_js.php:159 concrete/tools/page_controls_menu_js.php:199
-#: concrete/tools/pages/delete.php:122 concrete/tools/users/bulk_delete.php:67
+#: concrete/tools/i18n_js.php:159 concrete/tools/page_controls_menu_js.php:201
+#: concrete/tools/pages/delete.php:124 concrete/tools/users/bulk_delete.php:67
 msgid "Delete"
 msgstr "削除"
 
@@ -748,10 +761,13 @@ msgstr "ダウンロード総数: %s"
 msgid "Most recent 20 downloads:"
 msgstr "最近の 20 ダウンロード:"
 
-#: concrete/single_pages/dashboard/reports/forms.php:172
+#: concrete/core/controllers/single_pages/dashboard/reports/forms.php:56
+#: concrete/single_pages/dashboard/reports/forms.php:179
 #: concrete/single_pages/dashboard/reports/logs.php:58
-#: concrete/single_pages/dashboard/reports/statistics.php:106
+#: concrete/single_pages/dashboard/reports/statistics.php:107
 #: concrete/single_pages/dashboard/reports/surveys.php:24
+#: concrete/single_pages/dashboard/system/attributes/sets.php:202
+#: concrete/single_pages/dashboard/system/attributes/types.php:22
 #: concrete/tools/files/properties.php:424
 msgid "User"
 msgstr "ユーザー"
@@ -764,12 +780,12 @@ msgstr "ダウンロード時間"
 msgid "File Version ID"
 msgstr "ファイルバージョンID"
 
-#: concrete/single_pages/dashboard/reports/statistics.php:138
+#: concrete/single_pages/dashboard/reports/statistics.php:139
 #: concrete/tools/files/properties.php:440
 msgid "Anonymous"
 msgstr "匿名の"
 
-#: concrete/single_pages/dashboard/reports/statistics.php:144
+#: concrete/single_pages/dashboard/reports/statistics.php:145
 #: concrete/tools/files/properties.php:446
 msgid "Deleted User"
 msgstr "削除されたユーザー"
@@ -792,7 +808,7 @@ msgid "Files in no sets."
 msgstr "セット定義されていないファイル"
 
 #: concrete/tools/files/importers/incoming.php:70
-#: concrete/tools/files/importers/remote.php:149
+#: concrete/tools/files/importers/remote.php:151
 #: concrete/tools/files/importers/single.php:64
 msgid "Upload Error"
 msgstr "アップロードエラー"
@@ -822,11 +838,11 @@ msgstr "正しいURLを指定してください。"
 msgid "Unknown mime-type: "
 msgstr "不明なデータタイプ（MIME）:"
 
-#: concrete/tools/files/importers/remote.php:134
+#: concrete/tools/files/importers/remote.php:136
 msgid "Could not determine the name of the file at "
 msgstr "ファイルの名前を次の場所で設定できませんでした："
 
-#: concrete/tools/files/importers/remote.php:138
+#: concrete/tools/files/importers/remote.php:140
 msgid "There was an error downloading "
 msgstr "ダウンロード中にエラーが発生しました"
 
@@ -900,18 +916,18 @@ msgstr "無効なファイルです。"
 msgid "You do not have the ability to copy this file."
 msgstr "このファイルをコピーすることはできません。"
 
-#: concrete/tools/files/duplicate.php:81
+#: concrete/tools/files/duplicate.php:83
 msgid "You do not have permission to copy any of the selected files."
 msgstr "選択されたファイルをコピーする権限がありません。"
 
-#: concrete/tools/files/duplicate.php:83
+#: concrete/tools/files/duplicate.php:85
 msgid "Are you sure you want to copy the following files?"
 msgstr "以下のファイルをコピーしていいですか？"
 
 #: concrete/elements/files/search_results.php:32
 #: concrete/elements/permission/clipboard.php:5
 #: concrete/tools/dashboard/sitemap_drag_request.php:191
-#: concrete/tools/files/duplicate.php:113 concrete/tools/i18n_js.php:154
+#: concrete/tools/files/duplicate.php:115 concrete/tools/i18n_js.php:154
 #: concrete/tools/versions.php:363
 msgid "Copy"
 msgstr "コピー"
@@ -920,68 +936,68 @@ msgstr "コピー"
 msgid "Unable to delete one or more files."
 msgstr "ファイルを削除できませんでした。"
 
-#: concrete/tools/files/delete.php:56
+#: concrete/tools/files/delete.php:58
 msgid "You do not have permission to delete any of the selected files."
 msgstr "選択されたファイルのどれか、もしくはすべてを削除する権限がありません。"
 
-#: concrete/tools/files/delete.php:59
+#: concrete/tools/files/delete.php:61
 msgid "Are you sure you want to delete the following files?"
 msgstr "これらのファイルを削除してよろしいですか？"
 
 #: concrete/tools/marketplace/add-ons.php:9
 #: concrete/tools/marketplace/details.php:9
-#: concrete/tools/marketplace/download.php:5
+#: concrete/tools/marketplace/download.php:11
 #: concrete/tools/marketplace/themes.php:9
 msgid "You do not have permission to download packages from the marketplace."
 msgstr "マーケットプレイスからパッケージをダウンロードする権限がありません。"
 
-#: concrete/tools/marketplace/download.php:36
+#: concrete/tools/marketplace/download.php:42
 msgid "Invalid package or no package specified."
 msgstr "不正なパッケージか、パッケージが特定されていません。"
 
-#: concrete/tools/marketplace/download.php:63
+#: concrete/tools/marketplace/download.php:69
 msgid "The package was successfully installed."
 msgstr "パッケージが正常にインストールされました。"
 
-#: concrete/tools/marketplace/download.php:66
+#: concrete/tools/marketplace/download.php:72
 msgid ""
 "The package was successfully downloaded and decompressed on your server."
 msgstr "パッケージが正常にダウンロードされ、サーバー上に展開されました。"
 
-#: concrete/tools/marketplace/download.php:69
+#: concrete/tools/marketplace/download.php:75
 msgid "Return"
 msgstr "戻る"
 
-#: concrete/tools/marketplace/download.php:74
+#: concrete/tools/marketplace/download.php:80
 msgid "The package could not be installed:"
 msgstr "パッケージがインストールできませんでした。"
 
-#: concrete/tools/marketplace/download.php:80
+#: concrete/tools/marketplace/download.php:86
 msgid "To install the package manually:"
 msgstr "パッケージを手動インストール："
 
-#: concrete/tools/marketplace/download.php:82
+#: concrete/tools/marketplace/download.php:88
 #, php-format
 msgid "Download the package from <a href=\"%s\">here</a>."
 msgstr "<a href=\"%s\">こちら</a>からパッケージをダウンロードする。"
 
-#: concrete/tools/marketplace/download.php:83
+#: concrete/tools/marketplace/download.php:89
 msgid ""
 "Upload and unpack the package on your web server. Place the unpacked files "
 "in the packages directory of the root of your concrete5 installation."
 msgstr ""
-"ウェブサーバー上にパッケージをアップロード・解凍しました。解凍したファイル"
-"を、concrete5をインストールしたルート配下の packages ディレクトリーに手動で"
-"アップロードしてください。"
+"ウェブサーバー上にパッケージをアップロード・解凍してください。解凍したフォル"
+"ダを、concrete5をインストールしたルート直下の packages ディレクトリーに移動し"
+"てください。"
 
-#: concrete/tools/marketplace/download.php:84
+#: concrete/tools/marketplace/download.php:90
 #, php-format
 msgid ""
 "Go to the <a href=\"%s\">Add Functionality</a> page in your concrete5 "
 "Dashboard."
 msgstr "管理画面の<a href=\"%s\">機能を追加</a>ページに行ってください。"
 
-#: concrete/tools/marketplace/download.php:85
+#: concrete/tools/marketplace/download.php:91
 msgid "Click the Install button next to the package name."
 msgstr "パッケージの名前の隣にあるインストールボタンをクリックしてください。"
 
@@ -991,22 +1007,22 @@ msgstr "パッケージの名前の隣にあるインストールボタンをク
 #: concrete/elements/collection_theme.php:102
 #: concrete/single_pages/dashboard/pages/themes/view.php:21
 #: concrete/single_pages/dashboard/pages/themes/view.php:52
-#: concrete/tools/marketplace/refresh_theme.php:26
+#: concrete/tools/marketplace/refresh_theme.php:27
 #: concrete/tools/pages/design.php:180
 msgid "Themes"
 msgstr "テーマ"
 
 #: concrete/tools/marketplace/checkout.php:12
-#: concrete/tools/marketplace/frame.php:32
-#: concrete/tools/marketplace/refresh_theme.php:28
+#: concrete/tools/marketplace/frame.php:33
+#: concrete/tools/marketplace/refresh_theme.php:29
 msgid "You do not have permission to connect to the marketplace."
 msgstr "このサイトをマーケットプレイスに接続する権限がありません。"
 
-#: concrete/tools/marketplace/refresh_theme.php:30
+#: concrete/tools/marketplace/refresh_theme.php:31
 msgid "Unable to connect to the marketplace."
 msgstr "マーケットプレイスに接続できませんでした。"
 
-#: concrete/tools/marketplace/refresh_theme.php:40
+#: concrete/tools/marketplace/refresh_theme.php:41
 msgid "Install theme"
 msgstr "テーマをインストールする"
 
@@ -1023,8 +1039,8 @@ msgstr "テーマをインストールする"
 #: concrete/single_pages/dashboard/system/basics/editor.php:86
 #: concrete/tools/i18n_js.php:98 concrete/tools/marketplace/details.php:108
 #: concrete/tools/marketplace/details.php:109
-#: concrete/tools/marketplace/refresh_theme.php:41
 #: concrete/tools/marketplace/refresh_theme.php:42
+#: concrete/tools/marketplace/refresh_theme.php:43
 #: concrete/tools/pages/design.php:194 concrete/tools/pages/design.php:195
 msgid "Preview"
 msgstr "プレビュー"
@@ -1069,23 +1085,23 @@ msgid "Invalid marketplace item."
 msgstr "マーケットプレイスの項目が不正です。"
 
 #: concrete/elements/block_area_layout.php:23
-#: concrete/tools/layout_services.php:43
+#: concrete/tools/layout_services.php:59
 msgid "Error: Layout not found"
 msgstr "エラー：レイアウトが見つかりません"
 
-#: concrete/tools/layout_services.php:151
+#: concrete/tools/layout_services.php:167
 msgid "Error: Invalid column count. Please refresh your page."
 msgstr "エラー：不正なカラム数です。ページをリフレッシュしてください。"
 
-#: concrete/tools/layout_services.php:170
+#: concrete/tools/layout_services.php:186
 msgid "Invalid Task."
 msgstr "不正なタスク"
 
-#: concrete/tools/layout_services.php:177
+#: concrete/tools/layout_services.php:193
 msgid "Unknown Error"
 msgstr "不明なエラー"
 
-#: concrete/tools/layout_services.php:178
+#: concrete/tools/layout_services.php:194
 msgid "Success"
 msgstr "成功しました"
 
@@ -1128,7 +1144,7 @@ msgstr "フラットビュー"
 #: concrete/elements/users/search_form_advanced.php:103
 #: concrete/single_pages/dashboard/files/sets.php:170
 #: concrete/single_pages/dashboard/reports/logs.php:44
-#: concrete/single_pages/dashboard/system/seo/bulk_seo_tool.php:99
+#: concrete/single_pages/dashboard/system/seo/bulk_seo_tool.php:101
 #: concrete/single_pages/dashboard/users/groups.php:69
 #: concrete/single_pages/members.php:4 concrete/single_pages/members.php:7
 #: concrete/tools/select_group.php:46
@@ -1349,9 +1365,9 @@ msgstr ""
 "選択されたグループ全てに属しているユーザーのみが、この権限を与えられます。"
 
 #: concrete/blocks/guestbook/view.php:70
-#: concrete/core/models/page_list.php:512
+#: concrete/core/models/page_list.php:514
 #: concrete/elements/attribute/type_form_required.php:56
-#: concrete/elements/block_master_collection_alias.php:27
+#: concrete/elements/block_master_collection_alias.php:29
 #: concrete/elements/collection_add.php:25
 #: concrete/elements/collection_add_external.php:17
 #: concrete/elements/collection_edit_external.php:17
@@ -1371,7 +1387,7 @@ msgstr ""
 #: concrete/single_pages/dashboard/pages/types/view.php:217
 #: concrete/single_pages/dashboard/reports/surveys.php:72
 #: concrete/single_pages/dashboard/system/attributes/sets.php:34
-#: concrete/single_pages/dashboard/system/attributes/sets.php:151
+#: concrete/single_pages/dashboard/system/attributes/sets.php:168
 #: concrete/single_pages/dashboard/system/attributes/types.php:13
 #: concrete/single_pages/dashboard/system/mail/importers.php:97
 #: concrete/single_pages/dashboard/system/optimization/jobs.php:60
@@ -1380,10 +1396,10 @@ msgstr ""
 #: concrete/single_pages/dashboard/system/optimization/jobs.php:364
 #: concrete/single_pages/dashboard/users/add_group.php:20
 #: concrete/single_pages/dashboard/users/group_sets.php:22
-#: concrete/single_pages/dashboard/users/group_sets.php:133
+#: concrete/single_pages/dashboard/users/group_sets.php:132
 #: concrete/single_pages/dashboard/users/groups.php:152
 #: concrete/single_pages/dashboard/workflow/list.php:44
-#: concrete/tools/pages/delete.php:90
+#: concrete/tools/pages/delete.php:92
 #: concrete/tools/permissions/dialogs/access/entity/types/group_combination.php:22
 msgid "Name"
 msgstr "名前"
@@ -1420,7 +1436,7 @@ msgstr "グループセットが見つかりません。"
 #: concrete/helpers/concrete/upgrade/version_510.php:84
 #: concrete/single_pages/dashboard/users/add.php:99
 #: concrete/single_pages/dashboard/users/group_sets.php:63
-#: concrete/single_pages/dashboard/users/group_sets.php:140
+#: concrete/single_pages/dashboard/users/group_sets.php:139
 #: concrete/single_pages/dashboard/users/groups.php:56
 #: concrete/single_pages/dashboard/users/search.php:279
 #: concrete/single_pages/dashboard/users/search.php:485
@@ -1432,6 +1448,10 @@ msgstr "グループ"
 #: concrete/tools/user_group_selector.php:36
 msgid "Users"
 msgstr "ユーザー"
+
+#: concrete/tools/spellchecker_service.php:16
+msgid "SuggestPopup"
+msgstr "提案ポップアップ"
 
 #: concrete/tools/add_block_popup.php:35
 msgid ""
@@ -1517,9 +1537,9 @@ msgstr ""
 
 #: concrete/single_pages/install.php:67 concrete/single_pages/install.php:125
 #: concrete/single_pages/install.php:317 concrete/single_pages/install.php:446
-#: concrete/tools/page_controls_menu_js.php:119
-#: concrete/tools/page_controls_menu_js.php:149
-#: concrete/tools/page_controls_menu_js.php:164 concrete/tools/versions.php:35
+#: concrete/tools/page_controls_menu_js.php:121
+#: concrete/tools/page_controls_menu_js.php:151
+#: concrete/tools/page_controls_menu_js.php:166 concrete/tools/versions.php:35
 #, php-format
 msgid "Version %s"
 msgstr "バージョン %s"
@@ -1591,7 +1611,7 @@ msgstr "バージョンをコピー"
 msgid "Remove"
 msgstr "削除"
 
-#: concrete/tools/versions.php:395
+#: concrete/tools/versions.php:397
 msgid "View Versions"
 msgstr "バージョンを表示"
 
@@ -1601,23 +1621,23 @@ msgstr "バージョンを表示"
 msgid "No groups found."
 msgstr "グループが見つかりませんでした。"
 
-#: concrete/tools/check_in.php:27 concrete/tools/page_controls_menu_js.php:117
+#: concrete/tools/check_in.php:27 concrete/tools/page_controls_menu_js.php:119
 msgid "Exit Edit Mode"
 msgstr "編集モード終了"
 
-#: concrete/tools/check_in.php:31 concrete/tools/page_controls_menu_js.php:129
+#: concrete/tools/check_in.php:31 concrete/tools/page_controls_menu_js.php:131
 msgid "Version Comments"
 msgstr "バージョン（編集履歴）コメント"
 
-#: concrete/tools/check_in.php:36 concrete/tools/page_controls_menu_js.php:133
+#: concrete/tools/check_in.php:36 concrete/tools/page_controls_menu_js.php:135
 msgid "Publish My Edits"
 msgstr "この編集を公開"
 
-#: concrete/tools/check_in.php:38 concrete/tools/page_controls_menu_js.php:143
+#: concrete/tools/check_in.php:38 concrete/tools/page_controls_menu_js.php:145
 msgid "Preview My Edits"
 msgstr "この編集を下書き保存＆プレビュー"
 
-#: concrete/tools/check_in.php:40 concrete/tools/page_controls_menu_js.php:144
+#: concrete/tools/check_in.php:40 concrete/tools/page_controls_menu_js.php:146
 msgid "Discard My Edits"
 msgstr "この編集を破棄する"
 
@@ -1657,7 +1677,7 @@ msgstr "ユーザー属性"
 msgid "Are you sure you would like to activate the following users?"
 msgstr "あなたは次のユーザーをアクティブしてもよろしいですか？"
 
-#: concrete/elements/users/search_results.php:42
+#: concrete/elements/users/search_results.php:44
 #: concrete/single_pages/dashboard/pages/themes/view.php:87
 #: concrete/single_pages/dashboard/pages/themes/view.php:89
 #: concrete/tools/users/bulk_activate.php:59
@@ -1679,7 +1699,7 @@ msgstr "ユーザーエクスポート権限がありません。"
 
 #: concrete/core/controllers/single_pages/login.php:16
 #: concrete/core/helpers/form/user_selector.php:116
-#: concrete/core/models/user_list.php:142
+#: concrete/core/models/user_list.php:145
 #: concrete/elements/permission/keys/edit_user_properties.php:30
 #: concrete/elements/permission/keys/edit_user_properties.php:67
 #: concrete/elements/users/confirm_list.php:7
@@ -1687,7 +1707,7 @@ msgstr "ユーザーエクスポート権限がありません。"
 #: concrete/single_pages/dashboard/system/mail/method.php:33
 #: concrete/single_pages/dashboard/users/add.php:36
 #: concrete/single_pages/dashboard/users/search.php:187
-#: concrete/single_pages/login.php:103 concrete/single_pages/login.php:176
+#: concrete/single_pages/login.php:120 concrete/single_pages/login.php:194
 #: concrete/single_pages/register.php:51
 #: concrete/tools/users/search_results_export.php:26
 msgid "Username"
@@ -1704,10 +1724,9 @@ msgstr "ユーザーID"
 #: concrete/single_pages/dashboard/system/mail/importers.php:99
 #: concrete/single_pages/dashboard/users/add.php:44
 #: concrete/single_pages/dashboard/users/search.php:188
-#: concrete/single_pages/install.php:153 concrete/single_pages/login.php:78
-#: concrete/single_pages/login.php:95 concrete/single_pages/login.php:101
-#: concrete/single_pages/login.php:174 concrete/single_pages/login.php:253
-#: concrete/single_pages/register.php:59
+#: concrete/single_pages/install.php:153 concrete/single_pages/login.php:88
+#: concrete/single_pages/login.php:118 concrete/single_pages/login.php:192
+#: concrete/single_pages/login.php:255 concrete/single_pages/register.php:59
 #: concrete/tools/users/search_results_export.php:27
 msgid "Email Address"
 msgstr "メールアドレス"
@@ -1716,7 +1735,7 @@ msgstr "メールアドレス"
 msgid "Registered"
 msgstr "登録済み"
 
-#: concrete/core/models/user_list.php:145
+#: concrete/core/models/user_list.php:148
 #: concrete/elements/users/confirm_list.php:9
 #: concrete/tools/users/search_results_export.php:29
 msgid "# Logins"
@@ -1732,7 +1751,7 @@ msgstr "一括無効化ができないユーザーは、リストから除外さ
 msgid "Are you sure you would like to deactivate the following users?"
 msgstr "あなたは次のユーザーを非アクティブしてもよろしいですか？"
 
-#: concrete/elements/users/search_results.php:43
+#: concrete/elements/users/search_results.php:45
 #: concrete/tools/users/bulk_deactivate.php:69
 msgid "Deactivate"
 msgstr "無効化する"
@@ -1771,11 +1790,11 @@ msgstr "スタックを追加"
 msgid "Paste from Clipboard"
 msgstr "クリップボードからペースト"
 
-#: concrete/elements/pages/search_results.php:44
+#: concrete/elements/pages/search_results.php:47
 #: concrete/single_pages/dashboard/scrapbook/view.php:100
 #: concrete/single_pages/dashboard/scrapbook/view.php:258
 #: concrete/tools/i18n_js.php:15 concrete/tools/i18n_js.php:42
-#: concrete/tools/i18n_js.php:108 concrete/tools/page_controls_menu_js.php:184
+#: concrete/tools/i18n_js.php:108 concrete/tools/page_controls_menu_js.php:186
 msgid "Design"
 msgstr "デザイン"
 
@@ -1851,7 +1870,7 @@ msgstr "ブロックはクリップボードに追加されました。"
 #: concrete/single_pages/dashboard/scrapbook/view.php:261
 #: concrete/single_pages/dashboard/system/mail/importers.php:110
 #: concrete/tools/i18n_js.php:32 concrete/tools/i18n_js.php:152
-#: concrete/tools/page_controls_menu_js.php:63
+#: concrete/tools/page_controls_menu_js.php:65
 msgid "Edit"
 msgstr "編集"
 
@@ -2012,7 +2031,7 @@ msgstr "検索をカスタマイズ"
 
 #: concrete/elements/files/search_results.php:30 concrete/tools/i18n_js.php:69
 #: concrete/tools/i18n_js.php:100 concrete/tools/i18n_js.php:158
-#: concrete/tools/page_controls_menu_js.php:178
+#: concrete/tools/page_controls_menu_js.php:180
 msgid "Properties"
 msgstr "設定"
 
@@ -2068,7 +2087,7 @@ msgstr "非アクティブユーザー"
 msgid "Remove From Group"
 msgstr "グループから移動"
 
-#: concrete/elements/users/search_results.php:46 concrete/tools/i18n_js.php:83
+#: concrete/elements/users/search_results.php:48 concrete/tools/i18n_js.php:83
 msgid "Add to Group"
 msgstr "グループに追加"
 
@@ -2110,12 +2129,12 @@ msgstr "完全に削除"
 
 #: concrete/single_pages/dashboard/system/optimization/cache.php:45
 #: concrete/tools/i18n_js.php:101 concrete/tools/i18n_js.php:102
-#: concrete/tools/page_controls_menu_js.php:196
+#: concrete/tools/page_controls_menu_js.php:198
 #: concrete/tools/pages/speed_settings.php:122
 msgid "Full Page Caching"
 msgstr "フルページキャッシュ"
 
-#: concrete/tools/i18n_js.php:103 concrete/tools/page_controls_menu_js.php:178
+#: concrete/tools/i18n_js.php:103 concrete/tools/page_controls_menu_js.php:180
 msgid "Page Properties"
 msgstr "ページ設定"
 
@@ -2151,8 +2170,8 @@ msgstr ""
 msgid "Add Page"
 msgstr "新規ページ"
 
-#: concrete/elements/pages/search_results.php:37
-#: concrete/tools/i18n_js.php:115 concrete/tools/page_controls_menu_js.php:193
+#: concrete/elements/pages/search_results.php:40
+#: concrete/tools/i18n_js.php:115 concrete/tools/page_controls_menu_js.php:195
 msgid "Move/Copy"
 msgstr "移動／コピー"
 
@@ -2244,7 +2263,7 @@ msgstr "ヒントはありません"
 msgid "View"
 msgstr "表示"
 
-#: concrete/elements/users/search_results.php:53
+#: concrete/elements/users/search_results.php:55
 #: concrete/tools/i18n_js.php:149
 msgid "Choose"
 msgstr "選択"
@@ -2305,18 +2324,18 @@ msgstr "一致する検索結果はありません"
 #: concrete/config/install/disabled/standard/content.xml:44
 #: concrete/helpers/concrete/upgrade/version_510.php:89
 #: concrete/single_pages/dashboard/pages/types/view.php:203
-#: concrete/tools/page_controls_menu_js.php:57
+#: concrete/tools/page_controls_menu_js.php:59
 msgid "Page Types"
 msgstr "ページタイプ"
 
 #: concrete/config/install/disabled/blank/content.xml:101
 #: concrete/config/install/disabled/standard/content.xml:101
-#: concrete/tools/page_controls_menu_js.php:63
+#: concrete/tools/page_controls_menu_js.php:65
 msgid "Editing"
 msgstr "編集中"
 
 #: concrete/themes/dashboard/elements/header.php:114
-#: concrete/tools/page_controls_menu_js.php:78
+#: concrete/tools/page_controls_menu_js.php:80
 #, php-format
 msgid "Powered by <a href=\"%s\">concrete5</a>."
 msgstr "Powered by <a href=\"%s\">concrete5</a>."
@@ -2328,12 +2347,12 @@ msgstr "Powered by <a href=\"%s\">concrete5</a>."
 #: concrete/single_pages/dashboard/system/basics/interface.php:10
 #: concrete/single_pages/dashboard/view.php:3
 #: concrete/themes/dashboard/elements/header.php:119
-#: concrete/tools/page_controls_menu_js.php:96
+#: concrete/tools/page_controls_menu_js.php:98
 msgid "Dashboard"
 msgstr "管理画面"
 
 #: concrete/themes/dashboard/elements/header.php:120
-#: concrete/tools/page_controls_menu_js.php:98
+#: concrete/tools/page_controls_menu_js.php:100
 msgid "Intelligent Search"
 msgstr "検索"
 
@@ -2345,12 +2364,12 @@ msgstr "検索"
 #: concrete/themes/greensalad/full.php:58
 #: concrete/themes/greensalad/home.php:63
 #: concrete/themes/greensalad/view.php:63
-#: concrete/tools/page_controls_menu_js.php:99
+#: concrete/tools/page_controls_menu_js.php:101
 msgid "Sign Out"
 msgstr "ログアウト"
 
-#: concrete/tools/page_controls_menu_js.php:120
-#: concrete/tools/page_controls_menu_js.php:150
+#: concrete/tools/page_controls_menu_js.php:122
+#: concrete/tools/page_controls_menu_js.php:152
 #, php-format
 msgid "Page currently in edit mode on %s"
 msgstr "編集開始: %s"
@@ -2358,78 +2377,78 @@ msgstr "編集開始: %s"
 #: concrete/single_pages/dashboard/blocks/stacks/view.php:91
 #: concrete/single_pages/dashboard/composer/write.php:143
 #: concrete/single_pages/dashboard/composer/write.php:152
-#: concrete/tools/page_controls_menu_js.php:138
+#: concrete/tools/page_controls_menu_js.php:140
 msgid "Submit to Workflow"
 msgstr "ワークフローに送信"
 
-#: concrete/tools/page_controls_menu_js.php:158
+#: concrete/tools/page_controls_menu_js.php:160
 msgid "Someone has already checked this page out for editing."
 msgstr "違うユーザーが、すでにこのページを編集しています。"
 
-#: concrete/tools/page_controls_menu_js.php:158
+#: concrete/tools/page_controls_menu_js.php:160
 msgid "Edit this Page"
 msgstr "編集モード"
 
-#: concrete/tools/page_controls_menu_js.php:161
+#: concrete/tools/page_controls_menu_js.php:163
 msgid "Add a Sub-Page"
 msgstr "新規ページ"
 
-#: concrete/tools/page_controls_menu_js.php:165
+#: concrete/tools/page_controls_menu_js.php:167
 #, php-format
 msgid "Page last edited on %s"
 msgstr "最終編集日時: %s"
 
-#: concrete/tools/page_controls_menu_js.php:181
+#: concrete/tools/page_controls_menu_js.php:183
 msgid "View Page as Someone Else"
 msgstr "他のユーザーとしてページを閲覧"
 
-#: concrete/tools/page_controls_menu_js.php:181
+#: concrete/tools/page_controls_menu_js.php:183
 msgid "Preview as User"
 msgstr "ユーザープレビュー"
 
-#: concrete/tools/page_controls_menu_js.php:190
+#: concrete/tools/page_controls_menu_js.php:192
 msgid "Page Versions"
 msgstr "ページバージョン"
 
-#: concrete/tools/page_controls_menu_js.php:193
+#: concrete/tools/page_controls_menu_js.php:195
 msgid "Move/Copy Page"
 msgstr "ページを移動／コピーする"
 
-#: concrete/tools/page_controls_menu_js.php:199
+#: concrete/tools/page_controls_menu_js.php:201
 msgid "Delete Page"
 msgstr "ページ削除"
 
-#: concrete/tools/page_controls_menu_js.php:225
+#: concrete/tools/page_controls_menu_js.php:227
 #, php-format
 msgid "%s is currently editing this page."
 msgstr "%s さんがこのページを編集しています"
 
-#: concrete/tools/page_controls_menu_js.php:233
+#: concrete/tools/page_controls_menu_js.php:235
 msgid "This page is an alias of one that actually appears elsewhere."
 msgstr "このページは、他の位置に存在するページのエイリアスです。"
 
-#: concrete/tools/page_controls_menu_js.php:235
+#: concrete/tools/page_controls_menu_js.php:237
 msgid "View/Edit Original"
 msgstr "オリジナルを表示／編集"
 
-#: concrete/tools/page_controls_menu_js.php:240
+#: concrete/tools/page_controls_menu_js.php:242
 msgid "Remove Alias"
 msgstr "エイリアスを削除"
 
-#: concrete/tools/page_controls_menu_js.php:253
+#: concrete/tools/page_controls_menu_js.php:255
 #, php-format
 msgid "Page Defaults for %s Page Type. All edits take effect immediately."
 msgstr "%s ページタイプのデフォルトです。編集はすぐに反映されます。"
 
-#: concrete/tools/page_controls_menu_js.php:307
+#: concrete/tools/page_controls_menu_js.php:309
 msgid "This page is pending approval."
 msgstr "このページの承認は保留中です。"
 
-#: concrete/tools/page_controls_menu_js.php:314
+#: concrete/tools/page_controls_menu_js.php:316
 msgid "Submit for Approval"
 msgstr "承認を申請"
 
-#: concrete/tools/page_controls_menu_js.php:318
+#: concrete/tools/page_controls_menu_js.php:320
 msgid "Approve Version"
 msgstr "このバージョンを承認する"
 
@@ -2465,8 +2484,8 @@ msgstr "フルページキャッシュを無効"
 msgid "%s minutes"
 msgstr "%s 分"
 
-#: concrete/elements/collection_speed_settings.php:111
-#: concrete/elements/collection_speed_settings.php:168
+#: concrete/elements/collection_speed_settings.php:109
+#: concrete/elements/collection_speed_settings.php:166
 #: concrete/tools/pages/speed_settings.php:116
 #: concrete/tools/pages/speed_settings.php:160
 msgid "Until manually cleared"
@@ -2477,25 +2496,25 @@ msgstr "手動でクリアされるまで"
 msgid "Multiple values"
 msgstr "複数値"
 
-#: concrete/elements/collection_speed_settings.php:144
-#: concrete/elements/collection_speed_settings.php:165
+#: concrete/elements/collection_speed_settings.php:142
+#: concrete/elements/collection_speed_settings.php:163
 #: concrete/tools/pages/speed_settings.php:130
 #: concrete/tools/pages/speed_settings.php:154
 #, php-format
 msgid "Use global setting - %s"
 msgstr "グローバル設定を適用 - %s"
 
-#: concrete/elements/collection_speed_settings.php:147
+#: concrete/elements/collection_speed_settings.php:145
 #: concrete/tools/pages/speed_settings.php:133
 msgid "Do not cache this page."
 msgstr "このページはキャッシュしない。"
 
-#: concrete/elements/collection_speed_settings.php:150
+#: concrete/elements/collection_speed_settings.php:148
 #: concrete/tools/pages/speed_settings.php:136
 msgid "Cache this page."
 msgstr "このページをキャッシュする。"
 
-#: concrete/elements/collection_speed_settings.php:159
+#: concrete/elements/collection_speed_settings.php:157
 #: concrete/tools/pages/speed_settings.php:145
 msgid "Cache for how long?"
 msgstr "キャッシュ時間は？"
@@ -2505,7 +2524,7 @@ msgstr "キャッシュ時間は？"
 msgid "Default - %s minutes"
 msgstr "標準 - %s 分"
 
-#: concrete/elements/collection_speed_settings.php:171
+#: concrete/elements/collection_speed_settings.php:169
 #: concrete/elements/permission/keys/access_user_search.php:33
 #: concrete/elements/permission/keys/access_user_search.php:59
 #: concrete/elements/permission/keys/add_block.php:24
@@ -2529,7 +2548,7 @@ msgstr "標準 - %s 分"
 msgid "Custom"
 msgstr "カスタム"
 
-#: concrete/elements/collection_speed_settings.php:174
+#: concrete/elements/collection_speed_settings.php:172
 #: concrete/single_pages/dashboard/system/permissions/ip_blacklist.php:22
 #: concrete/tools/pages/speed_settings.php:166
 msgid "minutes"
@@ -2683,25 +2702,25 @@ msgstr ""
 "の設定を上書きするか、ページタイプのデフォルトの権限を使用する設定になってい"
 "る必要があります。"
 
-#: concrete/tools/pages/delete.php:81
+#: concrete/tools/pages/delete.php:83
 msgid "You do not have permission to delete any of the selected pages."
 msgstr "選択されたページを削除する権限がありません。"
 
-#: concrete/tools/pages/delete.php:84
+#: concrete/tools/pages/delete.php:86
 msgid "Are you sure you want to delete the following pages?"
 msgstr "これらのページを削除してもよろしいですか？"
 
 #: concrete/elements/pages/search_form_advanced.php:65
 #: concrete/elements/pages/search_form_advanced.php:143
 #: concrete/elements/pages/search_form_advanced.php:235
-#: concrete/single_pages/dashboard/composer/drafts.php:12
-#: concrete/single_pages/dashboard/system/seo/bulk_seo_tool.php:146
-#: concrete/tools/pages/delete.php:91
+#: concrete/single_pages/dashboard/composer/drafts.php:15
+#: concrete/single_pages/dashboard/system/seo/bulk_seo_tool.php:148
+#: concrete/tools/pages/delete.php:93
 msgid "Page Type"
 msgstr "ページタイプ"
 
 #: concrete/core/models/file_list.php:431
-#: concrete/core/models/page_list.php:515 concrete/tools/pages/delete.php:93
+#: concrete/core/models/page_list.php:517 concrete/tools/pages/delete.php:95
 msgid "Author"
 msgstr "制作者"
 
@@ -2832,7 +2851,9 @@ msgstr "ライブラリに保存されたファイルにリンクします。（
 #: concrete/core/libraries/file/types.php:136
 #: concrete/core/models/file_version.php:232
 #: concrete/single_pages/dashboard/pages/themes/inspect.php:33
-#: concrete/single_pages/dashboard/reports/statistics.php:105
+#: concrete/single_pages/dashboard/reports/statistics.php:106
+#: concrete/single_pages/dashboard/system/attributes/sets.php:205
+#: concrete/single_pages/dashboard/system/attributes/types.php:25
 #: concrete/single_pages/dashboard/system/backup_restore/backup.php:103
 msgid "File"
 msgstr "ファイル"
@@ -2854,7 +2875,7 @@ msgstr ""
 "も。"
 
 #: concrete/core/controllers/blocks/form.php:35
-#: concrete/single_pages/dashboard/reports/forms.php:84
+#: concrete/single_pages/dashboard/reports/forms.php:82
 msgid "Form"
 msgstr "フォーム"
 
@@ -3137,6 +3158,10 @@ msgstr "Googleマップ"
 msgid "Please enter a zoom number from 0 to 21."
 msgstr "ズーム値（0〜21）を入力してください。"
 
+#: concrete/core/controllers/blocks/google_map.php:64
+msgid "Get Directions"
+msgstr "行き方を調べる"
+
 #: concrete/core/controllers/blocks/html.php:27
 msgid "For adding HTML by hand."
 msgstr "HTMLのコードを直接追加。"
@@ -3392,7 +3417,7 @@ msgstr "関連性"
 msgid "The package has been updated successfully."
 msgstr "パッケージが正常にアップデートされました。"
 
-#: concrete/core/controllers/single_pages/dashboard/extend/install.php:151
+#: concrete/core/controllers/single_pages/dashboard/extend/install.php:155
 #: concrete/core/controllers/single_pages/dashboard/extend/update.php:61
 msgid "Invalid marketplace item ID."
 msgstr "マーケットプレイスアイテムIDが無効です。"
@@ -3409,20 +3434,25 @@ msgstr "無効なパッケージです。"
 msgid "The package type has been uninstalled."
 msgstr "パッケージタイプがアンインストールされました。"
 
-#: concrete/core/controllers/single_pages/dashboard/extend/install.php:134
+#: concrete/core/controllers/single_pages/dashboard/extend/install.php:133
+msgid "Install failed - invalid package. Check log for details"
+msgstr ""
+"インストール失敗 - 不正なパッケージです。詳細はログをチェックしてください。"
+
+#: concrete/core/controllers/single_pages/dashboard/extend/install.php:138
 msgid "You do not have permission to install add-ons."
 msgstr "アドオンをインストールする権限がありません。"
 
-#: concrete/core/controllers/single_pages/dashboard/extend/install.php:140
+#: concrete/core/controllers/single_pages/dashboard/extend/install.php:144
 msgid "The package has been installed."
 msgstr "新しいパッケージがインストールされました。"
 
-#: concrete/core/controllers/single_pages/dashboard/extend/install.php:164
+#: concrete/core/controllers/single_pages/dashboard/extend/install.php:168
 #, php-format
 msgid "Marketplace item %s downloaded successfully."
 msgstr "マーケットプレイスの %s が正常にダウンロードされました。"
 
-#: concrete/core/controllers/single_pages/dashboard/extend/install.php:167
+#: concrete/core/controllers/single_pages/dashboard/extend/install.php:171
 msgid "You do not have permission to download add-ons."
 msgstr "アドオンをダウンロードする権限がありません。"
 
@@ -3567,7 +3597,7 @@ msgstr ""
 msgid "Workflow updated."
 msgstr "ワークフローが更新されました。"
 
-#: concrete/core/controllers/single_pages/dashboard/pages/types.php:58
+#: concrete/core/controllers/single_pages/dashboard/pages/types.php:71
 #: concrete/core/controllers/single_pages/dashboard/pages/types/add.php:29
 #: concrete/core/controllers/single_pages/dashboard/users/add_group.php:29
 #: concrete/core/controllers/single_pages/dashboard/users/groups.php:19
@@ -3851,7 +3881,7 @@ msgstr "メンテナンスモードが解除され、このサイトが公開さ
 
 #: concrete/core/controllers/single_pages/dashboard/system/permissions/advanced.php:14
 msgid "Advanced permissions enabled."
-msgstr "上級権限モードが有効になりました。"
+msgstr "上級権限モードが有効です。"
 
 #: concrete/core/controllers/single_pages/dashboard/system/permissions/antispam.php:9
 msgid "** None Activated"
@@ -3879,9 +3909,9 @@ msgstr " %s にテストメールを送信しました。"
 msgid "You will receive a test message from %s"
 msgstr "%s からテストメールが届きます"
 
-#: concrete/core/controllers/single_pages/dashboard/reports/forms.php:151
-#: concrete/core/controllers/single_pages/dashboard/reports/forms.php:159
-#: concrete/core/controllers/single_pages/dashboard/reports/forms.php:168
+#: concrete/core/controllers/single_pages/dashboard/reports/forms.php:155
+#: concrete/core/controllers/single_pages/dashboard/reports/forms.php:164
+#: concrete/core/controllers/single_pages/dashboard/reports/forms.php:174
 #: concrete/core/controllers/single_pages/dashboard/system/mail/importers.php:17
 #: concrete/core/controllers/single_pages/dashboard/system/mail/method.php:12
 #: concrete/core/controllers/single_pages/dashboard/system/mail/method/test_settings.php:13
@@ -4102,6 +4132,14 @@ msgstr ""
 "この属性セットはロックされています。パッケージによって追加されたため、手動で"
 "取り除くことができません。"
 
+#: concrete/core/controllers/single_pages/dashboard/system/attributes/types.php:33
+msgid "Attribute Type Associations saved."
+msgstr "属性タイプの関連付けが保存されました。"
+
+#: concrete/core/controllers/single_pages/dashboard/system/attributes/types.php:36
+msgid "Attribute Type added."
+msgstr "属性タイプが追加されました。"
+
 #: concrete/core/controllers/single_pages/dashboard/system/registration/postlogin.php:36
 msgid "Login redirection saved."
 msgstr "ログイン後スタートページの設定を保存しました。"
@@ -4243,16 +4281,9 @@ msgid "Job Set schedule updated successfully."
 msgstr "ジョブセットのスケジュールを正常に更新されました。"
 
 #: concrete/core/controllers/single_pages/dashboard/reports/statistics.php:44
-#: concrete/elements/dashboard/notification_list.php:44
+#: concrete/core/helpers/date.php:432
 msgid "Today"
 msgstr "今日"
-
-#. %s is a time
-#: concrete/core/controllers/single_pages/dashboard/reports/surveys.php:17
-#: concrete/single_pages/dashboard/reports/logs.php:67
-#, php-format
-msgid "Today at %s"
-msgstr "今日 %s"
 
 #: concrete/config/install/base/dashboard.xml:226
 #: concrete/config/install/disabled/blank/content.xml:38
@@ -4270,8 +4301,18 @@ msgstr "ログ"
 msgid "All"
 msgstr "すべて"
 
-#: concrete/core/controllers/single_pages/dashboard/reports/forms.php:126
-#: concrete/single_pages/dashboard/reports/forms.php:202
+#. %1$s is the survey name, %2$s is the date.
+#: concrete/core/controllers/single_pages/dashboard/reports/forms.php:37
+#, php-format
+msgid "%1$s Form Data Output - Run on %2$s"
+msgstr "%1$s フォームデータ出力 - %2$s に実行"
+
+#: concrete/core/controllers/single_pages/dashboard/reports/forms.php:51
+msgid "Submitted Date"
+msgstr "送信日"
+
+#: concrete/core/controllers/single_pages/dashboard/reports/forms.php:129
+#: concrete/single_pages/dashboard/reports/forms.php:212
 msgid "File not found"
 msgstr "ファイルが見つかりませんでした"
 
@@ -4283,13 +4324,13 @@ msgstr "コンポーザー設定が更新されました。"
 msgid "Parent page not selected"
 msgstr "親ページが選択されていません"
 
-#: concrete/core/controllers/single_pages/dashboard/pages/types.php:52
+#: concrete/core/controllers/single_pages/dashboard/pages/types.php:63
 #: concrete/core/controllers/single_pages/dashboard/pages/types/add.php:19
 #: concrete/core/libraries/attribute/controller.php:172
 msgid "Handle required."
 msgstr "ハンドル（半角英文字）は必須です。"
 
-#: concrete/core/controllers/single_pages/dashboard/pages/types.php:54
+#: concrete/core/controllers/single_pages/dashboard/pages/types.php:66
 #: concrete/core/controllers/single_pages/dashboard/pages/types/add.php:21
 msgid "Handles must contain only letters, numbers or the underscore symbol."
 msgstr "ハンドルは文字、数字、アンダースコア記号しか含めることはできません。"
@@ -4298,7 +4339,7 @@ msgstr "ハンドルは文字、数字、アンダースコア記号しか含め
 msgid "Handle already exists."
 msgstr "そのハンドルはすでに使われています。"
 
-#: concrete/core/controllers/single_pages/dashboard/pages/types.php:60
+#: concrete/core/controllers/single_pages/dashboard/pages/types.php:74
 #: concrete/core/controllers/single_pages/dashboard/pages/types/add.php:31
 msgid "Invalid characters in page type name."
 msgstr "ページタイプ名に不正な文字が含まれています。"
@@ -4390,7 +4431,7 @@ msgstr "ページ属性が作成されました。"
 msgid "Page Attribute Deleted."
 msgstr "ページ属性が削除されました。"
 
-#: concrete/core/controllers/single_pages/dashboard/pages/types.php:23
+#: concrete/core/controllers/single_pages/dashboard/pages/types.php:31
 msgid ""
 "You must delete all pages of this type, and remove all page versions that "
 "contain this page type before deleting this page type."
@@ -4399,15 +4440,15 @@ msgstr ""
 "削除し、このページタイプを使用している全てのページバージョンを取り除く必要が"
 "あります。"
 
-#: concrete/core/controllers/single_pages/dashboard/pages/types.php:29
+#: concrete/core/controllers/single_pages/dashboard/pages/types.php:38
 msgid "Page type added successfully."
 msgstr "ページタイプが正常に追加されました。"
 
-#: concrete/core/controllers/single_pages/dashboard/pages/types.php:34
+#: concrete/core/controllers/single_pages/dashboard/pages/types.php:44
 msgid "Page type updated successfully."
 msgstr "ページタイプが正常に更新されました。"
 
-#: concrete/core/controllers/single_pages/dashboard/pages/types.php:39
+#: concrete/core/controllers/single_pages/dashboard/pages/types.php:50
 msgid "This page type is no longer included in composer."
 msgstr "このページタイプは、コンポーザーに含まれていません。"
 
@@ -4487,13 +4528,13 @@ msgstr ""
 "concrete5の現在のバージョンを判別できません。アップグレードを続行できません。"
 
 #: concrete/core/controllers/single_pages/upgrade.php:51
-#: concrete/core/controllers/single_pages/upgrade.php:81
+#: concrete/core/controllers/single_pages/upgrade.php:86
 #, php-format
 msgid "Upgrading from <b>%s</b>"
 msgstr "<b>%s</b>からアップグレード"
 
 #: concrete/core/controllers/single_pages/upgrade.php:52
-#: concrete/core/controllers/single_pages/upgrade.php:82
+#: concrete/core/controllers/single_pages/upgrade.php:87
 #, php-format
 msgid "Upgrading to <b>%s</b>"
 msgstr "<b>%s</b>にアップグレード"
@@ -4507,36 +4548,45 @@ msgstr ""
 "アップグレードできません。"
 
 #: concrete/core/controllers/single_pages/upgrade.php:56
-#, php-format
-msgid ""
-"Your site is already up to date! The current version of concrete5 is <b>%s</"
-"b>. You should remove this file for security."
-msgstr ""
-"あなたのサイトは最新版です。現在の concrete5 バージョンは<b>%s</b>。\n"
-"セキュリティーのために、このファイルを削除してください。"
+msgid "Your site is already up to date!"
+msgstr "このサイトは最新版です！"
 
-#: concrete/core/controllers/single_pages/upgrade.php:62
+#: concrete/core/controllers/single_pages/upgrade.php:58
+#, php-format
+msgid "The current version of concrete5 is %s."
+msgstr "concrete5 の現バージョン %s."
+
+#: concrete/core/controllers/single_pages/upgrade.php:60
+msgid "You should remove this file for security."
+msgstr "このファイルをセキュリティーの関係で削除することをお勧めします。"
+
+#: concrete/core/controllers/single_pages/upgrade.php:67
 msgid "You must first upgrade your site to version 5.4.2.2"
 msgstr "先にサイトを5.4.2.2にアップグレードする必要があります。"
 
-#: concrete/core/controllers/single_pages/upgrade.php:195
+#: concrete/core/controllers/single_pages/upgrade.php:207
 msgid "Unable to locate database import file."
 msgstr "データベース取り込みファイルが見つかりません。"
 
-#: concrete/core/controllers/single_pages/upgrade.php:233
+#: concrete/core/controllers/single_pages/upgrade.php:245
 #, php-format
 msgid "Unable to create temporary db xml file: %s"
 msgstr "一時的な db xml file の作成ができません: %s"
 
-#: concrete/core/controllers/single_pages/upgrade.php:284
+#: concrete/core/controllers/single_pages/upgrade.php:307
 #, php-format
 msgid "An Unexpected Error occurred while upgrading: %s"
 msgstr "アップグレード中に、予期せぬエラーが発生しました： %s"
 
-#: concrete/core/controllers/single_pages/upgrade.php:288
+#. %s is the concrete5 version number
+#: concrete/core/controllers/single_pages/upgrade.php:313
 #, php-format
-msgid "Upgrade to <b>%s</b> complete!"
-msgstr "<b>%s</b>へのアップグレードが完了しました。"
+msgid "Upgrade to %s complete!"
+msgstr "%s へのアップグレードを完了しました！"
+
+#: concrete/core/controllers/single_pages/upgrade.php:316
+msgid "Upgrade to latest version complete!"
+msgstr "最新バージョンへのアップグレードを完了しました！"
 
 #: concrete/core/controllers/single_pages/login.php:28
 #: concrete/single_pages/dashboard/users/search.php:242
@@ -4631,8 +4681,8 @@ msgstr "無効なメールアドレスです。"
 msgid "We have no record of that email address."
 msgstr "そのメールアドレスは、データベースに登録されていません。"
 
-#: concrete/core/controllers/single_pages/login.php:461
-#: concrete/core/controllers/single_pages/login.php:465
+#: concrete/core/controllers/single_pages/login.php:454
+#: concrete/core/controllers/single_pages/login.php:458
 #: concrete/mail/forgot_password.php:4
 msgid "Forgot Password"
 msgstr "パスワード再発行"
@@ -4716,11 +4766,11 @@ msgstr "有効なデータベース名を入力してください"
 msgid "You must specify a valid database server"
 msgstr "有効なデータベースサーバーを入力してください"
 
-#: concrete/core/controllers/single_pages/install.php:292
+#: concrete/core/controllers/single_pages/install.php:287
 msgid "Unable to open config/site.php for writing."
 msgstr "config/site.phpファイルに書き込む事ができませんでした。"
 
-#: concrete/core/controllers/single_pages/install.php:313
+#: concrete/core/controllers/single_pages/install.php:308
 msgid "Unable to open config/site_user.php for writing."
 msgstr "config/site.phpファイルに書き込む事ができませんでした。"
 
@@ -4849,9 +4899,9 @@ msgstr "ファイルを選択してください"
 #: concrete/blocks/guestbook/edit.php:35 concrete/blocks/guestbook/edit.php:53
 #: concrete/blocks/page_list/page_list_form.php:112
 #: concrete/blocks/survey/add.php:21 concrete/blocks/survey/edit.php:22
-#: concrete/core/models/attribute/types/boolean.php:38
-#: concrete/core/models/attribute/types/boolean.php:66
-#: concrete/core/models/attribute/types/boolean.php:76
+#: concrete/core/models/attribute/types/boolean.php:39
+#: concrete/core/models/attribute/types/boolean.php:67
+#: concrete/core/models/attribute/types/boolean.php:77
 #: concrete/elements/pages/search_form_advanced.php:84
 #: concrete/elements/pages/search_form_advanced.php:272
 #: concrete/single_pages/dashboard/system/mail/importers.php:5
@@ -4868,7 +4918,7 @@ msgstr "はい"
 #: concrete/blocks/guestbook/add.php:58 concrete/blocks/guestbook/edit.php:27
 #: concrete/blocks/guestbook/edit.php:36 concrete/blocks/guestbook/edit.php:54
 #: concrete/blocks/page_list/page_list_form.php:115
-#: concrete/core/models/attribute/types/boolean.php:38
+#: concrete/core/models/attribute/types/boolean.php:39
 #: concrete/elements/pages/search_form_advanced.php:83
 #: concrete/elements/pages/search_form_advanced.php:271
 #: concrete/single_pages/dashboard/system/mail/importers.php:5
@@ -4886,7 +4936,7 @@ msgstr "国を少なくとも1つ選択してください。"
 msgid "The default country must be in the list of custom countries."
 msgstr "デフォルトの国は、リストにある国から選ぶ必要があります。"
 
-#: concrete/core/models/attribute/types/date_time.php:129
+#: concrete/core/models/attribute/types/date_time.php:142
 #: concrete/core/models/attribute/types/number.php:28
 #: concrete/elements/files/search_form_advanced.php:50
 #: concrete/elements/files/search_form_advanced.php:65
@@ -4901,9 +4951,11 @@ msgstr "デフォルトの国は、リストにある国から選ぶ必要があ
 msgid "to"
 msgstr "から"
 
-#: concrete/core/models/attribute/types/date_time.php:41
-msgid " on "
-msgstr " - "
+#. %1$s is a time, %2$s is a date
+#: concrete/core/models/attribute/types/date_time.php:47
+#, php-format
+msgid "%1$s on %2$s"
+msgstr "%2$s %1$s"
 
 #: concrete/core/models/file_list.php:131
 #, php-format
@@ -4949,7 +5001,7 @@ msgstr "エラー：無効なジョブファイルです。%sクラスが、%s�
 #: concrete/config/install/base/dashboard.xml:632
 #: concrete/config/install/disabled/blank/content.xml:124
 #: concrete/config/install/disabled/standard/content.xml:124
-#: concrete/core/models/user_list.php:143
+#: concrete/core/models/user_list.php:146
 #: concrete/elements/users/confirm_list.php:8
 #: concrete/helpers/concrete/upgrade/version_532.php:162
 #: concrete/mail/user_register_approval_required.php:15
@@ -4958,12 +5010,9 @@ msgstr "エラー：無効なジョブファイルです。%sクラスが、%s�
 msgid "Email"
 msgstr "Email"
 
-#: concrete/core/models/page_list.php:514
-#: concrete/core/models/user_list.php:144
-#: concrete/elements/pages/search_form_advanced.php:9
-#: concrete/single_pages/dashboard/composer/drafts.php:13
-msgid "Last Modified"
-msgstr "最終更新日時"
+#: concrete/core/models/user_list.php:147
+msgid "Signup Date"
+msgstr "登録日"
 
 #: concrete/core/models/stack/model.php:54
 msgid "No Name"
@@ -4982,30 +5031,36 @@ msgstr "エラー：レイアウトが属しているエリアがありません
 #: concrete/core/models/page.php:291
 #: concrete/core/models/user_private_message.php:147
 #: concrete/core/models/workflow/progress/history.php:21
-#: concrete/single_pages/profile/friends.php:23
+#: concrete/single_pages/profile/friends.php:26
 msgid "Unknown User"
 msgstr "不明なユーザー"
 
-#: concrete/core/models/page.php:1629
+#: concrete/core/models/page.php:1634
 #, php-format
 msgid "Page \"%s\" at path \"%s\" deleted"
 msgstr "ページ「%s」（パス %s ）を削除しました"
 
-#: concrete/core/models/page.php:1629 concrete/core/models/page.php:1691
+#: concrete/core/models/page.php:1634 concrete/core/models/page.php:1696
 msgid "Page Action"
 msgstr "ページアクション"
 
-#: concrete/core/models/page.php:1691
+#: concrete/core/models/page.php:1696
 #, php-format
 msgid "Page \"%s\" at path \"%s\" Moved to trash"
 msgstr "ページ「%s」（パス %s ）をゴミ箱に移動しました"
 
-#: concrete/core/models/page_list.php:513
-#: concrete/single_pages/dashboard/reports/forms.php:169
+#: concrete/core/models/page_list.php:515
+#: concrete/single_pages/dashboard/reports/forms.php:178
 #: concrete/single_pages/dashboard/reports/surveys.php:23
 #: concrete/single_pages/dashboard/system/backup_restore/backup.php:102
 msgid "Date"
 msgstr "日付"
+
+#: concrete/core/models/page_list.php:516
+#: concrete/elements/pages/search_form_advanced.php:9
+#: concrete/single_pages/dashboard/composer/drafts.php:16
+msgid "Last Modified"
+msgstr "最終更新日時"
 
 #: concrete/core/models/user_banned_ip.php:54
 msgid "Failed Registration"
@@ -5084,7 +5139,7 @@ msgstr "完了。"
 msgid "Unable to install database: %s"
 msgstr "データベースをインストールできませんでした: %s"
 
-#: concrete/config/localization.php:122
+#: concrete/config/localization.php:175
 #: concrete/core/models/starting_point_package.php:129
 msgctxt "GroupName"
 msgid "Guest"
@@ -5095,7 +5150,7 @@ msgctxt "GroupDescription"
 msgid "The guest group represents unregistered visitors to your site."
 msgstr "ゲストグループとは、サイトに登録していない訪問者を表します。"
 
-#: concrete/config/localization.php:124
+#: concrete/config/localization.php:177
 #: concrete/core/models/starting_point_package.php:130
 msgctxt "GroupName"
 msgid "Registered Users"
@@ -5106,13 +5161,13 @@ msgctxt "GroupDescription"
 msgid "The registered users group represents all user accounts."
 msgstr "登録ユーザーとは、すべての登録済みユーザーを表します。"
 
-#: concrete/config/localization.php:126
+#: concrete/config/localization.php:179
 #: concrete/core/models/starting_point_package.php:131
 msgctxt "GroupName"
 msgid "Administrators"
 msgstr "管理者"
 
-#: concrete/core/models/userinfo.php:244
+#: concrete/core/models/userinfo.php:246
 #: concrete/mail/mail_importer_error.php:8
 #: concrete/mail/private_message.php:10
 #: concrete/mail/private_message_response_enabled.php:8
@@ -5120,12 +5175,12 @@ msgstr "管理者"
 msgid "Subject: %s"
 msgstr "件名: %s"
 
-#: concrete/core/models/userinfo.php:246
+#: concrete/core/models/userinfo.php:248
 #, php-format
 msgid "Message: %s"
 msgstr "本文: %s"
 
-#: concrete/core/models/userinfo.php:253
+#: concrete/core/models/userinfo.php:255
 msgid "(No Subject)"
 msgstr "(件名なし)"
 
@@ -5285,7 +5340,7 @@ msgid "Permission Changes"
 msgstr "権限変更"
 
 #: concrete/core/models/workflow/request/requests/change_page_permissions.php:52
-#: concrete/elements/pages/search_results.php:40
+#: concrete/elements/pages/search_results.php:43
 msgid "Change Permissions"
 msgstr "権限を変更"
 
@@ -5462,7 +5517,7 @@ msgstr "ページ所有者"
 #: concrete/config/install/disabled/blank/content.xml:33
 #: concrete/config/install/disabled/standard/content.xml:33
 #: concrete/core/models/permission/access/entity/types/user.php:13
-#: concrete/elements/users/search_results.php:35
+#: concrete/elements/users/search_results.php:36
 #: concrete/helpers/concrete/upgrade/version_510.php:83
 #: concrete/single_pages/dashboard/users/add.php:19
 msgid "Add User"
@@ -5488,25 +5543,25 @@ msgstr "グループ"
 msgid "(Deleted Group)"
 msgstr "（削除されたグループ）"
 
-#: concrete/core/models/permission/duration.php:158
+#: concrete/core/models/permission/duration.php:160
 #, php-format
 msgid "Starts %s. "
 msgstr "開始　%s. "
 
-#: concrete/core/models/permission/duration.php:160
+#: concrete/core/models/permission/duration.php:162
 msgid "Already Started. "
 msgstr "すでに開始されています。"
 
-#: concrete/core/models/permission/duration.php:163
+#: concrete/core/models/permission/duration.php:165
 #, php-format
 msgid "Ends %s. "
 msgstr "終了　%s"
 
-#: concrete/core/models/permission/duration.php:165
+#: concrete/core/models/permission/duration.php:167
 msgid "No End Date. "
 msgstr "終了日なし。"
 
-#: concrete/core/models/permission/duration.php:168
+#: concrete/core/models/permission/duration.php:170
 #, php-format
 msgid "Repeats %s. "
 msgstr "繰り返し %s"
@@ -5536,122 +5591,122 @@ msgstr "Captchaをクリックすると違う文字候補が出てきます。"
 msgid "Please type the letters and numbers shown in the image."
 msgstr "画像中の文字と数字を入力してください。"
 
-#: concrete/core/models/package.php:298
+#: concrete/core/models/package.php:297
 msgid "Attribute categories"
 msgstr "属性カテゴリー"
 
-#: concrete/core/models/package.php:301
+#: concrete/core/models/package.php:300
 msgid "Permission categories"
 msgstr "権限カテゴリー"
 
-#: concrete/core/models/package.php:304
+#: concrete/core/models/package.php:303
 msgid "Permission access entity types"
 msgstr "権限アクセスエンティティタイプ"
 
-#: concrete/core/models/package.php:307
+#: concrete/core/models/package.php:306
 msgid "Attribute keys"
 msgstr "属性キー"
 
-#: concrete/core/models/package.php:310
+#: concrete/core/models/package.php:309
 msgid "Attribute sets"
 msgstr "属性セット"
 
-#: concrete/core/models/package.php:313
+#: concrete/core/models/package.php:312
 msgid "Group sets"
 msgstr "グループセット"
 
-#: concrete/core/models/package.php:316
+#: concrete/core/models/package.php:315
 msgid "Page types"
 msgstr "ページタイプ"
 
-#: concrete/core/models/package.php:319
+#: concrete/core/models/package.php:318
 msgid "Mail importers"
 msgstr "メールインポーター"
 
-#: concrete/core/models/package.php:322
+#: concrete/core/models/package.php:321
 msgid "Configuration values"
 msgstr "設定値"
 
-#: concrete/core/models/package.php:325
+#: concrete/core/models/package.php:324
 msgid "Block types"
 msgstr "ブロックタイプ"
 
-#: concrete/core/models/package.php:328
+#: concrete/core/models/package.php:327
 msgid "Page themes"
 msgstr "ページテーマ"
 
-#: concrete/core/models/package.php:334
+#: concrete/core/models/package.php:333
 msgid "Single pages"
 msgstr "シングルページ"
 
-#: concrete/core/models/package.php:337
+#: concrete/core/models/package.php:336
 msgid "Attribute types"
 msgstr "属性タイプ"
 
-#: concrete/core/models/package.php:340
+#: concrete/core/models/package.php:339
 msgid "Captcha libraries"
 msgstr "CAPTCHAライブラリー"
 
-#: concrete/core/models/package.php:343
+#: concrete/core/models/package.php:342
 msgid "Antispam libraries"
 msgstr "スパム拒否ライブラリー"
 
-#: concrete/core/models/package.php:346
+#: concrete/core/models/package.php:345
 #: concrete/single_pages/dashboard/system/optimization/jobs.php:46
 #: concrete/single_pages/dashboard/system/optimization/jobs.php:265
 #: concrete/single_pages/dashboard/system/optimization/jobs.php:371
 msgid "Jobs"
 msgstr "ジョブ"
 
-#: concrete/core/models/package.php:349
+#: concrete/core/models/package.php:348
 msgid "Workflow types"
 msgstr "ワークフロータイプ"
 
-#: concrete/core/models/package.php:387
+#: concrete/core/models/package.php:386
 #, php-format
 msgid "%s (%s)"
 msgstr "%s (%s)"
 
-#: concrete/core/models/package.php:392
+#: concrete/core/models/package.php:391
 #, php-format
 msgid " %s (%s)"
 msgstr " %s (%s)"
 
-#: concrete/core/models/package.php:577
+#: concrete/core/models/package.php:576
 msgid "You've already installed that package."
 msgstr "そのパッケージはすでにインストールされています。"
 
-#: concrete/core/models/package.php:578
+#: concrete/core/models/package.php:577
 msgid "Invalid Package."
 msgstr "無効なパッケージです。"
 
-#: concrete/core/models/package.php:579
+#: concrete/core/models/package.php:578
 #, php-format
 msgid "This package requires concrete5 version %s or greater."
 msgstr "このパッケージはconcrete5のバージョン %s 以上が必要です。"
 
-#: concrete/core/models/package.php:580
+#: concrete/core/models/package.php:579
 msgid "An error occurred while downloading the package."
 msgstr "パッケージのダウンロード中にエラーが発生しました。"
 
-#: concrete/core/models/package.php:581
+#: concrete/core/models/package.php:580
 msgid "concrete5 was not able to save the package after download."
 msgstr "concrete5がダウンロード後のパッケージを保存できませんでした。"
 
-#: concrete/core/models/package.php:582
+#: concrete/core/models/package.php:581
 msgid "An error occurred while trying to unzip the package."
 msgstr "パッケージのZIPファイルを解凍中にエラーが発生しました。"
 
-#: concrete/core/models/package.php:583
+#: concrete/core/models/package.php:582
 msgid "An error occurred while trying to install the package."
 msgstr "パッケージのインストール中にエラーが発生しました。"
 
-#: concrete/core/models/package.php:584
+#: concrete/core/models/package.php:583
 #, php-format
 msgid "Unable to backup old package directory to %s"
 msgstr "旧パッケージを「%s」ディレクトリーにバックアップできませんでした。"
 
-#: concrete/core/models/package.php:585
+#: concrete/core/models/package.php:584
 msgid ""
 "This package isn't currently available for this version of concrete5. Please "
 "contact the maintainer of this package for assistance."
@@ -5674,7 +5729,7 @@ msgstr "マーケットプレイスに接続しアイテムをダウンロード
 msgid "Version %d"
 msgstr "バージョン %d"
 
-#: concrete/core/models/block_types.php:712
+#: concrete/core/models/block_types.php:715
 #, php-format
 msgid ""
 "%s not found. Please check that the block controller file contains the "
@@ -5683,7 +5738,7 @@ msgstr ""
 "%s が見つかりません。ブロックのcontrollerファイルに正しいクラス名が含まれてい"
 "るか確認してください。"
 
-#: concrete/core/models/block_types.php:721
+#: concrete/core/models/block_types.php:724
 msgid ""
 "Error: Block Type cannot be installed because no db.xml file can be found. "
 "Either create a db.xml file for this block type, or remove the $btTable "
@@ -5693,7 +5748,7 @@ msgstr ""
 "た。このブロックタイプの db.xml ファイルを作成するか、$btTable 変数をブロック"
 "タイプのコントローラーから削除してください。"
 
-#: concrete/core/models/block_types.php:725
+#: concrete/core/models/block_types.php:728
 msgid ""
 "Error: Block Type cannot be installed due to an unknown database error. "
 "Please check that the db.xml file for this block type is formatted correctly."
@@ -5702,18 +5757,18 @@ msgstr ""
 "でした。ブロックタイプの db.xml ファイルの書式が正しいかどうか確認してくださ"
 "い。"
 
-#: concrete/core/models/block_types.php:786
+#: concrete/core/models/block_types.php:789
 #, php-format
 msgid "No block found with the handle %s."
 msgstr "ハンドル %s のブロックが見つかりません。"
 
-#: concrete/core/models/block_types.php:805
+#: concrete/core/models/block_types.php:808
 msgid "Error: Block Type table must contain at least two fields."
 msgstr ""
 "エラー：ブロックタイプのテーブルは少なくとも2つのフィールドを含める必要があり"
 "ます。"
 
-#: concrete/core/models/block_types.php:807
+#: concrete/core/models/block_types.php:810
 msgid "Error: Block Type table must contain a \"bID\" primary key field."
 msgstr ""
 "エラー：ブロックタイプのテーブルに「bID」のプライマリーキーフィールドを含める"
@@ -5743,6 +5798,24 @@ msgstr "エレメントの引数「%s」は不正な変数名です。"
 #: concrete/core/libraries/loader.php:265
 msgid "A database error occurred while processing this request."
 msgstr "リクエストの処理中にデータベースエラーが発生しました。"
+
+#: concrete/core/libraries/loader.php:333
+#, php-format
+msgid ""
+"Warning - failed to load package with pkgHandle '%1$s'. Could not find "
+"package controller file: '%2$s'"
+msgstr ""
+"警告 - pgkHanfle %1$sのパッケージを読み込めませんでした。次のパッケージコント"
+"ローラーファイルが見つかりませんでした。'%2$s'"
+
+#: concrete/core/libraries/loader.php:347
+#, php-format
+msgid ""
+"Warning - failed to load package in directory '%1$s'. The package controller "
+"does not define the expected class: '%2$s'"
+msgstr ""
+"警告 - '%1$s'ディレクトリーにあるパッケージを読み込めませんでした。パッケージ"
+"コントローラーで必要なクラス '%2$s' が定義されていませんでした。"
 
 #: concrete/core/libraries/content/importer.php:221
 #, php-format
@@ -5810,7 +5883,7 @@ msgstr ""
 "Eメールを正常に処理できませんでした。あなたのオリジナルメッセージにバリデー"
 "ションハッシュがあるかチェックしてください。"
 
-#: concrete/core/libraries/view.php:981
+#: concrete/core/libraries/view.php:994
 #, php-format
 msgid ""
 "File %s not found. All themes need default.php and view.php files in them. "
@@ -5955,33 +6028,117 @@ msgstr "次"
 msgid "Previous"
 msgstr "前"
 
-#: concrete/core/helpers/file.php:323
+#: concrete/core/helpers/file.php:325
 msgid "An error occured while attempting to determine file permissions."
 msgstr "ファイル権限の設定時にエラーが発生しました。"
 
-#: concrete/core/helpers/date.php:175
+#: concrete/core/helpers/date.php:168
 #, php-format
 msgid "%d day"
 msgid_plural "%d days"
 msgstr[0] "%d 日"
 
-#: concrete/core/helpers/date.php:177 concrete/core/helpers/date.php:180
+#: concrete/core/helpers/date.php:170 concrete/core/helpers/date.php:173
 #, php-format
 msgid "%d hour"
 msgid_plural "%d hours"
 msgstr[0] "%d 時間"
 
-#: concrete/core/helpers/date.php:183 concrete/core/helpers/date.php:188
+#: concrete/core/helpers/date.php:175 concrete/core/helpers/date.php:178
 #, php-format
 msgid "%d minute"
 msgid_plural "%d minutes"
 msgstr[0] "%d 分"
 
-#: concrete/core/helpers/date.php:191 concrete/core/helpers/date.php:196
+#: concrete/core/helpers/date.php:180 concrete/core/helpers/date.php:183
 #, php-format
 msgid "%d second"
 msgid_plural "%d seconds"
 msgstr[0] "%d 秒"
+
+#. Long date format: see http://www.php.net/manual/en/function.date.php
+#: concrete/config/localization.php:75 concrete/core/helpers/date.php:322
+msgid "F j, Y"
+msgstr "Y年n月j日"
+
+#. Short date format: see http://www.php.net/manual/en/function.date.php
+#: concrete/config/localization.php:68 concrete/core/helpers/date.php:328
+#: concrete/core/helpers/date.php:551 concrete/core/helpers/date.php:575
+#: concrete/core/helpers/form/date_time.php:43
+#: concrete/core/helpers/form/date_time.php:65
+msgid "n/j/Y"
+msgstr "Y/m/d"
+
+#. Time format with seconds: see
+#. http://www.php.net/manual/en/function.date.php
+#: concrete/config/localization.php:89 concrete/core/helpers/date.php:354
+#: concrete/core/helpers/date.php:557
+msgid "g:i:s A"
+msgstr "G:i:s"
+
+#. Time format without seconds: see
+#. http://www.php.net/manual/en/function.date.php
+#: concrete/config/localization.php:82 concrete/core/helpers/date.php:361
+msgid "g:i A"
+msgstr "G:i"
+
+#. Long date format and time with seconds: see
+#. http://www.php.net/manual/en/function.date.php
+#: concrete/config/localization.php:54 concrete/core/helpers/date.php:389
+msgid "F d, Y \\a\\t g:i:s A"
+msgstr "Y年n月j日 h:i:s"
+
+#. Long date format and time without seconds: see
+#. http://www.php.net/manual/en/function.date.php
+#: concrete/config/localization.php:47 concrete/core/helpers/date.php:395
+#: concrete/core/helpers/date.php:536
+msgid "F d, Y \\a\\t g:i A"
+msgstr "Y年n月j日 g:i A"
+
+#. Short date format and time with seconds: see
+#. http://www.php.net/manual/en/function.date.php
+#: concrete/core/helpers/date.php:400
+msgid "n/j/Y \\a\\t g:i:s A"
+msgstr "Y/m/d h:m:s"
+
+#. Short date format and time without seconds: see
+#. http://www.php.net/manual/en/function.date.php
+#: concrete/config/localization.php:61 concrete/core/helpers/date.php:406
+#: concrete/core/helpers/date.php:545
+msgid "n/j/Y \\a\\t g:i A"
+msgstr "Y/n/j \\a\\t g:i A"
+
+#: concrete/core/helpers/date.php:434
+msgid "Tomorrow"
+msgstr "明日"
+
+#: concrete/core/helpers/date.php:436
+msgid "Yesterday"
+msgstr "昨日"
+
+#. %s is a time
+#: concrete/core/helpers/date.php:462
+#, php-format
+msgid "Today at %s"
+msgstr "今日 %s"
+
+#. %s is a time
+#: concrete/core/helpers/date.php:464
+#, php-format
+msgid "Tomorrow at %s"
+msgstr "明日の%s"
+
+#. %s is a time
+#: concrete/core/helpers/date.php:466
+#, php-format
+msgid "Yesterday at %s"
+msgstr "昨日の%s"
+
+#. Used when dates are used to start filenames: see
+#. http://www.php.net/manual/en/function.date.php
+#: concrete/config/localization.php:96 concrete/core/helpers/date.php:528
+msgid "d-m-Y_H:i_"
+msgstr "Y-m-d_H:i_"
 
 #. %s is a number
 #: concrete/core/helpers/number.php:115
@@ -6070,45 +6227,45 @@ msgstr "ユーザーが選択されていません。"
 msgid "Select Page"
 msgstr "ページを選択"
 
-#: concrete/core/helpers/mail.php:375
+#: concrete/core/helpers/mail.php:376
 msgid "Mail Exception Occurred. Unable to send mail: "
 msgstr "エラーが発生し、メール送信ができませんでした: "
 
-#: concrete/core/helpers/mail.php:378 concrete/core/helpers/mail.php:399
+#: concrete/core/helpers/mail.php:379 concrete/core/helpers/mail.php:400
 msgid "Template Used"
 msgstr "使用テンプレート"
 
-#: concrete/core/helpers/mail.php:379 concrete/core/helpers/mail.php:400
-#: concrete/single_pages/profile/messages.php:57
-#: concrete/single_pages/profile/messages.php:135
+#: concrete/core/helpers/mail.php:380 concrete/core/helpers/mail.php:401
+#: concrete/single_pages/profile/messages.php:61
+#: concrete/single_pages/profile/messages.php:139
 msgid "To"
 msgstr "To"
 
-#: concrete/core/helpers/mail.php:380 concrete/core/helpers/mail.php:401
-#: concrete/single_pages/profile/messages.php:57
+#: concrete/core/helpers/mail.php:381 concrete/core/helpers/mail.php:402
+#: concrete/single_pages/profile/messages.php:61
 msgid "From"
 msgstr "From"
 
-#: concrete/core/helpers/mail.php:382 concrete/core/helpers/mail.php:403
+#: concrete/core/helpers/mail.php:383 concrete/core/helpers/mail.php:404
 msgid "Reply-To"
 msgstr "Reply-To"
 
-#: concrete/core/helpers/mail.php:384 concrete/core/helpers/mail.php:405
-#: concrete/single_pages/profile/messages.php:58
-#: concrete/single_pages/profile/messages.php:141
+#: concrete/core/helpers/mail.php:385 concrete/core/helpers/mail.php:406
+#: concrete/single_pages/profile/messages.php:62
+#: concrete/single_pages/profile/messages.php:145
 msgid "Subject"
 msgstr "件名"
 
-#: concrete/core/helpers/mail.php:385 concrete/core/helpers/mail.php:406
+#: concrete/core/helpers/mail.php:386 concrete/core/helpers/mail.php:407
 msgid "Body"
 msgstr "本文"
 
-#: concrete/core/helpers/mail.php:395
+#: concrete/core/helpers/mail.php:396
 msgid "EMAILS ARE ENABLED. THIS EMAIL WAS SENT TO mail()"
 msgstr ""
 "メール機能は有効。このメールはmail()もしくはmb_send_mail()に送られました。"
 
-#: concrete/core/helpers/mail.php:397
+#: concrete/core/helpers/mail.php:398
 msgid "EMAILS ARE DISABLED. THIS EMAIL WAS LOGGED BUT NOT SENT"
 msgstr ""
 "メール機能は無効。このメールはログに記録されましたが、送信されませんでした"
@@ -6168,7 +6325,7 @@ msgstr "&lt; ホームに戻る"
 #: concrete/single_pages/dashboard/users/search.php:317
 #: concrete/single_pages/download_file.php:34
 #: concrete/single_pages/install.php:102
-#: concrete/single_pages/profile/messages.php:44
+#: concrete/single_pages/profile/messages.php:48
 #: concrete/themes/dashboard/elements/header.php:112
 msgid "Back"
 msgstr "戻る"
@@ -6191,7 +6348,7 @@ msgstr "変更を保存"
 msgid "Edit Page"
 msgstr "編集モード"
 
-#: concrete/blocks/page_list/templates/blog_index.php:29
+#: concrete/blocks/page_list/templates/blog_index.php:31
 #: concrete/themes/default/blog_entry.php:19
 #, php-format
 msgid "Posted by %s on %s"
@@ -6255,7 +6412,7 @@ msgstr "%s: 基本情報"
 #: concrete/single_pages/dashboard/pages/types/view.php:64
 #: concrete/single_pages/dashboard/pages/types/view.php:218
 #: concrete/single_pages/dashboard/system/attributes/sets.php:23
-#: concrete/single_pages/dashboard/system/attributes/sets.php:144
+#: concrete/single_pages/dashboard/system/attributes/sets.php:161
 msgid "Handle"
 msgstr "ハンドル"
 
@@ -6272,7 +6429,7 @@ msgid "Set"
 msgstr "セット"
 
 #: concrete/elements/attribute/type_form_required.php:68
-#: concrete/models/attribute/types/select/form.php:157
+#: concrete/models/attribute/types/select/form.php:186
 msgid "** None"
 msgstr "** なし"
 
@@ -6327,7 +6484,7 @@ msgstr "管理画面のユーザー検索で使用する"
 #: concrete/elements/pages/search_form_advanced.php:179
 #: concrete/elements/permission/access/list.php:12
 #: concrete/elements/users/search_form_advanced.php:115
-#: concrete/models/attribute/types/select/form.php:74
+#: concrete/models/attribute/types/select/form.php:92
 #: concrete/models/attribute/types/select/type_form.php:107
 #: concrete/single_pages/dashboard/blocks/stacks/view.php:42
 #: concrete/single_pages/dashboard/blocks/stacks/view.php:274
@@ -6393,8 +6550,8 @@ msgid "Display files in no sets."
 msgstr "セット定義されていないファイル"
 
 #: concrete/elements/files/search_results.php:27
-#: concrete/elements/pages/search_results.php:35
-#: concrete/elements/users/search_results.php:37
+#: concrete/elements/pages/search_results.php:38
+#: concrete/elements/users/search_results.php:39
 msgid "With Selected"
 msgstr "選択したアイテムの"
 
@@ -6452,7 +6609,7 @@ msgstr "保存された検索"
 #: concrete/elements/users/search_form_advanced.php:63
 #: concrete/single_pages/dashboard/files/sets.php:157
 #: concrete/single_pages/dashboard/reports/logs.php:35
-#: concrete/single_pages/dashboard/system/seo/bulk_seo_tool.php:91
+#: concrete/single_pages/dashboard/system/seo/bulk_seo_tool.php:93
 #: concrete/single_pages/dashboard/users/groups.php:66
 msgid "Keywords"
 msgstr "キーワード"
@@ -6466,7 +6623,7 @@ msgstr "表示件数"
 #: concrete/elements/files/search_form_advanced.php:223
 #: concrete/elements/pages/search_form_advanced.php:173
 #: concrete/elements/users/search_form_advanced.php:109
-#: concrete/single_pages/dashboard/system/seo/bulk_seo_tool.php:100
+#: concrete/single_pages/dashboard/system/seo/bulk_seo_tool.php:102
 msgid "Advanced Search"
 msgstr "詳細検索"
 
@@ -6508,7 +6665,7 @@ msgstr "アップロード"
 msgid "Undo"
 msgstr "取り消す"
 
-#: concrete/blocks/google_map/form_setup_html.php:20
+#: concrete/blocks/google_map/form_setup_html.php:30
 #: concrete/elements/files/edit/image.php:22
 msgid "Zoom"
 msgstr "ズーム"
@@ -6679,7 +6836,6 @@ msgid ""
 msgstr "注意: 追加ページパスは履歴管理されません。変更はすぐに反映されます。"
 
 #: concrete/elements/profile/sidebar.php:7
-#: concrete/single_pages/profile/friends.php:36
 msgid "Member Since"
 msgstr "登録日"
 
@@ -6803,43 +6959,39 @@ msgstr ""
 "新しいバージョンの concrete5 がダウンロードされましたが、まだアップグレードさ"
 "れていません。<a href=\"%s\">%s にアップグレード</a>！"
 
-#: concrete/elements/dashboard/notification_list.php:46
-msgid "Yesterday"
-msgstr "昨日"
-
-#: concrete/elements/dashboard/notification_list.php:60
-#: concrete/elements/dashboard/notification_list.php:63
+#: concrete/elements/dashboard/notification_list.php:55
+#: concrete/elements/dashboard/notification_list.php:58
 msgid "Full Release Notes"
 msgstr "リリースノート全文"
 
 #: concrete/config/install/base/dashboard.xml:734
 #: concrete/config/install/disabled/blank/content.xml:110
 #: concrete/config/install/disabled/standard/content.xml:110
-#: concrete/elements/dashboard/notification_list.php:61
+#: concrete/elements/dashboard/notification_list.php:56
 #: concrete/single_pages/dashboard/system/backup_restore/update.php:68
 msgid "Update concrete5"
 msgstr "concrete5をアップグレード"
 
-#: concrete/elements/dashboard/notification_list.php:64
+#: concrete/elements/dashboard/notification_list.php:59
 msgid "Update Addon"
 msgstr "このアドオンをアップグレード"
 
 #: concrete/blocks/rss_displayer/templates/read_more.php:36
-#: concrete/elements/dashboard/notification_list.php:66
+#: concrete/elements/dashboard/notification_list.php:61
 msgid "Read More"
 msgstr "もっと読む"
 
-#: concrete/elements/dashboard/notification_list.php:67
+#: concrete/elements/dashboard/notification_list.php:62
 msgid "Read Full Post"
 msgstr "記事全文"
 
-#: concrete/elements/dashboard/notification_list.php:95
+#: concrete/elements/dashboard/notification_list.php:88
 #: concrete/single_pages/dashboard/extend/update.php:55
 #: concrete/single_pages/dashboard/extend/update.php:57
 msgid "More Information"
 msgstr "詳しい情報"
 
-#: concrete/elements/block_master_collection_alias.php:17
+#: concrete/elements/block_master_collection_alias.php:19
 msgid ""
 "There are no pages of this type added to your website. If there were, you'd "
 "be able to choose which of those pages this block appears on."
@@ -6847,7 +6999,7 @@ msgstr ""
 "現在、このタイプが追加されたページは存在していません。もし存在する場合は、こ"
 "のブロックが追加されたページを選択することができます。"
 
-#: concrete/elements/block_master_collection_alias.php:21
+#: concrete/elements/block_master_collection_alias.php:23
 msgid ""
 "Choose which pages below this particular block should appear on. Any "
 "previously selected blocks may also be removed using the checkbox. Click the "
@@ -6858,11 +7010,11 @@ msgstr ""
 "す。「更新日時」の右側にあるチェックボックスをクリックすると、すべてのページ"
 "に適用されます。"
 
-#: concrete/elements/block_master_collection_alias.php:28
+#: concrete/elements/block_master_collection_alias.php:30
 msgid "Date Created"
 msgstr "作成日時"
 
-#: concrete/elements/block_master_collection_alias.php:29
+#: concrete/elements/block_master_collection_alias.php:31
 msgid "Date Modified"
 msgstr "更新日時"
 
@@ -6920,7 +7072,7 @@ msgstr "リンクを新しいウインドウで開く"
 msgid "You have no items in your Clipboard."
 msgstr "クリップボードには使用可能なアイテムが保存されていません。"
 
-#: concrete/config/localization.php:120
+#: concrete/config/localization.php:173
 #: concrete/elements/block_area_add_stack_contents.php:48
 #: concrete/elements/scrapbook_lists.php:33
 #: concrete/elements/scrapbook_lists.php:49
@@ -7026,27 +7178,27 @@ msgstr "追加アドオン"
 msgid "Purge attempt complete."
 msgstr "消去を試みました。"
 
-#: concrete/elements/collection_speed_settings.php:126
+#: concrete/elements/collection_speed_settings.php:124
 #, php-format
 msgid "This page currently exists in the full page cache. It expires %s."
 msgstr ""
 "このページはフルページキャッシュに存在します。キャッシュは %s まで有効です。"
 
-#: concrete/elements/collection_speed_settings.php:127
-#: concrete/elements/collection_speed_settings.php:132
+#: concrete/elements/collection_speed_settings.php:125
+#: concrete/elements/collection_speed_settings.php:130
 msgid "Purge"
 msgstr "消去"
 
-#: concrete/elements/collection_speed_settings.php:131
+#: concrete/elements/collection_speed_settings.php:129
 msgid "This page <strong>may</strong> exist in the page cache."
 msgstr ""
 "このページはページキャッシュに存在する<strong>可能性があります</strong>。"
 
-#: concrete/elements/collection_speed_settings.php:135
+#: concrete/elements/collection_speed_settings.php:133
 msgid "This page is not currently in the full page cache."
 msgstr "現在このページのフルページキャッシュは無効です。"
 
-#: concrete/elements/collection_speed_settings.php:139
+#: concrete/elements/collection_speed_settings.php:137
 msgid "Enable Cache"
 msgstr "キャッシュを有効"
 
@@ -7226,8 +7378,8 @@ msgstr "近日公表"
 
 #: concrete/elements/pages/search_form_advanced.php:136
 #: concrete/elements/workflow/progress/categories/page/pending.php:11
-#: concrete/single_pages/dashboard/composer/drafts.php:11
-#: concrete/single_pages/dashboard/system/seo/bulk_seo_tool.php:137
+#: concrete/single_pages/dashboard/composer/drafts.php:14
+#: concrete/single_pages/dashboard/system/seo/bulk_seo_tool.php:139
 msgid "Page Name"
 msgstr "ページ名"
 
@@ -7239,16 +7391,16 @@ msgstr "直前の操作"
 msgid "Current Status"
 msgstr "現在の状態"
 
-#: concrete/elements/workflow/progress/categories/page/pending.php:30
+#: concrete/elements/workflow/progress/categories/page/pending.php:32
 msgid "Click for history."
 msgstr "クリックで履歴を表示します。"
 
-#: concrete/elements/workflow/progress/categories/page/pending.php:68
+#: concrete/elements/workflow/progress/categories/page/pending.php:70
 msgid "There is nothing currently waiting for you."
 msgstr "現在あなた宛ての通知はありません。"
 
-#: concrete/elements/workflow/progress/categories/page/pending.php:87
-#: concrete/elements/workflow/progress/categories/page/pending.php:96
+#: concrete/elements/workflow/progress/categories/page/pending.php:89
+#: concrete/elements/workflow/progress/categories/page/pending.php:98
 msgid "None."
 msgstr "なし。"
 
@@ -7257,7 +7409,7 @@ msgid "Preview As"
 msgstr "プレビューユーザー"
 
 #: concrete/elements/collection_preview_as_user.php:17
-#: concrete/single_pages/dashboard/reports/logs.php:77
+#: concrete/single_pages/dashboard/reports/logs.php:71
 msgid "Guest"
 msgstr "ゲスト"
 
@@ -7282,21 +7434,21 @@ msgstr "1個の期間指定権限設定があります"
 msgid "%s Timed Permissions Found"
 msgstr "%s個の期間指定権限設定があります"
 
-#: concrete/elements/pages/search_results.php:36
-#: concrete/elements/users/search_results.php:39
+#: concrete/elements/pages/search_results.php:39
+#: concrete/elements/users/search_results.php:41
 msgid "Edit Properties"
 msgstr "プロパティーを編集"
 
-#: concrete/elements/users/search_results.php:47
+#: concrete/elements/users/search_results.php:49
 msgid "Remove from Group"
 msgstr "グループから移動"
 
-#: concrete/elements/users/search_results.php:115
+#: concrete/elements/users/search_results.php:117
 #: concrete/single_pages/members.php:15
 msgid "No users found."
 msgstr "該当するユーザーが見つかりませんでした。"
 
-#: concrete/elements/users/search_results.php:126
+#: concrete/elements/users/search_results.php:128
 msgid "Export"
 msgstr "エクスポート"
 
@@ -7519,8 +7671,8 @@ msgstr "誰が何を検索することができないのですか？"
 #: concrete/single_pages/dashboard/users/add.php:37
 #: concrete/single_pages/dashboard/users/search.php:221
 #: concrete/single_pages/download_file.php:26
-#: concrete/single_pages/install.php:159 concrete/single_pages/login.php:108
-#: concrete/single_pages/login.php:185 concrete/single_pages/register.php:65
+#: concrete/single_pages/install.php:159 concrete/single_pages/login.php:128
+#: concrete/single_pages/login.php:202 concrete/single_pages/register.php:65
 msgid "Password"
 msgstr "パスワード"
 
@@ -7654,7 +7806,7 @@ msgstr "ユーザー／グループの追加"
 #: concrete/config/install/base/dashboard.xml:300
 #: concrete/elements/permission/detail.php:31
 #: concrete/elements/permission/detail.php:79
-#: concrete/helpers/concrete/upgrade/version_560.php:140
+#: concrete/helpers/concrete/upgrade/version_560.php:141
 #: concrete/single_pages/dashboard/workflow/list.php:100
 msgid "Workflow"
 msgstr "ワークフロー"
@@ -7832,7 +7984,7 @@ msgstr "右"
 
 #: concrete/elements/custom_style/fonts.php:56
 msgid "Justify"
-msgstr "そろえる"
+msgstr "均等割付け"
 
 #: concrete/elements/custom_style/spacing.php:5
 msgid "Margin"
@@ -7947,25 +8099,25 @@ msgstr ""
 msgid "No attributes assigned."
 msgstr "属性が割り当てられていません。"
 
-#: concrete/elements/pages/search_results.php:38
+#: concrete/elements/pages/search_results.php:41
 msgid "Speed Settings"
 msgstr "スピード設定"
 
-#: concrete/elements/pages/search_results.php:41
+#: concrete/elements/pages/search_results.php:44
 msgid "Change Permissions - Add Access"
 msgstr "権限を変更 - アクセスを追加"
 
-#: concrete/elements/pages/search_results.php:42
+#: concrete/elements/pages/search_results.php:45
 msgid "Change Permissions - Remove Access"
 msgstr "権限を変更 - アクセスを削除"
 
-#: concrete/elements/pages/search_results.php:64
+#: concrete/elements/pages/search_results.php:67
 msgid "Score"
 msgstr "スコア"
 
-#: concrete/elements/pages/search_results.php:155
+#: concrete/elements/pages/search_results.php:158
 #: concrete/single_pages/dashboard/pages/single.php:39
-#: concrete/single_pages/dashboard/system/seo/bulk_seo_tool.php:240
+#: concrete/single_pages/dashboard/system/seo/bulk_seo_tool.php:242
 msgid "No pages found."
 msgstr "ページが見つかりません。"
 
@@ -7996,7 +8148,7 @@ msgstr "権限の継承"
 #: concrete/elements/pages/search_form_advanced.php:21
 #: concrete/elements/pages/search_form_advanced.php:64
 #: concrete/elements/pages/search_form_advanced.php:234
-#: concrete/single_pages/dashboard/system/seo/bulk_seo_tool.php:103
+#: concrete/single_pages/dashboard/system/seo/bulk_seo_tool.php:105
 msgid "Parent Page"
 msgstr "親ページ"
 
@@ -8350,43 +8502,43 @@ msgid "Rich Text - Custom"
 msgstr "カスタム"
 
 #: concrete/models/attribute/types/address/composer.php:8
-#: concrete/models/attribute/types/address/form.php:7
+#: concrete/models/attribute/types/address/form.php:6
 msgid "Address 1"
 msgstr "住所1"
 
 #: concrete/models/attribute/types/address/composer.php:15
-#: concrete/models/attribute/types/address/form.php:11
+#: concrete/models/attribute/types/address/form.php:10
 msgid "Address 2"
 msgstr "住所2"
 
 #: concrete/models/attribute/types/address/composer.php:22
-#: concrete/models/attribute/types/address/form.php:15
+#: concrete/models/attribute/types/address/form.php:14
 msgid "City"
 msgstr "市町村"
 
 #: concrete/models/attribute/types/address/composer.php:29
-#: concrete/models/attribute/types/address/form.php:20
+#: concrete/models/attribute/types/address/form.php:19
 msgid "State/Province"
 msgstr "都道府県"
 
 #: concrete/models/attribute/types/address/composer.php:42
-#: concrete/models/attribute/types/address/form.php:32
+#: concrete/models/attribute/types/address/form.php:31
 msgid "Choose State/Province"
 msgstr "都道府県を選択してください"
 
 #: concrete/models/attribute/types/address/composer.php:64
-#: concrete/models/attribute/types/address/form.php:52
+#: concrete/models/attribute/types/address/form.php:51
 #: concrete/models/attribute/types/address/type_form.php:3
 msgid "Choose Country"
 msgstr "国を選択してください"
 
 #: concrete/models/attribute/types/address/composer.php:68
-#: concrete/models/attribute/types/address/form.php:56
+#: concrete/models/attribute/types/address/form.php:55
 msgid "Country"
 msgstr "国"
 
 #: concrete/models/attribute/types/address/composer.php:75
-#: concrete/models/attribute/types/address/form.php:61
+#: concrete/models/attribute/types/address/form.php:60
 msgid "Postal Code"
 msgstr "郵便番号"
 
@@ -8434,12 +8586,12 @@ msgstr "テキストフィールド"
 msgid "Remove Option"
 msgstr "オプションを削除"
 
-#: concrete/models/attribute/types/select/form.php:41
+#: concrete/models/attribute/types/select/form.php:46
 msgid "Selected Options"
 msgstr "選択済みオプション"
 
-#: concrete/models/attribute/types/select/form.php:169
-#: concrete/models/attribute/types/select/form.php:170
+#: concrete/models/attribute/types/select/form.php:200
+#: concrete/models/attribute/types/select/form.php:204
 msgid "Add Another Option"
 msgstr "オプション項目を追加"
 
@@ -8536,45 +8688,13 @@ msgstr "ブログ付きサンプルコンテンツ"
 msgid "A great starting point for an attractive website with a blog."
 msgstr "ブログのついたウェブサイトを作成するための基本セット。"
 
-#: concrete/config/localization.php:45
-msgid "F d, Y \\a\\t g:i A"
-msgstr "Y年n月j日 g:i A"
-
-#: concrete/config/localization.php:49
-msgid "F d, Y \\a\\t g:i:s A"
-msgstr "Y年n月j日 h:i:s"
-
-#: concrete/config/localization.php:53
-msgid "n/j/Y \\a\\t g:i A"
-msgstr "Y/n/j \\a\\t g:i A"
-
-#: concrete/config/localization.php:57
-msgid "n/j/Y"
-msgstr "Y/m/d"
-
-#: concrete/config/localization.php:61
-msgid "F j, Y"
-msgstr "Y年n月j日"
-
-#: concrete/config/localization.php:65
-msgid "g:i A"
-msgstr "G:i"
-
-#: concrete/config/localization.php:69
-msgid "g:i:s A"
-msgstr "G:i:s"
-
-#: concrete/config/localization.php:73
-msgid "d-m-Y_H:i_"
-msgstr "Y-m-d_H:i_"
-
 #. http://api.jqueryui.com/datepicker/#utility-formatDate
-#: concrete/config/localization.php:108
+#: concrete/config/localization.php:161
 msgid "m/d/yy"
 msgstr "yy/m/d"
 
 #. can be 12 or 24
-#: concrete/config/localization.php:117
+#: concrete/config/localization.php:170
 msgctxt "Time format"
 msgid "12"
 msgstr "12"
@@ -8725,22 +8845,42 @@ msgstr "WebM"
 msgid "Google Map disabled in edit mode."
 msgstr "Google Mapは編集モードでは表示されません。"
 
-#: concrete/blocks/google_map/form_setup_html.php:9
+#: concrete/blocks/google_map/form_setup_html.php:12
+msgid "General"
+msgstr "一般"
+
+#: concrete/blocks/google_map/form_setup_html.php:13
+msgid "Balloon"
+msgstr "吹き出し"
+
+#: concrete/blocks/google_map/form_setup_html.php:19
 msgid "Map Title"
 msgstr "地図の名前"
 
-#: concrete/blocks/google_map/form_setup_html.php:9
+#: concrete/blocks/google_map/form_setup_html.php:19
 #: concrete/blocks/rss_displayer/form_setup_html.php:29
 msgid "Optional"
 msgstr "オプション"
 
-#: concrete/blocks/google_map/form_setup_html.php:16
+#: concrete/blocks/google_map/form_setup_html.php:26
 msgid "e.g. 17 SE 3rd #410, Portland, OR, 97214"
 msgstr "例）三重県四日市市諏訪町１−５"
 
-#: concrete/blocks/google_map/form_setup_html.php:23
+#: concrete/blocks/google_map/form_setup_html.php:33
 msgid "Enter a number from 0 to 21, with 21 being the most zoomed in."
 msgstr "ズーム値（0〜21）を入力してください。21がズーム最大値です。"
+
+#: concrete/blocks/google_map/form_setup_html.php:43
+msgid "Show a balloon?"
+msgstr "吹き出しを見せる？"
+
+#: concrete/blocks/google_map/form_setup_html.php:47
+msgid "Balloon content"
+msgstr "吹き出しの内容"
+
+#: concrete/blocks/google_map/form_setup_html.php:54
+msgid "Show link to Google Maps?"
+msgstr "Google Map へのリンクを表示？"
 
 #: concrete/blocks/google_map/scrapbook.php:4
 #, php-format
@@ -9151,11 +9291,11 @@ msgstr "無効な権限です"
 #: concrete/blocks/form/form_setup_html.php:15
 #: concrete/blocks/form/form_setup_html.php:32
 #: concrete/blocks/survey/add.php:25 concrete/blocks/survey/edit.php:27
-#: concrete/single_pages/dashboard/reports/forms.php:86
+#: concrete/single_pages/dashboard/reports/forms.php:84
 #: concrete/single_pages/dashboard/scrapbook/view.php:164
 #: concrete/single_pages/dashboard/sitemap/full.php:29
 #: concrete/single_pages/dashboard/system/registration/public_registration.php:43
-#: concrete/single_pages/login.php:213 concrete/single_pages/register.php:82
+#: concrete/single_pages/login.php:222 concrete/single_pages/register.php:82
 msgid "Options"
 msgstr "オプション"
 
@@ -9316,6 +9456,7 @@ msgid "Fade Duration"
 msgstr "フェード時間"
 
 #: concrete/blocks/slideshow/image_row_include.php:16
+msgctxt "Number of the set"
 msgid "Set Number"
 msgstr "セット番号"
 
@@ -9575,33 +9716,33 @@ msgstr ""
 "このページリストは、ブログ用ページタイプを使用していないか、RSSフィードにアク"
 "セスできる権限がありません。"
 
-#: concrete/blocks/page_list/templates/blog_index.php:60
+#: concrete/blocks/page_list/templates/blog_index.php:62
 #: concrete/blocks/page_list/view.php:66
 msgid "RSS Icon"
 msgstr "アイコン"
 
-#: concrete/blocks/page_list/templates/blog_index.php:60
+#: concrete/blocks/page_list/templates/blog_index.php:62
 #: concrete/blocks/page_list/view.php:66
 msgid "RSS Feed"
 msgstr "RSSフィードタイトル"
 
-#: concrete/blocks/page_list/templates/blog_index_thumbnail.php:72
+#: concrete/blocks/page_list/templates/blog_index_thumbnail.php:74
 msgid "Newer Posts"
 msgstr "新しい投稿"
 
-#: concrete/blocks/page_list/templates/blog_index_thumbnail.php:73
+#: concrete/blocks/page_list/templates/blog_index_thumbnail.php:75
 msgid "Older Posts"
 msgstr "以前の投稿"
 
-#: concrete/blocks/page_list/templates/blog_index.php:18
+#: concrete/blocks/page_list/templates/blog_index.php:20
 msgid "Comment"
 msgstr "コメント"
 
-#: concrete/blocks/page_list/templates/blog_index.php:42
+#: concrete/blocks/page_list/templates/blog_index.php:44
 msgid "Read full post"
 msgstr "すべての投稿を読む。"
 
-#: concrete/blocks/page_list/templates/blog_index.php:59
+#: concrete/blocks/page_list/templates/blog_index.php:61
 msgid "Subscribe to RSS Feed"
 msgstr "RSSフィード購読"
 
@@ -9990,6 +10131,11 @@ msgstr "そのアドレスのページが存在していません。"
 msgid "My Friends"
 msgstr "マイフレンド"
 
+#: concrete/single_pages/profile/friends.php:39
+#, php-format
+msgid "Member Since %s"
+msgstr "%s に登録"
+
 #: concrete/single_pages/dashboard/users/add.php:45
 #: concrete/single_pages/dashboard/users/search.php:189
 #: concrete/single_pages/profile/avatar.php:6
@@ -10016,59 +10162,59 @@ msgstr "アバターを削除 &gt;"
 msgid "User Profile picture saved."
 msgstr "プロフィール画像が保存されました。"
 
-#: concrete/single_pages/profile/messages.php:9
+#: concrete/single_pages/profile/messages.php:13
 msgid "Back to Mailbox"
 msgstr "メッセージボックスに戻る"
 
-#: concrete/single_pages/profile/messages.php:11
+#: concrete/single_pages/profile/messages.php:15
 msgid "Message Details"
 msgstr "メッセージ詳細"
 
-#: concrete/single_pages/profile/messages.php:38
+#: concrete/single_pages/profile/messages.php:42
 msgid "Reply"
 msgstr "返信"
 
-#: concrete/single_pages/profile/messages.php:43
+#: concrete/single_pages/profile/messages.php:47
 msgid "Delete this message?"
 msgstr "このメッセージを削除しますか？"
 
-#: concrete/single_pages/profile/messages.php:53
+#: concrete/single_pages/profile/messages.php:57
 msgid "Back to Mailbox List"
 msgstr "メッセージ一覧に戻る"
 
-#: concrete/single_pages/profile/messages.php:59
+#: concrete/single_pages/profile/messages.php:63
 msgid "Sent At"
 msgstr "送信日時"
 
-#: concrete/single_pages/profile/messages.php:60
+#: concrete/single_pages/profile/messages.php:64
 msgid "Status"
 msgstr "ステータス"
 
-#: concrete/single_pages/profile/messages.php:84
+#: concrete/single_pages/profile/messages.php:88
 msgid "No messages found."
 msgstr "メッセージがありません。"
 
-#: concrete/single_pages/profile/messages.php:96
+#: concrete/single_pages/profile/messages.php:100
 msgid "Reply Sent."
 msgstr "返信"
 
-#: concrete/single_pages/profile/messages.php:97
+#: concrete/single_pages/profile/messages.php:101
 msgid "Return to Message."
 msgstr "メッセージに戻る。"
 
-#: concrete/single_pages/profile/messages.php:103
+#: concrete/single_pages/profile/messages.php:107
 msgid "Message Sent."
 msgstr "メッセージが送信されました。"
 
-#: concrete/single_pages/profile/messages.php:104
+#: concrete/single_pages/profile/messages.php:108
 msgid "Return to Profile."
 msgstr "プロフィールに戻る。"
 
-#: concrete/single_pages/profile/messages.php:109
+#: concrete/single_pages/profile/messages.php:113
 msgid "Woops!"
 msgstr "おおっと！"
 
-#: concrete/single_pages/profile/messages.php:110
+#: concrete/single_pages/profile/messages.php:114
 msgid ""
 "You've sent more messages than we can handle just now, that last one didn't "
 "go out. \n"
@@ -10079,49 +10225,49 @@ msgstr ""
 "\t\t\t\t管理者に確認をお願いしています。\n"
 "\t\t\t\t新しいメッセージを送らずにしばらくお待ちください。"
 
-#: concrete/single_pages/profile/messages.php:126
+#: concrete/single_pages/profile/messages.php:130
 #, php-format
 msgid "Re: %s"
 msgstr "Re: %s"
 
-#: concrete/single_pages/profile/messages.php:132
+#: concrete/single_pages/profile/messages.php:136
 msgid "Send a Private Message"
 msgstr "メッセージを送る"
 
-#: concrete/single_pages/profile/messages.php:146
+#: concrete/single_pages/profile/messages.php:150
 msgid "Message"
 msgstr "メッセージ"
 
-#: concrete/single_pages/profile/messages.php:152
+#: concrete/single_pages/profile/messages.php:156
 msgid "Send Message"
 msgstr "メッセージを送る"
 
-#: concrete/single_pages/profile/messages.php:170
+#: concrete/single_pages/profile/messages.php:174
 msgid "Mailbox"
 msgstr "メールボックス"
 
 #: concrete/config/install/base/login_registration.xml:13
 #: concrete/config/install/disabled/blank/content.xml:10
 #: concrete/config/install/disabled/standard/content.xml:10
-#: concrete/single_pages/profile/messages.php:171
+#: concrete/single_pages/profile/messages.php:175
 msgid "Messages"
 msgstr "メッセージ"
 
-#: concrete/single_pages/profile/messages.php:172
+#: concrete/single_pages/profile/messages.php:176
 msgid "Latest Message"
 msgstr "最新メッセージ"
 
-#: concrete/single_pages/profile/messages.php:175
+#: concrete/single_pages/profile/messages.php:179
 msgid "Inbox"
 msgstr "受信箱"
 
-#: concrete/single_pages/profile/messages.php:180
-#: concrete/single_pages/profile/messages.php:190
+#: concrete/single_pages/profile/messages.php:184
+#: concrete/single_pages/profile/messages.php:194
 #, php-format
 msgid "<strong>%s</strong>, sent by %s on %s"
 msgstr "<strong>%s</strong>, 差出人 %s - %s"
 
-#: concrete/single_pages/profile/messages.php:185
+#: concrete/single_pages/profile/messages.php:189
 msgid "Sent Messages"
 msgstr "送信済み"
 
@@ -10138,6 +10284,7 @@ msgid "Time Zone"
 msgstr "タイムゾーン"
 
 #: concrete/single_pages/dashboard/users/search.php:215
+#: concrete/single_pages/login.php:32
 #: concrete/single_pages/profile/edit.php:50
 msgid "Change Password"
 msgstr "パスワード変更"
@@ -10146,7 +10293,7 @@ msgstr "パスワード変更"
 msgid "Leave this blank to keep your current password."
 msgstr "パスワードを変更しない場合は空白のままにしてください。"
 
-#: concrete/single_pages/login.php:38
+#: concrete/single_pages/login.php:35
 #: concrete/single_pages/profile/edit.php:54
 msgid "New Password"
 msgstr "新しいパスワード"
@@ -10227,11 +10374,11 @@ msgstr "まだどのページタイプもコンポーザー設定がされてい
 msgid "Composer Drafts"
 msgstr "コンポーザー下書き"
 
-#: concrete/single_pages/dashboard/composer/drafts.php:18
+#: concrete/single_pages/dashboard/composer/drafts.php:21
 msgid "(Untitled Page)"
 msgstr "(無題ページ)"
 
-#: concrete/single_pages/dashboard/composer/drafts.php:34
+#: concrete/single_pages/dashboard/composer/drafts.php:39
 #, php-format
 msgid "You have not created any drafts. <a href=\"%s\">Visit Composer &gt;</a>"
 msgstr "下書きがありません。 <a href=\"%s\">コンポーザーに行く &gt;</a>"
@@ -10299,11 +10446,11 @@ msgid "Are you sure you want to delete this file set?"
 msgstr "このファイルセットを削除してもよろしいですか？"
 
 #: concrete/single_pages/dashboard/files/add_set.php:4
-#: concrete/single_pages/dashboard/system/attributes/sets.php:139
-#: concrete/single_pages/dashboard/system/attributes/sets.php:160
+#: concrete/single_pages/dashboard/system/attributes/sets.php:156
+#: concrete/single_pages/dashboard/system/attributes/sets.php:177
 #: concrete/single_pages/dashboard/system/optimization/jobs.php:360
 #: concrete/single_pages/dashboard/users/group_sets.php:128
-#: concrete/single_pages/dashboard/users/group_sets.php:152
+#: concrete/single_pages/dashboard/users/group_sets.php:151
 msgid "Add Set"
 msgstr "セットを追加"
 
@@ -10643,7 +10790,7 @@ msgstr "インストール可能なものはありません。"
 #: concrete/single_pages/dashboard/blocks/types/view.php:66
 #: concrete/single_pages/dashboard/extend/install.php:304
 #: concrete/single_pages/dashboard/pages/themes/view.php:151
-#: concrete/single_pages/dashboard/system/attributes/types.php:52
+#: concrete/single_pages/dashboard/system/attributes/types.php:68
 #: concrete/single_pages/dashboard/system/optimization/jobs.php:182
 msgid "Install"
 msgstr "インストール"
@@ -10783,7 +10930,7 @@ msgstr "順序をリセット"
 msgid "Internal Block Types"
 msgstr "内部ブロックタイプ"
 
-#: concrete/helpers/concrete/upgrade/version_560.php:129
+#: concrete/helpers/concrete/upgrade/version_560.php:130
 #: concrete/single_pages/dashboard/blocks/permissions.php:8
 msgid "Block &amp; Stack Permissions"
 msgstr "ブロックとスタック権限"
@@ -10867,7 +11014,7 @@ msgid "No stacks have been added."
 msgstr "追加されたスタックはありません。"
 
 #: concrete/config/install/base/dashboard.xml:314
-#: concrete/helpers/concrete/upgrade/version_560.php:149
+#: concrete/helpers/concrete/upgrade/version_560.php:150
 #: concrete/single_pages/dashboard/workflow/me.php:3
 msgid "Waiting for Me"
 msgstr "確認待ち"
@@ -10997,7 +11144,7 @@ msgid "Update Groups"
 msgstr "グループをアップデート"
 
 #: concrete/config/install/base/dashboard.xml:179
-#: concrete/helpers/concrete/upgrade/version_560.php:112
+#: concrete/helpers/concrete/upgrade/version_560.php:113
 #: concrete/single_pages/dashboard/users/group_sets.php:106
 msgid "Group Sets"
 msgstr "グループセット"
@@ -11006,7 +11153,7 @@ msgstr "グループセット"
 msgid "You have not added any group sets."
 msgstr "グループセットが登録されていません。"
 
-#: concrete/single_pages/dashboard/users/group_sets.php:158
+#: concrete/single_pages/dashboard/users/group_sets.php:157
 #, php-format
 msgid ""
 "You must enable <a href=\"%s\">advanced permissions</a> to use group sets."
@@ -11146,15 +11293,15 @@ msgstr "不明"
 #: concrete/config/install/base/dashboard.xml:123
 #: concrete/config/install/disabled/blank/content.xml:30
 #: concrete/config/install/disabled/standard/content.xml:30
-#: concrete/single_pages/dashboard/users/search.php:591
+#: concrete/single_pages/dashboard/users/search.php:589
 msgid "Search Users"
 msgstr "ユーザー検索"
 
-#: concrete/single_pages/dashboard/users/search.php:591
+#: concrete/single_pages/dashboard/users/search.php:589
 msgid "Search the users of your site and perform bulk actions on them."
 msgstr "サイトのユーザを検索し、それらの一括操作を行います。"
 
-#: concrete/single_pages/dashboard/users/search.php:604
+#: concrete/single_pages/dashboard/users/search.php:602
 msgid ""
 "You do not have access to user search. This setting may be changed in the "
 "access section of the dashboard settings page."
@@ -11163,7 +11310,7 @@ msgstr ""
 "イト全体の設定」の、「アクセス権限」の項目で行えるでしょう。"
 
 #: concrete/single_pages/dashboard/users/add.php:56
-#: concrete/single_pages/install.php:460 concrete/single_pages/login.php:217
+#: concrete/single_pages/install.php:460 concrete/single_pages/login.php:225
 msgid "Language"
 msgstr "言語"
 
@@ -11172,7 +11319,7 @@ msgid "Registration Data"
 msgstr "ユーザー登録情報"
 
 #: concrete/config/install/base/dashboard.xml:489
-#: concrete/helpers/concrete/upgrade/version_560.php:118
+#: concrete/helpers/concrete/upgrade/version_560.php:119
 #: concrete/single_pages/dashboard/system/seo/bulk_seo_tool.php:2
 msgid "Bulk SEO Updater"
 msgstr "一括SEOアップデーター"
@@ -11181,60 +11328,60 @@ msgstr "一括SEOアップデーター"
 msgid "Manage Search Engine Optimization (SEO) Related Page Properties."
 msgstr "検索エンジン最適化（SEO）関連のページプロパティーを管理します。"
 
-#: concrete/single_pages/dashboard/system/seo/bulk_seo_tool.php:91
+#: concrete/single_pages/dashboard/system/seo/bulk_seo_tool.php:93
 msgid " # Per Page"
 msgstr " # ページ毎"
 
-#: concrete/single_pages/dashboard/system/seo/bulk_seo_tool.php:107
+#: concrete/single_pages/dashboard/system/seo/bulk_seo_tool.php:109
 msgid "How Many Levels Below Parent?"
 msgstr "親ページの下何階層まで含める？"
 
-#: concrete/single_pages/dashboard/system/seo/bulk_seo_tool.php:109
+#: concrete/single_pages/dashboard/system/seo/bulk_seo_tool.php:111
 msgid "First Level"
 msgstr "最初の階層"
 
-#: concrete/single_pages/dashboard/system/seo/bulk_seo_tool.php:110
+#: concrete/single_pages/dashboard/system/seo/bulk_seo_tool.php:112
 msgid "All Levels"
 msgstr "すべての階層"
 
-#: concrete/single_pages/dashboard/system/seo/bulk_seo_tool.php:112
+#: concrete/single_pages/dashboard/system/seo/bulk_seo_tool.php:114
 msgid " No Meta Description"
 msgstr "Metaタグ説明なし"
 
-#: concrete/single_pages/dashboard/system/seo/bulk_seo_tool.php:113
+#: concrete/single_pages/dashboard/system/seo/bulk_seo_tool.php:115
 msgid " No Meta Keywords"
 msgstr "Metaタグキーワードなし"
 
-#: concrete/single_pages/dashboard/system/seo/bulk_seo_tool.php:149
+#: concrete/single_pages/dashboard/system/seo/bulk_seo_tool.php:151
 msgid "Single Page"
 msgstr "シングルページ"
 
-#: concrete/single_pages/dashboard/system/seo/bulk_seo_tool.php:154
+#: concrete/single_pages/dashboard/system/seo/bulk_seo_tool.php:156
 msgid "Modified"
 msgstr "修正"
 
-#: concrete/single_pages/dashboard/system/seo/bulk_seo_tool.php:166
+#: concrete/single_pages/dashboard/system/seo/bulk_seo_tool.php:168
 msgid "Meta Title"
 msgstr "Metaタグタイトル"
 
-#: concrete/single_pages/dashboard/system/seo/bulk_seo_tool.php:178
-#: concrete/single_pages/dashboard/system/seo/bulk_seo_tool.php:193
+#: concrete/single_pages/dashboard/system/seo/bulk_seo_tool.php:180
+#: concrete/single_pages/dashboard/system/seo/bulk_seo_tool.php:195
 msgid "Default value. Click to edit."
 msgstr "デフォルト値。編集するにはクリックしてください。"
 
-#: concrete/single_pages/dashboard/system/seo/bulk_seo_tool.php:182
+#: concrete/single_pages/dashboard/system/seo/bulk_seo_tool.php:184
 msgid "Meta Description"
 msgstr "Metaタグ説明"
 
-#: concrete/single_pages/dashboard/system/seo/bulk_seo_tool.php:199
+#: concrete/single_pages/dashboard/system/seo/bulk_seo_tool.php:201
 msgid "Meta Keywords"
 msgstr "Metaタグキーワード"
 
-#: concrete/single_pages/dashboard/system/seo/bulk_seo_tool.php:208
+#: concrete/single_pages/dashboard/system/seo/bulk_seo_tool.php:210
 msgid "Slug"
 msgstr "スラッグ"
 
-#: concrete/single_pages/dashboard/system/seo/bulk_seo_tool.php:242
+#: concrete/single_pages/dashboard/system/seo/bulk_seo_tool.php:244
 msgid "Update All"
 msgstr "すべてアップデート"
 
@@ -11643,7 +11790,7 @@ msgid "Disabled"
 msgstr "無効"
 
 #: concrete/config/install/base/dashboard.xml:578
-#: concrete/helpers/concrete/upgrade/version_560.php:135
+#: concrete/helpers/concrete/upgrade/version_560.php:136
 #: concrete/single_pages/dashboard/system/permissions/advanced.php:5
 msgid "Advanced Permissions"
 msgstr "上級権限モード"
@@ -11715,7 +11862,7 @@ msgid "Task Permissions"
 msgstr "タスク権限"
 
 #: concrete/config/install/base/dashboard.xml:576
-#: concrete/helpers/concrete/upgrade/version_560.php:124
+#: concrete/helpers/concrete/upgrade/version_560.php:125
 #: concrete/single_pages/dashboard/system/permissions/users.php:8
 msgid "User Permissions"
 msgstr "ユーザー権限"
@@ -12078,23 +12225,43 @@ msgstr "属性を更新"
 msgid "No attributes found."
 msgstr "属性が指定されていません。"
 
-#: concrete/single_pages/dashboard/system/attributes/sets.php:117
-msgid "Attribute Sets"
-msgstr "属性セット"
+#: concrete/single_pages/dashboard/system/attributes/sets.php:121
+msgid "Page Attribute Sets"
+msgstr "ページ属性セット"
 
-#: concrete/single_pages/dashboard/system/attributes/sets.php:134
+#: concrete/single_pages/dashboard/system/attributes/sets.php:124
+msgid "User Attribute Sets"
+msgstr "ユーザー属性セット"
+
+#: concrete/single_pages/dashboard/system/attributes/sets.php:127
+msgid "File Attribute Sets"
+msgstr "ファイル属性セット"
+
+#. %s is an attribute category name
+#: concrete/single_pages/dashboard/system/attributes/sets.php:130
+#, php-format
+msgid "%s Attribute Sets"
+msgstr "%s 属性セット"
+
+#: concrete/single_pages/dashboard/system/attributes/sets.php:151
 msgid "No attribute sets currently defined."
 msgstr "属性セットはまだ定義されていません。"
 
-#: concrete/single_pages/dashboard/system/attributes/sets.php:171
+#: concrete/single_pages/dashboard/system/attributes/sets.php:188
 msgid "Attribute Categories"
 msgstr "属性カテゴリー"
 
-#: concrete/single_pages/dashboard/system/attributes/sets.php:172
+#: concrete/single_pages/dashboard/system/attributes/sets.php:189
 msgid "Attribute Categories are used to group different types of sets."
 msgstr "属性カテゴリーはセット内の違うタイプのグループで使われています。"
 
-#: concrete/single_pages/dashboard/system/attributes/sets.php:182
+#: concrete/config/install/disabled/blank/content.xml:146
+#: concrete/single_pages/dashboard/system/attributes/sets.php:199
+#: concrete/single_pages/dashboard/system/attributes/types.php:19
+msgid "Page"
+msgstr "ページ"
+
+#: concrete/single_pages/dashboard/system/attributes/sets.php:215
 msgid "No attribute categories currently defined."
 msgstr "属性カテゴリーはまだ定義されていません。"
 
@@ -12102,11 +12269,11 @@ msgstr "属性カテゴリーはまだ定義されていません。"
 msgid "Attribute Type Associations"
 msgstr "属性タイプの関連付け"
 
-#: concrete/single_pages/dashboard/system/attributes/types.php:38
+#: concrete/single_pages/dashboard/system/attributes/types.php:54
 msgid "Custom Attribute Types"
 msgstr "カスタム属性タイプ"
 
-#: concrete/single_pages/dashboard/system/attributes/types.php:43
+#: concrete/single_pages/dashboard/system/attributes/types.php:59
 msgid "There are no available attribute types awaiting installation."
 msgstr "現在、インストール待ち属性タイプはありません。"
 
@@ -12395,6 +12562,7 @@ msgstr "有効 - すべての場合でキャッシュを利用。"
 msgid "Expire Pages from Cache"
 msgstr "ページのキャッシュ期限"
 
+#. %s is a time interval, eg '5 minutes'
 #: concrete/single_pages/dashboard/system/optimization/cache.php:72
 #, php-format
 msgid "Every %s (default setting)."
@@ -12612,48 +12780,48 @@ msgstr "ジョブセットが登録されていません。"
 msgid "Add Job Set"
 msgstr "ジョブセットを追加"
 
-#: concrete/single_pages/dashboard/reports/statistics.php:5
+#: concrete/single_pages/dashboard/reports/statistics.php:6
 msgid "Recent Activity"
 msgstr "最近のアクティビティー"
 
-#: concrete/single_pages/dashboard/reports/statistics.php:12
+#: concrete/single_pages/dashboard/reports/statistics.php:13
 msgid "Recent Page Views"
 msgstr "最近のページビュー"
 
-#: concrete/single_pages/dashboard/reports/statistics.php:25
+#: concrete/single_pages/dashboard/reports/statistics.php:26
 msgid "Page Views"
 msgstr "ページビュー"
 
-#: concrete/single_pages/dashboard/reports/statistics.php:36
+#: concrete/single_pages/dashboard/reports/statistics.php:37
 msgid "Recent Registrations"
 msgstr "最近のユーザー登録"
 
-#: concrete/single_pages/dashboard/reports/statistics.php:49
+#: concrete/single_pages/dashboard/reports/statistics.php:50
 msgid "User Registrations"
 msgstr "ユーザー登録"
 
-#: concrete/single_pages/dashboard/reports/statistics.php:68
-#: concrete/single_pages/dashboard/reports/statistics.php:81
+#: concrete/single_pages/dashboard/reports/statistics.php:69
+#: concrete/single_pages/dashboard/reports/statistics.php:82
 msgid "Pages Created"
 msgstr "作成されたページ"
 
-#: concrete/single_pages/dashboard/reports/statistics.php:90
+#: concrete/single_pages/dashboard/reports/statistics.php:91
 msgid "Total page versions"
 msgstr "ページバージョン総数"
 
-#: concrete/single_pages/dashboard/reports/statistics.php:91
+#: concrete/single_pages/dashboard/reports/statistics.php:92
 msgid "Total pages in edit mode"
 msgstr "編集モードのページ数"
 
-#: concrete/single_pages/dashboard/reports/statistics.php:100
+#: concrete/single_pages/dashboard/reports/statistics.php:101
 msgid "Five Most Recent Downloads"
 msgstr "最近ダウンロードされた5件"
 
-#: concrete/single_pages/dashboard/reports/statistics.php:107
+#: concrete/single_pages/dashboard/reports/statistics.php:108
 msgid "Downloaded On"
 msgstr "ダウンロード日時"
 
-#: concrete/single_pages/dashboard/reports/statistics.php:113
+#: concrete/single_pages/dashboard/reports/statistics.php:114
 msgid "No files have been downloaded."
 msgstr "ダウンロードされたファイルはありません。"
 
@@ -12726,11 +12894,11 @@ msgstr "このフォームの投稿を削除してもよろしいですか？"
 #: concrete/config/install/disabled/blank/content.xml:36
 #: concrete/config/install/disabled/standard/content.xml:36
 #: concrete/helpers/concrete/upgrade/version_510.php:79
-#: concrete/single_pages/dashboard/reports/forms.php:68
+#: concrete/single_pages/dashboard/reports/forms.php:69
 msgid "Form Results"
 msgstr "フォーム一覧"
 
-#: concrete/single_pages/dashboard/reports/forms.php:85
+#: concrete/single_pages/dashboard/reports/forms.php:83
 msgid "Submissions"
 msgstr "登録"
 
@@ -12746,32 +12914,32 @@ msgstr "ページを開く"
 msgid "Delete Submissions"
 msgstr "登録を削除"
 
-#: concrete/single_pages/dashboard/reports/forms.php:136
+#: concrete/single_pages/dashboard/reports/forms.php:139
 msgid "There are no available forms in your site."
 msgstr "お使いのサイトには利用できるフォームがありません。"
 
-#: concrete/single_pages/dashboard/reports/forms.php:140
+#: concrete/single_pages/dashboard/reports/forms.php:144
 #, php-format
 msgid "Responses to %s"
 msgstr "%sへの回答"
 
-#: concrete/single_pages/dashboard/reports/forms.php:143
+#: concrete/single_pages/dashboard/reports/forms.php:148
 msgid "No one has yet submitted this form."
 msgstr "このフォームの回答は、まだありません。"
 
-#: concrete/single_pages/dashboard/reports/forms.php:147
+#: concrete/single_pages/dashboard/reports/forms.php:157
 msgid "Export to Excel"
 msgstr "Excel形式でエクスポート"
 
-#: concrete/single_pages/dashboard/reports/forms.php:158
+#: concrete/single_pages/dashboard/reports/forms.php:167
 msgid "* Scroll right to view full results"
 msgstr "* 全ての結果を見るには右にスクロール"
 
-#: concrete/single_pages/dashboard/reports/forms.php:176
+#: concrete/single_pages/dashboard/reports/forms.php:185
 msgid "Actions"
 msgstr "操作"
 
-#: concrete/single_pages/dashboard/reports/forms.php:190
+#: concrete/single_pages/dashboard/reports/forms.php:198
 #, php-format
 msgid "(User ID: %s)"
 msgstr "(ユーザーID: %s)"
@@ -13091,7 +13259,7 @@ msgstr "ホームに戻る"
 msgid "Your Details"
 msgstr "ユーザー詳細"
 
-#: concrete/single_pages/install.php:165 concrete/single_pages/login.php:44
+#: concrete/single_pages/install.php:165 concrete/single_pages/login.php:41
 #: concrete/single_pages/register.php:71
 msgid "Confirm Password"
 msgstr "パスワード確認"
@@ -13145,25 +13313,25 @@ msgstr "このプロセスを<a href=\"%s\">再実行</a>。"
 msgid "Sign in to %s"
 msgstr "%sにログイン"
 
-#: concrete/single_pages/login.php:25
+#: concrete/single_pages/login.php:24
 msgid "Password changed.  Please login to continue. "
 msgstr "パスワードが変更されました。ログインしてください。"
 
-#: concrete/single_pages/login.php:31
+#: concrete/single_pages/login.php:33
 msgid "Enter your new password below."
 msgstr "新しいパスワードを入力してください。"
 
-#: concrete/single_pages/login.php:51 concrete/single_pages/login.php:82
-#: concrete/single_pages/login.php:113 concrete/single_pages/login.php:151
-#: concrete/single_pages/login.php:232
+#: concrete/single_pages/login.php:52 concrete/single_pages/login.php:99
+#: concrete/single_pages/login.php:139 concrete/single_pages/login.php:176
+#: concrete/single_pages/login.php:240
 msgid "Sign In"
 msgstr "サインイン"
 
-#: concrete/single_pages/login.php:59
+#: concrete/single_pages/login.php:62
 msgid "Email Address Verified"
 msgstr "メールアドレスが確認されました。"
 
-#: concrete/single_pages/login.php:63
+#: concrete/single_pages/login.php:64
 #, php-format
 msgid ""
 "The email address <b>%s</b> has been verified and you are now a fully "
@@ -13172,49 +13340,63 @@ msgstr ""
 "メールアドレス「<b>%s</b>」が無事に確認されました。このサイトへの登録が完了し"
 "ました。"
 
-#: concrete/single_pages/login.php:65
+#: concrete/single_pages/login.php:72
 msgid "Continue to Site"
 msgstr "サイトを開く"
 
-#: concrete/single_pages/login.php:77
+#: concrete/single_pages/login.php:85
+msgid "Specify your OpenID email address"
+msgstr "OpenID メールアドレスを指定してください"
+
+#: concrete/single_pages/login.php:86
 msgid "To complete the signup process, you must provide a valid email address."
 msgstr ""
 "サインアップを完了するには、有効なメールアドレスを設定する必要があります。"
 
-#: concrete/single_pages/login.php:94
-msgid ""
-"The OpenID account returned an email address already registered on this "
-"site. To join this OpenID to the existing user account, login below:"
-msgstr ""
-"OpenIDアカウントに登録されているメールアドレスはすでにこのサイトに登録されて"
-"います。OpenIDと既に登録されているユーザーを関連付けるには以下でログインして"
-"ください:"
+#: concrete/single_pages/login.php:113
+msgid "Merge local account with OpenID"
+msgstr "OpenID をローカルアカウントに統合します"
 
-#: concrete/single_pages/login.php:128
+#. %s is an email address
+#: concrete/single_pages/login.php:114
+#, php-format
+msgid ""
+"The OpenID account returned an email address already registered on this site "
+"(%s). To join this OpenID to the existing user account, login below:"
+msgstr ""
+"メールアドレスから取得された OpenID アカウントは、すでにこのサイト (%s) に登"
+"録されています。OpenID を既存のユーザーアカウントに接続するには、こちらからロ"
+"グインしてください。"
+
+#: concrete/single_pages/login.php:153
+msgid "Fill in missing fields"
+msgstr "未入力の項目があります"
+
+#: concrete/single_pages/login.php:154
 msgid "You must provide the following information before you may login."
 msgstr "ログインする前に以下の情報を入力してください。"
 
-#: concrete/single_pages/login.php:169
+#: concrete/single_pages/login.php:188
 msgid "User Account"
 msgstr "ユーザーアカウント"
 
-#: concrete/single_pages/login.php:197
+#: concrete/single_pages/login.php:210
 msgid "OpenID"
 msgstr "OpenID"
 
-#: concrete/single_pages/login.php:200
+#: concrete/single_pages/login.php:212
 msgid "Login with OpenID"
 msgstr "もしくは、OpenIDでログイン"
 
-#: concrete/single_pages/login.php:223
+#: concrete/single_pages/login.php:230
 msgid "Remain logged in to website."
 msgstr "ログイン状態を保存する"
 
-#: concrete/single_pages/login.php:246
+#: concrete/single_pages/login.php:251
 msgid "Forgot Your Password?"
 msgstr "パスワードを忘れた方はこちら"
 
-#: concrete/single_pages/login.php:248
+#: concrete/single_pages/login.php:252
 msgid ""
 "Enter your email address below. We will send you instructions to reset your "
 "password."
@@ -13222,19 +13404,19 @@ msgstr ""
 "ユーザー登録したメールアドレスを入力ください。パスワードリセットの方法をお送"
 "りします。"
 
-#: concrete/single_pages/login.php:260
+#: concrete/single_pages/login.php:266
 msgid "Reset and Email Password"
 msgstr "パスワードをリセット・メールで送信"
 
-#: concrete/single_pages/login.php:272
+#: concrete/single_pages/login.php:277
 msgid "Not a Member"
 msgstr "メンバー登録が未だの方"
 
-#: concrete/single_pages/login.php:273
+#: concrete/single_pages/login.php:278
 msgid "Create a user account for use on this website."
 msgstr "ユーザーアカウントの作成"
 
-#: concrete/single_pages/login.php:275
+#: concrete/single_pages/login.php:286
 msgid "Register here!"
 msgstr "ここからユーザー登録！"
 
@@ -13450,7 +13632,7 @@ msgstr ""
 msgid "Choose Language"
 msgstr "言語を選択"
 
-#: concrete/helpers/concrete/dashboard/sitemap.php:376
+#: concrete/helpers/concrete/dashboard/sitemap.php:383
 #, php-format
 msgid "%s more to display. <a href=\"%s\">View All</a>"
 msgstr "あと %s 件あります。<a href=\"%s\">すべて見る</a>"
@@ -13785,25 +13967,25 @@ msgid "Newsflow"
 msgstr "ニュースフロー"
 
 #: concrete/config/install/base/dashboard.xml:719
-#: concrete/helpers/concrete/upgrade/version_560.php:154
+#: concrete/helpers/concrete/upgrade/version_560.php:155
 msgid "Proxy Server"
 msgstr "プロキシサーバー"
 
 #. Keywords for page /dashboard/composer
 #: concrete/config/install/base/dashboard.xml:8
-#: concrete/helpers/concrete/upgrade/version_560.php:158
+#: concrete/helpers/concrete/upgrade/version_560.php:159
 msgid "blog, blogging"
 msgstr "ブログ, blog, blogging"
 
 #. Keywords for page /dashboard/composer/write
 #: concrete/config/install/base/dashboard.xml:18
-#: concrete/helpers/concrete/upgrade/version_560.php:159
+#: concrete/helpers/concrete/upgrade/version_560.php:160
 msgid "new blog, write blog, blogging"
 msgstr "new blog, write, write blog, blogging"
 
 #. Keywords for page /dashboard/composer/drafts
 #: concrete/config/install/base/dashboard.xml:28
-#: concrete/helpers/concrete/upgrade/version_560.php:160
+#: concrete/helpers/concrete/upgrade/version_560.php:161
 msgid "blog drafts, composer"
 msgstr "ブログの下書き、コンポーザー"
 
@@ -13811,26 +13993,26 @@ msgstr "ブログの下書き、コンポーザー"
 #. Keywords for page /dashboard/sitemap
 #: concrete/config/install/base/dashboard.xml:38
 #: concrete/config/install/base/dashboard.xml:45
-#: concrete/helpers/concrete/upgrade/version_560.php:161
 #: concrete/helpers/concrete/upgrade/version_560.php:162
+#: concrete/helpers/concrete/upgrade/version_560.php:163
 msgid "pages, add page, delete page, copy, move, alias"
 msgstr "pages, add page, delete page, copy, move, alias"
 
 #. Keywords for page /dashboard/sitemap/explore
 #: concrete/config/install/base/dashboard.xml:55
-#: concrete/helpers/concrete/upgrade/version_560.php:163
+#: concrete/helpers/concrete/upgrade/version_560.php:164
 msgid "pages, add page, delete page, copy, move, alias, bulk"
 msgstr "pages, add page, delete page, copy, move, alias, bulk"
 
 #. Keywords for page /dashboard/sitemap/search
 #: concrete/config/install/base/dashboard.xml:65
-#: concrete/helpers/concrete/upgrade/version_560.php:164
+#: concrete/helpers/concrete/upgrade/version_560.php:165
 msgid "find page, search page, search, find, pages, sitemap"
 msgstr "find page, search page, search, find, pages, sitemap"
 
 #. Keywords for page /dashboard/files/search
 #: concrete/config/install/base/dashboard.xml:76
-#: concrete/helpers/concrete/upgrade/version_560.php:165
+#: concrete/helpers/concrete/upgrade/version_560.php:166
 msgid ""
 "add file, delete file, copy, move, alias, resize, crop, rename, images, "
 "title, attribute"
@@ -13840,25 +14022,25 @@ msgstr ""
 
 #. Keywords for page /dashboard/files/attributes
 #: concrete/config/install/base/dashboard.xml:86
-#: concrete/helpers/concrete/upgrade/version_560.php:166
+#: concrete/helpers/concrete/upgrade/version_560.php:167
 msgid "file, file attributes, title, attribute, description, rename"
 msgstr "file, file attributes, title, attribute, description, rename"
 
 #. Keywords for page /dashboard/files/sets
 #: concrete/config/install/base/dashboard.xml:96
-#: concrete/helpers/concrete/upgrade/version_560.php:167
+#: concrete/helpers/concrete/upgrade/version_560.php:168
 msgid "files, category, categories"
 msgstr "ファイル、カテゴリー"
 
 #. Keywords for page /dashboard/files/add_set
 #: concrete/config/install/base/dashboard.xml:109
-#: concrete/helpers/concrete/upgrade/version_560.php:168
+#: concrete/helpers/concrete/upgrade/version_560.php:169
 msgid "new file set"
 msgstr "新規ファイル作成"
 
 #. Keywords for page /dashboard/users
 #: concrete/config/install/base/dashboard.xml:119
-#: concrete/helpers/concrete/upgrade/version_560.php:169
+#: concrete/helpers/concrete/upgrade/version_560.php:170
 msgid ""
 "users, groups, people, find, delete user, remove user, change password, "
 "password"
@@ -13868,7 +14050,7 @@ msgstr ""
 
 #. Keywords for page /dashboard/users/search
 #: concrete/config/install/base/dashboard.xml:126
-#: concrete/helpers/concrete/upgrade/version_560.php:170
+#: concrete/helpers/concrete/upgrade/version_560.php:171
 msgid ""
 "find, search, people, delete user, remove user, change password, password"
 msgstr ""
@@ -13876,115 +14058,115 @@ msgstr ""
 
 #. Keywords for page /dashboard/users/groups
 #: concrete/config/install/base/dashboard.xml:136
-#: concrete/helpers/concrete/upgrade/version_560.php:171
+#: concrete/helpers/concrete/upgrade/version_560.php:172
 msgid "user, group, people, permissions, access, expire"
 msgstr "user, group, people, permissions, access, expire"
 
 #. Keywords for page /dashboard/users/attributes
 #: concrete/config/install/base/dashboard.xml:146
-#: concrete/helpers/concrete/upgrade/version_560.php:172
+#: concrete/helpers/concrete/upgrade/version_560.php:173
 msgid "user attributes, user data, gather data, registration data"
 msgstr "user attributes, user data, gather data, registration data"
 
 #. Keywords for page /dashboard/users/add
 #: concrete/config/install/base/dashboard.xml:156
-#: concrete/helpers/concrete/upgrade/version_560.php:173
+#: concrete/helpers/concrete/upgrade/version_560.php:174
 msgid "new user, create"
 msgstr "新しいユーザーをつくる"
 
 #. Keywords for page /dashboard/users/add_group
 #: concrete/config/install/base/dashboard.xml:169
-#: concrete/helpers/concrete/upgrade/version_560.php:174
+#: concrete/helpers/concrete/upgrade/version_560.php:175
 msgid "new user group, new group, group, create"
 msgstr "new user group, new group, group, create"
 
 #. Keywords for page /dashboard/users/group_sets
 #: concrete/config/install/base/dashboard.xml:182
-#: concrete/helpers/concrete/upgrade/version_560.php:175
+#: concrete/helpers/concrete/upgrade/version_560.php:176
 msgid "group set"
 msgstr "グループセット"
 
 #. Keywords for page /dashboard/reports
 #: concrete/config/install/base/dashboard.xml:192
-#: concrete/helpers/concrete/upgrade/version_560.php:176
+#: concrete/helpers/concrete/upgrade/version_560.php:177
 msgid "forms, log, error, email, mysql, exception, survey"
 msgstr "forms, log, error, email, mysql, exception, survey"
 
 #. Keywords for page /dashboard/reports/statistics
 #: concrete/config/install/base/dashboard.xml:199
-#: concrete/helpers/concrete/upgrade/version_560.php:177
+#: concrete/helpers/concrete/upgrade/version_560.php:178
 msgid "hits, pageviews, visitors, activity"
 msgstr "hits, pageviews, visitors, activity"
 
 #. Keywords for page /dashboard/reports/forms
 #: concrete/config/install/base/dashboard.xml:209
-#: concrete/helpers/concrete/upgrade/version_560.php:178
+#: concrete/helpers/concrete/upgrade/version_560.php:179
 msgid "forms, questions, response, data"
 msgstr "forms, questions, response, data"
 
 #. Keywords for page /dashboard/reports/surveys
 #: concrete/config/install/base/dashboard.xml:219
-#: concrete/helpers/concrete/upgrade/version_560.php:179
+#: concrete/helpers/concrete/upgrade/version_560.php:180
 msgid "questions, quiz, response"
 msgstr "questions, quiz, response"
 
 #. Keywords for page /dashboard/reports/logs
 #: concrete/config/install/base/dashboard.xml:229
-#: concrete/helpers/concrete/upgrade/version_560.php:180
+#: concrete/helpers/concrete/upgrade/version_560.php:181
 msgid "forms, log, error, email, mysql, exception, survey, history"
 msgstr "forms, log, error, email, mysql, exception, survey, history"
 
 #. Keywords for page /dashboard/pages/themes
 #: concrete/config/install/base/dashboard.xml:240
-#: concrete/helpers/concrete/upgrade/version_560.php:181
+#: concrete/helpers/concrete/upgrade/version_560.php:182
 msgid "new theme, theme, active theme, change theme, template, css"
 msgstr "new theme, theme, active theme, change theme, template, css"
 
 #. Keywords for page /dashboard/pages/themes/add
 #: concrete/config/install/base/dashboard.xml:250
-#: concrete/helpers/concrete/upgrade/version_560.php:182
+#: concrete/helpers/concrete/upgrade/version_560.php:183
 msgid "theme"
 msgstr "テーマ"
 
 #. Keywords for page /dashboard/pages/themes/inspect
 #: concrete/config/install/base/dashboard.xml:257
-#: concrete/helpers/concrete/upgrade/version_560.php:183
+#: concrete/helpers/concrete/upgrade/version_560.php:184
 msgid "page types"
 msgstr "ページタイプ"
 
 #. Keywords for page /dashboard/pages/themes/customize
 #: concrete/config/install/base/dashboard.xml:264
-#: concrete/helpers/concrete/upgrade/version_560.php:184
+#: concrete/helpers/concrete/upgrade/version_560.php:185
 msgid "custom theme, change theme, custom css, css"
 msgstr "カスタムテーマ、テーマの変更、カスタムCSS、CSS"
 
 #. Keywords for page /dashboard/pages/types
 #: concrete/config/install/base/dashboard.xml:271
-#: concrete/helpers/concrete/upgrade/version_560.php:185
+#: concrete/helpers/concrete/upgrade/version_560.php:186
 msgid "page type defaults, global block, global area, starter, template"
 msgstr "page type defaults, global block, global area, starter, template"
 
 #. Keywords for page /dashboard/pages/attributes
 #: concrete/config/install/base/dashboard.xml:282
-#: concrete/helpers/concrete/upgrade/version_560.php:186
+#: concrete/helpers/concrete/upgrade/version_560.php:187
 msgid "page attributes, custom"
 msgstr "ページ属性、カスタム"
 
 #. Keywords for page /dashboard/pages/single
 #: concrete/config/install/base/dashboard.xml:292
-#: concrete/helpers/concrete/upgrade/version_560.php:187
+#: concrete/helpers/concrete/upgrade/version_560.php:188
 msgid "single, page, custom, application"
 msgstr "シングル、ページ、カスタム、アプリケーション"
 
 #. Keywords for page /dashboard/workflow
 #: concrete/config/install/base/dashboard.xml:303
-#: concrete/helpers/concrete/upgrade/version_560.php:188
+#: concrete/helpers/concrete/upgrade/version_560.php:189
 msgid "add workflow, remove workflow"
 msgstr "add workflow, remove workflow"
 
 #. Keywords for page /dashboard/blocks/stacks
 #: concrete/config/install/base/dashboard.xml:325
-#: concrete/helpers/concrete/upgrade/version_560.php:189
+#: concrete/helpers/concrete/upgrade/version_560.php:190
 msgid ""
 "stacks, reusable content, scrapbook, copy, paste, paste block, copy block, "
 "site name, logo"
@@ -13994,19 +14176,19 @@ msgstr ""
 
 #. Keywords for page /dashboard/blocks/stacks/list
 #: concrete/config/install/base/dashboard.xml:351
-#: concrete/helpers/concrete/upgrade/version_560.php:190
+#: concrete/helpers/concrete/upgrade/version_560.php:191
 msgid "edit stacks, view stacks, all stacks"
 msgstr "edit stacks, view stacks, all stacks"
 
 #. Keywords for page /dashboard/blocks/types
 #: concrete/config/install/base/dashboard.xml:358
-#: concrete/helpers/concrete/upgrade/version_560.php:191
+#: concrete/helpers/concrete/upgrade/version_560.php:192
 msgid "block, refresh, custom"
 msgstr "ブロック、リフレッシュ、カスタム"
 
 #. Keywords for page /dashboard/extend
 #: concrete/config/install/base/dashboard.xml:374
-#: concrete/helpers/concrete/upgrade/version_560.php:192
+#: concrete/helpers/concrete/upgrade/version_560.php:193
 msgid ""
 "add-on, addon, add on, package, applications, ecommerce, discussions, "
 "forums, themes, templates, blocks"
@@ -14016,7 +14198,7 @@ msgstr ""
 
 #. Keywords for page /dashboard/extend/install
 #: concrete/config/install/base/dashboard.xml:393
-#: concrete/helpers/concrete/upgrade/version_560.php:193
+#: concrete/helpers/concrete/upgrade/version_560.php:194
 msgid ""
 "add-on, addon, ecommerce, install, discussions, forums, themes, templates, "
 "blocks"
@@ -14026,25 +14208,25 @@ msgstr ""
 
 #. Keywords for page /dashboard/extend/update
 #: concrete/config/install/base/dashboard.xml:400
-#: concrete/helpers/concrete/upgrade/version_560.php:194
+#: concrete/helpers/concrete/upgrade/version_560.php:195
 msgid "update, upgrade"
 msgstr "update, upgrade"
 
 #. Keywords for page /dashboard/extend/connect
 #: concrete/config/install/base/dashboard.xml:407
-#: concrete/helpers/concrete/upgrade/version_560.php:195
+#: concrete/helpers/concrete/upgrade/version_560.php:196
 msgid "concrete5.org, my account, marketplace"
 msgstr "concrete5.org, my account, marketplace"
 
 #. Keywords for page /dashboard/extend/themes
 #: concrete/config/install/base/dashboard.xml:414
-#: concrete/helpers/concrete/upgrade/version_560.php:196
+#: concrete/helpers/concrete/upgrade/version_560.php:197
 msgid "buy theme, new theme, marketplace, template"
 msgstr "buy theme, new theme, marketplace, template"
 
 #. Keywords for page /dashboard/extend/add-ons
 #: concrete/config/install/base/dashboard.xml:421
-#: concrete/helpers/concrete/upgrade/version_560.php:197
+#: concrete/helpers/concrete/upgrade/version_560.php:198
 msgid ""
 "buy addon, buy add on, buy add-on, purchase addon, purchase add on, purchase "
 "add-on, find addon, new addon, marketplace"
@@ -14054,31 +14236,31 @@ msgstr ""
 
 #. Keywords for page /dashboard/system
 #: concrete/config/install/base/dashboard.xml:433
-#: concrete/helpers/concrete/upgrade/version_560.php:198
+#: concrete/helpers/concrete/upgrade/version_560.php:199
 msgid "dashboard, configuration"
 msgstr "管理画面、設定"
 
 #. Keywords for page /dashboard/system/basics/site_name
 #: concrete/config/install/base/dashboard.xml:441
-#: concrete/helpers/concrete/upgrade/version_560.php:199
+#: concrete/helpers/concrete/upgrade/version_560.php:200
 msgid "website name, title"
 msgstr "ウェブサイト名、タイトル"
 
 #. Keywords for page /dashboard/system/basics/icons
 #: concrete/config/install/base/dashboard.xml:448
-#: concrete/helpers/concrete/upgrade/version_560.php:200
+#: concrete/helpers/concrete/upgrade/version_560.php:201
 msgid "logo, favicon, iphone, icon, bookmark"
 msgstr "logo, favicon, iphone, icon, bookmark"
 
 #. Keywords for page /dashboard/system/basics/editor
 #: concrete/config/install/base/dashboard.xml:455
-#: concrete/helpers/concrete/upgrade/version_560.php:201
+#: concrete/helpers/concrete/upgrade/version_560.php:202
 msgid "tinymce, content block, fonts, editor, content, overlay"
 msgstr "TinyMCE, 記事ブロック, フォント, 編集, 記事, オーバーレイ"
 
 #. Keywords for page /dashboard/system/basics/multilingual
 #: concrete/config/install/base/dashboard.xml:462
-#: concrete/helpers/concrete/upgrade/version_560.php:202
+#: concrete/helpers/concrete/upgrade/version_560.php:203
 msgid "translate, translation, internationalization, multilingual"
 msgstr ""
 "翻訳, 多言語, マルチリンガル, translate, translation, internationalization, "
@@ -14086,51 +14268,51 @@ msgstr ""
 
 #. Keywords for page /dashboard/system/basics/timezone
 #: concrete/config/install/base/dashboard.xml:469
-#: concrete/helpers/concrete/upgrade/version_560.php:203
+#: concrete/helpers/concrete/upgrade/version_560.php:204
 msgid "timezone, profile, locale"
 msgstr "タイムゾーン、プロフィール、場所"
 
 #. Keywords for page /dashboard/system/basics/interface
 #: concrete/config/install/base/dashboard.xml:476
-#: concrete/helpers/concrete/upgrade/version_560.php:204
+#: concrete/helpers/concrete/upgrade/version_560.php:205
 msgid "interface, quick nav, dashboard background, background image"
 msgstr "interface, quick nav, dashboard background, background image"
 
 #. Keywords for page /dashboard/system/seo/urls
 #: concrete/config/install/base/dashboard.xml:485
-#: concrete/helpers/concrete/upgrade/version_560.php:205
+#: concrete/helpers/concrete/upgrade/version_560.php:206
 msgid "vanity, pretty url, seo, pageview, view"
 msgstr "vanity, pretty url, seo, pageview, view"
 
 #. Keywords for page /dashboard/system/seo/bulk_seo_tool
 #: concrete/config/install/base/dashboard.xml:492
-#: concrete/helpers/concrete/upgrade/version_560.php:206
+#: concrete/helpers/concrete/upgrade/version_560.php:207
 msgid "bulk, seo, change keywords, engine, optimization, search"
 msgstr "bulk, seo, change keywords, engine, optimization, search"
 
 #. Keywords for page /dashboard/system/seo/tracking_codes
 #: concrete/config/install/base/dashboard.xml:499
-#: concrete/helpers/concrete/upgrade/version_560.php:207
+#: concrete/helpers/concrete/upgrade/version_560.php:208
 msgid "traffic, statistics, google analytics, quant, pageviews, hits"
 msgstr "traffic, statistics, google analytics, quant, pageviews, hits"
 
 #. Keywords for page /dashboard/system/seo/statistics
 #: concrete/config/install/base/dashboard.xml:513
-#: concrete/helpers/concrete/upgrade/version_560.php:208
+#: concrete/helpers/concrete/upgrade/version_560.php:209
 msgid "turn off statistics, tracking, statistics, pageviews, hits"
 msgstr "turn off statistics, tracking, statistics, pageviews, hits"
 
 #. Keywords for page /dashboard/system/seo/search_index
 #: concrete/config/install/base/dashboard.xml:520
-#: concrete/helpers/concrete/upgrade/version_560.php:209
-#: concrete/helpers/concrete/upgrade/version_560.php:238
+#: concrete/helpers/concrete/upgrade/version_560.php:210
+#: concrete/helpers/concrete/upgrade/version_560.php:239
 msgid "configure search, site search, search option"
 msgstr "検索、サイト検索、検索オプションを設定する"
 
 #. Keywords for page /dashboard/system/optimization/cache
 #: concrete/config/install/base/dashboard.xml:528
-#: concrete/helpers/concrete/upgrade/version_560.php:210
-#: concrete/helpers/concrete/upgrade/version_560.php:239
+#: concrete/helpers/concrete/upgrade/version_560.php:211
+#: concrete/helpers/concrete/upgrade/version_560.php:240
 msgid ""
 "cache option, change cache, override, turn on cache, turn off cache, no "
 "cache, page cache, caching"
@@ -14140,13 +14322,13 @@ msgstr ""
 
 #. Keywords for page /dashboard/system/optimization/clear_cache
 #: concrete/config/install/base/dashboard.xml:535
-#: concrete/helpers/concrete/upgrade/version_560.php:211
+#: concrete/helpers/concrete/upgrade/version_560.php:212
 msgid "cache option, turn off cache, no cache, page cache, caching"
 msgstr "cache option, turn off cache, no cache, page cache, caching"
 
 #. Keywords for page /dashboard/system/optimization/jobs
 #: concrete/config/install/base/dashboard.xml:542
-#: concrete/helpers/concrete/upgrade/version_560.php:212
+#: concrete/helpers/concrete/upgrade/version_560.php:213
 msgid ""
 "index search, reindex search, build sitemap, sitemap.xml, clear old "
 "versions, page versions, remove old"
@@ -14156,61 +14338,61 @@ msgstr ""
 
 #. Keywords for page /dashboard/system/permissions/site
 #: concrete/config/install/base/dashboard.xml:551
-#: concrete/helpers/concrete/upgrade/version_560.php:213
+#: concrete/helpers/concrete/upgrade/version_560.php:214
 msgid "editors, hide site, offline, private, public, access"
 msgstr "エディター, サイトを隠す, オフライン, 保護, 公開, アクセス"
 
 #. Keywords for page /dashboard/system/permissions/files
 #: concrete/config/install/base/dashboard.xml:558
-#: concrete/helpers/concrete/upgrade/version_560.php:214
+#: concrete/helpers/concrete/upgrade/version_560.php:215
 msgid "file options, file manager, upload, modify"
 msgstr "file options, file manager, upload, modify"
 
 #. Keywords for page /dashboard/system/permissions/file_types
 #: concrete/config/install/base/dashboard.xml:565
-#: concrete/helpers/concrete/upgrade/version_560.php:215
+#: concrete/helpers/concrete/upgrade/version_560.php:216
 msgid "security, files, media, extension, manager, upload"
 msgstr "セキュリティ、ファイル、メディア、拡張、管理、アップロード"
 
 #. Keywords for page /dashboard/system/permissions/tasks
 #: concrete/config/install/base/dashboard.xml:572
-#: concrete/helpers/concrete/upgrade/version_560.php:216
+#: concrete/helpers/concrete/upgrade/version_560.php:217
 msgid "security, actions, administrator, admin, package, marketplace, search"
 msgstr "セキュリティ、アクション、管理者、パッケージ、マーケットプレイス、検索"
 
 #. Keywords for page /dashboard/system/permissions/ip_blacklist
 #: concrete/config/install/base/dashboard.xml:583
-#: concrete/helpers/concrete/upgrade/version_560.php:217
+#: concrete/helpers/concrete/upgrade/version_560.php:218
 msgid "security, lock ip, lock out, block ip, address, restrict, access"
 msgstr "security, lock ip, lock out, block ip, address, restrict, access"
 
 #. Keywords for page /dashboard/system/permissions/captcha
 #: concrete/config/install/base/dashboard.xml:590
-#: concrete/helpers/concrete/upgrade/version_560.php:218
+#: concrete/helpers/concrete/upgrade/version_560.php:219
 msgid "security, registration"
 msgstr "security, registration"
 
 #. Keywords for page /dashboard/system/permissions/antispam
 #: concrete/config/install/base/dashboard.xml:597
-#: concrete/helpers/concrete/upgrade/version_560.php:219
+#: concrete/helpers/concrete/upgrade/version_560.php:220
 msgid "antispam, block spam, security"
 msgstr "アンチスパム、スパムブロック、セキュリティ"
 
 #. Keywords for page /dashboard/system/permissions/maintenance_mode
 #: concrete/config/install/base/dashboard.xml:604
-#: concrete/helpers/concrete/upgrade/version_560.php:220
+#: concrete/helpers/concrete/upgrade/version_560.php:221
 msgid "lock site, under construction, hide, hidden"
 msgstr "lock site, under construction, hide, hidden"
 
 #. Keywords for page /dashboard/system/registration/postlogin
 #: concrete/config/install/base/dashboard.xml:613
-#: concrete/helpers/concrete/upgrade/version_560.php:221
+#: concrete/helpers/concrete/upgrade/version_560.php:222
 msgid "profile, login, redirect, specific, dashboard, administrators"
 msgstr "profile, login, redirect, specific, dashboard, administrators"
 
 #. Keywords for page /dashboard/system/registration/profiles
 #: concrete/config/install/base/dashboard.xml:620
-#: concrete/helpers/concrete/upgrade/version_560.php:222
+#: concrete/helpers/concrete/upgrade/version_560.php:223
 msgid "member profile, member page, community, forums, social, avatar"
 msgstr ""
 "メンバープロフィール, メンバーページ, コミュニティ, フォーラム, ソーシャル, "
@@ -14218,25 +14400,25 @@ msgstr ""
 
 #. Keywords for page /dashboard/system/registration/public_registration
 #: concrete/config/install/base/dashboard.xml:627
-#: concrete/helpers/concrete/upgrade/version_560.php:223
+#: concrete/helpers/concrete/upgrade/version_560.php:224
 msgid "signup, new user, community"
 msgstr "サインアップ、新規ユーザー、コミュニティ"
 
 #. Keywords for page /dashboard/system/mail
 #: concrete/config/install/base/dashboard.xml:635
-#: concrete/helpers/concrete/upgrade/version_560.php:224
+#: concrete/helpers/concrete/upgrade/version_560.php:225
 msgid "smtp, mail settings"
 msgstr "SMTP、メール設定"
 
 #. Keywords for page /dashboard/system/mail/method
 #: concrete/config/install/base/dashboard.xml:642
-#: concrete/helpers/concrete/upgrade/version_560.php:225
+#: concrete/helpers/concrete/upgrade/version_560.php:226
 msgid "email server, mail settings, mail configuration, external, internal"
 msgstr "email server, mail settings, mail configuration, external, internal"
 
 #. Keywords for page /dashboard/system/mail/importers
 #: concrete/config/install/base/dashboard.xml:656
-#: concrete/helpers/concrete/upgrade/version_560.php:226
+#: concrete/helpers/concrete/upgrade/version_560.php:227
 msgid ""
 "email server, mail settings, mail configuration, private message, message "
 "system, import, email, message"
@@ -14246,73 +14428,73 @@ msgstr ""
 
 #. Keywords for page /dashboard/system/attributes
 #: concrete/config/install/base/dashboard.xml:664
-#: concrete/helpers/concrete/upgrade/version_560.php:227
+#: concrete/helpers/concrete/upgrade/version_560.php:228
 msgid "attribute configuration"
 msgstr "属性設定"
 
 #. Keywords for page /dashboard/system/attributes/sets
 #: concrete/config/install/base/dashboard.xml:671
-#: concrete/helpers/concrete/upgrade/version_560.php:228
+#: concrete/helpers/concrete/upgrade/version_560.php:229
 msgid "attributes, sets"
 msgstr "属性, セット"
 
 #. Keywords for page /dashboard/system/attributes/types
 #: concrete/config/install/base/dashboard.xml:678
-#: concrete/helpers/concrete/upgrade/version_560.php:229
+#: concrete/helpers/concrete/upgrade/version_560.php:230
 msgid "attributes, types"
 msgstr "属性, タイプ"
 
 #. Keywords for page /dashboard/system/environment/info
 #: concrete/config/install/base/dashboard.xml:692
-#: concrete/helpers/concrete/upgrade/version_560.php:230
+#: concrete/helpers/concrete/upgrade/version_560.php:231
 msgid "overrides, system info, debug, support, help"
 msgstr "オーバーライド, システム情報, デバッグ, サポート, ヘルプ"
 
 #. Keywords for page /dashboard/system/environment/debug
 #: concrete/config/install/base/dashboard.xml:699
-#: concrete/helpers/concrete/upgrade/version_560.php:231
+#: concrete/helpers/concrete/upgrade/version_560.php:232
 msgid "errors, exceptions, develop, support, help"
 msgstr "errors, exceptions, develop, support, help"
 
 #. Keywords for page /dashboard/system/environment/logging
 #: concrete/config/install/base/dashboard.xml:706
-#: concrete/helpers/concrete/upgrade/version_560.php:232
+#: concrete/helpers/concrete/upgrade/version_560.php:233
 msgid "email, logging, logs, smtp, pop, errors, mysql, log"
 msgstr "メール, ロギング, ログ, SMTP, ポップ, エラー, MySQL, ログ"
 
 #. Keywords for page /dashboard/system/environment/file_storage_locations
 #: concrete/config/install/base/dashboard.xml:713
-#: concrete/helpers/concrete/upgrade/version_560.php:233
+#: concrete/helpers/concrete/upgrade/version_560.php:234
 msgid "security, alternate storage, hide files"
 msgstr "セキュリティ、代替ストレージ、非表示ファイル"
 
 #. Keywords for page /dashboard/system/environment/proxy
 #: concrete/config/install/base/dashboard.xml:722
-#: concrete/helpers/concrete/upgrade/version_560.php:234
+#: concrete/helpers/concrete/upgrade/version_560.php:235
 msgid "network, proxy server"
 msgstr "ネットワーク、プロキシサーバー"
 
 #. Keywords for page /dashboard/system/backup_restore
 #: concrete/config/install/base/dashboard.xml:729
-#: concrete/helpers/concrete/upgrade/version_560.php:235
+#: concrete/helpers/concrete/upgrade/version_560.php:236
 msgid "export, backup, database, sql, mysql, encryption, restore"
 msgstr "export, backup, database, sql, mysql, encryption, restore"
 
 #. Keywords for page /dashboard/system/backup_restore/update
 #: concrete/config/install/base/dashboard.xml:737
-#: concrete/helpers/concrete/upgrade/version_560.php:236
+#: concrete/helpers/concrete/upgrade/version_560.php:237
 msgid "upgrade, new version, update"
 msgstr "アップグレード、新バージョン、アップデート"
 
 #. Keywords for page /dashboard/system/backup_restore/database
 #: concrete/config/install/base/dashboard.xml:744
-#: concrete/helpers/concrete/upgrade/version_560.php:237
+#: concrete/helpers/concrete/upgrade/version_560.php:238
 msgid ""
 "export, database, xml, starting, points, schema, refresh, custom, tables"
 msgstr ""
 "export, database, xml, starting, points, schema, refresh, custom, tables"
 
-#: concrete/helpers/concrete/upgrade/version_560.php:326
+#: concrete/helpers/concrete/upgrade/version_560.php:327
 msgid "Dashboard Icon"
 msgstr "管理画面アイコン"
 
@@ -16711,10 +16893,6 @@ msgstr "コメント："
 #: concrete/config/install/disabled/standard/install_blocks_attributes_permissions_jobs.xml:205
 msgid "View Newsflow Updates in an Overlay"
 msgstr "ニュースフローの更新をオーバーレイで見る"
-
-#: concrete/config/install/disabled/blank/content.xml:146
-msgid "Page"
-msgstr "ページ"
 
 #: concrete/config/install/packages/standard/content.xml:10
 msgctxt "SelectAttributeValue"
