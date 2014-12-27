@@ -87,6 +87,7 @@ class Concrete5_Model_Page extends Collection {
 					$this->cPointerOriginalID = $cPointerOriginalID;
 					$this->cPath = $cPathOverride;
 					$this->cParentID = $cParentIDOverride;
+					$this->cDisplayOrder = $cDisplayOrderOverride;
 				}
 				$this->isMasterCollection = $row['cIsTemplate'];
 			} else {
