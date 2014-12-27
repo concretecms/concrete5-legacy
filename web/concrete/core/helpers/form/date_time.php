@@ -43,8 +43,12 @@ class Concrete5_Helper_Form_DateTime {
 			$format = defined('CUSTOM_DATE_APP_GENERIC_MDY') ? CUSTOM_DATE_APP_GENERIC_MDY : t(/*i18n: Short date format: see http://www.php.net/manual/en/function.date.php */ 'n/j/Y');
 			$h = is_numeric($arr[$field . '_h']) ? $arr[$field . '_h'] : '00';
 			$m = is_numeric($arr[$field . '_m']) ? $arr[$field . '_m'] : '00';
-			if(isset($arr[$field . '_a']) && ($arr[$field . '_a'] === 'PM')) {
-				$a = $dateHelper->date('A', mktime(13));
+			if(isset($arr[$field . '_a'])) {
+				if ($arr[$field . '_a'] === 'AM') {
+					$a = $dateHelper->date('A', mktime(1));
+				} else {
+					$a = $dateHelper->date('A', mktime(13));
+				}
 				$value .= " $h:$m $a";
 				$format .= ' h:i A';
 			}
