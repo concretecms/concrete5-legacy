@@ -149,21 +149,23 @@ class Concrete5_Helper_Form_DateTime {
 		/* @var $dateHelper DateHelper */
 		if (DATE_FORM_HELPER_FORMAT_HOUR == '12') {
 			$html .= '<select id="' . $id . '_a" name="' . $_a . '" ' . $disabled . '>';
+			// Get the translation of "AM" in the current language
+			$strAM = $dateHelper->date('A', mktime(1));
 			$html .= '<option value="AM" ';
-			if ($a == 'AM') {
+			if ($a == $strAM) {
 				$html .= 'selected';
 			}
 			$html .= '>';
-			// This prints out the translation of "AM" in the current language
-			$html .= $dateHelper->date('A', mktime(1));
+			$html .= $strAM;
 			$html .= '</option>';
+			// Get the translation of "PM" in the current language
+			$strPM = $dateHelper->date('A', mktime(13));
 			$html .= '<option value="PM" ';
-			if ($a == 'PM') {
+			if ($a == $strPM) {
 				$html .= 'selected';
 			}
 			$html .= '>';
-			// This prints out the translation of "PM" in the current language
-			$html .= $dateHelper->date('A', mktime(13));
+			$html .= $strPM;
 			$html .= '</option>';
 			$html .= '</select>';
 		}
