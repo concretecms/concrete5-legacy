@@ -19,6 +19,7 @@ $controller->orderBy	= $_REQUEST['orderBy'];
 $controller->ctID 		= $_REQUEST['ctID'];
 $controller->rss 		= $_REQUEST['rss'];
 $controller->displayFeaturedOnly = $_REQUEST['displayFeaturedOnly'];
+$controller->includeAllDescendents = $_REQUEST['includeAllDescendents'];
 
 $cArray = $controller->getPages();
 
