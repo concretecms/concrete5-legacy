@@ -22,10 +22,29 @@ class Concrete5_Library_Content_Exporter {
 	
 	protected $x; // the xml object for export
 	protected static $mcBlockIDs = array();
-	
-	public function run() {
-		$this->x = new SimpleXMLElement("<concrete5-cif></concrete5-cif>");
-		$this->x->addAttribute('version', '1.0');
+
+	/**
+	 * @deprecated
+	 */
+	public function run()
+	{
+		$this->exportAll();
+	}
+
+	protected function getXMLRoot()
+	{
+		$root = new SimpleXMLElement("<concrete5-cif></concrete5-cif>");
+		$root->addAttribute('version', '1.0');
+		return $root;
+	}
+
+	public function getXMLNode()
+	{
+		return $this->x;
+	}
+
+	public function exportAll() {
+		$this->x = $this->getXMLRoot();
 
 		// First, attribute categories
 		AttributeKeyCategory::exportList($this->x);
@@ -76,23 +95,33 @@ class Concrete5_Library_Content_Exporter {
 		// now stacks/global areas
 		Loader::model('stack/list');
 		StackList::export($this->x);
-		
-		// now content pages
-		$pages = $this->x->addChild("pages");
-		$db = Loader::db();
-		$r = $db->Execute('select Pages.cID from Pages left join ComposerDrafts on Pages.cID = ComposerDrafts.cID where ComposerDrafts.cID is null and cIsTemplate = 0 and cFilename is null or cFilename = "" order by cID asc');
-		while($row = $r->FetchRow()) {
-			$pc = Page::getByID($row['cID'], 'RECENT');
-			$pc->export($pages);
-		}		
-		
-		Loader::model("system/captcha/library");		
+
+		$this->exportPages($this->x);
+
+		Loader::model("system/captcha/library");
 		SystemCaptchaLibrary::exportList($this->x);
 		
 		Config::exportList($this->x);
-		
 	}
-	
+
+	public function exportPages($xml = null, PageList $pl = null)
+	{
+		if (!$xml) {
+			$this->x = $this->getXMLRoot();
+		}
+		$node = $this->x->addChild("pages");
+		if (!$pl) {
+			$pl = new PageList();
+		}
+		$pl->ignorePermissions();
+		$pl->ignoreAliases();
+		$pl->filter(false, 'cFilename is null or cFilename = \'\'');
+		$pages = $pl->get();
+		foreach($pages as $pc) {
+			$pc->export($node);
+		}
+	}
+
 	public static function addMasterCollectionBlockID($b, $id) {
 		self::$mcBlockIDs[$b->getBlockID()] = $id;
 	}
