@@ -120,7 +120,7 @@ class Concrete5_Library_Content_Importer {
 		}
 	}
 
-	protected function setupPageNodeOrder($pageNodeA, $pageNodeB) {
+	public function setupPageNodeOrder($pageNodeA, $pageNodeB) {
 		$pathA = (string) $pageNodeA['path'];
 		$pathB = (string) $pageNodeB['path'];
 		$numA = count(explode('/', $pathA));
@@ -210,7 +210,7 @@ class Concrete5_Library_Content_Importer {
 		}
 	}
 	
-	protected function importPageAreas(Page $page, SimpleXMLElement $px) {
+	public function importPageAreas(Page $page, SimpleXMLElement $px) {
 		foreach($px->area as $ax) {
 			if (isset($ax->block)) {
 				foreach($ax->block as $bx) {
