@@ -60,7 +60,6 @@ class Concrete5_Controller_Block_Form extends BlockController {
 							}
 							if ($table == 'btFormQuestions') {
 								$db = Loader::db();
-								$aar->qID = 0;
 								$aar->questionSetId = $db->GetOne('select questionSetId from btForm where bID = ?', array($b->getBlockID()));
 								$aar->qID = null;
 							}
