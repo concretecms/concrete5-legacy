@@ -312,7 +312,7 @@ class Concrete5_Helper_Date {
 	 */
 	public function formatDate($value = 'now', $longDate = false, $timezone = 'user') {
 		$zendDate = $this->toZendDate($value, $timezone);
-		if (is_null(toZendDate)) {
+		if (is_null($zendDate)) {
 			return '';
 		}
 		if($longDate) {
