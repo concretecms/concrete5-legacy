@@ -95,6 +95,26 @@ class Concrete5_Helper_Lists_StatesProvinces {
 		'YT' => 'Yukon'
 	),
 
+	'NZ' => array(
+		'NORTHLAND' => 'Northland',
+		'AUCKLAND' => 'Auckland',
+		'WAIKATO' => 'Waikato',
+		'BOP' => 'Bay of Plenty',
+		'GISBORNE' => 'Gisborne',
+		'HAWKESBAY' => "Hawke's Bay",
+		'TARANAKI' => 'Taranaki',
+		'MANAWATU' => 'Manawatu-Wanganui',
+		'WELLINGTON' => 'Wellington',
+		'TASMAN' => 'Tasman',
+		'NELSON' => 'Nelson',
+		'MARLBOROUGH' => 'Marlborough',
+		'WESTCOAST' => 'West Coast',
+		'CANTERBURY' => 'Canterbury',
+		'OTAGO' => 'Otago',
+		'SOUTHLAND' => 'Southland',
+		'CHATHAM' => 'Chatham Islands'
+	),
+
 	'AU' => array(
 		'AAT' => 'Australian Antarctic Territory',
 		'ACT' => 'Australian Capital Territory',
