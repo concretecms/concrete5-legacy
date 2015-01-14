@@ -229,7 +229,8 @@ class Concrete5_Model_AttributeKey extends Object {
 			$akIsInternal = 1;
 		}
 		$db = Loader::db();
-		$akID = $db->GetOne('select akID from AttributeKeys where akHandle = ?', array($ak['handle']));
+		$akc = AttributeKeyCategory::getByHandle($akCategoryHandle);
+		$akID = $db->GetOne('select akID from AttributeKeys where akHandle = ? and akCategoryID = ?', array($ak['handle'], $akc->getAttributeKeyCategoryID()));
 		if (!$akID) {
 			$akn = self::add($akCategoryHandle, $type, array('akHandle' => $ak['handle'], 'akName' => $ak['name'], 'akIsInternal' => $akIsInternal, 'akIsSearchableIndexed' => $ak['indexed'], 'akIsSearchable' => $ak['searchable']), $pkg);
 			$akn->getController()->importKey($ak);
