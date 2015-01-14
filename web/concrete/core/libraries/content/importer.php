@@ -536,10 +536,10 @@ class Concrete5_Library_Content_Importer {
 		if (isset($sx->attributekeys)) {
 			$db = Loader::db();
 			foreach($sx->attributekeys->attributekey as $ak) {
-				$akID = $db->GetOne('select akID from AttributeKeys where akHandle = ?', array($ak['handle']));
+				$akc = AttributeKeyCategory::getByHandle($ak['category']);
+				$akID = $db->GetOne('select akID from AttributeKeys where akHandle = ? and akCategoryID = ?', array($ak['handle'], $akc->getAttributeKeyCategoryID()));
 				
 				if (!$akID) {
-					$akc = AttributeKeyCategory::getByHandle($ak['category']);
 					$pkg = ContentImporter::getPackageObject($ak['package']);
 					$type = AttributeType::getByHandle($ak['type']);
 					$txt = Loader::helper('text');
