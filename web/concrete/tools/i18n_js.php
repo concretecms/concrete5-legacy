@@ -81,6 +81,7 @@ var ccmi18n = {
 	user_delete: "<?=t('Delete')?>",
 	user_group_remove: "<?=t('Remove From Group')?>",
 	user_group_add: "<?=t('Add to Group')?>"
+	discard_my_edits: "<?=t('Are you sure you want to discard?')?>"
 }
 
 var ccmi18n_sitemap = {
