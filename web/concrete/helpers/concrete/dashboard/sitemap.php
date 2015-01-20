@@ -165,7 +165,7 @@ class ConcreteDashboardSitemapHelper {
 		$db = Loader::db();
 		
 		$obj = new stdClass;
-		if (isset($cID) && Loader::helper('validation/numbers')->integer($cID)) {
+		if (isset($cID) && (Loader::helper('validation/numbers')->integer($cID) || $cID == 0)) {
 			if ($keywords != '' && $keywords != false) {
 				$nc = Page::getByID($cID, 'RECENT');
 				$pl = new PageList();
