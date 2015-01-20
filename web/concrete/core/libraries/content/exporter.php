@@ -133,8 +133,8 @@ class Concrete5_Library_Content_Exporter {
 	}
 	
 	public function output() {
-		return $this->x->asXML();
-		
+		// return output stripped of control characters except newlines and character returns.
+		return preg_replace('/[\x00-\x09\x0B\x0C\x0E-\x1F\x7F]/', '', $this->x->asXML());
 	}
 	
 	public function getFilesArchive() {
