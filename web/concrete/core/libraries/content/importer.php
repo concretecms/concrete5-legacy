@@ -134,7 +134,13 @@ class Concrete5_Library_Content_Importer {
 				return 0;
 			}
 		} else {
-			return ($numA < $numB) ? -1 : 1;
+			if ($numA > $numB) {
+				return 1;
+			} else if ($numA < $numB) {
+				return -1;
+			} else {
+				return 0;
+			}
 		}
 	}
 	
