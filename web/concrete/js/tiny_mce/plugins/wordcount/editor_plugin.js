@@ -1,1 +1,122 @@
-(function(){tinymce.create("tinymce.plugins.WordCount",{block:0,id:null,countre:null,cleanre:null,init:function(c,d){var e=this,f=0,g=tinymce.VK;e.countre=c.getParam("wordcount_countregex",/[\w\u2019\u00co-\u00ff^\uc397^u00f7\'-]+/g);e.cleanre=c.getParam("wordcount_cleanregex",/[0-9.(),;:!?%#$?\'\"_+=\\\/-]*/g);e.update_rate=c.getParam("wordcount_update_rate",2000);e.update_on_delete=c.getParam("wordcount_update_on_delete",false);e.id=c.id+"-word-count";c.onPostRender.add(function(i,h){var j,k;k=i.getParam("wordcount_target_id");if(!k){j=tinymce.DOM.get(i.id+"_path_row");if(j){tinymce.DOM.add(j.parentNode,"div",{style:"float: right"},i.getLang("wordcount.words","Words: ")+'<span id="'+e.id+'">0</span>')}}else{tinymce.DOM.add(k,"span",{},'<span id="'+e.id+'">0</span>')}});c.onInit.add(function(h){h.selection.onSetContent.add(function(){e._count(h)});e._count(h)});c.onSetContent.add(function(h){e._count(h)});function b(h){return h!==f&&(h===g.ENTER||f===g.SPACEBAR||a(f))}function a(h){return h===g.DELETE||h===g.BACKSPACE}c.onKeyUp.add(function(h,i){if(b(i.keyCode)||e.update_on_delete&&a(i.keyCode)){e._count(h)}f=i.keyCode})},_getCount:function(c){var a=0;var b=c.getContent({format:"raw"});if(b){b=b.replace(/\.\.\./g," ");b=b.replace(/<.[^<>]*?>/g," ").replace(/&nbsp;|&#160;/gi," ");b=b.replace(/(\w+)(&.+?;)+(\w+)/,"$1$3").replace(/&.+?;/g," ");b=b.replace(this.cleanre,"");var d=b.match(this.countre);if(d){a=d.length}}return a},_count:function(a){var b=this;if(b.block){return}b.block=1;setTimeout(function(){if(!a.destroyed){var c=b._getCount(a);tinymce.DOM.setHTML(b.id,c.toString());setTimeout(function(){b.block=0},b.update_rate)}},1)},getInfo:function(){return{longname:"Word Count plugin",author:"Moxiecode Systems AB",authorurl:"http://tinymce.moxiecode.com",infourl:"http://wiki.moxiecode.com/index.php/TinyMCE:Plugins/wordcount",version:tinymce.majorVersion+"."+tinymce.minorVersion}}});tinymce.PluginManager.add("wordcount",tinymce.plugins.WordCount)})();
+/**
+ * editor_plugin_src.js
+ *
+ * Copyright 2009, Moxiecode Systems AB
+ * Released under LGPL License.
+ *
+ * License: http://tinymce.moxiecode.com/license
+ * Contributing: http://tinymce.moxiecode.com/contributing
+ */
+
+(function() {
+	tinymce.create('tinymce.plugins.WordCount', {
+		block : 0,
+		id : null,
+		countre : null,
+		cleanre : null,
+
+		init : function(ed, url) {
+			var t = this, last = 0, VK = tinymce.VK;
+
+			t.countre = ed.getParam('wordcount_countregex', /[\w\u2019\u00co-\u00ff^\uc397^u00f7\'-]+/g); // u2019 == &rsquo; u00c0-u00ff extended latin chars with diacritical marks. exclude uc397 multiplication & u00f7 division
+			t.cleanre = ed.getParam('wordcount_cleanregex', /[0-9.(),;:!?%#$?\'\"_+=\\\/-]*/g);
+			t.update_rate = ed.getParam('wordcount_update_rate', 2000);
+			t.update_on_delete = ed.getParam('wordcount_update_on_delete', false);
+			t.id = ed.id + '-word-count';
+
+			ed.onPostRender.add(function(ed, cm) {
+				var row, id;
+
+				// Add it to the specified id or the theme advanced path
+				id = ed.getParam('wordcount_target_id');
+				if (!id) {
+					row = tinymce.DOM.get(ed.id + '_path_row');
+
+					if (row)
+						tinymce.DOM.add(row.parentNode, 'div', {'style': 'float: right'}, ed.getLang('wordcount.words', 'Words: ') + '<span id="' + t.id + '">0</span>');
+				} else {
+					tinymce.DOM.add(id, 'span', {}, '<span id="' + t.id + '">0</span>');
+				}
+			});
+
+			ed.onInit.add(function(ed) {
+				ed.selection.onSetContent.add(function() {
+					t._count(ed);
+				});
+
+				t._count(ed);
+			});
+
+			ed.onSetContent.add(function(ed) {
+				t._count(ed);
+			});
+
+			function checkKeys(key) {
+				return key !== last && (key === VK.ENTER || last === VK.SPACEBAR || checkDelOrBksp(last));
+			}
+
+			function checkDelOrBksp(key) {
+				return key === VK.DELETE || key === VK.BACKSPACE;
+			}
+
+			ed.onKeyUp.add(function(ed, e) {
+				if (checkKeys(e.keyCode) || t.update_on_delete && checkDelOrBksp(e.keyCode)) {
+					t._count(ed);
+				}
+
+				last = e.keyCode;
+			});
+		},
+
+		_getCount : function(ed) {
+			var tc = 0;
+			var tx = ed.getContent({ format: 'raw' });
+
+			if (tx) {
+					tx = tx.replace(/\.\.\./g, ' '); // convert ellipses to spaces
+					tx = tx.replace(/<.[^<>]*?>/g, ' ').replace(/&nbsp;|&#160;/gi, ' '); // remove html tags and space chars
+
+					// deal with html entities
+					tx = tx.replace(/(\w+)(&.+?;)+(\w+)/, "$1$3").replace(/&.+?;/g, ' ');
+					tx = tx.replace(this.cleanre, ''); // remove numbers and punctuation
+
+					var wordArray = tx.match(this.countre);
+					if (wordArray) {
+							tc = wordArray.length;
+					}
+			}
+
+			return tc;
+		},
+
+		_count : function(ed) {
+			var t = this;
+
+			// Keep multiple calls from happening at the same time
+			if (t.block)
+				return;
+
+			t.block = 1;
+
+			setTimeout(function() {
+				if (!ed.destroyed) {
+					var tc = t._getCount(ed);
+					tinymce.DOM.setHTML(t.id, tc.toString());
+					setTimeout(function() {t.block = 0;}, t.update_rate);
+				}
+			}, 1);
+		},
+
+		getInfo: function() {
+			return {
+				longname : 'Word Count plugin',
+				author : 'Moxiecode Systems AB',
+				authorurl : 'http://tinymce.moxiecode.com',
+				infourl : 'http://wiki.moxiecode.com/index.php/TinyMCE:Plugins/wordcount',
+				version : tinymce.majorVersion + "." + tinymce.minorVersion
+			};
+		}
+	});
+
+	tinymce.PluginManager.add('wordcount', tinymce.plugins.WordCount);
+})();
