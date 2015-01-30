@@ -9,16 +9,16 @@
 	<script type="text/javascript" src="js/element_common.js"></script>
 	<script type="text/javascript" src="js/acronym.js"></script>
 	<link rel="stylesheet" type="text/css" href="css/popup.css" />
+	<style type="text/css">@import "../../../../css/ccm.app.css";</style>
+	<style type="text/css">@import "../../../../css/ccm.tinymce.css";</style>
 </head>
 <body style="display: none" role="application" aria-labelledby="app_title">
 <span style="display:none;" id="app_title">{#xhtmlxtras_dlg.title_acronym_element}</span>
 <form onsubmit="insertAcronym();return false;" action="#">
-	<div class="tabs">
-		<ul>
-			<li id="general_tab" class="current" aria-controls="general_panel"><span><a href="javascript:mcTabs.displayTab('general_tab','general_panel');" onmousedown="return false;">{#xhtmlxtras_dlg.general_tab}</a></span></li>
+		<ul id="ccm-advanced-link-tabs" class="ccm-dialog-tabs">
+			<li id="general_tab" class="current" aria-controls="general_panel"><a href="javascript:mcTabs.displayTab('general_tab','general_panel');" onmousedown="return false;">{#xhtmlxtras_dlg.general_tab}</a></li>
 			<!-- <li id="events_tab"><span><a href="javascript:mcTabs.displayTab('events_tab','events_panel');" onmousedown="return false;">{#xhtmlxtras_dlg.events_tab}</a></span></li> -->
 		</ul>
-	</div>
 
 	<div class="panel_wrapper">
 		<div id="general_panel" class="panel current">
@@ -132,10 +132,10 @@
 			</fieldset>
 		</div>
 	</div>
-	<div class="mceActionPanel">
-		<input type="submit" id="insert" name="insert" value="{#update}" />
-		<input type="button" id="remove" name="remove" class="button" value="{#xhtmlxtras_dlg.remove}" onclick="removeAcronym();" style="display: none;" />
-		<input type="button" id="cancel" name="cancel" value="{#cancel}" onclick="tinyMCEPopup.close();" />
+	<div class="mceActionPanel ccm-ui">
+		<input type="submit" class="btn" style="float: right;" id="insert" name="insert" value="{#update}" />
+		<input type="button" class="btn" id="remove" name="remove" class="button" value="{#xhtmlxtras_dlg.remove}" onclick="removeAbbr();" style="display: none;" />
+		<input type="button" class="btn" id="cancel" name="cancel" value="{#cancel}" onclick="tinyMCEPopup.close();" />
 	</div>
 </form>
 </body>

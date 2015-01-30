@@ -48,7 +48,7 @@
 	}
 
 	function setVal(id, value, name) {
-		if (typeof(value) != 'undefined') {
+		if (typeof(value) != 'undefined' && value != null) {
 			var elm = get(id);
 
 			if (elm.nodeName == "SELECT")
@@ -66,9 +66,9 @@
 
 	window.Media = {
 		init : function() {
-			var html, editor;
+			var html, editor, self = this;
 
-			this.editor = editor = tinyMCEPopup.editor;
+			self.editor = editor = tinyMCEPopup.editor;
 
 			// Setup file browsers and color pickers
 			get('filebrowsercontainer').innerHTML = getBrowserHTML('filebrowser','src','media','media');
@@ -78,9 +78,9 @@
 			get('video_altsource2_filebrowser').innerHTML = getBrowserHTML('video_filebrowser_altsource2','video_altsource2','media','media');
 			get('audio_altsource1_filebrowser').innerHTML = getBrowserHTML('audio_filebrowser_altsource1','audio_altsource1','media','media');
 			get('audio_altsource2_filebrowser').innerHTML = getBrowserHTML('audio_filebrowser_altsource2','audio_altsource2','media','media');
-			get('video_poster_filebrowser').innerHTML = getBrowserHTML('filebrowser_poster','video_poster','media','image');
+			get('video_poster_filebrowser').innerHTML = getBrowserHTML('filebrowser_poster','video_poster','image','media');
 
-			html = this.getMediaListHTML('medialist', 'src', 'media', 'media');
+			html = self.getMediaListHTML('medialist', 'src', 'media', 'media');
 			if (html == "")
 				get("linklistrow").style.display = 'none';
 			else
@@ -104,11 +104,12 @@
 			if (isVisible('filebrowser_poster'))
 				get('video_poster').style.width = '220px';
 
-			editor.dom.setOuterHTML(get('media_type'), this.getMediaTypeHTML(editor));
+			editor.dom.setOuterHTML(get('media_type'), self.getMediaTypeHTML(editor));
 
-			this.data = clone(tinyMCEPopup.getWindowArg('data'));
-			this.dataToForm();
-			this.preview();
+			self.setDefaultDialogSettings(editor);
+			self.data = clone(tinyMCEPopup.getWindowArg('data'));
+			self.dataToForm();
+			self.preview();
 
 			updateColor('bgcolor_pick', 'bgcolor');
 		},
@@ -175,14 +176,14 @@
 						formItemName = type == 'global' ? name : type + '_' + name;
 
 						if (type == 'global')
-							list = data;
-						else if (type == 'video' || type == 'audio') {
+						list = data;
+					else if (type == 'video' || type == 'audio') {
 							list = data.video.attrs;
 
 							if (!list && !to_form)
-								data.video.attrs = list = {};
+							data.video.attrs = list = {};
 						} else
-							list = data.params;
+						list = data.params;
 
 						if (list) {
 							if (to_form) {
@@ -294,34 +295,77 @@
 			} else {
 				src = getVal("src");
 
-				// YouTube *NEW*
-				if (src.match(/youtu.be\/[a-z1-9.-_]+/)) {
+				// YouTube Embed
+				if (src.match(/youtube\.com\/embed\/\w+/)) {
 					data.width = 425;
 					data.height = 350;
 					data.params.frameborder = '0';
 					data.type = 'iframe';
-					src = 'http://www.youtube.com/embed/' + src.match(/youtu.be\/([a-z1-9.-_]+)/)[1];
 					setVal('src', src);
 					setVal('media_type', data.type);
-				}
+				} else {
+					// YouTube *NEW*
+					if (src.match(/youtu\.be\/[a-z1-9.-_]+/)) {
+						data.width = 425;
+						data.height = 350;
+						data.params.frameborder = '0';
+						data.type = 'iframe';
+						src = 'http://www.youtube.com/embed/' + src.match(/youtu.be\/([a-z1-9.-_]+)/)[1];
+						setVal('src', src);
+						setVal('media_type', data.type);
+					}
 
-				// YouTube
-				if (src.match(/youtube.com(.+)v=([^&]+)/)) {
-					data.width = 425;
-					data.height = 350;
-					data.params.frameborder = '0';
-					data.type = 'iframe';
-					src = 'http://www.youtube.com/embed/' + src.match(/v=([^&]+)/)[1];
-					setVal('src', src);
-					setVal('media_type', data.type);
+					// YouTube
+					if (src.match(/youtube\.com(.+)v=([^&]+)/)) {
+						data.width = 425;
+						data.height = 350;
+						data.params.frameborder = '0';
+						data.type = 'iframe';
+						src = 'http://www.youtube.com/embed/' + src.match(/v=([^&]+)/)[1];
+						setVal('src', src);
+						setVal('media_type', data.type);
+					}
 				}
 
 				// Google video
-				if (src.match(/video.google.com(.+)docid=([^&]+)/)) {
+				if (src.match(/video\.google\.com(.+)docid=([^&]+)/)) {
 					data.width = 425;
 					data.height = 326;
 					data.type = 'flash';
 					src = 'http://video.google.com/googleplayer.swf?docId=' + src.match(/docid=([^&]+)/)[1] + '&hl=en';
+					setVal('src', src);
+					setVal('media_type', data.type);
+				}
+				
+				// Vimeo
+				if (src.match(/vimeo\.com\/([0-9]+)/)) {
+					data.width = 425;
+					data.height = 350;
+					data.params.frameborder = '0';
+					data.type = 'iframe';
+					src = 'http://player.vimeo.com/video/' + src.match(/vimeo.com\/([0-9]+)/)[1];
+					setVal('src', src);
+					setVal('media_type', data.type);
+				}
+            
+				// stream.cz
+				if (src.match(/stream\.cz\/((?!object).)*\/([0-9]+)/)) {
+					data.width = 425;
+					data.height = 350;
+					data.params.frameborder = '0';
+					data.type = 'iframe';
+					src = 'http://www.stream.cz/object/' + src.match(/stream.cz\/[^/]+\/([0-9]+)/)[1];
+					setVal('src', src);
+					setVal('media_type', data.type);
+				}
+				
+				// Google maps
+				if (src.match(/maps\.google\.([a-z]{2,3})\/maps\/(.+)msid=(.+)/)) {
+					data.width = 425;
+					data.height = 350;
+					data.params.frameborder = '0';
+					data.type = 'iframe';
+					src = 'http://maps.google.com/maps/ms?msid=' + src.match(/msid=(.+)/)[1] + "&output=embed";
 					setVal('src', src);
 					setVal('media_type', data.type);
 				}
@@ -426,23 +470,39 @@
 		},
 
 		getMediaTypeHTML : function(editor) {
+			function option(media_type, element) {
+				if (!editor.schema.getElementRule(element || media_type)) {
+					return '';
+				}
+
+				return '<option value="'+media_type+'">'+tinyMCEPopup.editor.translate("media_dlg."+media_type)+'</option>'
+			}
+
 			var html = "";
+
 			html += '<select id="media_type" name="media_type" onchange="Media.formToData(\'type\');">';
-			html += '<option value="video">HTML5 Video</option>';
-			html += '<option value="audio">HTML5 Audio</option>';
-			html += '<option value="flash">Flash</option>';
-			html += '<option value="quicktime">QuickTime</option>';
-			html += '<option value="shockwave">Shockwave</option>';
-			html += '<option value="windowsmedia">Windows Media</option>';
-			html += '<option value="realmedia">Real Media</option>';
-			html += '<option value="iframe">Iframe</option>';
+			html += option("video");
+			html += option("audio");
+			html += option("flash", "object");
+			html += option("quicktime", "object");
+			html += option("shockwave", "object");
+			html += option("windowsmedia", "object");
+			html += option("realmedia", "object");
+			html += option("iframe");
 
 			if (editor.getParam('media_embedded_audio', false)) {
-				html += '<option value="embeddedaudio">Embedded Audio</option>';
+				html += option('embeddedaudio', "object");
 			}
-			
+
 			html += '</select>';
 			return html;
+		},
+
+		setDefaultDialogSettings : function(editor) {
+			var defaultDialogSettings = editor.getParam("media_dialog_defaults", {});
+			tinymce.each(defaultDialogSettings, function(v, k) {
+				setVal(k, v);
+			});
 		}
 	};
 
