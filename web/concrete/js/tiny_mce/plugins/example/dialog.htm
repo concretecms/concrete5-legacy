@@ -4,6 +4,8 @@
 	<title>{#example_dlg.title}</title>
 	<script type="text/javascript" src="../../tiny_mce_popup.js"></script>
 	<script type="text/javascript" src="js/dialog.js"></script>
+	<style type="text/css">@import "../../../../css/ccm.app.css";</style>
+	<style type="text/css">@import "../../../../css/ccm.tinymce.css";</style>
 </head>
 <body>
 
@@ -12,7 +14,7 @@
 	<p>Selected text: <input id="someval" name="someval" type="text" class="text" /></p>
 	<p>Custom arg: <input id="somearg" name="somearg" type="text" class="text" /></p>
 
-	<div class="mceActionPanel">
+	<div class="mceActionPanel ccm-ui">
 		<input type="button" id="insert" name="insert" value="{#insert}" onclick="ExampleDialog.insert();" />
 		<input type="button" id="cancel" name="cancel" value="{#cancel}" onclick="tinyMCEPopup.close();" />
 	</div>

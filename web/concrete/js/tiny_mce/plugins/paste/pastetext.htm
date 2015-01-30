@@ -3,6 +3,8 @@
 	<title>{#paste.paste_text_desc}</title>
 	<script type="text/javascript" src="../../tiny_mce_popup.js"></script>
 	<script type="text/javascript" src="js/pastetext.js"></script>
+	<style type="text/css">@import "../../../../css/ccm.app.css";</style>
+	<style type="text/css">@import "../../../../css/ccm.tinymce.css";</style>
 </head>
 <body onresize="PasteTextDialog.resize();" style="display:none; overflow:hidden;">
 	<form name="source" onsubmit="return PasteTextDialog.insert();" action="#">
@@ -18,7 +20,7 @@
 
 		<textarea id="content" name="content" rows="15" cols="100" style="width: 100%; height: 100%; font-family: 'Courier New',Courier,mono; font-size: 12px;" dir="ltr" wrap="soft" class="mceFocus"></textarea>
 
-		<div class="mceActionPanel">
+		<div class="mceActionPanel ccm-ui">
 			<input type="submit" name="insert" value="{#insert}" id="insert" />
 			<input type="button" name="cancel" value="{#cancel}" onclick="tinyMCEPopup.close();" id="cancel" />
 		</div>

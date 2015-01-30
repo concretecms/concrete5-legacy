@@ -9,12 +9,14 @@
 	<script type="text/javascript" src="../../utils/editable_selects.js"></script>
 	<script type="text/javascript" src="js/table.js"></script>
 	<link href="css/table.css" rel="stylesheet" type="text/css" />
+	<style type="text/css">@import "../../../../css/ccm.app.css";</style>
+	<style type="text/css">@import "../../../../css/ccm.tinymce.css";</style>
 </head>
 <body id="table" style="display: none" role="application" aria-labelledby="app_title">
 	<span style="display:none;" id="app_title">{#table_dlg.title}</span>
 	<form onsubmit="insertTable();return false;" action="#">
 		<div class="tabs">
-			<ul>
+			<ul id="ccm-advanced-link-tabs" class="ccm-dialog-tabs">
 				<li id="general_tab" aria-controls="general_panel" class="current"><span><a href="javascript:mcTabs.displayTab('general_tab','general_panel');" onmousedown="return false;">{#table_dlg.general_tab}</a></span></li>
 				<li id="advanced_tab" aria-controls="advanced_panel"><span><a href="javascript:mcTabs.displayTab('advanced_tab','advanced_panel');" onmousedown="return false;">{#table_dlg.advanced_tab}</a></span></li>
 			</ul>
@@ -179,7 +181,7 @@
 			</div>
 		</div>
 
-		<div class="mceActionPanel">
+		<div class="mceActionPanel ccm-ui">
 			<input type="submit" id="insert" name="insert" value="{#insert}" />
 			<input type="button" id="cancel" name="cancel" value="{#cancel}" onclick="tinyMCEPopup.close();" />
 		</div>

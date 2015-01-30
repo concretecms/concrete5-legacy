@@ -7,12 +7,14 @@
 	<script type="text/javascript" src="../../utils/form_utils.js"></script>
 	<script type="text/javascript" src="js/searchreplace.js"></script>
 	<link rel="stylesheet" type="text/css" href="css/searchreplace.css" />
+	<style type="text/css">@import "../../../../css/ccm.app.css";</style>
+	<style type="text/css">@import "../../../../css/ccm.tinymce.css";</style>
 </head>
 <body style="display:none;" role="application" aria-labelledby="app_title">
 <span id="app_title" style="display:none">{#searchreplace_dlg.replace_title}</span>
 <form onsubmit="SearchReplaceDialog.searchNext('none');return false;" action="#">
 	<div class="tabs">
-		<ul>
+		<ul id="ccm-advanced-link-tabs" class="ccm-dialog-tabs">
 			<li id="search_tab" aria-controls="search_panel"><span><a href="javascript:SearchReplaceDialog.switchMode('search');" onmousedown="return false;">{#searchreplace.search_desc}</a></span></li>
 			<li id="replace_tab" aria-controls="replace_panel"><span><a href="javascript:SearchReplaceDialog.switchMode('replace');" onmousedown="return false;">{#searchreplace_dlg.replace}</a></span></li>
 		</ul>
@@ -89,7 +91,7 @@
 
 	</div>
 
-	<div class="mceActionPanel">
+	<div class="mceActionPanel ccm-ui">
 		<input type="submit" id="insert" name="insert" value="{#searchreplace_dlg.findnext}" />
 		<input type="button" class="button" id="replaceBtn" name="replaceBtn" value="{#searchreplace_dlg.replace}" onclick="SearchReplaceDialog.searchNext('current');" />
 		<input type="button" class="button" id="replaceAllBtn" name="replaceAllBtn" value="{#searchreplace_dlg.replaceall}" onclick="SearchReplaceDialog.searchNext('all');" />

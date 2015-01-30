@@ -9,11 +9,13 @@
 	<script type="text/javascript" src="../../utils/editable_selects.js"></script>
 	<script type="text/javascript" src="js/row.js"></script>
 	<link href="css/row.css" rel="stylesheet" type="text/css" />
+	<style type="text/css">@import "../../../../css/ccm.app.css";</style>
+	<style type="text/css">@import "../../../../css/ccm.tinymce.css";</style>
 </head>
 <body id="tablerow" style="display: none" role="application">
 	<form onsubmit="updateAction();return false;" action="#">
 		<div class="tabs">
-			<ul>
+			<ul id="ccm-advanced-link-tabs" class="ccm-dialog-tabs">
 				<li id="general_tab" class="current" aria-controls="general_panel"><span><a href="javascript:mcTabs.displayTab('general_tab','general_panel');" onmousedown="return false;">{#table_dlg.general_tab}</a></span></li>
 				<li id="advanced_tab" aria-controls="advanced_panel"><span><a href="javascript:mcTabs.displayTab('advanced_tab','advanced_panel');" onmousedown="return false;">{#table_dlg.advanced_tab}</a></span></li>
 			</ul>
@@ -140,7 +142,7 @@
 			</div>
 		</div>
 
-		<div class="mceActionPanel">
+		<div class="mceActionPanel ccm-ui">
 			<div>
 				<select id="action" name="action">
 					<option value="row">{#table_dlg.row_row}</option>
