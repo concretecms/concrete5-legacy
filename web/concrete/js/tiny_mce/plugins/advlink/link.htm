@@ -15,14 +15,12 @@
 <body id="advlink" style="display: none" role="application" onload="javascript:mcTabs.displayTab('general_tab','general_panel', true);" aria-labelledby="app_label">
 	<span class="mceVoiceLabel" id="app_label" style="display:none;">{#advlink_dlg.title}</span>
 	<form onsubmit="insertAction();return false;" action="#">
-		<div class="tabs" role="presentation">
 			<ul id="ccm-advanced-link-tabs" class="ccm-dialog-tabs">
-				<li id="general_tab" class="current" aria-controls="general_panel" ><span><a href="javascript:mcTabs.displayTab('general_tab','general_panel');" onmousedown="return false;">{#advlink_dlg.general_tab}</a></span></li>
-				<li id="popup_tab" aria-controls="popup_panel" ><span><a href="javascript:mcTabs.displayTab('popup_tab','popup_panel');" onmousedown="return false;">{#advlink_dlg.popup_tab}</a></span></li>
-				<li id="events_tab" aria-controls="events_panel"><span><a href="javascript:mcTabs.displayTab('events_tab','events_panel');" onmousedown="return false;">{#advlink_dlg.events_tab}</a></span></li>
-				<li id="advanced_tab" aria-controls="advanced_panel"><span><a href="javascript:mcTabs.displayTab('advanced_tab','advanced_panel');" onmousedown="return false;">{#advlink_dlg.advanced_tab}</a></span></li>
+				<li id="general_tab" class="current" aria-controls="general_panel" ><a href="javascript:mcTabs.displayTab('general_tab','general_panel');" onmousedown="return false;">{#advlink_dlg.general_tab}</a></li>
+				<li id="popup_tab" aria-controls="popup_panel" ><a href="javascript:mcTabs.displayTab('popup_tab','popup_panel');" onmousedown="return false;">{#advlink_dlg.popup_tab}</a></li>
+				<li id="events_tab" aria-controls="events_panel"><a href="javascript:mcTabs.displayTab('events_tab','events_panel');" onmousedown="return false;">{#advlink_dlg.events_tab}</a></li>
+				<li id="advanced_tab" aria-controls="advanced_panel"><a href="javascript:mcTabs.displayTab('advanced_tab','advanced_panel');" onmousedown="return false;">{#advlink_dlg.advanced_tab}</a></li>
 			</ul>
-		</div>
 
 		<div class="panel_wrapper" role="presentation">
 			<div id="general_panel" class="panel current">
@@ -333,8 +331,8 @@
 		</div>
 
 		<div class="mceActionPanel ccm-ui">
-			<input type="submit" id="insert" name="insert" value="{#insert}" />
-			<input type="button" id="cancel" name="cancel" value="{#cancel}" onclick="tinyMCEPopup.close();" />
+			<input type="submit" style="float: right" class="btn" id="insert" name="insert" value="{#insert}" />
+			<input type="button" id="cancel" name="cancel" class="btn" value="{#cancel}" onclick="tinyMCEPopup.close();" />
 		</div>
 	</form>
 </body>

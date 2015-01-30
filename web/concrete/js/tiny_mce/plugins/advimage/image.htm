@@ -15,13 +15,11 @@
 <body id="advimage" style="display: none" role="application" aria-labelledby="app_title">
 	<span id="app_title" style="display:none">{#advimage_dlg.dialog_title}</span>
 	<form onsubmit="ImageDialog.insert();return false;" action="#"> 
-		<div class="tabs">
 			<ul id="ccm-area-tabs" class="ccm-dialog-tabs">
 				<li id="general_tab" class="current" aria-controls="general_panel"><span><a href="javascript:mcTabs.displayTab('general_tab','general_panel');" onmousedown="return false;">{#advimage_dlg.tab_general}</a></span></li>
 				<li id="appearance_tab" aria-controls="appearance_panel"><span><a href="javascript:mcTabs.displayTab('appearance_tab','appearance_panel');" onmousedown="return false;">{#advimage_dlg.tab_appearance}</a></span></li>
 				<li id="advanced_tab" aria-controls="advanced_panel"><span><a href="javascript:mcTabs.displayTab('advanced_tab','advanced_panel');" onmousedown="return false;">{#advimage_dlg.tab_advanced}</a></span></li>
 			</ul>
-		</div>
 
 		<div class="panel_wrapper">
 			<div id="general_panel" class="panel current">
@@ -229,8 +227,8 @@
 		</div>
 
 		<div class="mceActionPanel ccm-ui">
-			<input type="submit" id="insert" name="insert" value="{#insert}" />
-			<input type="button" id="cancel" name="cancel" value="{#cancel}" onclick="tinyMCEPopup.close();" />
+			<input type="submit" style="float: right" class="btn" id="insert" name="insert" value="{#insert}" />
+		<input type="button" id="cancel" name="cancel" class="btn" value="{#cancel}" onclick="tinyMCEPopup.close();" />
 		</div>
 	</form>
 </body> 

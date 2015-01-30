@@ -12,11 +12,9 @@
 </head>
 <body role="application">
 <form onsubmit="AdvHRDialog.update();return false;" action="#">
-	<div class="tabs">
 		<ul id="ccm-advanced-link-tabs" class="ccm-dialog-tabs">
 			<li id="general_tab" class="current" aria-controls="general_panel"><span><a href="javascript:mcTabs.displayTab('general_tab','general_panel');" onmousedown="return false;">{#advhr.advhr_desc}</a></span></li>
 		</ul>
-	</div>
 
 	<div class="panel_wrapper">
 		<div id="general_panel" class="panel current">
@@ -52,8 +50,8 @@
 	</div>
 
 	<div class="mceActionPanel ccm-ui">
-		<input type="submit" id="insert" name="insert" value="{#insert}" />
-		<input type="button" id="cancel" name="cancel" value="{#cancel}" onclick="tinyMCEPopup.close();" />
+		<input type="submit" style="float: right" class="btn" id="insert" name="insert" value="{#insert}" />
+		<input type="button" id="cancel" name="cancel" class="btn" value="{#cancel}" onclick="tinyMCEPopup.close();" />
 	</div>
 </form>
 </body>

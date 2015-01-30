@@ -14,12 +14,10 @@
 </head>
 <body id="tablerow" style="display: none" role="application">
 	<form onsubmit="updateAction();return false;" action="#">
-		<div class="tabs">
 			<ul id="ccm-advanced-link-tabs" class="ccm-dialog-tabs">
-				<li id="general_tab" class="current" aria-controls="general_panel"><span><a href="javascript:mcTabs.displayTab('general_tab','general_panel');" onmousedown="return false;">{#table_dlg.general_tab}</a></span></li>
-				<li id="advanced_tab" aria-controls="advanced_panel"><span><a href="javascript:mcTabs.displayTab('advanced_tab','advanced_panel');" onmousedown="return false;">{#table_dlg.advanced_tab}</a></span></li>
+				<li id="general_tab" class="current" aria-controls="general_panel"><a href="javascript:mcTabs.displayTab('general_tab','general_panel');" onmousedown="return false;">{#table_dlg.general_tab}</a></li>
+				<li id="advanced_tab" aria-controls="advanced_panel"><a href="javascript:mcTabs.displayTab('advanced_tab','advanced_panel');" onmousedown="return false;">{#table_dlg.advanced_tab}</a></li>
 			</ul>
-		</div>
 
 		<div class="panel_wrapper">
 			<div id="general_panel" class="panel current">
@@ -152,8 +150,8 @@
 				</select>
 			</div>
 
-			<input type="submit" id="insert" name="insert" value="{#update}" />
-			<input type="button" id="cancel" name="cancel" value="{#cancel}" onclick="tinyMCEPopup.close();" />
+			<input type="submit" style="float: right" class="btn" id="insert" name="insert" value="{#insert}" />
+			<input type="button" id="cancel" name="cancel" class="btn" value="{#cancel}" onclick="tinyMCEPopup.close();" />
 		</div>
 	</form>
 </body>

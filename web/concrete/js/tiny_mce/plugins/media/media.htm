@@ -14,13 +14,11 @@
 </head>
 <body style="display: none" role="application">
 <form onsubmit="Media.insert();return false;" action="#">
-		<div class="tabs" role="presentation">
 			<ul id="ccm-advanced-link-tabs" class="ccm-dialog-tabs">
 				<li id="general_tab" class="current" aria-controls="general_panel"><span><a href="javascript:mcTabs.displayTab('general_tab','general_panel');Media.formToData();" onmousedown="return false;">{#media_dlg.general}</a></span></li>
 				<li id="advanced_tab" aria-controls="advanced_panel"><span><a href="javascript:mcTabs.displayTab('advanced_tab','advanced_panel');Media.formToData();" onmousedown="return false;">{#media_dlg.advanced}</a></span></li>
 				<li id="source_tab" aria-controls="source_panel"><span><a href="javascript:mcTabs.displayTab('source_tab','source_panel');Media.formToData('source');" onmousedown="return false;">{#media_dlg.source}</a></span></li>
 			</ul>
-		</div>
 
 		<div class="panel_wrapper">
 			<div id="general_panel" class="panel current">
@@ -916,8 +914,8 @@
 		</div>
 
 		<div class="mceActionPanel ccm-ui">
-			<input type="submit" id="insert" name="insert" value="{#insert}" />
-			<input type="button" id="cancel" name="cancel" value="{#cancel}" onclick="tinyMCEPopup.close();" />
+			<input type="submit" style="float: right" class="btn" id="insert" name="insert" value="{#insert}" />
+			<input type="button" id="cancel" name="cancel" class="btn" value="{#cancel}" onclick="tinyMCEPopup.close();" />
 		</div>
 	</form>
 </body>
