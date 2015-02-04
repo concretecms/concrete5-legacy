@@ -157,6 +157,11 @@ class Concrete5_Helper_Image {
 					$image->setSize($finalWidth, $finalHeight);
 					if($image->readImage($originalPath) === true) {
 						$image->cropThumbnailImage($width, $height);
+						/*
+						 * Remove the canvas
+						 * See: http://php.net/manual/en/imagick.cropthumbnailimage.php#106710
+						 */
+						$image->setImagePage(0, 0, 0, 0);
 						$imageRead = true;
 					}
 					
