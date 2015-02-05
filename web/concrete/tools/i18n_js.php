@@ -166,8 +166,8 @@ var ccmi18n_filemanager = {
 	uploadComplete: <?php echo $jh->encode(t('Upload Complete')); ?>,
 
 	PTYPE_CUSTOM: <?php echo '""'; //$jh->encode(FilePermissions::PTYPE_CUSTOM); ?>,
-	PTYPE_NONE: <?php echo '""'; //$jh->encode(FilePermissions::PTYPE_NONE); ?>",
-	PTYPE_ALL: <?php echo '""'; //$jh->encode(FilePermissions::PTYPE_ALL); ?>",
+	PTYPE_NONE: <?php echo '""'; //$jh->encode(FilePermissions::PTYPE_NONE); ?>,
+	PTYPE_ALL: <?php echo '""'; //$jh->encode(FilePermissions::PTYPE_ALL); ?>,
 
 	FTYPE_IMAGE: <?php echo $jh->encode(FileType::T_IMAGE); ?>,
 	FTYPE_VIDEO: <?php echo $jh->encode(FileType::T_VIDEO); ?>,
