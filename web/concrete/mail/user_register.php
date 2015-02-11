@@ -55,7 +55,7 @@ ob_start();
 
 <? t('This account may be managed directly at') ?>
 
-<?= BASE_URL.View::url('/dashbard/users/search?uID='.$uID) ?>
+<?= BASE_URL.View::url('/dashboard/users/search?uID='.$uID) ?>
 <?
 
 $body = ob_get_clean();
