@@ -8,22 +8,22 @@
 	<script type="text/javascript" src="../../utils/form_utils.js"></script>
 	<script type="text/javascript" src="js/props.js"></script>
 	<link href="css/props.css" rel="stylesheet" type="text/css" />
+	<style type="text/css">@import "../../../../css/ccm.app.css";</style>
+	<style type="text/css">@import "../../../../css/ccm.tinymce.css";</style>
 </head>
 
 <body id="styleprops" style="display: none" role="application" aria-labelledby="app_title">
 <span id="app_title" style="display:none">{#style_dlg.title}</span>
 <form onsubmit="updateAction();return false;" action="#">
-<div class="tabs">
-	<ul>
-		<li id="text_tab" class="current" aria-controls="text_panel"><span><a href="javascript:mcTabs.displayTab('text_tab','text_panel');" onMouseDown="return false;">{#style_dlg.text_tab}</a></span></li>
-		<li id="background_tab" aria-controls="background_panel"><span><a href="javascript:mcTabs.displayTab('background_tab','background_panel');" onMouseDown="return false;">{#style_dlg.background_tab}</a></span></li>
-		<li id="block_tab" aria-controls="block_panel"><span><a href="javascript:mcTabs.displayTab('block_tab','block_panel');" onMouseDown="return false;">{#style_dlg.block_tab}</a></span></li>
-		<li id="box_tab" aria-controls="box_panel"><span><a href="javascript:mcTabs.displayTab('box_tab','box_panel');" onMouseDown="return false;">{#style_dlg.box_tab}</a></span></li>
-		<li id="border_tab" aria-controls="border_panel"><span><a href="javascript:mcTabs.displayTab('border_tab','border_panel');" onMouseDown="return false;">{#style_dlg.border_tab}</a></span></li>
-		<li id="list_tab" aria-controls="list_panel"><span><a href="javascript:mcTabs.displayTab('list_tab','list_panel');" onMouseDown="return false;">{#style_dlg.list_tab}</a></span></li>
-		<li id="positioning_tab" aria-controls="positioning_panel"><span><a href="javascript:mcTabs.displayTab('positioning_tab','positioning_panel');" onMouseDown="return false;">{#style_dlg.positioning_tab}</a></span></li>
+	<ul id="ccm-advanced-link-tabs" class="ccm-dialog-tabs">
+		<li id="text_tab" class="current" aria-controls="text_panel"><a href="javascript:mcTabs.displayTab('text_tab','text_panel');" onMouseDown="return false;">{#style_dlg.text_tab}</a></li>
+		<li id="background_tab" aria-controls="background_panel"><a href="javascript:mcTabs.displayTab('background_tab','background_panel');" onMouseDown="return false;">{#style_dlg.background_tab}</a></li>
+		<li id="block_tab" aria-controls="block_panel"><a href="javascript:mcTabs.displayTab('block_tab','block_panel');" onMouseDown="return false;">{#style_dlg.block_tab}</a></li>
+		<li id="box_tab" aria-controls="box_panel"><a href="javascript:mcTabs.displayTab('box_tab','box_panel');" onMouseDown="return false;">{#style_dlg.box_tab}</a></li>
+		<li id="border_tab" aria-controls="border_panel"><a href="javascript:mcTabs.displayTab('border_tab','border_panel');" onMouseDown="return false;">{#style_dlg.border_tab}</a></li>
+		<li id="list_tab" aria-controls="list_panel"><a href="javascript:mcTabs.displayTab('list_tab','list_panel');" onMouseDown="return false;">{#style_dlg.list_tab}</a></li>
+		<li id="positioning_tab" aria-controls="positioning_panel"><a href="javascript:mcTabs.displayTab('positioning_tab','positioning_panel');" onMouseDown="return false;">{#style_dlg.positioning_tab}</a></li>
 	</ul>
-</div>
 
 <div class="panel_wrapper">
 <div id="text_panel" class="panel current">
@@ -118,7 +118,7 @@
 							<td><label for="text_blink">{#style_dlg.text_blink}</label></td>
 						</tr>
 						<tr>
-							<td><input id="text_none" name="text_none" class="checkbox" type="checkbox" /></td>
+							<td><input id="text_none" name="text_none" class="checkbox" type="checkbox" onclick="updateTextDecorations();"/></td>
 							<td><label for="text_none">{#style_dlg.text_none}</label></td>
 						</tr>
 					</table>
@@ -825,10 +825,15 @@
 </div>
 </div>
 
-<div class="mceActionPanel">
-	<input type="submit" id="insert" name="insert" value="{#update}" />
-	<input type="button" class="button" id="apply" name="apply" value="{#style_dlg.apply}" onClick="applyAction();" />
-	<input type="button" id="cancel" name="cancel" value="{#cancel}" onClick="tinyMCEPopup.close();" />
+<div class="panel_toggle_insert_span">
+	<input type="checkbox" class="checkbox" id="toggle_insert_span" name="toggle_insert_span" onClick="toggleApplyAction();" />
+	<label for="toggle_insert_span">{#style_dlg.toggle_insert_span}</label>
+</div>
+
+<div class="mceActionPanel ccm-ui">
+	<input type="submit" class="btn primary" id="insert" name="insert" value="{#update}" />
+	<input type="button" class="btn" id="apply" name="apply" value="{#style_dlg.apply}" onClick="applyAction();" />
+	<input type="button" class="btn" id="cancel" name="cancel" value="{#cancel}" onClick="tinyMCEPopup.close();" />
 </div>
 </form>
 

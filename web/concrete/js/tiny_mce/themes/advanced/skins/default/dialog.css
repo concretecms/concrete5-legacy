@@ -35,7 +35,7 @@ input.checkbox {border:1px none #000000; background:transparent; vertical-align:
 .input_noborder {border:0;}
 
 /* Buttons */
-#insert, #cancel, input.button, .updateButton {
+/*#insert, #cancel, input.button, .updateButton {
 border:0; margin:0; padding:0;
 font-weight:bold;
 width:94px; height:26px;
@@ -46,7 +46,7 @@ float:left;
 }
 
 #insert {background:url(img/buttons.png) 0 -52px}
-#cancel {background:url(img/buttons.png) 0 0; float:right}
+#cancel {background:url(img/buttons.png) 0 0; float:right}*/
 
 /* Browse */
 a.pickcolor, a.browse {text-decoration:none}

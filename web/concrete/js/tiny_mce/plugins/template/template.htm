@@ -4,6 +4,8 @@
 	<script type="text/javascript" src="../../tiny_mce_popup.js"></script>
 	<script type="text/javascript" src="js/template.js"></script>
 	<link href="css/template.css" rel="stylesheet" type="text/css" />
+	<style type="text/css">@import "../../../../css/ccm.app.css";</style>
+	<style type="text/css">@import "../../../../css/ccm.tinymce.css";</style>
 </head>
 <body onresize="TemplateDialog.resize();"> 
 	<form onsubmit="TemplateDialog.insert();return false;">
@@ -22,9 +24,9 @@
 			</fieldset>
 		</div>
 		
-		<div class="mceActionPanel">
-			<input type="submit" id="insert" name="insert" value="{#insert}" />
-			<input type="button" id="cancel" name="cancel" value="{#cancel}" onclick="tinyMCEPopup.close();" />
+		<div class="mceActionPanel ccm-ui">
+			<input type="submit" style="float: right" class="btn" id="insert" name="insert" value="{#insert}" />
+			<input type="button" id="cancel" name="cancel" class="btn" value="{#cancel}" onclick="tinyMCEPopup.close();" />
 		</div>
 	</form>
 </body> 

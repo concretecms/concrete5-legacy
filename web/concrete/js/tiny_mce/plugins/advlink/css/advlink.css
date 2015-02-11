@@ -1,5 +1,6 @@
 .mceLinkList, .mceAnchorList, #targetlist {width:280px;}
 .mceActionPanel {margin-top:7px;}
+/*.panel_wrapper div.current {height:320px;}*/
 #classlist, #title, #href {width:280px;}
 #popupurl, #popupname {width:200px;}
 #popupwidth, #popupheight, #popupleft, #popuptop {width:30px;vertical-align:middle;text-align:center;}

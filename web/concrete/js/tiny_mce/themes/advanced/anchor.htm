@@ -4,6 +4,8 @@
 	<title>{#advanced_dlg.anchor_title}</title>
 	<script type="text/javascript" src="../../tiny_mce_popup.js"></script>
 	<script type="text/javascript" src="js/anchor.js"></script>
+	<style type="text/css">@import "../../../../css/ccm.app.css";</style>
+	<style type="text/css">@import "../../../../css/ccm.tinymce.css";</style>
 </head>
 <body style="display: none" role="application" aria-labelledby="app_title">
 <form onsubmit="AnchorDialog.update();return false;" action="#">
@@ -17,9 +19,9 @@
 		</tr>
 	</table>
 
-	<div class="mceActionPanel">
-		<input type="submit" id="insert" name="insert" value="{#update}" />
-		<input type="button" id="cancel" name="cancel" value="{#cancel}" onclick="tinyMCEPopup.close();" />
+	<div class="mceActionPanel ccm-ui">
+		<input type="submit" class="btn primary" style="float: right;" id="insert" name="insert" value="{#update}" />
+		<input type="button" class="btn" id="cancel" name="cancel" value="{#cancel}" onclick="tinyMCEPopup.close();" />
 	</div>
 </form>
 </body>

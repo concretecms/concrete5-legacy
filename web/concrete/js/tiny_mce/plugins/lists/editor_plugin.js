@@ -1,1 +1,955 @@
-(function(){var e=tinymce.each,r=tinymce.dom.Event,g;function p(t,s){while(t&&(t.nodeType===8||(t.nodeType===3&&/^[ \t\n\r]*$/.test(t.nodeValue)))){t=s(t)}return t}function b(s){return p(s,function(t){return t.previousSibling})}function i(s){return p(s,function(t){return t.nextSibling})}function d(s,u,t){return s.dom.getParent(u,function(v){return tinymce.inArray(t,v)!==-1})}function n(s){return s&&(s.tagName==="OL"||s.tagName==="UL")}function c(u,v){var t,w,s;t=b(u.lastChild);while(n(t)){w=t;t=b(w.previousSibling)}if(w){s=v.create("li",{style:"list-style-type: none;"});v.split(u,w);v.insertAfter(s,w);s.appendChild(w);s.appendChild(w);u=s.previousSibling}return u}function m(t,s,u){t=a(t,s,u);return o(t,s,u)}function a(u,s,v){var t=b(u.previousSibling);if(t){return h(t,u,s?t:false,v)}else{return u}}function o(u,t,v){var s=i(u.nextSibling);if(s){return h(u,s,t?s:false,v)}else{return u}}function h(u,s,t,v){if(l(u,s,!!t,v)){return f(u,s,t)}else{if(u&&u.tagName==="LI"&&n(s)){u.appendChild(s)}}return s}function l(u,t,s,v){if(!u||!t){return false}else{if(u.tagName==="LI"&&t.tagName==="LI"){return t.style.listStyleType==="none"||j(t)}else{if(n(u)){return(u.tagName===t.tagName&&(s||u.style.listStyleType===t.style.listStyleType))||q(t)}else{if(v&&u.tagName==="P"&&t.tagName==="P"){return true}else{return false}}}}}function q(t){var s=i(t.firstChild),u=b(t.lastChild);return s&&u&&n(t)&&s===u&&(n(s)||s.style.listStyleType==="none"||j(s))}function j(u){var t=i(u.firstChild),s=b(u.lastChild);return t&&s&&t===s&&n(t)}function f(w,v,s){var u=b(w.lastChild),t=i(v.firstChild);if(w.tagName==="P"){w.appendChild(w.ownerDocument.createElement("br"))}while(v.firstChild){w.appendChild(v.firstChild)}if(s){w.style.listStyleType=s.style.listStyleType}v.parentNode.removeChild(v);h(u,t,false);return w}function k(t,u){var s;if(!u.is(t,"li,ol,ul")){s=u.getParent(t,"li");if(s){t=s}}return t}tinymce.create("tinymce.plugins.Lists",{init:function(A,y){var w=0;var t=1;var H=2;var J=3;var z=J;function C(M){return M.keyCode===9&&(A.queryCommandState("InsertUnorderedList")||A.queryCommandState("InsertOrderedList"))}function x(){var M=B();var O=M.parentNode.parentNode;var N=M.parentNode.lastChild===M;return N&&!u(O)&&K(M)}function u(M){if(n(M)){return M.parentNode&&M.parentNode.tagName==="LI"}else{return M.tagName==="LI"}}function D(){return A.selection.isCollapsed()&&K(B())}function B(){var M=A.selection.getStart();return((M.tagName=="BR"||M.tagName=="")&&M.parentNode.tagName=="LI")?M.parentNode:M}function K(M){var N=M.childNodes.length;if(M.tagName==="LI"){return N==0?true:N==1&&(M.firstChild.tagName==""||F(M)||G(M))}return false}function F(M){return tinymce.isWebKit&&M.firstChild.nodeName=="BR"}function G(M){var N=tinymce.grep(M.parentNode.childNodes,function(Q){return Q.nodeName=="LI"});var O=M==N[N.length-1];var P=M.firstChild;return tinymce.isIE9&&O&&(P.nodeValue==String.fromCharCode(160)||P.nodeValue==String.fromCharCode(32))}function L(M){return M.keyCode===13}function I(M){if(C(M)){return w}else{if(L(M)&&x()){return H}else{if(L(M)&&D()){return t}else{return J}}}}function s(M,N){if(z==w||z==t){return r.cancel(N)}}function v(P,R){var U;if(!tinymce.isGecko){return}var N=P.selection.getStart();if(R.keyCode!=8||N.tagName!=="IMG"){return}function O(Y){var Z=Y.firstChild;var X=null;do{if(!Z){break}if(Z.tagName==="LI"){X=Z}}while(Z=Z.nextSibling);return X}function W(Y,X){while(Y.childNodes.length>0){X.appendChild(Y.childNodes[0])}}U=N.parentNode.previousSibling;if(!U){return}var S;if(U.tagName==="UL"||U.tagName==="OL"){S=U}else{if(U.previousSibling&&(U.previousSibling.tagName==="UL"||U.previousSibling.tagName==="OL")){S=U.previousSibling}else{return}}var V=O(S);var M=P.dom.createRng();M.setStart(V,1);M.setEnd(V,1);P.selection.setRng(M);P.selection.collapse(true);var Q=P.selection.getBookmark();var T=N.parentNode.cloneNode(true);if(T.tagName==="P"||T.tagName==="DIV"){W(T,V)}else{V.appendChild(T)}N.parentNode.parentNode.removeChild(N.parentNode);P.selection.moveToBookmark(Q)}function E(M){var N=A.dom.getParent(M,"ol,ul");if(N!=null){var O=N.lastChild;O.appendChild(A.getDoc().createElement(""));A.selection.setCursorLocation(O,0)}}this.ed=A;A.addCommand("Indent",this.indent,this);A.addCommand("Outdent",this.outdent,this);A.addCommand("InsertUnorderedList",function(){this.applyList("UL","OL")},this);A.addCommand("InsertOrderedList",function(){this.applyList("OL","UL")},this);A.onInit.add(function(){A.editorCommands.addCommands({outdent:function(){var N=A.selection,O=A.dom;function M(P){P=O.getParent(P,O.isBlock);return P&&(parseInt(A.dom.getStyle(P,"margin-left")||0,10)+parseInt(A.dom.getStyle(P,"padding-left")||0,10))>0}return M(N.getStart())||M(N.getEnd())||A.queryCommandState("InsertOrderedList")||A.queryCommandState("InsertUnorderedList")}},"state")});A.onKeyUp.add(function(N,O){if(z==w){N.execCommand(O.shiftKey?"Outdent":"Indent",true,null);z=J;return r.cancel(O)}else{if(z==t){var M=B();var Q=N.settings.list_outdent_on_enter===true||O.shiftKey;N.execCommand(Q?"Outdent":"Indent",true,null);if(tinymce.isIE){E(M)}return r.cancel(O)}else{if(z==H){if(tinymce.isIE8){var P=N.getDoc().createTextNode("\uFEFF");N.selection.getNode().appendChild(P)}else{if(tinymce.isIE9){N.execCommand("Outdent");return r.cancel(O)}}}}}});A.onKeyDown.add(function(M,N){z=I(N)});A.onKeyDown.add(s);A.onKeyDown.add(v);A.onKeyPress.add(s)},applyList:function(y,v){var C=this,z=C.ed,I=z.dom,s=[],H=false,u=false,w=false,B,G=z.selection.getSelectedBlocks();function E(t){if(t&&t.tagName==="BR"){I.remove(t)}}function F(M){var N=I.create(y),t;function L(O){if(O.style.marginLeft||O.style.paddingLeft){C.adjustPaddingFunction(false)(O)}}if(M.tagName==="LI"){}else{if(M.tagName==="P"||M.tagName==="DIV"||M.tagName==="BODY"){K(M,function(P,O,Q){J(P,O,M.tagName==="BODY"?null:P.parentNode);t=P.parentNode;L(t);E(O)});if(M.tagName==="P"||G.length>1){I.split(t.parentNode.parentNode,t.parentNode)}m(t.parentNode,true);return}else{t=I.create("li");I.insertAfter(t,M);t.appendChild(M);L(M);M=t}}I.insertAfter(N,M);N.appendChild(M);m(N,true);s.push(M)}function J(Q,L,O){var t,P=Q,N,M;while(!I.isBlock(Q.parentNode)&&Q.parentNode!==I.getRoot()){Q=I.split(Q.parentNode,Q.previousSibling);Q=Q.nextSibling;P=Q}if(O){t=O.cloneNode(true);Q.parentNode.insertBefore(t,Q);while(t.firstChild){I.remove(t.firstChild)}t=I.rename(t,"li")}else{t=I.create("li");Q.parentNode.insertBefore(t,Q)}while(P&&P!=L){N=P.nextSibling;t.appendChild(P);P=N}if(t.childNodes.length===0){t.innerHTML='<br _mce_bogus="1" />'}F(t)}function K(Q,T){var N,R,O=3,L=1,t="br,ul,ol,p,div,h1,h2,h3,h4,h5,h6,table,blockquote,address,pre,form,center,dl";function P(X,U){var V=I.createRng(),W;g.keep=true;z.selection.moveToBookmark(g);g.keep=false;W=z.selection.getRng(true);if(!U){U=X.parentNode.lastChild}V.setStartBefore(X);V.setEndAfter(U);return !(V.compareBoundaryPoints(O,W)>0||V.compareBoundaryPoints(L,W)<=0)}function S(U){if(U.nextSibling){return U.nextSibling}if(!I.isBlock(U.parentNode)&&U.parentNode!==I.getRoot()){return S(U.parentNode)}}N=Q.firstChild;var M=false;e(I.select(t,Q),function(V){var U;if(V.hasAttribute&&V.hasAttribute("_mce_bogus")){return true}if(P(N,V)){I.addClass(V,"_mce_tagged_br");N=S(V)}});M=(N&&P(N,undefined));N=Q.firstChild;e(I.select(t,Q),function(V){var U=S(V);if(V.hasAttribute&&V.hasAttribute("_mce_bogus")){return true}if(I.hasClass(V,"_mce_tagged_br")){T(N,V,R);R=null}else{R=V}N=U});if(M){T(N,undefined,R)}}function D(t){K(t,function(M,L,N){J(M,L);E(L);E(N)})}function A(t){if(tinymce.inArray(s,t)!==-1){return}if(t.parentNode.tagName===v){I.split(t.parentNode,t);F(t);o(t.parentNode,false)}s.push(t)}function x(M){var O,N,L,t;if(tinymce.inArray(s,M)!==-1){return}M=c(M,I);while(I.is(M.parentNode,"ol,ul,li")){I.split(M.parentNode,M)}s.push(M);M=I.rename(M,"p");L=m(M,false,z.settings.force_br_newlines);if(L===M){O=M.firstChild;while(O){if(I.isBlock(O)){O=I.split(O.parentNode,O);t=true;N=O.nextSibling&&O.nextSibling.firstChild}else{N=O.nextSibling;if(t&&O.tagName==="BR"){I.remove(O)}t=false}O=N}}}e(G,function(t){t=k(t,I);if(t.tagName===v||(t.tagName==="LI"&&t.parentNode.tagName===v)){u=true}else{if(t.tagName===y||(t.tagName==="LI"&&t.parentNode.tagName===y)){H=true}else{w=true}}});if(w||u||G.length===0){B={LI:A,H1:F,H2:F,H3:F,H4:F,H5:F,H6:F,P:F,BODY:F,DIV:G.length>1?F:D,defaultAction:D}}else{B={defaultAction:x}}this.process(B)},indent:function(){var u=this.ed,w=u.dom,x=[];function s(z){var y=w.create("li",{style:"list-style-type: none;"});w.insertAfter(y,z);return y}function t(B){var y=s(B),D=w.getParent(B,"ol,ul"),C=D.tagName,E=w.getStyle(D,"list-style-type"),A={},z;if(E!==""){A.style="list-style-type: "+E+";"}z=w.create(C,A);y.appendChild(z);return z}function v(z){if(!d(u,z,x)){z=c(z,w);var y=t(z);y.appendChild(z);m(y.parentNode,false);m(y,false);x.push(z)}}this.process({LI:v,defaultAction:this.adjustPaddingFunction(true)})},outdent:function(){var v=this,u=v.ed,w=u.dom,s=[];function x(t){var z,y,A;if(!d(u,t,s)){if(w.getStyle(t,"margin-left")!==""||w.getStyle(t,"padding-left")!==""){return v.adjustPaddingFunction(false)(t)}A=w.getStyle(t,"text-align",true);if(A==="center"||A==="right"){w.setStyle(t,"text-align","left");return}t=c(t,w);z=t.parentNode;y=t.parentNode.parentNode;if(y.tagName==="P"){w.split(y,t.parentNode)}else{w.split(z,t);if(y.tagName==="LI"){w.split(y,t)}else{if(!w.is(y,"ol,ul")){w.rename(t,"p")}}}s.push(t)}}this.process({LI:x,defaultAction:this.adjustPaddingFunction(false)});e(s,m)},process:function(y){var D=this,w=D.ed.selection,z=D.ed.dom,C,u;function x(s){z.removeClass(s,"_mce_act_on");if(!s||s.nodeType!==1){return}s=k(s,z);var t=y[s.tagName];if(!t){t=y.defaultAction}t(s)}function v(s){D.splitSafeEach(s.childNodes,x)}function B(s,t){return t>=0&&s.hasChildNodes()&&t<s.childNodes.length&&s.childNodes[t].tagName==="BR"}C=w.getSelectedBlocks();if(C.length===0){C=[z.getRoot()]}u=w.getRng(true);if(!u.collapsed){if(B(u.endContainer,u.endOffset-1)){u.setEnd(u.endContainer,u.endOffset-1);w.setRng(u)}if(B(u.startContainer,u.startOffset)){u.setStart(u.startContainer,u.startOffset+1);w.setRng(u)}}if(tinymce.isIE8){var E=D.ed.selection.getNode();if(E.tagName==="LI"&&!(E.parentNode.lastChild===E)){var A=D.ed.getDoc().createTextNode("\uFEFF");E.appendChild(A)}}g=w.getBookmark();y.OL=y.UL=v;D.splitSafeEach(C,x);w.moveToBookmark(g);g=null;D.ed.execCommand("mceRepaint")},splitSafeEach:function(t,s){if(tinymce.isGecko&&(/Firefox\/[12]\.[0-9]/.test(navigator.userAgent)||/Firefox\/3\.[0-4]/.test(navigator.userAgent))){this.classBasedEach(t,s)}else{e(t,s)}},classBasedEach:function(v,u){var w=this.ed.dom,s,t;e(v,function(x){w.addClass(x,"_mce_act_on")});s=w.select("._mce_act_on");while(s.length>0){t=s.shift();w.removeClass(t,"_mce_act_on");u(t);s=w.select("._mce_act_on")}},adjustPaddingFunction:function(u){var s,v,t=this.ed;s=t.settings.indentation;v=/[a-z%]+/i.exec(s);s=parseInt(s,10);return function(w){var y,x;y=parseInt(t.dom.getStyle(w,"margin-left")||0,10)+parseInt(t.dom.getStyle(w,"padding-left")||0,10);if(u){x=y+s}else{x=y-s}t.dom.setStyle(w,"padding-left","");t.dom.setStyle(w,"margin-left",x>0?x+v:"")}},getInfo:function(){return{longname:"Lists",author:"Moxiecode Systems AB",authorurl:"http://tinymce.moxiecode.com",infourl:"http://wiki.moxiecode.com/index.php/TinyMCE:Plugins/lists",version:tinymce.majorVersion+"."+tinymce.minorVersion}}});tinymce.PluginManager.add("lists",tinymce.plugins.Lists)}());
+/**
+ * editor_plugin_src.js
+ *
+ * Copyright 2011, Moxiecode Systems AB
+ * Released under LGPL License.
+ *
+ * License: http://tinymce.moxiecode.com/license
+ * Contributing: http://tinymce.moxiecode.com/contributing
+ */
+
+(function() {
+	var each = tinymce.each, Event = tinymce.dom.Event, bookmark;
+
+	// Skips text nodes that only contain whitespace since they aren't semantically important.
+	function skipWhitespaceNodes(e, next) {
+		while (e && (e.nodeType === 8 || (e.nodeType === 3 && /^[ \t\n\r]*$/.test(e.nodeValue)))) {
+			e = next(e);
+		}
+		return e;
+	}
+
+	function skipWhitespaceNodesBackwards(e) {
+		return skipWhitespaceNodes(e, function(e) {
+			return e.previousSibling;
+		});
+	}
+
+	function skipWhitespaceNodesForwards(e) {
+		return skipWhitespaceNodes(e, function(e) {
+			return e.nextSibling;
+		});
+	}
+
+	function hasParentInList(ed, e, list) {
+		return ed.dom.getParent(e, function(p) {
+			return tinymce.inArray(list, p) !== -1;
+		});
+	}
+
+	function isList(e) {
+		return e && (e.tagName === 'OL' || e.tagName === 'UL');
+	}
+
+	function splitNestedLists(element, dom) {
+		var tmp, nested, wrapItem;
+		tmp = skipWhitespaceNodesBackwards(element.lastChild);
+		while (isList(tmp)) {
+			nested = tmp;
+			tmp = skipWhitespaceNodesBackwards(nested.previousSibling);
+		}
+		if (nested) {
+			wrapItem = dom.create('li', { style: 'list-style-type: none;'});
+			dom.split(element, nested);
+			dom.insertAfter(wrapItem, nested);
+			wrapItem.appendChild(nested);
+			wrapItem.appendChild(nested);
+			element = wrapItem.previousSibling;
+		}
+		return element;
+	}
+
+	function attemptMergeWithAdjacent(e, allowDifferentListStyles, mergeParagraphs) {
+		e = attemptMergeWithPrevious(e, allowDifferentListStyles, mergeParagraphs);
+		return attemptMergeWithNext(e, allowDifferentListStyles, mergeParagraphs);
+	}
+
+	function attemptMergeWithPrevious(e, allowDifferentListStyles, mergeParagraphs) {
+		var prev = skipWhitespaceNodesBackwards(e.previousSibling);
+		if (prev) {
+			return attemptMerge(prev, e, allowDifferentListStyles ? prev : false, mergeParagraphs);
+		} else {
+			return e;
+		}
+	}
+
+	function attemptMergeWithNext(e, allowDifferentListStyles, mergeParagraphs) {
+		var next = skipWhitespaceNodesForwards(e.nextSibling);
+		if (next) {
+			return attemptMerge(e, next, allowDifferentListStyles ? next : false, mergeParagraphs);
+		} else {
+			return e;
+		}
+	}
+
+	function attemptMerge(e1, e2, differentStylesMasterElement, mergeParagraphs) {
+		if (canMerge(e1, e2, !!differentStylesMasterElement, mergeParagraphs)) {
+			return merge(e1, e2, differentStylesMasterElement);
+		} else if (e1 && e1.tagName === 'LI' && isList(e2)) {
+			// Fix invalidly nested lists.
+			e1.appendChild(e2);
+		}
+		return e2;
+	}
+
+	function canMerge(e1, e2, allowDifferentListStyles, mergeParagraphs) {
+		if (!e1 || !e2) {
+			return false;
+		} else if (e1.tagName === 'LI' && e2.tagName === 'LI') {
+			return e2.style.listStyleType === 'none' || containsOnlyAList(e2);
+		} else if (isList(e1)) {
+			return (e1.tagName === e2.tagName && (allowDifferentListStyles || e1.style.listStyleType === e2.style.listStyleType)) || isListForIndent(e2);
+		} else return mergeParagraphs && e1.tagName === 'P' && e2.tagName === 'P';
+	}
+
+	function isListForIndent(e) {
+		var firstLI = skipWhitespaceNodesForwards(e.firstChild), lastLI = skipWhitespaceNodesBackwards(e.lastChild);
+		return firstLI && lastLI && isList(e) && firstLI === lastLI && (isList(firstLI) || firstLI.style.listStyleType === 'none' || containsOnlyAList(firstLI));
+	}
+
+	function containsOnlyAList(e) {
+		var firstChild = skipWhitespaceNodesForwards(e.firstChild), lastChild = skipWhitespaceNodesBackwards(e.lastChild);
+		return firstChild && lastChild && firstChild === lastChild && isList(firstChild);
+	}
+
+	function merge(e1, e2, masterElement) {
+		var lastOriginal = skipWhitespaceNodesBackwards(e1.lastChild), firstNew = skipWhitespaceNodesForwards(e2.firstChild);
+		if (e1.tagName === 'P') {
+			e1.appendChild(e1.ownerDocument.createElement('br'));
+		}
+		while (e2.firstChild) {
+			e1.appendChild(e2.firstChild);
+		}
+		if (masterElement) {
+			e1.style.listStyleType = masterElement.style.listStyleType;
+		}
+		e2.parentNode.removeChild(e2);
+		attemptMerge(lastOriginal, firstNew, false);
+		return e1;
+	}
+
+	function findItemToOperateOn(e, dom) {
+		var item;
+		if (!dom.is(e, 'li,ol,ul')) {
+			item = dom.getParent(e, 'li');
+			if (item) {
+				e = item;
+			}
+		}
+		return e;
+	}
+
+	tinymce.create('tinymce.plugins.Lists', {
+		init: function(ed) {
+			var LIST_TABBING = 'TABBING';
+			var LIST_EMPTY_ITEM = 'EMPTY';
+			var LIST_ESCAPE = 'ESCAPE';
+			var LIST_PARAGRAPH = 'PARAGRAPH';
+			var LIST_UNKNOWN = 'UNKNOWN';
+			var state = LIST_UNKNOWN;
+
+			function isTabInList(e) {
+				// Don't indent on Ctrl+Tab or Alt+Tab
+				return e.keyCode === tinymce.VK.TAB && !(e.altKey || e.ctrlKey) &&
+					(ed.queryCommandState('InsertUnorderedList') || ed.queryCommandState('InsertOrderedList'));
+			}
+
+			function isOnLastListItem() {
+				var li = getLi();
+				var grandParent = li.parentNode.parentNode;
+				var isLastItem = li.parentNode.lastChild === li;
+				return isLastItem && !isNestedList(grandParent) && isEmptyListItem(li);
+			}
+
+			function isNestedList(grandParent) {
+				if (isList(grandParent)) {
+					return grandParent.parentNode && grandParent.parentNode.tagName === 'LI';
+				} else {
+					return  grandParent.tagName === 'LI';
+				}
+			}
+
+			function isInEmptyListItem() {
+				return ed.selection.isCollapsed() && isEmptyListItem(getLi());
+			}
+
+			function getLi() {
+				var n = ed.selection.getStart();
+				// Get start will return BR if the LI only contains a BR or an empty element as we use these to fix caret position
+				return ((n.tagName == 'BR' || n.tagName == '') && n.parentNode.tagName == 'LI') ? n.parentNode : n;
+			}
+
+			function isEmptyListItem(li) {
+				var numChildren = li.childNodes.length;
+				if (li.tagName === 'LI') {
+					return numChildren == 0 ? true : numChildren == 1 && (li.firstChild.tagName == '' || li.firstChild.tagName == 'BR' || isEmptyIE9Li(li));
+				}
+				return false;
+			}
+
+			function isEmptyIE9Li(li) {
+				// only consider this to be last item if there is no list item content or that content is nbsp or space since IE9 creates these
+				var lis = tinymce.grep(li.parentNode.childNodes, function(n) {return n.tagName == 'LI'});
+				var isLastLi = li == lis[lis.length - 1];
+				var child = li.firstChild;
+				return tinymce.isIE9 && isLastLi && (child.nodeValue == String.fromCharCode(160) || child.nodeValue == String.fromCharCode(32));
+			}
+
+			function isEnter(e) {
+				return e.keyCode === tinymce.VK.ENTER;
+			}
+
+			function isEnterWithoutShift(e) {
+				return isEnter(e) && !e.shiftKey;
+			}
+
+			function getListKeyState(e) {
+				if (isTabInList(e)) {
+					return LIST_TABBING;
+				} else if (isEnterWithoutShift(e) && isOnLastListItem()) {
+					// Returns LIST_UNKNOWN since breaking out of lists is handled by the EnterKey.js logic now
+					//return LIST_ESCAPE;
+					return LIST_UNKNOWN;
+				} else if (isEnterWithoutShift(e) && isInEmptyListItem()) {
+					return LIST_EMPTY_ITEM;
+				} else {
+					return LIST_UNKNOWN;
+				}
+			}
+
+			function cancelDefaultEvents(ed, e) {
+				// list escape is done manually using outdent as it does not create paragraphs correctly in td's
+				if (state == LIST_TABBING || state == LIST_EMPTY_ITEM || tinymce.isGecko && state == LIST_ESCAPE) {
+					Event.cancel(e);
+				}
+			}
+
+			function isCursorAtEndOfContainer() {
+				var range = ed.selection.getRng(true);
+				var startContainer = range.startContainer;
+				if (startContainer.nodeType == 3) {
+					var value = startContainer.nodeValue;
+					if (tinymce.isIE9 && value.length > 1 && value.charCodeAt(value.length-1) == 32) {
+						// IE9 places a space on the end of the text in some cases so ignore last char
+						return (range.endOffset == value.length-1);
+					} else {
+						return (range.endOffset == value.length);
+					}
+				} else if (startContainer.nodeType == 1) {
+					return range.endOffset == startContainer.childNodes.length;
+				}
+				return false;
+			}
+
+			/*
+			 	If we are at the end of a list item surrounded with an element, pressing enter should create a
+			 	new list item instead without splitting the element e.g. don't want to create new P or H1 tag
+			  */
+			function isEndOfListItem() {
+				var node = ed.selection.getNode();
+				var validElements = 'h1,h2,h3,h4,h5,h6,p,div';
+				var isLastParagraphOfLi = ed.dom.is(node, validElements) && node.parentNode.tagName === 'LI' && node.parentNode.lastChild === node;
+				return ed.selection.isCollapsed() && isLastParagraphOfLi && isCursorAtEndOfContainer();
+			}
+
+			// Creates a new list item after the current selection's list item parent
+			function createNewLi(ed, e) {
+				if (isEnterWithoutShift(e) && isEndOfListItem()) {
+					var node = ed.selection.getNode();
+					var li = ed.dom.create("li");
+					var parentLi = ed.dom.getParent(node, 'li');
+					ed.dom.insertAfter(li, parentLi);
+
+					// Move caret to new list element.
+					if (tinymce.isIE6 || tinymce.isIE7 || tinyMCE.isIE8) {
+						// Removed this line since it would create an odd <&nbsp;> tag and placing the caret inside an empty LI is handled and should be handled by the selection logic
+						//li.appendChild(ed.dom.create("&nbsp;")); // IE needs an element within the bullet point
+						ed.selection.setCursorLocation(li, 1);
+					} else {
+						ed.selection.setCursorLocation(li, 0);
+					}
+					e.preventDefault();
+				}
+			}
+
+			function imageJoiningListItem(ed, e) {
+				var prevSibling;
+
+				if (!tinymce.isGecko)
+					return;
+
+				var n = ed.selection.getStart();
+				if (e.keyCode != tinymce.VK.BACKSPACE || n.tagName !== 'IMG')
+					return;
+
+				function lastLI(node) {
+					var child = node.firstChild;
+					var li = null;
+					do {
+						if (!child)
+							break;
+
+						if (child.tagName === 'LI')
+							li = child;
+					} while (child = child.nextSibling);
+
+					return li;
+				}
+
+				function addChildren(parentNode, destination) {
+					while (parentNode.childNodes.length > 0)
+						destination.appendChild(parentNode.childNodes[0]);
+				}
+
+				// Check if there is a previous sibling
+				prevSibling = n.parentNode.previousSibling;
+				if (!prevSibling)
+					return;
+
+				var ul;
+				if (prevSibling.tagName === 'UL' || prevSibling.tagName === 'OL')
+					ul = prevSibling;
+				else if (prevSibling.previousSibling && (prevSibling.previousSibling.tagName === 'UL' || prevSibling.previousSibling.tagName === 'OL'))
+					ul = prevSibling.previousSibling;
+				else
+					return;
+
+				var li = lastLI(ul);
+
+				// move the caret to the end of the list item
+				var rng = ed.dom.createRng();
+				rng.setStart(li, 1);
+				rng.setEnd(li, 1);
+				ed.selection.setRng(rng);
+				ed.selection.collapse(true);
+
+				// save a bookmark at the end of the list item
+				var bookmark = ed.selection.getBookmark();
+
+				// copy the image an its text to the list item
+				var clone = n.parentNode.cloneNode(true);
+				if (clone.tagName === 'P' || clone.tagName === 'DIV')
+					addChildren(clone, li);
+				else
+					li.appendChild(clone);
+
+				// remove the old copy of the image
+				n.parentNode.parentNode.removeChild(n.parentNode);
+
+				// move the caret where we saved the bookmark
+				ed.selection.moveToBookmark(bookmark);
+			}
+
+			// fix the cursor position to ensure it is correct in IE
+			function setCursorPositionToOriginalLi(li) {
+				var list = ed.dom.getParent(li, 'ol,ul');
+				if (list != null) {
+					var lastLi = list.lastChild;
+					// Removed this line since IE9 would report an DOM character error and placing the caret inside an empty LI is handled and should be handled by the selection logic
+					//lastLi.appendChild(ed.getDoc().createElement(''));
+					ed.selection.setCursorLocation(lastLi, 0);
+				}
+			}
+
+			this.ed = ed;
+			ed.addCommand('Indent', this.indent, this);
+			ed.addCommand('Outdent', this.outdent, this);
+			ed.addCommand('InsertUnorderedList', function() {
+				this.applyList('UL', 'OL');
+			}, this);
+			ed.addCommand('InsertOrderedList', function() {
+				this.applyList('OL', 'UL');
+			}, this);
+
+			ed.onInit.add(function() {
+				ed.editorCommands.addCommands({
+					'outdent': function() {
+						var sel = ed.selection, dom = ed.dom;
+
+						function hasStyleIndent(n) {
+							n = dom.getParent(n, dom.isBlock);
+							return n && (parseInt(ed.dom.getStyle(n, 'margin-left') || 0, 10) + parseInt(ed.dom.getStyle(n, 'padding-left') || 0, 10)) > 0;
+						}
+
+						return hasStyleIndent(sel.getStart()) || hasStyleIndent(sel.getEnd()) || ed.queryCommandState('InsertOrderedList') || ed.queryCommandState('InsertUnorderedList');
+					}
+				}, 'state');
+			});
+
+			ed.onKeyUp.add(function(ed, e) {
+				if (state == LIST_TABBING) {
+					ed.execCommand(e.shiftKey ? 'Outdent' : 'Indent', true, null);
+					state = LIST_UNKNOWN;
+					return Event.cancel(e);
+				} else if (state == LIST_EMPTY_ITEM) {
+					var li = getLi();
+					var shouldOutdent =  ed.settings.list_outdent_on_enter === true || e.shiftKey;
+					ed.execCommand(shouldOutdent ? 'Outdent' : 'Indent', true, null);
+					if (tinymce.isIE) {
+						setCursorPositionToOriginalLi(li);
+					}
+
+					return Event.cancel(e);
+				} else if (state == LIST_ESCAPE) {
+					if (tinymce.isIE6 || tinymce.isIE7 || tinymce.isIE8) {
+						// append a zero sized nbsp so that caret is positioned correctly in IE after escaping and applying formatting.
+						// if there is no text then applying formatting for e.g a H1 to the P tag immediately following list after
+						// escaping from it will cause the caret to be positioned on the last li instead of staying the in P tag.
+						var n = ed.getDoc().createTextNode('\uFEFF');
+						ed.selection.getNode().appendChild(n);
+					} else if (tinymce.isIE9 || tinymce.isGecko) {
+						// IE9 does not escape the list so we use outdent to do this and cancel the default behaviour
+						// Gecko does not create a paragraph outdenting inside a TD so default behaviour is cancelled and we outdent ourselves
+						ed.execCommand('Outdent');
+						return Event.cancel(e);
+					}
+				}
+			});
+
+			function fixListItem(parent, reference) {
+				// a zero-sized non-breaking space is placed in the empty list item so that the nested list is
+				// displayed on the below line instead of next to it
+				var n = ed.getDoc().createTextNode('\uFEFF');
+				parent.insertBefore(n, reference);
+				ed.selection.setCursorLocation(n, 0);
+				// repaint to remove rendering artifact. only visible when creating new list
+				ed.execCommand('mceRepaint');
+			}
+
+			function fixIndentedListItemForGecko(ed, e) {
+				if (isEnter(e)) {
+					var li = getLi();
+					if (li) {
+						var parent = li.parentNode;
+						var grandParent = parent && parent.parentNode;
+						if (grandParent && grandParent.nodeName == 'LI' && grandParent.firstChild == parent && li == parent.firstChild) {
+							fixListItem(grandParent, parent);
+						}
+					}
+				}
+			}
+
+			function fixIndentedListItemForIE8(ed, e) {
+				if (isEnter(e)) {
+					var li = getLi();
+					if (ed.dom.select('ul li', li).length === 1) {
+						var list = li.firstChild;
+						fixListItem(li, list);
+					}
+				}
+			}
+
+			function fixDeletingFirstCharOfList(ed, e) {
+				function listElements(li) {
+					var elements = [];
+					var walker = new tinymce.dom.TreeWalker(li.firstChild, li);
+					for (var node = walker.current(); node; node = walker.next()) {
+						if (ed.dom.is(node, 'ol,ul,li')) {
+							elements.push(node);
+						}
+					}
+					return elements;
+				}
+
+				if (e.keyCode == tinymce.VK.BACKSPACE) {
+					var li = getLi();
+					if (li) {
+						var list = ed.dom.getParent(li, 'ol,ul'),
+							rng  = ed.selection.getRng();
+						if (list && list.firstChild === li && rng.startOffset == 0) {
+							var elements = listElements(li);
+							elements.unshift(li);
+							ed.execCommand("Outdent", false, elements);
+							ed.undoManager.add();
+							return Event.cancel(e);
+						}
+					}
+				}
+			}
+
+			function fixDeletingEmptyLiInWebkit(ed, e) {
+				var li = getLi();
+				if (e.keyCode === tinymce.VK.BACKSPACE && ed.dom.is(li, 'li') && li.parentNode.firstChild!==li) {
+					if (ed.dom.select('ul,ol', li).length === 1) {
+						var prevLi = li.previousSibling;
+						ed.dom.remove(ed.dom.select('br', li));
+						ed.dom.remove(li, true);
+						var textNodes = tinymce.grep(prevLi.childNodes, function(n){ return n.nodeType === 3 });
+						if (textNodes.length === 1) {
+							var textNode = textNodes[0];
+							ed.selection.setCursorLocation(textNode, textNode.length);
+						}
+						ed.undoManager.add();
+						return Event.cancel(e);
+					}
+				}
+			}
+
+			ed.onKeyDown.add(function(_, e) { state = getListKeyState(e); });
+			ed.onKeyDown.add(cancelDefaultEvents);
+			ed.onKeyDown.add(imageJoiningListItem);
+			ed.onKeyDown.add(createNewLi);
+
+			if (tinymce.isGecko) {
+				ed.onKeyUp.add(fixIndentedListItemForGecko);
+			}
+			if (tinymce.isIE8) {
+				ed.onKeyUp.add(fixIndentedListItemForIE8);
+			}
+			if (tinymce.isGecko || tinymce.isWebKit) {
+				ed.onKeyDown.add(fixDeletingFirstCharOfList);
+			}
+			if (tinymce.isWebKit) {
+				ed.onKeyDown.add(fixDeletingEmptyLiInWebkit);
+			}
+		},
+
+		applyList: function(targetListType, oppositeListType) {
+			var t = this, ed = t.ed, dom = ed.dom, applied = [], hasSameType = false, hasOppositeType = false, hasNonList = false, actions,
+					selectedBlocks = ed.selection.getSelectedBlocks();
+
+			function cleanupBr(e) {
+				if (e && e.tagName === 'BR') {
+					dom.remove(e);
+				}
+			}
+
+			function makeList(element) {
+				var list = dom.create(targetListType), li;
+
+				function adjustIndentForNewList(element) {
+					// If there's a margin-left, outdent one level to account for the extra list margin.
+					if (element.style.marginLeft || element.style.paddingLeft) {
+						t.adjustPaddingFunction(false)(element);
+					}
+				}
+
+				if (element.tagName === 'LI') {
+					// No change required.
+				} else if (element.tagName === 'P' || element.tagName === 'DIV' || element.tagName === 'BODY') {
+					processBrs(element, function(startSection, br) {
+						doWrapList(startSection, br, element.tagName === 'BODY' ? null : startSection.parentNode);
+						li = startSection.parentNode;
+						adjustIndentForNewList(li);
+						cleanupBr(br);
+					});
+					if (li) {
+						if (li.tagName === 'LI' && (element.tagName === 'P' || selectedBlocks.length > 1)) {
+							dom.split(li.parentNode.parentNode, li.parentNode);
+						}
+						attemptMergeWithAdjacent(li.parentNode, true);
+					}
+					return;
+				} else {
+					// Put the list around the element.
+					li = dom.create('li');
+					dom.insertAfter(li, element);
+					li.appendChild(element);
+					adjustIndentForNewList(element);
+					element = li;
+				}
+				dom.insertAfter(list, element);
+				list.appendChild(element);
+				attemptMergeWithAdjacent(list, true);
+				applied.push(element);
+			}
+
+			function doWrapList(start, end, template) {
+				var li, n = start, tmp;
+				while (!dom.isBlock(start.parentNode) && start.parentNode !== dom.getRoot()) {
+					start = dom.split(start.parentNode, start.previousSibling);
+					start = start.nextSibling;
+					n = start;
+				}
+				if (template) {
+					li = template.cloneNode(true);
+					start.parentNode.insertBefore(li, start);
+					while (li.firstChild) dom.remove(li.firstChild);
+					li = dom.rename(li, 'li');
+				} else {
+					li = dom.create('li');
+					start.parentNode.insertBefore(li, start);
+				}
+				while (n && n != end) {
+					tmp = n.nextSibling;
+					li.appendChild(n);
+					n = tmp;
+				}
+				if (li.childNodes.length === 0) {
+					li.innerHTML = '<br _mce_bogus="1" />';
+				}
+				makeList(li);
+			}
+
+			function processBrs(element, callback) {
+				var startSection, previousBR, END_TO_START = 3, START_TO_END = 1,
+						breakElements = 'br,ul,ol,p,div,h1,h2,h3,h4,h5,h6,table,blockquote,address,pre,form,center,dl';
+
+				function isAnyPartSelected(start, end) {
+					var r = dom.createRng(), sel;
+					bookmark.keep = true;
+					ed.selection.moveToBookmark(bookmark);
+					bookmark.keep = false;
+					sel = ed.selection.getRng(true);
+					if (!end) {
+						end = start.parentNode.lastChild;
+					}
+					r.setStartBefore(start);
+					r.setEndAfter(end);
+					return !(r.compareBoundaryPoints(END_TO_START, sel) > 0 || r.compareBoundaryPoints(START_TO_END, sel) <= 0);
+				}
+
+				function nextLeaf(br) {
+					if (br.nextSibling)
+						return br.nextSibling;
+					if (!dom.isBlock(br.parentNode) && br.parentNode !== dom.getRoot())
+						return nextLeaf(br.parentNode);
+				}
+
+				// Split on BRs within the range and process those.
+				startSection = element.firstChild;
+				// First mark the BRs that have any part of the previous section selected.
+				var trailingContentSelected = false;
+				each(dom.select(breakElements, element), function(br) {
+					if (br.hasAttribute && br.hasAttribute('_mce_bogus')) {
+						return true; // Skip the bogus Brs that are put in to appease Firefox and Safari.
+					}
+					if (isAnyPartSelected(startSection, br)) {
+						dom.addClass(br, '_mce_tagged_br');
+						startSection = nextLeaf(br);
+					}
+				});
+				trailingContentSelected = (startSection && isAnyPartSelected(startSection, undefined));
+				startSection = element.firstChild;
+				each(dom.select(breakElements, element), function(br) {
+					// Got a section from start to br.
+					var tmp = nextLeaf(br);
+					if (br.hasAttribute && br.hasAttribute('_mce_bogus')) {
+						return true; // Skip the bogus Brs that are put in to appease Firefox and Safari.
+					}
+					if (dom.hasClass(br, '_mce_tagged_br')) {
+						callback(startSection, br, previousBR);
+						previousBR = null;
+					} else {
+						previousBR = br;
+					}
+					startSection = tmp;
+				});
+				if (trailingContentSelected) {
+					callback(startSection, undefined, previousBR);
+				}
+			}
+
+			function wrapList(element) {
+				processBrs(element, function(startSection, br, previousBR) {
+					// Need to indent this part
+					doWrapList(startSection, br);
+					cleanupBr(br);
+					cleanupBr(previousBR);
+				});
+			}
+
+			function changeList(element) {
+				if (tinymce.inArray(applied, element) !== -1) {
+					return;
+				}
+				if (element.parentNode.tagName === oppositeListType) {
+					dom.split(element.parentNode, element);
+					makeList(element);
+					attemptMergeWithNext(element.parentNode, false);
+				}
+				applied.push(element);
+			}
+
+			function convertListItemToParagraph(element) {
+				var child, nextChild, mergedElement, splitLast;
+				if (tinymce.inArray(applied, element) !== -1) {
+					return;
+				}
+				element = splitNestedLists(element, dom);
+				while (dom.is(element.parentNode, 'ol,ul,li')) {
+					dom.split(element.parentNode, element);
+				}
+				// Push the original element we have from the selection, not the renamed one.
+				applied.push(element);
+				element = dom.rename(element, 'p');
+				mergedElement = attemptMergeWithAdjacent(element, false, ed.settings.force_br_newlines);
+				if (mergedElement === element) {
+					// Now split out any block elements that can't be contained within a P.
+					// Manually iterate to ensure we handle modifications correctly (doesn't work with tinymce.each)
+					child = element.firstChild;
+					while (child) {
+						if (dom.isBlock(child)) {
+							child = dom.split(child.parentNode, child);
+							splitLast = true;
+							nextChild = child.nextSibling && child.nextSibling.firstChild;
+						} else {
+							nextChild = child.nextSibling;
+							if (splitLast && child.tagName === 'BR') {
+								dom.remove(child);
+							}
+							splitLast = false;
+						}
+						child = nextChild;
+					}
+				}
+			}
+
+			each(selectedBlocks, function(e) {
+				e = findItemToOperateOn(e, dom);
+				if (e.tagName === oppositeListType || (e.tagName === 'LI' && e.parentNode.tagName === oppositeListType)) {
+					hasOppositeType = true;
+				} else if (e.tagName === targetListType || (e.tagName === 'LI' && e.parentNode.tagName === targetListType)) {
+					hasSameType = true;
+				} else {
+					hasNonList = true;
+				}
+			});
+
+			if (hasNonList &&!hasSameType || hasOppositeType || selectedBlocks.length === 0) {
+				actions = {
+					'LI': changeList,
+					'H1': makeList,
+					'H2': makeList,
+					'H3': makeList,
+					'H4': makeList,
+					'H5': makeList,
+					'H6': makeList,
+					'P': makeList,
+					'BODY': makeList,
+					'DIV': selectedBlocks.length > 1 ? makeList : wrapList,
+					defaultAction: wrapList,
+					elements: this.selectedBlocks()
+				};
+			} else {
+				actions = {
+					defaultAction: convertListItemToParagraph,
+					elements: this.selectedBlocks(),
+					processEvenIfEmpty: true
+				};
+			}
+			this.process(actions);
+		},
+
+		indent: function() {
+			var ed = this.ed, dom = ed.dom, indented = [];
+
+			function createWrapItem(element) {
+				var wrapItem = dom.create('li', { style: 'list-style-type: none;'});
+				dom.insertAfter(wrapItem, element);
+				return wrapItem;
+			}
+
+			function createWrapList(element) {
+				var wrapItem = createWrapItem(element),
+						list = dom.getParent(element, 'ol,ul'),
+						listType = list.tagName,
+						listStyle = dom.getStyle(list, 'list-style-type'),
+						attrs = {},
+						wrapList;
+				if (listStyle !== '') {
+					attrs.style = 'list-style-type: ' + listStyle + ';';
+				}
+				wrapList = dom.create(listType, attrs);
+				wrapItem.appendChild(wrapList);
+				return wrapList;
+			}
+
+			function indentLI(element) {
+				if (!hasParentInList(ed, element, indented)) {
+					element = splitNestedLists(element, dom);
+					var wrapList = createWrapList(element);
+					wrapList.appendChild(element);
+					attemptMergeWithAdjacent(wrapList.parentNode, false);
+					attemptMergeWithAdjacent(wrapList, false);
+					indented.push(element);
+				}
+			}
+
+			this.process({
+				'LI': indentLI,
+				defaultAction: this.adjustPaddingFunction(true),
+				elements: this.selectedBlocks()
+			});
+
+		},
+
+		outdent: function(ui, elements) {
+			var t = this, ed = t.ed, dom = ed.dom, outdented = [];
+
+			function outdentLI(element) {
+				var listElement, targetParent, align;
+				if (!hasParentInList(ed, element, outdented)) {
+					if (dom.getStyle(element, 'margin-left') !== '' || dom.getStyle(element, 'padding-left') !== '') {
+						return t.adjustPaddingFunction(false)(element);
+					}
+					align = dom.getStyle(element, 'text-align', true);
+					if (align === 'center' || align === 'right') {
+						dom.setStyle(element, 'text-align', 'left');
+						return;
+					}
+					element = splitNestedLists(element, dom);
+					listElement = element.parentNode;
+					targetParent = element.parentNode.parentNode;
+					if (targetParent.tagName === 'P') {
+						dom.split(targetParent, element.parentNode);
+					} else {
+						dom.split(listElement, element);
+						if (targetParent.tagName === 'LI') {
+							// Nested list, need to split the LI and go back out to the OL/UL element.
+							dom.split(targetParent, element);
+						} else if (!dom.is(targetParent, 'ol,ul')) {
+							dom.rename(element, 'p');
+						}
+					}
+					outdented.push(element);
+				}
+			}
+
+			var listElements = elements && tinymce.is(elements, 'array') ? elements : this.selectedBlocks();
+			this.process({
+				'LI': outdentLI,
+				defaultAction: this.adjustPaddingFunction(false),
+				elements: listElements
+			});
+
+			each(outdented, attemptMergeWithAdjacent);
+		},
+
+		process: function(actions) {
+			var t = this, sel = t.ed.selection, dom = t.ed.dom, selectedBlocks, r;
+
+			function isEmptyElement(element) {
+				var excludeBrsAndBookmarks = tinymce.grep(element.childNodes, function(n) {
+					return !(n.nodeName === 'BR' || n.nodeName === 'SPAN' && dom.getAttrib(n, 'data-mce-type') == 'bookmark'
+							|| n.nodeType == 3 && (n.nodeValue == String.fromCharCode(160) || n.nodeValue == ''));
+				});
+				return excludeBrsAndBookmarks.length === 0;
+			}
+
+			function processElement(element) {
+				dom.removeClass(element, '_mce_act_on');
+				if (!element || element.nodeType !== 1 || ! actions.processEvenIfEmpty && selectedBlocks.length > 1 && isEmptyElement(element)) {
+					return;
+				}
+				element = findItemToOperateOn(element, dom);
+				var action = actions[element.tagName];
+				if (!action) {
+					action = actions.defaultAction;
+				}
+				action(element);
+			}
+
+			function recurse(element) {
+				t.splitSafeEach(element.childNodes, processElement, true);
+			}
+
+			function brAtEdgeOfSelection(container, offset) {
+				return offset >= 0 && container.hasChildNodes() && offset < container.childNodes.length &&
+						container.childNodes[offset].tagName === 'BR';
+			}
+
+			function isInTable() {
+				var n = sel.getNode();
+				var p = dom.getParent(n, 'td');
+				return p !== null;
+			}
+
+			selectedBlocks = actions.elements;
+
+			r = sel.getRng(true);
+			if (!r.collapsed) {
+				if (brAtEdgeOfSelection(r.endContainer, r.endOffset - 1)) {
+					r.setEnd(r.endContainer, r.endOffset - 1);
+					sel.setRng(r);
+				}
+				if (brAtEdgeOfSelection(r.startContainer, r.startOffset)) {
+					r.setStart(r.startContainer, r.startOffset + 1);
+					sel.setRng(r);
+				}
+			}
+
+
+			if (tinymce.isIE8) {
+				// append a zero sized nbsp so that caret is restored correctly using bookmark
+				var s = t.ed.selection.getNode();
+				if (s.tagName === 'LI' && !(s.parentNode.lastChild === s)) {
+					var i = t.ed.getDoc().createTextNode('\uFEFF');
+					s.appendChild(i);
+				}
+			}
+
+			bookmark = sel.getBookmark();
+			actions.OL = actions.UL = recurse;
+			t.splitSafeEach(selectedBlocks, processElement);
+			sel.moveToBookmark(bookmark);
+			bookmark = null;
+
+			// we avoid doing repaint in a table as this will move the caret out of the table in Firefox 3.6
+			if (!isInTable()) {
+				// Avoids table or image handles being left behind in Firefox.
+				t.ed.execCommand('mceRepaint');
+			}
+		},
+
+		splitSafeEach: function(elements, f, forceClassBase) {
+			if (forceClassBase ||
+				(tinymce.isGecko &&
+					(/Firefox\/[12]\.[0-9]/.test(navigator.userAgent) ||
+					 /Firefox\/3\.[0-4]/.test(navigator.userAgent)))) {
+				this.classBasedEach(elements, f);
+			} else {
+				each(elements, f);
+			}
+		},
+
+		classBasedEach: function(elements, f) {
+			var dom = this.ed.dom, nodes, element;
+			// Mark nodes
+			each(elements, function(element) {
+				dom.addClass(element, '_mce_act_on');
+			});
+			nodes = dom.select('._mce_act_on');
+			while (nodes.length > 0) {
+				element = nodes.shift();
+				dom.removeClass(element, '_mce_act_on');
+				f(element);
+				nodes = dom.select('._mce_act_on');
+			}
+		},
+
+		adjustPaddingFunction: function(isIndent) {
+			var indentAmount, indentUnits, ed = this.ed;
+			indentAmount = ed.settings.indentation;
+			indentUnits = /[a-z%]+/i.exec(indentAmount);
+			indentAmount = parseInt(indentAmount, 10);
+			return function(element) {
+				var currentIndent, newIndentAmount;
+				currentIndent = parseInt(ed.dom.getStyle(element, 'margin-left') || 0, 10) + parseInt(ed.dom.getStyle(element, 'padding-left') || 0, 10);
+				if (isIndent) {
+					newIndentAmount = currentIndent + indentAmount;
+				} else {
+					newIndentAmount = currentIndent - indentAmount;
+				}
+				ed.dom.setStyle(element, 'padding-left', '');
+				ed.dom.setStyle(element, 'margin-left', newIndentAmount > 0 ? newIndentAmount + indentUnits : '');
+			};
+		},
+
+		selectedBlocks: function() {
+			var ed = this.ed, selectedBlocks = ed.selection.getSelectedBlocks();
+			return selectedBlocks.length == 0 ? [ ed.dom.getRoot() ] : selectedBlocks;
+		},
+
+		getInfo: function() {
+			return {
+				longname : 'Lists',
+				author : 'Moxiecode Systems AB',
+				authorurl : 'http://tinymce.moxiecode.com',
+				infourl : 'http://wiki.moxiecode.com/index.php/TinyMCE:Plugins/lists',
+				version : tinymce.majorVersion + "." + tinymce.minorVersion
+			};
+		}
+	});
+	tinymce.PluginManager.add("lists", tinymce.plugins.Lists);
+}());

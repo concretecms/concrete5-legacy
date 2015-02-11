@@ -9,16 +9,16 @@
 	<script type="text/javascript" src="../../utils/editable_selects.js"></script>
 	<script type="text/javascript" src="js/table.js"></script>
 	<link href="css/table.css" rel="stylesheet" type="text/css" />
+	<style type="text/css">@import "../../../../css/ccm.app.css";</style>
+	<style type="text/css">@import "../../../../css/ccm.tinymce.css";</style>
 </head>
 <body id="table" style="display: none" role="application" aria-labelledby="app_title">
 	<span style="display:none;" id="app_title">{#table_dlg.title}</span>
 	<form onsubmit="insertTable();return false;" action="#">
-		<div class="tabs">
-			<ul>
-				<li id="general_tab" aria-controls="general_panel" class="current"><span><a href="javascript:mcTabs.displayTab('general_tab','general_panel');" onmousedown="return false;">{#table_dlg.general_tab}</a></span></li>
-				<li id="advanced_tab" aria-controls="advanced_panel"><span><a href="javascript:mcTabs.displayTab('advanced_tab','advanced_panel');" onmousedown="return false;">{#table_dlg.advanced_tab}</a></span></li>
+			<ul id="ccm-advanced-link-tabs" class="ccm-dialog-tabs">
+				<li id="general_tab" aria-controls="general_panel" class="current"><a href="javascript:mcTabs.displayTab('general_tab','general_panel');" onmousedown="return false;">{#table_dlg.general_tab}</a></li>
+				<li id="advanced_tab" aria-controls="advanced_panel"><a href="javascript:mcTabs.displayTab('advanced_tab','advanced_panel');" onmousedown="return false;">{#table_dlg.advanced_tab}</a></li>
 			</ul>
-		</div>
 
 		<div class="panel_wrapper">
 			<div id="general_panel" class="panel current">
@@ -46,7 +46,7 @@
 								<option value="right">{#table_dlg.align_right}</option>
 							</select></td>
 							<td><label id="borderlabel" for="border">{#table_dlg.border}</label></td>
-							<td><input id="border" name="border" type="text" value="" size="3" maxlength="3" onchange="changedBorder();" class="number" /></td>
+							<td><input id="border" name="border" type="text" value="" size="3" maxlength="5" onchange="changedBorder();" class="size" /></td>
 						</tr>
 						<tr id="width_row">
 							<td><label id="widthlabel" for="width">{#table_dlg.width}</label></td>
@@ -179,9 +179,9 @@
 			</div>
 		</div>
 
-		<div class="mceActionPanel">
-			<input type="submit" id="insert" name="insert" value="{#insert}" />
-			<input type="button" id="cancel" name="cancel" value="{#cancel}" onclick="tinyMCEPopup.close();" />
+		<div class="mceActionPanel ccm-ui">
+			<input type="submit" style="float: right" class="btn primary" id="insert" name="insert" value="{#insert}" />
+			<input type="button" id="cancel" name="cancel" class="btn" value="{#cancel}" onclick="tinyMCEPopup.close();" />
 		</div>
 	</form>
 </body>
