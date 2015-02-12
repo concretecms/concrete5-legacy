@@ -82,7 +82,8 @@ var ccmi18n = {
 	user_deactivate: <?php echo $jh->encode(t('Deactivate Users')); ?>,
 	user_delete: <?php echo $jh->encode(t('Delete')); ?>,
 	user_group_remove: <?php echo $jh->encode(t('Remove From Group')); ?>,
-	user_group_add: <?php echo $jh->encode(t('Add to Group')); ?>
+	user_group_add: <?php echo $jh->encode(t('Add to Group')); ?>,
+        discard_my_edits: <?php echo $jh->encode(t('Are you sure you want to discard this edit?')); ?>
 };
 
 var ccmi18n_sitemap = {
