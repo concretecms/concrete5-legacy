@@ -21,6 +21,7 @@ class ConcreteUpgradeVersion5633Helper {
 			'Disallow: /concrete',
 			'Disallow: /css',
 			'Disallow: /js',
+			'Disallow: /themes',
 			'Disallow: /packages',
 			'Disallow: /updates'
 		);
