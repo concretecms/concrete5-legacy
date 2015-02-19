@@ -195,7 +195,7 @@ foreach($t1 as $value) {
 						}
 						$fsetName2 = implode("-",$fsetName2);
 					?>
-						<option value="<?= $s->getFileSetID()?>"  <? if (is_array($searchRequest['fsID']) && in_array($s->getFileSetID(), $searchRequest['fsID'])) { ?> selected="selected" <? } ?>><?= $fsetName2; ?></option>
+						<option value="<?=$s->getFileSetID()?>"  <? if ((is_array($searchRequest['fsID']) && in_array($s->getFileSetID(), $searchRequest['fsID'])) || (is_string($searchRequest['fsID']) && $searchRequest['fsID'] == $s->getFileSetID())) { ?> selected="selected" <? } ?>><?= $fsetName2;?></option>
 					<? } ?>
 					</optgroup>
 					<optgroup label="<?=t('Other')?>">
