@@ -43,7 +43,7 @@ class Concrete5_Controller_Dashboard_Sitemap_Search extends Controller {
 		$columns = PageSearchColumnSet::getCurrent();
 		$this->set('columns', $columns);
 		
-		$cvName = htmlentities($req['cvName'], ENT_QUOTES, APP_CHARSET);
+		$cvName = h($req['cvName']);
 		
 		if ($cvName != '') {
 			$pageList->filterByName($cvName);

@@ -49,7 +49,7 @@ class Concrete5_Model_SecurimageSystemCaptchaTypeController extends SystemCaptch
 	/**
 	 * Displays the text input field that must be entered when used with a corresponding image.
 	 */
-	public function showInput($args = false)
+	public function showInput($args = false, $forPreview = false)
 	{
 	$attribs = '';
 		if (is_array($args)) {
@@ -57,7 +57,7 @@ class Concrete5_Model_SecurimageSystemCaptchaTypeController extends SystemCaptch
 				$attribs .= $key . '="' . $value . '" ';
 			}
 		}
-	  echo '<div><input type="text" name="ccmCaptchaCode" class="ccm-input-captcha" required="required" ' . $attribs . ' /></div><br/>';
+	  echo '<div><input type="text" name="ccmCaptchaCode" class="ccm-input-captcha"'. ($forPreview === true  ? '' : ' required="required" ') . $attribs . ' /></div><br/>';
 	}
 	
 	/** 

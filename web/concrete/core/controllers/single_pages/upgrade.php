@@ -194,6 +194,10 @@ class Concrete5_Controller_Upgrade extends Controller {
 			$ugvs[] = "version_5632";
 		}
 
+		if (version_compare($sav, '5.6.3.3', '<')) {
+			$ugvs[] = "version_5633";
+		}
+
 		foreach($ugvs as $ugh) {
 			$this->upgrades[] = Loader::helper('concrete/upgrade/' . $ugh);
 		}

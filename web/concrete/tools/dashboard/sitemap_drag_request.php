@@ -167,12 +167,12 @@ if ($successMessage) {
 </h3><br/>
 	<form>
 
-		<input type="hidden" name="origCID" id="origCID" value="<?=$_REQUEST['origCID']?>" />
+		<input type="hidden" name="origCID" id="origCID" value="<?=h($_REQUEST['origCID'])?>" />
 		<input type="hidden" name="destParentID" id="destParentID" value="<?=$dc->getCollectionParentID()?>" />
-		<input type="hidden" name="destCID" id="destCID" value="<?=$_REQUEST['destCID']?>" />
-		<input type="hidden" name="instance_id" id="instance_id" value="<?=$_REQUEST['instance_id']?>" />
-		<input type="hidden" name="select_mode" id="select_mode" value="<?=$_REQUEST['select_mode']?>" />
-		<input type="hidden" name="display_mode" id="display_mode" value="<?=$_REQUEST['display_mode']?>" />
+		<input type="hidden" name="destCID" id="destCID" value="<?=h($_REQUEST['destCID'])?>" />
+		<input type="hidden" name="instance_id" id="instance_id" value="<?=h($_REQUEST['instance_id'])?>" />
+		<input type="hidden" name="select_mode" id="select_mode" value="<?=h($_REQUEST['select_mode'])?>" />
+		<input type="hidden" name="display_mode" id="display_mode" value="<?=h($_REQUEST['display_mode'])?>" />
 
 		<input type="radio" checked style="vertical-align: middle" id="ctaskMove" name="ctask" value="MOVE" onclick="toggleMove()" />
 		<strong><?=t('Move')?></strong> <? if (count($originalPages) == 1) { ?>"<?=$oc->getCollectionName()?>"<? } ?> <?=t('beneath')?> "<?=$dc->getCollectionName()?>"

@@ -5,17 +5,17 @@
 	<script type="text/javascript" src="../../tiny_mce_popup.js"></script>
 	<script type="text/javascript" src="../../utils/mctabs.js"></script>
 	<script type="text/javascript" src="js/color_picker.js"></script>
+	<style type="text/css">@import "../../../../css/ccm.app.css";</style>
+	<style type="text/css">@import "../../../../css/ccm.tinymce.css";</style>
 </head>
 <body id="colorpicker" style="display: none" role="application" aria-labelledby="app_label">
 	<span class="mceVoiceLabel" id="app_label" style="display:none;">{#advanced_dlg.colorpicker_title}</span>
 <form onsubmit="insertAction();return false" action="#">
-	<div class="tabs">
-		<ul>
-			<li id="picker_tab" aria-controls="picker_panel" class="current"><span><a href="javascript:mcTabs.displayTab('picker_tab','picker_panel');" onmousedown="return false;">{#advanced_dlg.colorpicker_picker_tab}</a></span></li>
-			<li id="rgb_tab" aria-controls="rgb_panel"><span><a href="javascript:;" onclick="mcTabs.displayTab('rgb_tab','rgb_panel');" onmousedown="return false;">{#advanced_dlg.colorpicker_palette_tab}</a></span></li>
-			<li id="named_tab" aria-controls="named_panel"><span><a  href="javascript:;" onclick="javascript:mcTabs.displayTab('named_tab','named_panel');" onmousedown="return false;">{#advanced_dlg.colorpicker_named_tab}</a></span></li>
+		<ul id="ccm-advanced-link-tabs" class="ccm-dialog-tabs">
+			<li id="picker_tab" aria-controls="picker_panel" class="current"><a href="javascript:mcTabs.displayTab('picker_tab','picker_panel');" onmousedown="return false;">{#advanced_dlg.colorpicker_picker_tab}</a></li>
+			<li id="rgb_tab" aria-controls="rgb_panel"><a href="javascript:;" onclick="mcTabs.displayTab('rgb_tab','rgb_panel');" onmousedown="return false;">{#advanced_dlg.colorpicker_palette_tab}</a></li>
+			<li id="named_tab" aria-controls="named_panel"><a  href="javascript:;" onclick="javascript:mcTabs.displayTab('named_tab','named_panel');" onmousedown="return false;">{#advanced_dlg.colorpicker_named_tab}</a></li>
 		</ul>
-	</div>
 
 	<div class="panel_wrapper">
 		<div id="picker_panel" class="panel current">
@@ -60,8 +60,8 @@
 		</div>
 	</div>
 
-	<div class="mceActionPanel">
-		<input type="submit" id="insert" name="insert" value="{#apply}" />
+	<div class="mceActionPanel ccm-ui">
+		<input type="submit" class="btn primary" id="insert" name="insert" value="{#apply}" />
 
 		<div id="preview"></div>
 

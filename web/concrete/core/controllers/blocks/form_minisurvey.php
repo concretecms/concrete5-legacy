@@ -162,8 +162,8 @@ class Concrete5_Controller_Block_FormMinisurvey {
 					} else { */
 						$requiredSymbol=($questionRow['required'])?'&nbsp;<span class="required">*</span>':'';
 						echo '<tr>
-						        <td valign="top" class="question"><label for="Question'.intval($questionRow['msqID']).'">'.$questionRow['question'].''.$requiredSymbol.'</label></td>
-						        <td valign="top">'.$this->loadInputType($questionRow, $showEdit, $questionRow['required'] && (!$forPreview)).'</td>
+						        <td style="vertical-align:top" class="question"><label for="Question'.intval($questionRow['msqID']).'">'.$questionRow['question'].''.$requiredSymbol.'</label></td>
+						        <td style="vertical-align:top">'.$this->loadInputType($questionRow, $showEdit, $questionRow['required'] && (!$forPreview)).'</td>
 						      </tr>';
 					//}
 				}			
@@ -175,7 +175,7 @@ class Concrete5_Controller_Block_FormMinisurvey {
 				echo $captcha->label();
    				echo '</td></tr><tr><td>&nbsp;</td><td>';
    				
-   				$captcha->showInput();
+   				$captcha->showInput( false, $forPreview );
    				$captcha->display();
    
    				//echo isset($errors['captcha'])?'<span class="error">' . $errors['captcha'] . '</span>':'';

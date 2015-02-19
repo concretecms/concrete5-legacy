@@ -29,26 +29,26 @@ define('DIR_FILES_AVATARS', DIR_FILES_UPLOADED . '/avatars');
 class Concrete5_Controller_Install extends Controller {
 
 	public $helpers = array('form', 'html');
-	
+
 	protected function getLocales() {
 		return Localization::getAvailableInterfaceLanguageDescriptions();
 	}
-	
+
 	public function view() {
 		$locales = $this->getLocales();
-		$this->set('locales', $locales);		
-		$this->testAndRunInstall();		
-	}
-	
-	public function setup() {
-	
-	}
-	
-	public function select_language() {
-		
+		$this->set('locales', $locales);
+		$this->testAndRunInstall();
 	}
 
-	/** 
+	public function setup() {
+
+	}
+
+	public function select_language() {
+
+	}
+
+	/**
 	 * Testing
 	 */
 	public function on_start() {
@@ -65,12 +65,12 @@ class Concrete5_Controller_Install extends Controller {
 
 		if (file_exists(DIR_CONFIG_SITE . '/site.php')) {
 			throw new Exception(t('concrete5 is already installed.'));
-		}		
+		}
 		if (!isset($_COOKIE['CONCRETE5_INSTALL_TEST'])) {
 			setcookie('CONCRETE5_INSTALL_TEST', '1', 0, DIR_REL . '/');
 		}
 	}
-	
+
 	protected function testAndRunInstall() {
 		if (file_exists(DIR_CONFIG_SITE . '/site_install_user.php')) {
 			require(DIR_CONFIG_SITE . '/site_install.php');
@@ -85,7 +85,7 @@ class Concrete5_Controller_Install extends Controller {
 			} else {
 				$this->addHeaderItem(Loader::helper('html')->css('jquery.ui.css'));
 				$this->addHeaderItem(Loader::helper('html')->javascript('jquery.ui.js'));
-				if (defined('INSTALL_STARTING_POINT') && INSTALL_STARTING_POINT) { 
+				if (defined('INSTALL_STARTING_POINT') && INSTALL_STARTING_POINT) {
 					$spl = Loader::startingPointPackage(INSTALL_STARTING_POINT);
 				} else {
 					$spl = Loader::startingPointPackage('standard');
@@ -96,12 +96,12 @@ class Concrete5_Controller_Install extends Controller {
 			}
 		}
 	}
-	
+
 	private function setRequiredItems() {
 		$this->set('imageTest', function_exists('imagecreatetruecolor'));
 		$this->set('mysqlTest', function_exists('mysql_connect'));
 		$this->set('xmlTest', function_exists('xml_parse') && function_exists('simplexml_load_file'));
-		$this->set('fileWriteTest', $this->testFileWritePermissions());	
+		$this->set('fileWriteTest', $this->testFileWritePermissions());
 		$phpVmin = '5.2.4';
 		if (version_compare(PHP_VERSION, $phpVmin, '>=')) {
 			$phpVtest = true;
@@ -117,7 +117,7 @@ class Concrete5_Controller_Install extends Controller {
 		//$this->set('searchTest', function_exists('iconv') && function_exists('mb_strtolower') && (@preg_match('/\pL/u', 'a') == 1));
 		$this->set('remoteFileUploadTest', function_exists('iconv'));
 	}
-	
+
 	public function passedRequiredItems() {
 		if ($this->get('imageTest') && $this->get('mysqlTest') && $this->get('fileWriteTest') && $this->get('xmlTest') && $this->get('phpVtest')) {
 			return true;
@@ -134,7 +134,7 @@ class Concrete5_Controller_Install extends Controller {
 		if (!is_writable(DIR_FILES_UPLOADED)) {
 			$e->add(t('Your files directory files/ does not appear to be writable by the web server.'));
 		}
-		
+
 		if (!is_writable(DIR_PACKAGES)) {
 			$e->add(t('Your packages directory packages/ does not appear to be writable by the web server.'));
 		}
@@ -157,15 +157,15 @@ class Concrete5_Controller_Install extends Controller {
 		print $js->encode(array('response' => $num));
 		exit;
 	}
-	
+
 	public function run_routine($pkgHandle, $routine) {
 		$spl = Loader::startingPointPackage($pkgHandle);
 		require(DIR_CONFIG_SITE . '/site_install.php');
 		@include(DIR_CONFIG_SITE . '/site_install_user.php');
-		
+
 		$jsx = Loader::helper('json');
 		$js = new stdClass;
-		
+
 		try {
 			call_user_func(array($spl, $routine));
 			$js->error = false;
@@ -177,7 +177,7 @@ class Concrete5_Controller_Install extends Controller {
 		print $jsx->encode($js);
 		exit;
 	}
-	
+
 	protected function validateSampleContent($e) {
 		$pkg = Loader::startingPointPackage($this->post('SAMPLE_CONTENT'));
 		if (!is_object($pkg)) {
@@ -185,7 +185,7 @@ class Concrete5_Controller_Install extends Controller {
 		}
 		return $e;
 	}
-	
+
 	protected function validateDatabase($e) {
 		if (!function_exists('mysql_connect')) {
 			$e->add($this->getDBErrorMsg());
@@ -197,25 +197,25 @@ class Concrete5_Controller_Install extends Controller {
 				$DB_SERVER = DB_SERVER;
 				$DB_DATABASE = DB_DATABASE;
 			} else {
-				$db = Loader::db( $_POST['DB_SERVER'], $_POST['DB_USERNAME'], $_POST['DB_PASSWORD'], $_POST['DB_DATABASE'], true);			
+				$db = Loader::db( $_POST['DB_SERVER'], $_POST['DB_USERNAME'], $_POST['DB_PASSWORD'], $_POST['DB_DATABASE'], true);
 				$DB_SERVER = $_POST['DB_SERVER'];
 				$DB_DATABASE = $_POST['DB_DATABASE'];
 			}
-			
+
 			if ($DB_SERVER && $DB_DATABASE) {
 				if (!$db) {
 					$e->add(t('Unable to connect to database.'));
-				} else {					
+				} else {
 					$num = $db->GetCol("show tables");
 					if (count($num) > 0) {
 						$e->add(t('There are already %s tables in this database. concrete5 must be installed in an empty database.', count($num)));
 					}
 				}
 			}
-		}	
+		}
 		return $e;
 	}
-	
+
 	public function reset() {
 		// remove site.php so that we can try again ?
 		return;
@@ -233,8 +233,8 @@ class Concrete5_Controller_Install extends Controller {
 			unlink(DIR_CONFIG_SITE . '/site.php');
 		}
 	}
-	
-	public function configure() {	
+
+	public function configure() {
 		try {
 
 			$val = Loader::helper('validation/form');
@@ -243,27 +243,27 @@ class Concrete5_Controller_Install extends Controller {
 			$val->addRequiredEmail("uEmail", t('Please specify a valid email address'));
 			$val->addRequired("DB_DATABASE", t('You must specify a valid database name'));
 			$val->addRequired("DB_SERVER", t('You must specify a valid database server'));
-			
+
 			$password = $_POST['uPassword'];
 			$passwordConfirm = $_POST['uPasswordConfirm'];
 
 			$e = Loader::helper('validation/error');
 			$uh = Loader::helper('concrete/user');
 			$uh->validNewPassword($password, $e);
-	
+
 			if ($password) {
 				if ($password != $passwordConfirm) {
 					$e->add(t('The two passwords provided do not match.'));
 				}
 			}
-			
+
 			if(is_object($this->fileWriteErrors)) {
 				$e = $this->fileWriteErrors;
 			}
-			
+
 			$e = $this->validateDatabase($e);
 			$e = $this->validateSampleContent($e);
-			
+
 			if ($val->test() && (!$e->has())) {
 
 
@@ -294,7 +294,7 @@ class Concrete5_Controller_Install extends Controller {
 					$configuration .= "define('INSTALL_USER_EMAIL', '" . $_POST['uEmail'] . "');\n";
 					$configuration .= "define('INSTALL_USER_PASSWORD_HASH', '" . $hasher->HashPassword($_POST['uPassword']) . "');\n";
 					$configuration .= "define('INSTALL_STARTING_POINT', '" . $this->post('SAMPLE_CONTENT') . "');\n";
-					$configuration .= "define('SITE', '" . addslashes($_POST['SITE']) . "');\n";
+					$configuration .= "define('SITE', '" . h($_POST['SITE']) . "');\n";
 					if (defined('ACTIVE_LOCALE') && ACTIVE_LOCALE != '' && ACTIVE_LOCALE != 'en_US') {
 						$configuration .= "define('ACTIVE_LOCALE', '" . ACTIVE_LOCALE . "');\n";
 					}
@@ -308,7 +308,7 @@ class Concrete5_Controller_Install extends Controller {
 					throw new Exception(t('Unable to open config/site_user.php for writing.'));
 				}
 
-			
+
 			} else {
 				if ($e->has()) {
 					$this->set('error', $e);
@@ -316,7 +316,7 @@ class Concrete5_Controller_Install extends Controller {
 					$this->set('error', $val->getError());
 				}
 			}
-			
+
 		} catch (Exception $e) {
 			$this->reset();
 			$this->set('error', $e);
@@ -324,4 +324,3 @@ class Concrete5_Controller_Install extends Controller {
 	}
 
 }
-

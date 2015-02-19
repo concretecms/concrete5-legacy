@@ -67,7 +67,8 @@
 			}
 		}
 		
-		public function save($args) {		
+		public function save($args) {
+			$args['forceImageToMatchDimensions'] = ($args['forceImageToMatchDimensions'] != '') ? 1 : 0;
 			$args['fOnstateID'] = ($args['fOnstateID'] != '') ? $args['fOnstateID'] : 0;
 			$args['fID'] = ($args['fID'] != '') ? $args['fID'] : 0;
 			$args['maxWidth'] = (intval($args['maxWidth']) > 0) ? intval($args['maxWidth']) : 0;

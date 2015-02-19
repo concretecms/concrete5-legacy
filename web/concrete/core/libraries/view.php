@@ -154,7 +154,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 				}
 				$style = $pt->parseStyleSheet($stylesheet);
 				$r = @file_put_contents($cacheFile, $style);
-				@chmod($cacheFile, Loader::helper('file')->getCreateFilePermissions(DIR_FILES_CACHE)->file);
+				@chmod($cacheFile, FILE_PERMISSIONS_MODE);
 				if ($r) {
 					return REL_DIR_FILES_CACHE . '/' . DIRNAME_CSS . '/' . $this->getThemeHandle() . '/' . $stylesheet;
 				} else {

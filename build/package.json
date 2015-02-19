@@ -1,6 +1,10 @@
 {
 	"name": "concrete5",
 	"version": "5.6.2",
+	"repository": {
+		"type": "git",
+		"url": "git@github.com:concrete5/concrete5.git"
+	},
 	"devDependencies": {
 		"grunt": "~0.4",
 		"grunt-contrib-uglify": "~0.2",

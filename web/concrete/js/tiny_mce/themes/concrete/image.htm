@@ -11,11 +11,9 @@
 </head>
 <body id="image" style="display: none">
 <form onsubmit="ImageDialog.update();return false;" action="#">
-	<div class="tabs">
-		<ul>
-			<li id="general_tab" class="current"><span><a href="javascript:mcTabs.displayTab('general_tab','general_panel');" onmousedown="return false;">{#advanced_dlg.image_title}</a></span></li>
+		<ul id="ccm-advanced-link-tabs" class="ccm-dialog-tabs">
+			<li id="general_tab" class="current"><a href="javascript:mcTabs.displayTab('general_tab','general_panel');" onmousedown="return false;">{#advanced_dlg.image_title}</a></li>
 		</ul>
-	</div>
 
 	<div class="panel_wrapper">
 		<div id="general_panel" class="panel current">
@@ -73,8 +71,8 @@
 		</div>
 	</div>
 
-	<div class="mceActionPanel">
-		<input type="submit" id="insert" name="insert" class="btn" value="{#insert}" />
+	<div class="mceActionPanel ccm-ui">
+		<input type="submit" id="insert" name="insert" class="btn primary" style="float: right;" value="{#insert}" />
 		<input type="button" id="cancel" name="cancel" class="btn" value="{#cancel}" onclick="tinyMCEPopup.close();" />
 	</div>
 </form>

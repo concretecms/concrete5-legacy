@@ -87,6 +87,7 @@ class Concrete5_Model_Page extends Collection {
 					$this->cPointerOriginalID = $cPointerOriginalID;
 					$this->cPath = $cPathOverride;
 					$this->cParentID = $cParentIDOverride;
+					$this->cDisplayOrder = $cDisplayOrderOverride;
 				}
 				$this->isMasterCollection = $row['cIsTemplate'];
 			} else {
@@ -422,6 +423,7 @@ class Concrete5_Model_Page extends Collection {
 		$cDate = $dh->getSystemDateTime();
 		$cDatePublic = $dh->getSystemDateTime();
 		$handle = $this->getCollectionHandle();
+		$cDisplayOrder = $c->getNextSubPageDisplayOrder();
 
 		$_cParentID = $c->getCollectionID();
 		$q = "select PagePaths.cPath from PagePaths where cID = '{$_cParentID}'";
@@ -436,8 +438,8 @@ class Concrete5_Model_Page extends Collection {
 		$cobj = parent::add($data);
 		$newCID = $cobj->getCollectionID();
 		
-		$v = array($newCID, $cParentID, $uID, $this->getCollectionID());
-		$q = "insert into Pages (cID, cParentID, uID, cPointerID) values (?, ?, ?, ?)";
+		$v = array($newCID, $cParentID, $uID, $this->getCollectionID(), $cDisplayOrder);
+		$q = "insert into Pages (cID, cParentID, uID, cPointerID, cDisplayOrder) values (?, ?, ?, ?, ?)";
 		$r = $db->prepare($q);
 		
 		$res = $db->execute($r, $v);
@@ -676,16 +678,17 @@ class Concrete5_Model_Page extends Collection {
 		}
 	}
 
-	public function queueForDeletionRequest() {
+	public function queueForDeletionRequest($queue = null, $includeThisPage = true) {
 		$pages = array();
-		$includeThisPage = true;
 		$pages = $this->populateRecursivePages($pages, array('cID' => $this->getCollectionID()), $this->getCollectionParentID(), 0, $includeThisPage);
 		// now, since this is deletion, we want to order the pages by level, which
 		// should get us no funny business if the queue dies.
 		usort($pages, array('Page', 'queueForDeletionSort'));
-		$q = Queue::get('delete_page_request');
+		if (!$queue) {
+			$queue = Queue::get('delete_page_request');
+		}
 		foreach($pages as $page) {
-			$q->send(serialize($page));
+			$queue->send(serialize($page));
 		}
 	}
 
@@ -726,6 +729,17 @@ class Concrete5_Model_Page extends Collection {
 				$cnt->exportValue($akx);
 			}
 		}
+
+		// this is brutal but we need to do it because otherwise duplicated pages
+		// that haven't yet been visited in a browser won't properly export their contents
+		// because they don't have area records yet.
+		$v = View::getInstance();
+		$v->disableEditing();
+		$v->disableLinks();
+		$v->enablePreview();
+		ob_start();
+		$v->render($this);
+		ob_end_clean();
 
 		$db = Loader::db();
 		$r = $db->Execute('select arHandle from Areas where cID = ? and arIsGlobal = 0', array($this->getCollectionID()));

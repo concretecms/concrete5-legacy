@@ -168,13 +168,13 @@ foreach($t1 as $value) {
 			
 				<div class="controls">
 					<? foreach($s1 as $s) { ?>
-						<? if (is_array($searchRequest['fsID']) && in_array($s->getFileSetID(), $searchRequest['fsID'])) { ?>
+						<? if ((is_array($searchRequest['fsID']) && in_array($s->getFileSetID(), $searchRequest['fsID'])) || (is_string($searchRequest['fsID']) && $searchRequest['fsID'] == $s->getFileSetID())) { ?>
 						<label class="checkbox">
 						<input type="checkbox"  checked disabled><?=wordwrap($s->getFileSetName(), '23', '&shy;', true)?>
 						</label>
 						<? } ?>
 					<? } ?>
-					<? if (is_array($searchRequest['fsID']) && in_array(-1, $searchRequest['fsID'])) { ?>					
+					<? if ((is_array($searchRequest['fsID']) && in_array(-1, $searchRequest['fsID'])) || (is_string($searchRequest['fsID']) && $searchRequest['fsID'] == '-1')) { ?>
 					<label class="checkbox">
 					<input type="checkbox"  checked disabled><?=t('Files in no sets.')?>
 					</label>
@@ -199,7 +199,7 @@ foreach($t1 as $value) {
 					<? } ?>
 					</optgroup>
 					<optgroup label="<?=t('Other')?>">
-						<option value="-1" <? if (is_array($searchRequest['fsID']) && in_array(-1, $searchRequest['fsID'])) { ?> selected="selected" <? } ?>><?=t('Files in no sets.')?></option>
+						<option value="-1" <? if ((is_array($searchRequest['fsID']) && in_array(-1, $searchRequest['fsID'])) || (is_string($searchRequest['fsID']) && $searchRequest['fsID'] == '-1')) { ?> selected="selected" <? } ?>><?=t('Files in no sets.')?></option>
 					</optgroup>
 				</select>
 			</div>

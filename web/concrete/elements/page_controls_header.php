@@ -20,8 +20,7 @@ print "var CCM_SECURITY_TOKEN = '" . $valt->generate() . "';";
 </script>
 
 <?
-$dh = Loader::helper('concrete/dashboard');
-if (!$dh->inDashboard()) {
+if (!$dh->inDashboard($c)) {
 	$this->addHeaderItem($html->css('ccm.app.css'));
 	if (MOBILE_THEME_IS_ACTIVE == true) {
 		$this->addHeaderItem($html->css('ccm.app.mobile.css'));
