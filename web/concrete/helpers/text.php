@@ -7,7 +7,12 @@ class TextHelper extends Concrete5_Helper_Text {
 	 * @param string $handle
 	 * @return string $handle
 	 */
-	public function urlify($handle) {
+    public function urlify(
+        $handle,
+        $maxlength = PAGE_PATH_SEGMENT_MAX_LENGTH,
+        $locale = '',
+        $removeExcludedWords = true
+    ) {
         if(LANGUAGE == "ja"){
     		$handle = trim($handle);
     		$handle = str_replace(PAGE_PATH_SEPARATOR, '-', $handle);
@@ -41,11 +46,10 @@ class TextHelper extends Concrete5_Helper_Text {
     		}
     		$handle = trim($handle, '-');
     		$handle = str_replace('-', PAGE_PATH_SEPARATOR, $handle);
+	        return $handle;
         }else{
-            Loader::library('3rdparty/urlify');
-            $handle = URLify::filter($handle);
+            return parent::urlify($handle, $maxlength, $locale, $removeExcludedWords);
         }
-        return $handle;
-	}
+    }
 
 }
