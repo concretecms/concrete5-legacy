@@ -122,5 +122,8 @@
 		</field>
 		<field name="answerLong" type="X">
 		</field>
+		<index name="asID">
+			<col>asID</col>
+		</index>		
 	</table>
 </schema>
