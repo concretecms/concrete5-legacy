@@ -1468,6 +1468,7 @@
   <table name="FileVersions">
     <opt platform="MYSQL">ENGINE=MYISAM</opt>
     <opt platform="MYSQLT">ENGINE=MYISAM</opt>
+    <opt platform="MYSQLI">ENGINE=MYISAM</opt>
     <field name="fID" type="I" size="10">
       <KEY/>
       <DEFAULT value="0"/>
@@ -1970,6 +1971,7 @@
 <table name="PageSearchIndex">
     <opt platform="MYSQL">ENGINE=MYISAM</opt>
     <opt platform="MYSQLT">ENGINE=MYISAM</opt>
+    <opt platform="MYSQLI">ENGINE=MYISAM</opt>
     <field name="cID" type="I" size="10">
       <KEY/>
       <DEFAULT value="0"/>
@@ -2017,6 +2019,7 @@
   <table name="PageStatistics">
     <opt platform="MYSQL">ENGINE=MYISAM</opt>
     <opt platform="MYSQLT">ENGINE=MYISAM</opt>
+    <opt platform="MYSQLI">ENGINE=MYISAM</opt>
     <field name="pstID" type="I8" size="20">
       <KEY/>
       <AUTOINCREMENT/>
@@ -3155,6 +3158,7 @@
     </field>
     <opt platform="mysql">ENGINE=INNODB</opt>
     <opt platform="mysqlt">ENGINE=INNODB</opt>
+    <opt platform="mysqli">ENGINE=INNODB</opt>
   </table>
   <table name="QueueMessages">
     <field name="message_id" type="I" size="20">
@@ -3192,6 +3196,7 @@
     </index>
     <opt platform="mysql">ENGINE=INNODB</opt>
     <opt platform="mysqlt">ENGINE=INNODB</opt>
+    <opt platform="mysqli">ENGINE=INNODB</opt>
   </table>  
     <table name="QueuePageDuplicationRelations">
     <field name="queue_name" type="C" size="255">
