@@ -55,7 +55,7 @@ class Concrete5_Controller_Block_Search extends BlockController {
 		$highlight = str_replace(array('"',"'","&quot;"),'',$highlight); // strip the quotes as they mess the regex
 
 		if (!$highlight) {
-			$text = Loader::helper('text')->shorten($fulltext, 180);
+			$text = Loader::helper('text')->shortenTextWord($fulltext, 180);
 			if (strlen($fulltext) > 180) {
 				$text . '&hellip;<wbr>';
 			}
