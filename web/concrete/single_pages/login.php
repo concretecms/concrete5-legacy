@@ -232,6 +232,7 @@ $(function() {
 					<?php $rcID = isset($_REQUEST['rcID']) ? Loader::helper('text')->entities($_REQUEST['rcID']) : $rcID; ?>
 					<input type="hidden" name="rcID" value="<?php echo $rcID; ?>" />
 					<input type="hidden" name="attr" value="<?php echo isset( $attr ) ? $attr : ''; ?>" />
+					<?php echo $vt->output( 'login_form' ); ?>
 				</fieldset>
 			</div>
 		</div>

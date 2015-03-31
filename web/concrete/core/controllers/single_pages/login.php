@@ -31,6 +31,8 @@ class Concrete5_Controller_Login extends Controller {
 		$this->set('locales', $locales);
 
 		$this->openIDReturnTo = BASE_URL . View::url("/login", "complete_openid");
+
+		$this->set('vt', Loader::helper('validation/token'));
 	}
 
 	// automagically run by the controller once we're done with the current method
@@ -121,6 +123,7 @@ class Concrete5_Controller_Login extends Controller {
 	public function do_login() {
 		$ip = Loader::helper('validation/ip');
 		$vs = Loader::helper('validation/strings');
+		$vt = Loader::helper('validation/token');
 
 		$loginData['success']=0;
 
@@ -132,6 +135,12 @@ class Concrete5_Controller_Login extends Controller {
 			if (!$ip->check()) {
 				throw new Exception($ip->getErrorMessage());
 			}
+
+            // check the security token
+            if ( !$vt->validate( 'login_form' ) ) {
+                throw new Exception( $vt->getErrorMessage() );
+            }
+
 			if (OpenIDAuth::isEnabled() && $vs->notempty($this->post('uOpenID'))) {
 				$oa = new OpenIDAuth();
 				$oa->setReturnURL($this->openIDReturnTo);
