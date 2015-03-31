@@ -20,6 +20,7 @@ copy(dirname(__FILE__) . '/../assets/it_IT.mo', DIR_BASE . '/languages/it_IT/LC_
 define('DIR_BUILDTOOLS', dirname(dirname(__FILE__)) . '/build-tools');
 if(!is_dir(DIR_BUILDTOOLS)) {
 	exec('git clone --depth 1 --single-branch --branch master https://github.com/mlocati/concrete5-build ' . escapeshellarg(DIR_BUILDTOOLS));
+	exec('php composer.phar install');
 }
 
 //causes dispatcher to skip the page rendering
