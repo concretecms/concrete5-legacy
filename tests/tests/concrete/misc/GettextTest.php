@@ -6,7 +6,7 @@ class GettextTest extends PHPUnit_Framework_TestCase {
 		// Create the .pot file with the strings taken from the source code
 		$potFile = DIR_BASE . '/' . DIRNAME_LANGUAGES . '/messages.pot';
 		$cmd = array();
-		$cmd[] = 'php ' . escapeshellarg(DIR_BUILDTOOLS . '/i18n.php');
+		$cmd[] = 'php ' . escapeshellarg(DIR_BUILDTOOLS . '/bin/i18n.php');
 		$cmd[] = '--webroot=' . escapeshellarg(DIR_BASE);
 		$cmd[] = '--createpot=yes';
 		$cmd[] = '--createpo=no';
