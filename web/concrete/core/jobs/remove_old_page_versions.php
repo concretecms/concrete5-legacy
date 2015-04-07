@@ -40,7 +40,7 @@ class Concrete5_Job_RemoveOldPageVersions extends Job {
 			if($page instanceof Page) {
 				$pvl = new VersionList($page);
 				$pagesAffected[] = $page->getCollectionID();
-				foreach(array_slice(array_reverse($pvl->getVersionListArray()), 10) as $v) {
+				foreach(array_slice($pvl->getVersionListArray(), 10) as $v) {
 					if($v instanceof CollectionVersion && !$v->isApproved() && !$v->isMostRecent() ) {
 						@$v->delete();
 						$versionCount++;
