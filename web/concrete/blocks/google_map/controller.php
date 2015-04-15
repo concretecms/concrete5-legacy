@@ -49,12 +49,29 @@
 		
 		
 		public function view(){ 
-			$this->set('bID', $this->bID);	
+			$this->set('unique_identifier', $this->get_unique_identifier());	
 			$this->set('title', $this->title);
 			$this->set('location', $this->location);
 			$this->set('latitude', $this->latitude);
 			$this->set('longitude', $this->longitude);
 			$this->set('zoom', $this->zoom);			
+		}
+		/*
+		Adapted from
+		http://www.concrete5.org/documentation/how-tos/developers/obtain-a-unique-identifier-for-a-block/
+		*/
+		public function get_unique_identifier()
+		{	
+			// This is needed because blocks in stacks don't have a proxy, but still need to be unique
+			$suffix = '_'.rand(0,1000000);
+	
+			// its a copy, so use proxy id
+			if($this->getBlockObject()->getProxyBlock()){
+				return $this->getBlockObject()->getProxyBlock()->getInstance()->getIdentifier().$suffix;
+			}
+	
+			// its a unique block, so use id
+			return $this->getIdentifier().$suffix;
 		}
 		
 		public function save($data) { 
