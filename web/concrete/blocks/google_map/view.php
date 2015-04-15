@@ -10,7 +10,7 @@ if ($c->isEditMode()) { ?>
 	.googleMapCanvas{ width:100%; border:0px none; height: 400px;}
 	</style>
 	<script type="text/javascript"> 
-	function googleMapInit<?=$bID?>() { 
+	function googleMapInit<?=$unique_identifier?>() { 
 		try{
 			var latlng = new google.maps.LatLng(<?=$latitude?>, <?=$longitude?>);
 		    var mapOptions = {
@@ -20,7 +20,7 @@ if ($c->isEditMode()) { ?>
 		      streetViewControl: false,
 		      mapTypeControl: false
 			};
-		    var map = new google.maps.Map(document.getElementById('googleMapCanvas<?=$bID?>'), mapOptions);
+		    var map = new google.maps.Map(document.getElementById('googleMapCanvas<?=$unique_identifier?>'), mapOptions);
 		    var marker = new google.maps.Marker({
 		        position: latlng, 
 		        map: map
@@ -30,9 +30,9 @@ if ($c->isEditMode()) { ?>
 	</script>
 	
 	<? if( strlen($title)>0){ ?><h3><?=$title?></h3><? } ?>
-	<div id="googleMapCanvas<?=$bID?>" class="googleMapCanvas"></div>
+	<div id="googleMapCanvas<?=$unique_identifier?>" class="googleMapCanvas"></div>
 	<script type="text/javascript">$(function() {
-		googleMapInit<?=$bID?>();
+		googleMapInit<?=$unique_identifier?>();
 	});</script>
 	
 <? } ?>
