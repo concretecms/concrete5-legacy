@@ -81,9 +81,6 @@
 			elseif (is_dir(DIR_LANGUAGES_CORE . '/' . $locale)) {
 				$languageDir = DIR_LANGUAGES_CORE . '/' . $locale;
 			}
-			else {
-				return;
-			}
 
 			$options = array(
 				'adapter' => 'gettext',
@@ -183,14 +180,14 @@
 
 			return $languages;
 		}
-		
+
 		/**
 		 * Generates a list of all available languages and returns an array like
 		 * [ "de_DE" => "Deutsch (Deutschland)",
 		 *   "en_US" => "English (United States)",
 		 *   "fr_FR" => "Français (France)"]
 		 * The result will be sorted by the key.
-		 * If the $displayLocale is set, the language- and region-names will be returned in that language 
+		 * If the $displayLocale is set, the language- and region-names will be returned in that language
 		 * @param string $displayLocale Language of the description
 		 * @return Array An associative Array with locale as the key and description as content
 		 */
@@ -206,7 +203,7 @@
 			natcasesort($locales);
 			return $locales;
 		}
-		
+
 		/**
 		 * Get the description of a locale consisting of language and region description
 		 * e.g. "French (France)"
@@ -218,19 +215,19 @@
 			$localeList = Zend_Locale::getLocaleList();
 			if (! isset($localeList[$locale])) {
 				return $locale;
-			} 
-			
+			}
+
 			if ($displayLocale !== NULL && (! isset($localeList[$displayLocale]))) {
 				$displayLocale = NULL;
-			} 
-			
+			}
+
 			$cacheLibrary = Cache::getLibrary();
 			if (is_object($cacheLibrary)) {
 				Zend_Locale_Data::setCache($cacheLibrary);
-			}		
-			
+			}
+
 			$displayLocale = $displayLocale?$displayLocale:$locale;
-			
+
 			$zendLocale = new Zend_Locale($locale);
 			$languageName = Zend_Locale::getTranslation($zendLocale->getLanguage(), 'language', $displayLocale);
 			$description = $languageName;
@@ -244,7 +241,7 @@
 					} else {
 						$description = $languageName . ' (' . $regionName . ")";
 					}
-					
+
 				}
 			}
 			return $description;
