@@ -69,8 +69,11 @@ class Concrete5_Helper_Form {
 	 * @param string $name
 	 * @return string $html
 	 */
-	public function label($field, $name, $miscFields = array()) {
-		$str = '<label for="' . $field . '"' . $this->parseMiscFields('control-label ', $miscFields) . '>' . $name . '</label>';
+	public function label($field, $name, $miscFields = array(), $required = null) {
+		if($required) {
+			$asterisk = " *";
+		}
+		$str = '<label for="' . $field . '"' . $this->parseMiscFields('control-label ', $miscFields) . '>' . $name . $asterisk .'</label>';
 		return $str;
 	}
 
