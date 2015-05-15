@@ -21,9 +21,10 @@
      \  c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c    \\___]\\___/||_||_|\\___]|_|  \\___/ \\___]\\___/ \\_____/
        ------------------------------        --    --   -- --   --  --     --     --    --     ----
 
-# Version 5.7 Development
+# Legacy Version
 
-Looking for concrete5 5.7 development? It has its own repository: http://github.com/concrete5/concrete5-5.7.0/
+This is the legacy version of Concrete5. It is still being actively maintained, but significant development and new features are a part of Version 5.7 and greater.
+New versions of concrete5 can be found in this repository: http://github.com/concrete5/concrete5/
 
 # Note
 
