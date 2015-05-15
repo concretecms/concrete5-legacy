@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/concrete5/concrete5.png?branch=master)](https://travis-ci.org/concrete5/concrete5)
+[![Build Status](https://travis-ci.org/concrete5/concrete5-legacy.png?branch=master)](https://travis-ci.org/concrete5/concrete5)
 
 
         c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c
