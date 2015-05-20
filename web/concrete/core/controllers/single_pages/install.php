@@ -25,6 +25,7 @@ define('DIR_FILES_UPLOADED_THUMBNAILS', DIR_FILES_UPLOADED . '/thumbnails');
 define('DIR_FILES_UPLOADED_THUMBNAILS_LEVEL2', DIR_FILES_UPLOADED . '/thumbnails/level2');
 define('DIR_FILES_UPLOADED_THUMBNAILS_LEVEL3', DIR_FILES_UPLOADED . '/thumbnails/level3');
 define('DIR_FILES_AVATARS', DIR_FILES_UPLOADED . '/avatars');
+define('ENABLE_TRANSLATE_LOCALE_EN_US', false);
 
 class Concrete5_Controller_Install extends Controller {
 
