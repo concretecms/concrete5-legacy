@@ -28,7 +28,9 @@ function setWrap(val) {
 
 	s.wrap = val;
 
-	if (!tinymce.isIE) {
+	if (tinymce.isWebKit) {
+    s.setAttribute("wrap", val);
+  } else if (!tinymce.isIE) {
 		v = s.value;
 		n = s.cloneNode(false);
 		n.setAttribute("wrap", val);
