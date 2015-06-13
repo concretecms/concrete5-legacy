@@ -196,9 +196,17 @@ jQuery.fn.dialog.replaceTop = function(r) {
 			var helpText = 'Help';
 		}
 		$("#ccm-dialog-content" + nd).parent().find('.ui-dialog-titlebar').append('<span class="ccm-dialog-help"><a href="javascript:void(0)" title="' + helpText + '" class="ccm-menu-help-trigger">Help</a></span>');
-		$("#ccm-dialog-content" + nd).parent().find('.ui-dialog-titlebar .ccm-menu-help-trigger').popover({content: function() {
+		var $ccmDialogHelp = $("#ccm-dialog-content" + nd).parent().find('.ui-dialog-titlebar .ccm-menu-help-trigger').popover({content: function() {
 			return helpContent;			
 		}, placement: 'bottom', html: true, trigger: 'click'});
+		if ($ccmDialogHelp.length) {
+			$ccmDialogHelp.closest('.ui-dialog').on(
+				'dialogbeforeclose',
+				function() {
+					$ccmDialogHelp.data('popover').hide();
+				}
+			);
+		}
 	}
 }
 

@@ -82,7 +82,9 @@ class Concrete5_Controller_Dashboard_Composer_Write extends Controller {
 					$data['cHandle'] = $handle;
 				}
 				if ($asl->allowEditDateTime()) { 
-					$data['cDatePublic'] = Loader::helper('form/date_time')->translate('cDatePublic');
+					$dt = Loader::helper('form/date_time');
+					$dh = Loader::helper('date');
+					$data['cDatePublic'] = $dh->getSystemDateTime($dt->translate('cDatePublic'));
 				}
 
 				$entry->getVersionToModify();

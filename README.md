@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/concrete5/concrete5.png?branch=master)](https://travis-ci.org/concrete5/concrete5)
+[![Build Status](https://travis-ci.org/concrete5/concrete5-legacy.png?branch=master)](https://travis-ci.org/concrete5/concrete5-legacy)
 
 
         c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c
@@ -21,13 +21,14 @@
      \  c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c    \\___]\\___/||_||_|\\___]|_|  \\___/ \\___]\\___/ \\_____/
        ------------------------------        --    --   -- --   --  --     --     --    --     ----
 
-# Version 5.7 Development
+# Legacy Version
 
-Looking for concrete5 5.7 development? It has its own repository: http://github.com/concrete5/concrete5-5.7.0/
+This is the legacy version of Concrete5. It is still being actively maintained, but significant development and new features are a part of Version 5.7 and greater.
+New versions of concrete5 can be found in this repository: http://github.com/concrete5/concrete5/
 
 # Note
 
-This is the development distribution of concrete5. It is bleeding edge. The latest development build can be downloaded from https://github.com/concrete5/concrete5/zipball/master. 
+This is the development distribution of concrete5 Legacy. It is bleeding edge. The latest development build can be downloaded from https://github.com/concrete5/concrete5-legacy/zipball/master. 
 
 For the latest fully supported release, check out http://www.concrete5.org/download/
 

@@ -55,14 +55,14 @@ class Concrete5_Controller_Block_Search extends BlockController {
 		$highlight = str_replace(array('"',"'","&quot;"),'',$highlight); // strip the quotes as they mess the regex
 
 		if (!$highlight) {
-			$text = Loader::helper('text')->shorten($fulltext, 180);
+			$text = Loader::helper('text')->shortenTextWord($fulltext, 180);
 			if (strlen($fulltext) > 180) {
 				$text . '&hellip;<wbr>';
 			}
 			return $text;
 		}
 
-		$regex = '([[:alnum:]|\'|\.|_|\s]{0,45})'. preg_quote($highlight, '#') .'([[:alnum:]|\.|_|\s]{0,45})';
+		$regex = '(^|\s)([[:alnum:]|\'|\.|_|\s]{0,45})'. preg_quote($highlight, '#') .'([[:alnum:]|\.|’|_|\s]{0,45})($|\s)';
 		preg_match_all("#$regex#ui", $text, $matches);
 
 		if(!empty($matches[0])) {

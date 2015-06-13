@@ -443,7 +443,6 @@ class Concrete5_Model_Page extends Collection {
 		$r = $db->prepare($q);
 		
 		$res = $db->execute($r, $v);
-		$newCID = $db->Insert_ID();
 
 		Loader::model('page_statistics');		
 		PageStatistics::incrementParents($newCID);
@@ -517,8 +516,7 @@ class Concrete5_Model_Page extends Collection {
 		$r = $db->prepare($q);
 		
 		$res = $db->execute($r, $v);
-		$newCID = $db->Insert_ID();
-
+		
 		Loader::model('page_statistics');		
 		PageStatistics::incrementParents($newCID);
 

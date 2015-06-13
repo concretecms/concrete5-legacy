@@ -68,7 +68,7 @@
 		}
 		
 		public function save($args) {
-			$args['forceImageToMatchDimensions'] = ($args['forceImageToMatchDimensions'] != '') ? 1 : 0;
+			$args['forceImageToMatchDimensions'] = ($args['forceImageToMatchDimensions'] != '') ? $args['forceImageToMatchDimensions'] : 0;
 			$args['fOnstateID'] = ($args['fOnstateID'] != '') ? $args['fOnstateID'] : 0;
 			$args['fID'] = ($args['fID'] != '') ? $args['fID'] : 0;
 			$args['maxWidth'] = (intval($args['maxWidth']) > 0) ? intval($args['maxWidth']) : 0;
@@ -121,7 +121,7 @@
 			$img .= ($style) ? "style=\"{$style}\" " : '';
 			if($this->fOnstateID != 0) {
 				$fos = $this->getFileOnstateObject();
-				$fullPathOnstate = $f->getPath();
+				$fullPathOnstate = $fos->getPath();
 				$sizehover = @getimagesize($fullPathOnstate);
 
 				if ($this->maxWidth == $sizehover[0] && $this->maxHeight == $sizehover[1]) {

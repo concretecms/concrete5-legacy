@@ -6,7 +6,6 @@ V5.18 3 Sep 2012  (c) 2000-2012 John Lim (jlim#natsoft.com). All rights reserved
   the BSD license will take precedence.
   Set tabs to 8.
   
-  MySQL code that does not support transactions. Use mysqlt if you need transactions.
   Requires mysql client. Works on Windows and Unix.
  
 21 October 2003: MySQLi extension implementation by Arjen de Rijke (a.de.rijke@xs4all.nl)
@@ -28,7 +27,7 @@ if (! defined("_ADODB_MYSQLI_LAYER")) {
 
 class ADODB_mysqli extends ADOConnection {
 	var $databaseType = 'mysqli';
-	var $dataProvider = 'mysql';
+	var $dataProvider = 'mysqli';
 	var $hasInsertID = true;
 	var $hasAffectedRows = true;	
 	var $metaTablesSQL = "SELECT TABLE_NAME, CASE WHEN TABLE_TYPE = 'VIEW' THEN 'V' ELSE 'T' END FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA=SCHEMA()";	
