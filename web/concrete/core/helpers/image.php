@@ -168,7 +168,7 @@ class Concrete5_Helper_Image {
 				} else {
 					$image->setSize($width, $height);
 					if($image->readImage($originalPath) === true) {
-						$image->thumbnailImage($finalWidth, $finalHeight, true);
+						$image->thumbnailImage($finalWidth, $finalHeight);
 						$imageRead = true;
 					}
 				}
