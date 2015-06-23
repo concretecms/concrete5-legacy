@@ -300,14 +300,14 @@ class Concrete5_Helper_Image {
 		$prefix  = $this->jpegCompression . ':'; // Add prefix for compression level to serve the properly compressed images
 		$prefix .= ($crop ? 'cropped:' : ''); // Name cropped images different from resized images so they don't get mixed up in the cache
 		if (file_exists($path) && $fID) {
-			$filename = md5($prefix . $path . ':' . $maxWidth . ':' . $maxHeight . ':' . filemtime($path)) . '_f' . $fID . '.' . $fh->getExtension($path);
+			$filename = md5($prefix . $path . ':' . $maxWidth . ':' . $maxHeight . ':' . filemtime($path)) . '_f' . $fID . '/' . basename($path);
 		} else if (file_exists($path)){
-			$filename = md5($prefix . $path . ':' . $maxWidth . ':' . $maxHeight . ':' . filemtime($path)) . '.' . $fh->getExtension($path);
+			$filename = md5($prefix . $path . ':' . $maxWidth . ':' . $maxHeight . ':' . filemtime($path)) . '/' . basename($path);
 		} else if ($fID){
 			// This may be redundant - don't know it can actually ever occur
-			$filename = md5($prefix . $path . ':' . $maxWidth . ':' . $maxHeight . ':') . '_f' . $fID . '.' . $fh->getExtension($path);
+			$filename = md5($prefix . $path . ':' . $maxWidth . ':' . $maxHeight . ':') . '_f' . $fID . '/' . basename($path);
 		} else {
-			$filename = md5($prefix . $path . ':' . $maxWidth . ':' . $maxHeight . ':') . '.' . $fh->getExtension($path);
+			$filename = md5($prefix . $path . ':' . $maxWidth . ':' . $maxHeight . ':') . '/' . basename($path);
 		}
 
 		if (!file_exists(DIR_FILES_CACHE . '/' . $filename)) {
@@ -318,6 +318,10 @@ class Concrete5_Helper_Image {
 		$src = REL_DIR_FILES_CACHE . '/' . $filename;
 		$abspath = DIR_FILES_CACHE . '/' . $filename;
 		$thumb = new stdClass;
+		$dir = dirname($abspath);
+		if (!file_exists($dir)) {
+			mkdir($dir);
+		}		
 		if (isset($abspath) && file_exists($abspath)) {			
 			$thumb->src = $src;
 			$dimensions = getimagesize($abspath);
