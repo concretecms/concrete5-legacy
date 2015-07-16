@@ -188,7 +188,7 @@ class Concrete5_Controller_Install extends Controller {
 	}
 
 	protected function validateDatabase($e) {
-		if (!function_exists('mysql_connect')) {
+		if (!function_exists('mysql_connect') && !function_exists('mysqli_connect')) {
 			$e->add($this->getDBErrorMsg());
 		} else {
 
