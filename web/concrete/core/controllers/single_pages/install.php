@@ -100,7 +100,7 @@ class Concrete5_Controller_Install extends Controller {
 
 	private function setRequiredItems() {
 		$this->set('imageTest', function_exists('imagecreatetruecolor'));
-		$this->set('mysqlTest', function_exists('mysql_connect'));
+		$this->set('mysqlTest', function_exists('mysql_connect') || function_exists('mysqli_connect'));
 		$this->set('xmlTest', function_exists('xml_parse') && function_exists('simplexml_load_file'));
 		$this->set('fileWriteTest', $this->testFileWritePermissions());
 		$phpVmin = '5.2.4';
@@ -188,7 +188,7 @@ class Concrete5_Controller_Install extends Controller {
 	}
 
 	protected function validateDatabase($e) {
-		if (!function_exists('mysql_connect')) {
+		if (!function_exists('mysql_connect') && !function_exists('mysqli_connect')) {
 			$e->add($this->getDBErrorMsg());
 		} else {
 
