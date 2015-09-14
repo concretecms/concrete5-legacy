@@ -26,9 +26,6 @@ class Localization extends Concrete5_Library_Localization {
 			elseif (is_dir(DIRNAME_UPDATES .'/' . DIRNAME_APP_UPDATED . '/' . DIRNAME_LANGUAGES_CORE . '/' . $locale)) {
 				$languageDir = DIRNAME_UPDATES .'/' . DIRNAME_APP_UPDATED . '/' . DIRNAME_LANGUAGES_CORE . '/' . $locale;
 			}
-			else {
-				return;
-			}
 		}
 		else {
 			if (is_dir(DIR_LANGUAGES . '/' . $locale)) {
@@ -36,9 +33,6 @@ class Localization extends Concrete5_Library_Localization {
 			}
 			elseif (is_dir(DIR_LANGUAGES_CORE . '/' . $locale)) {
 				$languageDir = DIR_LANGUAGES_CORE . '/' . $locale;
-			}
-			else {
-				return;
 			}
 		}
 
