@@ -71,7 +71,7 @@ class Concrete5_Helper_Validation_Identifier {
 	
 	public function getString($length = 12) {
 		$str = str_repeat($this->letters, 10);
-		$hash = substr(str_shuffle($str), 0, $length);
+		$hash = substr(microtime() . str_shuffle((microtime() + mt_rand(999,9999)) . $str), 0, $length);
 		return $hash;
 	}
 	
