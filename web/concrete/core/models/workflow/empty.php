@@ -1,6 +1,11 @@
 <?
 defined('C5_EXECUTE') or die("Access Denied.");
 class Concrete5_Model_EmptyWorkflow extends Workflow {
+	public function canApproveWorkflow()
+	{
+		return true;
+	}
+
 	public function start(WorkflowProgress $wp) {
 		$req = $wp->getWorkflowRequestObject();
 		$wpr = $req->approve($wp);

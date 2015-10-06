@@ -40,6 +40,16 @@ class Concrete5_Model_BasicWorkflow extends Workflow  {
 		}			
 	}
 
+	/**
+	 * Returns true if the logged-in user can approve the current workflow
+	 */
+	public function canApproveWorkflow()
+	{
+		$pk = PermissionKey::getByHandle('approve_basic_workflow_action');
+		$pk->setPermissionObject($this);
+		return $pk->validate();
+	}
+
 	public function loadDetails() {}
 	
 	public function delete() {
@@ -53,14 +63,21 @@ class Concrete5_Model_BasicWorkflow extends Workflow  {
 		$req = $wp->getWorkflowRequestObject();
 		$db = Loader::db();
 		$db->Execute('insert into BasicWorkflowProgressData (wpID, uIDStarted) values (?, ?)', array($wp->getWorkflowProgressID(), $req->getRequesterUserID()));
-		
-		$ui = UserInfo::getByID($req->getRequesterUserID());
-		
-		// let's get all the people who are set to be notified on entry
-		$message = t('On %s, user %s submitted the following request: %s', Loader::helper('date')->formatDateTime($wp->getWorkflowProgressDateAdded(), true, false), $ui->getUserName(), $req->getWorkflowRequestDescriptionObject()->getEmailDescription());
-		$this->notify($wp, $message, 'notify_on_basic_workflow_entry');
+
+		if ($this->canApproveWorkflow()) {
+			// Then that means we have the ability to approve the workflow we just started.
+			// In that case, we transparently approve it, and skip the entry notification step.
+			$wpr = $req->approve($wp);
+			$wp->delete();
+		} else {
+			$ui = UserInfo::getByID($req->getRequesterUserID());
+
+			// let's get all the people who are set to be notified on entry
+			$message = t('On %s, user %s submitted the following request: %s', Loader::helper('date')->formatDateTime($wp->getWorkflowProgressDateAdded(), true, false), $ui->getUserName(), $req->getWorkflowRequestDescriptionObject()->getEmailDescription());
+			$this->notify($wp, $message, 'notify_on_basic_workflow_entry');
+		}
 	}
-	
+
 	public function getWorkflowProgressCurrentDescription(WorkflowProgress $wp) {
 		$bdw = new BasicWorkflowProgressData($wp);
 		$ux = UserInfo::getByID($bdw->getUserStartedID());
@@ -139,7 +156,6 @@ class Concrete5_Model_BasicWorkflow extends Workflow  {
 			$wpr = $req->runTask('approve', $wp);
 			$wp->markCompleted();
 
-			
 			$hist = new BasicWorkflowHistoryEntry();
 			$hist->setAction('approve');
 			$hist->setRequesterUserID($u->getUserID());
@@ -153,9 +169,7 @@ class Concrete5_Model_BasicWorkflow extends Workflow  {
 	}
 	
 	public function canApproveWorkflowProgressObject(WorkflowProgress $wp) {
-		$pk = PermissionKey::getByHandle('approve_basic_workflow_action');
-		$pk->setPermissionObject($this);
-		return $pk->validate();
+		return $this->canApproveWorkflow();
 	}
 	
 	public function getWorkflowProgressActions(WorkflowProgress $wp) {
