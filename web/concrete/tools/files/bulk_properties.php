@@ -93,7 +93,7 @@ if ($_POST['task'] == 'update_core' && $fp->canEditFileProperties() && (!$previe
 				$fv=$f->getVersionToModify();
 				$fv->updateTitle($text);
 			}
-			print $text;
+			print h($text);
 			break;
 		case 'fvDescription':
 			$text = $_POST['fvDescription'];
@@ -101,7 +101,7 @@ if ($_POST['task'] == 'update_core' && $fp->canEditFileProperties() && (!$previe
 				$fv=$f->getVersionToModify();
 				$fv->updateDescription($text);
 			}
-			print $text;
+			print h($text);
 			break;
 		case 'fvTags':
 			$text = $_POST['fvTags'];
@@ -109,7 +109,7 @@ if ($_POST['task'] == 'update_core' && $fp->canEditFileProperties() && (!$previe
 				$fv=$f->getVersionToModify();
 				$fv->updateTags($text);
 			}
-			print $text;
+			print h($text);
 			break;
 	}
 

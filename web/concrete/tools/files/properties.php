@@ -47,17 +47,17 @@ if ($_POST['task'] == 'update_core' && $fp->canEditFileProperties() && (!$previe
 		case 'fvTitle':
 			$text = $_POST['fvTitle'];
 			$fv->updateTitle($text);
-			print $text;
+			print h($text);
 			break;
 		case 'fvDescription':
 			$text = $_POST['fvDescription'];
 			$fv->updateDescription($text);
-			print $text;
+			print h($text);
 			break;
 		case 'fvTags':
 			$text = $_POST['fvTags'];
 			$fv->updateTags($text);
-			print $text;
+			print h($text);
 			break;
 	}
 
