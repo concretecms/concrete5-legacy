@@ -28,11 +28,8 @@ ccm_triggerSelectFile = function(fID, af) {
 		obj.attr('ccm-file-manager-can-replace', obj.children('div').attr('ccm-file-manager-can-replace'));
 		obj.attr('ccm-file-manager-instance', af);
 		
-		obj.unbind();
-		obj.click(function(e) {
-			e.stopPropagation();
-			ccm_alActivateMenu($(this),e);
-		});
+		obj.unbind('click', ccm_triggerMenu);
+		obj.click(ccm_triggerMenu);
 		
 		if (typeof(ccm_triggerSelectFileComplete)  == 'function') {
 			ccm_triggerSelectFileComplete(fID, af);
@@ -41,6 +38,11 @@ ccm_triggerSelectFile = function(fID, af) {
 	var vobj = $('#' + af + "-fm-value");
 	vobj.attr('value', fID);
 	ccm_alSetupFileProcessor();
+}
+
+ccm_triggerMenu = function(e){
+	e.stopPropagation();
+	ccm_alActivateMenu($(this),e);
 }
 
 ccm_alGetFileData = function(fID, onComplete) {
