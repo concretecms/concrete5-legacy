@@ -1,6 +1,6 @@
 <?
 defined('C5_EXECUTE') or die("Access Denied.");
-$step = ($_REQUEST['step']) ? "&step={$_REQUEST['step']}" : ""; 
+$step = ($_REQUEST['step']) ? "&step=" . h($_REQUEST['step']) : ""; 
 $closeWindowCID=(intval($rcID))?intval($rcID):$c->getCollectionID();
 ?>
 
