@@ -295,7 +295,7 @@ class Concrete5_Controller_Install extends Controller {
 					$configuration .= "define('INSTALL_USER_EMAIL', '" . $_POST['uEmail'] . "');\n";
 					$configuration .= "define('INSTALL_USER_PASSWORD_HASH', '" . $hasher->HashPassword($_POST['uPassword']) . "');\n";
 					$configuration .= "define('INSTALL_STARTING_POINT', '" . $this->post('SAMPLE_CONTENT') . "');\n";
-					$configuration .= "define('SITE', '" . h($_POST['SITE']) . "');\n";
+					$configuration .= "define('SITE', '" . str_replace("'", "\\'", h($_POST['SITE'])) . "');\n";
 					if (defined('ACTIVE_LOCALE') && ACTIVE_LOCALE != '' && ACTIVE_LOCALE != 'en_US') {
 						$configuration .= "define('ACTIVE_LOCALE', '" . ACTIVE_LOCALE . "');\n";
 					}
