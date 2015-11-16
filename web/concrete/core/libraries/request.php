@@ -63,8 +63,10 @@ class Concrete5_Library_Request {
 				}
 				/* falls through */
 			case 'REQUEST_URI':
-				$path = str_replace($_SERVER['QUERY_STRING'], '', $path);
-				$path = trim($path, '?');
+				$p = strpos($path, '?');
+				if ($p !== false) {
+					$path = substr($path, 0, $p);
+				}
 				break;
 		}
 		if ($var !== 'PATH_INFO' && DIR_REL != '') {
