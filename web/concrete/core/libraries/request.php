@@ -56,24 +56,26 @@ class Concrete5_Library_Request {
 		// Allow for special handling
 		// for each path var type.
 		switch ( $var ) {
-
-			case 'PATH_INFO':
-				// DIR_REL not in path; do nothing.
-				break;
-			
+			case 'REDIRECT_URL':
+				// With apache 2.4 REDIRECT_URL is a full URL, not only the request path.
+				if (preg_match('/https?:\/\/[^\/]+(.*)$/i', $_SERVER['REDIRECT_URL'], $m)) {
+					$path = $m[1];
+				}
+				/* falls through */
 			case 'REQUEST_URI':
-				$path = str_replace($_SERVER['QUERY_STRING'], '', $path);
-				$path = trim($path, '?');
-			default:
-				// if the path starts off with dir_rel, we remove it:
-				if (DIR_REL != '') {
-					$dr = trim(DIR_REL, '/');
-					$path = trim($path, '/');
-					if (strpos($path, $dr) === 0) {
-						$path = substr($path, strlen($dr));	
-					}
+				$p = strpos($path, '?');
+				if ($p !== false) {
+					$path = substr($path, 0, $p);
 				}
 				break;
+		}
+		if ($var !== 'PATH_INFO' && DIR_REL != '') {
+				// if the path starts off with dir_rel, we remove it:
+				$dr = trim(DIR_REL, '/');
+				$path = trim($path, '/');
+				if (strpos($path, $dr) === 0) {
+					$path = substr($path, strlen($dr));	
+				}
 		}
 
 		$path = trim($path, '/');
