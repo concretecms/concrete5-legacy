@@ -34,7 +34,7 @@ class Concrete5_Controller_AttributeType_Number extends AttributeTypeController 
 		if (is_object($this->attributeValue)) {
 			$value = $this->getAttributeValue()->getValue();
 		}
-		print Loader::helper('form')->text($this->field('value'), $value, array('style' => 'width:80px'));
+		print Loader::helper('form')->number($this->field('value'), $value, array('style' => 'width:80px'));
 	}
 	
 	public function validateForm($p) {
