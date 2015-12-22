@@ -24,9 +24,9 @@ class Concrete5_Controller_AttributeType_Number extends AttributeTypeController 
 	
 	public function search() {
 		$f = Loader::helper('form');
-		$html = $f->text($this->field('from'), $this->request('from'));
+		$html = $f->number($this->field('from'), $this->request('from'));
 		$html .= ' ' . t('to') . ' ';
-		$html .= $f->text($this->field('to'), $this->request('to'));
+		$html .= $f->number($this->field('to'), $this->request('to'));
 		print $html;
 	}
 	
