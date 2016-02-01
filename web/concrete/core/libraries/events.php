@@ -25,6 +25,8 @@ class Concrete5_Library_Events {
 	const EVENT_TYPE_PAGETYPE = "page_type";
 	const EVENT_TYPE_GLOBAL = "global";
 	
+	private static $fired = array();
+
 	/** 
 	 * Enables events if they haven't been enabled yet. This happens automatically if a particular 3rd party addon requires it
 	 */
@@ -180,7 +182,17 @@ class Concrete5_Library_Events {
 				}
 			}
 		}
+		self::$fired[$event] = true;
 		return $eventReturn;
+	}
+
+	/**
+	 * @param string $event
+	 *
+	 * @return bool
+	 */
+	public static function fired($event) {
+	    return (isset(self::$fired[$event]) && $fired[$event]) ? true : false;
 	}
 
 	/**

@@ -777,7 +777,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 
 			$wrapTemplateInTheme = false;
 			$this->checkMobileView();
-			if (defined('DB_DATABASE') && ($view !== '/upgrade')) {
+			if (defined('DB_DATABASE') && ($view !== '/upgrade') && !Events::fired('on_start')) {
 				Events::fire('on_start', $this);
 			}
 			

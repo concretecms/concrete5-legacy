@@ -341,6 +341,9 @@
 								if (!is_object($b)) {
 									exit;
 								}
+								if (!Events::fired('on_start')) {
+								    Events::fire('on_start', View::getInstance());
+								}
 								$action = $b->passThruBlock($_REQUEST['method']);
 							}
 						}
