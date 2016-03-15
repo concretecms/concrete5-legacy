@@ -56,6 +56,9 @@
 	## Must come before full page caching
 	require($cdir . '/startup/session.php');
 
+	## Check host for redirection ##
+	require($cdir . '/startup/url_check.php');
+
 	## Early loading full page cache
 	if (!$config_check_failed) {
 		require($cdir . '/startup/check_page_cache.php');
@@ -106,9 +109,6 @@
 
 	## Load permissions and attributes
 	PermissionKey::loadAll();
-
-	## Check host for redirection ##
-	require($cdir . '/startup/url_check.php');
 
 	## Set debug-related and logging activities
 	require($cdir . '/startup/debug_logging.php');
