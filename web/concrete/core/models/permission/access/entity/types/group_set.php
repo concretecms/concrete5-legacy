@@ -65,8 +65,8 @@ class Concrete5_Model_GroupSetPermissionAccessEntity extends PermissionAccessEnt
 			array($petID, $gs->getGroupSetID()));
 		if (!$peID) { 
 			$db->Execute("insert into PermissionAccessEntities (petID) values(?)", array($petID));
-			Config::save('ACCESS_ENTITY_UPDATED', time());
 			$peID = $db->Insert_ID();
+			Config::save('ACCESS_ENTITY_UPDATED', time());
 			$db->Execute('insert into PermissionAccessEntityGroupSets (peID, gsID) values (?, ?)', array($peID, $gs->getGroupSetID()));
 		}
 		return PermissionAccessEntity::getByID($peID);
