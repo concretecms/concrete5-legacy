@@ -106,6 +106,14 @@ if ($this->controller->getTask() == 'install_package' && $showInstallOptionsScre
 		return strcasecmp($name1, $name2);
 	}
 	
+	/*
+         * Sort the installed package list to make it easier to work with
+         * Test for empty just in case the list is empty
+         */
+        if(!empty($pkgArray)){
+            usort($pkgArray, 'sortAvailableArray');
+        }
+        
 	// grab the total numbers of updates.
 	// this consists of 
 	// 1. All packages that have greater pkgAvailableVersions than pkgVersion
