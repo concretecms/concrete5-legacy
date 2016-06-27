@@ -708,6 +708,7 @@ class Concrete5_Model_Page extends Collection {
 		$p->addAttribute('name', Loader::helper('text')->entities($this->getCollectionName()));
 		$p->addAttribute('path', $this->getCollectionPath());
 		$p->addAttribute('filename', $this->getCollectionFilename());
+		$p->addAttribute('public-date', $this->getCollectionDatePublic());
 		$p->addAttribute('pagetype', $this->getCollectionTypeHandle());
 		$p->addAttribute('description', Loader::helper('text')->entities($this->getCollectionDescription()));
 		$p->addAttribute('package', $this->getPackageHandle());
@@ -731,13 +732,13 @@ class Concrete5_Model_Page extends Collection {
 		// this is brutal but we need to do it because otherwise duplicated pages
 		// that haven't yet been visited in a browser won't properly export their contents
 		// because they don't have area records yet.
-		$v = View::getInstance();
+/*		$v = View::getInstance();
 		$v->disableEditing();
 		$v->disableLinks();
 		$v->enablePreview();
 		ob_start();
 		$v->render($this);
-		ob_end_clean();
+		ob_end_clean();*/
 
 		$db = Loader::db();
 		$r = $db->Execute('select arHandle from Areas where cID = ? and arIsGlobal = 0', array($this->getCollectionID()));
