@@ -749,15 +749,15 @@ class Concrete5_Model_Area extends Object {
 	 * @todo need more documentation export?
 	 */
 	public function export($p, $page) {
-		$area = $p->addChild('area');
-		$area->addAttribute('name', $this->getAreaHandle());
-		
 		$blocks = $page->getBlocks($this->getAreaHandle());
-		foreach($blocks as $bl) {
-			$bl->export($area);
+		if (count($blocks)) {
+			$area = $p->addChild('area');
+			$area->addAttribute('name', $this->getAreaHandle());
+			foreach($blocks as $bl) {
+				$bl->export($area);
+			}
 		}
 	}
-	
 
 	/** 
 	 * Specify HTML to automatically print before blocks contained within the area

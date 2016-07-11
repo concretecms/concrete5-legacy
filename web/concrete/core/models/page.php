@@ -741,7 +741,7 @@ class Concrete5_Model_Page extends Collection {
 		ob_end_clean();*/
 
 		$db = Loader::db();
-		$r = $db->Execute('select arHandle from Areas where cID = ? and arIsGlobal = 0', array($this->getCollectionID()));
+		$r = $db->Execute('select distinct arHandle from Areas where cID = ? and arIsGlobal = 0', array($this->getCollectionID()));
 		while ($row = $r->FetchRow()) {
 			$ax = Area::get($this, $row['arHandle']);
 			$ax->export($p, $this);
