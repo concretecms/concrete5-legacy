@@ -125,6 +125,7 @@ class Concrete5_Controller_AttributeType_Address extends AttributeTypeController
 	}
 	
 	public function action_load_provinces_js() {
+		header("Content-Type: application/javascript");
 		$h = Loader::helper('lists/states_provinces');
 		print "var ccm_attributeTypeAddressStatesTextList = '\\\n";
 		$all = $h->getAll();
