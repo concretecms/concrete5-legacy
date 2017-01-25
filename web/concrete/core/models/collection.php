@@ -743,8 +743,19 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		
 		public function getGlobalBlocks() {
 			$db = Loader::db();
-			$v = array( Stack::ST_TYPE_GLOBAL_AREA );
-			$rs = $db->GetCol('select stName from Stacks where Stacks.stType = ?', $v );
+			$v = array( $this->getCollectionID(), 1, Stack::ST_TYPE_GLOBAL_AREA );
+
+			// Get only global areas used by this collection.
+			$sql = <<<SQL
+			SELECT stName FROM Stacks WHERE stName IN
+			(
+				SELECT arHandle FROM Areas WHERE cID = ? AND arIsGlobal = ? AND arHandle IN
+				(
+					SELECT stName FROM Stacks WHERE Stacks.stType = ?
+				)
+			)
+SQL;
+			$rs = $db->GetCol($sql, $v);
 			$blocks = array();
 			if (count($rs) > 0) {
 				$pcp = new Permissions($this);
