@@ -142,7 +142,7 @@ class Concrete5_Model_FileAttributeKey extends AttributeKey {
 		// is NOT in use anywhere else on the same cID, cvID, akID combo, we use it (so we reuse IDs)
 		// otherwise generate new IDs
 		$av = $f->getAttributeValueObject($this, true);
-		parent::saveAttribute($av, $value);
+		parent::saveAttribute($av, $value, $f);
 		$db = Loader::db();
 		$db->Replace('FileAttributeValues', array(
 			'fID' => $f->getFileID(), 

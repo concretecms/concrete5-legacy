@@ -116,7 +116,7 @@ class Concrete5_Model_CollectionAttributeKey extends AttributeKey {
 		// is NOT in use anywhere else on the same cID, cvID, akID combo, we use it (so we reuse IDs)
 		// otherwise generate new IDs
 		$av = $nvc->getAttributeValueObject($this, true);
-		parent::saveAttribute($av, $value);
+		parent::saveAttribute($av, $value, $nvc);
 		$db = Loader::db();
 		$v = array($nvc->getCollectionID(), $nvc->getVersionID(), $this->getAttributeKeyID(), $av->getAttributeValueID());
 		$db->Replace('CollectionAttributeValues', array(
