@@ -17,20 +17,17 @@ defined('C5_EXECUTE') or die("Access Denied.");
  * @copyright  Copyright (c) 2003-2008 Concrete5. (http://www.concrete5.org)
  * @license    http://www.concrete5.org/license/     MIT License
  */
- 
+
 class Concrete5_Helper_Validation_Identifier {
 
-	private $letters = 'abcefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
-	
-	
-	/** 
+	/**
 	 * Like generate() below, but simply appends an ever increasing number to what you provide
 	 * until it comes back as not found
 	 */
 	public function generateFromBase($string, $table, $key) {
 		$foundRecord = false;
 		$db = Loader::db();
-		$i = ''; 
+		$i = '';
 		while ($foundRecord == false) {
 			$_string = $string . $i;
 			$cnt = $db->GetOne("select count(" . $key . ") as total from " . $table . " where " . $key . " = ?", array($_string));
@@ -45,7 +42,7 @@ class Concrete5_Helper_Validation_Identifier {
 		}
 		return $_string;
 	}
-	
+
 	/**
 	 * Generates a unique identifier for an item in a database table. Used, among other places, in generating
 	 * User hashes for email validation
@@ -68,16 +65,28 @@ class Concrete5_Helper_Validation_Identifier {
 		}
 		return $string;
 	}
-	
-	public function getString($length = 12) {
-		$str = str_repeat($this->letters, 10);
-		$hash = substr(str_shuffle($str), 0, $length);
-		return $hash;
-	}
-	
+
+    /**
+     * Generate a cryptographically secure random string
+     * @param int $length
+     * @return string
+     */
+    public function getString($length = 12)
+    {
+        if (function_exists('random_bytes')) {
+            $bytes = random_bytes($length / 2);
+        } else {
+            Loader::library('3rdparty/phpass/PasswordHash');
+            $hash = new PasswordHash(8, false);
+            $bytes = $hash->get_random_bytes($length / 2);
+        }
+
+        return bin2hex($bytes);
+    }
+
 	public function deleteKey($table, $keyCol, $uHash){
 		$db = Loader::db();
-		$db->Execute("DELETE FROM ".$table." WHERE ".$keyCol."=?", array($uHash) );		
+		$db->Execute("DELETE FROM ".$table." WHERE ".$keyCol."=?", array($uHash) );
 	}
 
 }
