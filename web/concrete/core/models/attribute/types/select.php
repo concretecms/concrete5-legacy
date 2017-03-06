@@ -79,15 +79,16 @@ class Concrete5_Controller_AttributeType_Select extends AttributeTypeController 
 	}
 
 	public function exportValue($akn) {
+		$xh = Loader::helper('xml');
 		$list = $this->getSelectedOptions();
 		if ($list->count() > 0) {
 			$av = $akn->addChild('value');
 			foreach($list as $l) {
-				$av->addChild('option', (string) $l);
+				$xh->createCDataNode($av, 'option', (string) $l);
 			}
 		}
 	}
-
+	
 	public function importValue(SimpleXMLElement $akv) {
 		if (isset($akv->value)) {
 			$vals = array();
