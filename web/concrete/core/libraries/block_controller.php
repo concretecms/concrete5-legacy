@@ -312,6 +312,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			// now we insert stuff that isn't part of the btTable
 			// we have to do this this way because we need a bID
 			$this->importAdditionalData($b, $blockNode);
+			return $b;
 		}
 		
 		public function cacheBlockRecord() {
