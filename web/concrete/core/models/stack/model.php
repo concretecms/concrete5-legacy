@@ -156,7 +156,7 @@ class Concrete5_Model_Stack extends Page {
 	public function export($pageNode) {
 
 		$p = $pageNode->addChild('stack');
-		$p->addAttribute('name', Loader::helper('text')->entities($this->getCollectionName()));
+		$p->addAttribute('name', $this->getCollectionName());
 		if ($this->getStackTypeExportText()) {
 			$p->addAttribute('type', $this->getStackTypeExportText());
 		}
