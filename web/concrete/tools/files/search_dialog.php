@@ -13,6 +13,7 @@ if (isset($_REQUEST['searchInstance'])) {
 	$searchInstance = $page . time();
 }
 $ocID = Loader::helper('text')->entities($_REQUEST['ocID']);
+$disable_choose = Loader::helper('text')->entities($_REQUEST['disable_choose']);
 
 $cnt = Loader::controller('/dashboard/files/search');
 $fileList = $cnt->getRequestedSearchResults();
@@ -22,7 +23,7 @@ $searchRequest = $cnt->get('searchRequest');
 $columns = $cnt->get('columns');
 
 $alType = 'false';
-if (isset($_REQUEST['disable_choose']) && $_REQUEST['disable_choose'] == 1) { 
+if ($disable_choose == 1) { 
 	$alType = 'BROWSE';
 }
 
@@ -40,7 +41,7 @@ $v->outputHeaderItems();
 	<div id="ccm-<?=$searchInstance?>-overlay-wrapper">
 <? } ?>
 <div id="ccm-<?=$searchInstance?>-search-overlay" class="ccm-ui">
-	<input type="hidden" name="dialogAction" value="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/files/search_dialog?ocID=<?=$_REQUEST['ocID']?>&searchInstance=<?=$searchInstance?>&disable_choose=<?=$_REQUEST['disable_choose']?>" />
+	<input type="hidden" name="dialogAction" value="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/files/search_dialog?ocID=<?=$ocID?>&amp;searchInstance=<?=$searchInstance?>&amp;disable_choose=<?=$disable_choose?>" />
 
 <div class="ccm-pane-options" id="ccm-<?=$searchInstance?>-pane-options">
 
