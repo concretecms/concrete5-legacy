@@ -705,12 +705,22 @@ class Concrete5_Model_Page extends Collection {
 
 	public function export($pageNode) {
 		$p = $pageNode->addChild('page');
+		$authorName = null;
+		if ($this->getCollectionUserID()) {
+			$author = UserInfo::getByID($this->getCollectionUserID());
+			if ($author) {
+				$authorName = $author->getUserName();
+			}
+		}
 		$p->addAttribute('name', $this->getCollectionName());
 		$p->addAttribute('path', $this->getCollectionPath());
 		$p->addAttribute('filename', $this->getCollectionFilename());
 		$p->addAttribute('public-date', $this->getCollectionDatePublic());
 		$p->addAttribute('pagetype', $this->getCollectionTypeHandle());
 		$p->addAttribute('description', $this->getCollectionDescription());
+		if ($authorName) {
+			$p->addAttribute('user', $authorName);
+		}
 		$p->addAttribute('package', $this->getPackageHandle());
 		if ($this->getCollectionParentID() == 0 && $this->isSystemPage()) {
 			$p->addAttribute('root', 'true');

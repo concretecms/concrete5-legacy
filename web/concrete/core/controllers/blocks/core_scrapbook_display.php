@@ -36,6 +36,19 @@
 			}
 		}
 
+		public function export(SimpleXMLElement $blockNode) {
+			$b = Block::getByID($this->bOriginalID);
+			$bc = $b->getInstance();
+			if ($bc) {
+				$blockNode['type'] = $b->getBlockTypeHandle();
+				$blockNode['name'] = $b->getBlockName();
+				if ($b->getBlockFilename() != '') {
+					$blockNode['custom-template'] = $b->getBlockFilename();
+				}
+				return $bc->export($blockNode);
+			}
+		}
+
 		public function on_page_view($page) {
 			$b = Block::getByID($this->bOriginalID);
 			$bc = $b->getInstance();
