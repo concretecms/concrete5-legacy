@@ -1,0 +1,16 @@
+# encoding: utf-8
+
+site 'http://community.opscode.com/api/v1'
+
+cookbook "apt"
+cookbook "mysql", {}
+cookbook "redis", {:github=>"ctrabold/chef-redis"}
+cookbook "git", {}
+cookbook "openssl", {}
+cookbook "apache2", {}
+cookbook "nodejs", {:github=>"mdxp/nodejs-cookbook"}
+cookbook "build-essential", {}
+cookbook "php", {}
+cookbook "database", {:github=>"opscode-cookbooks/database"}
+cookbook "ruby_build", {:github=>"fnichol/chef-ruby_build", :ref=>"v0.8.0"}
+cookbook "rbenv", {:github=>"fnichol/chef-rbenv", :ref=>"v0.7.2"}

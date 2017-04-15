@@ -1,0 +1,52 @@
+# REGULAR VIRTUAL HOST
+<VirtualHost *:80>
+  ServerName <%= @params[:server_name] %>
+  DocumentRoot <%= @params[:docroot] %>
+
+  LogLevel debug
+  ErrorLog <%= node[:apache][:log_dir] %>/<%= @params[:name] %>-error.log
+  CustomLog <%= node[:apache][:log_dir] %>/<%= @params[:name] %>-access.log combined
+
+  RewriteEngine On
+  RewriteLog <%= node[:apache][:log_dir] %>/<%= @application_name %>-rewrite.log
+  RewriteLogLevel 0
+
+  php_value date.timezone <%= @params[:php_timezone] %>
+
+  # set $_SERVER['VAGRANT_VM'] = true
+  SetEnv VAGRANT_VM true
+
+  <Directory <%= @params[:docroot] %>>
+    php_admin_value upload_tmp_dir /tmp/<%= @params[:server_name] %>
+    php_value display_errors 1
+  </Directory>
+</VirtualHost>
+
+# SSL VIRTUAL HOST
+<IfModule mod_ssl.c>
+<VirtualHost *:443>
+    ServerName <%= @params[:server_name] %>
+    DocumentRoot <%= @params[:docroot] %>
+
+    LogLevel debug
+    ErrorLog <%= node[:apache][:log_dir] %>/<%= @params[:name] %>-error.log
+    CustomLog <%= node[:apache][:log_dir] %>/<%= @params[:name] %>-access.log combined
+
+    RewriteEngine On
+    RewriteLog <%= node[:apache][:log_dir] %>/<%= @application_name %>-rewrite.log
+    RewriteLogLevel 0
+
+    php_value date.timezone <%= @params[:php_timezone] %>
+
+    # set $_SERVER['VAGRANT_VM'] = true
+    SetEnv VAGRANT_VM true
+
+    <Directory <%= @params[:docroot] %>>
+      php_admin_value upload_tmp_dir /tmp/<%= @params[:server_name] %>
+      php_value display_errors 1
+    </Directory>
+
+    SSLEngine on
+    SSLCertificateFile /etc/ssl/certs/vagrant_apache_ssl.pem
+</VirtualHost>
+</IfModule>

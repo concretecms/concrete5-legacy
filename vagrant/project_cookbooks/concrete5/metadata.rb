@@ -1,0 +1,10 @@
+name "concrete5"
+
+depends "apt"
+depends "openssl"
+depends "mysql"
+depends "redis"
+depends "git"
+depends "apache2"
+depends "nodejs"
+depends "php"
