@@ -5,28 +5,45 @@ defined('C5_EXECUTE') or die("Access Denied.");
 $valt = Loader::helper('validation/token');
 $th = Loader::helper('text');
 $dh = Loader::helper('date');
-
+$ih = Loader::helper('concrete/interface');
 
 // VARIABLES
 
 // Check if entries to show, assign to boolean var.
 $areEntries = count($entries) > 0 ? true : false;
 
-?>
+echo Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(isset($emergencyLogContent) ? t('Emergency log') : t('Logs'), false, false, false);
 
-	<?=Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Logs'), false, false, false);?>
+	if(isset($emergencyLogContent)) {
+		?>
+		<div class="ccm-pane-body">
+			<textarea rows="20" style="width: 100%; box-sizing: border-box;" readonly><?php
+				echo h($emergencyLogContent);
+			?></textarea>
+		</div>
+		<div class="ccm-pane-footer">
+			<?php echo $ih->button(t('Clear emergency log'), $this->url('/dashboard/reports/logs/', 'clear_emergency_log'), 'right', 'danger'); ?>
+			<?php echo $ih->button(t('Back to standard logs'), $this->url('/dashboard/reports/logs/'), 'right'); ?>
+		</div>
+		<?
+		echo Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper(false);
+	}
+   elseif(!$areEntries) { ?>
     
-    <? if(!$areEntries) { ?>
-    
-    <div class="ccm-pane-body ccm-pane-body-footer">
+    <div class="ccm-pane-body<?php echo $emergencyLogExists ? '' : ' ccm-pane-body-footer'; ?>">
     
     	<p><?=t('There are no log entries to show at the moment.')?></p>
     
     </div>
+		<?php
+		if($emergencyLogExists) {
+			?><div class="ccm-pane-footer">
+				<?php echo $ih->button(t('View emergency log'), $this->url('/dashboard/reports/logs/', 'emergency_log'), 'right'); ?>
+			</div><?php
+		}
+		echo Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper(false);
     
-    <?=Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper(false);?>
-    
-    <? } else { ?>
+    } else { ?>
     
     <div class="ccm-pane-options ccm-pane-options-permanent-search">
     	<form method="post" id="ccm-log-search"  action="<?=$pageBase?>">
@@ -48,7 +65,7 @@ $areEntries = count($entries) > 0 ? true : false;
         </form>
     </div>
         
-	<div class="ccm-pane-body <? if(!$paginator || !strlen($paginator->getPages())>0) { ?>ccm-pane-body-footer <? } ?>">
+	<div class="ccm-pane-body <? if((!$paginator || !strlen($paginator->getPages())>0) && !$emergencyLogExists) { ?>ccm-pane-body-footer <? } ?>">
 
         <table class="table table-bordered">
         	<thead>
@@ -90,24 +107,23 @@ $areEntries = count($entries) > 0 ? true : false;
     </div>
     <!-- END Body Pane -->
     
-	<? if($paginator && strlen($paginator->getPages())>0){ ?>
-    <div class="ccm-pane-footer">
-        
-        	<div class="pagination">
-              <ul>
-                  <li class="prev"><?=$paginator->getPrevious()?></li>
-                  
-                  <? // Call to pagination helper's 'getPages' method with new $wrapper var ?>
-                  <?=$paginator->getPages('li')?>
-                  
-                  <li class="next"><?=$paginator->getNext()?></li>
-              </ul>
-			</div>
-
-
-	</div>
-        <? } // PAGINATOR ?>
+	<?
+	if(($paginator && strlen($paginator->getPages())>0) || $emergencyLogExists) {
+		?><div class="ccm-pane-footer"><?php
+		if($paginator && strlen($paginator->getPages())>0) {
+			?><div class="pagination">
+				<ul>
+					<li class="prev"><?=$paginator->getPrevious()?></li>
+					<?=$paginator->getPages('li')?>
+					<li class="next"><?=$paginator->getNext()?></li>
+				</ul>
+			</div><?php
+		}
+		if($emergencyLogExists) {
+			echo $ih->button(t('View emergency log'), $this->url('/dashboard/reports/logs/', 'emergency_log'), 'right');
+		}
+		?></div><?php
+	}
     
-    <?=Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper(false);?>
-    
-    <? } ?>
+	echo Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper(false);
+}

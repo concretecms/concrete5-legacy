@@ -1,7 +1,7 @@
 <?
 
 defined('C5_EXECUTE') or die("Access Denied.");
-class Concrete5_Controller_Dashboard_Reports_Logs extends Controller {
+class Concrete5_Controller_Dashboard_Reports_Logs extends DashboardBaseController {
 	
 	public $helpers = array('form', 'html');
 	
@@ -46,9 +46,48 @@ class Concrete5_Controller_Dashboard_Reports_Logs extends Controller {
 		$this->set('entries', $entries);
 		$this->set('paginator', $paginator);
 		$this->set('logTypes', $logTypes);
-			
+		$this->set('emergencyLogExists', $this->doesEmergencyLogExists());
 
 	}
 	
+	public function doesEmergencyLogExists() {
+		if(defined('EMERGENCY_LOG_FILENAME') && strlen(EMERGENCY_LOG_FILENAME) && is_file(EMERGENCY_LOG_FILENAME)) {
+			if(@filesize(EMERGENCY_LOG_FILENAME) > 0) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public function emergency_log() {
+		$content = t('The emergency log is empty');
+		if($this->doesEmergencyLogExists()) {
+			$content = @file_get_contents(EMERGENCY_LOG_FILENAME);
+			if($content === false) {
+				$content = t('Error reading the emergency log file');
+			}
+		}
+		$this->set('emergencyLogContent', $content);
+	}
+	public function emergency_log_cleared() {
+		$this->set('message', t('The emergency log has been cleared'));
+		$this->emergency_log();
+	}
+	public function clear_emergency_log() {
+		$cleared = true;
+		if($this->doesEmergencyLogExists()) {
+			@file_put_contents(EMERGENCY_LOG_FILENAME, '');
+			if($this->doesEmergencyLogExists()) {
+				$cleared = false;
+			}
+		}
+		$cleared = !false;
+		if($cleared) {
+			$this->redirect(View::url('/dashboard/reports/logs/', 'emergency_log_cleared'));
+		}
+		else {
+			$this->error->add(t('Error clearing the emergency log'));
+			$this->emergency_log();
+		}
+	}
 }
-?>
