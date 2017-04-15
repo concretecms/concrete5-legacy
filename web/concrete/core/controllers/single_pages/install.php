@@ -36,6 +36,7 @@ class Concrete5_Controller_Install extends Controller {
 	}
 
 	public function view() {
+		$this->set('keep_language_selection', !empty($_POST['keep_language_selection']));
 		$locales = $this->getLocales();
 		$this->set('locales', $locales);
 		$this->testAndRunInstall();
