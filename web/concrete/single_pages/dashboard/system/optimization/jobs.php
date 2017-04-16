@@ -427,14 +427,22 @@ jQuery.fn.hideLoading = function() {
 }
 
 jQuery.fn.processResponse = function(r) {
-	$(this).hideLoading();
-	if (r.error) {
-		$(this).addClass('error');
-	} else {
-		$(this).addClass('success');
+	try {
+		var json = JSON.parse(r);
+		$(this).hideLoading();
+		if (json.error) {
+			$(this).addClass('error');
+		} else {
+			$(this).addClass('success');
+		}
+		$(this).find('.jDateLastRun').html(json.jDateLastRun);
+		$(this).find('.jLastStatusText').html(json.result);
 	}
-	$(this).find('.jDateLastRun').html(r.jDateLastRun);
-	$(this).find('.jLastStatusText').html(r.result);
+	catch (e) {
+		$(this).hideLoading();
+		$(this).addClass('error');
+		$(this).find('.jLastStatusText').text(r);
+	}
 }
 
 $(function() {
@@ -478,7 +486,6 @@ $(function() {
 			$.ajax({ 
 				url: CCM_TOOLS_PATH + '/jobs/run_single',
 				data: params,
-				dataType: 'json',
 				cache: false,
 				success: function(json) {
 					row.processResponse(json);
