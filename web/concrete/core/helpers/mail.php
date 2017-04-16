@@ -410,15 +410,7 @@ class Concrete5_Helper_Mail {
 		
 		// clear data if applicable
 		if ($resetData) {
-			$this->to = array();
-			$this->cc = array();
-			$this->bcc = array();
-			$this->replyto = array();
-			$this->from = array();
-			$this->template = '';
-			$this->subject = '';
-			$this->body = '';
-			$this->bodyHTML = '';
+			$this->reset()
 		}
 	}
 	
