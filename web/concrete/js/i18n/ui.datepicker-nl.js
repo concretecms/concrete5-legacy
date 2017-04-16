@@ -16,6 +16,7 @@ jQuery(function($){
 		dayNamesMin: ['Zo','Ma','Di','Wo','Do','Vr','Za'],
 		dayStatus: 'DD', dateStatus: 'D, M d',
 		dateFormat: 'dd-mm-yy', firstDay: 1, 
+		yearSuffix: '',
 		initStatus: 'Kies een datum', isRTL: false};
 	$.datepicker.setDefaults($.datepicker.regional['nl']);
 });
