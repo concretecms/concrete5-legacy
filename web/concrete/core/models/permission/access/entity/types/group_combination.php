@@ -44,21 +44,35 @@ class Concrete5_Model_GroupCombinationPermissionAccessEntity extends PermissionA
 
 	public static function getOrCreate($groups) {
 		$db = Loader::db();
+		// grab id for 'group combination' permission entity type
 		$petID = $db->GetOne('select petID from PermissionAccessEntityTypes where petHandle = \'group_combination\'');
-		$q = 'select pae.peID from PermissionAccessEntities pae ';
-		$i = 1;
+		// build a query to find a group combination exactly matching the provided groups including group count
+		$q  = 'select peID ';
+		$q .= 'from (';
+		$q .= '    select count(*) as group_count, PAEG.peID ';
+		$q .= '    from PermissionAccessEntityGroups PAEG ';
+		$q .= '    inner join (';
+		$q .= '        select pae.peID ';
+		$q .= '        from PermissionAccessEntities pae ';
+		$i  = 1;
 		foreach($groups as $g) {
-			$q .= 'left join PermissionAccessEntityGroups paeg' . $i . ' on pae.peID = paeg' . $i . '.peID ';
+			$q .= '    left join PermissionAccessEntityGroups paeg' . $i . ' on pae.peID = paeg' . $i . '.peID ';
 			$i++;
 		}
-		$q .= 'where petID = ? ';
-		$i = 1;
+		$q .= '        where petID = ? ';
+		$i  = 1;
 		foreach($groups as $g) {
-			$q .= 'and paeg' . $i . '.gID = ' . $g->getGroupID() . ' ';
+			$q .= '    and paeg' . $i . '.gID = ' . $g->getGroupID() . ' ';
 			$i++;
 		}
-		$peID = $db->GetOne($q, array($petID));
-		if (!$peID) { 
+		$q .= '    ) PAE on PAEG.peID = PAE.peID ';
+		$q .= '    GROUP BY peID ';
+		$q .= ') as PAE ';
+		$q .= 'where group_count = ?';
+		// attempt to retrieve group combination id
+		$peID = $db->GetOne($q, array($petID, count($groups)));
+		// create a new group combination if one doesn't already exist
+		if(!$peID){
 			$db->Execute("insert into PermissionAccessEntities (petID) values (?)", array($petID));
 			Config::save('ACCESS_ENTITY_UPDATED', time());
 			$peID = $db->Insert_ID();
@@ -66,9 +80,10 @@ class Concrete5_Model_GroupCombinationPermissionAccessEntity extends PermissionA
 				$db->Execute('insert into PermissionAccessEntityGroups (peID, gID) values (?, ?)', array($peID, $g->getGroupID()));
 			}
 		}
+		// return group combination object
 		return PermissionAccessEntity::getByID($peID);
 	}
-	
+
 	public function getAccessEntityUsers(PermissionAccess $pa) {
 		$gl = new UserList();
 		foreach($this->groups as $g) {
