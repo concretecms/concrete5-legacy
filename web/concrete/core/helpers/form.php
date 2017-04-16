@@ -88,11 +88,14 @@ class Concrete5_Helper_Form {
 	 * @param string $key
 	 * @param string $value
 	 * @param array $miscFields Additional fields appended at the end of the input
+	 * @param bool $useRequestValue Overrides whether $_REQUEST value is used to override set value
 	 */
-	public function hidden($key, $value = null, $miscFields = array()) {
-		$val = $this->getRequestValue($key);
-		if ($val !== false && (!is_array($val))) {
-			$value = $val;
+	public function hidden($key, $value = null, $miscFields = array(), $useRequestValue=true) {
+		if($useRequestValue){
+			$val = $this->getRequestValue($key);
+			if ($val !== false && (!is_array($val))) {
+				$value = $val;
+			}
 		}
 		$str = '<input type="hidden" name="' . $key . '" id="' . $key . '" value="' . $value . '"' . $this->parseMiscFields('ccm-input-hidden ', $miscFields) . ' />';
 		return $str;
