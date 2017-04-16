@@ -169,19 +169,22 @@ class Concrete5_Controller_Block_FormMinisurvey {
 				}			
 				$surveyBlockInfo = $this->getMiniSurveyBlockInfoByQuestionId($qsID,intval($bID));
 				
-				if($surveyBlockInfo['displayCaptcha']) {
-				  echo '<tr><td colspan="2">';
-   				$captcha = Loader::helper('validation/captcha');				
-				echo $captcha->label();
-   				echo '</td></tr><tr><td>&nbsp;</td><td>';
-   				
-   				$captcha->showInput( false, $forPreview );
-   				$captcha->display();
-   
-   				//echo isset($errors['captcha'])?'<span class="error">' . $errors['captcha'] . '</span>':'';
-				  echo '</td></tr>';
-   				
-   			}
+                if($surveyBlockInfo['displayCaptcha']) {
+                    if ($forPreview) {
+                        print '<tr><td colspan="2"><div class="ccm-edit-mode-disabled-item">' . t('Form Captcha') . '</div></td></tr>';
+                    } else {
+                        echo '<tr><td colspan="2">';
+                        $captcha = Loader::helper('validation/captcha');				
+                        echo $captcha->label();
+                        echo '</td></tr><tr><td>&nbsp;</td><td>';
+                        
+                        $captcha->showInput( false, $forPreview );
+                        $captcha->display();
+                        
+                        //echo isset($errors['captcha'])?'<span class="error">' . $errors['captcha'] . '</span>':'';
+                        echo '</td></tr>';
+                    }
+                }
 			
 				echo '<tr><td>&nbsp;</td><td><input class="formBlockSubmitButton ccm-input-button" name="Submit" type="submit" value="'.t('Submit').'" /></td></tr>';
 				echo '</table>';
