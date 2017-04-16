@@ -529,6 +529,18 @@ class Concrete5_Library_Controller {
 	 * @return array
 	 */
 	public function getHelperObjects() { return $this->helperObjects; }
+
+	/**
+	 * Returns an instantiated helper object, if it's been loaded via our $helpers array
+	 * Used for accessing helpers within the controller itself without having to rerun Loader::helper()
+	 * @return Helper
+	 */
+	public function helper($type) {
+		$type = strtolower(str_replace('/','_',$type));
+		if (isset($this->helperObjects[$type])) {
+			return $this->helperObjects[$type];
+		}
+	}
 	
 	/** 
 	 * Outputs a list of items set by the addHeaderItem() function
