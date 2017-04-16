@@ -1,0 +1,18 @@
+{
+    "name": "concrete5/concrete5",
+    "description": "concrete5 is an open source content management system",
+    "keywords": ["CMS", "concrete5", "concrete"],
+    "homepage": "http://www.concrete5.org/",
+    "type": "library",
+    "license": "MIT",
+
+    "require": {
+        "php": ">=5.3.0"
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/concrete5/concrete5"
+        }
+    ]
+}
