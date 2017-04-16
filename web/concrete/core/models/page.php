@@ -1745,14 +1745,7 @@ class Concrete5_Model_Page extends Collection {
 	function getNextSubPageDisplayOrder() {
 		$db = Loader::db();
 		$max = $db->getOne("select max(cDisplayOrder) from Pages where cParentID = " . $this->getCollectionID());
-		if ($max == "" || $max == null) {
-			return 0;
-		} else if (!$max) {
-			return 1;
-		} else {
-			return $max + 1;
-		}
-		
+		return is_numeric($max) ? ($max + 1) : 0;
 	}
 
 	function rescanCollectionPath($retainOldPagePath = false) {
