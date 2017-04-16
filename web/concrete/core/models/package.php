@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 /**
  *
@@ -185,6 +185,8 @@ class Concrete5_Model_Package extends Object {
 		// currently this is just done from xml
 		
 		$db = Loader::db();
+		$result = new stdClass;
+		$result->result = false;
 
 		// this sucks - but adodb generates errors at the beginning because it attempts
 		// to find a table that doesn't exist! 
@@ -201,6 +203,10 @@ class Concrete5_Model_Package extends Object {
 		
 		if (!$sql) {
 			$result->message = $db->ErrorMsg();
+			if(empty($result->message) && !function_exists('xslt_create')){
+				$result->message = "Php function 'xslt_create' doesn't exist cannot do db update.";
+				return $result;
+			}
 			return $result;
 		}
 
@@ -211,10 +217,7 @@ class Concrete5_Model_Package extends Object {
 			$dbLayerErrorMessage = ob_get_contents();
 			ob_end_clean();
 		}
-		
-		$result = new stdClass;
-		$result->result = false;
-		
+
 		if ($dbLayerErrorMessage != '') {
 			$result->message = $dbLayerErrorMessage;
 			return $result;
