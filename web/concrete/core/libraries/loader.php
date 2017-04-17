@@ -258,6 +258,13 @@
 							}
 							$_dba->Execute($names);
 						}
+
+						if (defined('APP_TIMEZONE')) {
+							$dt = new DateTime();
+							$dt->setTimezone(new DateTimeZone(APP_TIMEZONE));
+							$offset = $dt->format("P");
+							$_dba->Execute("SET time_zone='$offset';");
+						}
 						
 						ADOdb_Active_Record::SetDatabaseAdapter($_dba);
 					} else if (defined('DB_SERVER')) {
