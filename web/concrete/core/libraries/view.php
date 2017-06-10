@@ -36,7 +36,12 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		 * @var bool
 		 */
 		protected $disableContentInclude = false;
-		
+
+		/**
+		 * @var string
+		 */
+		protected $viewFile;
+
 		/**
 		 * controller used by this particular view
 		 * @access public
@@ -1004,5 +1009,15 @@ defined('C5_EXECUTE') or die("Access Denied.");
 				exit;
 			}
 			
+		}
+
+		/**
+		 *
+		 * @param $file string Full file path as string
+		 */
+		public function includeFileInScope($file, $args = array()) {
+			$this->viewFile = $file;
+			extract($args);
+			include($this->viewFile);
 		}
 	}

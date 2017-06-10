@@ -94,7 +94,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 				ob_start();
 			}
 
-			@Loader::element(DIRNAME_ATTRIBUTES . '/' . $view . '_header', array('type' => $this->attributeType));
+			$this->includeHeader($view);
 
 			$js = $this->attributeType->getAttributeTypeFileURL($view . '.js');
 			$css = $this->attributeType->getAttributeTypeFileURL($view . '.css');
@@ -126,12 +126,34 @@ defined('C5_EXECUTE') or die("Access Denied.");
 				include($file);
 			}
 
-			@Loader::element(DIRNAME_ATTRIBUTES . '/' . $view . '_footer', array('type' => $this->attributeType));
+			$this->includeFooter($view);
 
 			if ($return) {
 				$contents = ob_get_contents();
 				ob_end_clean();
 				return $contents;
+			}
+		}
+
+		/**
+		 *
+		 * @param $view string
+		 */
+		protected function includeHeader($view) {
+			if ($_file = Environment::get()->getPath(DIRNAME_ATTRIBUTES . '/' . $view . '_header.php')) {
+				$type = $this->attributeType;
+				include($_file);
+			}
+		}
+
+		/**
+		 *
+		 * @param $view string
+		 */
+		protected function includeFooter($view) {
+			if ($_file = Environment::get()->getPath(DIRNAME_ATTRIBUTES . '/' . $view . '_footer.php')) {
+				$type = $this->attributeType;
+				include($_file);
 			}
 		}
 	}
