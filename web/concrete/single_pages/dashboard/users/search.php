@@ -1,7 +1,7 @@
 <?
 defined('C5_EXECUTE') or die("Access Denied.");
 
-$attribs = UserAttributeKey::getList(true);
+$attribs = UserAttributeKey::getList();
 $u = new User();
 $uh = Loader::helper('concrete/user');
 $txt = Loader::helper('text');
@@ -455,7 +455,7 @@ if (is_object($uo)) {
 
 		<br/>
 		<?
-		$attribs = UserAttributeKey::getList(true);
+		$attribs = UserAttributeKey::getList();
 		if (count($attribs) > 0) { ?>
 		<h3><?=t('User Attributes')?></h3><br/>
 
