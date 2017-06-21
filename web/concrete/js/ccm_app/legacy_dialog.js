@@ -203,7 +203,9 @@ jQuery.fn.dialog.replaceTop = function(r) {
 			$ccmDialogHelp.closest('.ui-dialog').on(
 				'dialogbeforeclose',
 				function() {
-					$ccmDialogHelp.data('popover').hide();
+					if (typeof $ccmDialogHelp.data('popover') != 'undefined') {
+						$ccmDialogHelp.data('popover').hide();
+					}
 				}
 			);
 		}

@@ -28,7 +28,8 @@ ccm_triggerSelectFile = function(fID, af) {
 		obj.attr('ccm-file-manager-can-replace', obj.children('div').attr('ccm-file-manager-can-replace'));
 		obj.attr('ccm-file-manager-instance', af);
 		
-		obj.click(function(e) {
+		obj.unbind('click.concrete');
+		obj.on('click.concrete', function(e){
 			e.stopPropagation();
 			ccm_alActivateMenu($(this),e);
 		});

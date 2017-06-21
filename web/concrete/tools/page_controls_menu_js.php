@@ -42,7 +42,7 @@ if (isset($cp)) {
 		}
 	}
 
-	if ($cp->canViewToolbar()) { 
+	if ($cp->canViewToolbar()) {
 		$cID = $c->getCollectionID(); ?>
 
 
@@ -61,19 +61,19 @@ menuHTML += '<li id="ccm-logo-wrapper"><?=Loader::helper('concrete/interface')->
 
 <?
 	if ($cp->canViewToolbar()) {  ?>
-	
+
 	menuHTML += '<li <? if ($c->isEditMode()) { ?>class="ccm-nav-edit-mode-active"<? } ?>><a class="ccm-icon-edit ccm-menu-icon" id="ccm-nav-edit" href="<? if (!$c->isEditMode()) { ?><?=DIR_REL?>/<?=DISPATCHER_FILENAME?>?cID=<?=$c->getCollectionID()?>&ctask=check-out<?=$token?><? } else { ?>javascript:void(0);<? } ?>" <? if (!$c->isEditMode()) { ?> onclick="$(\'#ccm-edit-overlay\').hide()" <? } ?>>' + <?=$jh->encode($c->isEditMode() ? t('Editing') : t('Edit'))?> + '</a></li>';
 	<?
 	$items = $ihm->getPageHeaderMenuItems('left');
 	foreach($items as $ih) {
-		$cnt = $ih->getController(); 
+		$cnt = $ih->getController();
 		if ($cnt->displayItem()) {
 		?>
 			menuHTML += '<li>' + <?=$jh->encode($cnt->getMenuLinkHTML())?> + '</li>';
 		<?
 		}
 	}
-	
+
 } ?>
 
 <? if (Loader::helper('concrete/interface')->showWhiteLabelMessage()) { ?>
@@ -85,7 +85,7 @@ menuHTML += '<ul id="ccm-system-nav">';
 <?
 $items = $ihm->getPageHeaderMenuItems('right');
 foreach($items as $ih) {
-	$cnt = $ih->getController(); 
+	$cnt = $ih->getController();
 	if ($cnt->displayItem()) {
 	?>
 		menuHTML += '<li>' + <?=$jh->encode($cnt->getMenuLinkHTML())?> + '</li>';
@@ -131,12 +131,23 @@ menuHTML += <?=$jh->encode($valt->output('', true))?>;
 menuHTML += '<h4>' + <?=$jh->encode(t('Version Comments'))?> + '</h4>';
 menuHTML += '<p><input type="text" name="comments" id="ccm-check-in-comments" style="width:520px" maxlength="255" /></p>';
 <? if ($cp->canApprovePageVersions()) { ?>
-	<? 
+	<?
 	$publishTitle = t('Publish My Edits');
 	$pk = PermissionKey::getByHandle('approve_page_versions');
 	$pk->setPermissionObject($c);
 	$pa = $pk->getPermissionAccessObject();
-	if (is_object($pa) && count($pa->getWorkflows()) > 0) {
+	$workflows = array();
+	$canApproveWorkflow = true;
+	if (is_object($pa)) {
+		$workflows = $pa->getWorkflows();
+	}
+	foreach($workflows as $wf) {
+		if (!$wf->canApproveWorkflow()) {
+			$canApproveWorkflow = false;
+		}
+	}
+
+	if (count($workflows > 0) && !$canApproveWorkflow) {
 		$publishTitle = t('Submit to Workflow');
 	}
 ?>
@@ -209,27 +220,27 @@ menuHTML += '</div>';
 menuHTML += '</div>';
 <?
 	}
-	
+
 } ?>
 
 $(function() {
 	var item, sbitem, btn, btn1, btn2;
 	<? if ($c->isEditMode()) { ?>
-		$(ccm_editInit);	
+		$(ccm_editInit);
 	<? } ?>
 
-	<? 
+	<?
 	if (!$dh->inDashboard()) { ?>
-		$("#ccm-page-controls-wrapper").html(menuHTML); 
+		$("#ccm-page-controls-wrapper").html(menuHTML);
 		<? if ($cantCheckOut) { ?>
 			item = new ccm_statusBarItem();
 			item.setCSSClass('info');
 			item.setDescription(<?=$jh->encode(t("%s is currently editing this page.", $c->getCollectionCheckedOutUserName()))?>);
-			ccm_statusBar.addItem(item);		
+			ccm_statusBar.addItem(item);
 		<? } ?>
 
 		<? if ($c->getCollectionPointerID() > 0) { ?>
-	
+
 			sbitem  = new ccm_statusBarItem();
 			sbitem.setCSSClass('info');
 			sbitem.setDescription(<?=$jh->encode(t("This page is an alias of one that actually appears elsewhere."))?>);
@@ -244,25 +255,25 @@ $(function() {
 				btn2.setURL('<?=DIR_REL . "/" . DISPATCHER_FILENAME . "?cID=" . $c->getCollectionPointerOriginalID() . "&ctask=remove-alias" . $token?>');
 				sbitem.addButton(btn2);
 			<? } ?>
-			ccm_statusBar.addItem(sbitem);		
-		
-		<? } 	
+			ccm_statusBar.addItem(sbitem);
+
+		<? }
 
 		if ($c->isMasterCollection()) { ?>
 
 			sbitem = new ccm_statusBarItem();
 			sbitem.setCSSClass('info');
 			sbitem.setDescription(<?=$jh->encode(h(t('Page Defaults for %s Page Type. All edits take effect immediately.', $c->getCollectionTypeName())))?>);
-			ccm_statusBar.addItem(sbitem);		
+			ccm_statusBar.addItem(sbitem);
 		<? } ?>
 		<?
 		$hasPendingPageApproval = false;
-		
+
 		if ($cp->canViewToolbar()) { ?>
 			<? if (is_array($workflowList)) { ?>
 				<? foreach($workflowList as $wl) { ?>
-					<? $wr = $wl->getWorkflowRequestObject(); 
-					$wrk = $wr->getWorkflowRequestPermissionKeyObject(); 
+					<? $wr = $wl->getWorkflowRequestObject();
+					$wrk = $wr->getWorkflowRequestPermissionKeyObject();
 					if ($wrk->getPermissionKeyHandle() == 'approve_page_versions') {
 						$hasPendingPageApproval = true;
 					}
@@ -294,20 +305,20 @@ $(function() {
 					<? } ?>
 					ccm_statusBar.addItem(sbitem);
 				<? } ?>
-			
+
 			<? } ?>
 		<? } ?>
-		
-		<?		
-		
+
+		<?
+
 		if (!$c->getCollectionPointerID() && !$hasPendingPageApproval) {
 			if (is_object($vo)) {
 				if (!$vo->isApproved() && !$c->isEditMode() && $cp->canViewToolbar()) { ?>
-				
+
 					sbitem = new ccm_statusBarItem();
 					sbitem.setCSSClass('info');
 					sbitem.setDescription(<?=$jh->encode(t("This page is pending approval."))?>);
-					<? if ($cp->canApprovePageVersions() && !$c->isCheckedOut()) { 
+					<? if ($cp->canApprovePageVersions() && !$c->isCheckedOut()) {
 						$pk = PagePermissionKey::getByHandle('approve_page_versions');
 						$pk->setPermissionObject($c);
 						$pa = $pk->getPermissionAccessObject();
@@ -326,18 +337,18 @@ $(function() {
 						btn1.setURL('<?=DIR_REL . "/" . DISPATCHER_FILENAME . "?cID=" . $c->getCollectionID() . "&ctask=approve-recent" . $token?>');
 						sbitem.addButton(btn1);
 					<? } ?>
-					ccm_statusBar.addItem(sbitem);		
+					ccm_statusBar.addItem(sbitem);
 				<? }
 			}
-		} ?>		
-		
+		} ?>
 
-		ccm_statusBar.activate();		
+
+		ccm_statusBar.activate();
 		$(".launch-tooltip").tooltip();
 		ccm_activateToolbar();
 	<? } ?>
-	
-	
 
-	
+
+
+
 });

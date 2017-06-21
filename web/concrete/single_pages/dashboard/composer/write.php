@@ -12,7 +12,22 @@ if (isset($entry)) {
 	$pk = PermissionKey::getByHandle('approve_page_versions');
 	$pk->setPermissionObject($entry);
 	$pa = $pk->getPermissionAccessObject();
-	$workflow = (count($pa->getWorkflows()) > 0);
+
+	$workflows = array();
+	$canApproveWorkflow = true;
+	if (is_object($pa)) {
+		$workflows = $pa->getWorkflows();
+	}
+	foreach($workflows as $wf) {
+		if (!$wf->canApproveWorkflow()) {
+			$canApproveWorkflow = false;
+		}
+	}
+
+	if (count($workflows > 0) && !$canApproveWorkflow) {
+		$workflow = true;
+	}
+
 
 	?>
 

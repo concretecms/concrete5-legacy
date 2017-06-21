@@ -394,7 +394,7 @@ class Concrete5_Helper_Lists_StatesProvinces {
 		'SC' => 'Santa Catarina',
 		'SE' => 'Sergipe',
 		'SP' => 'Sao Paulo',
-		'TO' => 'Tocatins'
+		'TO' => 'Tocantins'
 	),
 
 	'IT' => array(

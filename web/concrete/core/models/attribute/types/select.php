@@ -7,17 +7,17 @@ class Concrete5_Controller_AttributeType_Select extends AttributeTypeController 
 	private $akSelectOptionDisplayOrder;
 
 	protected $searchIndexFieldDefinition = 'X NULL';
-	
+
 	public function type_form() {
 		$path1 = $this->getView()->getAttributeTypeURL('type_form.js');
 		$path2 = $this->getView()->getAttributeTypeURL('type_form.css');
 		$this->addHeaderItem(Loader::helper('html')->javascript($path1));
 		$this->addHeaderItem(Loader::helper('html')->css($path2));
-		$this->set('form', Loader::helper('form'));		
+		$this->set('form', Loader::helper('form'));
 		$this->load();
 		//$akSelectValues = $this->getSelectValuesFromPost();
 		//$this->set('akSelectValues', $akSelectValues);
-		
+
 		if ($this->isPost()) {
 			$akSelectValues = $this->getSelectValuesFromPost();
 			$this->set('akSelectValues', $akSelectValues);
@@ -28,13 +28,13 @@ class Concrete5_Controller_AttributeType_Select extends AttributeTypeController 
 			$this->set('akSelectValues', array());
 		}
 	}
-	
+
 	protected function load() {
 		$ak = $this->getAttributeKey();
 		if (!is_object($ak)) {
 			return false;
 		}
-		
+
 		$db = Loader::db();
 		$row = $db->GetRow('select akSelectAllowMultipleValues, akSelectOptionDisplayOrder, akSelectAllowOtherValues from atSelectSettings where akID = ?', $ak->getAttributeKeyID());
 		$this->akSelectAllowMultipleValues = $row['akSelectAllowMultipleValues'];
@@ -42,14 +42,14 @@ class Concrete5_Controller_AttributeType_Select extends AttributeTypeController 
 		$this->akSelectOptionDisplayOrder = $row['akSelectOptionDisplayOrder'];
 
 		$this->set('akSelectAllowMultipleValues', $this->akSelectAllowMultipleValues);
-		$this->set('akSelectAllowOtherValues', $this->akSelectAllowOtherValues);			
-		$this->set('akSelectOptionDisplayOrder', $this->akSelectOptionDisplayOrder);			
+		$this->set('akSelectAllowOtherValues', $this->akSelectAllowOtherValues);
+		$this->set('akSelectOptionDisplayOrder', $this->akSelectOptionDisplayOrder);
 	}
 
 	public function duplicateKey($newAK) {
 		$this->load();
 		$db = Loader::db();
-		$db->Execute('insert into atSelectSettings (akID, akSelectAllowMultipleValues, akSelectOptionDisplayOrder, akSelectAllowOtherValues) values (?, ?, ?, ?)', array($newAK->getAttributeKeyID(), $this->akSelectAllowMultipleValues, $this->akSelectOptionDisplayOrder, $this->akSelectAllowOtherValues));	
+		$db->Execute('insert into atSelectSettings (akID, akSelectAllowMultipleValues, akSelectOptionDisplayOrder, akSelectAllowOtherValues) values (?, ?, ?, ?)', array($newAK->getAttributeKeyID(), $this->akSelectAllowMultipleValues, $this->akSelectOptionDisplayOrder, $this->akSelectAllowOtherValues));
 		$r = $db->Execute('select value, displayOrder, isEndUserAdded from atSelectOptions where akID = ?', $this->getAttributeKey()->getAttributeKeyID());
 		while ($row = $r->FetchRow()) {
 			$db->Execute('insert into atSelectOptions (akID, value, displayOrder, isEndUserAdded) values (?, ?, ?, ?)', array(
@@ -60,7 +60,7 @@ class Concrete5_Controller_AttributeType_Select extends AttributeTypeController 
 			));
 		}
 	}
-	
+
 	public function exportKey($akey) {
 		$this->load();
 		$db = Loader::db();
@@ -77,13 +77,14 @@ class Concrete5_Controller_AttributeType_Select extends AttributeTypeController 
 		}
 		return $akey;
 	}
-	
+
 	public function exportValue($akn) {
+		$xh = Loader::helper('xml');
 		$list = $this->getSelectedOptions();
 		if ($list->count() > 0) {
 			$av = $akn->addChild('value');
 			foreach($list as $l) {
-				$av->addChild('option', (string) $l);
+				$xh->createCDataNode($av, 'option', (string) $l);
 			}
 		}
 	}
@@ -97,7 +98,7 @@ class Concrete5_Controller_AttributeType_Select extends AttributeTypeController 
 			return $vals;
 		}
 	}
-	
+
 	public function importKey($akey) {
 		if (isset($akey->type)) {
 			$akSelectAllowMultipleValues = $akey->type['allow-multiple-values'];
@@ -105,8 +106,8 @@ class Concrete5_Controller_AttributeType_Select extends AttributeTypeController 
 			$akSelectAllowOtherValues = $akey->type['allow-other-values'];
 			$db = Loader::db();
 			$db->Replace('atSelectSettings', array(
-				'akID' => $this->attributeKey->getAttributeKeyID(), 
-				'akSelectAllowMultipleValues' => $akSelectAllowMultipleValues, 
+				'akID' => $this->attributeKey->getAttributeKeyID(),
+				'akSelectAllowMultipleValues' => $akSelectAllowMultipleValues,
 				'akSelectAllowOtherValues' => $akSelectAllowOtherValues,
 				'akSelectOptionDisplayOrder' => $akSelectOptionDisplayOrder
 			), array('akID'), true);
@@ -118,12 +119,12 @@ class Concrete5_Controller_AttributeType_Select extends AttributeTypeController 
 			}
 		}
 	}
-	
+
 	private function getSelectValuesFromPost() {
 		$options = new SelectAttributeTypeOptionList();
-		$displayOrder = 0;		
+		$displayOrder = 0;
 		foreach($_POST as $key => $value) {
-			if( !strstr($key,'akSelectValue_') || $value=='TEMPLATE' ) continue; 
+			if( !strstr($key,'akSelectValue_') || $value=='TEMPLATE' ) continue;
 			$opt = false;
 			// strip off the prefix to get the ID
 			$id = substr($key, 14);
@@ -135,16 +136,16 @@ class Concrete5_Controller_AttributeType_Select extends AttributeTypeController 
 			} else if ($_POST['akSelectValueExistingOption_' . $id] == $id) {
 				$opt = new SelectAttributeTypeOption($id, $value, $displayOrder);
 			}
-			
+
 			if (is_object($opt)) {
 				$options->add($opt);
 				$displayOrder++;
 			}
 		}
-		
+
 		return $options;
 	}
-	
+
 	public function form() {
 		$this->load();
 		$options = $this->getSelectedOptions();
@@ -158,16 +159,16 @@ class Concrete5_Controller_AttributeType_Select extends AttributeTypeController 
 		$this->addFooterItem(Loader::helper('html')->javascript('jquery.ui.js'));
 		$this->addHeaderItem(Loader::helper('html')->css('jquery.ui.css'));
 	}
-	
+
 	public function search() {
-		$this->load();	
+		$this->load();
 		$selectedOptions = $this->request('atSelectOptionID');
 		if (!is_array($selectedOptions)) {
 			$selectedOptions = array();
 		}
 		$this->set('selectedOptions', $selectedOptions);
 	}
-	
+
 	public function deleteValue() {
 		$db = Loader::db();
 		$db->Execute('delete from atSelectOptionsSelected where avID = ?', array($this->getAttributeValueID()));
@@ -185,10 +186,10 @@ class Concrete5_Controller_AttributeType_Select extends AttributeTypeController 
 
 	public function saveForm($data) {
 		$this->load();
-		
+
 		if ($this->akSelectAllowOtherValues && is_array($data['atSelectNewOption'])) {
 			$options = $this->getOptions();
-						
+
 			foreach($data['atSelectNewOption'] as $newoption) {
 				// check for duplicates
 				$existing = false;
@@ -209,7 +210,7 @@ class Concrete5_Controller_AttributeType_Select extends AttributeTypeController 
 
 		if(is_array($data['atSelectOptionID'])) {
 			$data['atSelectOptionID'] = array_unique($data['atSelectOptionID']);
-		}		
+		}
 		$db = Loader::db();
 		$db->Execute('delete from atSelectOptionsSelected where avID = ?', array($this->getAttributeValueID()));
 		if (is_array($data['atSelectOptionID'])) {
@@ -223,7 +224,7 @@ class Concrete5_Controller_AttributeType_Select extends AttributeTypeController 
 			}
 		}
 	}
-	
+
 	// Sets select options for a particular attribute
 	// If the $value == string, then 1 item is selected
 	// if array, then multiple, but only if the attribute in question is a select multiple
@@ -234,12 +235,12 @@ class Concrete5_Controller_AttributeType_Select extends AttributeTypeController 
 		$db = Loader::db();
 		$this->load();
 		$options = array();
-		
+
 		if ((is_array($value) || $value instanceof Traversable) && $this->akSelectAllowMultipleValues) {
 			foreach($value as $v) {
 				$opt = SelectAttributeTypeOption::getByValue($v, $this->attributeKey);
 				if (is_object($opt)) {
-					$options[] = $opt;	
+					$options[] = $opt;
 				}else if ($this->akSelectAllowOtherValues) {
 			        $options[] = SelectAttributeTypeOption::add($this->attributeKey, $v, true);
 			    }
@@ -248,13 +249,13 @@ class Concrete5_Controller_AttributeType_Select extends AttributeTypeController 
 			if (is_array($value)) {
 				$value = $value[0];
 			}
-			
+
 			$opt = SelectAttributeTypeOption::getByValue($value, $this->attributeKey);
 			if (is_object($opt)) {
-				$options[] = $opt;	
+				$options[] = $opt;
 			}
 		}
-		
+
 		$db->Execute('delete from atSelectOptionsSelected where avID = ?', array($this->getAttributeValueID()));
 		if (count($options) > 0) {
 			foreach($options as $opt) {
@@ -266,7 +267,7 @@ class Concrete5_Controller_AttributeType_Select extends AttributeTypeController 
 		}
 	}
 
-	
+
 	public function getDisplayValue() {
 		$list = $this->getSelectedOptions();
 		$html = '';
@@ -279,7 +280,7 @@ class Concrete5_Controller_AttributeType_Select extends AttributeTypeController 
 	public function getDisplaySanitizedValue() {
 		return $this->getDisplayValue();
 	}
-	
+
 	public function validateForm($p) {
 		$this->load();
 		$options = $this->request('atSelectOptionID');
@@ -300,7 +301,7 @@ class Concrete5_Controller_AttributeType_Select extends AttributeTypeController 
 		}
 		return false;
 	}
-	
+
 	public function searchForm($list) {
 		$options = $this->request('atSelectOptionID');
 		$db = Loader::db();
@@ -320,7 +321,7 @@ class Concrete5_Controller_AttributeType_Select extends AttributeTypeController 
 		if (count($optionQuery) == 0) {
 			return false;
 		}
-		
+
 		$i = 0;
 		foreach($optionQuery as $val) {
 			$val = $db->quote('%||' . $val . '||%');
@@ -333,12 +334,12 @@ class Concrete5_Controller_AttributeType_Select extends AttributeTypeController 
 		$list->filter(false, '(' . $multiString . ')');
 		return $list;
 	}
-	
+
 	public function getValue() {
 		$list = $this->getSelectedOptions();
-		return $list;	
+		return $list;
 	}
-	
+
     public function getSearchIndexValue() {
         $str = "\n";
         $list = $this->getSelectedOptions();
@@ -352,7 +353,7 @@ class Concrete5_Controller_AttributeType_Select extends AttributeTypeController 
         }
         return $str;
     }
-	
+
 	public function getSelectedOptions() {
 		if (!isset($this->akSelectOptionDisplayOrder)) {
 			$this->load();
@@ -382,11 +383,17 @@ class Concrete5_Controller_AttributeType_Select extends AttributeTypeController 
 		}
 		return $list;
 	}
-	
+
 	public function action_load_autocomplete_values() {
 		$this->load();
 		$values = array();
-			// now, if the current instance of the attribute key allows us to do autocomplete, we return all the values
+
+		if (!Loader::helper('validation/token')->validate('load_autocomplete_values')) {
+			echo Loader::helper('json')->encode(t('Access Denied'));
+			return;
+		}
+
+		// now, if the current instance of the attribute key allows us to do autocomplete, we return all the values
 		if ($this->akSelectAllowMultipleValues && $this->akSelectAllowOtherValues) {
 			$options = $this->getOptions($_GET['term'] . '%');
 			foreach($options as $opt) {
@@ -395,7 +402,7 @@ class Concrete5_Controller_AttributeType_Select extends AttributeTypeController 
 		}
 		print Loader::helper('json')->encode($values);
 	}
-	
+
 	public function getOptionUsageArray($parentPage = false, $limit = 9999) {
 		$db = Loader::db();
 		$q = "select atSelectOptions.value, atSelectOptionID, count(atSelectOptionID) as total from Pages inner join CollectionVersions on (Pages.cID = CollectionVersions.cID and CollectionVersions.cvIsApproved = 1) inner join CollectionAttributeValues on (CollectionVersions.cID = CollectionAttributeValues.cID and CollectionVersions.cvID = CollectionAttributeValues.cvID) inner join atSelectOptionsSelected on (atSelectOptionsSelected.avID = CollectionAttributeValues.avID) inner join atSelectOptions on atSelectOptionsSelected.atSelectOptionID = atSelectOptions.ID where Pages.cIsActive = 1 and CollectionAttributeValues.akID = ? ";
@@ -412,10 +419,10 @@ class Concrete5_Controller_AttributeType_Select extends AttributeTypeController 
 			$opt = new SelectAttributeTypeOption($row['atSelectOptionID'], $row['value'], $i, $row['total']);
 			$list->add($opt);
 			$i++;
-		}		
+		}
 		return $list;
 	}
-	
+
 	/**
 	 * returns a list of available options optionally filtered by an sql $like statement ex: startswith%
 	 * @param string $like
@@ -429,12 +436,12 @@ class Concrete5_Controller_AttributeType_Select extends AttributeTypeController 
 		switch($this->akSelectOptionDisplayOrder) {
 			case 'popularity_desc':
 				if(isset($like) && strlen($like)) {
-					$r = $db->Execute('select ID, value, displayOrder, count(atSelectOptionsSelected.atSelectOptionID) as total 
-						from atSelectOptions left join atSelectOptionsSelected on (atSelectOptions.ID = atSelectOptionsSelected.atSelectOptionID) 
+					$r = $db->Execute('select ID, value, displayOrder, count(atSelectOptionsSelected.atSelectOptionID) as total
+						from atSelectOptions left join atSelectOptionsSelected on (atSelectOptions.ID = atSelectOptionsSelected.atSelectOptionID)
 						where akID = ? AND atSelectOptions.value LIKE ? group by ID order by total desc, value asc', array($this->attributeKey->getAttributeKeyID(),$like));
 				} else {
-					$r = $db->Execute('select ID, value, displayOrder, count(atSelectOptionsSelected.atSelectOptionID) as total 
-						from atSelectOptions left join atSelectOptionsSelected on (atSelectOptions.ID = atSelectOptionsSelected.atSelectOptionID) 
+					$r = $db->Execute('select ID, value, displayOrder, count(atSelectOptionsSelected.atSelectOptionID) as total
+						from atSelectOptions left join atSelectOptionsSelected on (atSelectOptions.ID = atSelectOptionsSelected.atSelectOptionID)
 						where akID = ? group by ID order by total desc, value asc', array($this->attributeKey->getAttributeKeyID()));
 				}
 				break;
@@ -460,19 +467,19 @@ class Concrete5_Controller_AttributeType_Select extends AttributeTypeController 
 		}
 		return $options;
 	}
-		
+
 	public function saveKey($data) {
 		$ak = $this->getAttributeKey();
-		
+
 		$db = Loader::db();
 
 		$initialOptionSet = $this->getOptions();
 		$selectedPostValues = $this->getSelectValuesFromPost();
-		
+
 		$akSelectAllowMultipleValues = $data['akSelectAllowMultipleValues'];
 		$akSelectAllowOtherValues = $data['akSelectAllowOtherValues'];
 		$akSelectOptionDisplayOrder = $data['akSelectOptionDisplayOrder'];
-		
+
 		if ($data['akSelectAllowMultipleValues'] != 1) {
 			$akSelectAllowMultipleValues = 0;
 		}
@@ -482,15 +489,15 @@ class Concrete5_Controller_AttributeType_Select extends AttributeTypeController 
 		if (!in_array($data['akSelectOptionDisplayOrder'], array('display_asc', 'alpha_asc', 'popularity_desc'))) {
 			$akSelectOptionDisplayOrder = 'display_asc';
 		}
-				
+
 		// now we have a collection attribute key object above.
 		$db->Replace('atSelectSettings', array(
-			'akID' => $ak->getAttributeKeyID(), 
-			'akSelectAllowMultipleValues' => $akSelectAllowMultipleValues, 
+			'akID' => $ak->getAttributeKeyID(),
+			'akSelectAllowMultipleValues' => $akSelectAllowMultipleValues,
 			'akSelectAllowOtherValues' => $akSelectAllowOtherValues,
 			'akSelectOptionDisplayOrder' => $akSelectOptionDisplayOrder
 		), array('akID'), true);
-		
+
 		// Now we add the options
 		$newOptionSet = new SelectAttributeTypeOptionList();
 		$displayOrder = 0;
@@ -502,8 +509,8 @@ class Concrete5_Controller_AttributeType_Select extends AttributeTypeController 
 			$newOptionSet->add($opt);
 			$displayOrder++;
 		}
-		
-		// Now we remove all options that appear in the 
+
+		// Now we remove all options that appear in the
 		// old values list but not in the new
 		foreach($initialOptionSet as $iopt) {
 			if (!$newOptionSet->contains($iopt)) {
@@ -521,21 +528,21 @@ class Concrete5_Controller_AttributeType_Select extends AttributeTypeController 
 		}
 		return $this->akSelectAllowMultipleValues;
 	}
-	
+
 	public function getAllowOtherValues() {
 		if (is_null($this->akSelectAllowOtherValues)) {
 			$this->load();
 		}
 		return $this->akSelectAllowOtherValues;
 	}
-	
+
 	public function getOptionDisplayOrder() {
 		if (is_null($this->akSelectOptionDisplayOrder)) {
 			$this->load();
 		}
 		return $this->akSelectOptionDisplayOrder;
 	}
-	
+
 }
 
 class Concrete5_Model_SelectAttributeTypeOption extends Object {
@@ -544,10 +551,10 @@ class Concrete5_Model_SelectAttributeTypeOption extends Object {
 		$this->ID = $ID;
 		$this->value = $value;
 		$this->th = Loader::helper('text');
-		$this->displayOrder = $displayOrder;	
-		$this->usageCount = $usageCount;	
+		$this->displayOrder = $displayOrder;
+		$this->usageCount = $usageCount;
 	}
-	
+
 	public function getSelectAttributeOptionID() {return $this->ID;}
 	public function getSelectAttributeOptionUsageCount() {return $this->usageCount;}
 	public function getSelectAttributeOptionValue($sanitize = true) {
@@ -575,26 +582,28 @@ class Concrete5_Model_SelectAttributeTypeOption extends Object {
 	}
 	public function getSelectAttributeOptionDisplayOrder() {return $this->displayOrder;}
 	public function getSelectAttributeOptionTemporaryID() {return $this->tempID;}
-	
+
 	public function __toString() {return $this->value;}
-	
+
 	public static function add($ak, $option, $isEndUserAdded = 0) {
 		$db = Loader::db();
 		$th = Loader::helper('text');
 		// this works because displayorder starts at zero. So if there are three items, for example, the display order of the NEXT item will be 3.
-		$displayOrder = $db->GetOne('select count(ID) from atSelectOptions where akID = ?', array($ak->getAttributeKeyID()));			
+		$displayOrder = $db->GetOne('select count(ID) from atSelectOptions where akID = ?', array($ak->getAttributeKeyID()));
 
 		$v = array($ak->getAttributeKeyID(), $displayOrder, $th->sanitize($option), $isEndUserAdded);
 		$db->Execute('insert into atSelectOptions (akID, displayOrder, value, isEndUserAdded) values (?, ?, ?, ?)', $v);
 		
-		return SelectAttributeTypeOption::getByID($db->Insert_ID());
+		$id = $db->Insert_ID();
+
+		return SelectAttributeTypeOption::getByID($id);
 	}
-	
+
 	public function setDisplayOrder($num) {
 		$db = Loader::db();
 		$db->Execute('update atSelectOptions set displayOrder = ? where ID = ?', array($num, $this->ID));
 	}
-	
+
 	public static function getByID($id) {
 		$db = Loader::db();
 		$row = $db->GetRow("select ID, displayOrder, value from atSelectOptions where ID = ?", array($id));
@@ -603,7 +612,7 @@ class Concrete5_Model_SelectAttributeTypeOption extends Object {
 			return $obj;
 		}
 	}
-	
+
 	public static function getByValue($value, $ak = false) {
 		$db = Loader::db();
 		if (is_object($ak)) {
@@ -616,13 +625,13 @@ class Concrete5_Model_SelectAttributeTypeOption extends Object {
 			return $obj;
 		}
 	}
-	
+
 	public function delete() {
 		$db = Loader::db();
 		$db->Execute('delete from atSelectOptions where ID = ?', array($this->ID));
 		$db->Execute('delete from atSelectOptionsSelected where atSelectOptionID = ?', array($this->ID));
 	}
-	
+
 	public function saveOrCreate($ak) {
 		if ($this->tempID != false || $this->ID==0) {
 			return SelectAttributeTypeOption::add($ak, $this->value);
@@ -633,53 +642,53 @@ class Concrete5_Model_SelectAttributeTypeOption extends Object {
 			return SelectAttributeTypeOption::getByID($this->ID);
 		}
 	}
-	
+
 }
 
 class Concrete5_Model_SelectAttributeTypeOptionList extends Object implements Iterator {
 
 	private $options = array();
-	
+
 	public function add(SelectAttributeTypeOption $opt) {
 		$this->options[] = $opt;
 	}
-	
+
 	public function rewind() {
 		reset($this->options);
 	}
-	
+
 	public function current() {
 		return current($this->options);
 	}
-	
+
 	public function key() {
 		return key($this->options);
 	}
-	
+
 	public function next() {
 		next($this->options);
 	}
-	
+
 	public function valid() {
 		return $this->current() !== false;
 	}
-	
+
 	public function count() {return count($this->options);}
-	
+
 	public function contains(SelectAttributeTypeOption $opt) {
 		foreach($this->options as $o) {
 			if ($o->getSelectAttributeOptionID() == $opt->getSelectAttributeOptionID()) {
 				return true;
 			}
 		}
-		
+
 		return false;
 	}
-	
+
 	public function get($index) {
 		return $this->options[$index];
 	}
-	
+
 	public function getOptions() {
 		return $this->options;
 	}

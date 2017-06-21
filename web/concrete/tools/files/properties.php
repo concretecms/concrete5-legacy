@@ -5,6 +5,8 @@ $form = Loader::helper('form');
 Loader::model("file_attributes");
 $previewMode = false;
 
+$token = Loader::helper('validation/token');
+
 $f = File::getByID($_REQUEST['fID']);
 
 $fp = new Permissions($f);
@@ -18,7 +20,7 @@ if (isset($_REQUEST['fvID'])) {
 	$fv = $f->getApprovedVersion();
 }
 
-if ($_REQUEST['task'] == 'preview_version') { 
+if ($_REQUEST['task'] == 'preview_version') {
 	$previewMode = true;
 }
 
@@ -36,24 +38,29 @@ if ($_POST['task'] == 'delete_version' && $fp->canEditFileContents() && (!$previ
 if ($_POST['task'] == 'update_core' && $fp->canEditFileProperties() && (!$previewMode)) {
 	$fv = $f->getVersionToModify();
 
+	if (!$token->validate('properties.update_core')) {
+		echo t("Invalid Token.");
+		exit;
+	}
+
 	switch($_POST['attributeField']) {
 		case 'fvTitle':
 			$text = $_POST['fvTitle'];
 			$fv->updateTitle($text);
-			print $text;
+			print h($text);
 			break;
 		case 'fvDescription':
 			$text = $_POST['fvDescription'];
 			$fv->updateDescription($text);
-			print $text;
+			print h($text);
 			break;
 		case 'fvTags':
 			$text = $_POST['fvTags'];
 			$fv->updateTags($text);
-			print $text;
+			print h($text);
 			break;
 	}
-	
+
 	exit;
 }
 
@@ -63,7 +70,7 @@ if ($_POST['task'] == 'update_extended_attribute' && $fp->canEditFileProperties(
 	$value = '';
 	$ak = FileAttributeKey::get($fakID);
 	$ak->saveAttributeForm($fv);
-	
+
 	$val = $fv->getAttributeValueObject($ak);
 	print $val->getValue('displaySanitized');
 	exit;
@@ -75,7 +82,7 @@ if ($_POST['task'] == 'clear_extended_attribute' && $fp->canEditFileProperties()
 	$value = '';
 	$ak = FileAttributeKey::get($fakID);
 	$fv->clearAttribute($ak);
-	
+
 	$val = $fv->getAttributeValueObject($ak);
 	print '<div class="ccm-attribute-field-none">' . t('None') . '</div>';
 	exit;
@@ -84,19 +91,22 @@ if ($_POST['task'] == 'clear_extended_attribute' && $fp->canEditFileProperties()
 
 function printCorePropertyRow($title, $field, $value, $formText) {
 	global $previewMode, $f, $fp;
+	$token_helper = Loader::helper('validation/token');
+	$token = $token_helper->generate('properties.update_core');
 	if ($value == '') {
 		$text = '<div class="ccm-attribute-field-none">' . t('None') . '</div>';
-	} else { 
+	} else {
 		$text = htmlentities( $value, ENT_QUOTES, APP_CHARSET);
 	}
 
 	if ($fp->canEditFileProperties() && (!$previewMode)) {
-	
+
 	$html = '
 	<tr class="ccm-attribute-editable-field">
 		<td><strong><a href="javascript:void(0)">' . $title . '</a></strong></td>
 		<td width="100%" class="ccm-attribute-editable-field-central"><div class="ccm-attribute-editable-field-text">' . $text . '</div>
 		<form method="post" action="' . REL_DIR_FILES_TOOLS_REQUIRED . '/files/properties">
+		<input type="hidden" name="ccm_token" value="' . $token . '" />
 		<input type="hidden" name="attributeField" value="' . $field . '" />
 		<input type="hidden" name="fID" value="' . $f->getFileID() . '" />
 		<input type="hidden" name="task" value="update_core" />
@@ -109,15 +119,15 @@ function printCorePropertyRow($title, $field, $value, $formText) {
 		<img src="' . ASSETS_URL_IMAGES . '/throbber_white_16.gif" width="16" height="16" class="ccm-attribute-editable-field-loading" />
 		</td>
 	</tr>';
-	
+
 	} else {
 		$html = '
 		<tr>
 			<td><strong>' . $title . '</strong></td>
 			<td width="100%" colspan="2">' . $text . '</td>
-		</tr>';	
+		</tr>';
 	}
-	
+
 	print $html;
 }
 
@@ -128,15 +138,15 @@ function printFileAttributeRow($ak, $fv) {
 	if (is_object($vo)) {
 		$value = $vo->getValue('displaySanitized');
 	}
-	
+
 	if ($value == '') {
 		$text = '<div class="ccm-attribute-field-none">' . t('None') . '</div>';
 	} else {
 		$text = $value;
 	}
-	if ($ak->isAttributeKeyEditable() && $fp->canEditFileProperties() && (!$previewMode)) { 
+	if ($ak->isAttributeKeyEditable() && $fp->canEditFileProperties() && (!$previewMode)) {
 	$type = $ak->getAttributeType();
-	
+
 	$html = '
 	<tr class="ccm-attribute-editable-field">
 		<td><strong><a href="javascript:void(0)">' . $ak->getAttributeKeyDisplayName() . '</a></strong></td>
@@ -155,14 +165,14 @@ function printFileAttributeRow($ak, $fv) {
 		<img src="' . ASSETS_URL_IMAGES . '/throbber_white_16.gif" width="16" height="16" class="ccm-attribute-editable-field-loading" />
 		</td>
 	</tr>';
-	
+
 	} else {
 
 	$html = '
 	<tr>
 		<td><strong>' . $ak->getAttributeKeyDisplayName() . '</strong></td>
 		<td width="100%" colspan="2">' . $text . '</td>
-	</tr>';	
+	</tr>';
 	}
 	print $html;
 }
@@ -196,7 +206,7 @@ $("#ccm-file-properties-tab-<?=$f->getFileID()?>-<?=$fv->getFileVersionID()?> ul
 <div class="ccm-file-properties-details-tab" id="ccm-file-properties-details-<?=$f->getFileID()?>-<?=$fv->getFileVersionID()?>-tab">
 
 <?
-if (!$previewMode && $fp->canEditFileContents()) { 
+if (!$previewMode && $fp->canEditFileContents()) {
 	$h = Loader::helper('concrete/interface');
 	$b1 = $h->button_js(t('Rescan'), 'ccm_alRescanFiles(' . $f->getFileID() . ')');
 	print $b1;
@@ -229,8 +239,8 @@ if (!$previewMode && $fp->canEditFileContents()) {
 
 <?
 $oc = $f->getOriginalPageObject();
-if (is_object($oc)) { 
-	$fileManager = Page::getByPath('/dashboard/files/search'); 
+if (is_object($oc)) {
+	$fileManager = Page::getByPath('/dashboard/files/search');
 	$ocName = $oc->getCollectionName();
 	if (is_object($fileManager) && !$fileManager->isError()) {
 		if ($fileManager->getCollectionID() == $oc->getCollectionID()) {
@@ -285,7 +295,7 @@ printCorePropertyRow(t('Tags'), 'fvTags', $fv->getTags(), $form->textarea('fvTag
 </table>
 
 
-<? 
+<?
 $attribs = FileAttributeKey::getImporterList($fv);
 $ft = $fv->getType();
 
@@ -307,7 +317,7 @@ foreach($attribs as $at) {
 </table>
 <? } ?>
 
-<? 
+<?
 $attribs = FileAttributeKey::getUserAddedList();
 
 if (count($attribs) > 0) { ?>
@@ -341,11 +351,11 @@ foreach($attribs as $at) {
 </div>
 
 <? if (!$previewMode) { ?>
-	
+
 	<div class="ccm-file-properties-details-tab" id="ccm-file-properties-versions-<?=$f->getFileID()?>-<?=$fv->getFileVersionID()?>-tab" style="display: none">
-	
+
 		<h3><?=t('File Versions')?></h3>
-	
+
 		<table border="0" cellspacing="0" width="100%" id="ccm-file-versions-grid" class="ccm-grid" cellpadding="0">
 		<tr>
 			<th>&nbsp;</th>
@@ -372,7 +382,7 @@ foreach($attribs as $at) {
 					</a>
 					</div>
 				</td>
-				<td> 
+				<td>
 					<div style="width: 150px; word-wrap: break-word">
 						<?=$fvv->getTitle()?>
 					</div>
@@ -381,14 +391,14 @@ foreach($attribs as $at) {
 					$comments = $fvv->getVersionLogComments();
 					if (count($comments) > 0) {
 						print t('Updated ');
-	
+
 						for ($i = 0; $i < count($comments); $i++) {
 							print $comments[$i];
 							if (count($comments) > ($i + 1)) {
 								print ', ';
 							}
 						}
-						
+
 						print '.';
 					}
 					?>
@@ -402,50 +412,50 @@ foreach($attribs as $at) {
 						<td><a class="ccm-file-versions-remove" href="javascript:void(0)"><?=t('Delete')?></a></td>
 					<? } ?>
 				<? } ?>
-			</tr>	
-		
+			</tr>
+
 		<? } ?>
-		
+
 		</table>
-	
+
 	</div>
 
 <? } ?>
 
 <div class="ccm-file-properties-details-tab" id="ccm-file-properties-statistics-<?=$f->getFileID()?>-<?=$fv->getFileVersionID()?>-tab" style="display: none">
-	
+
 	<?
 	$downloadStatistics = $f->getDownloadStatistics();
 	?>
 	<h4><?=t('Total Downloads: %s', $f->getTotalDownloads())?></h4>
 	<p><?=t('Most recent 20 downloads:')?></p>
 	<table border="0" cellspacing="0" width="100%" id="ccm-file-versions-grid" class="ccm-grid" cellpadding="0">
-		<tr> 
+		<tr>
 			<th><?=t('User')?></th>
 			<th><?=t('Download Time')?></th>
 			<th><?=t('File Version ID')?></th>
-		</tr>	
+		</tr>
 		<?
-		
+
 		$downloadStatsCounter=0;
-		foreach($downloadStatistics as $download){ 
+		foreach($downloadStatistics as $download){
 			$downloadStatsCounter++;
 			if($downloadStatsCounter>20) break;
 			?>
 		<tr>
 			<td>
-				<? 
+				<?
 				$uID=intval($download['uID']);
 				if(!$uID){
 					echo t('Anonymous');
-				}else{ 
+				}else{
 					$downloadUI = UserInfo::getById($uID);
 					if($downloadUI instanceof UserInfo) {
 						echo $downloadUI->getUserName();
 					} else {
 						echo t('Deleted User');
 					}
-				} 
+				}
 				?>
 			</td>
 			<td><?=$dateHelper->formatSpecial('FILE_DOWNLOAD', $download['timestamp'])?></td>
@@ -458,8 +468,8 @@ foreach($attribs as $at) {
 </div>
 
 <script type="text/javascript">
-$(function() { 
-	ccm_activateEditablePropertiesGrid(); 
+$(function() {
+	ccm_activateEditablePropertiesGrid();
 	ccm_alSetupVersionSelector();
 });
 </script>

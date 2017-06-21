@@ -705,11 +705,22 @@ class Concrete5_Model_Page extends Collection {
 
 	public function export($pageNode) {
 		$p = $pageNode->addChild('page');
-		$p->addAttribute('name', Loader::helper('text')->entities($this->getCollectionName()));
+		$authorName = null;
+		if ($this->getCollectionUserID()) {
+			$author = UserInfo::getByID($this->getCollectionUserID());
+			if ($author) {
+				$authorName = $author->getUserName();
+			}
+		}
+		$p->addAttribute('name', $this->getCollectionName());
 		$p->addAttribute('path', $this->getCollectionPath());
 		$p->addAttribute('filename', $this->getCollectionFilename());
+		$p->addAttribute('public-date', $this->getCollectionDatePublic());
 		$p->addAttribute('pagetype', $this->getCollectionTypeHandle());
-		$p->addAttribute('description', Loader::helper('text')->entities($this->getCollectionDescription()));
+		$p->addAttribute('description', $this->getCollectionDescription());
+		if ($authorName) {
+			$p->addAttribute('user', $authorName);
+		}
 		$p->addAttribute('package', $this->getPackageHandle());
 		if ($this->getCollectionParentID() == 0 && $this->isSystemPage()) {
 			$p->addAttribute('root', 'true');
@@ -731,16 +742,16 @@ class Concrete5_Model_Page extends Collection {
 		// this is brutal but we need to do it because otherwise duplicated pages
 		// that haven't yet been visited in a browser won't properly export their contents
 		// because they don't have area records yet.
-		$v = View::getInstance();
+/*		$v = View::getInstance();
 		$v->disableEditing();
 		$v->disableLinks();
 		$v->enablePreview();
 		ob_start();
 		$v->render($this);
-		ob_end_clean();
+		ob_end_clean();*/
 
 		$db = Loader::db();
-		$r = $db->Execute('select arHandle from Areas where cID = ? and arIsGlobal = 0', array($this->getCollectionID()));
+		$r = $db->Execute('select distinct arHandle from Areas where cID = ? and arIsGlobal = 0', array($this->getCollectionID()));
 		while ($row = $r->FetchRow()) {
 			$ax = Area::get($this, $row['arHandle']);
 			$ax->export($p, $this);

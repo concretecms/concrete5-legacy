@@ -87,10 +87,22 @@
 				$pk = PermissionKey::getByHandle('approve_page_versions');
 				$pk->setPermissionObject($stack);
 				$pa = $pk->getPermissionAccessObject();
-				if (is_object($pa) && count($pa->getWorkflows()) > 0) {
+
+				$workflows = array();
+				$canApproveWorkflow = true;
+				if (is_object($pa)) {
+					$workflows = $pa->getWorkflows();
+				}
+				foreach($workflows as $wf) {
+					if (!$wf->canApproveWorkflow()) {
+						$canApproveWorkflow = false;
+					}
+				}
+
+				if (count($workflows > 0) && !$canApproveWorkflow) {
 					$publishTitle = t('Submit to Workflow');
 				}
-			
+
 				$token = '&' . Loader::helper('validation/token')->getParameter(); ?>
 				<a style="margin-right: 8px; <? if ($vo->isApproved()) { ?> display: none; <? } ?>" href="javascript:void(0)" onclick="window.location.href='<?=DIR_REL . "/" . DISPATCHER_FILENAME . "?cID=" . $stack->getCollectionID() . "&ctask=approve-recent" . $token?>'" class="btn btn-success small ccm-main-nav-edit-option ccm-button-v2-right"><?=$publishTitle?></a>
 			<?
