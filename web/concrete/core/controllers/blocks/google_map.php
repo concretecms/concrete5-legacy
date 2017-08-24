@@ -116,14 +116,14 @@
 			}
 		}
 		
-        public function edit() {
+		public function edit() {
 			$this->set('apiKey', Config::get('GOOGLE_MAPS_API_KEY'));            
-        }
-        
-        public function add() {
+		}
+
+		public function add() {
 			$this->set('apiKey', Config::get('GOOGLE_MAPS_API_KEY'));            
-        }
-		
+		}
+
 		public function view(){ 
 			$this->set('bID', $this->bID);	
 			$this->set('title', $this->title);
@@ -139,9 +139,9 @@
 			$args['location'] = isset($data['location']) ? trim($data['location']) : '';
 			$args['zoom'] = (intval($data['zoom'])>=0 && intval($data['zoom'])<=21) ? intval($data['zoom']) : 14;
             
-            // get key and safe in config so that it's saved globally
-            $apiKey = $data['api_key'];
-            Config::save('GOOGLE_MAPS_API_KEY', $apiKey);
+			// get key and safe in config so that it's saved globally
+			$apiKey = $data['api_key'];
+			Config::save('GOOGLE_MAPS_API_KEY', $apiKey);
 			
 			if( strlen($args['location'])>0 ){
 				$coords = $this->lookupLatLong($args['location']);
