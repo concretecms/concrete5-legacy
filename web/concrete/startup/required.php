@@ -3,6 +3,9 @@
 defined('C5_EXECUTE') or die("Access Denied.");
 require_once(DIR_BASE_CORE . '/' . DIRNAME_CORE_CLASSES . '/' . DIRNAME_LIBRARIES . '/object.php');
 require_once(DIR_BASE_CORE . '/' . DIRNAME_LIBRARIES . '/object.php');
+if (PHP_VERSION_ID < 70200) {
+	class_alias('ConcreteObject', 'Object');
+}
 require_once(DIR_BASE_CORE . '/' . DIRNAME_CORE_CLASSES . '/' . DIRNAME_LIBRARIES . '/loader.php');
 require_once(DIR_BASE_CORE . '/' . DIRNAME_LIBRARIES . '/loader.php');
 require_once(DIR_BASE_CORE . '/' . DIRNAME_CORE_CLASSES . '/' . DIRNAME_LIBRARIES . '/cache.php');

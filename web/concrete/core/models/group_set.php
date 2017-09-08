@@ -10,7 +10,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
  *
  */
 
-class Concrete5_Model_GroupSet extends Object {
+class Concrete5_Model_GroupSet extends ConcreteObject {
 	
 	public static function getList() {
 		$db = Loader::db();

@@ -3,7 +3,7 @@
 defined('C5_EXECUTE') or die("Access Denied.");
 
  
-class Concrete5_Library_LogEntry extends Object {
+class Concrete5_Library_LogEntry extends ConcreteObject {
 	
 	public function getType() {return $this->logType;}
 	public function getText() {return $this->logText;}

@@ -154,7 +154,7 @@ class Concrete5_Library_FileType {
 		} else {
 			Loader::library($script);
 		}
-		$class = Object::camelcase($this->getCustomImporter()) . 'FileTypeInspector';
+		$class = ConcreteObject::camelcase($this->getCustomImporter()) . 'FileTypeInspector';
 		$cl = new $class;
 		return $cl;
 	}

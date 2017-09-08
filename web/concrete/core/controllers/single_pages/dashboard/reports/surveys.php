@@ -16,7 +16,9 @@ class Concrete5_Controller_Dashboard_Reports_Surveys extends Controller {
 		// If a valid bID and cID are set, get the corresponding data
 		if ($bID > 0 && $cID > 0) {
 			$this->getSurveyDetails($bID, $cID);
-			SurveyBlockController::displayChart($bID, $cID);
+			foreach (SurveyBlockController::prepareChart($bID, $cID) as $key => $value) {
+				$this->set($key, $value);
+			}
 		} else { // Otherwise, redirect the page to overview
 			$this->redirect('/dashboard/reports/surveys');
 		}

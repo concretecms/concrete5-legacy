@@ -24,7 +24,7 @@ if (isset($entry)) {
 		}
 	}
 
-	if (count($workflows > 0) && !$canApproveWorkflow) {
+	if (count($workflows) > 0 && !$canApproveWorkflow) {
 		$workflow = true;
 	}
 

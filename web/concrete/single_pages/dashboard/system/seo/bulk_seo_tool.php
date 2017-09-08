@@ -174,10 +174,10 @@ if (count($pages) > 0) {
 									$autoTitle = sprintf(PAGE_TITLE_FORMAT, SITE, $pageTitle);
 									$titleInfo = array('title' => $cID);
 									if(strlen($cobj->getAttribute('meta_title')) <= 0) {
-										 $titleInfo[style] = 'background: whiteSmoke'; 
+										$titleInfo['style'] = 'background: whiteSmoke'; 
 									}
 									echo $form->text('meta_title', $cobj->getAttribute('meta_title') ? $cobj->getAttribute('meta_title') : $autoTitle, $titleInfo); 
-									echo $titleInfo[style] ? '<br /><span class="help-inline">' . t('Default value. Click to edit.') . '</span>' : '' ?>
+									echo $titleInfo['style'] ? '<br /><span class="help-inline">' . t('Default value. Click to edit.') . '</span>' : '' ?>
 								</div>
 							</div>
 								
@@ -189,10 +189,10 @@ if (count($pages) > 0) {
 									$autoDesc = htmlspecialchars($pageDescription, ENT_COMPAT, APP_CHARSET);
 									$descInfo = array('title' => $cID); 
 									if(strlen($cobj -> getAttribute('meta_description')) <= 0) {
-										$descInfo[style] = 'background: whiteSmoke'; 
+										$descInfo['style'] = 'background: whiteSmoke'; 
 									}
 									echo $form->textarea('meta_description', $cobj->getAttribute('meta_description') ? $cobj->getAttribute('meta_description') : $autoDesc, $descInfo); 
-									echo $descInfo[style] ? '<br /><span class="help-inline">' . t('Default value. Click to edit.') . '</span>' : '';
+									echo $descInfo['style'] ? '<br /><span class="help-inline">' . t('Default value. Click to edit.') . '</span>' : '';
 									 ?>
 								</div>
 							</div>
@@ -213,7 +213,6 @@ if (count($pages) > 0) {
 								<?php echo $form->text('collection_handle', $cobj->getCollectionHandle(), array('title' => $cID, 'class' => 'collectionHandle')); ?>
 								<br />
 								<?php
-									Page::rescanCollectionPath($cID);
 									$path = $cobj->getCollectionPath();
 									$tokens = explode('/', $path);
 									$lastkey = array_pop(array_keys($tokens));

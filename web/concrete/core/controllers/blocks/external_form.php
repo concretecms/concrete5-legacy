@@ -52,11 +52,11 @@
 		protected function getControllerFile() {
 			if (file_exists(DIR_FILES_BLOCK_TYPES_FORMS_EXTERNAL_PROCESS . '/' . $this->filename)) {
 				$filename = DIR_FILES_BLOCK_TYPES_FORMS_EXTERNAL_PROCESS . '/' . $this->filename;
-				$class = Object::camelcase(substr($this->filename, 0, strrpos($this->filename, '.php')));
+				$class = ConcreteObject::camelcase(substr($this->filename, 0, strrpos($this->filename, '.php')));
 				
 			} else if (file_exists(DIR_FILES_BLOCK_TYPES_FORMS_EXTERNAL_PROCESS_CORE . '/' . $this->filename)) {
 				$filename = DIR_FILES_BLOCK_TYPES_FORMS_EXTERNAL_PROCESS_CORE . '/' . $this->filename;
-				$class = Object::camelcase(substr($this->filename, 0, strrpos($this->filename, '.php')));
+				$class = ConcreteObject::camelcase(substr($this->filename, 0, strrpos($this->filename, '.php')));
 			}
 			
 			

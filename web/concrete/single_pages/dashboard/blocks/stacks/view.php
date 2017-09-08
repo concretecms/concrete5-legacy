@@ -99,7 +99,7 @@
 					}
 				}
 
-				if (count($workflows > 0) && !$canApproveWorkflow) {
+				if (count($workflows) > 0 && !$canApproveWorkflow) {
 					$publishTitle = t('Submit to Workflow');
 				}
 

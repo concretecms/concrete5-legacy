@@ -72,7 +72,7 @@ class Concrete5_Controller_Dashboard_System_Permissions_IpBlacklist extends Dash
 			//ip table actions
 			//use a single sql query, more efficient than active record
 			$ip_ban_changes = $this->post('ip_ban_changes');
-			if (count($ip_ban_changes) > 0) {				
+			if (is_array($ip_ban_changes) && count($ip_ban_changes) > 0) {				
 				$ip_ban_change_to 	= $this->post('ip_ban_change_to');				
 				$q = 'UPDATE UserBannedIPs SET expires = ? WHERE ';
 				$v = array();

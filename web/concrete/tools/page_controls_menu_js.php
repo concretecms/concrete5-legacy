@@ -147,7 +147,7 @@ menuHTML += '<p><input type="text" name="comments" id="ccm-check-in-comments" st
 		}
 	}
 
-	if (count($workflows > 0) && !$canApproveWorkflow) {
+	if (count($workflows) > 0 && !$canApproveWorkflow) {
 		$publishTitle = t('Submit to Workflow');
 	}
 ?>

@@ -9,7 +9,7 @@
  */
  
 
-class Concrete5_Model_LayoutPreset extends Object{
+class Concrete5_Model_LayoutPreset extends ConcreteObject{
 	
 	protected $lpID=0;
 	protected $lpName='';

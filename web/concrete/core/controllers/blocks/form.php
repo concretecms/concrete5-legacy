@@ -141,7 +141,7 @@ class Concrete5_Controller_Block_Form extends BlockController {
 		$rs = $db->query($q,$v);  
 		
 		//Add Questions (for programmatically creating forms, such as during the site install)
-		if( count($data['questions'])>0 ){
+		if( is_array($data['questions']) && count($data['questions'])>0 ){
 			$miniSurvey = new MiniSurvey();
 			foreach( $data['questions'] as $questionData )
 				$miniSurvey->addEditQuestion($questionData,0);

@@ -55,7 +55,7 @@ class HtmlV2Helper extends HtmlHelper {
 	 * 			'IEversion' => 'lte IE 6'
 	 * 		)));
 	 */
-	public function css($file, $pkgHandle = null) {
+	public function css($file, $pkgHandle = null, $foo = array()) {
 		
 		if (!is_array($file)) {
 			
@@ -137,7 +137,7 @@ class HtmlV2Helper extends HtmlHelper {
 	 * @param $file
 	 * @return $str
 	 */
-	public function javascript($file, $pkgHandle = null) {
+	public function javascript($file, $pkgHandle = null, $foo = array()) {
 
 		if (!is_array($file)) {
 			

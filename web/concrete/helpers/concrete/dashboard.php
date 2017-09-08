@@ -99,7 +99,7 @@ class ConcreteDashboardHelper {
 		$currentMenu = array();
 		$nh = Loader::helper('navigation');
 		$trail = $nh->getTrailToCollection($c);
-		if (count($trail) > 1 || count($navigatePages) > 1 || is_object($upToPage)) { 
+		if (count($trail) > 1 || (is_array($navigatePages) && count($navigatePages)) > 1 || is_object($upToPage)) { 
 			$parent = Page::getByID($c->getCollectionParentID());
 			if (count($trail) > 1 && (!is_object($upToPage))) {
 				$upToPage = Page::getByID($parent->getCollectionParentID());
@@ -107,7 +107,7 @@ class ConcreteDashboardHelper {
 			Loader::block('autonav');
 			$subpages = array();
 			if ($navigatePages !== -1) { 
-				if (count($navigatePages) > 0) { 
+				if (is_array($navigatePages) && count($navigatePages) > 0) { 
 					$subpages = $navigatePages;
 				} else { 
 					$subpages = AutonavBlockController::getChildPages($parent);

@@ -19,7 +19,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
  *
  */
 
-	class Concrete5_Model_UserInfo extends Object { 
+	class Concrete5_Model_UserInfo extends ConcreteObject { 
 
 		public function __toString() {
 			return 'UserInfo: ' . $this->getUserID();
