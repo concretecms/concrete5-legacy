@@ -569,7 +569,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			}
 			
 			if ($task != null) {
-				if (ENABLE_LEGACY_CONTROLLER_URLS) {
+				if (defined('ENABLE_LEGACY_CONTROLLER_URLS') && ENABLE_LEGACY_CONTROLLER_URLS) {
 					$_action .= '-/' . $task;
 				} else {
 					$_action .= $task;			

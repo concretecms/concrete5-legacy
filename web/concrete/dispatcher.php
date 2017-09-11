@@ -153,7 +153,7 @@
 		// figure out where we need to go
 		$req = Request::get();
 		if ($req->getRequestCollectionPath() != '') {
-			if (ENABLE_LEGACY_CONTROLLER_URLS) {
+			if (defined('ENABLE_LEGACY_CONTROLLER_URLS') && ENABLE_LEGACY_CONTROLLER_URLS) {
 				$c = Page::getByPath($req->getRequestCollectionPath(), 'ACTIVE');
 			} else {
 				$c = $req->getRequestedPage();
