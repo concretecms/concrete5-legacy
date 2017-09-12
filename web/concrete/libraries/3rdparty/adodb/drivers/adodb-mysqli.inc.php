@@ -34,7 +34,7 @@ if (! defined("_ADODB_MYSQLI_LAYER")) {
 
 class ADODB_mysqli extends ADOConnection {
 	var $databaseType = 'mysqli';
-	var $dataProvider = 'mysql';
+	var $dataProvider = 'mysqli';
 	var $hasInsertID = true;
 	var $hasAffectedRows = true;
 	var $metaTablesSQL = "SELECT
