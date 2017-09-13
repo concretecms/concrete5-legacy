@@ -2,8 +2,10 @@
 defined('C5_EXECUTE') or die("Access Denied.");
 
 class Concrete5_Model_FileSetPermissionAssignment extends PermissionAssignment {
-	
-	public function setPermissionObject(FileSet $fs) {
+	/**
+	 * @param FileSet $fs
+	 */
+	public function setPermissionObject($fs) {
 		$this->permissionObject = $fs;
 		
 		if ($fs->overrideGlobalPermissions()) {

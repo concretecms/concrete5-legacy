@@ -68,7 +68,7 @@ $txt = Loader::helper('text');?>
 	
 			<?php 
 			$cat = AttributeKeyCategory::getByID($set->getAttributeSetKeyCategoryID());
-			$list = AttributeKey::getList($cat->getAttributeKeyCategoryHandle());
+			$list = AttributeKey::getCategoryList($cat->getAttributeKeyCategoryHandle());
 			$unassigned = $cat->getUnassignedAttributeKeys();
 			if (count($list) > 0) { ?>
 	

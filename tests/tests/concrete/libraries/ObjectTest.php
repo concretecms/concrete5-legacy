@@ -4,7 +4,7 @@ class ObjectTest extends PHPUnit_Framework_TestCase {
 	private $obj;
 	
 	protected function setUp() {
-		$this->obj = new Object();
+		$this->obj = new ConcreteObject();
 	}
 
 	public function testLoadError() {

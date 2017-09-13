@@ -64,7 +64,7 @@ if ($this->controller->getTask() == 'install_package' && $showInstallOptionsScre
 	<p><?=t('Uninstalling %s will remove the following data from your system.', $pkg->getPackageName())?></p>
 		
 		<? foreach($items as $k => $itemArray) { 
-			if (count($itemArray) == 0) {
+			if ($itemArray === null || count($itemArray) == 0) {
 				continue;
 			}
 			?>

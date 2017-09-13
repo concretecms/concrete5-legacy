@@ -496,7 +496,7 @@ if (is_object($uo)) {
 				<div class="span5"><p>
 					<?
 					$dateTime = $g->getGroupDateTimeEntered();
-					if ($dateTime != '0000-00-00 00:00:00') {
+					if ($dateTime) {
 						echo $dh->formatDateTime($dateTime, false, true);
 					}?><br />
 					</p></div>

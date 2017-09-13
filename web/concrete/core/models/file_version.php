@@ -1,6 +1,6 @@
 <?
 
-class Concrete5_Model_FileVersion extends Object {
+class Concrete5_Model_FileVersion extends ConcreteObject {
 
 	protected $numThumbnailLevels = 3;
 	protected $attributes = array();

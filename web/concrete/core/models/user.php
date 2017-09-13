@@ -18,7 +18,7 @@
  *
  */
 
-	class Concrete5_Model_User extends Object { 
+	class Concrete5_Model_User extends ConcreteObject { 
 	
 		public $uID = '';
 		public $uName = '';
@@ -399,7 +399,7 @@
 										}
 										break;
 									case 'INTERVAL':
-										if (time() > strtotime($row['ugEntered']) + ($row['gUserExpirationInterval'] * 60)) {
+										if ($row['ugEntered'] && (time() > strtotime($row['ugEntered']) + ($row['gUserExpirationInterval'] * 60))) {
 											$expire = true;
 										}
 										break;

@@ -10,7 +10,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 * @package Utilities
 *
 */
-class Concrete5_Model_Pile extends Object {
+class Concrete5_Model_Pile extends ConcreteObject {
 
 	var $pID, $uID, $isDefault, $name, $state, $timestamp;
 

@@ -91,7 +91,6 @@
     </field>
     <field name="uDateAdded" type="T">
       <NOTNULL/>
-      <DEFAULT value="0000-00-00 00:00:00"/>
     </field>
     <field name="uHasAvatar" type="I" size="1">
       <NOTNULL/>

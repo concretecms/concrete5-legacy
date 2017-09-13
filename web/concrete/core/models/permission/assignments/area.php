@@ -20,7 +20,10 @@ class Concrete5_Model_AreaPermissionAssignment extends PermissionAssignment {
 		'add_stack_to_area' => 'add_stack'
 	);
 
-	public function setPermissionObject(Area $a) {
+	/**
+	 * @param Area $a
+	 */
+	public function setPermissionObject($a) {
 		$ax = $a;
 		if ($a->isGlobalArea()) {
 			$cx = Stack::getByName($a->getAreaHandle());
