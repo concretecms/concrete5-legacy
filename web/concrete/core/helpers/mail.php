@@ -170,6 +170,20 @@ class Concrete5_Helper_Mail {
 	 */
 	public function getBodyHTML() {return $this->bodyHTML;}
 	
+	/** 
+	 * Returns the message's body in plain text
+	 *
+	 * Can be used to prevent an empty Log entry if one only uses HTML templates
+	 * @return string
+	 */
+	public function getBodyAsText(){
+		if(strlen($this->getBody()) == 0){
+			return strip_tags($this->getBodyHTML());
+		}
+		
+		return $this->getBody();
+	}
+	
 	/**
 	 * manually set the HTML portion of a MIME encoded message, can also be done by setting $bodyHTML in a mail template
 	 * @param string $html
@@ -383,7 +397,7 @@ class Concrete5_Helper_Mail {
 						$l->write(t('Reply-To') . ': ' . $replyStr);
 					}
 					$l->write(t('Subject') . ': ' . $this->subject);
-					$l->write(t('Body') . ': ' . $this->body);
+					$l->write(t('Body') . ': ' . $this->getBodyAsText());
 				}				
 				$l->close();
 			}
@@ -404,7 +418,7 @@ class Concrete5_Helper_Mail {
 				$l->write(t('Reply-To') . ': ' . $replyStr);
 			}
 			$l->write(t('Subject') . ': ' . $this->subject);
-			$l->write(t('Body') . ': ' . $this->body);
+			$l->write(t('Body') . ': ' . $this->getBodyAsText());
 			$l->close();
 		}		
 		
