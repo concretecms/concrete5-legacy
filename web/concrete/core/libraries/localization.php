@@ -111,6 +111,10 @@
 				global $config_check_failed;
 				if(!(isset($config_check_failed) && $config_check_failed)) {
 					foreach(PackageList::get(1)->getPackages() as $p) {
+						// skip packages that have been removed on the file system to avoid an endless loop					
+						if (!file_exists($p->getPackagePath())) {
+							continue;
+						}
 						$pkg = Loader::package($p->getPackageHandle());
 						if (is_object($pkg)) {
 							$pkg->setupPackageLocalization($locale, null, $this->translate);
