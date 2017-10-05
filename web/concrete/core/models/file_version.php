@@ -296,6 +296,7 @@ class Concrete5_Model_FileVersion extends ConcreteObject {
 		$this->fvFilename = $filename;
 		$this->fvPrefix = $prefix;
 
+		Events::fire('on_file_version_replaced', $this);
 		$fo = $this->getFile();
 		$fo->refreshCache();
 	}
