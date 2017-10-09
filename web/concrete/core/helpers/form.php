@@ -422,7 +422,12 @@ class Concrete5_Helper_Form {
 	 */
 	protected function parseMiscFields($defaultClass, $attributes) {
 		$attr = '';
-
+		
+		// convert empty string to array
+		if ($attributes === '') {
+			$attributes = array();
+		}
+		
 		if ($defaultClass) {
 			$attributes['class'] = trim((isset($attributes['class']) ? $attributes['class'] : '') . ' ' . $defaultClass);
 		}
