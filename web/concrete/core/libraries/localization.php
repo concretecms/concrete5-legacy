@@ -81,7 +81,12 @@
 			elseif (is_dir(DIR_LANGUAGES_CORE . '/' . $locale)) {
 				$languageDir = DIR_LANGUAGES_CORE . '/' . $locale;
 			}
-
+			
+			// don't try to load translations that don't exist
+			if (!file_exists($languageDir)) {
+				return;
+			}
+			
 			$options = array(
 				'adapter' => 'gettext',
 				'content' => $languageDir,
