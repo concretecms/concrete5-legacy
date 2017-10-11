@@ -44,6 +44,25 @@ if ($_POST['task'] == 'update_core' && $fp->canEditFileProperties() && (!$previe
 	}
 
 	switch($_POST['attributeField']) {
+		case 'fvName':
+			$text = $_POST['fvName'];
+
+			// get old file names which we have to rename
+			$oldPath = $fv->getPath();
+			$oldPathThumbnail1 = $fv->hasThumbnail(1) ? $fv->getThumbnailPath(1) : false;
+			$oldPathThumbnail2 = $fv->hasThumbnail(2) ? $fv->getThumbnailPath(2) : false;
+			$oldPathThumbnail3 = $fv->hasThumbnail(3) ? $fv->getThumbnailPath(3) : false;
+
+			$fv->updateFile($text, $fv->getPrefix());
+
+			// rename files on disk
+			rename($oldPath, $fv->getPath());
+			if ($oldPathThumbnail1) rename($oldPathThumbnail1, $fv->getThumbnailPath(1));
+			if ($oldPathThumbnail2) rename($oldPathThumbnail2, $fv->getThumbnailPath(2));
+			if ($oldPathThumbnail3) rename($oldPathThumbnail3, $fv->getThumbnailPath(3));
+
+			print $text;
+			break;		
 		case 'fvTitle':
 			$text = $_POST['fvTitle'];
 			$fv->updateTitle($text);
@@ -224,10 +243,9 @@ if (!$previewMode && $fp->canEditFileContents()) {
 	<td><strong><?=t('ID')?></strong></td>
 	<td width="100%" colspan="2"><?=$fv->getFileID()?> <span style="color: #afafaf">(<?=t('Version')?> <?=$fv->getFileVersionID()?>)</span></td>
 </tr>
-<tr>
-	<td><strong><?=t('Filename')?></strong></td>
-	<td width="100%" colspan="2"><?=$fv->getFileName()?></td>
-</tr>
+<?php
+	printCorePropertyRow(t('Filename'), 'fvName', $fv->getFileName(), $form->text('fvName', $fv->getFileName()));
+?>
 <tr>
 	<td><strong><?=t('URL to File')?></strong></td>
 	<td width="100%" colspan="2"><?=$fv->getRelativePath(true)?></td>
