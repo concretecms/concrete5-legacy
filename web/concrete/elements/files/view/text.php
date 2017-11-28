@@ -1,6 +1,6 @@
-<? defined('C5_EXECUTE') or die("Access Denied."); ?> 
+<?php defined('C5_EXECUTE') or die("Access Denied."); ?> 
 <div style="text-align: left">
-<?
+<?php
 $fh = Loader::helper('file');
 $path = $fv->getPath();
 print '<pre style="font-size: 11px; font-family: Courier">';

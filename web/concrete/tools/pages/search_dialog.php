@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 
 $sh = Loader::helper('concrete/dashboard/sitemap');
@@ -35,14 +35,14 @@ $v->outputHeaderItems();
 ?>
 
 <script type="text/javascript">$(function() {
-	ccm_sitemapSetupSearch('<?=$searchInstance?>');
+	ccm_sitemapSetupSearch('<?php echo $searchInstance?>');
 });
 </script>
 
 <div id="ccm-search-overlay" >
-<div class="ccm-pane-options" id="ccm-<?=$searchInstance?>-pane-options">
-	<?=$searchForm?>
+<div class="ccm-pane-options" id="ccm-<?php echo $searchInstance?>-pane-options">
+	<?php echo $searchForm?>
 </div>
 
-<? Loader::element('pages/search_results', array('columns' => $columns, 'searchInstance' => $searchInstance, 'sitemap_select_callback' => $sitemap_select_callback, 'sitemap_select_mode' => $sitemap_select_mode, 'searchDialog' => true, 'pages' => $pages, 'pageList' => $pageList, 'pagination' => $pagination)); ?>
+<?php Loader::element('pages/search_results', array('columns' => $columns, 'searchInstance' => $searchInstance, 'sitemap_select_callback' => $sitemap_select_callback, 'sitemap_select_mode' => $sitemap_select_mode, 'searchDialog' => true, 'pages' => $pages, 'pageList' => $pageList, 'pagination' => $pagination)); ?>
 </div>

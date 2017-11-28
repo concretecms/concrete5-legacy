@@ -1,18 +1,18 @@
-<?  defined('C5_EXECUTE') or die("Access Denied.");?>
+<?php  defined('C5_EXECUTE') or die("Access Denied.");?>
 <div class="ccm-ui">
-<?
+<?php
 $valt = Loader::helper('validation/token');
 Loader::library('marketplace');
 $mi = Marketplace::getInstance();
 $tp = new TaskPermission();
 if (!$tp->canInstallPackages()) { ?>
-	<p><?=t('You do not have permission to download packages from the marketplace.')?></p>
-	<? exit;
+	<p><?php echo t('You do not have permission to download packages from the marketplace.')?></p>
+	<?php exit;
 } else if (!$mi->isConnected()) { ?>
 	<div class="ccm-pane-body-inner">
-		<? Loader::element('dashboard/marketplace_connect_failed')?>
+		<?php Loader::element('dashboard/marketplace_connect_failed')?>
 	</div>
-<? } else {
+<?php } else {
 	$ch = Loader::helper('concrete/interface');
 	Loader::library('marketplace');
 	Loader::model('marketplace_remote_item');
@@ -23,7 +23,7 @@ if (!$tp->canInstallPackages()) { ?>
 	}
 	if (is_object($mri)) { ?>
 
-		<? $screenshots = $mri->getScreenshots(); ?>
+		<?php $screenshots = $mri->getScreenshots(); ?>
 
 
 		<table class="ccm-marketplace-details-table">
@@ -31,58 +31,58 @@ if (!$tp->canInstallPackages()) { ?>
 			<td valign="top">
 				<div id="ccm-marketplace-item-screenshots-wrapper">
 				<div id="ccm-marketplace-item-screenshots">
-				<?
+				<?php
 				$i = 0;
 
 				if (count($screenshots) > 0) {
 					foreach($screenshots as $si) { ?>
-						<img src="<?=$si->src?>" width="<?=$si->width?>" height="<?=$si->height?>" <? if ($i != 0) { ?>style="display: none" <? } ?> />
-					<?
+						<img src="<?php echo $si->src?>" width="<?php echo $si->width?>" height="<?php echo $si->height?>" <?php if ($i != 0) { ?>style="display: none" <?php } ?> />
+					<?php
 					$i++;
 					}
 
 				} else { ?>
 					<div class="ccm-marketplace-item-screenshots-none">
-						<?=t('No screenshots')?>
+						<?php echo t('No screenshots')?>
 					</div>
-				<? } ?>
+				<?php } ?>
 				</div>
 				</div>
 
-				<? if (!$mri->getMarketplaceItemVersionForThisSite()) { ?>
+				<?php if (!$mri->getMarketplaceItemVersionForThisSite()) { ?>
 					<Div class="clearfix" style="clear: both">
 					<div class="block-message alert-message error">
-						<p><?=t('This add-on is marked as incompatible with this version of concrete5. Please contact the author of the add-on for assistance.')?></p>
+						<p><?php echo t('This add-on is marked as incompatible with this version of concrete5. Please contact the author of the add-on for assistance.')?></p>
 					</div>
 					</div>
-				<? } ?>
+				<?php } ?>
 			</td>
 			<td valign="top">
 
 		<div class="ccm-marketplace-item-information">
 		<div class="ccm-marketplace-item-information-inner">
-		<h1><?=$mri->getName()?></h1>
+		<h1><?php echo $mri->getName()?></h1>
 		</div>
 
-		<? if ($mri->getReviewBody() != '') { ?>
+		<?php if ($mri->getReviewBody() != '') { ?>
 			<div class="ccm-marketplace-item-review-quote">
-			<?=$mri->getReviewBody()?>
+			<?php echo $mri->getReviewBody()?>
 			</div>
-		<? } ?>
+		<?php } ?>
 		<div class="ccm-marketplace-item-rating">
-			<?=Loader::helper('rating')->outputDisplay($mri->getAverageRating())?>
-			<?=t2('%d review', '%d reviews', $mri->getTotalRatings(), $mri->getTotalRatings())?>
-			<? if ($mri->getTotalRatings() > 0) { ?>
-				<a href="<?=$mri->getRemoteReviewsURL()?>" target="_blank" class="ccm-marketplace-item-reviews-link"><?=t('Read Reviews')?></a>
-			<? } ?>
+			<?php echo Loader::helper('rating')->outputDisplay($mri->getAverageRating())?>
+			<?php echo t2('%d review', '%d reviews', $mri->getTotalRatings(), $mri->getTotalRatings())?>
+			<?php if ($mri->getTotalRatings() > 0) { ?>
+				<a href="<?php echo $mri->getRemoteReviewsURL()?>" target="_blank" class="ccm-marketplace-item-reviews-link"><?php echo t('Read Reviews')?></a>
+			<?php } ?>
 		</div>
 
 		<div>
-		<h2><?=t('Details')?></h2>
-		<p><?=$mri->getBody()?></p>
+		<h2><?php echo t('Details')?></h2>
+		<p><?php echo $mri->getBody()?></p>
 		</div>
 		</div>
-	<?
+	<?php
 		if ($mri->purchaseRequired()) {
 			$buttonText = t('Purchase - %s', '$' . $mri->getPrice());
 			$buttonAction = 'javascript:ccm_getMarketplaceItem({mpID: \'' . $mri->getMarketplaceItemID() . '\', token: \''.$valt->generate('marketpalce_token').'\'})';
@@ -102,12 +102,12 @@ if (!$tp->canInstallPackages()) { ?>
 	?>
 
 		<div class="dialog-buttons">
-			<input type="button" class="btn primary <? if (!$mri->getMarketplaceItemVersionForThisSite()) { ?> disabled<? } ?> ccm-button-right" value="<?=$buttonText?>" onclick="<?=$buttonAction?>" />
-			<input type="button" class="btn" value="<?=t('View in Marketplace')?>" onclick="window.open('<?=$mri->getRemoteURL()?>')" />
-			<? if ($mri->getMarketplaceItemType() == 'theme') { ?>
+			<input type="button" class="btn primary <?php if (!$mri->getMarketplaceItemVersionForThisSite()) { ?> disabled<?php } ?> ccm-button-right" value="<?php echo $buttonText?>" onclick="<?php echo $buttonAction?>" />
+			<input type="button" class="btn" value="<?php echo t('View in Marketplace')?>" onclick="window.open('<?php echo $mri->getRemoteURL()?>')" />
+			<?php if ($mri->getMarketplaceItemType() == 'theme') { ?>
 				<a title="<?php echo t('Preview')?>" onclick="ccm_previewMarketplaceTheme(1, <?php echo intval($mri->getRemoteCollectionID())?>,'<?php echo addslashes($mri->getName()) ?>','<?php echo addslashes($mri->getHandle()) ?>')"
-				href="javascript:void(0)" class="btn"><?=t('Preview')?></a>
-			<? } ?>
+				href="javascript:void(0)" class="btn"><?php echo t('Preview')?></a>
+			<?php } ?>
 		</div>
 		<br/>
 
@@ -116,11 +116,11 @@ if (!$tp->canInstallPackages()) { ?>
 	</tr>
 	</table>
 
-	<? } else { ?>
-		<div class="block-message alert-message error"><p><?=t('Invalid marketplace item.')?></p></div>
-	<? } ?>
+	<?php } else { ?>
+		<div class="block-message alert-message error"><p><?php echo t('Invalid marketplace item.')?></p></div>
+	<?php } ?>
 
-<? } ?>
+<?php } ?>
 
 </div>
 <script type="text/javascript">

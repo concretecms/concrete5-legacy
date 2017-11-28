@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 
 // HELPERS
@@ -6,53 +6,53 @@ $ci = Loader::helper('concrete/interface');
 
 ?>
 
-		<?=Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Inspect Theme'), false, 'span10 offset1', false);?>
+		<?php echo Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Inspect Theme'), false, 'span10 offset1', false);?>
     
-    <form method="post" id="ccm-inspect-form" action="<?=$this->url('/dashboard/pages/themes/inspect/', 'activate_files', $ptID)?>">
+    <form method="post" id="ccm-inspect-form" action="<?php echo $this->url('/dashboard/pages/themes/inspect/', 'activate_files', $ptID)?>">
     
 	<div class="ccm-pane-body" style="padding-top:10px;">
     
-    	<h3><?=t("Theme name: ").$pageTheme->getThemeDisplayName()?></h3>
+    	<h3><?php echo t("Theme name: ").$pageTheme->getThemeDisplayName()?></h3>
         
         <div class="row">
         
             <div class="span3">
-            	<h5><?=t('Thumbnail')?></h5>
+            	<h5><?php echo t('Thumbnail')?></h5>
                 <div class="well" style="padding:14px;">
                 	<div class="ccm-themes-thumbnail" style="padding:4px;background-color:#FFF;border-radius:3px;border:1px solid #DDD;">
-                    	<?=$pageTheme->getThemeThumbnail()?>
+                    	<?php echo $pageTheme->getThemeThumbnail()?>
                     </div>
                 </div>
             </div>
         
             <div class="span6">
-                <h5><?=t('Files in Theme')?></h5>
+                <h5><?php echo t('Files in Theme')?></h5>
                 <table border="0" cellspacing="0" cellpadding="0" class="table table-striped table-bordered">            
                     <thead>
                         <tr>
-                            <th><?=t('File')?></th>
-                            <th><?=t('Type')?></th>
-                            <th><?=t('Action to take')?></th>
+                            <th><?php echo t('File')?></th>
+                            <th><?php echo t('Type')?></th>
+                            <th><?php echo t('Action to take')?></th>
                         </tr>
                     </thead>
                     <tbody>
                         
-                    <?
+                    <?php
                     $txt = Loader::helper('text');
                     $pf = 0;
                     
                         if (count($files) == 0) { ?>
                         <tr>
                             <td colspan="3">
-                                <?=t('There are no templates in this file.')?>
+                                <?php echo t('There are no templates in this file.')?>
                             </td>
                         </tr>
-                        <? }
+                        <?php }
                     
                         foreach ($files as $f) { ?>
                         <tr class="inputs-list">
-                            <td><?=$f->getFilename()?></td>
-                            <td><?
+                            <td><?php echo $f->getFilename()?></td>
+                            <td><?php
                                 switch($f->getType()) {
                                     case PageThemeFile::TFTYPE_VIEW:
                                         print t("Wrapper for static pages.");
@@ -73,7 +73,7 @@ $ci = Loader::helper('concrete/interface');
                                 // END Switch
                             ?>
                             </td>
-                            <td><?
+                            <td><?php
                                 switch($f->getType()) {
                                     case PageThemeFile::TFTYPE_VIEW:
                                         print t('None. This file will automatically be used.');
@@ -96,7 +96,7 @@ $ci = Loader::helper('concrete/interface');
                             ?></td>
                         </tr>
                         
-                        <? } // END FOREACH ?>
+                        <?php } // END FOREACH ?>
                     
                     </tbody>
                 </table>        
@@ -107,13 +107,13 @@ $ci = Loader::helper('concrete/interface');
 	</div>
     
     <div class="ccm-pane-footer">
-        <?
+        <?php
         print $ci->button(t('Return to Themes'), $this->url('/dashboard/pages/themes'), 'left');
         if ($pf > 0) { 
             print $ci->submit(t('Ok'), 'ccm-inspect-form', 'right', 'primary'); ?>
-        <? }?>
+        <?php }?>
     </div>
     
     </form>
     
-    <?=Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper(false)?>
+    <?php echo Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper(false)?>

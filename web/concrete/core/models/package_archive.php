@@ -1,4 +1,4 @@
-<?  defined('C5_EXECUTE') or die("Access Denied.");
+<?php  defined('C5_EXECUTE') or die("Access Denied.");
 /**
 *
 * This class is responsible for unpacking themes that have been zipped and uploaded to the system. 

@@ -1,6 +1,6 @@
-<? defined('C5_EXECUTE') or die("Access Denied."); ?>
+<?php defined('C5_EXECUTE') or die("Access Denied."); ?>
 <div id="ccm-profile-wrapper">
-    <? Loader::element('profile/sidebar', array('profile'=> $ui)); ?>    
+    <?php Loader::element('profile/sidebar', array('profile'=> $ui)); ?>    
     <div id="ccm-profile-body">	
 
         <h2><?php echo t('User Avatar')?></h2>
@@ -13,11 +13,11 @@
                 <br /><br />
                 <a href="http://www.adobe.com/shockwave/download/download.cgi?P1_Prod_Version=ShockwaveFlash">Download the Flash Player here</a>.
             </div>
-            <? if ($ui->hasAvatar()) { ?>
+            <?php if ($ui->hasAvatar()) { ?>
 				<br/><br/>
                 <a href="<?php echo $this->action('delete')?>"><?php echo t('Remove your user avatar &gt;')?></a>
 
-            <? } ?>	
+            <?php } ?>	
         
             <div class="spacer"></div>
             

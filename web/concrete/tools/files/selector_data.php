@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 
 if (!Loader::helper('validation/numbers')->integer($_REQUEST['fID'])) {
@@ -29,8 +29,8 @@ $canViewInline = $fv->canView() ? 1 : 0;
 $canEdit = $fv->canEdit() ? 1 : 0;
 ?>
 
-<div class="ccm-file-selected" fID="<?=$fID?>" ccm-file-manager-field="<?=$selectedField?>" ccm-file-manager-can-duplicate="<?=$fp->canCopyFile()?>" ccm-file-manager-can-admin="<?=($fp->canEditFilePermissions())?>" ccm-file-manager-can-delete="<?=$fp->canDeleteFile()?>" ccm-file-manager-can-view="<?=$canViewInline?>" ccm-file-manager-can-replace="<?=$fp->canEditFileContents()?>" ccm-file-manager-can-edit="<?=$canEdit?>"  >
-<div class="ccm-file-selected-thumbnail"><?=$fv->getThumbnail(1)?></div>
-<div class="ccm-file-selected-data"><div><?=$fv->getTitle()?></div><div></div></div>
+<div class="ccm-file-selected" fID="<?php echo $fID?>" ccm-file-manager-field="<?php echo $selectedField?>" ccm-file-manager-can-duplicate="<?php echo $fp->canCopyFile()?>" ccm-file-manager-can-admin="<?php echo ($fp->canEditFilePermissions())?>" ccm-file-manager-can-delete="<?php echo $fp->canDeleteFile()?>" ccm-file-manager-can-view="<?php echo $canViewInline?>" ccm-file-manager-can-replace="<?php echo $fp->canEditFileContents()?>" ccm-file-manager-can-edit="<?php echo $canEdit?>"  >
+<div class="ccm-file-selected-thumbnail"><?php echo $fv->getThumbnail(1)?></div>
+<div class="ccm-file-selected-data"><div><?php echo $fv->getTitle()?></div><div></div></div>
 <div class="ccm-spacer">&nbsp;</div>
 </div>

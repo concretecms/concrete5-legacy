@@ -6,7 +6,7 @@ $this->inc('elements/header.php'); ?>
 
 	<div id="main-content-container" class="grid_24">
 		<div id="main-content-inner">
-			<? 
+			<?php 
 			Loader::element('system_errors', array('error' => $error));
 			print $innerContent;
 			?>

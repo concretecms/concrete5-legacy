@@ -1,48 +1,48 @@
-<? defined('C5_EXECUTE') or die("Access Denied."); ?>
+<?php defined('C5_EXECUTE') or die("Access Denied."); ?>
 <div class="row">
 <div class="span10 offset1">
 
 <div class="page-header">
-	<h1><?=t('Upgrade concrete5')?></h1>
+	<h1><?php echo t('Upgrade concrete5')?></h1>
 </div>
 <p>
-<?=$message?>
+<?php echo $message?>
 </p>
 
-<? if($had_failures) { ?>
+<?php if($had_failures) { ?>
 <div class="alert-message block-message error">
-	<?=t('These errors are most likely related to incompatible add-ons, please upgrade any add-ons and re-run to this script to complete the conversion of your data.')?>
+	<?php echo t('These errors are most likely related to incompatible add-ons, please upgrade any add-ons and re-run to this script to complete the conversion of your data.')?>
 </div>
-<? } ?>
+<?php } ?>
 
-<? if ($completeMessage) { ?>
-	<?=$completeMessage?>
-<? } ?>
+<?php if ($completeMessage) { ?>
+	<?php echo $completeMessage?>
+<?php } ?>
 
-<? if ($do_upgrade) { ?>
-<p>	<?=t('To proceed with the upgrade, click below.')?></p>
+<?php if ($do_upgrade) { ?>
+<p>	<?php echo t('To proceed with the upgrade, click below.')?></p>
 
 
-	<form method="post" action="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/upgrade.php">
+	<form method="post" action="<?php echo REL_DIR_FILES_TOOLS_REQUIRED?>/upgrade.php">
 	<div class="well" style="text-align: right">
-	<input type="submit" name="do_upgrade" class="ccm-input-submit btn primary" value="<?=t('Upgrade')?> &gt;"  />
+	<input type="submit" name="do_upgrade" class="ccm-input-submit btn primary" value="<?php echo t('Upgrade')?> &gt;"  />
 	</div>
 	</form>
 
 
 
-<? } else { ?>
+<?php } else { ?>
 
 	<div class="well" style="text-align: left">
-	    <a href="<?=DIR_REL?>/" class="btn"><?=t('Back to Home')?></a>
+	    <a href="<?php echo DIR_REL?>/" class="btn"><?php echo t('Back to Home')?></a>
   	</div>
 	
 	<?php if(!isset($hide_force) || !$hide_force) { ?>
         <p>
-        <?=t('<a href="%s">Click here</a> if you would like to re-run this script.', DIR_REL . '/' . DISPATCHER_FILENAME . '/tools/required/upgrade?force=1')?>
+        <?php echo t('<a href="%s">Click here</a> if you would like to re-run this script.', DIR_REL . '/' . DISPATCHER_FILENAME . '/tools/required/upgrade?force=1')?>
         </p>
-    <? } ?>
-<? } ?>
+    <?php } ?>
+<?php } ?>
 
 </div>
 </div>

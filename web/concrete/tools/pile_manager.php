@@ -1,4 +1,4 @@
-<?
+<?php
 
 defined('C5_EXECUTE') or die("Access Denied.");
 
@@ -212,7 +212,7 @@ if($_REQUEST['btask']=='add'){
 			ccmSaveToScrapbookDialogTarget = sel.closest('.ccm-dialog-content'); 
 			var scrapbook=sel.val(); 
 			if(!scrapbook){
-				alert("<?=t("Please choose a scrapbook.") ?>");
+				alert("<?php echo t("Please choose a scrapbook.") ?>");
 				return false;
 			}
 			jQuery.fn.dialog.showLoader();
@@ -220,7 +220,7 @@ if($_REQUEST['btask']=='add'){
 			$.ajax({
 			type: 'POST',
 			url: CCM_TOOLS_PATH+"/pile_manager.php",
-			data: 'cID=<?=intval($_REQUEST['cID'])?>&bID=<?=intval($_REQUEST['bID'])?>&arHandle=<?=urlencode($_REQUEST['arHandle'])?>&btask=add&scrapbookName='+scrapbook+'&blockAddMode='+blockAddMode,
+			data: 'cID=<?php echo intval($_REQUEST['cID'])?>&bID=<?php echo intval($_REQUEST['bID'])?>&arHandle=<?php echo urlencode($_REQUEST['arHandle'])?>&btask=add&scrapbookName='+scrapbook+'&blockAddMode='+blockAddMode,
 			success: function(resp) { 
 				jQuery.fn.dialog.hideLoader();
 				jQuery.fn.dialog.closeTop();
@@ -238,41 +238,41 @@ if($_REQUEST['btask']=='add'){
 		
 		<div>
 		<select id="ccm-addToScrapbookName" name="scrapbookName" onchange="ccmShowBlockAddModeRadios(this)" style="width: 205px">
-			<option value="userScrapbook" <?=($defaultScrapbook==$scrapbookHelper->getPersonalScrapbookName())?'selected':''?>>
-				<?=t("%s's Personal Scrapbook", $u->getUserName()) ?> 
+			<option value="userScrapbook" <?php echo ($defaultScrapbook==$scrapbookHelper->getPersonalScrapbookName())?'selected':''?>>
+				<?php echo t("%s's Personal Scrapbook", $u->getUserName()) ?> 
 			</option>
-			<? foreach($scrapBookAreasData as $scrapBookAreaData){ ?>
-				<option value="<?=addslashes($scrapBookAreaData['arHandle'])?>" 
-				<?=($defaultScrapbook==$scrapBookAreaData['arHandle'])?'selected':''?> >
-					<?=$scrapBookAreaData['arHandle'] ?>
+			<?php foreach($scrapBookAreasData as $scrapBookAreaData){ ?>
+				<option value="<?php echo addslashes($scrapBookAreaData['arHandle'])?>" 
+				<?php echo ($defaultScrapbook==$scrapBookAreaData['arHandle'])?'selected':''?> >
+					<?php echo $scrapBookAreaData['arHandle'] ?>
 				</option>
-			<? } ?>
+			<?php } ?>
 		</select> 
 		</div>
 		
-		<div id="ccm-blockAddModeWrap" style="display:<?=($defaultScrapbook!=$scrapbookHelper->getPersonalScrapbookName())?'block':'none'?>">
+		<div id="ccm-blockAddModeWrap" style="display:<?php echo ($defaultScrapbook!=$scrapbookHelper->getPersonalScrapbookName())?'block':'none'?>">
 			&nbsp;<br />
-			<input name="blockAddMode" type="radio" value="duplicate" checked="checked" /> <?=t('New copy to Scrapbook')?><br />
-			<input id="blockAddModeAliased" name="blockAddMode" type="radio" value="alias" /> <?=t('Alias original to Scrapbook')?>
+			<input name="blockAddMode" type="radio" value="duplicate" checked="checked" /> <?php echo t('New copy to Scrapbook')?><br />
+			<input id="blockAddModeAliased" name="blockAddMode" type="radio" value="alias" /> <?php echo t('Alias original to Scrapbook')?>
 		</div>
 	
 		<br/> 
 		
-		<div class="sillyIE7"><?= $ih->button_js( t('Add Block to Scrapbook'), 'ccmSaveToScrapbook()','left'); ?></div>
+		<div class="sillyIE7"><?php echo $ih->button_js( t('Add Block to Scrapbook'), 'ccmSaveToScrapbook()','left'); ?></div>
 		
-	<? }elseif($added){ ?>
+	<?php }elseif($added){ ?>
 		
 		<br/> 
 		
-		<?=t('Block added to scrapbook.')?>
+		<?php echo t('Block added to scrapbook.')?>
 		
 		<br/><br/>
 		<div style="text-align: center">
-		<img src="<?=ASSETS_URL_IMAGES?>/throbber_white_32.gif" width="32" height="32" />
+		<img src="<?php echo ASSETS_URL_IMAGES?>/throbber_white_32.gif" width="32" height="32" />
 		</div>
 		
-		<? /*<a href="javascript:void(0)" class="ccm-dialog-close ccm-button-left cancel"><span><em class="ccm-button-close"><?=t('Close Window')?></em></span></a>*/ ?>
+		<?php /*<a href="javascript:void(0)" class="ccm-dialog-close ccm-button-left cancel"><span><em class="ccm-button-close"><?php echo t('Close Window')?></em></span></a>*/ ?>
 		
-	<? }
+	<?php }
 }	
 ?>

@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");  
 
 $c = Page::getByID($_REQUEST['cID'], 'RECENT');
@@ -99,25 +99,25 @@ if (is_object($b)) {
 				if (is_object($csr)) { 
 					$styleHeader = '#'.$csr->getCustomStyleRuleCSSID(1).' {'. $csr->getCustomStyleRuleText(). "}";  ?>
 					<script type="text/javascript">
-						$('head').append('<style type="text/css"><?=addslashes($styleHeader)?></style>');
+						$('head').append('<style type="text/css"><?php echo addslashes($styleHeader)?></style>');
 					</script>
-				<?
+				<?php
 				}
 
 				if (count($items) > 0) { ?>
 				<script type="text/javascript">				
-				<?
+				<?php
 				foreach($items as $item) { 
 					if ($item instanceof CSSOutputObject) { ?>
 						// we only support CSS here
-						ccm_addHeaderItem("<?=$item->href?>", 'CSS');
-					<? } else if ($item instanceof JavaScriptOutputObject) { ?>
-						ccm_addHeaderItem("<?=$item->href?>", 'JAVASCRIPT');
-					<? }
+						ccm_addHeaderItem("<?php echo $item->href?>", 'CSS');
+					<?php } else if ($item instanceof JavaScriptOutputObject) { ?>
+						ccm_addHeaderItem("<?php echo $item->href?>", 'JAVASCRIPT');
+					<?php }
 				
 				} ?>
 				</script>
-				<? }
+				<?php }
 				
 				$bv->renderElement('block_controls', array(
 					'a' => $a,

@@ -1,4 +1,4 @@
-<? 
+<?php 
 defined('C5_EXECUTE') or die("Access Denied.");
 Loader::model('stack/list');
 $sl = new StackList();
@@ -14,7 +14,7 @@ $form = Loader::helper('form');
 <script type="text/javascript">
 
 $('input[name=ccmStackSearch]').focus(function() {
-	if ($(this).val() == '<?=t("Search")?>') {
+	if ($(this).val() == '<?php echo t("Search")?>') {
 		$(this).val('');
 	}
 	$(this).css('color', '#000');
@@ -105,7 +105,7 @@ ccmStackSearchResetKeys = function() {
 ccmStackAddToArea = function(stackID, arHandle) {
 	ccmStackSearchResetKeys();
 	jQuery.fn.dialog.showLoader();
-	$.get('<?=DIR_REL?>/<?=DISPATCHER_FILENAME?>?atask=add_stack&stID=' + stackID + '&cID=<?=$c->getCollectionID()?>&arHandle=' + encodeURIComponent(arHandle) + '&<?=$token?>', 
+	$.get('<?php echo DIR_REL?>/<?php echo DISPATCHER_FILENAME?>?atask=add_stack&stID=' + stackID + '&cID=<?php echo $c->getCollectionID()?>&arHandle=' + encodeURIComponent(arHandle) + '&<?php echo $token?>', 
 		function(r) { ccm_parseBlockResponse(r, false, 'add'); 
 	});
 }
@@ -127,31 +127,31 @@ $(function() {
 
 		<form onsubmit="return ccmStackSearchFormCheckResults()">
 		<i class="icon-search"></i>
-		<?=$form->text('ccmStackSearch', array('tabindex' => 1, 'autocomplete' => 'off', 'style' => 'margin-left: 8px; width: 168px'))?>
+		<?php echo $form->text('ccmStackSearch', array('tabindex' => 1, 'autocomplete' => 'off', 'style' => 'margin-left: 8px; width: 168px'))?>
 		</form>
 		
 		
 		</div>		
 	</div>
 	
-	<? if (count($stacks) > 0) { ?>
+	<?php if (count($stacks) > 0) { ?>
 		<ul id="ccm-stack-list" class="item-select-list item-select-list-groups">
-		<? foreach($stacks as $s) { 
+		<?php foreach($stacks as $s) { 
 			$as = Area::get($s, STACKS_AREA_NAME);
 			$asp = new Permissions($as);
 			if ($asp->canRead() && $ap->canAddStackToArea($s)) { 
 			?>	
 			<li class="ccm-stack-available">
-				<a onclick="ccmStackSearchResetKeys()" dialog-on-destroy="ccmStackSearchMapKeys()" class="dialog-launch ccm-block-type-inner" dialog-on-close="ccm_blockWindowAfterClose()" dialog-append-buttons="true" dialog-modal="false" dialog-width="620" dialog-height="400" dialog-title="<?=$s->getCollectionName()?> <?=t('Contents')?>" href="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/edit_area_popup.php?atask=add_stack_contents&cID=<?=$c->getCollectionID()?>&stackID=<?=$s->getCollectionID()?>&arHandle=<?=Loader::helper('text')->entities($a->getAreaHandle())?>"><?=$s->getCollectionName()?></a>
+				<a onclick="ccmStackSearchResetKeys()" dialog-on-destroy="ccmStackSearchMapKeys()" class="dialog-launch ccm-block-type-inner" dialog-on-close="ccm_blockWindowAfterClose()" dialog-append-buttons="true" dialog-modal="false" dialog-width="620" dialog-height="400" dialog-title="<?php echo $s->getCollectionName()?> <?php echo t('Contents')?>" href="<?php echo REL_DIR_FILES_TOOLS_REQUIRED?>/edit_area_popup.php?atask=add_stack_contents&cID=<?php echo $c->getCollectionID()?>&stackID=<?php echo $s->getCollectionID()?>&arHandle=<?php echo Loader::helper('text')->entities($a->getAreaHandle())?>"><?php echo $s->getCollectionName()?></a>
 			</li>
 			
-			<? } ?>
+			<?php } ?>
 			
-		<? } ?>
+		<?php } ?>
 		</ul>
-		<?
+		<?php
 	} else { ?>
 		<br/>
-		<p><?=t('No stacks can be added to this area.')?></p>
-	<? } ?>
+		<p><?php echo t('No stacks can be added to this area.')?></p>
+	<?php } ?>
 </div>

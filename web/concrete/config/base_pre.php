@@ -1,4 +1,4 @@
-<? defined('C5_EXECUTE') or die("Access Denied.");
+<?php defined('C5_EXECUTE') or die("Access Denied.");
 
 if (!defined('DIR_BASE')) {
 	define('DIR_BASE', dirname(realpath($_SERVER['SCRIPT_FILENAME'])));

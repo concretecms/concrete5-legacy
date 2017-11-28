@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 if ($action == null) { 
 	// we can pass an action from the block, but in most instances we won't, we'll use the default
@@ -6,15 +6,15 @@ if ($action == null) {
 	global $c;
 } ?>
 
-<a name="_add<?=$bt->getBlockTypeID()?>"></a>
+<a name="_add<?php echo $bt->getBlockTypeID()?>"></a>
 
 <script type="text/javascript">
 
-<? $ci = Loader::helper("concrete/urls"); ?>
-<? $url = $ci->getBlockTypeJavaScriptURL($bt); 
+<?php $ci = Loader::helper("concrete/urls"); ?>
+<?php $url = $ci->getBlockTypeJavaScriptURL($bt); 
 if ($url != '') { ?>
-	ccm_addHeaderItem("<?=$url?>", 'JAVASCRIPT');
-<? } 
+	ccm_addHeaderItem("<?php echo $url?>", 'JAVASCRIPT');
+<?php } 
 
 $identifier = strtoupper('BLOCK_CONTROLLER_' . $btHandle);
 if (is_array($headerItems[$identifier])) {
@@ -25,8 +25,8 @@ if (is_array($headerItems[$identifier])) {
 			$type = 'JAVASCRIPT';
 		}
 		?>
-		ccm_addHeaderItem("<?=$item->file?>", '<?=$type?>');
-	<?
+		ccm_addHeaderItem("<?php echo $item->file?>", '<?php echo $type?>');
+	<?php
 	}
 }
 ?>
@@ -39,9 +39,9 @@ $(function() {
 
 </script>
 
-<input type="hidden" name="ccm-block-pane-action" value="<?= Loader::helper('security')->sanitizeURL($_SERVER['REQUEST_URI']); ?>" />
+<input type="hidden" name="ccm-block-pane-action" value="<?php echo Loader::helper('security')->sanitizeURL($_SERVER['REQUEST_URI']); ?>" />
 
-<?
+<?php
 $hih = Loader::helper("concrete/interface/help");
 $blockTypes = $hih->getBlockTypes();
 $cont = $bt->getController();
@@ -54,25 +54,25 @@ if (isset($blockTypes[$bt->getBlockTypeHandle()])) {
 	}
 }
 if (isset($help)) { ?>
-	<div class="dialog-help" id="ccm-menu-help-content"><? 
+	<div class="dialog-help" id="ccm-menu-help-content"><?php 
 		if (is_array($help)) { 
 			print $help[0] . '<br><br><a href="' . $help[1] . '" class="btn small" target="_blank">' . t('Learn More') . '</a>';
 		} else {
 			print $help;
 		}
 	?></div>
-<? } ?>
+<?php } ?>
 
-<? if ($cont->getBlockTypeWrapperClass() != '') { ?>
-	<div class="<?=$cont->getBlockTypeWrapperClass();?>">
-<? } ?>
+<?php if ($cont->getBlockTypeWrapperClass() != '') { ?>
+	<div class="<?php echo $cont->getBlockTypeWrapperClass();?>">
+<?php } ?>
 
-<form method="post" action="<?=$action?>" id="ccm-block-form" enctype="multipart/form-data" class="validate form-horizontal">
+<form method="post" action="<?php echo $action?>" id="ccm-block-form" enctype="multipart/form-data" class="validate form-horizontal">
 
 <input type="hidden" name="ccm-block-form-method" value="REGULAR" />
 
-<? foreach($this->controller->getJavaScriptStrings() as $key => $val) { ?>
-	<input type="hidden" name="ccm-string-<?=$key?>" value="<?=h($val)?>" />
-<? } ?>
+<?php foreach($this->controller->getJavaScriptStrings() as $key => $val) { ?>
+	<input type="hidden" name="ccm-string-<?php echo $key?>" value="<?php echo h($val)?>" />
+<?php } ?>
 
 <div id="ccm-block-fields">

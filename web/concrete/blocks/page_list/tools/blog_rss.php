@@ -30,18 +30,18 @@ if($_GET['bID'] && $_GET['cID'] && $nh->integer($_GET['bID']) && $nh->integer($_
 	?>
 			<rss version="2.0">
 			  <channel>
-				<title><?=$controller->rssTitle?></title>
-				<link><?=Loader::helper('navigation')->getLinkToCollection($c, true)?></link>
-				<description><?=$controller->rssDescription?></description> 
-	<?
+				<title><?php echo $controller->rssTitle?></title>
+				<link><?php echo Loader::helper('navigation')->getLinkToCollection($c, true)?></link>
+				<description><?php echo $controller->rssDescription?></description> 
+	<?php
 			for ($i = 0; $i < count($cArray); $i++ ) {
 				$cobj = $cArray[$i]; 
 				$title = $cobj->getCollectionName();
                                 ?>
 				<item>
-				  <title><?=htmlspecialchars($title);?></title>
+				  <title><?php echo htmlspecialchars($title);?></title>
 				  <link>
-					<?= BASE_URL.$nh->getLinkToCollection($cobj) ?>		  
+					<?php echo BASE_URL.$nh->getLinkToCollection($cobj) ?>		  
 				  </link>
 				  <description><![CDATA[
 					<?php
@@ -50,7 +50,7 @@ if($_GET['bID'] && $_GET['cID'] && $nh->integer($_GET['bID']) && $nh->integer($_
 					$a->display($cobj);
 					?>
 				  ]]></description>
-                                  <? 
+                                  <?php 
                                     $tags = preg_split('/\n/', $cobj->getAttribute('tags'));
                                     if ($tags) {
 										foreach($tags as $tag) {
@@ -60,15 +60,15 @@ if($_GET['bID'] && $_GET['cID'] && $nh->integer($_GET['bID']) && $nh->integer($_
 										}
 									}
                                   ?>
-				  <? /* <pubDate><?=$cobj->getCollectionDatePublic()?></pubDate>
+				  <?php /* <pubDate><?php echo $cobj->getCollectionDatePublic()?></pubDate>
 				  Wed, 23 Feb 2005 16:12:56 GMT  */ ?>
-				  <pubDate><?=date( 'D, d M Y H:i:s T',strtotime($cobj->getCollectionDatePublic())) ?></pubDate>
+				  <pubDate><?php echo date( 'D, d M Y H:i:s T',strtotime($cobj->getCollectionDatePublic())) ?></pubDate>
 				</item>
-			<? } ?>
+			<?php } ?>
 				 </channel>
 			</rss>
 			
-	<?	} else {  	
+	<?php	} else {  	
 			$v = View::getInstance();
 			$v->renderError(t('Permission Denied'), t("This page list doesn't use the custom blog template, or you don't have permission to access this RSS feed"));
 			exit;

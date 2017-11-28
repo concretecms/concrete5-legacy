@@ -1,12 +1,12 @@
-<? defined('C5_EXECUTE') or die("Access Denied."); ?>
+<?php defined('C5_EXECUTE') or die("Access Denied."); ?>
 
-<div id="rssSummaryList<?=intval($bID)?>" class="rssSummaryList">
+<div id="rssSummaryList<?php echo intval($bID)?>" class="rssSummaryList">
 
-<? if( strlen($title)>0 ){ ?>
-	<div class="rssSummaryListTitle" style="margin-bottom:8px"><?=$title?></div>
-<? } ?>
+<?php if( strlen($title)>0 ){ ?>
+	<div class="rssSummaryListTitle" style="margin-bottom:8px"><?php echo $title?></div>
+<?php } ?>
 
-<? 
+<?php 
 $rssObj=$controller;
 $textHelper = Loader::helper("text"); 
 
@@ -25,13 +25,13 @@ if( strlen($errorMsg)>0 ){
 		
 		<div class="rssItem">
 			<div class="rssItemTitle"> 
-				<a href="<?= $item->get_permalink(); ?>" <? if($rssObj->launchInNewWindow) echo 'target="_blank"' ?> >
-					<?= $item->get_title(); ?>
+				<a href="<?php echo $item->get_permalink(); ?>" <?php if($rssObj->launchInNewWindow) echo 'target="_blank"' ?> >
+					<?php echo $item->get_title(); ?>
 				</a>
 			</div>
-			<div class="rssItemDate"><?= $item->get_date($dateFormat); ?></div>
+			<div class="rssItemDate"><?php echo $item->get_date($dateFormat); ?></div>
 			<div class="rssItemSummary">
-				<?
+				<?php
 				if( $rssObj->showSummary ){
 					echo $textHelper->shortText( strip_tags($item->get_description()) );
 				}
@@ -39,7 +39,7 @@ if( strlen($errorMsg)>0 ){
 			</div>
 		</div>
 	
-<?  }  
+<?php  }  
 }
 ?>
 </div>

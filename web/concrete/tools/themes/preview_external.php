@@ -14,8 +14,8 @@ if ($mi->isConnected() && $tp->canInstallPackages()) {
 	$postStr= '&themeHandle='.$themeHandle.'&ctID='.$ctID.'&ctHandle='.$ctHandle;
 	
 	if (!function_exists('curl_init')) { ?>
-		<div><?=t('curl must be enabled to preview external themes.')?></div>
-	<? }else{
+		<div><?php echo t('curl must be enabled to preview external themes.')?></div>
+	<?php }else{
 		$curl_handle = curl_init();
 
 		// Check to see if there are proxy settings

@@ -1,23 +1,23 @@
-<? defined('C5_EXECUTE') or die("Access Denied."); ?>
+<?php defined('C5_EXECUTE') or die("Access Denied."); ?>
 <div id="ccm-profile-wrapper">
-	<form method="get" action="<?=DIR_REL?>/<?=DISPATCHER_FILENAME?>">
+	<form method="get" action="<?php echo DIR_REL?>/<?php echo DISPATCHER_FILENAME?>">
 			<?php echo t('Search');?>  		
-			<input type="hidden" name="cID" value="<?=$c->getCollectionID()?>" />
-			<input name="keywords" type="text" value="<?=$keywords?>" size="20" />		
-			<input name="submit" type="submit" value="<?=t('Search')?>" />	
+			<input type="hidden" name="cID" value="<?php echo $c->getCollectionID()?>" />
+			<input name="keywords" type="text" value="<?php echo $keywords?>" size="20" />		
+			<input name="submit" type="submit" value="<?php echo t('Search')?>" />	
 
 	</form>
 	
 	<h1><?php echo t('Members');?></h1> 	
 	
-	<? if ($userList->getTotal() == 0) { ?>
+	<?php if ($userList->getTotal() == 0) { ?>
 	
-		<div><?=t('No users found.')?></div>
+		<div><?php echo t('No users found.')?></div>
 	
-	<? } else { ?>
+	<?php } else { ?>
 	
 		<div class="ccm-profile-member-list">
-		<?  
+		<?php  
 		$av = Loader::helper('concrete/avatar');
 		$u = new User();
 		
@@ -25,16 +25,16 @@
 		
 			?>				
 			<div class="ccm-profile-member">
-				<div class="ccm-profile-member-avatar"><?=$av->outputUserAvatar($user)?></div>
+				<div class="ccm-profile-member-avatar"><?php echo $av->outputUserAvatar($user)?></div>
 				<div class="ccm-profile-member-detail">
-					<div class="ccm-profile-member-username"><a href="<?=$this->url('/profile','view', $user->getUserID())?>"><?=$user->getUserName()?></a></div>
+					<div class="ccm-profile-member-username"><a href="<?php echo $this->url('/profile','view', $user->getUserID())?>"><?php echo $user->getUserName()?></a></div>
 					<div class="ccm-profile-member-fields">
-					<?
+					<?php
 					foreach($attribs as $ak) { ?>
 						<div>
-							<?=$user->getAttribute($ak, 'displaySanitized', 'display'); ?>
+							<?php echo $user->getAttribute($ak, 'displaySanitized', 'display'); ?>
 						</div>
-					<? } ?>
+					<?php } ?>
 					</div>					
 				</div>
 				<div class="ccm-spacer"></div>
@@ -42,13 +42,13 @@
 		
 		
 	
-	<? } ?>
+	<?php } ?>
 		
 		</div>
 		
-		<?=$userList->displayPagingV2()?>
+		<?php echo $userList->displayPagingV2()?>
 		
-	<? 
+	<?php 
 	
 	} ?>
 </div>

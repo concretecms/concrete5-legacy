@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 
 $sh = Loader::helper('concrete/dashboard/sitemap');
@@ -120,12 +120,12 @@ function printAttributeRow($ak) {
 
 if (!isset($_REQUEST['reload'])) { ?>
 	<div id="ccm-page-properties-wrapper">
-<? } ?>
+<?php } ?>
 
 <div id="ccm-page-properties" class="ccm-ui">
 
 <table border="0" cellspacing="0" cellpadding="0" class="ccm-grid">
-<?
+<?php
 
 foreach($attribs as $at) {
 
@@ -146,7 +146,7 @@ $(function() {
 });
 </script>
 
-<?
+<?php
 if (!isset($_REQUEST['reload'])) { ?>
 </div>
-<? }
+<?php }

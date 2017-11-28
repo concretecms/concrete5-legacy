@@ -1,4 +1,4 @@
-<?
+<?php
 /**
 *
 * A wrapper class for results from the search engine, allowing for abstraction in case search engines are changed in the future.

@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 
 $tp = new TaskPermission();
@@ -28,11 +28,11 @@ $v->outputHeaderItems();
 
 <div class="ccm-ui">
 <div id="ccm-search-overlay" >
-<div class="ccm-pane-options" id="ccm-<?=$searchInstance?>-pane-options">
-	<?=$searchForm?>
+<div class="ccm-pane-options" id="ccm-<?php echo $searchInstance?>-pane-options">
+	<?php echo $searchForm?>
 </div>
 
-<? Loader::element('users/search_results', array('columns' => $columns, 'mode' => $mode, 'users' => $users, 'userList' => $userList, 'pagination' => $pagination)); ?>
+<?php Loader::element('users/search_results', array('columns' => $columns, 'mode' => $mode, 'users' => $users, 'userList' => $userList, 'pagination' => $pagination)); ?>
 </div>
 </div>
 

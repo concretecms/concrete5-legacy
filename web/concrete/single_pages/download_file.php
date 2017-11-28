@@ -4,32 +4,32 @@ defined('C5_EXECUTE') or die("Access Denied.");
 
 ?>
 
-<h1><?=t('Download File')?></h1>
+<h1><?php echo t('Download File')?></h1>
 
-<? if (!isset($filename)) { ?>
+<?php if (!isset($filename)) { ?>
 
-	<p><?=t("Invalid File.");?></p>
+	<p><?php echo t("Invalid File.");?></p>
 
-<? } else { ?>
+<?php } else { ?>
 	
-	<p><?=t('This file requires a password to download.')?></p>
+	<p><?php echo t('This file requires a password to download.')?></p>
 	
-	<? if (isset($error)) {  ?>
-		<div class="ccm-error-response"><?=$error?></div>
-	<? } ?>
+	<?php if (isset($error)) {  ?>
+		<div class="ccm-error-response"><?php echo $error?></div>
+	<?php } ?>
 	
-	<form action="<?= View::url('/download_file', 'submit_password', $fID) ?>" method="post">
-		<? if(isset($force)) { ?>
-			<input type="hidden" value="<?= $force ?>" name="force" />
-		<? } ?>
-		<input type="hidden" value="<?= $rcID ?>" name="rcID"/>
-		<label for="password"><?=t('Password')?>: <input type="password" name="password" /></label>
+	<form action="<?php echo View::url('/download_file', 'submit_password', $fID) ?>" method="post">
+		<?php if(isset($force)) { ?>
+			<input type="hidden" value="<?php echo $force ?>" name="force" />
+		<?php } ?>
+		<input type="hidden" value="<?php echo $rcID ?>" name="rcID"/>
+		<label for="password"><?php echo t('Password')?>: <input type="password" name="password" /></label>
 		<br /><br />
-		<button type="submit"><?=t('Download')?></button>
+		<button type="submit"><?php echo t('Download')?></button>
 	</form>
 
-<? } ?>
+<?php } ?>
 
-<? if (is_object($rc)) { ?>
-<p><a href="<?=Loader::helper('navigation')->getLinkToCollection($rc)?>">&lt; <?=t('Back')?></a></p>
-<? } ?>
+<?php if (is_object($rc)) { ?>
+<p><a href="<?php echo Loader::helper('navigation')->getLinkToCollection($rc)?>">&lt; <?php echo t('Back')?></a></p>
+<?php } ?>

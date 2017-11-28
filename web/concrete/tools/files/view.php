@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 $u = new User();
 $form = Loader::helper('form');
@@ -20,7 +20,7 @@ if (!$fp->canViewFile()) {
 ?>
 <div style="text-align: center">
 
-<?
+<?php
 $to = $fv->getTypeObject();
 if ($to->getPackageHandle() != '') {
 	Loader::packageElement('files/view/' . $to->getView(), $to->getPackageHandle(), array('fv' => $fv));
@@ -31,10 +31,10 @@ if ($to->getPackageHandle() != '') {
 </div>
 
 <div class="dialog-buttons">
-<form method="post" action="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/files/download/" style="margin: 0px">
-<?=$form->hidden('fID', $f->getFileID()); ?>
-<?=$form->hidden('fvID', $f->getFileVersionID()); ?>
-<?=$form->submit('submit', t('Download'), array('class' => 'ccm-button-right primary'))?>
+<form method="post" action="<?php echo REL_DIR_FILES_TOOLS_REQUIRED?>/files/download/" style="margin: 0px">
+<?php echo $form->hidden('fID', $f->getFileID()); ?>
+<?php echo $form->hidden('fvID', $f->getFileVersionID()); ?>
+<?php echo $form->submit('submit', t('Download'), array('class' => 'ccm-button-right primary'))?>
 </form>
 </div>
 

@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 if ($cp->canEditPagePermissions()) {
 	$editAccess = array();
@@ -43,47 +43,47 @@ if ($cp->canEditPagePermissions()) {
 ?>
 
 <div class="ccm-ui">
-<form method="post" id="ccmPermissionsForm" name="ccmPermissionsForm" action="<?=$c->getCollectionAction()?>">
+<form method="post" id="ccmPermissionsForm" name="ccmPermissionsForm" action="<?php echo $c->getCollectionAction()?>">
 <input type="hidden" name="rel" value="<?php echo h($rel); ?>" />
 
 <div class="clearfix">
-<h3><?=t('Who can view this page?')?></h3>
+<h3><?php echo t('Who can view this page?')?></h3>
 
 <ul class="inputs-list">
 
-<?
+<?php
 
 foreach ($gArray as $g) {
 ?>
 
-<li><label><input type="checkbox" name="readGID[]" value="<?=$g->getGroupID()?>" <? if (in_array($g->getGroupID(), $viewAccess)) { ?> checked <? } ?> /> <?=$g->getGroupDisplayName()?></label></li>
+<li><label><input type="checkbox" name="readGID[]" value="<?php echo $g->getGroupID()?>" <?php if (in_array($g->getGroupID(), $viewAccess)) { ?> checked <?php } ?> /> <?php echo $g->getGroupDisplayName()?></label></li>
 
-<? } ?>
+<?php } ?>
 
 </ul>
 </div>
 
 <div class="clearfix">
 
-<h3><?=t('Who can edit this page?')?></h3>
+<h3><?php echo t('Who can edit this page?')?></h3>
 
 <ul class="inputs-list">
 
-<?
+<?php
 
 foreach ($gArray as $g) {
 ?>
 
-<li><label><input type="checkbox" name="editGID[]" value="<?=$g->getGroupID()?>" <? if (in_array($g->getGroupID(), $editAccess)) { ?> checked <? } ?> /> <?=$g->getGroupDisplayName()?></label></li>
+<li><label><input type="checkbox" name="editGID[]" value="<?php echo $g->getGroupID()?>" <?php if (in_array($g->getGroupID(), $editAccess)) { ?> checked <?php } ?> /> <?php echo $g->getGroupDisplayName()?></label></li>
 
-<? } ?>
+<?php } ?>
 
 </ul>
 </div>
 
 <div class="dialog-buttons">
-	<a href="javascript:void(0)" onclick="jQuery.fn.dialog.closeTop();" class="ccm-button-left btn"><?=t('Cancel')?></a>
-	<a href="javascript:void(0)" onclick="$('form[name=ccmPermissionsForm]').submit()" class="ccm-button-right btn primary"><?=t('Save')?></a>
+	<a href="javascript:void(0)" onclick="jQuery.fn.dialog.closeTop();" class="ccm-button-left btn"><?php echo t('Cancel')?></a>
+	<a href="javascript:void(0)" onclick="$('form[name=ccmPermissionsForm]').submit()" class="ccm-button-right btn primary"><?php echo t('Save')?></a>
 </div>	
 <input type="hidden" name="update_permissions" value="1" class="accept">
 <input type="hidden" name="processCollection" value="1">
@@ -113,4 +113,4 @@ $(function() {
 <div class="ccm-spacer">&nbsp;</div>
 </form>
 </div>
-<? } ?>
+<?php } ?>

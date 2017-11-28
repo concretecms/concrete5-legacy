@@ -1,9 +1,9 @@
-<? defined('C5_EXECUTE') or die("Access Denied."); ?>
+<?php defined('C5_EXECUTE') or die("Access Denied."); ?>
 
 
-<? $included = $permissionAccess->getAccessListItems(PermissionKey::ACCESS_TYPE_INCLUDE); ?>
-<? $excluded = $permissionAccess->getAccessListItems(PermissionKey::ACCESS_TYPE_EXCLUDE); ?>
-<?
+<?php $included = $permissionAccess->getAccessListItems(PermissionKey::ACCESS_TYPE_INCLUDE); ?>
+<?php $excluded = $permissionAccess->getAccessListItems(PermissionKey::ACCESS_TYPE_EXCLUDE); ?>
+<?php
 Loader::model('search/group');
 $gl = new GroupSearch();
 $gl->filter('gID', GUEST_GROUP_ID, '>');
@@ -14,66 +14,66 @@ foreach($gIDs as $gID) {
 	$groups[] = Group::getByID($gID['gID']);
 }
 ?>
-<? $form = Loader::helper('form'); ?>
+<?php $form = Loader::helper('form'); ?>
 
-<? if (count($included) > 0 || count($excluded) > 0) { ?>
+<?php if (count($included) > 0 || count($excluded) > 0) { ?>
 
-<? if (count($included) > 0) { ?>
+<?php if (count($included) > 0) { ?>
 
-<h3><?=t('Who can search what?')?></h3>
+<h3><?php echo t('Who can search what?')?></h3>
 
-<? foreach($included as $assignment) {
+<?php foreach($included as $assignment) {
 	$entity = $assignment->getAccessEntityObject(); 
 ?>
 
 
 <div class="clearfix">
-	<label><?=$entity->getAccessEntityLabel()?></label>
+	<label><?php echo $entity->getAccessEntityLabel()?></label>
 	<div class="input">
-	<?=$form->select('groupsIncluded[' . $entity->getAccessEntityID() . ']', array('A' => t('All Groups'), 'C' => t('Custom')), $assignment->getGroupsAllowedPermission())?><br/><br/>
-	<ul class="inputs-list" <? if ($assignment->getGroupsAllowedPermission() != 'C') { ?>style="display: none"<? } ?>>
-		<? foreach($groups as $g) { ?>
-			<li><label><input type="checkbox" name="gIDInclude[<?=$entity->getAccessEntityID()?>][]" value="<?=$g->getGroupID()?>" <? if (in_array($g->getGroupID(), $assignment->getGroupsAllowedArray())) { ?> checked="checked" <? } ?> /> <span><?=$g->getGroupDisplayName()?></span></label></li>
-		<? } ?>
+	<?php echo $form->select('groupsIncluded[' . $entity->getAccessEntityID() . ']', array('A' => t('All Groups'), 'C' => t('Custom')), $assignment->getGroupsAllowedPermission())?><br/><br/>
+	<ul class="inputs-list" <?php if ($assignment->getGroupsAllowedPermission() != 'C') { ?>style="display: none"<?php } ?>>
+		<?php foreach($groups as $g) { ?>
+			<li><label><input type="checkbox" name="gIDInclude[<?php echo $entity->getAccessEntityID()?>][]" value="<?php echo $g->getGroupID()?>" <?php if (in_array($g->getGroupID(), $assignment->getGroupsAllowedArray())) { ?> checked="checked" <?php } ?> /> <span><?php echo $g->getGroupDisplayName()?></span></label></li>
+		<?php } ?>
 	</ul>
 	</div>
 </div>
 
-<? }
+<?php }
 
 } ?>
 
 
-<? if (count($excluded) > 0) { ?>
+<?php if (count($excluded) > 0) { ?>
 
-<h3><?=t('Who can\'t search what?')?></h3>
+<h3><?php echo t('Who can\'t search what?')?></h3>
 
-<? foreach($excluded as $assignment) {
+<?php foreach($excluded as $assignment) {
 	$entity = $assignment->getAccessEntityObject(); 
 ?>
 
 
 <div class="clearfix">
-	<label><?=$entity->getAccessEntityLabel()?></label>
+	<label><?php echo $entity->getAccessEntityLabel()?></label>
 	<div class="input">
-	<?=$form->select('groupsExcluded[' . $entity->getAccessEntityID() . ']', array('N' => t('No Groups'), 'C' => t('Custom')), $assignment->getGroupsAllowedPermission())?><br/><br/>
-	<ul class="inputs-list" <? if ($assignment->getGroupsAllowedPermission() != 'C') { ?>style="display: none"<? } ?>>
-		<? foreach($groups as $g) { ?>
-			<li><label><input type="checkbox" name="gIDExclude[<?=$entity->getAccessEntityID()?>][]" value="<?=$g->getGroupID()?>" <? if (in_array($g->getGroupID(), $assignment->getGroupsAllowedArray())) { ?> checked="checked" <? } ?> /> <span><?=$g->getGroupDisplayName()?></span></label></li>
-		<? } ?>
+	<?php echo $form->select('groupsExcluded[' . $entity->getAccessEntityID() . ']', array('N' => t('No Groups'), 'C' => t('Custom')), $assignment->getGroupsAllowedPermission())?><br/><br/>
+	<ul class="inputs-list" <?php if ($assignment->getGroupsAllowedPermission() != 'C') { ?>style="display: none"<?php } ?>>
+		<?php foreach($groups as $g) { ?>
+			<li><label><input type="checkbox" name="gIDExclude[<?php echo $entity->getAccessEntityID()?>][]" value="<?php echo $g->getGroupID()?>" <?php if (in_array($g->getGroupID(), $assignment->getGroupsAllowedArray())) { ?> checked="checked" <?php } ?> /> <span><?php echo $g->getGroupDisplayName()?></span></label></li>
+		<?php } ?>
 	</ul>
 	</div>
 </div>
 
 
 
-<? }
+<?php }
 
 } ?>
 
-<? } else {  ?>
-	<p><?=t('No users or groups selected.')?></p>
-<? } ?>
+<?php } else {  ?>
+	<p><?php echo t('No users or groups selected.')?></p>
+<?php } ?>
 
 <script type="text/javascript">
 $(function() {

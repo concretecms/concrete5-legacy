@@ -1,4 +1,4 @@
-<?  defined('C5_EXECUTE') or die("Access Denied.");
+<?php  defined('C5_EXECUTE') or die("Access Denied.");
 
 $ch = Loader::helper('concrete/interface');
 $tp = new TaskPermission();
@@ -24,27 +24,27 @@ ccm_marketplaceRefreshInstalledThemes = function() {
 }
 </script>
 
-<h2><?=t('Themes')?></h2>
-	<? if (!$tp->canInstallPackages()) { ?>
-		<div><?=t('You do not have permission to connect to the marketplace.')?></div>
-	<? } else if( !count($availableThemes) ){ ?>
-		<div><?=t('Unable to connect to the marketplace.')?></div>
-	<? }else{ ?>
-		<div class="ccm-scroller" current-page="1" current-pos="0" num-pages="<?=ceil(count($availableThemes)/4)?>" >
-			<a href="javascript:void(0)" class="ccm-scroller-l"><img src="<?=ASSETS_URL_IMAGES?>/button_scroller_l.png" width="28" height="79" alt="l" /></a>
-			<a href="javascript:void(0)" class="ccm-scroller-r"><img src="<?=ASSETS_URL_IMAGES?>/button_scroller_r.png" width="28" height="79" alt="l" /></a>
+<h2><?php echo t('Themes')?></h2>
+	<?php if (!$tp->canInstallPackages()) { ?>
+		<div><?php echo t('You do not have permission to connect to the marketplace.')?></div>
+	<?php } else if( !count($availableThemes) ){ ?>
+		<div><?php echo t('Unable to connect to the marketplace.')?></div>
+	<?php }else{ ?>
+		<div class="ccm-scroller" current-page="1" current-pos="0" num-pages="<?php echo ceil(count($availableThemes)/4)?>" >
+			<a href="javascript:void(0)" class="ccm-scroller-l"><img src="<?php echo ASSETS_URL_IMAGES?>/button_scroller_l.png" width="28" height="79" alt="l" /></a>
+			<a href="javascript:void(0)" class="ccm-scroller-r"><img src="<?php echo ASSETS_URL_IMAGES?>/button_scroller_r.png" width="28" height="79" alt="l" /></a>
 
 			<div class="ccm-scroller-inner">
-				<ul id="ccm-select-marketplace-theme" style="width: <?=count($availableThemes) * 132?>px">
-				<? foreach($availableThemes as $availableTheme){ ?>
+				<ul id="ccm-select-marketplace-theme" style="width: <?php echo count($availableThemes) * 132?>px">
+				<?php foreach($availableThemes as $availableTheme){ ?>
 					<li class="themeWrap">
-						<span class="ccm-button-marketplace-install"><a href="javascript:void(0)" onclick="ccm_getMarketplaceItem({mpID: '<?=$availableTheme->getMarketplaceItemID()?>', token: '<?=$valt->generate('marketplace_token')?>', onComplete: function() {ccm_marketplaceRefreshInstalledThemes()}})" title="<?=t('Install theme')?>"><img src="<?=$availableTheme->getRemoteListIconURL() ?>" width="97" height="97" /></a></span>
-							<a title="<?=t('Preview')?>" onclick="ccm_previewMarketplaceTheme(<?=$_REQUEST['cID']?>, <?=intval($availableTheme->getRemoteCollectionID())?>,'<?=addslashes($availableTheme->getName()) ?>','<?=addslashes($availableTheme->getHandle()) ?>')" href="javascript:void(0)" class="preview">
-							<img src="<?=ASSETS_URL_IMAGES?>/icons/magnifying.png" alt="<?=t('Preview')?>" class="ccm-preview" /></a>
-						<div class="ccm-theme-name" ><a target="_blank" href="<?=$availableTheme->getRemoteURL() ?>"><?=$availableTheme->getName() ?></a></div>
+						<span class="ccm-button-marketplace-install"><a href="javascript:void(0)" onclick="ccm_getMarketplaceItem({mpID: '<?php echo $availableTheme->getMarketplaceItemID()?>', token: '<?php echo $valt->generate('marketplace_token')?>', onComplete: function() {ccm_marketplaceRefreshInstalledThemes()}})" title="<?php echo t('Install theme')?>"><img src="<?php echo $availableTheme->getRemoteListIconURL() ?>" width="97" height="97" /></a></span>
+							<a title="<?php echo t('Preview')?>" onclick="ccm_previewMarketplaceTheme(<?php echo $_REQUEST['cID']?>, <?php echo intval($availableTheme->getRemoteCollectionID())?>,'<?php echo addslashes($availableTheme->getName()) ?>','<?php echo addslashes($availableTheme->getHandle()) ?>')" href="javascript:void(0)" class="preview">
+							<img src="<?php echo ASSETS_URL_IMAGES?>/icons/magnifying.png" alt="<?php echo t('Preview')?>" class="ccm-preview" /></a>
+						<div class="ccm-theme-name" ><a target="_blank" href="<?php echo $availableTheme->getRemoteURL() ?>"><?php echo $availableTheme->getName() ?></a></div>
 					</li>
-				<? } ?>
+				<?php } ?>
 				</ul>
 			</div>
 		</div>
-	<? } ?>
+	<?php } ?>

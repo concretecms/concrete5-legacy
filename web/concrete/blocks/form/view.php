@@ -8,10 +8,10 @@ $miniSurveySubmitted = ($_GET['surveySuccess'] && $_GET['qsid'] == intval($surve
 ?>
 <a name="<?php echo $survey->questionSetId ?>"></a><br/>
 <?php if ($invalidIP) { ?>
-<div class="ccm-error"><p><?=$invalidIP?></p></div>
-<? } ?>
+<div class="ccm-error"><p><?php echo $invalidIP?></p></div>
+<?php } ?>
 
-<form enctype="multipart/form-data" id="miniSurveyView<?=intval($bID)?>" class="miniSurveyView<?php echo $miniSurveySubmitted ? ' miniSurveyView-submitted' : ' miniSurveyView-not-submitted'; ?>" method="post" action="<?php echo $this->action('submit_form').'#'.$survey->questionSetId?>">
+<form enctype="multipart/form-data" id="miniSurveyView<?php echo intval($bID)?>" class="miniSurveyView<?php echo $miniSurveySubmitted ? ' miniSurveyView-submitted' : ' miniSurveyView-not-submitted'; ?>" method="post" action="<?php echo $this->action('submit_form').'#'.$survey->questionSetId?>">
 	<?php  if ($miniSurveySubmitted) { ?>
 		<div id="msg"><?php echo $survey->thankyouMsg ?></div> 
 	<?php  }elseif(strlen($formResponse)){ ?>
@@ -22,7 +22,7 @@ $miniSurveySubmitted = ($_GET['surveySuccess'] && $_GET['qsid'] == intval($surve
 				echo '<div class="error">'.$error.'</div>';
 			} ?>
 		</div>
-	<? } ?>
-	<input name="qsID" type="hidden" value="<?= intval($survey->questionSetId)?>" />
+	<?php } ?>
+	<input name="qsID" type="hidden" value="<?php echo intval($survey->questionSetId)?>" />
 	<?php  $miniSurvey->loadSurvey( $survey->questionSetId, 0, intval($bID) );  ?> 
 </form>

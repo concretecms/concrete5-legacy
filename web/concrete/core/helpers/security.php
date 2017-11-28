@@ -1,4 +1,4 @@
-<?
+<?php
 
 /**
  * Helper class for sanitizing input and escaping output.

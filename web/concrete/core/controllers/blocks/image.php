@@ -1,4 +1,4 @@
-<?
+<?php
 	defined('C5_EXECUTE') or die("Access Denied.");	
 /**
  * A block controller for displaying an image on a page.

@@ -1,15 +1,15 @@
-<? defined('C5_EXECUTE') or die("Access Denied."); ?>
+<?php defined('C5_EXECUTE') or die("Access Denied."); ?>
 <div id="ccm-profile-wrapper">
-	<? Loader::element('profile/sidebar', array('profile'=> $profile)); ?>
+	<?php Loader::element('profile/sidebar', array('profile'=> $profile)); ?>
 	<div id="ccm-profile-body">
-		<h1><?=t('My Friends') ?></h1>
-		<?
+		<h1><?php echo t('My Friends') ?></h1>
+		<?php
 		$friendsData = UsersFriends::getUsersFriendsData( $profile->getUserID() );
 		if (!$friendsData) { ?>
 			<div style="padding:16px 0px;">
-				<?=t('No results found.')?>
+				<?php echo t('No results found.')?>
 			</div>
-		<?
+		<?php
 		}
 		else {
 			$dh = Loader::helper('date');
@@ -20,23 +20,23 @@
 				if (!is_object($friendUI)) { ?>
 					<div class="ccm-users-friend" style="margin-bottom:16px;">
 						<div style="float:left; width:100px;">
-							<?=$av->outputNoAvatar()?>
+							<?php echo $av->outputNoAvatar()?>
 						</div>
 						<div >
-							<?=t('Unknown User')?>
+							<?php echo t('Unknown User')?>
 						</div>
 						<div class="ccm-spacer"></div>
 					</div>
-				<? }
+				<?php }
 				else { ?>
 					<div class="ccm-users-friend" style="margin-bottom:16px;">
 						<div style="float:left; width:100px; margin-right:10px;">
-							<a href="<?=View::url('/profile',$friendUID)?>"><?= $av->outputUserAvatar($friendUI)?></a>
+							<a href="<?php echo View::url('/profile',$friendUID)?>"><?php echo $av->outputUserAvatar($friendUI)?></a>
 						</div>
 						<div >
-							<a href="<?=View::url('/profile',$friendUID) ?>"><?= $friendUI->getUsername(); ?></a>
+							<a href="<?php echo View::url('/profile',$friendUID) ?>"><?php echo $friendUI->getUsername(); ?></a>
 							<div style=" font-size:90%; line-height:90%; margin-top:4px;">
-							<?=t('Member Since %s', $dh->formatDate($friendUI->getUserDateAdded(), true))?>
+							<?php echo t('Member Since %s', $dh->formatDate($friendUI->getUserDateAdded(), true))?>
 							</div>
 						</div>
 						<div class="ccm-spacer"></div>

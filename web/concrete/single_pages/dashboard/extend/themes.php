@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 $valt = Loader::helper('validation/token');
 $ci = Loader::helper('concrete/urls');
@@ -9,17 +9,17 @@ if ($tp->canInstallPackages()) {
 }
 ?>
 
-<?=Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Browse Themes'), t('Get more themes from concrete5.org.'), false, false);?>
+<?php echo Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Browse Themes'), t('Get more themes from concrete5.org.'), false, false);?>
 <div class="ccm-pane-options">
-	<?=Loader::element('marketplace/search_form', array('action' => $this->url('/dashboard/extend/themes'), 'sets' => $sets, 'sortBy' => $sortBy));?>
+	<?php echo Loader::element('marketplace/search_form', array('action' => $this->url('/dashboard/extend/themes'), 'sets' => $sets, 'sortBy' => $sortBy));?>
 </div>
 <div class="ccm-pane-body">
-	<?=Loader::element('marketplace/results', array('type' => 'themes', 'items' => $items));?>
+	<?php echo Loader::element('marketplace/results', array('type' => 'themes', 'items' => $items));?>
 </div>	
 
-<div class="ccm-pane-footer" id="ccm-marketplace-browse-footer"><?=$list->displayPagingV2()?></div>
+<div class="ccm-pane-footer" id="ccm-marketplace-browse-footer"><?php echo $list->displayPagingV2()?></div>
 
-<?=Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper(false); ?>
+<?php echo Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper(false); ?>
 
 <script type="text/javascript">
 $(function() {

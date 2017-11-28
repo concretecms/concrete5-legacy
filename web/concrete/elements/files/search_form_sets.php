@@ -1,5 +1,5 @@
-<? defined('C5_EXECUTE') or die("Access Denied."); ?> 
-<?
+<?php defined('C5_EXECUTE') or die("Access Denied."); ?> 
+<?php
 
 $s1 = FileSet::getMySets();
 $form = Loader::helper('form');
@@ -11,11 +11,11 @@ if (count($s1) > 0) { ?>
 	<div>
 	<table border="0" cellspacing="0" cellpadding="0" id="ccm-file-search-advanced-sets-header">
 	<tr>
-		<td width="100%"><h2><?=t('Sets')?></h2></td>
+		<td width="100%"><h2><?php echo t('Sets')?></h2></td>
 		<td>
 
 		<div class="ccm-file-sets-search-wrapper-input">
-			<?=$form->text('fsSearchName', $searchRequest['fsSearchName'], array('autocomplete' => 'off'))?>
+			<?php echo $form->text('fsSearchName', $searchRequest['fsSearchName'], array('autocomplete' => 'off'))?>
 		</div>
 		
 		</td>
@@ -26,23 +26,23 @@ if (count($s1) > 0) { ?>
 		
 	<div class="ccm-file-search-advanced-sets-results">
 	<ul id="ccm-file-search-advanced-sets-list">
-	<? foreach($s1 as $fs) { 
+	<?php foreach($s1 as $fs) { 
 		$pfs = new Permissions($fs);
 		
 		?>
-		<li class="ccm-<?=$searchInstance?>-search-advanced-sets-cb">
+		<li class="ccm-<?php echo $searchInstance?>-search-advanced-sets-cb">
 		<div class="ccm-file-search-advanced-set-controls">
-			<a href="<?=View::url('/dashboard/files/sets', 'view_detail', $fs->getFileSetID())?>"><?=$html->image('icons/wrench.png')?></a>
-			<? if ($pfs->canDeleteFileSet()) { ?>
-				<a href="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/files/delete_set?fsID=<?=$fs->getFileSetID()?>&searchInstance=<?=$searchInstance?>" dialog-append-buttons="true" class="ccm-file-set-delete-window" dialog-title="<?=t('Delete File Set')?>" dialog-width="320" dialog-height="110" dialog-modal="false"><?=$html->image('icons/delete_small.png')?></a>
-			<? } ?>
+			<a href="<?php echo View::url('/dashboard/files/sets', 'view_detail', $fs->getFileSetID())?>"><?php echo $html->image('icons/wrench.png')?></a>
+			<?php if ($pfs->canDeleteFileSet()) { ?>
+				<a href="<?php echo REL_DIR_FILES_TOOLS_REQUIRED?>/files/delete_set?fsID=<?php echo $fs->getFileSetID()?>&searchInstance=<?php echo $searchInstance?>" dialog-append-buttons="true" class="ccm-file-set-delete-window" dialog-title="<?php echo t('Delete File Set')?>" dialog-width="320" dialog-height="110" dialog-modal="false"><?php echo $html->image('icons/delete_small.png')?></a>
+			<?php } ?>
 		</div>
-		<?=$form->checkbox('fsID[' . $fs->getFileSetID() . ']', $fs->getFileSetID(), (is_array($searchRequest['fsID']) && in_array($fs->getFileSetID(), $searchRequest['fsID'])))?> <?=$form->label('fsID[' . $fs->getFileSetID() . ']', $fs->getFileSetName())?></li>
-	<? } ?>
+		<?php echo $form->checkbox('fsID[' . $fs->getFileSetID() . ']', $fs->getFileSetID(), (is_array($searchRequest['fsID']) && in_array($fs->getFileSetID(), $searchRequest['fsID'])))?> <?php echo $form->label('fsID[' . $fs->getFileSetID() . ']', $fs->getFileSetName())?></li>
+	<?php } ?>
 	</ul>
 	</div>
 
-	<div style="padding-left: 6px; padding-top: 6px" class="ccm-note"><?=$form->checkbox('fsIDNone', '1', $searchRequest['fsIDNone'] == 1, array('instance' => $searchInstance))?> <?=$form->label('fsIDNone', t('Display files in no sets.'))?></div>
+	<div style="padding-left: 6px; padding-top: 6px" class="ccm-note"><?php echo $form->checkbox('fsIDNone', '1', $searchRequest['fsIDNone'] == 1, array('instance' => $searchInstance))?> <?php echo $form->label('fsIDNone', t('Display files in no sets.'))?></div>
 	
 </div>
 
@@ -51,4 +51,4 @@ if (count($s1) > 0) { ?>
 		$('a.ccm-file-set-delete-window').dialog();
 	});	
 	</script>
-<? } ?>
+<?php } ?>

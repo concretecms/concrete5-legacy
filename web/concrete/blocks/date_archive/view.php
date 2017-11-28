@@ -25,7 +25,7 @@ $dh = Loader::helper("date");
 			while(true) {
 				if($workingDt->format('Y') > $year) {
 					$year = $workingDt->format('Y');
-					?></ul><h4><?=$year?></h4><ul><?php
+					?></ul><h4><?php echo $year?></h4><ul><?php
 				}
 				?>
 				<li>
@@ -41,5 +41,5 @@ $dh = Loader::helper("date");
 				$i++;
 			} ?>
 		</ul>
-<? } ?>
+<?php } ?>
 </div>

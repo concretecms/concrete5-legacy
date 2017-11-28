@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 /**
  * The controller for the block that displays site activity, including statistics, in the dashboard.
