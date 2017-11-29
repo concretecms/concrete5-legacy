@@ -6,34 +6,34 @@
 			<table class="ccm-style-property-table" border="0" cellspacing="0" cellpadding="0">
 				<tr>
 					<td> 
-						<?=t('Top')?>:
+						<?php echo t('Top')?>:
 					</td>
 					<td>
-						<input name="margin_top" type="text" value="<?=htmlentities( $cssData['margin_top'], ENT_COMPAT, APP_CHARSET) ?>" size=2 style="width:40px" />
+						<input name="margin_top" type="text" value="<?php echo htmlentities( $cssData['margin_top'], ENT_COMPAT, APP_CHARSET) ?>" size=2 style="width:40px" />
 					</td>
 				</tr>
 				<tr>
 					<td> 
-						<?=t('Right')?>:
+						<?php echo t('Right')?>:
 					</td>
 					<td>
-						<input name="margin_right" type="text" value="<?=htmlentities( $cssData['margin_right'], ENT_COMPAT, APP_CHARSET) ?>" size=2 style="width:40px" />
+						<input name="margin_right" type="text" value="<?php echo htmlentities( $cssData['margin_right'], ENT_COMPAT, APP_CHARSET) ?>" size=2 style="width:40px" />
 					</td>
 				</tr>
 				<tr>
 					<td> 
-						<?=t('Bottom')?>:
+						<?php echo t('Bottom')?>:
 					</td>
 					<td>
-						<input name="margin_bottom" type="text" value="<?=htmlentities( $cssData['margin_bottom'], ENT_COMPAT, APP_CHARSET) ?>" size=2 style="width:40px" />
+						<input name="margin_bottom" type="text" value="<?php echo htmlentities( $cssData['margin_bottom'], ENT_COMPAT, APP_CHARSET) ?>" size=2 style="width:40px" />
 					</td>
 				</tr>
 				<tr>
 					<td> 
-						<?=t('Left')?>:
+						<?php echo t('Left')?>:
 					</td>
 					<td>
-						<input name="margin_left" type="text" value="<?=htmlentities( $cssData['margin_left'], ENT_COMPAT, APP_CHARSET) ?>" size=2 style="width:40px" />
+						<input name="margin_left" type="text" value="<?php echo htmlentities( $cssData['margin_left'], ENT_COMPAT, APP_CHARSET) ?>" size=2 style="width:40px" />
 					</td>
 				</tr>												
 			</table>	 
@@ -43,34 +43,34 @@
 			<table class="ccm-style-property-table" border="0" cellspacing="0" cellpadding="0">
 				<tr>
 					<td> 
-						<?=t('Top')?>:
+						<?php echo t('Top')?>:
 					</td>
 					<td>
-						<input name="padding_top" type="text" value="<?=htmlentities( $cssData['padding_top'], ENT_COMPAT, APP_CHARSET) ?>" size=2 style="width:40px" />
+						<input name="padding_top" type="text" value="<?php echo htmlentities( $cssData['padding_top'], ENT_COMPAT, APP_CHARSET) ?>" size=2 style="width:40px" />
 					</td>
 				</tr>
 				<tr>
 					<td> 
-						<?=t('Right')?>:
+						<?php echo t('Right')?>:
 					</td>
 					<td>
-						<input name="padding_right" type="text" value="<?=htmlentities( $cssData['padding_right'], ENT_COMPAT, APP_CHARSET) ?>" size=2 style="width:40px" />
+						<input name="padding_right" type="text" value="<?php echo htmlentities( $cssData['padding_right'], ENT_COMPAT, APP_CHARSET) ?>" size=2 style="width:40px" />
 					</td>
 				</tr>
 				<tr>
 					<td> 
-						<?=t('Bottom')?>:
+						<?php echo t('Bottom')?>:
 					</td>
 					<td>
-						<input name="padding_bottom" type="text" value="<?=htmlentities( $cssData['padding_bottom'], ENT_COMPAT, APP_CHARSET) ?>" size=2 style="width:40px" />
+						<input name="padding_bottom" type="text" value="<?php echo htmlentities( $cssData['padding_bottom'], ENT_COMPAT, APP_CHARSET) ?>" size=2 style="width:40px" />
 					</td>
 				</tr>
 				<tr>
 					<td> 
-						<?=t('Left')?>:
+						<?php echo t('Left')?>:
 					</td>
 					<td>
-						<input name="padding_left" type="text" value="<?=htmlentities( $cssData['padding_left'], ENT_COMPAT, APP_CHARSET) ?>" size=2 style="width:40px" />
+						<input name="padding_left" type="text" value="<?php echo htmlentities( $cssData['padding_left'], ENT_COMPAT, APP_CHARSET) ?>" size=2 style="width:40px" />
 					</td>
 				</tr>												
 			</table>

@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 
 if ($_REQUEST['task'] == 'copy_permission_set' && Loader::helper("validation/token")->validate('copy_permission_set')) {

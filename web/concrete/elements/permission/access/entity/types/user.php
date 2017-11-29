@@ -1,12 +1,12 @@
-<? defined('C5_EXECUTE') or die("Access Denied."); ?>
+<?php defined('C5_EXECUTE') or die("Access Denied."); ?>
 
-<? $url = $type->getAccessEntityTypeToolsURL(); ?>
+<?php $url = $type->getAccessEntityTypeToolsURL(); ?>
 
 <script type="text/javascript">
 ccm_triggerSelectUser = function(uID, uName) {
 	/* retrieve the peID for the selected group from ajax */
 	$('#ccm-permissions-access-entity-form .btn-group').removeClass('open');
-	$.getJSON('<?=$url?>', {
+	$.getJSON('<?php echo $url?>', {
 		'uID': uID
 	}, function(r) {
 		$('#ccm-permissions-access-entity-form input[name=peID]').val(r.peID);	

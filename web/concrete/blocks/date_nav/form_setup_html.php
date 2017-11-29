@@ -73,30 +73,30 @@ $("select#cParentIDLocation").change(function() {
 	<div class="ccm-block-field-group">
 	 	<h2><?php echo t('Display Format')?></h2>
 	 	<label class="radio inline">
-			<input type="radio" name="flatDisplay" value="0" <?php  if (!$controller->flatDisplay) { ?> checked<?php  } ?> /><? echo t('Hierarchy')?>&nbsp; 
+			<input type="radio" name="flatDisplay" value="0" <?php  if (!$controller->flatDisplay) { ?> checked<?php  } ?> /><?php echo t('Hierarchy')?>&nbsp; 
 		</label>
 	 	<label class="radio inline">
-			<input type="radio" name="flatDisplay" value="1" <?php  if ($controller->flatDisplay) { ?> checked<?php  } ?> /><? echo t('Flat')?> 
+			<input type="radio" name="flatDisplay" value="1" <?php  if ($controller->flatDisplay) { ?> checked<?php  } ?> /><?php echo t('Flat')?> 
 		</label>
 	</div>		
 	 
 	<div class="ccm-block-field-group">
 	 	<h2><?php echo t('Open by default to the...')?></h2>	  
 	 	<label class="radio inline">
-			<input type="radio" name="defaultNode" value="current_page" <?php  if ($controller->defaultNode!='current_month') { ?> checked<?php  } ?> /><? echo t('Current Page')?>&nbsp; 
+			<input type="radio" name="defaultNode" value="current_page" <?php  if ($controller->defaultNode!='current_month') { ?> checked<?php  } ?> /><?php echo t('Current Page')?>&nbsp; 
 		</label>
 	 	<label class="radio inline">
-			<input type="radio" name="defaultNode" value="current_month" <?php  if ($controller->defaultNode=='current_month') { ?> checked<?php  } ?> /><? echo t('Current Month')?> 
+			<input type="radio" name="defaultNode" value="current_month" <?php  if ($controller->defaultNode=='current_month') { ?> checked<?php  } ?> /><?php echo t('Current Month')?> 
 		</label>
 	</div>		 
 	 
 	<div class="ccm-block-field-group">
 	 	<h2><?php echo t('Page Info')?></h2>	  
 	 	<label class="radio inline">
-			<input type="radio" name="showDescriptions" value="0" <?php  if (!$controller->showDescriptions) { ?> checked<?php  } ?> /><? echo t('Titles')?>&nbsp;
+			<input type="radio" name="showDescriptions" value="0" <?php  if (!$controller->showDescriptions) { ?> checked<?php  } ?> /><?php echo t('Titles')?>&nbsp;
 		</label>
 	 	<label class="radio inline">
-			<input type="radio" name="showDescriptions" value="1" <?php  if ($controller->showDescriptions) { ?> checked<?php  } ?> /><? echo t('Titles &amp; Descriptions')?>
+			<input type="radio" name="showDescriptions" value="1" <?php  if ($controller->showDescriptions) { ?> checked<?php  } ?> /><?php echo t('Titles &amp; Descriptions')?>
 		</label>
 	</div>	
 

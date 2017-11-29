@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 $u = new User();
 $form = Loader::helper('form');
@@ -122,81 +122,81 @@ $searchInstance = Loader::helper('text')->entities($_REQUEST['searchInstance']);
 ?>
 <div class="ccm-ui">
 
-<? if ($pcnt == 0) { ?>
-	<?=t("You do not have permission to modify the page type or theme on any of the selected pages."); ?>
-<? } else { ?>
-	<form id="ccm-<?=$searchInstance?>-design-form" method="post" action="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/pages/design">
-	<input type="hidden" name="plID" value="<?=$plID?>" />
-	<input type="hidden" name="ctID" value="<?=$ctID?>" />
-	<? foreach($pages as $c) { ?>
-		<input type="hidden" name="cID[]" value="<?=$c->getCollectionID()?>" />
-	<? } ?>
+<?php if ($pcnt == 0) { ?>
+	<?php echo t("You do not have permission to modify the page type or theme on any of the selected pages."); ?>
+<?php } else { ?>
+	<form id="ccm-<?php echo $searchInstance?>-design-form" method="post" action="<?php echo REL_DIR_FILES_TOOLS_REQUIRED?>/pages/design">
+	<input type="hidden" name="plID" value="<?php echo $plID?>" />
+	<input type="hidden" name="ctID" value="<?php echo $ctID?>" />
+	<?php foreach($pages as $c) { ?>
+		<input type="hidden" name="cID[]" value="<?php echo $c->getCollectionID()?>" />
+	<?php } ?>
 	
-	<?=$form->hidden('task', 'design_pages')?>
+	<?php echo $form->hidden('task', 'design_pages')?>
 
-	<? 
+	<?php 
 	if ($isMasterCollection) { ?>
-		<h3><?=t('Choose a Page Type')?></h3>
+		<h3><?php echo t('Choose a Page Type')?></h3>
 	
 		<p>
-		<?=t("This is the defaults page for the %s page type. You cannot change it.", $c->getCollectionTypeName()); ?>
+		<?php echo t("This is the defaults page for the %s page type. You cannot change it.", $c->getCollectionTypeName()); ?>
 		</p>
 		
-	<? } else if ($isSinglePage) { ?>
-	<h3><?=t('Choose a Page Type')?></h3>
+	<?php } else if ($isSinglePage) { ?>
+	<h3><?php echo t('Choose a Page Type')?></h3>
 
 	<p>
-	<?=t("This page is a single page, which means it doesn't have a page type associated with it."); ?>
+	<?php echo t("This page is a single page, which means it doesn't have a page type associated with it."); ?>
 	</p>
 
-	<? } else if ($cnt > 0) { ?>
+	<?php } else if ($cnt > 0) { ?>
 	
-	<h3><?=t('Choose a Page Type')?></h3>
+	<h3><?php echo t('Choose a Page Type')?></h3>
 
-	<div class="ccm-scroller" current-page="1" current-pos="0" num-pages="<?=ceil($cnt/4)?>">
-		<a href="javascript:void(0)" class="ccm-scroller-l"><img src="<?=ASSETS_URL_IMAGES?>/button_scroller_l.png" width="28" height="79" alt="l" /></a>
-		<a href="javascript:void(0)" class="ccm-scroller-r"><img src="<?=ASSETS_URL_IMAGES?>/button_scroller_r.png" width="28" height="79" alt="l" /></a>
+	<div class="ccm-scroller" current-page="1" current-pos="0" num-pages="<?php echo ceil($cnt/4)?>">
+		<a href="javascript:void(0)" class="ccm-scroller-l"><img src="<?php echo ASSETS_URL_IMAGES?>/button_scroller_l.png" width="28" height="79" alt="l" /></a>
+		<a href="javascript:void(0)" class="ccm-scroller-r"><img src="<?php echo ASSETS_URL_IMAGES?>/button_scroller_r.png" width="28" height="79" alt="l" /></a>
 
 		<div class="ccm-scroller-inner">
-			<ul id="ccm-select-page-type" style="width: <?=$cnt * 132?>px">
-				<? 
+			<ul id="ccm-select-page-type" style="width: <?php echo $cnt * 132?>px">
+				<?php 
 				foreach($allowedPageTypes as $ct) { ?>		
-					<? $class = ($ct->getCollectionTypeID() == $ctID) ? 'ccm-item-selected' : ''; ?>
+					<?php $class = ($ct->getCollectionTypeID() == $ctID) ? 'ccm-item-selected' : ''; ?>
 			
-					<li class="<?=$class?>"><a href="javascript:void(0)" ccm-page-type-id="<?=$ct->getCollectionTypeID()?>"><?=$ct->getCollectionTypeIconImage();?></a><span><?=$ct->getCollectionTypeName()?></span>
+					<li class="<?php echo $class?>"><a href="javascript:void(0)" ccm-page-type-id="<?php echo $ct->getCollectionTypeID()?>"><?php echo $ct->getCollectionTypeIconImage();?></a><span><?php echo $ct->getCollectionTypeName()?></span>
 					</li>
-				<?
+				<?php
 				}?>
 			</ul>
 		</div>
 	</div>
-	<? } ?>
+	<?php } ?>
 	
 	
-	<? if(ENABLE_MARKETPLACE_SUPPORT){ ?>
-		<a href="javascript:void(0)" class="btn ccm-button-right"><?=t("Get more themes.")?></a>
-	<? } ?>
+	<?php if(ENABLE_MARKETPLACE_SUPPORT){ ?>
+		<a href="javascript:void(0)" class="btn ccm-button-right"><?php echo t("Get more themes.")?></a>
+	<?php } ?>
 
-	<h3 ><?=t('Themes')?></h3>
+	<h3 ><?php echo t('Themes')?></h3>
 
-	<div class="ccm-scroller" current-page="1" current-pos="0" num-pages="<?=ceil(count($tArray)/4)?>">
-		<a href="javascript:void(0)" class="ccm-scroller-l"><img src="<?=ASSETS_URL_IMAGES?>/button_scroller_l.png" width="28" height="79" alt="l" /></a>
-		<a href="javascript:void(0)" class="ccm-scroller-r"><img src="<?=ASSETS_URL_IMAGES?>/button_scroller_r.png" width="28" height="79" alt="l" /></a>
+	<div class="ccm-scroller" current-page="1" current-pos="0" num-pages="<?php echo ceil(count($tArray)/4)?>">
+		<a href="javascript:void(0)" class="ccm-scroller-l"><img src="<?php echo ASSETS_URL_IMAGES?>/button_scroller_l.png" width="28" height="79" alt="l" /></a>
+		<a href="javascript:void(0)" class="ccm-scroller-r"><img src="<?php echo ASSETS_URL_IMAGES?>/button_scroller_r.png" width="28" height="79" alt="l" /></a>
 		
 		<div class="ccm-scroller-inner">
-			<ul id="ccm-select-theme" style="width: <?=count($tArray) * 132?>px">
-			<? foreach($tArray as $t) { ?>
+			<ul id="ccm-select-theme" style="width: <?php echo count($tArray) * 132?>px">
+			<?php foreach($tArray as $t) { ?>
 			
-				<? $class = ($t->getThemeID() == $plID) ? 'ccm-item-selected' : ''; ?>
-				<li class="<?=$class?> themeWrap">
+				<?php $class = ($t->getThemeID() == $plID) ? 'ccm-item-selected' : ''; ?>
+				<li class="<?php echo $class?> themeWrap">
 				
-					<a href="javascript:void(0)" ccm-theme-id="<?=$t->getThemeID()?>"><?=$t->getThemeThumbnail()?></a>
-						<? if ($t->getThemeID() != $plID) { ?><a title="<?=t('Preview')?>" onclick="ccm_previewInternalTheme(<?=$c->getCollectionID()?>, <?=intval($t->getThemeID())?>,'<?=addslashes(str_replace(array("\r","\n",'\n'),'',$t->getThemeDisplayName())) ?>')" href="javascript:void(0)" class="preview">
-						<img src="<?=ASSETS_URL_IMAGES?>/icons/magnifying.png" alt="<?=t('Preview')?>" class="ccm-preview" /></a><? } ?>
-					<div class="ccm-theme-name" ><?=$t->getThemeDisplayName()?></div>
+					<a href="javascript:void(0)" ccm-theme-id="<?php echo $t->getThemeID()?>"><?php echo $t->getThemeThumbnail()?></a>
+						<?php if ($t->getThemeID() != $plID) { ?><a title="<?php echo t('Preview')?>" onclick="ccm_previewInternalTheme(<?php echo $c->getCollectionID()?>, <?php echo intval($t->getThemeID())?>,'<?php echo addslashes(str_replace(array("\r","\n",'\n'),'',$t->getThemeDisplayName())) ?>')" href="javascript:void(0)" class="preview">
+						<img src="<?php echo ASSETS_URL_IMAGES?>/icons/magnifying.png" alt="<?php echo t('Preview')?>" class="ccm-preview" /></a><?php } ?>
+					<div class="ccm-theme-name" ><?php echo $t->getThemeDisplayName()?></div>
 			
 				</li>
-			<? } ?>
+			<?php } ?>
 			</ul>
 		</div>
 	</div>
@@ -204,12 +204,12 @@ $searchInstance = Loader::helper('text')->entities($_REQUEST['searchInstance']);
 	
 	</form>
 	<div class="dialog-buttons">
-	<? $ih = Loader::helper('concrete/interface')?>
-	<?=$ih->button_js(t('Cancel'), 'jQuery.fn.dialog.closeTop()', 'left', 'btn')?>	
-	<?=$ih->button_js(t('Update'), 'ccm_sitemapUpdateDesign(\'' . $searchInstance . '\')', 'right', 'btn primary')?>
+	<?php $ih = Loader::helper('concrete/interface')?>
+	<?php echo $ih->button_js(t('Cancel'), 'jQuery.fn.dialog.closeTop()', 'left', 'btn')?>	
+	<?php echo $ih->button_js(t('Update'), 'ccm_sitemapUpdateDesign(\'' . $searchInstance . '\')', 'right', 'btn primary')?>
 	</div>		
 		
-	<?
+	<?php
 	
 }
 ?>

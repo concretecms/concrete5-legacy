@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 $u = new User();
 $form = Loader::helper('form');
@@ -32,20 +32,20 @@ if ($fsp->canDeleteFileSet()) {
 
 <div class="ccm-ui">
 
-<p><?=t('Are you sure you want to delete the following file set?')?></p>
-<p><strong><?=$fs->getFileSetName()?></strong></p>
-<div class="help-block"><?=t('(Note: files within the set will not be removed.)')?></div>
+<p><?php echo t('Are you sure you want to delete the following file set?')?></p>
+<p><strong><?php echo $fs->getFileSetName()?></strong></p>
+<div class="help-block"><?php echo t('(Note: files within the set will not be removed.)')?></div>
 
-	<form id="ccm-<?=$searchInstance?>-delete-file-set-form" method="post" action="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/files/delete_set" onsubmit="return ccm_alDeleteFileSet(this)">
-	<?=$form->hidden('task', 'delete_file_set')?>
-	<?=$vt->output('delete_file_set');?>
-	<?=$form->hidden('fsID', $_REQUEST['fsID']); ?>	
-	<?=$form->hidden('searchInstance', $searchInstance); ?>	
-	<? $ih = Loader::helper('concrete/interface')?>
+	<form id="ccm-<?php echo $searchInstance?>-delete-file-set-form" method="post" action="<?php echo REL_DIR_FILES_TOOLS_REQUIRED?>/files/delete_set" onsubmit="return ccm_alDeleteFileSet(this)">
+	<?php echo $form->hidden('task', 'delete_file_set')?>
+	<?php echo $vt->output('delete_file_set');?>
+	<?php echo $form->hidden('fsID', $_REQUEST['fsID']); ?>	
+	<?php echo $form->hidden('searchInstance', $searchInstance); ?>	
+	<?php $ih = Loader::helper('concrete/interface')?>
 
 <div class="dialog-buttons">
-	<?=$ih->button_js(t('Delete'), "ccm_alDeleteFileSet($('#ccm-" . $searchInstance . "-delete-file-set-form').get(0))", 'right', 'error')?>
-	<?=$ih->button_js(t('Cancel'), 'jQuery.fn.dialog.closeTop()', 'left')?>	
+	<?php echo $ih->button_js(t('Delete'), "ccm_alDeleteFileSet($('#ccm-" . $searchInstance . "-delete-file-set-form').get(0))", 'right', 'error')?>
+	<?php echo $ih->button_js(t('Cancel'), 'jQuery.fn.dialog.closeTop()', 'left')?>	
 </div>
 
 	</form>
@@ -58,21 +58,21 @@ ccm_alDeleteFileSet = function(form) {
 		jQuery.fn.dialog.hideLoader(); 
 		jQuery.fn.dialog.closeTop();
 		
-		<? if ($fs->getFileSetType() == FileSet::TYPE_SAVED_SEARCH) { ?>
-			if (ccm_alLaunchType['<?=$searchInstance?>'] == 'DASHBOARD') {
-				window.location.href = "<?=View::url('/dashboard/files/search')?>";
+		<?php if ($fs->getFileSetType() == FileSet::TYPE_SAVED_SEARCH) { ?>
+			if (ccm_alLaunchType['<?php echo $searchInstance?>'] == 'DASHBOARD') {
+				window.location.href = "<?php echo View::url('/dashboard/files/search')?>";
 			} else {
-				var url = $("div#ccm-<?=$searchInstance?>-overlay-wrapper input[name=dialogAction]").val() + "&refreshDialog=1";
+				var url = $("div#ccm-<?php echo $searchInstance?>-overlay-wrapper input[name=dialogAction]").val() + "&refreshDialog=1";
 				$.get(url, function(resp) {
 					jQuery.fn.dialog.hideLoader();
-					$("div#ccm-<?=$searchInstance?>-overlay-wrapper").html(resp);
+					$("div#ccm-<?php echo $searchInstance?>-overlay-wrapper").html(resp);
 				});
 			}
-		<? } else { ?>
-			$("#ccm-<?=$searchInstance?>-sets-search-wrapper").load('<?=REL_DIR_FILES_TOOLS_REQUIRED?>/files/search_sets_reload', {'searchInstance': '<?=$searchInstance?>'}, function() {
-				ccm_alSetupFileSetSearch('<?=$searchInstance?>');
+		<?php } else { ?>
+			$("#ccm-<?php echo $searchInstance?>-sets-search-wrapper").load('<?php echo REL_DIR_FILES_TOOLS_REQUIRED?>/files/search_sets_reload', {'searchInstance': '<?php echo $searchInstance?>'}, function() {
+				ccm_alSetupFileSetSearch('<?php echo $searchInstance?>');
 			});
-		<? } ?>
+		<?php } ?>
 	});
 	return false;
 }

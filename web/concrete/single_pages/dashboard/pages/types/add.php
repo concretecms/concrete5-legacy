@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 
 $ih = Loader::helper('concrete/interface');
@@ -14,28 +14,28 @@ $pageTypeIconsFS = FileSet::getByName("Page Type Icons");
 	
     <!-- START: Add Page Type pane -->
     
-    <?=Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Add Page Type'), false, false, false);?>
+    <?php echo Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Add Page Type'), false, false, false);?>
 	
-    <form method="post" class="form-horizontal" id="add_page_type" action="<?=$this->url('/dashboard/pages/types/add', 'do_add')?>">
-	<?=$valt->output('add_page_type')?>
-    <?=$form->hidden('task', 'add'); ?>
+    <form method="post" class="form-horizontal" id="add_page_type" action="<?php echo $this->url('/dashboard/pages/types/add', 'do_add')?>">
+	<?php echo $valt->output('add_page_type')?>
+    <?php echo $form->hidden('task', 'add'); ?>
 	
     <div class="ccm-pane-body">
     
         <table class="table" border="0" cellspacing="0" cellpadding="0">
             <thead>
                 <tr>
-                    <th class="header"><?=t('Name')?> <span class="required">*</span></th>
-                    <th class="header"><?=t('Handle')?> <span class="required">*</span></th>
+                    <th class="header"><?php echo t('Name')?> <span class="required">*</span></th>
+                    <th class="header"><?php echo t('Handle')?> <span class="required">*</span></th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
                     <td style="width: 60%">
-                        <?=$form->text('ctName', $_POST['ctName'], array('style' => 'width: 100%'))?>
+                        <?php echo $form->text('ctName', $_POST['ctName'], array('style' => 'width: 100%'))?>
                     </td>
                     <td>
-                        <?=$form->text('ctHandle', $_POST['ctHandle'], array('style' => 'width: 100%'))?>
+                        <?php echo $form->text('ctHandle', $_POST['ctHandle'], array('style' => 'width: 100%'))?>
                     </td>
                 </tr>
 			</tbody>
@@ -46,8 +46,8 @@ $pageTypeIconsFS = FileSet::getByName("Page Type Icons");
                 <tr>
                     <th class="subheader">
 					
-					<?=t('Icon')?>
-                    <?
+					<?php echo t('Icon')?>
+                    <?php
                         if (!is_object($pageTypeIconsFS)) {
                             print '<span style="margin-left: 4px; color: #aaa">';
                             print t('(To add your own page type icons, create a file set named "%s" and add files to that set)', 'Page Type Icons');
@@ -65,7 +65,7 @@ $pageTypeIconsFS = FileSet::getByName("Page Type Icons");
             <tbody>
                 <tr>
                     <td>
-                    <? 
+                    <?php 
                     $first = true;
                     foreach($icons as $ic) { 
                         if(is_object($ic)) {
@@ -81,10 +81,10 @@ $pageTypeIconsFS = FileSet::getByName("Page Type Icons");
                             $first = false;
                             ?>
                             <label class="checkbox inline">
-                            <input type="radio" name="ctIcon" value="<?= $ic->getFileID() ?>" style="vertical-align: middle" <?=$checked?> />
-                            <img src="<?= $fv->getRelativePath(); ?>" width="<?=COLLECTION_TYPE_ICON_WIDTH?>" height="<?=COLLECTION_TYPE_ICON_HEIGHT?>" style="vertical-align: middle" />
+                            <input type="radio" name="ctIcon" value="<?php echo $ic->getFileID() ?>" style="vertical-align: middle" <?php echo $checked?> />
+                            <img src="<?php echo $fv->getRelativePath(); ?>" width="<?php echo COLLECTION_TYPE_ICON_WIDTH?>" height="<?php echo COLLECTION_TYPE_ICON_HEIGHT?>" style="vertical-align: middle" />
                             </label>
-                        <? 
+                        <?php 
                         } else {
                             $checked = false;
                             if (isset($_POST['ctIcon']) && $_POST['ctIcon'] == $ic) {
@@ -97,10 +97,10 @@ $pageTypeIconsFS = FileSet::getByName("Page Type Icons");
                             $first = false;
                             ?>
                             <label class="checkbox inline">
-                            <input type="radio" name="ctIcon" value="<?= $ic ?>" style="vertical-align: middle" <?=$checked?> />
-                                <img src="<?=REL_DIR_FILES_COLLECTION_TYPE_ICONS.'/'.$ic;?>" width="<?=COLLECTION_TYPE_ICON_WIDTH?>" height="<?=COLLECTION_TYPE_ICON_HEIGHT?>" style="vertical-align: middle" />
+                            <input type="radio" name="ctIcon" value="<?php echo $ic ?>" style="vertical-align: middle" <?php echo $checked?> />
+                                <img src="<?php echo REL_DIR_FILES_COLLECTION_TYPE_ICONS.'/'.$ic;?>" width="<?php echo COLLECTION_TYPE_ICON_WIDTH?>" height="<?php echo COLLECTION_TYPE_ICON_HEIGHT?>" style="vertical-align: middle" />
                             </label>
-                        <?
+                        <?php
                         }
                     
                     } ?>
@@ -112,30 +112,30 @@ $pageTypeIconsFS = FileSet::getByName("Page Type Icons");
         <table class="table" border="0" cellspacing="0" cellpadding="0">
             <thead>
                 <tr>
-                    <th colspan="3" class="subheader"><?=t('Default Attributes to Display')?></th>
+                    <th colspan="3" class="subheader"><?php echo t('Default Attributes to Display')?></th>
                 </tr>
 			</thead>
             <tbody>
-                <?
+                <?php
                     $attribs = CollectionAttributeKey::getList();
                     $i = 0;
                     foreach($attribs as $ak) { 
                     if ($i == 0) { ?>
                         <tr class="inputs-list">
-                    <? } ?>
+                    <?php } ?>
                     
                         <td width="33%">
                             <label class="">
-                                <input type="checkbox" name="akID[]" value="<?=$ak->getAttributeKeyID()?>" <?= (isset($_POST['akID']) && is_array($_POST['akID']) && in_array($ak->getAttributeKeyID(), $_POST['akID'])) ? 'checked' : ''; ?> />
-                                <span><?=$ak->getAttributeKeyDisplayName()?></span>
+                                <input type="checkbox" name="akID[]" value="<?php echo $ak->getAttributeKeyID()?>" <?php echo (isset($_POST['akID']) && is_array($_POST['akID']) && in_array($ak->getAttributeKeyID(), $_POST['akID'])) ? 'checked' : ''; ?> />
+                                <span><?php echo $ak->getAttributeKeyDisplayName()?></span>
                             </label>
                         </td>
                     
-                    <? $i++;
+                    <?php $i++;
                     
                     if ($i == 3) { ?>
                     </tr>
-                    <? 
+                    <?php 
                     $i = 0;
                     }
                     
@@ -144,21 +144,21 @@ $pageTypeIconsFS = FileSet::getByName("Page Type Icons");
                 if ($i < 3 && $i > 0) {
                     for ($j = $i; $j < 3; $j++) { ?>
                         <td>&nbsp;</td>
-                    <? }
+                    <?php }
                 ?></tr>
-        	<? } ?>
+        	<?php } ?>
         	</tbody>
         </table>
 	
 	</div>
     
     <div class="ccm-pane-footer">
-        <? print $ih->submit(t('Add'), 'add_page_type', 'right', 'primary'); ?>
-        <? print $ih->button(t('Cancel'), $this->url('/dashboard/pages/types'), 'left'); ?>
+        <?php print $ih->submit(t('Add'), 'add_page_type', 'right', 'primary'); ?>
+        <?php print $ih->button(t('Cancel'), $this->url('/dashboard/pages/types'), 'left'); ?>
     </div>
     
     </form>
     
-    <?=Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper(false)?>
+    <?php echo Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper(false)?>
     
     <!-- END Add Page Type pane -->

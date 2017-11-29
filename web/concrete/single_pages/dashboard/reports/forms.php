@@ -20,9 +20,9 @@ $db = Loader::db();
 ?>
 <script>
 jQuery(function($) {
-	var deleteResponse = (<?=$json->encode(t('Are you sure you want to delete this form submission?'))?>),
-		deleteForm = (<?=$json->encode(t('Are you sure you want to delete this form and its form submissions?'))?>),
-		deleteFormAnswers = (<?=$json->encode(t('Are you sure you want to delete this form submissions?'))?>);
+	var deleteResponse = (<?php echo $json->encode(t('Are you sure you want to delete this form submission?'))?>),
+		deleteForm = (<?php echo $json->encode(t('Are you sure you want to delete this form and its form submissions?'))?>),
+		deleteFormAnswers = (<?php echo $json->encode(t('Are you sure you want to delete this form submissions?'))?>);
 	$('.delete-response').live('click', function(e) {
 		if (!confirm(deleteResponse)) {
 			e.preventDefault();
@@ -64,7 +64,7 @@ jQuery(function($) {
 }
 
 </style>
-<?
+<?php
 if (!isset($questionSet)) {
 	echo $h->getDashboardPaneHeaderWrapper(t('Form Results'));
 	$showTable = false;
@@ -84,7 +84,7 @@ if (!isset($questionSet)) {
 					<th><?php echo t('Options')?></th>
 				</tr>
 			</thead>
-			<tbody><?
+			<tbody><?php
 				foreach ($surveys as $qsid => $survey) {
 					$block = Block::getByID((int) $survey['bID']);
 					if (!is_object($block)) {
@@ -107,36 +107,36 @@ if (!isset($questionSet)) {
 					);
 					$url = $nh->getLinkToCollection($block->getBlockCollectionObject());
 					?><tr>
-						<td><?=h($survey['surveyName'])?></td>
-						<td><?=h($survey['answerSetCount'])?></td>
+						<td><?php echo h($survey['surveyName'])?></td>
+						<td><?php echo h($survey['answerSetCount'])?></td>
 						<td>
-							<?=$ih->button(t('View Responses'), DIR_REL . '/index.php?cID=' . $c->getCollectionID().'&qsid=' . $qsid, 'left', 'small')?>
-							<?=$ih->button(t('Open Page'), $url, 'left', 'small')?>
+							<?php echo $ih->button(t('View Responses'), DIR_REL . '/index.php?cID=' . $c->getCollectionID().'&qsid=' . $qsid, 'left', 'small')?>
+							<?php echo $ih->button(t('Open Page'), $url, 'left', 'small')?>
 							<form method="post" action="" style="display: inline">
-								<input type="hidden" name="qsID" value="<?= intval($qsid) ?>" />
+								<input type="hidden" name="qsID" value="<?php echo intval($qsid) ?>" />
 								<input type="hidden" name="action" value="deleteFormAnswers" />
 								<?php $valt->output('deleteFormAnswers') ?>
-								<?= $ih->submit(t('Delete Submissions'), false, 'left', 'small error delete-form-answers') ?>
+								<?php echo $ih->submit(t('Delete Submissions'), false, 'left', 'small error delete-form-answers') ?>
 							</form>
-							<?
+							<?php
 							if (!$in_use) {
 								?><form method="post" action="" style="display: inline">
-									<input type="hidden" name="bID" value="<?= intval($survey['bID']) ?>" />
-									<input type="hidden" name="qsID" value="<?= intval($qsid) ?>" />
+									<input type="hidden" name="bID" value="<?php echo intval($survey['bID']) ?>" />
+									<input type="hidden" name="qsID" value="<?php echo intval($qsid) ?>" />
 									<input type="hidden" name="action" value="deleteForm" />
 									<?php $valt->output('deleteForm') ?>
-									<?= $ih->submit(t('Delete'), false, 'left', 'small error delete-form') ?>
-								</form><?
+									<?php echo $ih->submit(t('Delete'), false, 'left', 'small error delete-form') ?>
+								</form><?php
 							}
 							?>
 						</td>
 					</tr><?php
 				}
 			?></tbody>
-		</table><?
+		</table><?php
 	}
 	else {
-		?><p><?=t('There are no available forms in your site.')?></p><?
+		?><p><?php echo t('There are no available forms in your site.')?></p><?php
 	}
 	echo $h->getDashboardPaneFooterWrapper();
 }
@@ -145,16 +145,16 @@ else {
 	if (count($answerSets) == 0) {
 		?>
 		<div class="ccm-pane-body ccm-pane-body-footer">
-			<div><?=t('No one has yet submitted this form.')?></div>
+			<div><?php echo t('No one has yet submitted this form.')?></div>
 		</div>
 		<?php
 	}
 	else {
 		$showPaginator = $paginator && (strlen($paginator->getPages()) > 0);
 		?>
-		<div class="ccm-pane-body <? if (!$showPaginator) { ?> ccm-pane-body-footer <? } ?>">
+		<div class="ccm-pane-body <?php if (!$showPaginator) { ?> ccm-pane-body-footer <?php } ?>">
 			<div class="ccm-list-action-row">
-				<a id="ccm-export-results" href="<?=$this->action('excel', '?qsid=' . $questionSet)?>"><span></span><?=t('Export to Excel')?></a>
+				<a id="ccm-export-results" href="<?php echo $this->action('excel', '?qsid=' . $questionSet)?>"><span></span><?php echo t('Export to Excel')?></a>
 			</div>
 			<div class="form-results-container">
 				<script>
@@ -168,28 +168,28 @@ else {
 				<table class="table table-striped">
 					<thead>
 						<tr>
-							<?
+							<?php
 							if ($_REQUEST['sortBy'] == 'chrono') {
-								?><th class="header headerSortDown"><a href="<?=h($urlhelper->unsetVariable('sortBy'))?>"><?
+								?><th class="header headerSortDown"><a href="<?php echo h($urlhelper->unsetVariable('sortBy'))?>"><?php
 							}
 							else {
-								?><th class="header headerSortUp"><a href="<?=h($urlhelper->setVariable('sortBy', 'chrono'))?>"><?
+								?><th class="header headerSortUp"><a href="<?php echo h($urlhelper->setVariable('sortBy', 'chrono'))?>"><?php
 							}
-							?><?=t('Date')?></a></th>
-							<th><?=t('User')?></th>
-							<?
+							?><?php echo t('Date')?></a></th>
+							<th><?php echo t('User')?></th>
+							<?php
 							foreach ($questions as $question) {
-								?><th><?=$question['question']?></th><?
+								?><th><?php echo $question['question']?></th><?php
 							}
 							?>
-							<th><?=t('Actions')?></th>
+							<th><?php echo t('Actions')?></th>
 						</tr>
 					</thead>
-					<tbody><?
+					<tbody><?php
 						foreach ($answerSets as $answerSetId => $answerSet) {
 							?><tr>
-								<td><?=$dh->getSystemDateTime($answerSet['created'])?></td>
-								<td><?
+								<td><?php echo $dh->getSystemDateTime($answerSet['created'])?></td>
+								<td><?php
 									if ($answerSet['uID'] > 0) {
 										$ui = UserInfo::getByID($answerSet['uID']);
 										if (is_object($ui)) {
@@ -198,7 +198,7 @@ else {
 										print t('(User ID: %s)', $answerSet['uID']);
 									}
 								?></td>
-								<?
+								<?php
 								foreach($questions as $questionId => $question) {
 									switch($question['inputType']) {
 										case 'fileupload':
@@ -222,13 +222,13 @@ else {
 								}
 								?>
 								<td><form method="post" action="" style="display: inline">
-										<input type="hidden" name="qsid" value="<?= intval($answerSet['questionSetId']) ?>" />
-										<input type="hidden" name="asid" value="<?= intval($answerSet['asID']) ?>" />
+										<input type="hidden" name="qsid" value="<?php echo intval($answerSet['questionSetId']) ?>" />
+										<input type="hidden" name="asid" value="<?php echo intval($answerSet['asID']) ?>" />
 										<input type="hidden" name="action" value="deleteResponse" />
 										<?php $valt->output('deleteResponse') ?>
-										<?= $ih->submit(t('Delete'), false, 'left', 'danger delete-response small') ?>
+										<?php echo $ih->submit(t('Delete'), false, 'left', 'danger delete-response small') ?>
 								</form></td>
-							</tr><?
+							</tr><?php
 						}
 					?></tbody>
 				</table>
@@ -239,15 +239,15 @@ else {
 			?><div class="ccm-pane-footer">
 				<div class="pagination">
 					<ul>
-						<li class="prev"><?=$paginator->getPrevious()?></li>
-						<?
+						<li class="prev"><?php echo $paginator->getPrevious()?></li>
+						<?php
 						// Call to pagination helper's 'getPages' method with new $wrapper var
 						echo $paginator->getPages('li');
 						?>
-						<li class="next"><?=$paginator->getNext()?></li>
+						<li class="next"><?php echo $paginator->getNext()?></li>
 					</ul>
 				</div>
-			</div><?
+			</div><?php
 		}
 	}
 	echo $h->getDashboardPaneFooterWrapper(false);

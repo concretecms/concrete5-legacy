@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 $ih = Loader::helper('concrete/interface');
 
@@ -18,7 +18,7 @@ echo Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Sing
 			<div class="input-prepend">
 				<span class="add-on"><?php echo $base?>/</span><?php echo $form->text('pageURL', $this->post('pageURL'), array('class'=>'span4')); ?>
 			</div>
-				<button class="btn" type="submit"><?=t('Add')?></button>
+				<button class="btn" type="submit"><?php echo t('Add')?></button>
 			</div>
 			</div>
 

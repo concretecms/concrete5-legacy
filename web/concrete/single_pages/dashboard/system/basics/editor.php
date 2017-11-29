@@ -1,5 +1,5 @@
-<? defined('C5_EXECUTE') or die("Access Denied."); ?>
-<?=Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Rich Text Editor'), t('Control the options available for TinyMCE.'), false, false);?>
+<?php defined('C5_EXECUTE') or die("Access Denied."); ?>
+<?php echo Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Rich Text Editor'), t('Control the options available for TinyMCE.'), false, false);?>
 <?php
 $h = Loader::helper('concrete/interface');
 ?>	
@@ -9,7 +9,7 @@ $h = Loader::helper('concrete/interface');
 	
 	<div class="row">
       <div class="span5">
-      	<legend><h3><?=t('Toolbar Set')?></h3></legend>
+      	<legend><h3><?php echo t('Toolbar Set')?></h3></legend>
 		<div class="control-group">
             <label id="optionsCheckboxes"></label>
             <div class="controls">
@@ -44,27 +44,27 @@ $h = Loader::helper('concrete/interface');
 
       </div>
       <div class="span6">
-      	<legend><h3><?=t('Editor Dimensions')?></h3></legend>
+      	<legend><h3><?php echo t('Editor Dimensions')?></h3></legend>
 
 			<div class="clearfix">
 				<label for="xlInput"><?php echo t('Width ')?></label>
-				<div class="input"><?
+				<div class="input"><?php
 					if (!$textEditorWidth) { 
 						$textEditorWidth = 580;
 					}
 					?>
-				  <?=Loader::helper('form')->text('CONTENTS_TXT_EDITOR_WIDTH', $textEditorWidth, array('class' => 'span1'))?>
+				  <?php echo Loader::helper('form')->text('CONTENTS_TXT_EDITOR_WIDTH', $textEditorWidth, array('class' => 'span1'))?>
 				</div>
 			</div>
 			
 			<div class="clearfix">
 				<label for="xlInput"><?php echo t('Height ')?></label>
-				<div class="input"><?
+				<div class="input"><?php
 					if (!$textEditorHeight) { 
 						$textEditorHeight = 380;
 					}
 					?>
-				  <?=Loader::helper('form')->text('CONTENTS_TXT_EDITOR_HEIGHT', $textEditorHeight, array('class' => 'span1'))?>
+				  <?php echo Loader::helper('form')->text('CONTENTS_TXT_EDITOR_HEIGHT', $textEditorHeight, array('class' => 'span1'))?>
 				</div>
 			</div>
  
@@ -73,18 +73,18 @@ $h = Loader::helper('concrete/interface');
 	<br/>
 		
 	<div id="text-editor-simple" style=" display:<?php echo ($txtEditorMode=='SIMPLE' || $txtEditorMode == '')?'block':'none' ?>">
-		<h4><?=t('Preview')?></h4>
-		<img src="<?=ASSETS_URL_IMAGES?>/editor_simple.png" width="630" height="65"  />
+		<h4><?php echo t('Preview')?></h4>
+		<img src="<?php echo ASSETS_URL_IMAGES?>/editor_simple.png" width="630" height="65"  />
 	</div>
 	
 	<div id="text-editor-advanced" style=" display:<?php echo ($txtEditorMode=='ADVANCED')?'block':'none' ?>">
-		<h4><?=t('Preview')?></h4>
-		<img src="<?=ASSETS_URL_IMAGES?>/editor_advanced.png" width="630" height="81"  />
+		<h4><?php echo t('Preview')?></h4>
+		<img src="<?php echo ASSETS_URL_IMAGES?>/editor_advanced.png" width="630" height="81"  />
 	</div>
 	
 	<div id="text-editor-office" style=" display:<?php echo ($txtEditorMode=='OFFICE')?'block':'none' ?>">
-		<h4><?=t('Preview')?></h4>
-		<img src="<?=ASSETS_URL_IMAGES?>/editor_office.png" width="630" height="107"  />
+		<h4><?php echo t('Preview')?></h4>
+		<img src="<?php echo ASSETS_URL_IMAGES?>/editor_office.png" width="630" height="107"  />
 	</div>
 	
 	<div id="cstmEditorTxtAreaWrap" style=" display:<?php echo ($txtEditorMode=='CUSTOM')?'block':'none' ?>" >
@@ -130,4 +130,4 @@ $h = Loader::helper('concrete/interface');
 
 
 
-<?=Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper(false);?>
+<?php echo Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper(false);?>

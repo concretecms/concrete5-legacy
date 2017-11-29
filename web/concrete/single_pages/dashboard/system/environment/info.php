@@ -1,5 +1,5 @@
-<? defined('C5_EXECUTE') or die("Access Denied.");?>
-<?=Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Environment'), false, 'span8 offset2');?>
+<?php defined('C5_EXECUTE') or die("Access Denied.");?>
+<?php echo Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Environment'), false, 'span8 offset2');?>
 
 <textarea style="width: 99%; height: 340px;" onclick="this.select()" id="ccm-dashboard-environment-info"><?php echo t('Unable to load environment info')?></textarea>
 
@@ -9,4 +9,4 @@ $(document).ready(function() {
 });
 </script>
 
-<?=Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper();?>
+<?php echo Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper();?>

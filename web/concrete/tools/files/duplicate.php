@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 $u = new User();
 $js = Loader::helper('json');
@@ -79,46 +79,46 @@ if (!is_array($_REQUEST['fID'])) {
 	
 <div class="ccm-ui">
 
-	<? if ($fcnt == 0) { ?>
-		<?=t("You do not have permission to copy any of the selected files."); ?>
-	<? } else { ?>
-		<?=t('Are you sure you want to copy the following files?')?><br/><br/>
+	<?php if ($fcnt == 0) { ?>
+		<?php echo t("You do not have permission to copy any of the selected files."); ?>
+	<?php } else { ?>
+		<?php echo t('Are you sure you want to copy the following files?')?><br/><br/>
 		
-		<form id="ccm-<?=$searchInstance?>-duplicate-form" method="post" action="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/files/duplicate">
-		<?=$form->hidden('task', 'duplicate_multiple_files')?>
+		<form id="ccm-<?php echo $searchInstance?>-duplicate-form" method="post" action="<?php echo REL_DIR_FILES_TOOLS_REQUIRED?>/files/duplicate">
+		<?php echo $form->hidden('task', 'duplicate_multiple_files')?>
 	<table border="0" cellspacing="0" cellpadding="0" width="100%" class="table table-bordered">
 		
-		<? foreach($files as $f) { 
+		<?php foreach($files as $f) { 
 			$fp = new Permissions($f);
 			if ($fp->canCopyFile()) {
 				$fv = $f->getApprovedVersion();
 				if (is_object($fv)) { ?>
 				
-				<?=$form->hidden('fID[]', $f->getFileID())?>		
+				<?php echo $form->hidden('fID[]', $f->getFileID())?>		
 				
 				<tr>
-					<td><?=$fv->getType()?></td>
-					<td class="ccm-file-list-filename" width="100%"><div style="width: 150px; word-wrap: break-word"><?=$fv->getTitle()?></div></td>
-					<td><?=$dh->formatSpecial('DASHBOARD_SEARCH_RESULTS_FILES', $f->getDateAdded())?></td>
-					<td><?=$fv->getSize()?></td>
-					<td><?=$fv->getAuthorName()?></td>
+					<td><?php echo $fv->getType()?></td>
+					<td class="ccm-file-list-filename" width="100%"><div style="width: 150px; word-wrap: break-word"><?php echo $fv->getTitle()?></div></td>
+					<td><?php echo $dh->formatSpecial('DASHBOARD_SEARCH_RESULTS_FILES', $f->getDateAdded())?></td>
+					<td><?php echo $fv->getSize()?></td>
+					<td><?php echo $fv->getAuthorName()?></td>
 				</tr>
 				
-				<? }
+				<?php }
 			}
 			
 		} ?>
 		</table>
 		</form>
-		<? $ih = Loader::helper('concrete/interface')?>
+		<?php $ih = Loader::helper('concrete/interface')?>
 		<div class="dialog-buttons">
-			<?=$ih->button_js(t('Copy'), 'ccm_alDuplicateFiles(\'' . $searchInstance . '\')', 'right', 'primary')?>
-			<?=$ih->button_js(t('Cancel'), 'jQuery.fn.dialog.closeTop()', 'left')?>	
+			<?php echo $ih->button_js(t('Copy'), 'ccm_alDuplicateFiles(\'' . $searchInstance . '\')', 'right', 'primary')?>
+			<?php echo $ih->button_js(t('Cancel'), 'jQuery.fn.dialog.closeTop()', 'left')?>	
 		</div>
 		
 			
 			
-		<?
+		<?php
 		
 	}
 

@@ -1,2 +1,2 @@
 <?php defined('C5_EXECUTE') or die("Access Denied."); ?>
-<p><?=t('Coming soon.')?></p>
+<p><?php echo t('Coming soon.')?></p>

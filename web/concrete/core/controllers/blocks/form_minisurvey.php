@@ -204,8 +204,8 @@ class Concrete5_Controller_Block_FormMinisurvey {
 								<a href="javascript:void(0)" onclick="miniSurvey.moveUp(this,<?php echo $questionRow['msqID']?>);return false" class="moveUpLink"></a> 
 								<a href="javascript:void(0)" onclick="miniSurvey.moveDown(this,<?php echo $questionRow['msqID']?>);return false" class="moveDownLink"></a>						  
 							</div>						
-							<a href="javascript:void(0)" onclick="miniSurvey.reloadQuestion(<?=intval($questionRow['qID']) ?>);return false"><?php echo t('edit')?></a> &nbsp;&nbsp; 
-							<a href="javascript:void(0)" onclick="miniSurvey.deleteQuestion(this,<?=intval($questionRow['msqID']) ?>,<?=intval($questionRow['qID'])?>);return false"><?= t('remove')?></a>
+							<a href="javascript:void(0)" onclick="miniSurvey.reloadQuestion(<?php echo intval($questionRow['qID']) ?>);return false"><?php echo t('edit')?></a> &nbsp;&nbsp; 
+							<a href="javascript:void(0)" onclick="miniSurvey.deleteQuestion(this,<?php echo intval($questionRow['msqID']) ?>,<?php echo intval($questionRow['qID'])?>);return false"><?php echo t('remove')?></a>
 						</div>
 						<div class="miniSurveySpacer"></div>
 					</div>

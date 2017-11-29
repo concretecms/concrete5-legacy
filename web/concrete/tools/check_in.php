@@ -1,4 +1,4 @@
-<?
+<?php
 
 defined('C5_EXECUTE') or die("Access Denied.");
 $c = Page::getByID($_REQUEST['cID']);
@@ -22,23 +22,23 @@ Loader::element('pane_header', array('c'=>$c));
 ?>
 <div class="ccm-pane-controls">
     <div id="ccm-edit-collection">
-        <form method="post" id="ccm-check-in" action="<?=DIR_REL?>/<?=DISPATCHER_FILENAME?>?cID=<?=$c->getCollectionID()?>&ctask=check-in">
-        	<? $valt = Loader::helper('validation/token'); $valt->output(); ?>
-            <h1><?=t('Exit Edit Mode')?></h1>
+        <form method="post" id="ccm-check-in" action="<?php echo DIR_REL?>/<?php echo DISPATCHER_FILENAME?>?cID=<?php echo $c->getCollectionID()?>&ctask=check-in">
+        	<?php $valt = Loader::helper('validation/token'); $valt->output(); ?>
+            <h1><?php echo t('Exit Edit Mode')?></h1>
             
             <div class="ccm-form-area">
                 <div class="ccm-field">
-                    <h2><?=t('Version Comments')?></h2>
-                    <input type="text" class="ccm-input-text" name="comments" id="ccm-check-in-comments" value="<?=$v->getVersionComments()?>" style="width:565px"/>
+                    <h2><?php echo t('Version Comments')?></h2>
+                    <input type="text" class="ccm-input-text" name="comments" id="ccm-check-in-comments" value="<?php echo $v->getVersionComments()?>" style="width:565px"/>
                 </div>
                 <div class="ccm-buttons">
-                    <? if ($cp->canApprovePageVersions()) { ?>
-                    <a href="javascript:void(0)" id="ccm-check-in-publish" class="ccm-button-right accept"><span><?=t('Publish My Edits')?></span></a>
-                    <? } ?>
-                    <a href="javascript:void(0)" id="ccm-check-in-preview" class="ccm-button-right accept" style="margin-right: 5px"><span><?=t('Preview My Edits')?></span></a>
-                    <? if ($v->canDiscard()) { ?>
-                    	<a href="javascript:void(0)" id="ccm-check-in-discard" class="ccm-button-left"><span><?=t('Discard My Edits')?></span></a>
-                    <? } ?>
+                    <?php if ($cp->canApprovePageVersions()) { ?>
+                    <a href="javascript:void(0)" id="ccm-check-in-publish" class="ccm-button-right accept"><span><?php echo t('Publish My Edits')?></span></a>
+                    <?php } ?>
+                    <a href="javascript:void(0)" id="ccm-check-in-preview" class="ccm-button-right accept" style="margin-right: 5px"><span><?php echo t('Preview My Edits')?></span></a>
+                    <?php if ($v->canDiscard()) { ?>
+                    	<a href="javascript:void(0)" id="ccm-check-in-discard" class="ccm-button-left"><span><?php echo t('Discard My Edits')?></span></a>
+                    <?php } ?>
                 </div>
                 <input type="hidden" name="approve" value="PREVIEW" id="ccm-approve-field" />        
 	        	<div class="ccm-spacer">&nbsp;</div>

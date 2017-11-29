@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 /* if the cookie is already set, remove it 
  * really for testing since the cookie has a long lifetime

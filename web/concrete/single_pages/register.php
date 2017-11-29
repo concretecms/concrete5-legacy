@@ -1,59 +1,59 @@
-<? defined('C5_EXECUTE') or die("Access Denied."); ?>
+<?php defined('C5_EXECUTE') or die("Access Denied."); ?>
 <div class="row">
 <div class="span10 offset1">
 <div class="page-header">
-	<h1><?=t('Site Registration')?></h1>
+	<h1><?php echo t('Site Registration')?></h1>
 </div>
 </div>
 </div>
 
 <div class="ccm-form">
 
-<? 
+<?php 
 $attribs = UserAttributeKey::getRegistrationList();
 
 if($success) { ?>
 <div class="row">
 <div class="span10 offset1">
-<?	switch($success) { 
+<?php	switch($success) { 
 		case "registered": 
 			?>
-			<p><strong><?=$successMsg ?></strong><br/><br/>
-			<a href="<?=$this->url('/')?>"><?=t('Return to Home')?></a></p>
-			<? 
+			<p><strong><?php echo $successMsg ?></strong><br/><br/>
+			<a href="<?php echo $this->url('/')?>"><?php echo t('Return to Home')?></a></p>
+			<?php 
 		break;
 		case "validate": 
 			?>
-			<p><?=$successMsg[0] ?></p>
-			<p><?=$successMsg[1] ?></p>
-			<p><a href="<?=$this->url('/')?>"><?=t('Return to Home')?></a></p>
-			<?
+			<p><?php echo $successMsg[0] ?></p>
+			<p><?php echo $successMsg[1] ?></p>
+			<p><a href="<?php echo $this->url('/')?>"><?php echo t('Return to Home')?></a></p>
+			<?php
 		break;
 		case "pending":
 			?>
-			<p><?=$successMsg ?></p>
-			<p><a href="<?=$this->url('/')?>"><?=t('Return to Home')?></a></p>
-            <?
+			<p><?php echo $successMsg ?></p>
+			<p><a href="<?php echo $this->url('/')?>"><?php echo t('Return to Home')?></a></p>
+            <?php
 		break;
 	} ?>
 			</div>
 </div>
-<? 
+<?php 
 } else { ?>
 
-<form method="post" action="<?=$this->url('/register', 'do_register')?>" class="form-horizontal">
+<form method="post" action="<?php echo $this->url('/register', 'do_register')?>" class="form-horizontal">
 <div class="row">
-<div class="<? if (count($attribs) > 0) {?>span5<? } else {?>span10<? } ?> offset1">
+<div class="<?php if (count($attribs) > 0) {?>span5<?php } else {?>span10<?php } ?> offset1">
 	<fieldset>
-		<legend><?=t('Your Details')?></legend>
-		<? if ($displayUserName) { ?>
+		<legend><?php echo t('Your Details')?></legend>
+		<?php if ($displayUserName) { ?>
 				<div class="control-group">
-				<?= $form->label('uName',t('Username')); ?>
+				<?php echo $form->label('uName',t('Username')); ?>
 				<div class="controls">
-					<?= $form->text('uName'); ?>
+					<?php echo $form->text('uName'); ?>
 				</div>
 			</div>
-		<? } ?>
+		<?php } ?>
 	
 		<div class="control-group">
 			<?php echo $form->label('uEmail',t('Email Address')); ?>
@@ -76,28 +76,28 @@ if($success) { ?>
 
 	</fieldset>
 </div>
-<? if (count($attribs) > 0) { ?>
+<?php if (count($attribs) > 0) { ?>
 <div class="span5">
 	<fieldset>
-		<legend><?=t('Options')?></legend>
-	<?
+		<legend><?php echo t('Options')?></legend>
+	<?php
 	
 	$af = Loader::helper('form/attribute');
 	
 	foreach($attribs as $ak) { ?> 
-			<?= $af->display($ak, $ak->isAttributeKeyRequiredOnRegister());	?>
-	<? }?>
+			<?php echo $af->display($ak, $ak->isAttributeKeyRequiredOnRegister());	?>
+	<?php }?>
 	</fieldset>
 </div>
-<? } ?>
+<?php } ?>
 <div class="span10 offset1 ">
-	<? if (ENABLE_REGISTRATION_CAPTCHA) { ?>
+	<?php if (ENABLE_REGISTRATION_CAPTCHA) { ?>
 	
 		<div class="control-group">
 			<?php $captcha = Loader::helper('validation/captcha'); ?>			
-			<?=$captcha->label()?>
+			<?php echo $captcha->label()?>
 			<div class="controls">
-			<?
+			<?php
 		  	  $captcha->showInput(); 
 			  $captcha->display();
 		  	  ?>
@@ -105,18 +105,18 @@ if($success) { ?>
 		</div>
 	
 		
-	<? } ?>
+	<?php } ?>
 
 </div>
 <div class="span10 offset1">
 	<div class="actions">
-	<?=$form->hidden('rcID', $rcID); ?>
-	<?=$form->submit('register', t('Register') . ' &gt;', array('class' => 'primary'))?>
+	<?php echo $form->hidden('rcID', $rcID); ?>
+	<?php echo $form->submit('register', t('Register') . ' &gt;', array('class' => 'primary'))?>
 	</div>
 </div>
 	
 </div>
 </form>
-<? } ?>
+<?php } ?>
 
 </div>

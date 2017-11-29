@@ -1,4 +1,4 @@
-<?
+<?php
 	defined('C5_EXECUTE') or die("Access Denied.");
 /**
  * Controller for the Google Maps block, which can display a map on a page.

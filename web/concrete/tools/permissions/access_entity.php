@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 $form = Loader::helper("form");
 $tp = new TaskPermission();
@@ -49,63 +49,63 @@ if ($_POST['task'] == 'save_permissions') {
 ?>
 <div class="ccm-ui" id="ccm-permissions-access-entity-wrapper">
 
-<form id="ccm-permissions-access-entity-form" method="post" action="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/permissions/access_entity">
+<form id="ccm-permissions-access-entity-form" method="post" action="<?php echo REL_DIR_FILES_TOOLS_REQUIRED?>/permissions/access_entity">
 <input type="hidden" name="task" value="save_permissions" />
-<?=$form->hidden('accessType');?>
-<?=$form->hidden('peID');?>
-<?=$form->hidden('pdID');?>
+<?php echo $form->hidden('accessType');?>
+<?php echo $form->hidden('peID');?>
+<?php echo $form->hidden('pdID');?>
 
-<h4><?=t('Access')?></h4>
+<h4><?php echo t('Access')?></h4>
 
-<p><?=t('Who gets access to this permission?')?></p>
+<p><?php echo t('Who gets access to this permission?')?></p>
 
-<div id="ccm-permissions-access-entity-label"><? if (is_object($pae)) { ?><div class="alert alert-info"><?=$pae->getAccessEntityLabel()?></div><? } else { ?><div class="alert alert-warning"><?=t('None Selected')?></div><? } ?></div>
+<div id="ccm-permissions-access-entity-label"><?php if (is_object($pae)) { ?><div class="alert alert-info"><?php echo $pae->getAccessEntityLabel()?></div><?php } else { ?><div class="alert alert-warning"><?php echo t('None Selected')?></div><?php } ?></div>
 
-<? if (!is_object($pae)) { ?>
+<?php if (!is_object($pae)) { ?>
 
 <div class="btn-group">
 	<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-	<i class="icon-plus-sign"></i> <?=t('Select')?>
+	<i class="icon-plus-sign"></i> <?php echo t('Select')?>
 	<span class="caret"></span>
 		</a>
 	<ul class="dropdown-menu">
-	<? 
+	<?php 
 	$category = PermissionKeyCategory::getByHandle($_REQUEST['pkCategoryHandle']);
 	$entitytypes = PermissionAccessEntityType::getList($category);
 	foreach($entitytypes as $type) { ?>
-		<li><?=$type->getAccessEntityTypeLinkHTML()?></li>
-	<? } ?>
+		<li><?php echo $type->getAccessEntityTypeLinkHTML()?></li>
+	<?php } ?>
 	</ul>
 </div>
 <br/><br/>
 
-<? foreach($entitytypes as $type) { ?>
+<?php foreach($entitytypes as $type) { ?>
 	
-<? if ($type->getPackageID() > 0) { ?>
-	<? Loader::packageElement('permission/access/entity/types/' . $type->getAccessEntityTypeHandle(), $type->getPackageHandle(), array('type' => $type)); ?>
-<? } else { ?>
-	<? Loader::element('permission/access/entity/types/' . $type->getAccessEntityTypeHandle(), array('type' => $type)); ?>
-<? } ?>
+<?php if ($type->getPackageID() > 0) { ?>
+	<?php Loader::packageElement('permission/access/entity/types/' . $type->getAccessEntityTypeHandle(), $type->getPackageHandle(), array('type' => $type)); ?>
+<?php } else { ?>
+	<?php Loader::element('permission/access/entity/types/' . $type->getAccessEntityTypeHandle(), array('type' => $type)); ?>
+<?php } ?>
 
 	
-<? } ?>
+<?php } ?>
 
-<? } ?>
+<?php } ?>
 
 
-<? if (!isset($_REQUEST['disableDuration'])) { ?>
+<?php if (!isset($_REQUEST['disableDuration'])) { ?>
 
-<h4><?=t('Time Settings')?></h4>
+<h4><?php echo t('Time Settings')?></h4>
 
-<p><?=t('How long will this permission be valid for?')?></p>
+<p><?php echo t('How long will this permission be valid for?')?></p>
 
-<?=Loader::element('permission/duration', array('pd' => $pd)); ?>
+<?php echo Loader::element('permission/duration', array('pd' => $pd)); ?>
 
-<? } ?>
+<?php } ?>
 
 <div class="dialog-buttons">
-	<input type="button" onclick="jQuery.fn.dialog.closeTop()" value="<?=t('Cancel')?>" class="btn" />
-	<input type="submit" onclick="$('#ccm-permissions-access-entity-form').submit()" value="<?=t('Save')?>" class="btn primary ccm-button-right" />
+	<input type="button" onclick="jQuery.fn.dialog.closeTop()" value="<?php echo t('Cancel')?>" class="btn" />
+	<input type="submit" onclick="$('#ccm-permissions-access-entity-form').submit()" value="<?php echo t('Save')?>" class="btn primary ccm-button-right" />
 </div>
 
 
@@ -122,10 +122,10 @@ if ($_POST['task'] == 'save_permissions') {
 			r = eval('(' + r + ')');
 			jQuery.fn.dialog.hideLoader();
 			if (r.error) {
-				ccmAlert.notice('<?=t("Error")?>', r.message);
+				ccmAlert.notice('<?php echo t("Error")?>', r.message);
 			} else {
 				if (typeof(ccm_addAccessEntity) == 'function') { 
-					ccm_addAccessEntity(r.peID, r.pdID, '<?=addslashes($_REQUEST["accessType"])?>');
+					ccm_addAccessEntity(r.peID, r.pdID, '<?php echo addslashes($_REQUEST["accessType"])?>');
 				} else {
 					alert(r.peID);
 					alert(r.pdID);

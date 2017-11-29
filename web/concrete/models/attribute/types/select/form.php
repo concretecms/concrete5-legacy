@@ -43,23 +43,23 @@ if (isset($akSelectAllowMultipleValues) && $akSelectAllowMultipleValues &&
     <div class="ccm-attribute-type-select-autocomplete">
 
         <div id="selectedAttrValueRows_<?php echo $attrKeyID; ?>" class="well well-small clearfix">
-            <h6><?= t('Selected Options') ?></h6>
+            <h6><?php echo t('Selected Options') ?></h6>
             <?php
             foreach ($selectedOptions as $optID) {
                 $opt = SelectAttributeTypeOption::getByID($optID);
 
                 ?>
                 <div class="existingAttrValue">
-                    <?=
+                    <?php echo
                     $form->hidden(
                          $this->field('atSelectOptionID') . '[]',
                          $opt->getSelectAttributeOptionID(),
                          array('style' => 'position:relative;')); ?>
-                    <span class="badge"><?= $opt->getSelectAttributeOptionValue() ?></span>
-                    <a class="text-error" title="<?= $removeOptionText ?>" href="javascript:void(0);"
+                    <span class="badge"><?php echo $opt->getSelectAttributeOptionValue() ?></span>
+                    <a class="text-error" title="<?php echo $removeOptionText ?>" href="javascript:void(0);"
                        onclick="$(this).parent().remove()">x</a>
                 </div>
-            <?
+            <?php
             }
 
             // now we get items from the post
@@ -68,13 +68,13 @@ if (isset($akSelectAllowMultipleValues) && $akSelectAllowMultipleValues &&
                 foreach ($vals as $v) {
                     ?>
                     <div class="newAttrValue">
-                        <?= $form->hidden($this->field('atSelectNewOption') . '[]', $v) ?>
-                        <span class="badge"><?= $v ?></span>
-                        <a class="text-error" title="<?= $removeOptionText ?>"
+                        <?php echo $form->hidden($this->field('atSelectNewOption') . '[]', $v) ?>
+                        <span class="badge"><?php echo $v ?></span>
+                        <a class="text-error" title="<?php echo $removeOptionText ?>"
                            onclick="ccmAttributeTypeSelectTagHelper<?php echo $attrKeyID ?>.remove(this)"
                            href="javascript:void(0)">x</a>
                     </div>
-                <?
+                <?php
                 }
             }
 
@@ -89,17 +89,17 @@ if (isset($akSelectAllowMultipleValues) && $akSelectAllowMultipleValues &&
                   'class' => 'ccm-attribute-type-select-autocomplete-text',
                   'style' => 'position:relative; width: 200px'));
     ?>
-        <input type="button" class="btn ccm-input-button" value="<?= t('Add') ?>"
-               onclick="ccmAttributeTypeSelectTagHelper<?= $attrKeyID ?>.addButtonClick(); return false"/>
+        <input type="button" class="btn ccm-input-button" value="<?php echo t('Add') ?>"
+               onclick="ccmAttributeTypeSelectTagHelper<?php echo $attrKeyID ?>.addButtonClick(); return false"/>
 	</span>
     </div>
 
     <script type="text/javascript">
         //<![CDATA[
         $(function () {
-            var availableTags = <?=$json->encode($opt_values);?>;
+            var availableTags = <?php echo $json->encode($opt_values);?>;
             $("#newAttrValueRows<?php echo $attrKeyID?>").autocomplete({
-                source: "<?=$this->action('load_autocomplete_values')?>",
+                source: "<?php echo $this->action('load_autocomplete_values')?>",
                 select: function (event, ui) {
 
                     ccmAttributeTypeSelectTagHelper<?php echo $attrKeyID?>.add(ui.item.value);
@@ -123,7 +123,7 @@ if (isset($akSelectAllowMultipleValues) && $akSelectAllowMultipleValues &&
         var ccmAttributeTypeSelectTagHelper<?php echo $attrKeyID?> = {
             addButtonClick: function () {
                 // Get and cache our row element
-                var valrow = $("input[name=newAttrValueRows<?=$attrKeyID?>]");
+                var valrow = $("input[name=newAttrValueRows<?php echo $attrKeyID?>]");
                 // Get and cache our row element's value
                 var valrowval = valrow.val();
 
@@ -141,9 +141,9 @@ if (isset($akSelectAllowMultipleValues) && $akSelectAllowMultipleValues &&
             add: function (value) {
                 var newRow = document.createElement('div');
                 newRow.className = 'newAttrValue';
-                newRow.innerHTML = '<input class="input" name="<?=$this->field('atSelectNewOption')?>[]" type="hidden" /> ';
+                newRow.innerHTML = '<input class="input" name="<?php echo $this->field('atSelectNewOption')?>[]" type="hidden" /> ';
                 newRow.innerHTML += '<span class="badge"></span>';
-                newRow.innerHTML += ' <a class="text-error" title="<?=$removeOptionText?>" onclick="ccmAttributeTypeSelectTagHelper<?php echo $attrKeyID?>.remove(this)" href="javascript:void(0)">x</a>';
+                newRow.innerHTML += ' <a class="text-error" title="<?php echo $removeOptionText?>" onclick="ccmAttributeTypeSelectTagHelper<?php echo $attrKeyID?>.remove(this)" href="javascript:void(0)">x</a>';
                 newRow = $(newRow);
                 newRow.find('span.badge').text(value);
                 newRow.find('input.input').val(value);
@@ -172,39 +172,39 @@ if (isset($akSelectAllowMultipleValues) && $akSelectAllowMultipleValues &&
     if ($akSelectAllowMultipleValues) {
         ?>
 
-        <? foreach ($options as $opt) { ?>
+        <?php foreach ($options as $opt) { ?>
             <label class="checkbox">
-                <?=
+                <?php echo
                 $form->checkbox(
                      $this->field('atSelectOptionID') . '[]',
                      $opt->getSelectAttributeOptionID(),
                      in_array($opt->getSelectAttributeOptionID(), $selectedOptions)); ?>
-                <?= $opt->getSelectAttributeOptionDisplayValue() ?></label>
-        <? } ?>
-    <?
+                <?php echo $opt->getSelectAttributeOptionDisplayValue() ?></label>
+        <?php } ?>
+    <?php
     } else {
         $opts = array('' => t('** None'));
         foreach ($options as $opt) {
             $opts[$opt->getSelectAttributeOptionID()] = $opt->getSelectAttributeOptionDisplayValue();
         }
         ?>
-        <?= $form->select($this->field('atSelectOptionID') . '[]', $opts, $selectedOptions[0]); ?>
+        <?php echo $form->select($this->field('atSelectOptionID') . '[]', $opts, $selectedOptions[0]); ?>
 
-    <?
+    <?php
     }
 
     if ($akSelectAllowOtherValues) {
         ?>
-        <div id="newAttrValueRows<?= $this->attributeKey->getAttributeKeyID() ?>" class="newAttrValueRows"></div>
+        <div id="newAttrValueRows<?php echo $this->attributeKey->getAttributeKeyID() ?>" class="newAttrValueRows"></div>
         <div style="padding-top: 5px;">
-            <a title="<?= t('Add Another Option') ?>" class="btn btn-small" href="javascript:void(0)"
-               onclick="ccmAttributeTypeSelectHelper.add(<?= $this->attributeKey->getAttributeKeyID() ?>, '<?=
+            <a title="<?php echo t('Add Another Option') ?>" class="btn btn-small" href="javascript:void(0)"
+               onclick="ccmAttributeTypeSelectHelper.add(<?php echo $this->attributeKey->getAttributeKeyID() ?>, '<?php echo
                $this->field(
                     'atSelectNewOption') ?>[]')">
-                <?= t('Add Another Option') ?>
+                <?php echo t('Add Another Option') ?>
             </a>
         </div>
-    <? } ?>
+    <?php } ?>
 
     <script type="text/javascript">
         //<![CDATA[
@@ -213,7 +213,7 @@ if (isset($akSelectAllowMultipleValues) && $akSelectAllowMultipleValues &&
                 var newRow = document.createElement('div');
                 newRow.className = 'newAttrValueRow';
                 newRow.innerHTML = '<input name="' + field + '" type="text" value="" /> ';
-                newRow.innerHTML += '<a title="<?=$removeOptionText?>" class="btn btn-mini btn-danger" onclick="ccmAttributeTypeSelectHelper.remove(this)" href="javascript:void(0)"><i class="icon icon-white icon-trash"></i></a>';
+                newRow.innerHTML += '<a title="<?php echo $removeOptionText?>" class="btn btn-mini btn-danger" onclick="ccmAttributeTypeSelectHelper.remove(this)" href="javascript:void(0)"><i class="icon icon-white icon-trash"></i></a>';
                 $('#newAttrValueRows' + akID).append(newRow);
             },
             remove: function (a) {

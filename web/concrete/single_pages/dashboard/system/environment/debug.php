@@ -1,4 +1,4 @@
-<? defined('C5_EXECUTE') or die("Access Denied.");?>
+<?php defined('C5_EXECUTE') or die("Access Denied.");?>
 
 <?php echo Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Debug Level'), false, 'span6 offset3', false)?>
 
@@ -24,7 +24,7 @@
 </div>
 
 <div class="ccm-pane-footer">
-	<?
+	<?php
 	print $interface->submit(t('Save'), 'debug-form', 'right','primary');
 	?>
 

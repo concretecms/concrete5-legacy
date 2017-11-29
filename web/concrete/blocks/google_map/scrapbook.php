@@ -1,6 +1,6 @@
-<? defined('C5_EXECUTE') or die("Access Denied."); ?>
+<?php defined('C5_EXECUTE') or die("Access Denied."); ?>
 
-<div><?=$title?></div>
-<div><?=t('Location: %s', $location)?></div>
-<div><?=t('Latitude: %s', $latitude)?></div>
-<div><?=t('Longitude: %s', $longitude)?></div>
+<div><?php echo $title?></div>
+<div><?php echo t('Location: %s', $location)?></div>
+<div><?php echo t('Latitude: %s', $latitude)?></div>
+<div><?php echo t('Longitude: %s', $longitude)?></div>

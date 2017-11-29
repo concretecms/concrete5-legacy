@@ -5,7 +5,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 
  	
   <fieldset>
-    <legend style="margin-bottom: 0px"><?=t('Titling')?></legend>
+    <legend style="margin-bottom: 0px"><?php echo t('Titling')?></legend>
 
     
 	<div class="control-group">
@@ -18,7 +18,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
   </fieldset>
   
   <fieldset id="ccm_edit_pane_nextPreviousWrap" style="display:<?php echo ($controller->linkStyle!='page_name')?'block':'none' ?>">
-    <legend style="margin-bottom: 0px"><?=t("Labels")?></legend>
+    <legend style="margin-bottom: 0px"><?php echo t("Labels")?></legend>
 
   <div class="control-group">
     <label class="control-label"><?php  echo t('Next Label')?></label>
@@ -44,12 +44,12 @@ defined('C5_EXECUTE') or die("Access Denied.");
  </fieldset>
 
   <fieldset>
-    <legend style="margin-bottom: 0px"><?=t('Navigation')?></legend>
+    <legend style="margin-bottom: 0px"><?php echo t('Navigation')?></legend>
 
   <div class="control-group">
     <label class="control-label"><?php echo t('Arrows')?></label>
     <div class="controls">
-      <label class="checkbox"><input name="showArrows" type="checkbox" value="1" <?php echo intval($controller->showArrows)?'checked="checked"':'' ?> /> <span><?=t('Include &laquo; and &raquo;.')?></span></label>
+      <label class="checkbox"><input name="showArrows" type="checkbox" value="1" <?php echo intval($controller->showArrows)?'checked="checked"':'' ?> /> <span><?php echo t('Include &laquo; and &raquo;.')?></span></label>
     </div>
   </div>   
 
@@ -75,13 +75,13 @@ defined('C5_EXECUTE') or die("Access Denied.");
   </fieldset>
 
   <fieldset>
-    <legend style="margin-bottom: 0px"><?=t('Ordering')?></legend>
+    <legend style="margin-bottom: 0px"><?php echo t('Ordering')?></legend>
     <div class="control-group">
       <label class="control-label"><?php echo(t('Order pages by'))?></label>
       <div class="controls">
       <select name="orderBy">
-          <option value="display_asc" <?php echo ($controller->orderBy=='display_asc') ? 'selected="selected"' : '' ?>><?=t('Sitemap')?></option>
-          <option value="chrono_desc" <?php echo ($controller->orderBy=='chrono_desc') ? 'selected="selected"' : '' ?>><?=t('Chronological')?></option>
+          <option value="display_asc" <?php echo ($controller->orderBy=='display_asc') ? 'selected="selected"' : '' ?>><?php echo t('Sitemap')?></option>
+          <option value="chrono_desc" <?php echo ($controller->orderBy=='chrono_desc') ? 'selected="selected"' : '' ?>><?php echo t('Chronological')?></option>
       </select>
       </div>
     </div>    

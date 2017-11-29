@@ -1,4 +1,4 @@
-<? 
+<?php 
 defined('C5_EXECUTE') or die("Access Denied.");
 if (isset($_REQUEST['themeID'])) {
 	// internal theme
@@ -7,4 +7,4 @@ if (isset($_REQUEST['themeID'])) {
 	$url = REL_DIR_FILES_TOOLS_REQUIRED . '/themes/preview_external?random=' . time() . '&themeCID=' . intval($_REQUEST['themeCID']) . '&previewCID=' . intval($_REQUEST['previewCID']) . '&themeHandle=' . h($_REQUEST['themeHandle']) . '&ctID=' . intval($_REQUEST['ctID']);
 }
 ?>
-<iframe id="previewTheme<?=time()?>" height="100%" style="width:100%; border:0px; " src="<?=$url?>"></iframe>
+<iframe id="previewTheme<?php echo time()?>" height="100%" style="width:100%; border:0px; " src="<?php echo $url?>"></iframe>

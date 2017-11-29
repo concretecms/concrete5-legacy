@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 	
 /**
@@ -28,7 +28,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		/**
 		 * Creates a URL that can be posted or navigated to that, when done so, will automatically run the corresponding method inside the block's controller.
 		 * <code>
-		 *     <a href="<?=$this->action('get_results')?>">Get the results</a>
+		 *     <a href="<?php echo $this->action('get_results')?>">Get the results</a>
 		 * </code>
 		 * @param string $task
 		 * @param strign $extraParams Adds items onto the end of the query string. Useful for anchor links, etc...

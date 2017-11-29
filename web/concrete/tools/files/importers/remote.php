@@ -145,23 +145,23 @@ if (count($errors) < 1) {
 <html>
 	<head>
 		<script language="javascript">
-<?
+<?php
 if(count($errors)) {
 ?>
-	window.parent.ccmAlert.notice("<?=t('Upload Error')?>", "<?=str_replace("\n", '', nl2br(implode('\n', $errors)))?>");
+	window.parent.ccmAlert.notice("<?php echo t('Upload Error')?>", "<?php echo str_replace("\n", '', nl2br(implode('\n', $errors)))?>");
 	window.parent.ccm_alResetSingle();
-<? } else { ?>
+<?php } else { ?>
 		highlight = new Array();
-	<? 	foreach ($import_responses as $r) { ?>
-			highlight.push(<?=$r->getFileID()?>);
-			window.parent.ccm_uploadedFiles.push(<?=intval($r->getFileID())?>);
-	<?	} ?>
+	<?php 	foreach ($import_responses as $r) { ?>
+			highlight.push(<?php echo $r->getFileID()?>);
+			window.parent.ccm_uploadedFiles.push(<?php echo intval($r->getFileID())?>);
+	<?php	} ?>
 		window.parent.jQuery.fn.dialog.closeTop();
 		setTimeout(function() {
-			window.parent.ccm_filesUploadedDialog('<?=$searchInstance?>');
+			window.parent.ccm_filesUploadedDialog('<?php echo $searchInstance?>');
 		}, 100);
 
-<? } ?>
+<?php } ?>
 		</script>
 	</head>
 	<body>

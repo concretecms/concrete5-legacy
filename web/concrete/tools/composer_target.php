@@ -28,9 +28,9 @@ switch($ct->getCollectionTypeComposerPublishMethod()) {
 		
 		?>
 	
-	<h1><?=t("Where do you want to publish this page?")?></h1>
+	<h1><?php echo t("Where do you want to publish this page?")?></h1>
 	<ul class="item-select-list">
-	<? foreach($pages as $p) { 
+	<?php foreach($pages as $p) { 
 		$trail = $navigation->getTrailToCollection($p);
 		$crumbs = array();
 		if(is_array($trail) && count($trail)) {
@@ -40,13 +40,13 @@ switch($ct->getCollectionTypeComposerPublishMethod()) {
 			}
 		}
 		?>
-		<li class="item-select-page"><a href="javascript:void(0)" onclick="<?=$function?>(<?=$p->getCollectionID()?>)"><?=$p->getCollectionName()?></a>
+		<li class="item-select-page"><a href="javascript:void(0)" onclick="<?php echo $function?>(<?php echo $p->getCollectionID()?>)"><?php echo $p->getCollectionName()?></a>
 			<div class="ccm-note" style="padding-left: 8px;"><?php echo implode(" &gt; ",$crumbs)?></div>
 		</li>
-	<? } ?>
+	<?php } ?>
 	</ul>
 	
-	<?
+	<?php
 		break;
 	case 'CHOOSE':
 		$args['sitemapCombinedMode'] = $sitemapCombinedMode;

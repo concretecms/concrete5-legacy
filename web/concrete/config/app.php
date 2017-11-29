@@ -1,4 +1,4 @@
-<?
+<?php
 /**
  *
  * When this file is run it basically queries the database for site config items and sets those up, possibly overriding items in the base.php.

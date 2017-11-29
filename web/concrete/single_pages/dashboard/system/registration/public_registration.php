@@ -1,5 +1,5 @@
-<? defined('C5_EXECUTE') or die("Access Denied.");?>
-<?=Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Public Registration'), t('Control the options available for Public Registration.'), 'span6 offset3', false);?>
+<?php defined('C5_EXECUTE') or die("Access Denied.");?>
+<?php echo Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Public Registration'), t('Control the options available for Public Registration.'), 'span6 offset3', false);?>
 <?php
 $h = Loader::helper('concrete/interface');
 ?>	
@@ -71,7 +71,7 @@ $h = Loader::helper('concrete/interface');
         </div>  
 	</div>
 <div class="ccm-pane-footer">
-<? print $h->submit(t('Save'), 'registration-type-form', 'right', 'primary'); ?>
+<?php print $h->submit(t('Save'), 'registration-type-form', 'right', 'primary'); ?>
 </div>
 </form> 	
     
@@ -115,4 +115,4 @@ $h = Loader::helper('concrete/interface');
  });
  </script>
 
-<?=Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper(false);?>
+<?php echo Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper(false);?>

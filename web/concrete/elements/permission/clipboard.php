@@ -1,12 +1,12 @@
-<? defined('C5_EXECUTE') or die("Access Denied."); ?>
-<?
+<?php defined('C5_EXECUTE') or die("Access Denied."); ?>
+<?php
 	$set = PermissionSet::getSavedPermissionSetFromSession();
 ?>
-<button class="btn btn-mini" type="button" id="ccm-permissions-list-copy-permissions"><?=t('Copy')?></button>
-<? if (is_object($set) && $set->getPermissionKeyCategory() == $pkCategory->getPermissionKeyCategoryHandle()) { ?>
-	<button class="btn btn-mini" type="button" id="ccm-permissions-list-paste-permissions"><?=t('Paste')?></button>
-<? } ?>
-<input type="hidden" name="pkCategoryHandle" value="<?=$pkCategory->getPermissionKeyCategoryHandle()?>" />
+<button class="btn btn-mini" type="button" id="ccm-permissions-list-copy-permissions"><?php echo t('Copy')?></button>
+<?php if (is_object($set) && $set->getPermissionKeyCategory() == $pkCategory->getPermissionKeyCategoryHandle()) { ?>
+	<button class="btn btn-mini" type="button" id="ccm-permissions-list-paste-permissions"><?php echo t('Paste')?></button>
+<?php } ?>
+<input type="hidden" name="pkCategoryHandle" value="<?php echo $pkCategory->getPermissionKeyCategoryHandle()?>" />
 <script type="text/javascript">
 
 $(function() {
@@ -22,7 +22,7 @@ $(function() {
 			dataType: 'json',
 			type: 'post',
 			data: data,
-			url: '<?=REL_DIR_FILES_TOOLS_REQUIRED?>/permissions/set?task=copy_permission_set&<?=Loader::helper('validation/token')->getParameter('copy_permission_set')?>',
+			url: '<?php echo REL_DIR_FILES_TOOLS_REQUIRED?>/permissions/set?task=copy_permission_set&<?php echo Loader::helper('validation/token')->getParameter('copy_permission_set')?>',
 			success: function(r) {
 				jQuery.fn.dialog.hideLoader();
 			}				
@@ -37,7 +37,7 @@ $(function() {
 			dataType: 'json',
 			type: 'post',
 			data: data,
-			url: '<?=REL_DIR_FILES_TOOLS_REQUIRED?>/permissions/set?task=paste_permission_set&<?=Loader::helper('validation/token')->getParameter('paste_permission_set')?>',
+			url: '<?php echo REL_DIR_FILES_TOOLS_REQUIRED?>/permissions/set?task=paste_permission_set&<?php echo Loader::helper('validation/token')->getParameter('paste_permission_set')?>',
 			success: function(r) {
 				jQuery.fn.dialog.hideLoader();
 				for (i = 0; i < r.length; i++) {

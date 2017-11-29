@@ -1,4 +1,4 @@
-<?
+<?php
 
 /**
  * Helper class for finding spelling mistakes in text.  Requires the linux package aspell.

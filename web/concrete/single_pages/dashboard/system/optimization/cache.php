@@ -1,4 +1,4 @@
-<? defined('C5_EXECUTE') or die("Access Denied."); ?>
+<?php defined('C5_EXECUTE') or die("Access Denied."); ?>
 <?php echo Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Cache &amp; Speed Settings'), false, 'span10 offset1', false)?>
 
 <form method="post" class="form-horizontal" id="update-cache-form" action="<?php echo $this->url('/dashboard/system/optimization/cache', 'update_cache')?>">
@@ -65,7 +65,7 @@
             </div>    
 
             <div class="control-group">
-                <label class="control-label"><?=t('Expire Pages from Cache')?></label>
+                <label class="control-label"><?php echo t('Expire Pages from Cache')?></label>
                 <div class="controls">
                 <label class="radio">
                     <input type="radio" name="FULL_PAGE_CACHE_LIFETIME" value="default" <?php  if (FULL_PAGE_CACHE_LIFETIME == 'default') { ?> checked <?php  } ?> />
@@ -95,7 +95,7 @@
         </fieldset>
     </div>
     <div class="ccm-pane-footer">
-        <?
+        <?php
         print $interface->submit(t('Save'), 'update-cache-form', 'right', 'primary');
         ?>    
     </div>

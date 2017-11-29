@@ -1,11 +1,11 @@
-<? defined('C5_EXECUTE') or die("Access Denied."); ?>
+<?php defined('C5_EXECUTE') or die("Access Denied."); ?>
 
-<?
+<?php
 $upToPage = Page::getByPath("/dashboard");
 ?>
-<?=Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('System &amp; Settings'), false, false, true, -1, $upToPage); ?>
+<?php echo Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('System &amp; Settings'), false, false, true, -1, $upToPage); ?>
 
-<?
+<?php
 for ($i = 0; $i < count($categories); $i++) {
 	$cat = $categories[$i];
 	?>
@@ -15,10 +15,10 @@ for ($i = 0; $i < count($categories); $i++) {
 
 
 	<ul class="nav nav-list">
-	<li class="nav-header"><?=t($cat->getCollectionName())?></li>
+	<li class="nav-header"><?php echo t($cat->getCollectionName())?></li>
 
 	
-	<?
+	<?php
 	$show = array();
 	$subcats = $cat->getCollectionChildrenArray(true);
 	foreach($subcats as $catID) {
@@ -32,29 +32,29 @@ for ($i = 0; $i < count($categories); $i++) {
 	if (count($show) > 0) { ?>
 	
 	
-	<? foreach($show as $subcat) { ?>
+	<?php foreach($show as $subcat) { ?>
 	
 	<li>
-	<a href="<?=Loader::helper('navigation')->getLinkToCollection($subcat, false, true)?>"><i class="<?=$subcat->getAttribute('icon_dashboard')?>"></i> <?=t($subcat->getCollectionName())?></a>
+	<a href="<?php echo Loader::helper('navigation')->getLinkToCollection($subcat, false, true)?>"><i class="<?php echo $subcat->getAttribute('icon_dashboard')?>"></i> <?php echo t($subcat->getCollectionName())?></a>
 	</li>
 	
-	<? } ?>
+	<?php } ?>
 	
 	
-	<? } else { ?>
+	<?php } else { ?>
 	
 	<li>
-		<a href="<?=Loader::helper('navigation')->getLinkToCollection($cat, false, true)?>"><i class="<?=$cat->getAttribute('icon_dashboard')?>"></i> <?=t('Home')?></a>
+		<a href="<?php echo Loader::helper('navigation')->getLinkToCollection($cat, false, true)?>"><i class="<?php echo $cat->getAttribute('icon_dashboard')?>"></i> <?php echo t('Home')?></a>
 	</li>
 			
-	<? } ?>
+	<?php } ?>
 	
 	</ul>
 
 	</div>
 	</div>
 	
-<? } ?>
+<?php } ?>
 
 
 	<div class="clearfix">
@@ -70,4 +70,4 @@ $(function() {
 </script>
 
 
-<?=Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper();?>
+<?php echo Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper();?>

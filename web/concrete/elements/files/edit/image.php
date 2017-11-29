@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 $u = new User();
 $form = Loader::helper('form');
@@ -9,24 +9,24 @@ if (!$fp->canEditFileContents()) {
 }
 ?>
 
-<script type="text/javascript" src="<?=ASSETS_URL_JAVASCRIPT?>/jquery.cropzoom.js"></script>
+<script type="text/javascript" src="<?php echo ASSETS_URL_JAVASCRIPT?>/jquery.cropzoom.js"></script>
 
 <div class="ccm-ui">
 
 <div class="ccm-pane-options">
 <form class="clearfix">
-<a href="javascript:void(0)" class="btn primary" id="ccm-file-manager-edit-save" style="float: right; margin-left: 10px"><?=t('Save')?></a>
-<a href="javascript:void(0)" class="btn" id="ccm-file-manager-edit-restore" style="float: right"><?=t('Undo')?></a>
+<a href="javascript:void(0)" class="btn primary" id="ccm-file-manager-edit-save" style="float: right; margin-left: 10px"><?php echo t('Save')?></a>
+<a href="javascript:void(0)" class="btn" id="ccm-file-manager-edit-restore" style="float: right"><?php echo t('Undo')?></a>
 
 <div class="span6">
-	<label><?=t('Zoom')?></label>
+	<label><?php echo t('Zoom')?></label>
 	<div class="input" style="margin-top: 11px">
 		<div id="ccm-file-manager-zoom-slider"></div>
 	</div>
 </div>
 
 <div class="span6">
-	<label><?=t('Rotate')?></label>
+	<label><?php echo t('Rotate')?></label>
 	<div class="input" style="margin-top: 11px; position: relative">
 		<a href="javascript:void(0)" id="ccm-file-manager-rotate-btn" class="btn" style="position: absolute; top: -10px; right: -50px">&crarr;</a>
 		<div id="ccm-file-manager-rotate"></div>
@@ -57,8 +57,8 @@ if (!$fp->canEditFileContents()) {
     <script type="text/javascript">
     
     $(document).ready(function(){
-       var iw = <?=$f->getAttribute('width')?>;
-       var ih = <?=$f->getAttribute('height')?>;
+       var iw = <?php echo $f->getAttribute('width')?>;
+       var ih = <?php echo $f->getAttribute('height')?>;
 	   var w = $('#ccm-file-manager-edit-image').closest('.ui-dialog-content').width();
 	   var h = $('#ccm-file-manager-edit-image').closest('.ui-dialog-content').height();
 	   if (iw > (w + 20)) {
@@ -88,30 +88,30 @@ if (!$fp->canEditFileContents()) {
             selector:{        
               centered:true,
               borderColor:'blue',
-              <? if ($_REQUEST['maxWidth']) { ?>
-              	maxWidth: <?=$_REQUEST['maxWidth']?>,
-              <? } ?>
-              <? if ($_REQUEST['maxHeight']) { ?>
-              	maxHeight: <?=$_REQUEST['maxHeight']?>,
-              <? } ?>
-              <? if ($_REQUEST['minWidth']) { ?>
-              	minWidth: <?=$_REQUEST['minWidth']?>,
-              <? } ?>
-              <? if ($_REQUEST['minHeight']) { ?>
-              	minHeight: <?=$_REQUEST['minHeight']?>,
-              <? } ?>
+              <?php if ($_REQUEST['maxWidth']) { ?>
+              	maxWidth: <?php echo $_REQUEST['maxWidth']?>,
+              <?php } ?>
+              <?php if ($_REQUEST['maxHeight']) { ?>
+              	maxHeight: <?php echo $_REQUEST['maxHeight']?>,
+              <?php } ?>
+              <?php if ($_REQUEST['minWidth']) { ?>
+              	minWidth: <?php echo $_REQUEST['minWidth']?>,
+              <?php } ?>
+              <?php if ($_REQUEST['minHeight']) { ?>
+              	minHeight: <?php echo $_REQUEST['minHeight']?>,
+              <?php } ?>
               borderColorHover:'red'
             },
             image:{
-                source:'<?=$f->getRelativePath()?>',
-                width: <?=$f->getAttribute('width')?>,
-                height:<?=$f->getAttribute('height')?>,
+                source:'<?php echo $f->getRelativePath()?>',
+                width: <?php echo $f->getAttribute('width')?>,
+                height:<?php echo $f->getAttribute('height')?>,
                 minZoom:5,
                 startZoom: 100,
                 maxZoom:300
             }
         });
-        <?
+        <?php
         $selectorStartWidth = $f->getAttribute('width');
         $selectorStartHeight = $f->getAttribute('height');
         if ($_REQUEST['maxWidth'] && ($_REQUEST['maxWidth'] < $selectorStartWidth)) {
@@ -128,8 +128,8 @@ if (!$fp->canEditFileContents()) {
         }        
         ?>
         
-        ssw = <?=$selectorStartWidth?>;
-        ssh = <?=$selectorStartHeight?>;
+        ssw = <?php echo $selectorStartWidth?>;
+        ssh = <?php echo $selectorStartHeight?>;
         
        if (w < ssw) {
        	ssw = w;
@@ -156,14 +156,14 @@ if (!$fp->canEditFileContents()) {
        
        $('#ccm-file-manager-edit-save').click(function(){ 
        		jQuery.fn.dialog.showLoader();
-            cropzoom.send('<?=REL_DIR_FILES_TOOLS_REQUIRED?>/files/image/process','POST',{
-            	'fID': <?=$f->getFileID()?>,
+            cropzoom.send('<?php echo REL_DIR_FILES_TOOLS_REQUIRED?>/files/image/process','POST',{
+            	'fID': <?php echo $f->getFileID()?>,
             },function(rta){
             	jQuery.fn.dialog.hideLoader();
 				highlight = new Array();
-				highlight.push(<?=$f->getFileID()?>);
+				highlight.push(<?php echo $f->getFileID()?>);
 				jQuery.fn.dialog.closeTop();
-				ccm_alRefresh(highlight, '<?=Loader::helper('text')->entities($_REQUEST['searchInstance'])?>');
+				ccm_alRefresh(highlight, '<?php echo Loader::helper('text')->entities($_REQUEST['searchInstance'])?>');
             });            
         });
        

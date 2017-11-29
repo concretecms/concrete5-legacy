@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 $section = 'groups';
 
@@ -53,31 +53,31 @@ $gResults = $gl->getPage();
 
 ?>
 
-<?=Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Groups'), false, 'span10 offset1', false)?>
-<?
+<?php echo Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Groups'), false, 'span10 offset1', false)?>
+<?php
 $tp = new TaskPermission();
 if ($tp->canAccessGroupSearch()) { ?>
 
 <div class="ccm-pane-options">
-<form method="get" class="form-horizontal" action="<?=$this->url('/dashboard/users/groups')?>">
+<form method="get" class="form-horizontal" action="<?php echo $this->url('/dashboard/users/groups')?>">
 <div class="ccm-pane-options-permanent-search">
 <div class="span8">
-<? $form = Loader::helper('form'); ?>
-<?=$form->label('gKeywords', t('Keywords'))?>
+<?php $form = Loader::helper('form'); ?>
+<?php echo $form->label('gKeywords', t('Keywords'))?>
 <div class="controls">
-	<input type="text" name="gKeywords" value="<?=Loader::helper('text')->entities($_REQUEST['gKeywords'])?>"  />
-	<input class="btn" type="submit" value="<?=t('Search')?>" />
+	<input type="text" name="gKeywords" value="<?php echo Loader::helper('text')->entities($_REQUEST['gKeywords'])?>"  />
+	<input class="btn" type="submit" value="<?php echo t('Search')?>" />
 </div>
 <input type="hidden" name="group_submit_search" value="1" />
 </div>
 </div>
 </form>
 </div>
-<div class="ccm-pane-body <? if (!$gl->requiresPaging()) { ?> ccm-pane-body-footer <? } ?>">
+<div class="ccm-pane-body <?php if (!$gl->requiresPaging()) { ?> ccm-pane-body-footer <?php } ?>">
 
 	<a href="<?php echo View::url('/dashboard/users/add_group')?>" style="float: right; position:relative;top:-5px"  class="btn primary"><?php echo t("Add Group")?></a>
 
-<? if (count($gResults) > 0) { 
+<?php if (count($gResults) > 0) { 
 	$gl->displaySummary();
 $gp = new Permissions();
 $canEditGroups = $gp->canEditGroups();
@@ -87,94 +87,94 @@ $canEditGroups = $gp->canEditGroups();
 	div.ccm-paging-top {padding-bottom:10px;}
 	</style>
 
-<?
+<?php
 	
 foreach ($gResults as $g) { ?>
 	
 	<div class="ccm-group">
-		<<? if ($canEditGroups) { ?>a<? } else {?>span<? } ?> class="ccm-group-inner" <? if ($canEditGroups) { ?>href="<?=$this->url('/dashboard/users/groups?task=edit&gID=' . $g['gID'])?>"<? } ?> style="background-image: url(<?=ASSETS_URL_IMAGES?>/icons/group.png)"><?=h(tc('GroupName', $g['gName']))?><? if ($canEditGroups) { ?></a><? } else {?></span><? } ?>
-		<? if ($g['gDescription']) { ?>
-			<div class="ccm-group-description"><?=h(tc('GroupDescription', $g['gDescription']))?></div>
-		<? } ?>
+		<<?php if ($canEditGroups) { ?>a<?php } else {?>span<?php } ?> class="ccm-group-inner" <?php if ($canEditGroups) { ?>href="<?php echo $this->url('/dashboard/users/groups?task=edit&gID=' . $g['gID'])?>"<?php } ?> style="background-image: url(<?php echo ASSETS_URL_IMAGES?>/icons/group.png)"><?php echo h(tc('GroupName', $g['gName']))?><?php if ($canEditGroups) { ?></a><?php } else {?></span><?php } ?>
+		<?php if ($g['gDescription']) { ?>
+			<div class="ccm-group-description"><?php echo h(tc('GroupDescription', $g['gDescription']))?></div>
+		<?php } ?>
 	</div>
 
 
-<? }
+<?php }
 
 } else { ?>
 
-	<p><?=t('No groups found.')?></p>
+	<p><?php echo t('No groups found.')?></p>
 	
-<? } ?>
+<?php } ?>
 </div>
-<? if ($gl->requiresPaging()) { ?>
+<?php if ($gl->requiresPaging()) { ?>
 <div class="ccm-pane-footer">
-	<?=$gl->displayPagingV2();?>
+	<?php echo $gl->displayPagingV2();?>
 </div>
-<? } ?>
+<?php } ?>
 
-<? } else { ?>
+<?php } else { ?>
 <div class="ccm-pane-body ccm-pane-body-footer">
-	<p><?=t('You do not have access to group search. This setting may be changed in the access section of the dashboard settings page.')?></p>
+	<p><?php echo t('You do not have access to group search. This setting may be changed in the access section of the dashboard settings page.')?></p>
 </div>
-<? } ?>
+<?php } ?>
 
-<?=Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper(false);?>
+<?php echo Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper(false);?>
 
-<? } else { ?>
+<?php } else { ?>
 
-<?=Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Edit Group'), false, false, false)?>
-<form method="post"  class="form-horizontal" id="update-group-form" action="<?=$this->url('/dashboard/users/groups/', 'update_group')?>">
-<?=$valt->output('add_or_update_group')?>
+<?php echo Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Edit Group'), false, false, false)?>
+<form method="post"  class="form-horizontal" id="update-group-form" action="<?php echo $this->url('/dashboard/users/groups/', 'update_group')?>">
+<?php echo $valt->output('add_or_update_group')?>
 <div class="ccm-pane-body">
-	<?
+	<?php
 	$form = Loader::helper('form');
 	$date = Loader::helper('form/date_time');
 	$u=new User();
 
 	$delConfirmJS = t('Are you sure you want to permanently remove this group?');
 	if($u->isSuperUser() == false){ ?>
-		<?=t('You must be logged in as %s to remove groups.', USER_SUPER)?>			
-	<? }else{ ?>   
+		<?php echo t('You must be logged in as %s to remove groups.', USER_SUPER)?>			
+	<?php }else{ ?>   
 
 		<script type="text/javascript">
 		deleteGroup = function() {
-			if (confirm('<?=$delConfirmJS?>')) { 
-				location.href = "<?=$this->url('/dashboard/users/groups', 'delete', intval($_REQUEST['gID']), $valt->generate('delete_group_' . intval($_REQUEST['gID']) ))?>";				
+			if (confirm('<?php echo $delConfirmJS?>')) { 
+				location.href = "<?php echo $this->url('/dashboard/users/groups', 'delete', intval($_REQUEST['gID']), $valt->generate('delete_group_' . intval($_REQUEST['gID']) ))?>";				
 			}
 		}
 		</script>
 
-	<? } ?>
+	<?php } ?>
 
 	<fieldset>
 	<div class="control-group">
-	<?=$form->label('gName', t('Name'))?>
+	<?php echo $form->label('gName', t('Name'))?>
 	<div class="controls">
-		<input type="text" name="gName" class="span6" value="<?=Loader::helper('text')->entities($gName)?>" />
+		<input type="text" name="gName" class="span6" value="<?php echo Loader::helper('text')->entities($gName)?>" />
 	</div>
 	</div>
 	
 	<div class="control-group">
-	<?=$form->label('gDescription', t('Description'))?>
+	<?php echo $form->label('gDescription', t('Description'))?>
 	<div class="controls">
-		<textarea name="gDescription" rows="6" class="span6"><?=Loader::helper("text")->entities($gDescription)?></textarea>
+		<textarea name="gDescription" rows="6" class="span6"><?php echo Loader::helper("text")->entities($gDescription)?></textarea>
 	</div>
 	</div>
 	</fieldset>
 	<fieldset>
-	<legend><?=t("Group Expiration Options")?></legend>
+	<legend><?php echo t("Group Expiration Options")?></legend>
 	<div class="control-group">
 	<div class="controls">
 
 		<label class="checkbox">
-		<?=$form->checkbox('gUserExpirationIsEnabled', 1, $g->isGroupExpirationEnabled())?>
-		<span><?=t('Automatically remove users from this group')?></span></label>
+		<?php echo $form->checkbox('gUserExpirationIsEnabled', 1, $g->isGroupExpirationEnabled())?>
+		<span><?php echo t('Automatically remove users from this group')?></span></label>
 		
 	</div>
 	
 	<div class="controls" style="padding-left: 18px">
-		<?=$form->select("gUserExpirationMethod", array(
+		<?php echo $form->select("gUserExpirationMethod", array(
 			'SET_TIME' => t('at a specific date and time'),
 				'INTERVAL' => t('once a certain amount of time has passed')
 			
@@ -185,32 +185,32 @@ foreach ($gResults as $g) { ?>
 	
 	<div id="gUserExpirationSetTimeOptions" style="display: none">
 	<div class="control-group">
-	<?=$form->label('gUserExpirationSetDateTime', t('Expiration Date'))?>
+	<?php echo $form->label('gUserExpirationSetDateTime', t('Expiration Date'))?>
 	<div class="controls">
-	<?=$date->datetime('gUserExpirationSetDateTime', $g->getGroupExpirationDateTime())?>
+	<?php echo $date->datetime('gUserExpirationSetDateTime', $g->getGroupExpirationDateTime())?>
 	</div>
 	</div>
 	</div>
 	<div id="gUserExpirationIntervalOptions" style="display: none">
 	<div class="control-group">
-	<label><?=t('Accounts expire after')?></label>
+	<label><?php echo t('Accounts expire after')?></label>
 	<div class="controls">
 	<table class="table table-condensed" style="width: auto">
 	<tr>
-	<?
+	<?php
 	$days = $g->getGroupExpirationIntervalDays();
 	$hours = $g->getGroupExpirationIntervalHours();
 	$minutes = $g->getGroupExpirationIntervalMinutes();
 	$style = 'width: 60px';
 	?>
-	<td valign="top"><strong><?=t('Days')?></strong><br/>
-	<?=$form->text('gUserExpirationIntervalDays', $days, array('style' => $style, 'class' => 'span1'))?>
+	<td valign="top"><strong><?php echo t('Days')?></strong><br/>
+	<?php echo $form->text('gUserExpirationIntervalDays', $days, array('style' => $style, 'class' => 'span1'))?>
 	</td>
-	<td valign="top"><strong><?=t('Hours')?></strong><br/>
-	<?=$form->text('gUserExpirationIntervalHours', $hours, array('style' => $style, 'class' => 'span1'))?>
+	<td valign="top"><strong><?php echo t('Hours')?></strong><br/>
+	<?php echo $form->text('gUserExpirationIntervalHours', $hours, array('style' => $style, 'class' => 'span1'))?>
 	</td>
-	<td valign="top"><strong><?=t('Minutes')?></strong><br/>
-	<?=$form->text('gUserExpirationIntervalMinutes', $minutes, array('style' => $style, 'class' => 'span1'))?>
+	<td valign="top"><strong><?php echo t('Minutes')?></strong><br/>
+	<?php echo $form->text('gUserExpirationIntervalMinutes', $minutes, array('style' => $style, 'class' => 'span1'))?>
 	</td>
 	</tr>
 	</table>
@@ -220,9 +220,9 @@ foreach ($gResults as $g) { ?>
 	
 	<div id="gUserExpirationAction" style="display: none">
 	<div class="clearfix">
-	<?=$form->label('gUserExpirationAction', t('Expiration Action'))?>
+	<?php echo $form->label('gUserExpirationAction', t('Expiration Action'))?>
 	<div class="input">
-	<?=$form->select("gUserExpirationAction", array(
+	<?php echo $form->select("gUserExpirationAction", array(
 	'REMOVE' => t('Remove the user from this group'),
 		'DEACTIVATE' => t('Deactivate the user account'),
 		'REMOVE_DEACTIVATE' => t('Remove the user from the group and deactivate the account')
@@ -230,19 +230,19 @@ foreach ($gResults as $g) { ?>
 	</div>
 	</div>
 	</div>
-	<input type="hidden" name="gID" value="<?=intval($_REQUEST['gID'])?>" />
+	<input type="hidden" name="gID" value="<?php echo intval($_REQUEST['gID'])?>" />
 	<input type="hidden" name="task" value="edit" />
 	</fieldset>
 </div>
 <div class="ccm-pane-footer">
-	<?=$ih->submit(t('Update'), 'update-group-form', 'right', 'primary')?>
-	<? print $ih->button_js(t('Delete'), "deleteGroup()", 'right', 'error');?>
-	<?=$ih->button(t('Cancel'), $this->url('/dashboard/users/groups'), 'left')?>
+	<?php echo $ih->submit(t('Update'), 'update-group-form', 'right', 'primary')?>
+	<?php print $ih->button_js(t('Delete'), "deleteGroup()", 'right', 'error');?>
+	<?php echo $ih->button(t('Cancel'), $this->url('/dashboard/users/groups'), 'left')?>
 </div>
 </form>
 
-<?=Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper(false);?>
-<? } ?>
+<?php echo Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper(false);?>
+<?php } ?>
 
 <script type="text/javascript">
 ccm_checkGroupExpirationOptions = function() {
@@ -275,9 +275,9 @@ $(function() {
 	ccm_checkGroupExpirationOptions();
 	/*
 	$("div#gUserExpirationIntervalOptions input").focus(function() {
-		if ($('input[name=gUserExpirationIntervalDays]').val() == '<?=t("Days")?>' &&
-			$('input[name=gUserExpirationIntervalHours]').val() == '<?=t("Hours")?>' &&
-			$('input[name=gUserExpirationIntervalMinutes]').val() == '<?=t("Minutes")?>') {
+		if ($('input[name=gUserExpirationIntervalDays]').val() == '<?php echo t("Days")?>' &&
+			$('input[name=gUserExpirationIntervalHours]').val() == '<?php echo t("Hours")?>' &&
+			$('input[name=gUserExpirationIntervalMinutes]').val() == '<?php echo t("Minutes")?>') {
 			$("div#gUserExpirationIntervalOptions input").val("");
 			$("div#gUserExpirationIntervalOptions input").css('color', '#000');
 		}
@@ -286,9 +286,9 @@ $(function() {
 		if ($('input[name=gUserExpirationIntervalDays]').val() == '' &&
 			$('input[name=gUserExpirationIntervalHours]').val() == '' &&
 			$('input[name=gUserExpirationIntervalMinutes]').val() == '') {
-			$('input[name=gUserExpirationIntervalDays]').val('<?=t("Days")?>');
-			$('input[name=gUserExpirationIntervalHours]').val('<?=t("Hours")?>');
-			$('input[name=gUserExpirationIntervalMinutes]').val('<?=t("Minutes")?>');
+			$('input[name=gUserExpirationIntervalDays]').val('<?php echo t("Days")?>');
+			$('input[name=gUserExpirationIntervalHours]').val('<?php echo t("Hours")?>');
+			$('input[name=gUserExpirationIntervalMinutes]').val('<?php echo t("Minutes")?>');
 			$("div#gUserExpirationIntervalOptions input").css('color', '#aaa');
 		}
 	});

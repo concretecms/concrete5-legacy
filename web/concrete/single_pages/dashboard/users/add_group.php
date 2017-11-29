@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 $section = 'groups';
 
@@ -11,37 +11,37 @@ $form = Loader::helper('form');
 
 ?>
 
-<?=Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Add Group'), false, false, false)?>
-<form class="form-horizontal" method="post" id="add-group-form" action="<?=$this->url('/dashboard/users/add_group/', 'do_add')?>">
+<?php echo Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Add Group'), false, false, false)?>
+<form class="form-horizontal" method="post" id="add-group-form" action="<?php echo $this->url('/dashboard/users/add_group/', 'do_add')?>">
 <div class="ccm-pane-body">
-<?=$valt->output('add_or_update_group')?>
+<?php echo $valt->output('add_or_update_group')?>
 <fieldset>
 <div class="control-group">
-<?=$form->label('gName', t('Name'))?>
+<?php echo $form->label('gName', t('Name'))?>
 <div class="controls">
-	<input type="text" name="gName" class="span6" value="<?=Loader::helper('text')->entities($_POST['gName'])?>" />
+	<input type="text" name="gName" class="span6" value="<?php echo Loader::helper('text')->entities($_POST['gName'])?>" />
 </div>
 </div>
 
 <div class="control-group">
-<?=$form->label('gDescription', t('Description'))?>
+<?php echo $form->label('gDescription', t('Description'))?>
 <div class="controls">
-	<?=$form->textarea('gDescription', array('rows' => 6, 'class' =>'span6'))?>
+	<?php echo $form->textarea('gDescription', array('rows' => 6, 'class' =>'span6'))?>
 </div>
 </div>
 </fieldset>
 <fieldset>
-<legend><?=t("Group Expiration Options")?></legend>
+<legend><?php echo t("Group Expiration Options")?></legend>
 
 <div class="control-group">
 	<div class="controls">
 	<label class="checkbox">
-	<?=$form->checkbox('gUserExpirationIsEnabled', 1, false)?>
-	<span><?=t('Automatically remove users from this group')?></span></label>
+	<?php echo $form->checkbox('gUserExpirationIsEnabled', 1, false)?>
+	<span><?php echo t('Automatically remove users from this group')?></span></label>
 	</div>
 	
 	<div class="controls" style="padding-left:18px">
-	<?=$form->select("gUserExpirationMethod", array(
+	<?php echo $form->select("gUserExpirationMethod", array(
 		'SET_TIME' => t('at a specific date and time'),
 			'INTERVAL' => t('once a certain amount of time has passed')
 		
@@ -51,26 +51,26 @@ $form = Loader::helper('form');
 
 <div id="gUserExpirationSetTimeOptions" style="display: none">
 <div class="control-group">
-<?=$form->label('gUserExpirationSetDateTime', t('Expiration Date'))?>
+<?php echo $form->label('gUserExpirationSetDateTime', t('Expiration Date'))?>
 <div class="controls">
-<?=$date->datetime('gUserExpirationSetDateTime')?>
+<?php echo $date->datetime('gUserExpirationSetDateTime')?>
 </div>
 </div>
 </div>
 <div id="gUserExpirationIntervalOptions" style="display: none">
 <div class="control-group">
-<label><?=t('Accounts expire after')?></label>
+<label><?php echo t('Accounts expire after')?></label>
 <div class="controls">
 <table class="table table-condensed" style="width: auto">
 <tr>
-<td valign="top"><strong><?=t('Days')?></strong><br/>
-<?=$form->text('gUserExpirationIntervalDays', array('style' => $style, 'class' => 'span1'))?>
+<td valign="top"><strong><?php echo t('Days')?></strong><br/>
+<?php echo $form->text('gUserExpirationIntervalDays', array('style' => $style, 'class' => 'span1'))?>
 </td>
-<td valign="top"><strong><?=t('Hours')?></strong><br/>
-<?=$form->text('gUserExpirationIntervalHours', array('style' => $style, 'class' => 'span1'))?>
+<td valign="top"><strong><?php echo t('Hours')?></strong><br/>
+<?php echo $form->text('gUserExpirationIntervalHours', array('style' => $style, 'class' => 'span1'))?>
 </td>
-<td valign="top"><strong><?=t('Minutes')?></strong><br/>
-<?=$form->text('gUserExpirationIntervalMinutes', array('style' => $style, 'class' => 'span1'))?>
+<td valign="top"><strong><?php echo t('Minutes')?></strong><br/>
+<?php echo $form->text('gUserExpirationIntervalMinutes', array('style' => $style, 'class' => 'span1'))?>
 </td>
 </tr>
 </table>
@@ -80,9 +80,9 @@ $form = Loader::helper('form');
 
 <div id="gUserExpirationAction" style="display: none">
 <div class="clearfix">
-<?=$form->label('gUserExpirationAction', t('Expiration Action'))?>
+<?php echo $form->label('gUserExpirationAction', t('Expiration Action'))?>
 <div class="input">
-<?=$form->select("gUserExpirationAction", array(
+<?php echo $form->select("gUserExpirationAction", array(
 'REMOVE' => t('Remove the user from this group'),
 	'DEACTIVATE' => t('Deactivate the user account'),
 	'REMOVE_DEACTIVATE' => t('Remove the user from the group and deactivate the account')
@@ -95,11 +95,11 @@ $form = Loader::helper('form');
 </div>
 
 <div class="ccm-pane-footer">
-<input type="hidden" name="add" value="1" /><input type="submit" name="submit" value="<?=t('Add')?>" class="btn ccm-button-right primary" />
+<input type="hidden" name="add" value="1" /><input type="submit" name="submit" value="<?php echo t('Add')?>" class="btn ccm-button-right primary" />
 </div>
 
 </form>	
-<?=Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper(false);?>
+<?php echo Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper(false);?>
 
 <script type="text/javascript">
 ccm_checkGroupExpirationOptions = function() {

@@ -1,4 +1,4 @@
-<? defined('C5_EXECUTE') or die("Access Denied.");
+<?php defined('C5_EXECUTE') or die("Access Denied.");
 $u = new User();
 $form = Loader::helper('form');
 Loader::model('attribute/categories/collection');
@@ -36,76 +36,76 @@ $list = CollectionAttributeKey::getList();
 ?>
 <div class="ccm-ui">
 
-<form method="post" id="ccm-<?=$searchInstance?>-customize-search-columns-form" action="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/pages/customize_search_columns/">
-<?=$form->hidden('task', 'update_columns')?>
+<form method="post" id="ccm-<?php echo $searchInstance?>-customize-search-columns-form" action="<?php echo REL_DIR_FILES_TOOLS_REQUIRED?>/pages/customize_search_columns/">
+<?php echo $form->hidden('task', 'update_columns')?>
 
-	<h3><?=t('Choose Headers')?></h3>
+	<h3><?php echo t('Choose Headers')?></h3>
 	
 	<div class="clearfix">
-	<label><?=t('Standard Properties')?></label>
+	<label><?php echo t('Standard Properties')?></label>
 	<div class="input">
 	<ul class="inputs-list">
 	
-	<?
+	<?php
 	$columns = $fldca->getColumns();
 	foreach($columns as $col) { 
 
 		?>
 
-		<li><label><?=$form->checkbox($col->getColumnKey(), 1, $fldc->contains($col))?> <span><?=$col->getColumnName()?></span></label></li>
+		<li><label><?php echo $form->checkbox($col->getColumnKey(), 1, $fldc->contains($col))?> <span><?php echo $col->getColumnName()?></span></label></li>
 	
-	<? } ?>
+	<?php } ?>
 	
 	</ul>
 	</div>
 	</div>
 
 	<div class="clearfix">
-	<label><?=t('Additional Attributes')?></label>
+	<label><?php echo t('Additional Attributes')?></label>
 	<div class="input">
 	<ul class="inputs-list">
 	
-	<? foreach($list as $ak) { ?>
+	<?php foreach($list as $ak) { ?>
 
-		<li><label><?=$form->checkbox('ak_' . $ak->getAttributeKeyHandle(), 1, $fldc->contains($ak))?> <span><?=$ak->getAttributeKeyDisplayName()?></span></label></li>
+		<li><label><?php echo $form->checkbox('ak_' . $ak->getAttributeKeyHandle(), 1, $fldc->contains($ak))?> <span><?php echo $ak->getAttributeKeyDisplayName()?></span></label></li>
 	
-	<? } ?>
+	<?php } ?>
 	
 	</ul>
 	</div>
 	</div>
 	
-	<h3><?=t('Column Order')?></h3>
+	<h3><?php echo t('Column Order')?></h3>
 	
-	<p><?=t('Click and drag to change column order.')?></p>
+	<p><?php echo t('Click and drag to change column order.')?></p>
 	
-	<ul class="ccm-search-sortable-column-wrapper" id="ccm-<?=$searchInstance?>-sortable-column-wrapper">
-	<? foreach($fldc->getColumns() as $col) { ?>
-		<li id="field_<?=$col->getColumnKey()?>"><input type="hidden" name="column[]" value="<?=$col->getColumnKey()?>" /><?=$col->getColumnName()?></li>	
-	<? } ?>	
+	<ul class="ccm-search-sortable-column-wrapper" id="ccm-<?php echo $searchInstance?>-sortable-column-wrapper">
+	<?php foreach($fldc->getColumns() as $col) { ?>
+		<li id="field_<?php echo $col->getColumnKey()?>"><input type="hidden" name="column[]" value="<?php echo $col->getColumnKey()?>" /><?php echo $col->getColumnName()?></li>	
+	<?php } ?>	
 	</ul>
 	
 	<br/>
 	
-	<h3><?=t('Sort By')?></h3>
+	<h3><?php echo t('Sort By')?></h3>
 	
 	<div class="ccm-sortable-column-sort-controls">
 	
-	<? $ds = $fldc->getDefaultSortColumn(); ?>
+	<?php $ds = $fldc->getDefaultSortColumn(); ?>
 	
-	<select <? if (count($fldc->getSortableColumns()) == 0) { ?>disabled="true"<? } ?> id="ccm-<?=$searchInstance?>-sortable-column-default" name="fSearchDefaultSort">
-	<? foreach($fldc->getSortableColumns() as $col) { ?>
-		<option id="opt_<?=$col->getColumnKey()?>" value="<?=$col->getColumnKey()?>" <? if ($col->getColumnKey() == $ds->getColumnKey()) { ?> selected="true" <? } ?>><?=$col->getColumnName()?></option>
-	<? } ?>	
+	<select <?php if (count($fldc->getSortableColumns()) == 0) { ?>disabled="true"<?php } ?> id="ccm-<?php echo $searchInstance?>-sortable-column-default" name="fSearchDefaultSort">
+	<?php foreach($fldc->getSortableColumns() as $col) { ?>
+		<option id="opt_<?php echo $col->getColumnKey()?>" value="<?php echo $col->getColumnKey()?>" <?php if ($col->getColumnKey() == $ds->getColumnKey()) { ?> selected="true" <?php } ?>><?php echo $col->getColumnName()?></option>
+	<?php } ?>	
 	</select>
-	<select <? if (count($fldc->getSortableColumns()) == 0) { ?>disabled="true"<? } ?> id="ccm-<?=$searchInstance?>-sortable-column-default-direction" name="fSearchDefaultSortDirection">
-		<option value="asc" <? if ($ds->getColumnDefaultSortDirection() == 'asc') { ?> selected="true" <? } ?>><?=t('Ascending')?></option>
-		<option value="desc" <? if ($ds->getColumnDefaultSortDirection() == 'desc') { ?> selected="true" <? } ?>><?=t('Descending')?></option>	
+	<select <?php if (count($fldc->getSortableColumns()) == 0) { ?>disabled="true"<?php } ?> id="ccm-<?php echo $searchInstance?>-sortable-column-default-direction" name="fSearchDefaultSortDirection">
+		<option value="asc" <?php if ($ds->getColumnDefaultSortDirection() == 'asc') { ?> selected="true" <?php } ?>><?php echo t('Ascending')?></option>
+		<option value="desc" <?php if ($ds->getColumnDefaultSortDirection() == 'desc') { ?> selected="true" <?php } ?>><?php echo t('Descending')?></option>	
 	</select>	
 	</div>
 
 	<div class="dialog-buttons">
-	<input type="button" class="btn primary" onclick="$('#ccm-<?=$searchInstance?>-customize-search-columns-form').submit()" value="<?=t('Save')?>" />
+	<input type="button" class="btn primary" onclick="$('#ccm-<?php echo $searchInstance?>-customize-search-columns-form').submit()" value="<?php echo t('Save')?>" />
 	</div>
 
 </form>
@@ -113,43 +113,43 @@ $list = CollectionAttributeKey::getList();
 
 <script type="text/javascript">
 ccm_submitCustomizeSearchColumnsForm = function() {
-	//ccm_deactivateSearchResults('<?=$searchInstance?>');
-	$("#ccm-<?=$searchInstance?>-customize-search-columns-form").ajaxSubmit(function(resp) {
-		var sortDirection = $("#ccm-<?=$searchInstance?>-customize-search-columns-form select[name=fSearchDefaultSortDirection]").val();
-		var sortCol = $("#ccm-<?=$searchInstance?>-customize-search-columns-form select[name=fSearchDefaultSort]").val();
-		$("#ccm-<?=$searchInstance?>-advanced-search input[name=ccm_order_dir]").val(sortDirection);
-		$("#ccm-<?=$searchInstance?>-advanced-search input[name=ccm_order_by]").val(sortCol);
+	//ccm_deactivateSearchResults('<?php echo $searchInstance?>');
+	$("#ccm-<?php echo $searchInstance?>-customize-search-columns-form").ajaxSubmit(function(resp) {
+		var sortDirection = $("#ccm-<?php echo $searchInstance?>-customize-search-columns-form select[name=fSearchDefaultSortDirection]").val();
+		var sortCol = $("#ccm-<?php echo $searchInstance?>-customize-search-columns-form select[name=fSearchDefaultSort]").val();
+		$("#ccm-<?php echo $searchInstance?>-advanced-search input[name=ccm_order_dir]").val(sortDirection);
+		$("#ccm-<?php echo $searchInstance?>-advanced-search input[name=ccm_order_by]").val(sortCol);
 		jQuery.fn.dialog.closeTop();
-		$("#ccm-<?=$searchInstance?>-advanced-search").ajaxSubmit(function(resp) {
-			ccm_parseAdvancedSearchResponse(resp, '<?=$searchInstance?>');
+		$("#ccm-<?php echo $searchInstance?>-advanced-search").ajaxSubmit(function(resp) {
+			ccm_parseAdvancedSearchResponse(resp, '<?php echo $searchInstance?>');
 		});
 	});
 	return false;
 }
 
 $(function() {
-	$('#ccm-<?=$searchInstance?>-sortable-column-wrapper').sortable({
+	$('#ccm-<?php echo $searchInstance?>-sortable-column-wrapper').sortable({
 		cursor: 'move',
 		opacity: 0.5
 	});
-	$('form#ccm-<?=$searchInstance?>-customize-search-columns-form input[type=checkbox]').click(function() {
+	$('form#ccm-<?php echo $searchInstance?>-customize-search-columns-form input[type=checkbox]').click(function() {
 		var thisLabel = $(this).parent().find('span').html();
 		var thisID = $(this).attr('id');
 		if ($(this).prop('checked')) {
 			if ($('#field_' + thisID).length == 0) {
-				$('#ccm-<?=$searchInstance?>-sortable-column-default').append('<option value="' + thisID + '" id="opt_' + thisID + '">' + thisLabel + '<\/option>');
+				$('#ccm-<?php echo $searchInstance?>-sortable-column-default').append('<option value="' + thisID + '" id="opt_' + thisID + '">' + thisLabel + '<\/option>');
 				$('div.ccm-sortable-column-sort-controls select').attr('disabled', false);
-				$('#ccm-<?=$searchInstance?>-sortable-column-wrapper').append('<li id="field_' + thisID + '"><input type="hidden" name="column[]" value="' + thisID + '" />' + thisLabel + '<\/li>');
+				$('#ccm-<?php echo $searchInstance?>-sortable-column-wrapper').append('<li id="field_' + thisID + '"><input type="hidden" name="column[]" value="' + thisID + '" />' + thisLabel + '<\/li>');
 			}
 		} else {
 			$('#field_' + thisID).remove();
 			$('#opt_' + thisID).remove();
-			if ($('#ccm-<?=$searchInstance?>-sortable-column-wrapper li').length == 0) {
+			if ($('#ccm-<?php echo $searchInstance?>-sortable-column-wrapper li').length == 0) {
 				$('div.ccm-sortable-column-sort-controls select').attr('disabled', true);
 			}
 		}
 	});
-	$('#ccm-<?=$searchInstance?>-customize-search-columns-form').submit(function() {
+	$('#ccm-<?php echo $searchInstance?>-customize-search-columns-form').submit(function() {
 		return ccm_submitCustomizeSearchColumnsForm();
 	});
 });

@@ -1,4 +1,4 @@
-<?
+<?php
 class PageAttributeExistenceTest extends PHPUnit_Framework_TestCase {
 
 	/**

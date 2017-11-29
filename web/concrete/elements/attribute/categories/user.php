@@ -1,4 +1,4 @@
-<?
+<?php
 if (is_object($key)) {
 	$uakProfileDisplay = $key->isAttributeKeyDisplayedOnProfile();
 	$uakProfileEdit = $key->isAttributeKeyEditableOnProfile();
@@ -9,36 +9,36 @@ if (is_object($key)) {
 	$uakIsActive = $key->isAttributeKeyActive();
 }
 ?>
-<? $form = Loader::helper('form'); ?>
+<?php $form = Loader::helper('form'); ?>
 <fieldset>
-<legend><?=t('User Attribute Options')?></legend>
+<legend><?php echo t('User Attribute Options')?></legend>
 <div class="clearfix">
-<label><?=t('Public Display')?></label>
+<label><?php echo t('Public Display')?></label>
 <div class="input">
 <ul class="inputs-list">
-	<li><label><?=$form->checkbox('uakProfileDisplay', 1, $uakProfileDisplay)?> <span><?=t('Displayed in Public Profile.');?></span></label></li>
-	<li><label><?=$form->checkbox('uakMemberListDisplay', 1, $uakMemberListDisplay)?> <span><?=t('Displayed on Member List.');?></span></label></li>
+	<li><label><?php echo $form->checkbox('uakProfileDisplay', 1, $uakProfileDisplay)?> <span><?php echo t('Displayed in Public Profile.');?></span></label></li>
+	<li><label><?php echo $form->checkbox('uakMemberListDisplay', 1, $uakMemberListDisplay)?> <span><?php echo t('Displayed on Member List.');?></span></label></li>
 </ul>
 </div>
 </div>
 
 <div class="clearfix">
-<label><?=t('Edit Mode')?></label>
+<label><?php echo t('Edit Mode')?></label>
 <div class="input">
 <ul class="inputs-list">
-	<li><label><?=$form->checkbox('uakProfileEdit', 1, $uakProfileEdit)?> <span><?=t('Editable in Profile.');?></span></label></li>
-	<li><label><?=$form->checkbox('uakProfileEditRequired', 1, $uakProfileEditRequired)?> <span><?=t('Editable and Required in Profile.');?></span></label></li>
+	<li><label><?php echo $form->checkbox('uakProfileEdit', 1, $uakProfileEdit)?> <span><?php echo t('Editable in Profile.');?></span></label></li>
+	<li><label><?php echo $form->checkbox('uakProfileEditRequired', 1, $uakProfileEditRequired)?> <span><?php echo t('Editable and Required in Profile.');?></span></label></li>
 </ul>
 </div>
 </div>
 
 
 <div class="clearfix">
-<label><?=t('Registration')?></label>
+<label><?php echo t('Registration')?></label>
 <div class="input">
 <ul class="inputs-list">
-	<li><label><?=$form->checkbox('uakRegisterEdit', 1, $uakRegisterEdit)?> <span><?=t('Show on Registration Form.');?></span></label></li>
-	<li><label><?=$form->checkbox('uakRegisterEditRequired', 1, $uakRegisterEditRequired)?> <span><?=t('Require on Registration Form.');?></span></label></li>
+	<li><label><?php echo $form->checkbox('uakRegisterEdit', 1, $uakRegisterEdit)?> <span><?php echo t('Show on Registration Form.');?></span></label></li>
+	<li><label><?php echo $form->checkbox('uakRegisterEditRequired', 1, $uakRegisterEditRequired)?> <span><?php echo t('Require on Registration Form.');?></span></label></li>
 </ul>
 </div>
 </div>

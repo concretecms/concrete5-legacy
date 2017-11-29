@@ -1,4 +1,4 @@
-<?
+<?php
 
 class Concrete5_Model_FileVersion extends ConcreteObject {
 
