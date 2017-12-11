@@ -626,7 +626,7 @@ class Concrete5_Model_Page extends Collection {
 		return $pages;
 	}
 
-	public function queueForDeletionSort($a, $b) {
+	public static function queueForDeletionSort($a, $b) {
 		if ($a['level'] > $b['level']) {
 			return -1;
 		}
@@ -636,7 +636,7 @@ class Concrete5_Model_Page extends Collection {
 		return 0;
 	}
 
-	public function queueForDuplicationSort($a, $b) {
+	public static function queueForDuplicationSort($a, $b) {
 		if ($a['level'] > $b['level']) {
 			return 1;
 		}
