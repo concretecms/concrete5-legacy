@@ -575,10 +575,13 @@ class Concrete5_Library_Content_Importer {
 
 	protected static function getImportFileIDValue($input) {
 		$db = Loader::db();
+		$fID = null;
 		if (strpos($input, ':') > -1) {
 			list($fvPrefix, $fvFilename) = explode(':', $input);
 			$fID = $db->GetOne('select fID from FileVersions where fvPrefix = ? and fvFilename = ?', array($fvPrefix, $fvFilename));
-		} else {
+		}
+
+		if (!$fID) {
 			$fID = $db->GetOne('select fID from FileVersions where fvFilename = ?', array($input));
 		}
 		return $fID;

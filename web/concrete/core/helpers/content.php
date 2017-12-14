@@ -244,12 +244,13 @@ class Concrete5_Helper_Content {
 
 	protected static function _replaceFilePlaceHolderOnImport($match, $returnString) {
 		$db = Loader::db();
+		$fID = null;
 		if (strpos($match[1], ':') > -1) {
 			list($fvPrefix, $fvFilename) = explode(':', $match[1]);
 			$fID = $db->GetOne('select fID from FileVersions where fvPrefix = ? and fvFilename = ?', array($fvPrefix, $fvFilename));
-		} else {
-			$fvFilename = $match[1];
-			$fID = $db->GetOne('select fID from FileVersions where fvFilename = ?', array($fvFilename));
+		}
+		if (!$fID) {
+			$fID = $db->GetOne('select fID from FileVersions where fvFilename = ?', array($match[1]));
 		}
 		return sprintf($returnString, $fID);
 	}
