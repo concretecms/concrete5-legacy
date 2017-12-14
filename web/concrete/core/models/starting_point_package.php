@@ -97,7 +97,15 @@ class Concrete5_Model_StartingPointPackage extends Package {
 			$contents = Loader::helper('file')->getDirectoryContents($this->getPackagePath() . '/files');
 
 			foreach($contents as $filename) {
-				$f = $fh->import($this->getPackagePath() . '/files/' . $filename, $filename);
+				if (preg_match("/([0-9]{12}]*)\_(.*)/", $filename, $matches)) {
+					// a prefix is already present in the filename.
+					$fvPrefix = $matches[1];
+					$fvFilename = $matches[2];
+				} else {
+					$fvPrefix = null;
+					$fvFilename = $filename;
+				}
+				$fh->import($this->getPackagePath() . '/files/' . $filename, $fvFilename, null, $fvPrefix);
 			}
 		}
 	}

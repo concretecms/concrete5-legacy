@@ -101,9 +101,10 @@ class Concrete5_Library_FileImporter {
 	 * @param string $pointer path to file
 	 * @param string $filename
 	 * @param FileRecord $fr
+	 * @param string $prefix
 	 * @return number Error Code | FileVersion
 	 */
-	public function import($pointer, $filename = false, $fr = false) {
+	public function import($pointer, $filename = false, $fr = false, $prefix = null) {
 		
 		if ($filename == false) {
 			// determine filename from $pointer
@@ -123,9 +124,13 @@ class Concrete5_Library_FileImporter {
 			return FileImporter::E_FILE_INVALID_EXTENSION;
 		}
 
-		
-		$prefix = $this->generatePrefix();
-		
+
+		if (!$prefix) {
+			// note, if you pass in a prefix manually, make sure it conforms to standards
+			// (e.g. it is 12 digits, numeric only)
+			$prefix = $this->generatePrefix();
+		}
+
 		// do save in the FileVersions table
 		
 		// move file to correct area in the filesystem based on prefix

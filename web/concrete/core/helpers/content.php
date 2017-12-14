@@ -235,17 +235,23 @@ class Concrete5_Helper_Content {
 	}
 
 	protected static function replaceImagePlaceHolderOnImport($match) {
-		$filename = $match[1];
-		$db = Loader::db();
-		$fID = $db->GetOne('select fID from FileVersions where fvFilename = ?', array($filename));
-		return '{CCM:FID_' . $fID . '}';
+		self::_replaceFilePlaceHolderOnImport($match, '{CCM:FID_%s}');
 	}
 
 	protected static function replaceFilePlaceHolderOnImport($match) {
-		$filename = $match[1];
+		self::_replaceFilePlaceHolderOnImport($match, '{CCM:FID_DL_%s}');
+	}
+
+	protected static function _replaceFilePlaceHolderOnImport($match, $returnString) {
 		$db = Loader::db();
-		$fID = $db->GetOne('select fID from FileVersions where fvFilename = ?', array($filename));
-		return '{CCM:FID_DL_' . $fID . '}';
+		if (strpos($match[1], ':') > -1) {
+			list($fvPrefix, $fvFilename) = explode(':', $match[1]);
+			$fID = $db->GetOne('select fID from FileVersions where fvPrefix = ? and fvFilename = ?', array($fvPrefix, $fvFilename));
+		} else {
+			$fvFilename = $match[1];
+			$fID = $db->GetOne('select fID from FileVersions where fvFilename = ?', array($fvFilename));
+		}
+		return sprintf($returnString, $fID);
 	}
 
 	protected static function replaceDefineOnImport($match) {

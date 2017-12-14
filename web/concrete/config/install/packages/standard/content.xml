@@ -123,7 +123,7 @@
                     <block type="image" name="" mc-block-id="EjT8GZha">
                         <data table="btContentImage">
                             <record>
-                                <fID>{ccm:export:file:europe_valencia_hemispheric.jpg}</fID>
+                                <fID>{ccm:export:file:123456785141:europe_valencia_hemispheric.jpg}</fID>
                                 <fOnstateID/>
                                 <maxWidth><![CDATA[960]]></maxWidth>
                                 <maxHeight><![CDATA[212]]></maxHeight>

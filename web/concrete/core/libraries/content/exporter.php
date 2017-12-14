@@ -155,7 +155,7 @@ class Concrete5_Library_Content_Exporter {
 	public static function replaceFileWithPlaceHolder($fID) {
 		if ($fID > 0) { 
 			$f = File::getByID($fID);
-			return '{ccm:export:file:' . $f->getFileName() . '}';
+			return '{ccm:export:file:' . $f->getPrefix() . ':' . $f->getFileName() . '}';
 		}
 	}
 
@@ -176,7 +176,7 @@ class Concrete5_Library_Content_Exporter {
 	public static function replaceImageWithPlaceHolderInMatch($fID) {
 		if ($fID > 0) { 
 			$f = File::getByID($fID[1]);
-			return '{ccm:export:image:' . $f->getFileName() . '}';
+			return '{ccm:export:image:' . $f->getPrefix() . ':' . $f->getFileName() . '}';
 		}
 	}
 
