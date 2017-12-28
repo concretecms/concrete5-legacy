@@ -180,10 +180,13 @@ class ConcreteInterfaceHelper {
 	}
 	
 	public function cacheInterfaceItems() {
-		$u = new User();
-		if ($u->isRegistered()) {
-			$ch = Loader::helper('concrete/dashboard');
-			$_SESSION['dashboardMenus'][Localization::activeLocale()] = $ch->getDashboardAndSearchMenus();
+		global $config_check_failed;
+		if (!isset($config_check_failed) || !$config_check_failed) {
+			$u = new User();
+			if ($u->isRegistered()) {
+				$ch = Loader::helper('concrete/dashboard');
+				$_SESSION['dashboardMenus'][Localization::activeLocale()] = $ch->getDashboardAndSearchMenus();
+			}
 		}
 	}
 	
