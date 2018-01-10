@@ -9,6 +9,13 @@ class Concrete5_Model_AttributeKey extends ConcreteObject {
 					isset($arguments[0]) ? $arguments[0] : null,
 					isset($arguments[1]) ? $arguments[1] : array()
 				);
+			case 'add':
+				return static::addAttributeKey(
+					$arguments[0], // $akCategoryHandle
+					$arguments[1], // $type
+					$arguments[2], // $args
+					isset($arguments[3]) ? $arguments[3] : false // $pkg
+				);
 		}
 		trigger_error('Call to undefined static method '.__CLASS__.'::' . $name . '()', E_USER_ERROR);
 	}
