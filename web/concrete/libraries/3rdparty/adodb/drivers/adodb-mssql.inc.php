@@ -1,6 +1,6 @@
 <?php
 /*
-@version   v5.20.9  21-Dec-2016
+@version   v5.21.0-dev  ??-???-2016
 @copyright (c) 2000-2013 John Lim (jlim#natsoft.com). All rights reserved.
 @copyright (c) 2014      Damien Regad, Mark Newnham and the ADOdb community
   Released under both BSD license and Lesser GPL library license.
@@ -155,9 +155,9 @@ class ADODB_mssql extends ADOConnection {
 	// the same scope. A scope is a module -- a stored procedure, trigger,
 	// function, or batch. Thus, two statements are in the same scope if
 	// they are in the same stored procedure, function, or batch.
-        if ($this->lastInsID !== false) {
-            return $this->lastInsID; // InsID from sp_executesql call
-        } else {
+		if ($this->lastInsID !== false) {
+			return $this->lastInsID; // InsID from sp_executesql call
+		} else {
 			return $this->GetOne($this->identitySQL);
 		}
 	}
@@ -177,22 +177,22 @@ class ADODB_mssql extends ADOConnection {
 	*/
 	function qstr($s,$magic_quotes=false)
 	{
- 		if (!$magic_quotes) {
- 			return  "'".str_replace("'",$this->replaceQuote,$s)."'";
+		if (!$magic_quotes) {
+			return  "'".str_replace("'",$this->replaceQuote,$s)."'";
 		}
 
- 		// undo magic quotes for " unless sybase is on
- 		$sybase = ini_get('magic_quotes_sybase');
- 		if (!$sybase) {
- 			$s = str_replace('\\"','"',$s);
- 			if ($this->replaceQuote == "\\'")  // ' already quoted, no need to change anything
- 				return "'$s'";
- 			else {// change \' to '' for sybase/mssql
- 				$s = str_replace('\\\\','\\',$s);
- 				return "'".str_replace("\\'",$this->replaceQuote,$s)."'";
- 			}
- 		} else {
- 			return "'".$s."'";
+		// undo magic quotes for " unless sybase is on
+		$sybase = ini_get('magic_quotes_sybase');
+		if (!$sybase) {
+			$s = str_replace('\\"','"',$s);
+			if ($this->replaceQuote == "\\'")  // ' already quoted, no need to change anything
+				return "'$s'";
+			else {// change \' to '' for sybase/mssql
+				$s = str_replace('\\\\','\\',$s);
+				return "'".str_replace("\\'",$this->replaceQuote,$s)."'";
+			}
+		} else {
+			return "'".$s."'";
 		}
 	}
 // moodle change end - see readme_moodle.txt
@@ -307,7 +307,9 @@ class ADODB_mssql extends ADOConnection {
 			case 'A':
 				$s .= "substring(convert(char(19),$col,0),18,2)";
 				break;
-
+			case 'l':
+				$s .= "datename(dw,$col)";
+				break;
 			default:
 				if ($ch == '\\') {
 					$i++;
@@ -325,8 +327,8 @@ class ADODB_mssql extends ADOConnection {
 	{
 		if ($this->transOff) return true;
 		$this->transCnt += 1;
-	   	$ok = $this->Execute('BEGIN TRAN');
-	   	return $ok;
+		$ok = $this->Execute('BEGIN TRAN');
+		return $ok;
 	}
 
 	function CommitTrans($ok=true)
@@ -449,29 +451,29 @@ class ADODB_mssql extends ADOConnection {
 
 		global $ADODB_FETCH_MODE;
 		$save = $ADODB_FETCH_MODE;
-        $ADODB_FETCH_MODE = ADODB_FETCH_NUM;
-        if ($this->fetchMode !== FALSE) {
-        	$savem = $this->SetFetchMode(FALSE);
-        }
+		$ADODB_FETCH_MODE = ADODB_FETCH_NUM;
+		if ($this->fetchMode !== FALSE) {
+			$savem = $this->SetFetchMode(FALSE);
+		}
 
-        $rs = $this->Execute($sql);
-        if (isset($savem)) {
-        	$this->SetFetchMode($savem);
-        }
-        $ADODB_FETCH_MODE = $save;
+		$rs = $this->Execute($sql);
+		if (isset($savem)) {
+			$this->SetFetchMode($savem);
+		}
+		$ADODB_FETCH_MODE = $save;
 
-        if (!is_object($rs)) {
-        	return FALSE;
-        }
+		if (!is_object($rs)) {
+			return FALSE;
+		}
 
 		$indexes = array();
 		while ($row = $rs->FetchRow()) {
 			if ($primary && !$row[5]) continue;
 
-            $indexes[$row[0]]['unique'] = $row[6];
-            $indexes[$row[0]]['columns'][] = $row[1];
-    	}
-        return $indexes;
+			$indexes[$row[0]]['unique'] = $row[6];
+			$indexes[$row[0]]['columns'][] = $row[1];
+		}
+		return $indexes;
 	}
 
 	function MetaForeignKeys($table, $owner=false, $upper=false)
@@ -486,7 +488,7 @@ class ADODB_mssql extends ADOConnection {
 "select object_name(constid) as constraint_name,
 	col_name(fkeyid, fkey) as column_name,
 	object_name(rkeyid) as referenced_table_name,
-   	col_name(rkeyid, rkey) as referenced_column_name
+	col_name(rkeyid, rkey) as referenced_column_name
 from sysforeignkeys
 where upper(object_name(fkeyid)) = $table
 order by constraint_name, referenced_table_name, keyno";
@@ -517,22 +519,24 @@ order by constraint_name, referenced_table_name, keyno";
 	function MetaDatabases()
 	{
 		if(@mssql_select_db("master")) {
-				 $qry=$this->metaDatabasesSQL;
-				 if($rs=@mssql_query($qry,$this->_connectionID)){
-						 $tmpAr=$ar=array();
-						 while($tmpAr=@mssql_fetch_row($rs))
-								 $ar[]=$tmpAr[0];
-						@mssql_select_db($this->database);
-						 if(sizeof($ar))
-								 return($ar);
-						 else
-								 return(false);
-				 } else {
-						 @mssql_select_db($this->database);
-						 return(false);
-				 }
-		 }
-		 return(false);
+			$qry = $this->metaDatabasesSQL;
+			if($rs = @mssql_query($qry,$this->_connectionID)) {
+				$tmpAr = $ar = array();
+				while($tmpAr = @mssql_fetch_row($rs)) {
+					$ar[]=$tmpAr[0];
+				}
+				@mssql_select_db($this->database);
+				if(sizeof($ar)) {
+					return($ar);
+				} else {
+					return(false);
+				}
+			} else {
+				@mssql_select_db($this->database);
+				return(false);
+			}
+		}
+		return(false);
 	}
 
 	// "Stein-Aksel Basma" <basma@accelero.no>
@@ -605,14 +609,18 @@ order by constraint_name, referenced_table_name, keyno";
 		if (!$id) return false;
 		$arr = mssql_fetch_array($id);
 		@mssql_free_result($id);
-		if (is_array($arr)) return $arr[0];
-	   else return -1;
+		if (is_array($arr)) {
+			return $arr[0];
+		} else {
+			return -1;
+		}
 	}
 
 	// returns true or false, newconnect supported since php 5.1.0.
 	function _connect($argHostname, $argUsername, $argPassword, $argDatabasename,$newconnect=false)
 	{
 		if (!function_exists('mssql_pconnect')) return null;
+		if (!empty($this->port)) $argHostname .= ":".$this->port;
 		$this->_connectionID = mssql_connect($argHostname,$argUsername,$argPassword,$newconnect);
 		if ($this->_connectionID === false) return false;
 		if ($argDatabasename) return $this->SelectDB($argDatabasename);
@@ -624,6 +632,7 @@ order by constraint_name, referenced_table_name, keyno";
 	function _pconnect($argHostname, $argUsername, $argPassword, $argDatabasename)
 	{
 		if (!function_exists('mssql_pconnect')) return null;
+		if (!empty($this->port)) $argHostname .= ":".$this->port;
 		$this->_connectionID = mssql_pconnect($argHostname,$argUsername,$argPassword);
 		if ($this->_connectionID === false) return false;
 
@@ -637,9 +646,9 @@ order by constraint_name, referenced_table_name, keyno";
 	}
 
 	function _nconnect($argHostname, $argUsername, $argPassword, $argDatabasename)
-    {
+	{
 		return $this->_connect($argHostname, $argUsername, $argPassword, $argDatabasename, true);
-    }
+	}
 
 	function Prepare($sql)
 	{
@@ -664,28 +673,28 @@ order by constraint_name, referenced_table_name, keyno";
 	}
 
 	// returns concatenated string
-    // MSSQL requires integers to be cast as strings
-    // automatically cast every datatype to VARCHAR(255)
-    // @author David Rogers (introspectshun)
-    function Concat()
-    {
-            $s = "";
-            $arr = func_get_args();
+	// MSSQL requires integers to be cast as strings
+	// automatically cast every datatype to VARCHAR(255)
+	// @author David Rogers (introspectshun)
+	function Concat()
+	{
+			$s = "";
+			$arr = func_get_args();
 
-            // Split single record on commas, if possible
-            if (sizeof($arr) == 1) {
-                foreach ($arr as $arg) {
-                    $args = explode(',', $arg);
-                }
-                $arr = $args;
-            }
+			// Split single record on commas, if possible
+			if (sizeof($arr) == 1) {
+				foreach ($arr as $arg) {
+					$args = explode(',', $arg);
+				}
+				$arr = $args;
+			}
 
-            array_walk($arr, create_function('&$v', '$v = "CAST(" . $v . " AS VARCHAR(255))";'));
-            $s = implode('+',$arr);
-            if (sizeof($arr) > 0) return "$s";
+			array_walk($arr, create_function('&$v', '$v = "CAST(" . $v . " AS VARCHAR(255))";'));
+			$s = implode('+',$arr);
+			if (sizeof($arr) > 0) return "$s";
 
 			return '';
-    }
+	}
 
 	/*
 	Usage:
@@ -773,11 +782,11 @@ order by constraint_name, referenced_table_name, keyno";
 			# bind input params with sp_executesql:
 			# see http://www.quest-pipelines.com/newsletter-v3/0402_F.htm
 			# works only with sql server 7 and newer
-            $getIdentity = false;
-            if (!is_array($sql) && preg_match('/^\\s*insert/i', $sql)) {
-                $getIdentity = true;
-                $sql .= (preg_match('/;\\s*$/i', $sql) ? ' ' : '; ') . $this->identitySQL;
-            }
+			$getIdentity = false;
+			if (!is_array($sql) && preg_match('/^\\s*insert/i', $sql)) {
+				$getIdentity = true;
+				$sql .= (preg_match('/;\\s*$/i', $sql) ? ' ' : '; ') . $this->identitySQL;
+			}
 			if (!is_array($sql)) $sql = $this->Prepare($sql);
 			$params = '';
 			$decl = '';
@@ -817,20 +826,20 @@ order by constraint_name, referenced_table_name, keyno";
 			$decl = $this->qstr($decl);
 			if ($this->debug) ADOConnection::outp("<font size=-1>sp_executesql N{$sql[1]},N$decl,$params</font>");
 			$rez = mssql_query("sp_executesql N{$sql[1]},N$decl,$params", $this->_connectionID);
-            if ($getIdentity) {
-                $arr = @mssql_fetch_row($rez);
-                $this->lastInsID = isset($arr[0]) ? $arr[0] : false;
-                @mssql_data_seek($rez, 0);
-            }
+			if ($getIdentity) {
+				$arr = @mssql_fetch_row($rez);
+				$this->lastInsID = isset($arr[0]) ? $arr[0] : false;
+				@mssql_data_seek($rez, 0);
+			}
 
 		} else if (is_array($sql)) {
 			# PrepareSP()
 			$rez = mssql_execute($sql[1]);
-            $this->lastInsID = false;
+			$this->lastInsID = false;
 
 		} else {
 			$rez = mssql_query($sql,$this->_connectionID);
-            $this->lastInsID = false;
+			$this->lastInsID = false;
 		}
 		return $rez;
 	}
@@ -838,8 +847,12 @@ order by constraint_name, referenced_table_name, keyno";
 	// returns true or false
 	function _close()
 	{
-		if ($this->transCnt) $this->RollbackTrans();
-		$rez = @mssql_close($this->_connectionID);
+		if ($this->transCnt) {
+			$this->RollbackTrans();
+		}
+		if($this->_connectionID) {
+			$rez = mssql_close($this->_connectionID);
+		}
 		$this->_connectionID = false;
 		return $rez;
 	}
@@ -854,10 +867,36 @@ order by constraint_name, referenced_table_name, keyno";
 	{
 		return ADORecordSet_array_mssql::UnixTimeStamp($v);
 	}
+
+	/**
+	* Returns a substring of a varchar type field
+	*
+	* The SQL server version varies because the length is mandatory, so
+	* we append a reasonable string length
+	*
+	* @param	string	$fld	The field to sub-string
+	* @param	int		$start	The start point
+	* @param	int		$length	An optional length
+	*
+	* @return	The SQL text
+	*/
+	function substr($fld,$start,$length=0)
+	{
+		if ($length == 0)
+			/*
+		     * The length available to varchar is 2GB, but that makes no
+			 * sense in a substring, so I'm going to arbitrarily limit
+			 * the length to 1K, but you could change it if you want
+			 */
+			$length = 1024;
+
+		$text = "SUBSTRING($fld,$start,$length)";
+		return $text;
+	}
 }
 
 /*--------------------------------------------------------------------------------------
-	 Class Name: Recordset
+	Class Name: Recordset
 --------------------------------------------------------------------------------------*/
 
 class ADORecordset_mssql extends ADORecordSet {
@@ -878,7 +917,7 @@ class ADORecordset_mssql extends ADORecordSet {
 
 		}
 		$this->fetchMode = $mode;
-		return parent::__construct($id,$mode);
+		return parent::__construct($id);
 	}
 
 
@@ -914,7 +953,7 @@ class ADORecordset_mssql extends ADORecordSet {
 			}
 		}
 
-		 return $this->fields[$this->bind[strtoupper($colname)]];
+		return $this->fields[$this->bind[strtoupper($colname)]];
 	}
 
 	/*	Returns: an object containing field information.
@@ -954,7 +993,7 @@ class ADORecordset_mssql extends ADORecordSet {
 			}
 			else {
 				if ($this->hasFetchAssoc) {// only for PHP 4.2.0 or later
-					 $this->fields = @mssql_fetch_assoc($this->_queryID);
+					$this->fields = @mssql_fetch_assoc($this->_queryID);
 				} else {
 					$flds = @mssql_fetch_array($this->_queryID);
 					if (is_array($flds)) {
@@ -1070,16 +1109,36 @@ class ADORecordset_mssql extends ADORecordSet {
 		return ADORecordSet_array_mssql::UnixTimeStamp($v);
 	}
 
+	/**
+	* Returns the maximum size of a MetaType C field. Because of the
+	* database design, SQL Server places no limits on the size of data inserted
+	* Although the actual limit is 2^31-1 bytes.
+	*
+	* @return int
+	*/
+	function charMax()
+	{
+		return ADODB_STRINGMAX_NOLIMIT;
+	}
+
+	/**
+	* Returns the maximum size of a MetaType X field. Because of the
+	* database design, SQL Server places no limits on the size of data inserted
+	* Although the actual limit is 2^31-1 bytes.
+	*
+	* @return int
+	*/
+	function textMax()
+	{
+		return ADODB_STRINGMAX_NOLIMIT;
+	}
+
 }
 
 
 class ADORecordSet_array_mssql extends ADORecordSet_array {
-	function __construct($id=-1,$mode=false)
-	{
-		parent::__construct($id,$mode);
-	}
 
-		// mssql uses a default date like Dec 30 2000 12:00AM
+	// mssql uses a default date like Dec 30 2000 12:00AM
 	static function UnixDate($v)
 	{
 
@@ -1119,8 +1178,8 @@ class ADORecordSet_array_mssql extends ADORecordSet_array {
 	global $ADODB_mssql_mths,$ADODB_mssql_date_order;
 
 		//Dec 30 2000 12:00AM
-		 if ($ADODB_mssql_date_order == 'dmy') {
-			 if (!preg_match( "|^([0-9]{1,2})[-/\. ]+([A-Za-z]{3})[-/\. ]+([0-9]{4}) +([0-9]{1,2}):([0-9]{1,2}) *([apAP]{0,1})|"
+		if ($ADODB_mssql_date_order == 'dmy') {
+			if (!preg_match( "|^([0-9]{1,2})[-/\. ]+([A-Za-z]{3})[-/\. ]+([0-9]{4}) +([0-9]{1,2}):([0-9]{1,2}) *([apAP]{0,1})|"
 			,$v, $rr)) return parent::UnixTimeStamp($v);
 			if ($rr[3] <= TIMESTAMP_FIRST_YEAR) return 0;
 
@@ -1156,11 +1215,11 @@ class ADORecordSet_array_mssql extends ADORecordSet_array {
 /*
 Code Example 1:
 
-select 	object_name(constid) as constraint_name,
-       	object_name(fkeyid) as table_name,
-        col_name(fkeyid, fkey) as column_name,
+select	object_name(constid) as constraint_name,
+		object_name(fkeyid) as table_name,
+		col_name(fkeyid, fkey) as column_name,
 	object_name(rkeyid) as referenced_table_name,
-   	col_name(rkeyid, rkey) as referenced_column_name
+	col_name(rkeyid, rkey) as referenced_column_name
 from sysforeignkeys
 where object_name(fkeyid) = x
 order by constraint_name, table_name, referenced_table_name,  keyno

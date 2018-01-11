@@ -1,6 +1,6 @@
 <?php
 /*
-@version   v5.20.9  21-Dec-2016
+@version   v5.21.0-dev  ??-???-2016
 @copyright (c) 2000-2013 John Lim (jlim#natsoft.com). All rights reserved.
 @copyright (c) 2014      Damien Regad, Mark Newnham and the ADOdb community
   Released under both BSD license and Lesser GPL library license.
@@ -32,10 +32,6 @@ class ADODB_sqlite3 extends ADOConnection {
 	var $sysDate = "adodb_date('Y-m-d')";
 	var $sysTimeStamp = "adodb_date('Y-m-d H:i:s')";
 	var $fmtTimeStamp = "'Y-m-d H:i:s'";
-
-	function __construct()
-	{
-	}
 
 	function ServerInfo()
 	{
@@ -82,6 +78,73 @@ class ADODB_sqlite3 extends ADOConnection {
 		return !empty($ret);
 	}
 
+	function metaType($t,$len=-1,$fieldobj=false)
+	{
+
+		if (is_object($t))
+		{
+			$fieldobj = $t;
+			$t = $fieldobj->type;
+			$len = $fieldobj->max_length;
+		}
+
+		$t = strtoupper($t);
+
+		/*
+		* We are using the Sqlite affinity method here
+		* @link https://www.sqlite.org/datatype3.html
+		*/
+		$affinity = array(
+		'INT'=>'INTEGER',
+		'INTEGER'=>'INTEGER',
+		'TINYINT'=>'INTEGER',
+		'SMALLINT'=>'INTEGER',
+		'MEDIUMINT'=>'INTEGER',
+		'BIGINT'=>'INTEGER',
+		'UNSIGNED BIG INT'=>'INTEGER',
+		'INT2'=>'INTEGER',
+		'INT8'=>'INTEGER',
+
+		'CHARACTER'=>'TEXT',
+		'VARCHAR'=>'TEXT',
+		'VARYING CHARACTER'=>'TEXT',
+		'NCHAR'=>'TEXT',
+		'NATIVE CHARACTER'=>'TEXT',
+		'NVARCHAR'=>'TEXT',
+		'TEXT'=>'TEXT',
+		'CLOB'=>'TEXT',
+
+		'BLOB'=>'BLOB',
+
+		'REAL'=>'REAL',
+		'DOUBLE'=>'REAL',
+		'DOUBLE PRECISION'=>'REAL',
+		'FLOAT'=>'REAL',
+
+		'NUMERIC'=>'NUMERIC',
+		'DECIMAL'=>'NUMERIC',
+		'BOOLEAN'=>'NUMERIC',
+		'DATE'=>'NUMERIC',
+		'DATETIME'=>'NUMERIC'
+		);
+
+		if (!isset($affinity[$t]))
+			return ADODB_DEFAULT_METATYPE;
+
+		$subt = $affinity[$t];
+		/*
+		* Now that we have subclassed the provided data down
+		* the sqlite 'affinity', we convert to ADOdb metatype
+		*/
+
+		$subclass = array('INTEGER'=>'I',
+						  'TEXT'=>'X',
+						  'BLOB'=>'B',
+						  'REAL'=>'N',
+						  'NUMERIC'=>'N');
+
+		return $subclass[$subt];
+	}
 	// mark newnham
 	function MetaColumns($table, $normalize=true)
 	{
@@ -129,6 +192,60 @@ class ADODB_sqlite3 extends ADOConnection {
 		return $arr;
 	}
 
+	function metaForeignKeys( $table, $owner = FALSE, $upper = FALSE, $associative = FALSE )
+	{
+	    global $ADODB_FETCH_MODE;
+		if ($ADODB_FETCH_MODE == ADODB_FETCH_ASSOC
+		|| $this->fetchMode == ADODB_FETCH_ASSOC)
+		$associative = true;
+
+	    /*
+		* Read sqlite master to find foreign keys
+		*/
+		$sql = "SELECT sql
+				 FROM (
+				SELECT sql sql, type type, tbl_name tbl_name, name name
+				  FROM sqlite_master
+			          )
+				WHERE type != 'meta'
+				  AND sql NOTNULL
+		          AND LOWER(name) ='" . strtolower($table) . "'";
+
+		$tableSql = $this->getOne($sql);
+
+		$fkeyList = array();
+		$ylist = preg_split("/,+/",$tableSql);
+		foreach ($ylist as $y)
+		{
+			if (!preg_match('/FOREIGN/',$y))
+				continue;
+
+			$matches = false;
+			preg_match_all('/\((.+?)\)/i',$y,$matches);
+			$tmatches = false;
+			preg_match_all('/REFERENCES (.+?)\(/i',$y,$tmatches);
+
+			if ($associative)
+			{
+				if (!isset($fkeyList[$tmatches[1][0]]))
+					$fkeyList[$tmatches[1][0]]	= array();
+				$fkeyList[$tmatches[1][0]][$matches[1][0]] = $matches[1][1];
+			}
+			else
+				$fkeyList[$tmatches[1][0]][] = $matches[1][0] . '=' . $matches[1][1];
+		}
+
+		if ($associative)
+		{
+			if ($upper)
+				$fkeyList = array_change_key_case($fkeyList,CASE_UPPER);
+			else
+				$fkeyList = array_change_key_case($fkeyList,CASE_LOWER);
+		}
+		return $fkeyList;
+	}
+
+
 	function _init($parentDriver)
 	{
 		$parentDriver->hasTransactions = false;
@@ -160,10 +277,21 @@ class ADODB_sqlite3 extends ADOConnection {
 
 	function SQLDate($fmt, $col=false)
 	{
+		/*
+		* In order to map the values correctly, we must ensure the proper
+		* casing for certain fields
+		* Y must be UC, because y is a 2 digit year
+		* d must be LC, because D is 3 char day
+		* A must be UC  because a is non-portable am
+		* Q must be UC  because q means nothing
+		*/
+		$fromChars = array('y','D','a','q');
+		$toChars   = array('Y','d','A','Q');
+		$fmt       = str_replace($fromChars,$toChars,$fmt);
+
 		$fmt = $this->qstr($fmt);
 		return ($col) ? "adodb_date2($fmt,$col)" : "adodb_date($fmt)";
 	}
-
 
 	function _createFunctions()
 	{
@@ -297,7 +425,7 @@ class ADODB_sqlite3 extends ADOConnection {
 		if ($this->fetchMode !== FALSE) {
 			$savem = $this->SetFetchMode(FALSE);
 		}
-		$SQL=sprintf("SELECT name,sql FROM sqlite_master WHERE type='index' AND tbl_name='%s'", strtolower($table));
+		$SQL=sprintf("SELECT name,sql FROM sqlite_master WHERE type='index' AND LOWER(tbl_name)='%s'", strtolower($table));
 		$rs = $this->Execute($SQL);
 		if (!is_object($rs)) {
 			if (isset($savem)) {
@@ -334,6 +462,72 @@ class ADODB_sqlite3 extends ADOConnection {
 			$ADODB_FETCH_MODE = $save;
 		}
 		return $indexes;
+	}
+
+	/**
+	* Returns the maximum size of a MetaType C field. Because of the
+	* database design, sqlite places no limits on the size of data inserted
+	*
+	* @return int
+	*/
+	function charMax()
+	{
+		return ADODB_STRINGMAX_NOLIMIT;
+	}
+
+	/**
+	* Returns the maximum size of a MetaType X field. Because of the
+	* database design, sqlite places no limits on the size of data inserted
+	*
+	* @return int
+	*/
+	function textMax()
+	{
+		return ADODB_STRINGMAX_NOLIMIT;
+	}
+
+	/**
+	 * Converts a date to a month only field and pads it to 2 characters
+	 *
+	 * This uses the more efficient strftime native function to process
+	 *
+	 * @param 	str		$fld	The name of the field to process
+	 *
+	 * @return	str				The SQL Statement
+	 */
+	function month($fld)
+	{
+		$x = "strftime('%m',$fld)";
+		return $x;
+	}
+
+	/**
+	 * Converts a date to a day only field and pads it to 2 characters
+	 *
+	 * This uses the more efficient strftime native function to process
+	 *
+	 * @param 	str		$fld	The name of the field to process
+	 *
+	 * @return	str				The SQL Statement
+	 */
+	function day($fld) {
+		$x = "strftime('%d',$fld)";
+		return $x;
+	}
+
+	/**
+	 * Converts a date to a year only field
+	 *
+	 * This uses the more efficient strftime native function to process
+	 *
+	 * @param 	str		$fld	The name of the field to process
+	 *
+	 * @return	str				The SQL Statement
+	 */
+	function year($fld)
+	{
+		$x = "strftime('%Y',$fld)";
+		return $x;
 	}
 
 }

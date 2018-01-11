@@ -1,7 +1,7 @@
 <?php
 /*
 
-@version   v5.20.9  21-Dec-2016
+@version   v5.21.0-dev  ??-???-2016
 @copyright (c) 2000-2013 John Lim (jlim#natsoft.com). All rights reserved.
 @copyright (c) 2014      Damien Regad, Mark Newnham and the ADOdb community
   Latest version is available at http://adodb.sourceforge.net
@@ -522,7 +522,7 @@ class ADODB_Active_Record {
 			$activetab->_created = time();
 			$s = serialize($activetab);
 			if (!function_exists('adodb_write_file')) {
-				include(ADODB_DIR.'/adodb-csvlib.inc.php');
+				include_once(ADODB_DIR.'/adodb-csvlib.inc.php');
 			}
 			adodb_write_file($fname,$s);
 		}
@@ -727,9 +727,7 @@ class ADODB_Active_Record {
 			if (is_null($val)) {
 				return 'null';
 			}
-			if ('' === (string) $val) {
-				return "''";
-			}
+
 			if (strlen($val)>0 &&
 				(strncmp($val,"'",1) != 0 || substr($val,strlen($val)-1,1) != "'")
 			) {

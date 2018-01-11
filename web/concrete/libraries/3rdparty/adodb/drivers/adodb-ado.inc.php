@@ -1,6 +1,6 @@
 <?php
 /*
-@version   v5.20.9  21-Dec-2016
+@version   v5.21.0-dev  ??-???-2016
 @copyright (c) 2000-2013 John Lim (jlim#natsoft.com). All rights reserved.
 @copyright (c) 2014      Damien Regad, Mark Newnham and the ADOdb community
   Released under both BSD license and Lesser GPL library license.
@@ -225,7 +225,7 @@ class ADODB_ado extends ADOConnection {
 
       // Map by http://msdn.microsoft.com/library/default.asp?url=/library/en-us/ado270/htm/mdmthcreateparam.asp
       // Check issue http://bugs.php.net/bug.php?id=40664 !!!
-			while(list(, $val) = each($inputarr)) {
+			foreach ($inputarr as $val) {
 				$type = gettype($val);
 				$len=strlen($val);
 				if ($type == 'boolean')
@@ -350,7 +350,7 @@ class ADORecordSet_ado extends ADORecordSet {
 			$mode = $ADODB_FETCH_MODE;
 		}
 		$this->fetchMode = $mode;
-		return parent::__construct($id,$mode);
+		return parent::__construct($id);
 	}
 
 
@@ -538,7 +538,7 @@ class ADORecordSet_ado extends ADORecordSet {
 		case 19://adUnsignedInt	= 19,
 		case 20://adUnsignedBigInt	= 21,
 			return 'I';
-		default: return 'N';
+		default: return ADODB_DEFAULT_METATYPE;
 		}
 	}
 
