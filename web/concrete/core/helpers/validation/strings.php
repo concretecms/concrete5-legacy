@@ -10,16 +10,17 @@
  * @license    http://www.concrete5.org/license/     MIT License
  */
 
-class Concrete5_Helper_Validation_Strings {	
+class Concrete5_Helper_Validation_Strings {
 
-	
-	/**
-	 * Validates an email address
-	 * @param string $address
-	 * @return bool $isvalid
-	 */
+
+    /**
+     * Validates an email address
+     * @param string $em
+     * @param bool $testMXRecord
+     * @return bool $isvalid
+     */
 	public function email($em, $testMXRecord = false) {
-		if (preg_match('/^([a-zA-Z0-9\._\+-]+)\@((\[?)[a-zA-Z0-9\-\.]+\.([a-zA-Z]{2,8}|[0-9]{1,3})(\]?))$/', $em, $matches)) {
+		if (filter_var($em, FILTER_VALIDATE_EMAIL)) {
 			if ($testMXRecord && function_exists('getmxrr')) {
 				list($username, $domain) = explode( '@', $em );
 				return getmxrr($domain, $mxrecords);
