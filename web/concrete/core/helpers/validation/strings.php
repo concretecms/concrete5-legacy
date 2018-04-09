@@ -20,16 +20,8 @@ class Concrete5_Helper_Validation_Strings {
      * @return bool $isvalid
      */
 	public function email($em, $testMXRecord = false) {
-		if (filter_var($em, FILTER_VALIDATE_EMAIL)) {
-			if ($testMXRecord && function_exists('getmxrr')) {
-				list($username, $domain) = explode( '@', $em );
-				return getmxrr($domain, $mxrecords);
-			} else {
-				return true;
-			}
-		} else {
-			return false;
-		}
+	    Loader::library('3rdparty/is_email');
+		return is_email($em, $testMXRecord);
 	}
 	
 	/**
