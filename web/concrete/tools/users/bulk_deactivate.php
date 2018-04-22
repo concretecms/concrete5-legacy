@@ -10,6 +10,8 @@ $ek = PermissionKey::getByHandle('activate_user');
 
 $form = Loader::helper('form');
 $ih = Loader::helper('concrete/interface');
+$token = Loader::helper('validation/token');
+
 $tp = new TaskPermission();
 if (!$tp->canActivateUser()) {
 	die(t("Access Denied."));
