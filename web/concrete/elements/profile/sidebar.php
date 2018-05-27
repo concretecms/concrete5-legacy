@@ -56,4 +56,16 @@ $token = Loader::helper('validation/token');
 	}
 	?>
 	</div>
+	
+		<form method="get" action="<?php echo $this->url('/members')?>">
+		<h4><?php echo t('Search Members')?></h4>
+		<?php
+		$form = Loader::helper('form');
+		print $form->text('keywords', array('style' => 'width: 80px'));
+		print '&nbsp;&nbsp;';
+		print $form->submit('submit', t('Search'));
+		?>
+
+		</form>
+	
 </div>
