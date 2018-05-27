@@ -1,6 +1,9 @@
 div.ccm-profile-attribute {padding-bottom: 8px}
 div#ccm-profile-body div.message { border: 1px solid #ccc; padding: 8px}
 img.u-avatar {margin-bottom: 8px}
+div.p-avatar{max-width: none !important;vertical-align:top;top:0;left:0;}
+div.avatar_preview{position:absolute;overflow:hidden;max-width: none;}
+div.avatar_placeholder{display:inline-block;}
 div.ccm-profile-member {margin-bottom: 8px; padding-bottom: 8px; border-bottom: 1px solid #ccc}
 div.ccm-profile-member-avatar {width: 100px; float: left}
 

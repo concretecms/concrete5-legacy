@@ -56,7 +56,7 @@ $token = Loader::helper('validation/token');
 	}
 	?>
 	</div>
-
+	
 		<form method="get" action="<?php echo $this->url('/members')?>">
 		<h4><?php echo t('Search Members')?></h4>
 		<?php
@@ -67,5 +67,5 @@ $token = Loader::helper('validation/token');
 		?>
 
 		</form>
-
+	
 </div>
