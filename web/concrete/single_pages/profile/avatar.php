@@ -16,11 +16,8 @@
           </script>
 
           <?php $valt = Loader::helper('validation/token');
-          if ($this->controller->getTask() == 'upload_avatar' && $error=="") {
-            $html = Loader::helper('html');
-            echo $html->javascript('/js/jquery.Jcrop.js');
-            echo $html->css('/css/jquery.Jcrop.css');
-            ?>
+          if ($this->controller->getTask() == 'upload_avatar' && $error=="") { ?>
+		  
             <script type="text/javascript">
               var pic_real_width, pic_real_height;
               function checkCoords(){
@@ -29,20 +26,19 @@
                 return false;
               };
               $(document).ready(function(){
-                pic_real_width = <? echo $targetImageWidth; ?>;
-                pic_real_height = <? echo $targetImageHeight; ?>;
+                pic_real_width = <?php echo $targetImageWidth; ?>;
+                pic_real_height = <?php echo $targetImageHeight; ?>;
                 // Create variables (in this scope) to hold the API and image size
                 var jcrop_api,
                   boundx,
                   boundy,
                 // Grab some information about the preview pane
-                  $preview = $("img[src|='<?php echo $av->getImagePath($ui,false)?>'], img[src|='<? echo AVATAR_NONE;?>']"),
+                  $preview = $("img[src|='<?php echo $av->getImagePath($ui,false)?>'], img[src|='<?php echo AVATAR_NONE;?>']"),
                   xsize = <?php echo AVATAR_WIDTH?>,
                   ysize = <?php echo AVATAR_HEIGHT?>,
                   loaded_xsize = $('#avatarCropArea').width(),
                   loaded_ysize = $('#avatarCropArea').height();
                 prepareAvatarsOnPage($preview);
-
                 $('#avatarCropArea').Jcrop({
                   onChange: updatePreview,
                   onSelect: updatePreview,
@@ -101,8 +97,10 @@
                   <?php echo $valt->output('upload');?>
                 </form>
               </div>
+			  <br/>
               <img src="<?php echo $targetImage;?>" style="max-width:100%; max-height:400px;" id="avatarCropArea"/>
-              <div>
+              <br/>
+			  <div>
                 <form method="post" enctype="multipart/form-data" action="<?php echo $this->action('crop_and_save_avatar')?>" onsubmit="return checkCoords();">
                   <input type="submit" class="btn" value="<?php echo t('Save')?>">
                   <input type="hidden" id="imageId" name="imageId" value="<?php echo $targetImageId?>" />
@@ -117,15 +115,15 @@
                   <?php echo $valt->output('crop_n_save_upload');?>
                 </form>
               </div>
-            <?php } ?>
-          <?php }else{ ?>
+			  
+			<?php } ?>
+          <?php } else { ?>
 
             <?php if ($ui->hasAvatar()) { ?>
               <a href="<?php echo $this->action('delete')?>"><?php echo t('Remove your user avatar &gt;')?></a>
             <?php } ?>
 
-            <div class="spacer"></div>
-            <br/>
+            <div class="spacer"></div><br/>
 
             <?php echo t('Upload a file to add a new avatar.')?>
             <div>
