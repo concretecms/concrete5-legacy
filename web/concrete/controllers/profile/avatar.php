@@ -1,10 +1,35 @@
 <?php
 defined('C5_EXECUTE') or die("Access Denied.");
 Loader::controller('/profile/edit');
-
 class ProfileAvatarController extends Concrete5_Controller_Profile_Avatar {
 	
-	  public function crop_and_save_avatar()
+  public function on_start() {
+		
+	    Loader::model("file_set");
+	    $fs = FileSet::getByName('ORIGINAL_AVATAR');
+		if (!$fs) { $fs = FileSet::createAndGetSet("ORIGINAL_AVATAR", FileSet::TYPE_PUBLIC, $uid = true); } // $uID=true Only One single avatar upload fileset
+		
+		$html = Loader::helper('html');
+		$this->addHeaderItem($html->css('ccm.profile.css'));
+			
+		$cp = new Permissions(Page::getCurrentPage());
+		if ($cp->canWrite() || $cp->canAddSubContent() || $cp->canAdminPage()) {} else {
+		
+			$this->addHeaderItem($html->javascript('jquery.js'));
+			$this->addHeaderItem($html->css('jquery.ui.css'));
+			$this->addFooterItem($html->javascript('jquery.form.js'));
+			$this->addHeaderItem($html->css('ccm.app.css'));
+			$this->addHeaderItem($html->javascript('jquery.ui.js'));
+			$this->addHeaderItem('<script type="text/javascript" src="'.REL_DIR_FILES_TOOLS_REQUIRED.'/i18n_js"></script>');
+			$this->addFooterItem($html->javascript("ccm.app.js"));
+				
+		}
+		
+		$this->addFooterItem($html->javascript('jquery.jcrop.js'));
+		$this->addHeaderItem($html->css('jquery.jcrop.css'));
+	}
+	
+  public function crop_and_save_avatar()
   {
     $valt = Loader::helper('validation/token');
     $av = Loader::helper('concrete/avatar');
@@ -42,7 +67,9 @@ class ProfileAvatarController extends Concrete5_Controller_Profile_Avatar {
           $error = t("Please upload an image.");
         } else {
           //We give the imagedata directly to the view
-          $fs = FileSet::createAndGetSet("ORIGINAL_AVATAR", FileSet::TYPE_PUBLIC);
+		  
+		  Loader::model("file_set");
+		  $fs = FileSet::getByName('ORIGINAL_AVATAR');
           $newFile = $fi->import($_FILES['Filedata']['tmp_name'], $_FILES['Filedata']['name']);
           $fs->addFileToSet($newFile);
           $this->set('targetImage',$newFile->getRelativePath());
@@ -67,6 +94,4 @@ class ProfileAvatarController extends Concrete5_Controller_Profile_Avatar {
     }
     $this->set('error',$error);
   }
-
-
 }
