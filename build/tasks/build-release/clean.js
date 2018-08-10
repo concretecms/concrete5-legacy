@@ -7,7 +7,7 @@ module.exports = function(grunt, config, parameters, done) {
 
 	try {
 		var fs = require('fs'),
-			path = "./release/concrete5-legacy-master/web",
+			path = "./release/concrete5-master/web",
 			cleanFiles = [".DS_Store", ".git", ".gitignore"],
 			walk = function(directory, onComplete) {
 				fs.readdir(directory, function(err, list) {

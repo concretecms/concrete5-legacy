@@ -52,7 +52,7 @@ if (!$dh->inDashboard($c)) {
 
 $cID = ($c->isAlias()) ? $c->getCollectionPointerOriginalID() : $c->getCollectionID();
 $btask = '';
-if (Loader::helper('validation/strings')->alphanum($_REQUEST['btask'])) {
+if (Loader::helper('validation/strings')->multiLingualName($_REQUEST['btask'])) {
 	$btask = $_REQUEST['btask'];
 }
 $this->addFooterItem('<script type="text/javascript" src="' . REL_DIR_FILES_TOOLS_REQUIRED . '/page_controls_menu_js?cID=' . $cID . '&amp;cvID=' . $cvID . '&amp;btask=' . $btask . '&amp;ts=' . time() . '"></script>'); 

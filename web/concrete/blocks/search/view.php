@@ -36,7 +36,7 @@ if ($do_search) {
 						<?php  echo $this->controller->highlightedMarkup($tt->shortText($r->getDescription()),$query)?><br/>
 					<?php } ?>
 					<?php echo $currentPageBody; ?>
-					<a href="<?php  echo $r->getPath(); ?>" class="pageLink"><?php  echo $this->controller->highlightedMarkup($r->getPath(),$query)?></a>
+					<a href="<?php  echo $r->getPath(); ?>" class="pageLink"><?php  echo $this->controller->highlightedMarkup(rawurldecode($r->getPath()),$query)?></a>
 				</p>
 			</div>
 		<?php 	}//foreach search result ?>

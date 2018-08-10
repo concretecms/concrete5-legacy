@@ -185,10 +185,18 @@ foreach($t1 as $value) {
 			
 			<div class="input">
 				<select multiple name="fsID[]" class="chosen-select">
-					<optgroup label="<?php echo t('Sets')?>">
-					<?php foreach($s1 as $s) { ?>
-						<option value="<?php echo $s->getFileSetID()?>"  <?php if ((is_array($searchRequest['fsID']) && in_array($s->getFileSetID(), $searchRequest['fsID'])) || (is_string($searchRequest['fsID']) && $searchRequest['fsID'] == $s->getFileSetID())) { ?> selected="selected" <?php } ?>><?php echo wordwrap($s->getFileSetName(), '23', '&shy;', true)?></option>
-					<?php } ?>
+					<optgroup label="<?=t('Sets')?>">
+					<? foreach($s1 as $s) { 
+						$fsetName = $s->getFileSetName();
+						$i = 0;
+						$fsetName2 = array();
+						for($i=0; $i < mb_strlen($fsetName, "UTF-8"); $i+=23){
+							$fsetName2[] = mb_substr($fsetName, $i, 23, "UTF-8");
+						}
+						$fsetName2 = implode("-",$fsetName2);
+					?>
+						<option value="<?=$s->getFileSetID()?>"  <? if ((is_array($searchRequest['fsID']) && in_array($s->getFileSetID(), $searchRequest['fsID'])) || (is_string($searchRequest['fsID']) && $searchRequest['fsID'] == $s->getFileSetID())) { ?> selected="selected" <? } ?>><?= $fsetName2;?></option>
+					<? } ?>
 					</optgroup>
 					<optgroup label="<?php echo t('Other')?>">
 						<option value="-1" <?php if ((is_array($searchRequest['fsID']) && in_array(-1, $searchRequest['fsID'])) || (is_string($searchRequest['fsID']) && $searchRequest['fsID'] == '-1')) { ?> selected="selected" <?php } ?>><?php echo t('Files in no sets.')?></option>

@@ -19,12 +19,12 @@
         <theme handle="greek_yogurt" package="" activated="1"/>
     </themes>
     <pagetypes>
-        <pagetype handle="blog_entry" name="Blog Entry" internal="0" icon="template1.png" package="">
+        <pagetype handle="blog_entry" name="ブログ記事" internal="0" icon="template1.png" package="">
             <composer method="PARENT" pagetype="" parent="{ccm:export:page:/blog}">
                 <items>
-                    <block type="image" name="Header Image" composer-template="header.php"/>
-                    <block type="image" name="Thumbnail Image" composer-template="thumbnail.php"/>
-                    <block type="content" name="Blog Content"/>
+                    <block type="image" name="ヘッダー画像" composer-template="header.php"/>
+                    <block type="image" name="サムネイル画像" composer-template="thumbnail.php"/>
+                    <block type="content" name="ブログ本文"/>
                     <attributekey handle="tags"/>
                 </items>
             </composer>
@@ -34,7 +34,7 @@
                 </attributes>
                 <area name="Blog Post Header"/>
                 <area name="Main">
-                    <block type="content" name="Blog Content" mc-block-id="0yueptBw">
+                    <block type="content" name="ブログ本文" mc-block-id="0yueptBw">
                         <data table="btContentLocal">
                             <record>
                                 <content><![CDATA[<p>This is my first blog post.</p>]]></content>
@@ -60,7 +60,7 @@
                 <area name="ThumbnailImage"/>
                 <area name="HeaderImage"/>
                 <area name="Thumbnail Image">
-                    <block type="image" name="Thumbnail Image" composer-template="thumbnail.php" mc-block-id="QCpfJ7BF">
+                    <block type="image" name="サムネイル画像" composer-template="thumbnail.php" mc-block-id="QCpfJ7BF">
                         <data table="btContentImage">
                             <record>
                                 <fID>{ccm:export:file:sh_thumbnail.jpg}</fID>
@@ -75,7 +75,7 @@
                     </block>
                 </area>
                 <area name="Header Image">
-                    <block type="image" name="Header Image" composer-template="header.php" mc-block-id="wLzzOzzD">
+                    <block type="image" name="ヘッダー画像" composer-template="header.php" mc-block-id="wLzzOzzD">
                         <data table="btContentImage">
                             <record>
                                 <fID>{ccm:export:file:europe_england_stonehenge.jpg}</fID>
@@ -92,7 +92,7 @@
                 </area>
             </page>
         </pagetype>
-        <pagetype handle="full" name="Full" internal="0" icon="main.png" package="">
+        <pagetype handle="full" name="全幅" internal="0" icon="main.png" package="">
             <page name="" path="" filename="" pagetype="full" description="" package="">
                 <area name="HeaderImage"/>
                 <area name="Main"/>
@@ -114,7 +114,7 @@
                 </area>
             </page>
         </pagetype>
-        <pagetype handle="left_sidebar" name="Left Sidebar" internal="0" icon="template1.png" package="">
+        <pagetype handle="left_sidebar" name="左サイドバー" internal="0" icon="template1.png" package="">
             <page name="" path="" filename="" pagetype="left_sidebar" description="" package="">
                 <area name="HeaderImage"/>
                 <area name="Sidebar"/>
@@ -137,7 +137,7 @@
                 </area>
             </page>
         </pagetype>
-        <pagetype handle="right_sidebar" name="Right Sidebar" internal="0" icon="right_sidebar.png" package="">
+        <pagetype handle="right_sidebar" name="右サイドバー" internal="0" icon="right_sidebar.png" package="">
             <page name="" path="" filename="" pagetype="right_sidebar" description="" package="">
                 <area name="Header Image">
                     <block type="image" name="" mc-block-id="v0zvw8ct">
@@ -184,7 +184,7 @@
                 <block type="content" name="">
                     <data table="btContentLocal">
                         <record>
-                            <content><![CDATA[<h3>Links:</h3>]]></content>
+                            <content><![CDATA[<h3>リンク:</h3>]]></content>
                             </record>
                         </data>
                     </block>
@@ -219,19 +219,19 @@
             </stack>
         </stacks>
         <pages>
-            <page name="Home" path="" filename="" pagetype="right_sidebar" description="" package="">
+            <page name="ホーム" path="" filename="" pagetype="right_sidebar" description="" package="">
                 <area name="Sidebar">
                     <block type="content" name="">
                         <data table="btContentLocal">
                             <record>
-                                <content><![CDATA[<h3>Sidebar</h3>]]></content>
+                                <content><![CDATA[<h3>サイドバー</h3>]]></content>
                                 </record>
                             </data>
                         </block>
                         <block type="content" name="">
                             <data table="btContentLocal">
                                 <record>
-                                    <content><![CDATA[<p>Everything about concrete5 is completely customizable through the CMS. This is a separate area from the main content on the homepage. You can&nbsp;<a title="Move blocks in concrete5" href="http://www.concrete5.org/documentation/general-topics/blocks-and-areas" target="_blank">drag and drop blocks</a>&nbsp;like this around your layout.</p>]]></content>
+                                    <content><![CDATA[<p>concrete5ではあらゆるものがCMSを使って変更可能です。これはホームページのメインコンテンツから分離されたエリアです。<a title="Move blocks in concrete5" href="http://www.concrete5.org/documentation/general-topics/blocks-and-areas" target="_blank">ブロックをドラッグ・アンド・ドロップ</a>して自由に動かすことができます。</p>]]></content>
                                 </record>
                             </data>
                         </block>
@@ -240,16 +240,16 @@
                         <block type="content" name="">
                             <data table="btContentLocal">
                                 <record>
-                                    <content><![CDATA[<h2>Welcome to concrete5!</h2>
-                                        <p>Content Management is easy with concrete5's in-context editing. Just <a href="{ccm:export:page:/login}">login</a> and you can change things as you browse your site.</p>
-                                        <p>You can watch videos and learn how to:</p>
+                                    <content><![CDATA[<h2>concrete5へようこそ!</h2>
+                                        <p>concrete5は、WEBサイトを見たまま直接編集ができるコンテンツ・マネジメント・システムです。<a href="{ccm:export:page:/login}">ログイン</a>するとブロックと呼ばれるページの構成要素を変更したり追加できるようになります。</p>
+                                        <p>以下が簡単な操作方法へのリンクです：</p>
                                         <ul>
-                                        <li><a title="In-context editing CMS" href="http://www.concrete5.org/documentation/general-topics/in-context-editing/" target="_blank">Edit</a>&nbsp;this page.</li>
-                                        <li>Add a <a title="Add a page in concrete5" href="http://www.concrete5.org/documentation/general-topics/add-a-page/" target="_blank">new page</a>.</li>
-                                        <li>Add some basic functionality, like&nbsp;<a title="Add a simple form in concrete5" href="http://www.concrete5.org/documentation/general-topics/add_a_form" target="_blank">a Form</a>.</li>
-                                        <li><a title="add-on marketplace for concrete5" href="http://www.concrete5.org/marketplace/how_to_install_add_ons_and_themes_/" target="_blank">Finding &amp; adding</a>&nbsp;more functionality and themes.</li>
+                                        <li><a title="ログイン・編集の基本" href="http://concrete5-japan.org/help/editing/login/" target="_blank">ページの編集方法</a></li>
+                                        <li><a href="http://concrete5-japan.org/help/editing/add-a-page/" target="_blank">新規ページ作成方法</a></li>
+                                        <li>いろいろな機能を持ったブロックを追加：<a href="http://www.youtube.com/watch?v=aZ6YfVvfybQ" target="_blank">フォーム</a></li>
+                                        <li>テーマやアドオンを<a href="http://concrete5-japan.org/help/editing/install_theme_and_blocks/" target="_blank">マーケットプレイスから簡単自動インストール</a></li>
                                         </ul>
-                                        <p>We've taken the liberty to build out the rest of this site with some sample content that will help you learn concrete5. Wander around a bit, or click Dashboard to get to the&nbsp;<a href="{ccm:export:page:/dashboard/sitemap}">Sitemap</a> and quickly delete the parts you don't want.</p>]]></content>
+                                        <p>このサイトに、concrete5について学ぶためのいろいろなサンプルをインストールしました。管理画面ボタンをクリックして<a href="{ccm:export:page:/dashboard/sitemap}">サイトマップ</a>にアクセスして、コンテンツを確認してみてください。不要な部分の削除もサイトマップから行えます。</p>]]></content>
                                     </record>
                                 </data>
                             </block>
@@ -271,7 +271,7 @@
                             </block>
                         </area>
                     </page>
-			<page name="About" path="/about" filename="" pagetype="left_sidebar" description="" package="">
+			<page name="概要" path="/about" filename="" pagetype="left_sidebar" description="" package="">
 											<area name="Sidebar">
 												<block type="core_stack_display" name="">
 													<stack><![CDATA[Side Nav]]></stack>
@@ -281,12 +281,8 @@
 												<block type="content" name="">
 													<data table="btContentLocal">
 														<record>
-															<content><![CDATA[<h2>Learn More</h2>
-																<p>Visit&nbsp;<a title="concrete5 Content Management System" href="http://www.concrete5.org/" target="_blank">concrete5.org</a>&nbsp;to learn more from the&nbsp;<a title="open source content management system" href="http://www.concrete5.org/community" target="_blank">community</a>&nbsp;and the&nbsp;<a href="http://www.concrete5.org/documentation/general-topics/" target="_blank">documentation</a>. You can also browse our&nbsp;<a title="concrete5 marketplace" href="http://www.concrete5.org/marketplace/" target="_blank">marketplace</a>&nbsp;for more&nbsp;<a title="Add-ons for concrete5" href="http://www.concrete5.org/marketplace/addons/" target="_blank">add-ons</a>&nbsp;and&nbsp;<a title="Themes for concrete5" href="http://www.concrete5.org/marketplace/themes/" target="_blank">themes</a>&nbsp;to quickly build the site you really need.&nbsp;</p>
-																<h3>&nbsp;</h3>
-																<h3>Getting Help</h3>
-																<p>You can get free help in the <a href="http://www.concrete5.org/community/forums/" target="_blank">forums</a> and post for free to the&nbsp;<a href="http://www.concrete5.org/community/forums/jobs1/" target="_blank">jobs board</a>.&nbsp;</p>
-																<p>You can also pay the concrete5 team of developers to help with&nbsp;<a href="http://www.concrete5.org/services/support/" target="_blank">any problem</a>&nbsp;you run into. We offer <a href="http://www.concrete5.org/services/training/" target="_blank">training courses</a>&nbsp;and&nbsp;<a href="http://www.concrete5.org/services/hosting/" target="_blank">hosting packages</a>, just let us know <a href="http://www.concrete5.org/services/professional_services/" target="_blank">how we can help</a>.</p>]]></content>
+															<content><![CDATA[<h2>さらに詳しく</h2>
+																<p><a title="concrete5 日本語公式サイト" href="http://concrete5-japan.org/" target="_blank">concrete5 日本語公式サイト</a>の<a href="http://concrete5-japan.org/help/" target="_blank">ヘルプ</a>や<a href="http://concrete5-japan.org/community/forums/" target="_blank">フォーラム</a>で、さらに詳しく知ることができます。<a title="concrete5 Content Management System" href="http://www.concrete5.org/" target="_blank">concrete5.org</a>の<a title="concrete5 marketplace" href="http://www.concrete5.org/marketplace/" target="_blank">マーケットプレイス</a>では、追加の<a title="Add-ons for concrete5" href="http://www.concrete5.org/marketplace/addons/" target="_blank">アドオン</a>や<a title="Themes for concrete5" href="http://www.concrete5.org/marketplace/themes/" target="_blank">テーマ</a>を探すことができます。</p>]]></content>
 															</record>
 														</data>
 													</block>
@@ -296,7 +292,7 @@
 													<block mc-block-id="EjT8GZha"/>
 												</area>
 											</page>
-			<page name="Guestbook" path="/about/guestbook" filename="" pagetype="right_sidebar" description="" package="">
+			<page name="ゲストブック" path="/about/guestbook" filename="" pagetype="right_sidebar" description="" package="">
 				<area name="Sidebar">
 					<block type="core_stack_display" name="">
 						<stack><![CDATA[Side Nav]]></stack>
@@ -307,8 +303,8 @@
 						<data table="btGuestBook">
 							<record>
 								<requireApproval><![CDATA[0]]></requireApproval>
-								<title><![CDATA[Tell us what you think]]></title>
-								<dateFormat><![CDATA[M jS, Y]]></dateFormat>
+								<title><![CDATA[コメントをどうぞ]]></title>
+								<dateFormat><![CDATA[Y年n月j日]]></dateFormat>
 								<displayGuestBookForm><![CDATA[1]]></displayGuestBookForm>
 								<displayCaptcha><![CDATA[1]]></displayCaptcha>
 								<authenticationRequired><![CDATA[0]]></authenticationRequired>
@@ -323,7 +319,7 @@
 					<block mc-block-id="v0zvw8ct"/>
 				</area>
 			</page>
-			<page name="Contact Us" path="/about/contact-us" filename="" pagetype="left_sidebar" description="" package="">
+			<page name="お問い合わせ" path="/about/contact-us" filename="" pagetype="left_sidebar" description="" package="">
 				<area name="Sidebar">
 					<block type="core_stack_display" name="">
 						<stack><![CDATA[Side Nav]]></stack>
@@ -333,8 +329,8 @@
 					<block type="content" name="">
 						<data table="btContentLocal">
 							<record>
-								<content><![CDATA[<h2>Contact Us</h2>
-									<p>Building a form is easy to do. Learn how to <a href="http://www.concrete5.org/documentation/general-topics/add_a_form" target="_blank">add a form block</a>.</p>]]></content>
+								<content><![CDATA[<h2>お問い合わせ</h2>
+									<p>お問い合わせフォームの作成も簡単です。<a href="http://concrete5-japan.org/help/editing/add_a_form_block/" target="_blank">フォームブロックの使い方</a></p>]]></content>
 								</record>
 							</data>
 						</block>
@@ -342,8 +338,8 @@
 							<data table="btForm">
 								<record>
 									<questionSetId><![CDATA[1324322748]]></questionSetId>
-									<surveyName><![CDATA[Contact Us]]></surveyName>
-									<thankyouMsg><![CDATA[Thanks!]]></thankyouMsg>
+									<surveyName><![CDATA[お問い合わせ]]></surveyName>
+									<thankyouMsg><![CDATA[ありがとうございます！]]></thankyouMsg>
 									<notifyMeOnSubmission><![CDATA[0]]></notifyMeOnSubmission>
 									<recipientEmail><![CDATA[]]></recipientEmail>
 									<displayCaptcha><![CDATA[0]]></displayCaptcha>
@@ -355,7 +351,7 @@
 									<qID><![CDATA[5]]></qID>
 									<msqID><![CDATA[4]]></msqID>
 									<questionSetId><![CDATA[1324322748]]></questionSetId>
-									<question><![CDATA[Name]]></question>
+									<question><![CDATA[お名前]]></question>
 									<inputType><![CDATA[field]]></inputType>
 									<options><![CDATA[]]></options>
 									<position><![CDATA[0]]></position>
@@ -379,9 +375,9 @@
 									<qID><![CDATA[7]]></qID>
 									<msqID><![CDATA[6]]></msqID>
 									<questionSetId><![CDATA[1324322748]]></questionSetId>
-									<question><![CDATA[What are you contacting us about?]]></question>
+									<question><![CDATA[お問い合わせ内容]]></question>
 									<inputType><![CDATA[radios]]></inputType>
-									<options><![CDATA[Question%%Comment%%Urgent Issue%%To Say Hello%%Other]]></options>
+									<options><![CDATA[質問%%ご意見%%緊急%%挨拶%%その他]]></options>
 									<position><![CDATA[0]]></position>
 									<width><![CDATA[50]]></width>
 									<height><![CDATA[3]]></height>
@@ -391,7 +387,7 @@
 									<qID><![CDATA[8]]></qID>
 									<msqID><![CDATA[7]]></msqID>
 									<questionSetId><![CDATA[1324322748]]></questionSetId>
-									<question><![CDATA[Message]]></question>
+									<question><![CDATA[メッセージ]]></question>
 									<inputType><![CDATA[text]]></inputType>
 									<options><![CDATA[]]></options>
 									<position><![CDATA[0]]></position>
@@ -407,12 +403,12 @@
 						<block mc-block-id="EjT8GZha"/>
 					</area>
 				</page>
-			<page name="Search" path="/search" filename="" pagetype="right_sidebar" description="" package="">
+			<page name="検索" path="/search" filename="" pagetype="right_sidebar" description="" package="">
 					<area name="Sidebar">
 						<block type="content" name="">
 							<data table="btContentLocal">
 								<record>
-									<content><![CDATA[<h3>Site Map</h3>]]></content>
+									<content><![CDATA[<h3>サイトマップ</h3>]]></content>
 									</record>
 								</data>
 							</block>
@@ -435,8 +431,8 @@
 							<block type="search" name="">
 								<data table="btSearch">
 									<record>
-										<title><![CDATA[Search This Site]]></title>
-										<buttonText><![CDATA[Search]]></buttonText>
+										<title><![CDATA[サイト内検索]]></title>
+										<buttonText><![CDATA[検索]]></buttonText>
 										<baseSearchPath><![CDATA[]]></baseSearchPath>
 										<resultsURL><![CDATA[]]></resultsURL>
 									</record>
@@ -448,7 +444,7 @@
 							<block mc-block-id="v0zvw8ct"/>
 						</area>
 					</page>
-			<page name="Blog" path="/blog" filename="" pagetype="right_sidebar" description="" package="">
+			<page name="ブログ" path="/blog" filename="" pagetype="right_sidebar" description="" package="">
                                                         <attributes>
                                                             <attributekey handle="tags"/>
                                                         </attributes>
@@ -479,7 +475,7 @@
                                                             <block type="content" name="">
                                                                 <data table="btContentLocal">
                                                                     <record>
-                                                                        <content><![CDATA[<h3>Tags</h3>]]></content>
+                                                                        <content><![CDATA[<h3>タグ</h3>]]></content>
                                                                     </record>
                                                                 </data>
                                                             </block>
@@ -496,7 +492,7 @@
                                                             <block type="date_archive" name="">
                                                                 <data table="btDateArchive">
                                                                     <record>
-                                                                        <title><![CDATA[Archives]]></title>
+                                                                        <title><![CDATA[アーカイブ]]></title>
                                                                         <targetCID>{ccm:export:page:/blog/blog-archives}</targetCID>
                                                                         <numMonths><![CDATA[12]]></numMonths>
                                                                     </record>
@@ -507,7 +503,7 @@
                                                             <block mc-block-id="v0zvw8ct"/>
                                                         </area>
                                                     </page>
-            <page name="Hello World" path="/blog/hello-world" filename="" pagetype="blog_entry" description="This is my first blog post!" package="">
+            <page name="Hello World" path="/blog/hello-world" filename="" pagetype="blog_entry" description="これは最初のブログ記事です！" package="">
                                                         <attributes>
                                                             <attributekey handle="tags">
                                                                 <value>
@@ -529,7 +525,7 @@
 																		<forceImageToMatchDimensions>1</forceImageToMatchDimensions>
                                                                         <externalLink><![CDATA[]]></externalLink>
                                                                         <internalLinkCID><![CDATA[0]]></internalLinkCID>
-                                                                        <altText><![CDATA[My concrete5 Blog]]></altText>
+                                                                        <altText><![CDATA[マイconcrete5ブログ]]></altText>
                                                                     </record>
                                                                 </data>
                                                             </block>
@@ -541,7 +537,7 @@
                                                             <block type="content" name="Blog Content">
                                                                 <data table="btContentLocal">
                                                                     <record>
-                                                                        <content><![CDATA[<p>Here is some sample content! I'm writing it using composer!</p>]]></content>
+                                                                        <content><![CDATA[<p>これはサンプルです！コンポーザーをつかって書くことができます！</p>]]></content>
                                                                     </record>
                                                                 </data>
                                                             </block>
@@ -565,7 +561,7 @@
                                                         <area name="Blog Post Header"/>
                                                         <area name="Blog Post Footer"/>
                                                     </page>
-			<page name="Blog Archives" path="/blog/blog-archives" filename="" pagetype="right_sidebar" description="" package="">
+			<page name="ブログアーカイブ" path="/blog/blog-archives" filename="" pagetype="right_sidebar" description="" package="">
                                                                 <attributes>
                                                                     <attributekey handle="exclude_nav">
                                                                         <value><![CDATA[1]]></value>
@@ -585,8 +581,8 @@
                                                                     <block type="search" name="">
                                                                         <data table="btSearch">
                                                                             <record>
-                                                                                <title><![CDATA[Search Blog]]></title>
-                                                                                <buttonText><![CDATA[Search]]></buttonText>
+                                                                                <title><![CDATA[ブログ検索]]></title>
+                                                                                <buttonText><![CDATA[検索]]></buttonText>
                                                                                 <baseSearchPath><![CDATA[/blog]]></baseSearchPath>
                                                                                 <resultsURL><![CDATA[]]></resultsURL>
                                                                             </record>
@@ -597,7 +593,7 @@
                                                                     <block type="tags" name="">
                                                                         <data table="btTags">
                                                                             <record>
-                                                                                <title><![CDATA[Tags]]></title>
+                                                                                <title><![CDATA[タグ]]></title>
                                                                                 <targetCID>{ccm:export:page:/blog/blog-archives}</targetCID>
                                                                                 <displayMode><![CDATA[cloud]]></displayMode>
                                                                                 <cloudCount><![CDATA[0]]></cloudCount>
@@ -607,7 +603,7 @@
                                                                     <block type="date_archive" name="">
                                                                         <data table="btDateArchive">
                                                                             <record>
-                                                                                <title><![CDATA[Archives]]></title>
+                                                                                <title><![CDATA[アーカイブ]]></title>
                                                                                 <targetCID>{ccm:export:page:/blog/blog-archives}</targetCID>
                                                                                 <numMonths><![CDATA[12]]></numMonths>
                                                                             </record>

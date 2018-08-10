@@ -765,8 +765,8 @@
 				<block type="content" name="">
 					<data table="btContentLocal">
 						<record>
-						<content><![CDATA[	<div id="newsflow-header-first-run"><h1>Welcome to concrete5.</h1>
-						<h2>It's easy to edit content and add pages using in-context editing.</h2></div>
+						<content><![CDATA[	<div id="newsflow-header-first-run"><h1>concrete5へようこそ。</h1>
+						<h2>直感的な操作で簡単にコンテンツの編集・ページの追加ができます。</h2></div>
 						]]></content>
 						</record>
 					</data>
@@ -777,10 +777,9 @@
 					<data table="btContentLocal">
 						<record>
 						<content><![CDATA[<div class="newsflow-column-first-run">
-							<h3>Building Your Own Site</h3>
-							<p>Editing with concrete5 is a breeze. Just point and click to make changes.</p>
-							<br/>
-							<p><a href="javascript:void(0)" onclick="ccm_getNewsflowByPath('/welcome/editors')" class="btn primary">Editor's Guide</a></p>
+							<h3>オリジナルのサイトを作る</h3>
+							<p>concrete5で編集を行うのは簡単です。マウスでクリックして変更するだけです。<br/><br/><br/></p>
+							<p><a href="javascript:void(0)" onclick="ccm_getNewsflowByPath('/welcome/editors')" class="btn primary">エディターズガイド</a></p>
 							</div>]]></content>
 						</record>
 					</data>
@@ -791,9 +790,9 @@
 					<data table="btContentLocal">
 						<record>
 						<content><![CDATA[<div class="newsflow-column-first-run">
-							<h3>Developing Applications</h3>
-							<p>If you’re comfortable in PHP concrete5 should be a breeze to learn. Take a few moments to understand the architecture.</p>
-							<p><a href="javascript:void(0)" onclick="ccm_getNewsflowByPath('/welcome/developers')" class="btn primary">Developer's Guide</a></p>
+							<h3>アプリケーションを開発する</h3>
+							<p>PHPに慣れている方なら、concrete5について学ぶのは簡単です。数分あればアーキテクチャについて理解できるでしょう。</p>
+							<p><a href="javascript:void(0)" onclick="ccm_getNewsflowByPath('/welcome/developers')" class="btn primary">デベロッパーズガイド</a></p>
 							</div>]]></content>
 						</record>
 					</data>
@@ -804,10 +803,9 @@
 					<data table="btContentLocal">
 						<record>
 						<content><![CDATA[<div class="newsflow-column-first-run">
-							<h3>Designing Websites</h3>
-							<p>Good with CSS and HTML? You can easily theme anything with concrete5.</p>
-							<br/>
-							<p><a href="javascript:void(0)" onclick="ccm_getNewsflowByPath('/welcome/designers')" class="btn primary">Designer's Guide</a></p>
+							<h3>ウェブサイトをデザインする</h3>
+							<p>CSSとHTMLが得意ですか？それなら、concrete5のテーマは簡単に作成できます。<br/><br/><br/></p>
+							<p><a href="javascript:void(0)" onclick="ccm_getNewsflowByPath('/welcome/designers')" class="btn primary">デザイナーズガイド</a></p>
 							</div>]]></content>
 						</record>
 					</data>
@@ -819,9 +817,9 @@
 						<record>
 						<content><![CDATA[
 						<div class="newsflow-column-first-run">
-						<h3>Business Background</h3>
-						<p>Worried about license structures, white-labeling or why concrete5 is a good choice for your agency?</p>
-						<p><a href="javascript:void(0)" onclick="ccm_getNewsflowByPath('/welcome/executives')" class="btn primary">Executive's Guide</a></p>
+						<h3>商用利用<br/><br/></h3>
+						<p>ライセンス形態やロゴの使用について、またはconcrete5がなぜ制作会社にとって最適なのかご存知ですか？<br/><br/></p>
+						<p><a href="javascript:void(0)" onclick="ccm_getNewsflowByPath('/welcome/executives')" class="btn primary">エグゼクティブガイド</a></p>
 						</div>]]></content>
 						</record>
 					</data>

@@ -56,7 +56,7 @@ if ($valt->validate('import_incoming')) {
 	}
 
 	if (count($files) == 0) {
-		$error = t('You must select at least one file.');
+		$error .= t('You must select at least one file.');
 	}
 
 } else {

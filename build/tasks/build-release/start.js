@@ -16,7 +16,7 @@ module.exports = function(grunt, config, parameters, done) {
 
 		// Download archive from git
 		process.stdout.write("Downloading Archive...\n");
-		var stream = download('https://github.com/concrete5/concrete5-legacy/archive/master.zip', path, {
+		var stream = download('https://github.com/concrete5japan/concrete5/archive/master.zip', path, {
 			extract: true
 		});
 		stream.on('close', function() {
