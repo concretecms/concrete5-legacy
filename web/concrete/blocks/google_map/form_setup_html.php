@@ -16,21 +16,21 @@
 		<table class="table table-bordered">
 			<tbody>
 				<tr>
-					<th><?=t('Map Title')?>: <div class="note">(<?=t('Optional')?>)</div></th>
-					<td><input id="ccm_googlemap_block_title" name="title" value="<?=$mapObj->title?>" maxlength="255" type="text" /></td>
+					<th><?php echo t('Map Title')?>: <div class="note">(<?php echo t('Optional')?>)</div></th>
+					<td><input id="ccm_googlemap_block_title" name="title" value="<?php echo $mapObj->title?>" maxlength="255" type="text" /></td>
 				</tr>
 				<tr>
-					<th><?=t('Location')?>:</th>
+					<th><?php echo t('Location')?>:</th>
 					<td>
-						<input id="ccm_googlemap_block_location" name="location" value="<?=$mapObj->location?>" maxlength="255" type="text" />
-						<div class="note"><?=t('e.g. 17 SE 3rd #410, Portland, OR, 97214')?></div>
+						<input id="ccm_googlemap_block_location" name="location" value="<?php echo $mapObj->location?>" maxlength="255" type="text" />
+						<div class="note"><?php echo t('e.g. 17 SE 3rd #410, Portland, OR, 97214')?></div>
 					</td>
 				</tr>
 				<tr>
-					<th><?=t('Zoom')?>:</th>
+					<th><?php echo t('Zoom')?>:</th>
 					<td>
-						<input id="ccm_googlemap_block_zoom" name="zoom" value="<?=$mapObj->zoom?>" maxlength="2" type="number" min="0" max="21" />
-						<div class="ccm-note"><?=t('Enter a number from 0 to 21, with 21 being the most zoomed in.')?> </div>
+						<input id="ccm_googlemap_block_zoom" name="zoom" value="<?php echo $mapObj->zoom?>" maxlength="2" type="number" min="0" max="21" />
+						<div class="ccm-note"><?php echo t('Enter a number from 0 to 21, with 21 being the most zoomed in.')?> </div>
 					</td>
 				</tr>
 			</tbody>

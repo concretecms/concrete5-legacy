@@ -1,4 +1,4 @@
-<?
+<?php
 /**
  * @access private
  * @package Helpers
@@ -109,50 +109,49 @@ class ConcreteUpgradeVersion560Helper {
 
 		$sp = Page::getByPath('/dashboard/users/group_sets');
 		if ($sp->isError()) {
-			$d11 = SinglePage::add('/dashboard/users/group_sets');
+			$d11 = SinglePage::createSinglePage('/dashboard/users/group_sets');
 			$d11->update(array('cName'=>t('Group Sets')));
 		}
 
 		$sp = Page::getByPath('/dashboard/system/seo/bulk_seo_tool');
 		if ($sp->isError()) {
-			$d1a = SinglePage::add('/dashboard/system/seo/bulk_seo_tool');
+			$d1a = SinglePage::createSinglePage('/dashboard/system/seo/bulk_seo_tool');
 			$d1a->update(array('cName'=>t('Bulk SEO Updater')));
 		}
 		
 		$sp = Page::getByPath('/dashboard/system/permissions/users');
 		if ($sp->isError()) {
-			$d1a = SinglePage::add('/dashboard/system/permissions/users');
+			$d1a = SinglePage::createSinglePage('/dashboard/system/permissions/users');
 			$d1a->update(array('cName'=>t('User Permissions')));
 		}
 		$sp = Page::getByPath('/dashboard/blocks/permissions');
 		if ($sp->isError()) {
-			$d1a = SinglePage::add('/dashboard/blocks/permissions');
+			$d1a = SinglePage::createSinglePage('/dashboard/blocks/permissions');
 			$d1a->update(array('cName'=>t('Block &amp; Stack Permissions')));
 		}
 
 		$sp = Page::getByPath('/dashboard/system/permissions/advanced');
 		if ($sp->isError()) {
-			$d1b = SinglePage::add('/dashboard/system/permissions/advanced');
+			$d1b = SinglePage::createSinglePage('/dashboard/system/permissions/advanced');
 			$d1b->update(array('cName'=>t('Advanced Permissions')));
 		}
 		$sp = Page::getByPath('/dashboard/workflow');
 		if ($sp->isError()) {
-			$d1a = SinglePage::add('/dashboard/workflow');
+			$d1a = SinglePage::createSinglePage('/dashboard/workflow');
 			$d1a->update(array('cName'=>t('Workflow')));
 		}
 		$sp = Page::getByPath('/dashboard/workflow/list');
 		if ($sp->isError()) {
-			$d1a = SinglePage::add('/dashboard/workflow/list');
-			$d1a->update(array('cName'=>t('Workflow List')));
+			$d1a = SinglePage::createSinglePage('/dashboard/workflow/list');
 		}
 		$sp = Page::getByPath('/dashboard/workflow/me');
 		if ($sp->isError()) {
-			$d1a = SinglePage::add('/dashboard/workflow/me');
+			$d1a = SinglePage::createSinglePage('/dashboard/workflow/me');
 			$d1a->update(array('cName'=>t('Waiting for Me')));
 		}
 		$sp = Page::getByPath('/dashboard/system/environment/proxy');
 		if ($sp->isError()) {
-			$d1a = SinglePage::add('/dashboard/system/environment/proxy');
+			$d1a = SinglePage::createSinglePage('/dashboard/system/environment/proxy');
 			$d1a->update(array('cName'=>t('Proxy Server')));
 		}
 		// update meta keywords

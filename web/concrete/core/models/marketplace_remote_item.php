@@ -1,4 +1,4 @@
-<?
+<?php
 
 /**
 *
@@ -10,7 +10,7 @@
 * @category Concrete
 */
 
-class Concrete5_Model_MarketplaceRemoteItem extends Object {
+class Concrete5_Model_MarketplaceRemoteItem extends ConcreteObject {
 
 	protected $price=0.00;	
 	protected $remoteCID=0;
@@ -229,7 +229,7 @@ class Concrete5_Model_MarketplaceRemoteItemList extends ItemList {
 		$this->params['mpID'] = $mpID;
 	}
 	
-	public function sortBy($sortBy) {
+	public function sortBy($sortBy, $foo = 'asc') {
 		$this->params['sort'] = $sortBy;
 	}
 	
@@ -301,7 +301,7 @@ class Concrete5_Model_MarketplaceRemoteItemList extends ItemList {
 	
 }
 
-class Concrete5_Model_MarketplaceRemoteItemSet extends Object {
+class Concrete5_Model_MarketplaceRemoteItemSet extends ConcreteObject {
 	
 	public function getMarketplaceRemoteSetName() {return $this->name;}
 	public function getMarketplaceRemoteSetID() {return $this->id;}

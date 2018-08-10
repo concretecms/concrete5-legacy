@@ -1,9 +1,9 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 $config_check_failed = false;
 
-if (version_compare(PHP_VERSION, '5.1.0', '<')) {
-	die("Concrete5 requires PHP5.1.");
+if (version_compare(PHP_VERSION, '5.3.2', '<')) {
+	die("Concrete5 requires PHP5.3.2.");
 }
 
 if (!defined('CONFIG_FILE')) { 

@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 $u = new User();
 $form = Loader::helper('form');
@@ -35,43 +35,43 @@ if ($_POST['task'] == 'set_location') {
 <div class="ccm-ui" id="ccm-file-permissions-dialog-wrapper">
 
 <ul class="tabs" id="ccm-file-permissions-tabs">
-	<? if (PERMISSIONS_MODEL != 'simple') { ?>
-		<li class="active"><a href="javascript:void(0)" id="ccm-file-permissions-advanced"><?=t('Permissions')?></a></li>
-	<? } ?>
-	<li <? if (PERMISSIONS_MODEL == 'simple') { ?> class="active" <? } ?>><a href="javascript:void(0)" id="ccm-file-password"><?=t('Protect with Password')?></a></li>
-	<li><a href="javascript:void(0)" id="ccm-file-storage"><?=t('Storage Location')?></a></li>
+	<?php if (PERMISSIONS_MODEL != 'simple') { ?>
+		<li class="active"><a href="javascript:void(0)" id="ccm-file-permissions-advanced"><?php echo t('Permissions')?></a></li>
+	<?php } ?>
+	<li <?php if (PERMISSIONS_MODEL == 'simple') { ?> class="active" <?php } ?>><a href="javascript:void(0)" id="ccm-file-password"><?php echo t('Protect with Password')?></a></li>
+	<li><a href="javascript:void(0)" id="ccm-file-storage"><?php echo t('Storage Location')?></a></li>
 </ul>
 
 <div class="clearfix"></div>
 
-<? if (PERMISSIONS_MODEL != 'simple') { ?>
+<?php if (PERMISSIONS_MODEL != 'simple') { ?>
 
 <div id="ccm-file-permissions-advanced-tab">
 
-	<? Loader::element('permission/lists/file', array('f' => $f)); ?>
+	<?php Loader::element('permission/lists/file', array('f' => $f)); ?>
 
 </div>
-<? } ?>
+<?php } ?>
 
-<div id="ccm-file-password-tab" <? if (PERMISSIONS_MODEL != 'simple') { ?> style="display: none" <? } ?>>
+<div id="ccm-file-password-tab" <?php if (PERMISSIONS_MODEL != 'simple') { ?> style="display: none" <?php } ?>>
 <br/>
 
-<h4><?=t('Requires Password to Access')?></h4>
+<h4><?php echo t('Requires Password to Access')?></h4>
 
-<p><?=t('Leave the following form field blank in order to allow everyone to download this file.')?></p>
+<p><?php echo t('Leave the following form field blank in order to allow everyone to download this file.')?></p>
 
-<form method="post" id="ccm-<?=$searchInstance?>-password-form" action="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/files/permissions/">
-<?=$form->hidden('task', 'set_password')?>
-<?=$form->hidden('fID', $f->getFileID())?>
-<?=$form->text('fPassword', $f->getPassword(), array('style' => 'width: 250px'))?>
+<form method="post" id="ccm-<?php echo $searchInstance?>-password-form" action="<?php echo REL_DIR_FILES_TOOLS_REQUIRED?>/files/permissions/">
+<?php echo $form->hidden('task', 'set_password')?>
+<?php echo $form->hidden('fID', $f->getFileID())?>
+<?php echo $form->text('fPassword', $f->getPassword(), array('style' => 'width: 250px'))?>
 
 <div id="ccm-file-password-buttons"  style="display: none">
-<?=$ih->button_js(t('Save Password'), 'ccm_alSubmitPasswordForm(\'' . $searchInstance . '\')', 'left', 'primary')?>
+<?php echo $ih->button_js(t('Save Password'), 'ccm_alSubmitPasswordForm(\'' . $searchInstance . '\')', 'left', 'primary')?>
 </div>
 
 </form>
 
-<div class="help-block"><p><?=t('Users who access files through the file manager will not be prompted for a password.')?></p></div>
+<div class="help-block"><p><?php echo t('Users who access files through the file manager will not be prompted for a password.')?></p></div>
 
 </div>
 
@@ -79,24 +79,24 @@ if ($_POST['task'] == 'set_location') {
 
 <br/>
 
-<h4><?=t('Choose File Storage Location')?></h4>
+<h4><?php echo t('Choose File Storage Location')?></h4>
 
-<form method="post" id="ccm-<?=$searchInstance?>-storage-form" action="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/files/permissions/">
-<div class="help-block"><p><?=t('All versions of a file will be moved to the selected location.')?></p></div>
+<form method="post" id="ccm-<?php echo $searchInstance?>-storage-form" action="<?php echo REL_DIR_FILES_TOOLS_REQUIRED?>/files/permissions/">
+<div class="help-block"><p><?php echo t('All versions of a file will be moved to the selected location.')?></p></div>
 
-<?=$form->hidden('task', 'set_location')?>
-<?=$form->hidden('fID', $f->getFileID())?>
-<label class="radio"><?=$form->radio('fslID', 0, $f->getStorageLocationID()) ?> <?=t('Default Location')?> (<?=DIR_FILES_UPLOADED?>)</label>
+<?php echo $form->hidden('task', 'set_location')?>
+<?php echo $form->hidden('fID', $f->getFileID())?>
+<label class="radio"><?php echo $form->radio('fslID', 0, $f->getStorageLocationID()) ?> <?php echo t('Default Location')?> (<?php echo DIR_FILES_UPLOADED?>)</label>
 
-<?
+<?php
 $fsl = FileStorageLocation::getByID(FileStorageLocation::ALTERNATE_ID);
 if (is_object($fsl)) { ?>
-	<label class="radio"><?=$form->radio('fslID', FileStorageLocation::ALTERNATE_ID, $f->getStorageLocationID()) ?> <?=$fsl->getName()?> (<?=$fsl->getDirectory()?>)</label>
-<? } ?>
+	<label class="radio"><?php echo $form->radio('fslID', FileStorageLocation::ALTERNATE_ID, $f->getStorageLocationID()) ?> <?php echo $fsl->getName()?> (<?php echo $fsl->getDirectory()?>)</label>
+<?php } ?>
 </form>
 
 <div id="ccm-file-storage-buttons" style="display: none">
-<?=$ih->button_js(t('Save Location'), 'ccm_alSubmitStorageForm(\'' . $searchInstance . '\')', 'left', 'primary')?>
+<?php echo $ih->button_js(t('Save Location'), 'ccm_alSubmitStorageForm(\'' . $searchInstance . '\')', 'left', 'primary')?>
 </div>
 
 
@@ -129,20 +129,20 @@ ccm_filePermissionsSetupButtons = function() {
 var ccm_fpActiveTab;
 
 $(function() {
-<? if (PERMISSIONS_MODEL == 'simple') { ?>
+<?php if (PERMISSIONS_MODEL == 'simple') { ?>
 	ccm_fpActiveTab = "ccm-file-password";
-<? } else { ?>
+<?php } else { ?>
 	ccm_fpActiveTab = "ccm-file-permissions-advanced";
-<? } ?>
+<?php } ?>
 
 	ccm_filePermissionsSetupButtons();
 	ccm_setupGridStriping('ccmPermissionsTable');
-	$("#ccm-<?=$searchInstance?>-storage-form").submit(function() {
-		ccm_alSubmitStorageForm('<?=$searchInstance?>');
+	$("#ccm-<?php echo $searchInstance?>-storage-form").submit(function() {
+		ccm_alSubmitStorageForm('<?php echo $searchInstance?>');
 		return false;
 	});
-	$("#ccm-<?=$searchInstance?>-password-form").submit(function() {
-		ccm_alSubmitPasswordForm('<?=$searchInstance?>');
+	$("#ccm-<?php echo $searchInstance?>-password-form").submit(function() {
+		ccm_alSubmitPasswordForm('<?php echo $searchInstance?>');
 		return false;
 	});
 });

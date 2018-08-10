@@ -1,4 +1,4 @@
-<?
+<?php
 
 defined('C5_EXECUTE') or die("Access Denied.");
 
@@ -24,7 +24,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
  * @license    http://www.concrete5.org/license/     MIT License
  *
  */
-class Concrete5_Model_CollectionType extends Object
+class Concrete5_Model_CollectionType extends ConcreteObject
 {
 
     public $ctID;
@@ -336,7 +336,7 @@ class Concrete5_Model_CollectionType extends Object
             $dh = Loader::helper('date');
             $cDate = $dh->getSystemDateTime();
             $data['ctID'] = $ctID;
-            $cobj = Collection::add($data);
+            $cobj = Collection::addCollection($data);
             $cID = $cobj->getCollectionID();
 
             $mcName = ($data['cName']) ? $data['cName'] : "MC: {$data['ctName']}";

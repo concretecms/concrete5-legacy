@@ -1,4 +1,4 @@
-<?
+<?php
 
 defined('C5_EXECUTE') or die("Access Denied.");
 
@@ -20,7 +20,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
  * @license    http://www.concrete5.org/license/     MIT License
  *
  */
-	class Concrete5_Library_View extends Object {
+	class Concrete5_Library_View extends ConcreteObject {
 			
 		/**
 		 * @var string
@@ -257,12 +257,8 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			$items = array_merge($a1, $a2, $a3);
 			
 			//Remove exact string duplicates (items whose string representations are equal)
-			if (version_compare(PHP_VERSION, '5.2.9', '<')) {
-				$items = array_unique($items);
-			} else {
-				// stupid PHP (see http://php.net/array_unique#refsect1-function.array-unique-changelog )
-				$items = array_unique($items, SORT_STRING);
-			}
+			$items = array_unique($items, SORT_STRING);
+
 			return $items;
 		}
 		
@@ -280,12 +276,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			$items = array_merge($a1, $a2, $a3, $a4);
 			
 			//Remove exact string duplicates (items whose string representations are equal)
-			if (version_compare(PHP_VERSION, '5.2.9', '<')) {
-				$items = array_unique($items);
-			} else {
-				// stupid PHP (see http://php.net/array_unique#refsect1-function.array-unique-changelog )
-				$items = array_unique($items, SORT_STRING);
-			}
+			$items = array_unique($items, SORT_STRING);
 			
 			//Also remove items having exact string duplicates in the header
 			$headerItems = $this->getHeaderItems();
@@ -578,7 +569,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			}
 			
 			if ($task != null) {
-				if (ENABLE_LEGACY_CONTROLLER_URLS) {
+				if (defined('ENABLE_LEGACY_CONTROLLER_URLS') && ENABLE_LEGACY_CONTROLLER_URLS) {
 					$_action .= '-/' . $task;
 				} else {
 					$_action .= $task;			

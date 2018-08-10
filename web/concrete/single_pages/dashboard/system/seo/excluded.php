@@ -5,15 +5,15 @@ echo Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Excl
 <form method="post" id="url-form" action="<?php echo $this->action('save')?>">
 	<div class="ccm-pane-body">
 		<div class="control-group">
-			<textarea style='width:100%;height:100px' name='SEO_EXCLUDE_WORDS'><?=$SEO_EXCLUDE_WORDS?></textarea>
+			<textarea style='width:100%;height:100px' name='SEO_EXCLUDE_WORDS'><?php echo $SEO_EXCLUDE_WORDS?></textarea>
 		</div>
-		<div class="alert alert-info"><?=t('Separate reserved words with a comma. These words will be automatically removed from URL slugs. To remove no words from URLs, delete all the words above.')?></div>
+		<div class="alert alert-info"><?php echo t('Separate reserved words with a comma. These words will be automatically removed from URL slugs. To remove no words from URLs, delete all the words above.')?></div>
 
 	</div>
 	<div class="ccm-pane-footer">
-	<? if (count($SEO_EXCLUDE_WORDS_ORIGINAL_ARRAY) != count($SEO_EXCLUDE_WORDS_ARRAY) || !$SEO_EXCLUDE_WORDS) { ?>
-		<a href="<?=$this->action('reset')?>" class="btn pull-left"><?=t('Reset To Default')?></a>
-	<? } ?>
+	<?php if (count($SEO_EXCLUDE_WORDS_ORIGINAL_ARRAY) != count($SEO_EXCLUDE_WORDS_ARRAY) || !$SEO_EXCLUDE_WORDS) { ?>
+		<a href="<?php echo $this->action('reset')?>" class="btn pull-left"><?php echo t('Reset To Default')?></a>
+	<?php } ?>
 		<?php echo $interface->submit(t('Save'), null, 'right', 'primary');?>
 	</div>
 </form>

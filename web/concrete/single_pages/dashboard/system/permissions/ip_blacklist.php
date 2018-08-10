@@ -1,9 +1,9 @@
-<? defined('C5_EXECUTE') or die("Access Denied.");
+<?php defined('C5_EXECUTE') or die("Access Denied.");
 /* @var $h ConcreteDashboardHelper */
 $h = Loader::helper('concrete/dashboard');?>
 <form method="post" id="ipblacklist-form" action="<?php echo $this->action('update_ipblacklist')?>">
 	<?php echo $this->controller->token->output('update_ipblacklist')?>
-	<?=$h->getDashboardPaneHeaderWrapper(t('IP Address Blacklist'), false, 'span10 offset1', false);?>
+	<?php echo $h->getDashboardPaneHeaderWrapper(t('IP Address Blacklist'), false, 'span10 offset1', false);?>
 	<div class="ccm-pane-body">
 			
 			<h3><?php echo t('Smart IP Banning')?></h3>

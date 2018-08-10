@@ -1,4 +1,4 @@
-<?
+<?php
 	defined('C5_EXECUTE') or die("Access Denied.");
 /**
  * The controller for the Dashboard App Status block. It is added to the dashboard news page/overlay and handles display of available updates.

@@ -1,5 +1,5 @@
 
-<? 
+<?php 
 defined('C5_EXECUTE') or die("Access Denied.");
 $al = Loader::helper('concrete/asset_library');
 $bf = null;
@@ -9,30 +9,30 @@ if ($controller->getFileID() > 0) {
 ?>
 
 <div class="clearfix">
-<?=$form->label('ccm-b-file', t('Flash File'))?>
+<?php echo $form->label('ccm-b-file', t('Flash File'))?>
 <div class="input">
-<?=$al->file('ccm-b-file', 'fID', t('Choose File'), $bf);?>
+<?php echo $al->file('ccm-b-file', 'fID', t('Choose File'), $bf);?>
 
 </div>
 </div>
 
 <div class="clearfix">
-<?=$form->label('quality', t('Quality'))?>
+<?php echo $form->label('quality', t('Quality'))?>
 <div class="input">
 <select name="quality" class="span2">
-	<option value="low" <?=($quality == "low"?"selected=\"selected\"":"")?>><?=t('low')?></option>
-    <option value="autolow" <?=($quality == "autolow"?"selected=\"selected\"":"")?>><?=t('autolow')?></option>
-    <option value="autohigh" <?=($quality == "autohigh"?"selected=\"selected\"":"")?>><?=t('autohigh')?></option>
-    <option value="medium" <?=($quality == "medium"?"selected=\"selected\"":"")?>><?=t('medium')?></option>
-    <option value="high" <?=($quality == "high"?"selected=\"selected\"":"")?>><?=t('high')?></option>
-    <option value="best" <?=($quality == "best"?"selected=\"selected\"":"")?>><?=t('best')?></option>
+	<option value="low" <?php echo ($quality == "low"?"selected=\"selected\"":"")?>><?php echo t('low')?></option>
+    <option value="autolow" <?php echo ($quality == "autolow"?"selected=\"selected\"":"")?>><?php echo t('autolow')?></option>
+    <option value="autohigh" <?php echo ($quality == "autohigh"?"selected=\"selected\"":"")?>><?php echo t('autohigh')?></option>
+    <option value="medium" <?php echo ($quality == "medium"?"selected=\"selected\"":"")?>><?php echo t('medium')?></option>
+    <option value="high" <?php echo ($quality == "high"?"selected=\"selected\"":"")?>><?php echo t('high')?></option>
+    <option value="best" <?php echo ($quality == "best"?"selected=\"selected\"":"")?>><?php echo t('best')?></option>
 </select>
 </div>
 </div>
 
 <div class="clearfix">
-<?=$form->label('minVersion', t('Minimum Version'))?>
+<?php echo $form->label('minVersion', t('Minimum Version'))?>
 <div class="input">
-	<input type="text" name="minVersion" value="<?=$minVersion?>" class="span3"/>
+	<input type="text" name="minVersion" value="<?php echo $minVersion?>" class="span3"/>
 </div>
 </div>

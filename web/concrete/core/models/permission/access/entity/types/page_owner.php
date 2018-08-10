@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 
 class Concrete5_Model_PageOwnerPermissionAccessEntity extends PermissionAccessEntity {
@@ -12,11 +12,12 @@ class Concrete5_Model_PageOwnerPermissionAccessEntity extends PermissionAccessEn
 			$a = $pae->getPermissionObject()->getBlockAreaObject();
 			$c = $a->getAreaCollectionObject();
 		}
+		$users = array();
 		if (is_object($c) && ($c instanceof Page)) {
 			$ui = UserInfo::getByID($c->getCollectionUserID());
-			$users = array($ui);
-			return $users;
+			$users[] = $ui;
 		}
+		return $users;
 	}
 
 	public function validate(PermissionAccess $pae) {

@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 
 /**
@@ -71,9 +71,11 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			self::$sets[$this->identifier][$key] = $value;		
 		}
 		
-		public function get($key, $defaultValue = null) {
-			if (isset(BlockController::$sets[$this->identifier][$key])) {
-				return BlockController::$sets[$this->identifier][$key];
+		public function get($key = null, $defaultValue = null) {
+			if ($key !== null) {
+				if (isset(BlockController::$sets[$this->identifier][$key])) {
+					return BlockController::$sets[$this->identifier][$key];
+				}
 			}
 			
 			return parent::get($key, $defaultValue);
@@ -464,7 +466,9 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			parent::addHeaderItem($file);
 		}
 		
-		public function setupAndRun($method) {
+		public function setupAndRun(/* Removed for LSP $method */) {
+			$func_args = func_get_args();
+			$method = isset($func_args[0]) ? $func_args[0] : null;
 			if ($method) {
 				$this->task = $method;
 			}

@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 /**
  * @package Workflow
@@ -7,7 +7,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
  * @license    http://www.concrete5.org/license/     MIT License
  *
  */
-abstract class Concrete5_Model_WorkflowProgress extends Object {  
+abstract class Concrete5_Model_WorkflowProgress extends ConcreteObject {  
 
 	protected $wpID;
 	protected $wpDateAdded;
@@ -79,11 +79,23 @@ abstract class Concrete5_Model_WorkflowProgress extends Object {
 			}
 		}
 	}
-	
+
+	public static function __callStatic($name, $arguments) {
+		switch (strtolower($name)) {
+			case 'add':
+				return static::addWorkflowProgress(
+					isset($arguments[0]) ? $arguments[0] : null,
+					isset($arguments[1]) ? $arguments[1] : null,
+					isset($arguments[2]) ? $arguments[2] : null
+				);
+		}
+		trigger_error('Call to undefined static method '.__CLASS__.'::' . $name . '()', E_USER_ERROR);
+	}
+
 	/** 
 	 * Creates a WorkflowProgress object (which will be assigned to a Page, File, etc... in our system.
 	 */
-	public static function add($wpCategoryHandle, Workflow $wf, WorkflowRequest $wr) {
+	public static function addWorkflowProgress($wpCategoryHandle, Workflow $wf, WorkflowRequest $wr) {
 		$db = Loader::db();
 		$wpDateAdded = Loader::helper('date')->getLocalDateTime();
 		$wpCategoryID = $db->GetOne('select wpCategoryID from WorkflowProgressCategories where wpCategoryHandle = ?', array($wpCategoryHandle));

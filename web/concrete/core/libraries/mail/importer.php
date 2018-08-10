@@ -9,7 +9,7 @@
  *
  */
 
-class Concrete5_Library_MailImporter extends Object {
+class Concrete5_Library_MailImporter extends ConcreteObject {
 
 	/**
 	 * gets the text string that's used to identify the body of the message

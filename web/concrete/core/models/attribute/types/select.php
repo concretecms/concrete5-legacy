@@ -78,7 +78,7 @@ class Concrete5_Controller_AttributeType_Select extends AttributeTypeController 
 		return $akey;
 	}
 
-	public function exportValue($akn) {
+	public function exportValue(SimpleXMLElement $akn) {
 		$xh = Loader::helper('xml');
 		$list = $this->getSelectedOptions();
 		if ($list->count() > 0) {
@@ -545,7 +545,7 @@ class Concrete5_Controller_AttributeType_Select extends AttributeTypeController 
 
 }
 
-class Concrete5_Model_SelectAttributeTypeOption extends Object {
+class Concrete5_Model_SelectAttributeTypeOption extends ConcreteObject {
 
 	public function __construct($ID, $value, $displayOrder, $usageCount = false) {
 		$this->ID = $ID;
@@ -645,7 +645,7 @@ class Concrete5_Model_SelectAttributeTypeOption extends Object {
 
 }
 
-class Concrete5_Model_SelectAttributeTypeOptionList extends Object implements Iterator {
+class Concrete5_Model_SelectAttributeTypeOptionList extends ConcreteObject implements Iterator {
 
 	private $options = array();
 

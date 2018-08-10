@@ -1,6 +1,6 @@
-<?
+<?php
 
-class Concrete5_Model_SystemNotification extends Object {
+class Concrete5_Model_SystemNotification extends ConcreteObject {
 
 	const SN_TYPE_CORE_UPDATE = 10;
 	const SN_TYPE_CORE_UPDATE_CRITICAL = 80;

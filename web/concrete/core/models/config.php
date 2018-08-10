@@ -23,14 +23,14 @@ defined('C5_EXECUTE') or die("Access Denied.");
  *
  */
 
-class Concrete5_Model_ConfigValue extends Object {
+class Concrete5_Model_ConfigValue extends ConcreteObject {
 	
 	public $value;
 	public $timestamp; // datetime value was set
 	public $key;
 }
 
-class Concrete5_Model_Config extends Object {
+class Concrete5_Model_Config extends ConcreteObject {
 	protected $pkg = false;
 	protected static $store;
 	

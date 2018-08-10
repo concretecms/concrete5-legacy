@@ -1,57 +1,57 @@
-<? defined('C5_EXECUTE') or die("Access Denied."); ?>
+<?php defined('C5_EXECUTE') or die("Access Denied."); ?>
 
-<? if (isset($error)) { ?>
-	<?=$error?><br/><br/>
-<? } ?>
+<?php if (isset($error)) { ?>
+	<?php echo $error?><br/><br/>
+<?php } ?>
 
-<form action="<?=$this->url( $resultTargetURL )?>" method="get" class="ccm-search-block-form">
+<form action="<?php echo $this->url( $resultTargetURL )?>" method="get" class="ccm-search-block-form">
 
-	<? if( strlen($title)>0){ ?><h3><?=$title?></h3><? } ?>
+	<?php if( strlen($title)>0){ ?><h3><?php echo $title?></h3><?php } ?>
 	
-	<? if(strlen($query)==0){ ?>
-	<input name="search_paths[]" type="hidden" value="<?=htmlentities($baseSearchPath, ENT_COMPAT, APP_CHARSET) ?>" />
-	<? } else if (is_array($_REQUEST['search_paths'])) { 
+	<?php if(strlen($query)==0){ ?>
+	<input name="search_paths[]" type="hidden" value="<?php echo htmlentities($baseSearchPath, ENT_COMPAT, APP_CHARSET) ?>" />
+	<?php } else if (is_array($_REQUEST['search_paths'])) { 
 		foreach($_REQUEST['search_paths'] as $search_path){ ?>
-			<input name="search_paths[]" type="hidden" value="<?=htmlentities($search_path, ENT_COMPAT, APP_CHARSET) ?>" />
-	<?  }
+			<input name="search_paths[]" type="hidden" value="<?php echo htmlentities($search_path, ENT_COMPAT, APP_CHARSET) ?>" />
+	<?php  }
 	} ?>
 	
-	<input name="query" type="text" value="<?=htmlentities($query, ENT_COMPAT, APP_CHARSET)?>" class="ccm-search-block-text" />
+	<input name="query" type="text" value="<?php echo htmlentities($query, ENT_COMPAT, APP_CHARSET)?>" class="ccm-search-block-text" />
 	
-	<input name="submit" type="submit" value="<?=$buttonText?>" class="ccm-search-block-submit" />
+	<input name="submit" type="submit" value="<?php echo $buttonText?>" class="ccm-search-block-submit" />
 
-<? 
+<?php 
 $tt = Loader::helper('text');
 if ($do_search) {
 	if(count($results)==0){ ?>
-		<h4 style="margin-top:32px"><?=t('There were no results found. Please try another keyword or phrase.')?></h4>	
-	<? }else{ ?>
+		<h4 style="margin-top:32px"><?php echo t('There were no results found. Please try another keyword or phrase.')?></h4>	
+	<?php }else{ ?>
 		<div id="searchResults">
-		<? foreach($results as $r) { 
+		<?php foreach($results as $r) { 
 			$currentPageBody = $this->controller->highlightedExtendedMarkup($r->getBodyContent(), $query);?>
 			<div class="searchResult">
-				<h3><a href="<?=$r->getPath()?>"><?=$r->getName()?></a></h3>
+				<h3><a href="<?php echo $r->getPath()?>"><?php echo $r->getName()?></a></h3>
 				<p>
-					<? if ($r->getDescription()) { ?>
+					<?php if ($r->getDescription()) { ?>
 						<?php  echo $this->controller->highlightedMarkup($tt->shortText($r->getDescription()),$query)?><br/>
-					<? } ?>
+					<?php } ?>
 					<?php echo $currentPageBody; ?>
 					<a href="<?php  echo $r->getPath(); ?>" class="pageLink"><?php  echo $this->controller->highlightedMarkup(rawurldecode($r->getPath()),$query)?></a>
 				</p>
 			</div>
-		<? 	}//foreach search result ?>
+		<?php 	}//foreach search result ?>
 		</div>
 		
-		<?
+		<?php
 		if($paginator && strlen($paginator->getPages())>0){ ?>	
 		<div class="ccm-pagination">	
-			 <span class="ccm-page-left"><?=$paginator->getPrevious()?></span>
-			 <?=$paginator->getPages()?>
-			 <span class="ccm-page-right"><?=$paginator->getNext()?></span>
+			 <span class="ccm-page-left"><?php echo $paginator->getPrevious()?></span>
+			 <?php echo $paginator->getPages()?>
+			 <span class="ccm-page-right"><?php echo $paginator->getNext()?></span>
 		</div>	
-		<? } ?>
+		<?php } ?>
 
-	<?				
+	<?php				
 	} //results found
 } 
 ?>

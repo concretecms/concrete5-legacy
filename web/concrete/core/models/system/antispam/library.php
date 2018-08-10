@@ -1,6 +1,6 @@
-<?
+<?php
 
-class Concrete5_Model_SystemAntispamLibrary extends Object {
+class Concrete5_Model_SystemAntispamLibrary extends ConcreteObject {
 
 	public function getSystemAntispamLibraryHandle() { return $this->saslHandle;}
 	public function getSystemAntispamLibraryName() { return $this->saslName;}

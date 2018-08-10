@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 
 class Concrete5_Controller_AttributeType_Default extends AttributeTypeController  {

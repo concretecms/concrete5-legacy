@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 global $c;
 Loader::model('collection_types');
@@ -20,15 +20,15 @@ if ($_REQUEST['approveImmediately'] == 1) {
 }
 ?>
 <div class="ccm-pane-controls ccm-ui">
-<? if ($approveImmediately) { ?>
+<?php if ($approveImmediately) { ?>
 	<div class="alert-message block-message notice">
-		<?=t("Note: Since you haven't checked this page out for editing, these changes will immediately be approved.")?>
+		<?php echo t("Note: Since you haven't checked this page out for editing, these changes will immediately be approved.")?>
 	</div>
-<? } ?>
+<?php } ?>
 
-<form method="post" name="permissionForm" id="ccmMetadataForm" action="<?=$c->getCollectionAction()?>">
-<input type="hidden" name="approveImmediately" value="<?=$approveImmediately?>" />
-<input type="hidden" name="rel" value="<?=$_REQUEST['rel']?>" />
+<form method="post" name="permissionForm" id="ccmMetadataForm" action="<?php echo $c->getCollectionAction()?>">
+<input type="hidden" name="approveImmediately" value="<?php echo $approveImmediately?>" />
+<input type="hidden" name="rel" value="<?php echo $_REQUEST['rel']?>" />
 
 	<script type="text/javascript"> 
 		
@@ -78,58 +78,58 @@ if ($_REQUEST['approveImmediately'] == 1) {
 	<div id="ccm-required-meta"></div>
 	
 	
-	<? if (!$c->isMasterCollection()) { ?>
+	<?php if (!$c->isMasterCollection()) { ?>
 	<ul class="nav-tabs nav" id="ccm-properties-tabs">
-		<li class="active"><a href="javascript:void(0)" id="ccm-properties-standard"><?=t('Standard Properties')?></a></li>
-		<li><a href="javascript:void(0)" id="ccm-properties-custom"><?=t('Custom Attributes')?></a></li>
-		<li <? if ($c->isMasterCollection() || !$asl->allowEditPaths()) { ?>style="display: none"<? } ?>><a href="javascript:void(0)" id="ccm-page-paths"><?=t('Page Paths and Location')?></a></li>
+		<li class="active"><a href="javascript:void(0)" id="ccm-properties-standard"><?php echo t('Standard Properties')?></a></li>
+		<li><a href="javascript:void(0)" id="ccm-properties-custom"><?php echo t('Custom Attributes')?></a></li>
+		<li <?php if ($c->isMasterCollection() || !$asl->allowEditPaths()) { ?>style="display: none"<?php } ?>><a href="javascript:void(0)" id="ccm-page-paths"><?php echo t('Page Paths and Location')?></a></li>
 	</ul>
-	<? } ?>
+	<?php } ?>
 
-	<div id="ccm-properties-standard-tab" <? if ($c->isMasterCollection()) { ?>style="display: none" <? } ?>>
+	<div id="ccm-properties-standard-tab" <?php if ($c->isMasterCollection()) { ?>style="display: none" <?php } ?>>
 	
-	<? if ($asl->allowEditName()) { ?>
+	<?php if ($asl->allowEditName()) { ?>
 	<div class="clearfix">
-		<label for="cName"><?=t('Name')?></label>
-		<div class="input"><input type="text" id="cName" name="cName" value="<?=htmlentities( $c->getCollectionName(), ENT_QUOTES, APP_CHARSET) ?>" />
-			<span class="help-inline"><?=t("Page ID: %s", $c->getCollectionID())?></span>
+		<label for="cName"><?php echo t('Name')?></label>
+		<div class="input"><input type="text" id="cName" name="cName" value="<?php echo htmlentities( $c->getCollectionName(), ENT_QUOTES, APP_CHARSET) ?>" />
+			<span class="help-inline"><?php echo t("Page ID: %s", $c->getCollectionID())?></span>
 		</div>
 	</div>
-	<? } ?>
+	<?php } ?>
 
-	<? if ($asl->allowEditDateTime()) { ?>
+	<?php if ($asl->allowEditDateTime()) { ?>
 	<div class="clearfix">
-		<label for="cDatePublic"><?=t('Public Date/Time')?></label>
-		<div class="input"><? print $dt->datetime('cDatePublic', $c->getCollectionDatePublic(null, 'user')); ?></div>
+		<label for="cDatePublic"><?php echo t('Public Date/Time')?></label>
+		<div class="input"><?php print $dt->datetime('cDatePublic', $c->getCollectionDatePublic(null, 'user')); ?></div>
 	</div>
-	<? } ?>
+	<?php } ?>
 	
-	<? if ($asl->allowEditUserID()) { ?>
+	<?php if ($asl->allowEditUserID()) { ?>
 	<div class="clearfix">
-	<label><?=t('Owner')?></label>
+	<label><?php echo t('Owner')?></label>
 	<div class="input">
-		<? 
+		<?php 
 		print $uh->selectUser('uID', $c->getCollectionUserID());
 		?>
 	</div>
 	</div>
-	<? } ?>
+	<?php } ?>
 	
 
-	<? if ($asl->allowEditDescription()) { ?>
+	<?php if ($asl->allowEditDescription()) { ?>
 	<div class="clearfix">
-	<label for="cDescription"><?=t('Description')?></label>
-	<div class="input"><textarea id="cDescription" name="cDescription" class="ccm-input-text" style="width: 495px; height: 50px"><?=h($c->getCollectionDescription())?></textarea></div>
+	<label for="cDescription"><?php echo t('Description')?></label>
+	<div class="input"><textarea id="cDescription" name="cDescription" class="ccm-input-text" style="width: 495px; height: 50px"><?php echo h($c->getCollectionDescription())?></textarea></div>
 	</div>
-	<? } ?>
+	<?php } ?>
 	
 	</div>
 	
-	<? if ($asl->allowEditPaths()) { ?>
+	<?php if ($asl->allowEditPaths()) { ?>
 	<div id="ccm-page-paths-tab" style="display: none">
 		<?php if ($c->getCollectionID() != 1) { ?>
 		<div class="clearfix">
-		<label for="cHandle"><?= t('Canonical URL')?></label>
+		<label for="cHandle"><?php echo t('Canonical URL')?></label>
 		<div class="input">
 		<?  if (!$c->isGeneratedCollection()) { ?>
 			<? echo BASE_URL . DIR_REL;?><?  if (URL_REWRITING == false) { ?>/<? echo DISPATCHER_FILENAME?><?  } ?><? 
@@ -145,7 +145,7 @@ if ($_REQUEST['approveImmediately'] == 1) {
 		
 		<?php if (!$c->isGeneratedCollection()) { ?>
 		<div class="clearfix" id="ccm-more-page-paths">
-			<label><?= t('More URLs') ?></label>
+			<label><?php echo t('More URLs') ?></label>
 
 			<?php
 				$paths = $c->getPagePaths();
@@ -161,12 +161,12 @@ if ($_REQUEST['approveImmediately'] == 1) {
 			?>
 		    <div class="input ccm-meta-path">
 	     		<input type="text" name="ppURL-add-0" class="ccm-input-text" value="" id="ppID-add-0">
-		 		<a href="javascript:void(0)" class="ccm-meta-path-add"><?=t('Add Path')?></a>
+		 		<a href="javascript:void(0)" class="ccm-meta-path-add"><?php echo t('Add Path')?></a>
 			</div>
 
 		</div>
 			<div class="input">
-		 		<p><?=t('Note: Additional page paths are not versioned. They will be available immediately.')?></p>
+		 		<p><?php echo t('Note: Additional page paths are not versioned. They will be available immediately.')?></p>
 			</div>			
 
 		<?php } ?>
@@ -176,11 +176,11 @@ if ($_REQUEST['approveImmediately'] == 1) {
 	<style type="text/css">
 	#ccm-more-page-paths div.input {margin-bottom: 10px;}
 	</style>
-	<? } ?>
+	<?php } ?>
 	
 	
-	<div id="ccm-properties-custom-tab" <? if (!$c->isMasterCollection()) { ?>style="display: none" <? } ?>>
-		<? Loader::element('collection_metadata_fields', array('c'=>$c, 'assignment' => $asl) ); ?>
+	<div id="ccm-properties-custom-tab" <?php if (!$c->isMasterCollection()) { ?>style="display: none" <?php } ?>>
+		<?php Loader::element('collection_metadata_fields', array('c'=>$c, 'assignment' => $asl) ); ?>
 	</div>
 
 	
@@ -190,6 +190,6 @@ if ($_REQUEST['approveImmediately'] == 1) {
 </form>
 </div>
 	<div class="dialog-buttons">
-	<a href="javascript:void(0)" onclick="jQuery.fn.dialog.closeTop();" class="ccm-button-left btn"><?=t('Cancel')?></a>
-	<a href="javascript:void(0)" class="btn primary ccm-button-right" onclick="$('#ccmMetadataForm').submit()"><?=t('Save')?></a>
+	<a href="javascript:void(0)" onclick="jQuery.fn.dialog.closeTop();" class="ccm-button-left btn"><?php echo t('Cancel')?></a>
+	<a href="javascript:void(0)" class="btn primary ccm-button-right" onclick="$('#ccmMetadataForm').submit()"><?php echo t('Save')?></a>
 	</div>

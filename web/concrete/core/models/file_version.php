@@ -1,6 +1,6 @@
-<?
+<?php
 
-class Concrete5_Model_FileVersion extends Object {
+class Concrete5_Model_FileVersion extends ConcreteObject {
 
 	protected $numThumbnailLevels = 3;
 	protected $attributes = array();
@@ -296,6 +296,7 @@ class Concrete5_Model_FileVersion extends Object {
 		$this->fvFilename = $filename;
 		$this->fvPrefix = $prefix;
 
+		Events::fire('on_file_version_replaced', $this);
 		$fo = $this->getFile();
 		$fo->refreshCache();
 	}

@@ -1,4 +1,4 @@
-<?
+<?php
 
 abstract class Concrete5_Model_SystemCaptchaTypeController {
 

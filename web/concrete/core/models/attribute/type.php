@@ -1,6 +1,6 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
-class Concrete5_Model_AttributeType extends Object {
+class Concrete5_Model_AttributeType extends ConcreteObject {
 
 	public function getAttributeTypeID() {return $this->atID;}
 	public function getAttributeTypeHandle() {return $this->atHandle;}
@@ -37,9 +37,11 @@ class Concrete5_Model_AttributeType extends Object {
 		unset($this->controller);
 	}
 	
-	public static function getList($akCategoryHandle = false) {
+	public static function getList(/* Removed for LSP compatibility $akCategoryHandle = false */) {
 		$db = Loader::db();
 		$list = array();
+		$func_args = func_get_args();
+		$akCategoryHandle = isset($func_args[0]) ? $func_args[0] : false;
 		if ($akCategoryHandle == false) {
 			$r = $db->Execute('select atID from AttributeTypes order by atID asc');
 		} else {

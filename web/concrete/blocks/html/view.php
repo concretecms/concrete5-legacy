@@ -1,5 +1,5 @@
-<? defined('C5_EXECUTE') or die("Access Denied."); ?>
+<?php defined('C5_EXECUTE') or die("Access Denied."); ?>
 
-<div id="HTMLBlock<?=intval($bID)?>" class="HTMLBlock">
-<?=$content; ?>
+<div id="HTMLBlock<?php echo intval($bID)?>" class="HTMLBlock">
+<?php echo $content; ?>
 </div>

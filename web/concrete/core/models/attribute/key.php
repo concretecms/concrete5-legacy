@@ -1,7 +1,25 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
-class Concrete5_Model_AttributeKey extends Object {
-	
+class Concrete5_Model_AttributeKey extends ConcreteObject {
+
+	public static function __callStatic($name, $arguments) {
+		switch (strtolower($name)) {
+			case 'getlist':
+				return static::getCategoryList(
+					isset($arguments[0]) ? $arguments[0] : null,
+					isset($arguments[1]) ? $arguments[1] : array()
+				);
+			case 'add':
+				return static::addAttributeKey(
+					$arguments[0], // $akCategoryHandle
+					$arguments[1], // $type
+					$arguments[2], // $args
+					isset($arguments[3]) ? $arguments[3] : false // $pkg
+				);
+		}
+		trigger_error('Call to undefined static method '.__CLASS__.'::' . $name . '()', E_USER_ERROR);
+	}
+
 	public function getIndexedSearchTable() {return false;}
 	public function getSearchIndexFieldDefinition() {
 		return $this->searchIndexFieldDefinition;
@@ -122,7 +140,7 @@ class Concrete5_Model_AttributeKey extends Object {
 	/** 
 	 * Returns a list of all attributes of this category
 	 */
-	public static function getList($akCategoryHandle, $filters = array()) {
+	public static function getCategoryList($akCategoryHandle, $filters = array()) {
 		$db = Loader::db();
 		$pkgHandle = $db->GetOne('select pkgHandle from AttributeKeyCategories inner join Packages on Packages.pkgID = AttributeKeyCategories.pkgID where akCategoryHandle = ?', array($akCategoryHandle));
 		$q = 'SELECT k.akID, s.asID, s.asDisplayOrder, sk.displayOrder'
@@ -152,13 +170,19 @@ class Concrete5_Model_AttributeKey extends Object {
 		$r->Close();
 		return $list;
 	}
-	
-	public function export($axml, $exporttype = 'full') {
+
+	public function export($axml/* Removed from definition because of LSP , $exporttype = 'full'*/) {
 		$type = $this->getAttributeType()->getAttributeTypeHandle();
 		$category = AttributeKeyCategory::getByID($this->akCategoryID)->getAttributeKeyCategoryHandle();
 		$akey = $axml->addChild('attributekey');
 		$akey->addAttribute('handle',$this->getAttributeKeyHandle());
-		
+		$exporttype = 'full';
+		if (func_num_args() > 1) {
+			$funcArgs = func_get_args();
+			$exporttype = $funcArgs[1];
+		} else {
+			$exporttype = 'full';
+		}
 		if ($exporttype == 'full') { 
 			$akey->addAttribute('name', $this->getAttributeKeyName());
 			$akey->addAttribute('package', $this->getPackageHandle());
@@ -176,7 +200,7 @@ class Concrete5_Model_AttributeKey extends Object {
 		$categories = AttributeKeyCategory::getList();
 		$axml = $xml->addChild('attributekeys');
 		foreach($categories as $cat) {
-			$attributes = AttributeKey::getList($cat->getAttributeKeyCategoryHandle());
+			$attributes = AttributeKey::getCategoryList($cat->getAttributeKeyCategoryHandle());
 			foreach($attributes as $at) {
 				$at->export($axml);
 			}
@@ -232,7 +256,7 @@ class Concrete5_Model_AttributeKey extends Object {
 		$akc = AttributeKeyCategory::getByHandle($akCategoryHandle);
 		$akID = $db->GetOne('select akID from AttributeKeys where akHandle = ? and akCategoryID = ?', array($ak['handle'], $akc->getAttributeKeyCategoryID()));
 		if (!$akID) {
-			$akn = self::add($akCategoryHandle, $type, array('akHandle' => $ak['handle'], 'akName' => $ak['name'], 'akIsInternal' => $akIsInternal, 'akIsSearchableIndexed' => $ak['indexed'], 'akIsSearchable' => $ak['searchable']), $pkg);
+			$akn = self::addAttributeKey($akCategoryHandle, $type, array('akHandle' => $ak['handle'], 'akName' => $ak['name'], 'akIsInternal' => $akIsInternal, 'akIsSearchableIndexed' => $ak['indexed'], 'akIsSearchable' => $ak['searchable']), $pkg);
 			$akn->getController()->importKey($ak);
 		}
 	}
@@ -240,7 +264,7 @@ class Concrete5_Model_AttributeKey extends Object {
 	/** 
 	 * Adds an attribute key. 
 	 */
-	protected function add($akCategoryHandle, $type, $args, $pkg = false) {
+	protected function addAttributeKey($akCategoryHandle, $type, $args, $pkg = false) {
 		
 		$vn = Loader::helper('validation/numbers');
 		$txt = Loader::helper('text');
@@ -403,7 +427,7 @@ class Concrete5_Model_AttributeKey extends Object {
 		$db->Execute('update AttributeKeys set akIsColumnHeader = ? where akID = ?', array($r, $this->getAttributeKeyID()));
 	}
 	
-	public function reindex($tbl, $columnHeaders, $attribs, $rs) {
+	public static function reindex($tbl, $columnHeaders, $attribs, $rs) {
 		$db = Loader::db();
 		$columns = $db->MetaColumns($tbl);
 		

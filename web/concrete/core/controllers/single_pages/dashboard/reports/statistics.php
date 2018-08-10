@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 
 class Concrete5_Controller_Dashboard_Reports_Statistics extends DashboardBaseController {
@@ -51,7 +51,7 @@ class Concrete5_Controller_Dashboard_Reports_Statistics extends DashboardBaseCon
 	}
 	
 	protected function setDownloadStatistics() {
-		$downloads = File::getDownloadStatistics(5);
+		$downloads = File::getGlobalDownloadStatistics(5);
 		$this->set('downloads', $downloads);
 	}
 	

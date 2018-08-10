@@ -1,4 +1,4 @@
-<?
+<?php
 
 defined('C5_EXECUTE') or die("Access Denied.");
 class ConcreteUpgradeVersion563Helper {
@@ -47,7 +47,7 @@ class ConcreteUpgradeVersion563Helper {
 
 		$sp = Page::getByPath('/dashboard/system/mail/method/test_settings');
 		if (!is_object($sp) || $sp->isError()) {
-			$sp = SinglePage::add('/dashboard/system/mail/method/test_settings');
+			$sp = SinglePage::createSinglePage('/dashboard/system/mail/method/test_settings');
 			$sp->update(array('cName'=>t('Test Mail Settings')));
 			$sp->setAttribute('meta_keywords', 'test smtp, test mail');
 		}

@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 $u = new User();
 $form = Loader::helper('form');
@@ -30,16 +30,16 @@ if ($_POST['task'] == 'save_search') {
 
 <div class="ccm-ui">
 
-<h3><?=t('Save Search')?></h3>
+<h3><?php echo t('Save Search')?></h3>
 
-<form id="ccm-<?=$searchInstance?>-save-search-form" method="post" action="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/files/save_search" onsubmit="return ccm_alSaveSearch(this)">
-<?=$form->hidden('task', 'save_search')?>
-<input type="hidden" name="searchInstance" value="<?=$searchInstance?>" />
-<? $ih = Loader::helper('concrete/interface')?>
-<p><?=t('Enter a name for this saved search file set.')?></p>
-<?=$form->text('fsName', array('style' => 'width: 200px'))?>
+<form id="ccm-<?php echo $searchInstance?>-save-search-form" method="post" action="<?php echo REL_DIR_FILES_TOOLS_REQUIRED?>/files/save_search" onsubmit="return ccm_alSaveSearch(this)">
+<?php echo $form->hidden('task', 'save_search')?>
+<input type="hidden" name="searchInstance" value="<?php echo $searchInstance?>" />
+<?php $ih = Loader::helper('concrete/interface')?>
+<p><?php echo t('Enter a name for this saved search file set.')?></p>
+<?php echo $form->text('fsName', array('style' => 'width: 200px'))?>
 
-<?=$ih->submit(t('Save Search'), false, 'left')?>
+<?php echo $ih->submit(t('Save Search'), false, 'left')?>
 
 </form>
 
@@ -48,19 +48,19 @@ if ($_POST['task'] == 'save_search') {
 <script type="text/javascript">
 ccm_alSaveSearch = function(form) {
 	if ($("input[name=fsName]").val() == '') {
-		alert('<?=t("You must enter a valid name")?>');
+		alert('<?php echo t("You must enter a valid name")?>');
 	} else {
 		jQuery.fn.dialog.showLoader();
 		$(form).ajaxSubmit(function(r) { 
 			jQuery.fn.dialog.hideLoader(); 
 			jQuery.fn.dialog.closeTop();
-			if (ccm_alLaunchType['<?=$searchInstance?>'] == 'DASHBOARD') {
-				window.location.href = "<?=View::url('/dashboard/files/search')?>?fssID=" + r;			
+			if (ccm_alLaunchType['<?php echo $searchInstance?>'] == 'DASHBOARD') {
+				window.location.href = "<?php echo View::url('/dashboard/files/search')?>?fssID=" + r;			
 			} else {
-				var url = $("div#ccm-<?=$searchInstance?>-overlay-wrapper input[name=dialogAction]").val() + "&refreshDialog=1&fssID=" + r;
+				var url = $("div#ccm-<?php echo $searchInstance?>-overlay-wrapper input[name=dialogAction]").val() + "&refreshDialog=1&fssID=" + r;
 				$.get(url, function(resp) {
 					jQuery.fn.dialog.hideLoader();
-					$("div#ccm-<?=$searchInstance?>-overlay-wrapper").html(resp);
+					$("div#ccm-<?php echo $searchInstance?>-overlay-wrapper").html(resp);
 				});		
 			}
 		});

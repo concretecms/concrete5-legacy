@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 
 class Concrete5_Controller_Dashboard_Users_Groups extends DashboardBaseController {
@@ -30,7 +30,7 @@ class Concrete5_Controller_Dashboard_Users_Groups extends DashboardBaseControlle
 			}
 		}
 		
-		if (count($error) == 0) {
+		if (!$this->error->has()) {
 			$g->update($gName, $_POST['gDescription']);
 			$cnta = Loader::controller('/dashboard/users/add_group');
 			$cnta->checkExpirationOptions($g);

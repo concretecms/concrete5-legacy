@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 /**
  * @package Workflow
@@ -7,7 +7,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
  * @license    http://www.concrete5.org/license/     MIT License
  *
  */
-abstract class Concrete5_Model_WorkflowRequest extends Object {  
+abstract class Concrete5_Model_WorkflowRequest extends ConcreteObject {  
 	
 	protected $currentWP;
 	protected $uID;
@@ -16,7 +16,15 @@ abstract class Concrete5_Model_WorkflowRequest extends Object {
 	public function __construct($pk) {
 		$this->pkID = $pk->getPermissionKeyID();
 	}
-	
+
+	public function __call($method, $arguments) {
+		switch (strtolower($name)) {
+			case 'trigger':
+				return $this->triggerWorkflowRequest(array_shift($arguments));
+		}
+		trigger_error('Call to undefined method '.__CLASS__.'::' . $name . '()', E_USER_ERROR);
+	}
+
 	public function getWorkflowRequestStatusNum() {
 		return $this->wrStatusNum;
 	}
@@ -70,7 +78,7 @@ abstract class Concrete5_Model_WorkflowRequest extends Object {
 	 * and initiates them
 	 * @return optional WorkflowProgress
 	 */
-	protected function trigger($pk) {
+	protected function triggerWorkflowRequest($pk) {
 		if (!$this->wrID) {
 			$this->save();
 		}

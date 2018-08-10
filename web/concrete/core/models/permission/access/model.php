@@ -1,7 +1,7 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 
-class Concrete5_Model_PermissionAccess extends Object {
+class Concrete5_Model_PermissionAccess extends ConcreteObject {
 	
 	protected $paID;
 	protected $paIDList = array();
@@ -195,7 +195,8 @@ class Concrete5_Model_PermissionAccess extends Object {
 		$db->Execute('delete from PermissionAccessList where peID = ? and paID = ?', array($pe->getAccessEntityID(), $this->getPermissionAccessID()));	
 	}
 	
-	public function save() {}
+	public function save($args) {
+	}
 
 	public static function create(PermissionKey $pk) {
 		$db = Loader::db();

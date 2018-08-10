@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 ?>
 
@@ -16,7 +16,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			<?php echo Loader::helper('validation/token')->output('update_set')?>
 
 		<fieldset>
-			<legend><?=t('Details')?></legend>
+			<legend><?php echo t('Details')?></legend>
 
 			<div class="control-group">
 				<?php echo $form->label('gsName', t('Name'))?>
@@ -36,7 +36,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 
 		<form method="post" action="<?php echo $this->action('delete_set')?>" class="form-vertical">
 		<fieldset>
-			<legend><?=t('Delete Set')?></legend>
+			<legend><?php echo t('Delete Set')?></legend>
 			<div class="control-group">
 			<div class="controls">
 				<p><?php echo t('Warning, this cannot be undone. No attributes will be deleted but they will no longer be grouped together.')?></p>
@@ -60,7 +60,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			<?php echo Loader::helper('validation/token')->output('update_set_groups')?>
 
 		<fieldset>
-			<legend><?=t('Groups')?></legend>
+			<legend><?php echo t('Groups')?></legend>
 			
 	
 			<?php 
@@ -101,10 +101,10 @@ defined('C5_EXECUTE') or die("Access Denied.");
 
 	<?php echo Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper();?>
 
-<? } else { ?>
+<?php } else { ?>
  
 	<?php echo Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Group Sets'), false, 'span10 offset1');?>
-	<? if (PERMISSIONS_MODEL == 'advanced') { ?>
+	<?php if (PERMISSIONS_MODEL == 'advanced') { ?>
 	<form method="post" class="form-horizontal" action="<?php echo $this->action('add_set')?>">
 
 
@@ -125,7 +125,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 
 	<br/>
 	
-	<h3><?=t('Add Set')?></h3>
+	<h3><?php echo t('Add Set')?></h3>
 
 	<?php echo Loader::helper('validation/token')->output('add_set')?>
 	<div class="control-group">
@@ -136,12 +136,12 @@ defined('C5_EXECUTE') or die("Access Denied.");
 	</div>
 
 	<div class="control-group">
-		<label class="control-label"><?=t('Groups')?></label>
+		<label class="control-label"><?php echo t('Groups')?></label>
 		<div class="controls">
-		<? foreach($groups as $g) { ?>
-			<label class="checkbox"><?=$form->checkbox('gID[]', $g->getGroupID())?> <span><?=$g->getGroupDisplayName()?></span></label>
+		<?php foreach($groups as $g) { ?>
+			<label class="checkbox"><?php echo $form->checkbox('gID[]', $g->getGroupID())?> <span><?php echo $g->getGroupDisplayName()?></span></label>
 			
-		<? } ?>
+		<?php } ?>
 		</div>
 	</div>
 	
@@ -153,10 +153,10 @@ defined('C5_EXECUTE') or die("Access Denied.");
 	</div>
 
 	</form>
-	<? } else { ?>
-		<p><?=t('You must enable <a href="%s">advanced permissions</a> to use group sets.', $this->url('/dashboard/system/permissions/advanced'))?></p>
-	<? } ?>
+	<?php } else { ?>
+		<p><?php echo t('You must enable <a href="%s">advanced permissions</a> to use group sets.', $this->url('/dashboard/system/permissions/advanced'))?></p>
+	<?php } ?>
 	
 	<?php echo Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper();?>
 
-<? } ?>
+<?php } ?>

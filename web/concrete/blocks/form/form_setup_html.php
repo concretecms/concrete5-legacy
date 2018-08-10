@@ -18,7 +18,7 @@ $ih = Loader::helper('concrete/interface');
 	
 	<input type="hidden" name="miniSurveyServices" value="<?php echo $uh->getBlockTypeToolsURL($bt)?>/services.php" />
 	
-	<? /* these question ids have been deleted, or edited, and so shouldn't be duplicated for block versioning */ ?>
+	<?php /* these question ids have been deleted, or edited, and so shouldn't be duplicated for block versioning */ ?>
 	<input type="hidden" id="ccm-ignoreQuestionIDs" name="ignoreQuestionIDs" value="" />
 	<input type="hidden" id="ccm-pendingDeleteIDs" name="pendingDeleteIDs" value="" />
 	
@@ -29,54 +29,54 @@ $ih = Loader::helper('concrete/interface');
 			$miniSurveyInfo['surveyName']=$c->getCollectionName();
 		?>
 		<fieldset>
-			<legend><?=t('Options')?></legend>
+			<legend><?php echo t('Options')?></legend>
 			<div class="clearfix">
-				<?=$form->label('surveyName', t('Form Name'))?>
+				<?php echo $form->label('surveyName', t('Form Name'))?>
 				<div class="input">
-					<?=$form->text('surveyName', $miniSurveyInfo['surveyName'])?>
+					<?php echo $form->text('surveyName', $miniSurveyInfo['surveyName'])?>
 				</div>
 			</div>
 			<div class="clearfix">
-				<?=$form->label('thankyouMsg', t('Message to display when completed'))?>
+				<?php echo $form->label('thankyouMsg', t('Message to display when completed'))?>
 				<div class="input">
-					<?=$form->textarea('thankyouMsg', $this->controller->thankyouMsg, array('rows' => 3))?>
+					<?php echo $form->textarea('thankyouMsg', $this->controller->thankyouMsg, array('rows' => 3))?>
 				</div>
 			</div>
 			<div class="clearfix">
-				<?=$form->label('recipientEmail', t('Notify me by email when people submit this form'))?>
+				<?php echo $form->label('recipientEmail', t('Notify me by email when people submit this form'))?>
 				<div class="input">
 					<div class="input-prepend">
 						<label>
 						<span class="add-on" style="z-index: 2000">
-							<?=$form->checkbox('notifyMeOnSubmission', 1, $miniSurveyInfo['notifyMeOnSubmission'] == 1, array('onclick' => "$('input[name=recipientEmail]').focus()"))?>
-						</span><?=$form->text('recipientEmail', $miniSurveyInfo['recipientEmail'], array('style' => 'z-index:2000;' ))?>
+							<?php echo $form->checkbox('notifyMeOnSubmission', 1, $miniSurveyInfo['notifyMeOnSubmission'] == 1, array('onclick' => "$('input[name=recipientEmail]').focus()"))?>
+						</span><?php echo $form->text('recipientEmail', $miniSurveyInfo['recipientEmail'], array('style' => 'z-index:2000;' ))?>
 						</label>
 					</div>
 
-					<span class="help-block"><?=t('(Seperate multiple emails with a comma)')?></span>
+					<span class="help-block"><?php echo t('(Seperate multiple emails with a comma)')?></span>
 				</div>
 			</div>
 			<div class="clearfix">
-				<label><?=t('Solving a <a href="%s" target="_blank">CAPTCHA</a> Required to Post?', 'http://en.wikipedia.org/wiki/Captcha')?></label>
+				<label><?php echo t('Solving a <a href="%s" target="_blank">CAPTCHA</a> Required to Post?', 'http://en.wikipedia.org/wiki/Captcha')?></label>
 				<div class="input">
 					<ul class="inputs-list" id="displayCaptcha">
 						<li>
 							<label>
-								<?=$form->radio('displayCaptcha', 1, (int) $miniSurveyInfo['displayCaptcha'])?>
-								<span><?=t('Yes')?></span>
+								<?php echo $form->radio('displayCaptcha', 1, (int) $miniSurveyInfo['displayCaptcha'])?>
+								<span><?php echo t('Yes')?></span>
 							</label>
 						</li>
 						<li>
 							<label>
-								<?=$form->radio('displayCaptcha', 0, (int) $miniSurveyInfo['displayCaptcha'])?>
-								<span><?=t('No')?></span>
+								<?php echo $form->radio('displayCaptcha', 0, (int) $miniSurveyInfo['displayCaptcha'])?>
+								<span><?php echo t('No')?></span>
 							</label>
 						</li>
 					</ul>
 				</div>
 			</div>
 			<div class="clearfix">
-				<label for="ccm-form-redirect"><?=t('Redirect to another page after form submission?')?></label>
+				<label for="ccm-form-redirect"><?php echo t('Redirect to another page after form submission?')?></label>
 				<div class="input">
 					<div id="ccm-form-redirect-page">
 						<?php
@@ -91,7 +91,7 @@ $ih = Loader::helper('concrete/interface');
 				</div>
 			</div>
 			<div class="clearfix">
-				<label for="ccm-form-fileset"><?=t('Add uploaded files to a set?')?></label>
+				<label for="ccm-form-fileset"><?php echo t('Add uploaded files to a set?')?></label>
 				<div class="input">
 					<div id="ccm-form-fileset">
 						<?php
@@ -121,70 +121,70 @@ $ih = Loader::helper('concrete/interface');
 			<legend id="addNewQuestionTitle"><?php echo t('Add a New Question')?></legend>		
 			
 			<div id="questionAddedMsg" class="alert-message" style="display:none">
-				<?=t('Your question has been added. To view it click the preview tab.')?>
+				<?php echo t('Your question has been added. To view it click the preview tab.')?>
 			</div>
 
 			<div class="clearfix">
-				<?=$form->label('question', t('Question'))?>
+				<?php echo $form->label('question', t('Question'))?>
 				<div class="input">
-					<?=$form->text('question')?>
+					<?php echo $form->text('question')?>
 				</div>
 			</div>
 			<div class="clearfix">
-				<label><?=t('Answer Type')?></label>
+				<label><?php echo t('Answer Type')?></label>
 				<div class="input">
 					<select class="inputs-list span4" name="answerType" id="answerType">
-						<option value="field"><?=t('Text Field')?></option>
-						<option value="text"><?=t('Text Area')?></option>
-						<option value="radios"><?=t('Radio Buttons')?></option>
-						<option value="select"><?=t('Select Box')?></option>
-						<option value="checkboxlist"><?=t('Checkbox List')?></option>
-						<option value="fileupload"><?=t('File Upload')?></option>
-						<option value="email"><?=t('Email Address')?></option>
-						<option value="telephone"><?=t('Telephone')?></option>
-						<option value="url"><?=t('Web Address')?></option>
-						<option value="date"><?=t('Date Field')?></option>
-						<option value="datetime"><?=t('DateTime Field')?></option>
+						<option value="field"><?php echo t('Text Field')?></option>
+						<option value="text"><?php echo t('Text Area')?></option>
+						<option value="radios"><?php echo t('Radio Buttons')?></option>
+						<option value="select"><?php echo t('Select Box')?></option>
+						<option value="checkboxlist"><?php echo t('Checkbox List')?></option>
+						<option value="fileupload"><?php echo t('File Upload')?></option>
+						<option value="email"><?php echo t('Email Address')?></option>
+						<option value="telephone"><?php echo t('Telephone')?></option>
+						<option value="url"><?php echo t('Web Address')?></option>
+						<option value="date"><?php echo t('Date Field')?></option>
+						<option value="datetime"><?php echo t('DateTime Field')?></option>
 					</select>
 				</div>
 			</div>
 			
 			<div id="answerOptionsArea">
 				<div class="clearfix">
-					<?=$form->label('answerOptions', t('Answer Options'))?>
+					<?php echo $form->label('answerOptions', t('Answer Options'))?>
 					<div class="input">
-						<?=$form->textarea('answerOptions', array('rows' => 3))?>
-						<span class="help-block"><?=t('Put each answer options on a new line')?></span>
+						<?php echo $form->textarea('answerOptions', array('rows' => 3))?>
+						<span class="help-block"><?php echo t('Put each answer options on a new line')?></span>
 					</div>
 				</div>
 			</div>
 
 			<div id="answerSettings">
 				<div class="clearfix">
-					<?=$form->label('width', t('Text Area Width'))?>
+					<?php echo $form->label('width', t('Text Area Width'))?>
 					<div class="input">
-						<?=$form->text('width', 50)?>
+						<?php echo $form->text('width', 50)?>
 					</div>
 				</div>
 				<div class="clearfix">
-					<?=$form->label('height', t('Text Area Height'))?>
+					<?php echo $form->label('height', t('Text Area Height'))?>
 					<div class="input">
-						<?=$form->text('height', 3)?>
+						<?php echo $form->text('height', 3)?>
 					</div>
 				</div>
 			</div>
 
 			<div class="clearfix">
-				<label><?=t('Required')?></label>
+				<label><?php echo t('Required')?></label>
 				<div class="input">
 					<ul class="inputs-list" id="required">
 						<li><label>
-							<?=$form->radio('required', 1)?>
-							<span><?=t('Yes')?></span>
+							<?php echo $form->radio('required', 1)?>
+							<span><?php echo t('Yes')?></span>
 						</label></li>
 						<li><label>
-							<?=$form->radio('required', 0)?>
-							<span><?=t('No')?></span>
+							<?php echo $form->radio('required', 0)?>
+							<span><?php echo t('No')?></span>
 						</label></li>
 					</ul>
 				</div>
@@ -202,8 +202,8 @@ $ih = Loader::helper('concrete/interface');
 			<div class="clearfix">
 			<label></label>
 			<div class="input">
-				<?=$ih->button(t('Refresh'), '#', 'left', '', array('style' => 'display:none', 'id' => 'refreshButton'))?>
-				<?=$ih->button(t('Add Question'), '#', '', '', array('id' => 'addQuestion'))?>
+				<?php echo $ih->button(t('Refresh'), '#', 'left', '', array('style' => 'display:none', 'id' => 'refreshButton'))?>
+				<?php echo $ih->button(t('Add Question'), '#', '', '', array('id' => 'addQuestion'))?>
 			</div>
 			</div>
 			
@@ -218,72 +218,72 @@ $ih = Loader::helper('concrete/interface');
 		
 		<div id="editQuestionForm" style="display:none">
 			<fieldset>
-				<legend id="editQuestionTitle"><?=t('Edit Question')?></legend>
+				<legend id="editQuestionTitle"><?php echo t('Edit Question')?></legend>
 				<div class="clearfix">
-					<?=$form->label('question', t('Question'))?>
+					<?php echo $form->label('question', t('Question'))?>
 					<div class="input">
-						<?=$form->text('questionEdit')?>
+						<?php echo $form->text('questionEdit')?>
 					</div>
 				</div>
 
 				<div class="clearfix">
-					<label><?=t('Answer Type')?></label>
+					<label><?php echo t('Answer Type')?></label>
 					<div class="input">
 						<select class="inputs-list span4" name="answerTypeEdit" id="answerTypeEdit">
-							<option value="field"><?=t('Text Field')?></option>
-							<option value="text"><?=t('Text Area')?></option>
-							<option value="radios"><?=t('Radio Buttons')?></option>
-							<option value="select"><?=t('Select Box')?></option>
-							<option value="checkboxlist"><?=t('Checkbox List')?></option>
-							<option value="fileupload"><?=t('File Upload')?></option>
-							<option value="email"><?=t('Email Address')?></option>
-							<option value="telephone"><?=t('Telephone')?></option>
-							<option value="url"><?=t('Web Address')?></option>
-							<option value="date"><?=t('Date Field')?></option>
-							<option value="datetime"><?=t('DateTime Field')?></option>
+							<option value="field"><?php echo t('Text Field')?></option>
+							<option value="text"><?php echo t('Text Area')?></option>
+							<option value="radios"><?php echo t('Radio Buttons')?></option>
+							<option value="select"><?php echo t('Select Box')?></option>
+							<option value="checkboxlist"><?php echo t('Checkbox List')?></option>
+							<option value="fileupload"><?php echo t('File Upload')?></option>
+							<option value="email"><?php echo t('Email Address')?></option>
+							<option value="telephone"><?php echo t('Telephone')?></option>
+							<option value="url"><?php echo t('Web Address')?></option>
+							<option value="date"><?php echo t('Date Field')?></option>
+							<option value="datetime"><?php echo t('DateTime Field')?></option>
 						</select>
 					</div>
 				</div>
 
 				<div id="answerOptionsAreaEdit">
 					<div class="clearfix">
-						<?=$form->label('answerOptionsEdit', t('Answer Options'))?>
+						<?php echo $form->label('answerOptionsEdit', t('Answer Options'))?>
 						<div class="input">
-							<?=$form->textarea('answerOptionsEdit', array('rows' => 3))?>
-							<span class="help-block"><?=t('Put each answer options on a new line')?></span>
+							<?php echo $form->textarea('answerOptionsEdit', array('rows' => 3))?>
+							<span class="help-block"><?php echo t('Put each answer options on a new line')?></span>
 						</div>
 					</div>
 				</div>
 				
 				<div id="answerSettingsEdit">
 					<div class="clearfix">
-						<?=$form->label('widthEdit', t('Text Area Width'))?>
+						<?php echo $form->label('widthEdit', t('Text Area Width'))?>
 						<div class="input">
-							<?=$form->text('widthEdit', 50)?>
+							<?php echo $form->text('widthEdit', 50)?>
 						</div>
 					</div>
 					<div class="clearfix">
-						<?=$form->label('heightEdit', t('Text Area Height'))?>
+						<?php echo $form->label('heightEdit', t('Text Area Height'))?>
 						<div class="input">
-							<?=$form->text('heightEdit', 3)?>
+							<?php echo $form->text('heightEdit', 3)?>
 						</div>
 					</div>
 				</div>
 
 				<div class="clearfix">
-					<label><?=t('Required')?> </label>
+					<label><?php echo t('Required')?> </label>
 					<div class="input">
 						<ul class="inputs-list" id="requiredEdit">
 							<li>
 								<label>
-									<?=$form->radio('requiredEdit', 1)?>
-									<span><?=t('Yes')?></span>
+									<?php echo $form->radio('requiredEdit', 1)?>
+									<span><?php echo t('Yes')?></span>
 								</label>
 							</li>
 							<li>
 								<label>
-									<?=$form->radio('requiredEdit', 0)?>
-									<span><?=t('No')?> </span>
+									<?php echo $form->radio('requiredEdit', 0)?>
+									<span><?php echo t('No')?> </span>
 								</label>
 							</li>
 						</ul>
@@ -301,8 +301,8 @@ $ih = Loader::helper('concrete/interface');
 			<input type="hidden" id="positionEdit" name="position" type="text" value="1000" />
 			
 			<div>
-				<?=$ih->button(t('Cancel'), 'javascript:void(0)', 'left', '', array('id' => 'cancelEditQuestion'))?>
-				<?=$ih->button(t('Save Changes'), 'javascript:void(0)', 'right', 'primary', array('id' => 'editQuestion'))?>
+				<?php echo $ih->button(t('Cancel'), 'javascript:void(0)', 'left', '', array('id' => 'cancelEditQuestion'))?>
+				<?php echo $ih->button(t('Save Changes'), 'javascript:void(0)', 'right', 'primary', array('id' => 'editQuestion'))?>
 			</div>
 		</div>
 	

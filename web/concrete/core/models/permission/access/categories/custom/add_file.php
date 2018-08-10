@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 
 class Concrete5_Model_AddFileFileSetPermissionAccess extends FileSetPermissionAccess {
@@ -38,7 +38,7 @@ class Concrete5_Model_AddFileFileSetPermissionAccess extends FileSetPermissionAc
 	}
 	
 	public function save($args) {
-		parent::save();
+		parent::save($args);
 		$db = Loader::db();
 		$db->Execute('delete from FileSetPermissionFileTypeAccessList where paID = ?', array($this->getPermissionAccessID()));
 		$db->Execute('delete from FileSetPermissionFileTypeAccessListCustom where paID = ?', array($this->getPermissionAccessID()));

@@ -1,10 +1,10 @@
 <fieldset>
-<legend><?=t('Date/Time Options')?></legend>
+<legend><?php echo t('Date/Time Options')?></legend>
 
 <div class="clearfix">
-<?=$form->label('akDateDisplayMode', t('Ask User For'))?>
+<?php echo $form->label('akDateDisplayMode', t('Ask User For'))?>
 <div class="input">
-<? 
+<?php 
 	$akDateDisplayModeOptions = array(
 		'date_time' => t('Both Date and Time'),
 		'date' => t('Date Only'),
@@ -12,7 +12,7 @@
 
 	);
 	?>
-<?=$form->select('akDateDisplayMode', $akDateDisplayModeOptions, $akDateDisplayMode)?>
+<?php echo $form->select('akDateDisplayMode', $akDateDisplayModeOptions, $akDateDisplayMode)?>
 </div>
 </div>
 

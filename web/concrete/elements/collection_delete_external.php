@@ -1,6 +1,6 @@
-<? defined('C5_EXECUTE') or die("Access Denied."); ?>
+<?php defined('C5_EXECUTE') or die("Access Denied."); ?>
 <div class="ccm-ui">
-<? 
+<?php 
 
 Loader::model('collection_attributes');
 Loader::model('collection_types');
@@ -29,36 +29,36 @@ $(function() {
 			if (r != null && r.rel == 'SITEMAP') {
 				jQuery.fn.dialog.hideLoader();
 				jQuery.fn.dialog.closeTop();
-				<? if ($_REQUEST['display_mode'] == 'explore') { ?>
-					ccmSitemapExploreNode('<?=$_REQUEST['instance_id']?>', 'explore', '<?=$_REQUEST['select_mode']?>', resp.cParentID);
-				<? } else { ?>
+				<?php if ($_REQUEST['display_mode'] == 'explore') { ?>
+					ccmSitemapExploreNode('<?php echo $_REQUEST['instance_id']?>', 'explore', '<?php echo $_REQUEST['select_mode']?>', resp.cParentID);
+				<?php } else { ?>
 					deleteBranchFade(r.cID);
-				<? } ?>
+				<?php } ?>
 	 			ccmAlert.hud(ccmi18n_sitemap.deletePageSuccessMsg, 2000, 'delete_small', ccmi18n_sitemap.deletePage);
 			} else {
-				window.location.href = '<?=DIR_REL?>/<?=DISPATCHER_FILENAME?>?cID=' + r.cParentID;
+				window.location.href = '<?php echo DIR_REL?>/<?php echo DISPATCHER_FILENAME?>?cID=' + r.cParentID;
 			}
 		}
 	});
 });
 </script>
 
-	<form class="form-stacked" method="post" id="ccm-delete-external-link-form" action="<?=DIR_REL?>/<?=DISPATCHER_FILENAME?>?cID=<?=$cID?>&<?=Loader::helper('validation/token')->getParameter()?>">		
+	<form class="form-stacked" method="post" id="ccm-delete-external-link-form" action="<?php echo DIR_REL?>/<?php echo DISPATCHER_FILENAME?>?cID=<?php echo $cID?>&<?php echo Loader::helper('validation/token')->getParameter()?>">		
 	
-	<?=t('Remove this alias or external link?')?>
+	<?php echo t('Remove this alias or external link?')?>
 
 	<div class="ccm-buttons dialog-buttons">
-	<input type="button" class="btn" value="<?=t('Cancel')?>" onclick="jQuery.fn.dialog.closeTop()" />
-	<a href="javascript:void(0)" onclick="$('#ccm-delete-external-link-form').submit()" class="btn ccm-button-right accept error"><span><?=('Delete')?></span></a>
+	<input type="button" class="btn" value="<?php echo t('Cancel')?>" onclick="jQuery.fn.dialog.closeTop()" />
+	<a href="javascript:void(0)" onclick="$('#ccm-delete-external-link-form').submit()" class="btn ccm-button-right accept error"><span><?php echo ('Delete')?></span></a>
 	</div>	
-	<input type="hidden" name="display_mode" value="<?=$_REQUEST['display_mode']?>" />
-	<input type="hidden" name="instance_id" value="<?=$_REQUEST['instance_id']?>" />
-	<input type="hidden" name="select_mode" value="<?=$_REQUEST['select_mode']?>" />
+	<input type="hidden" name="display_mode" value="<?php echo $_REQUEST['display_mode']?>" />
+	<input type="hidden" name="instance_id" value="<?php echo $_REQUEST['instance_id']?>" />
+	<input type="hidden" name="select_mode" value="<?php echo $_REQUEST['select_mode']?>" />
 	<input type="hidden" name="ctask" value="remove-alias" />
 	<input type="hidden" name="processCollection" value="1" />
 	<input type="hidden" name="rel" value="SITEMAP" />
 
 
 </form>
-<? } ?>
+<?php } ?>
 </div>

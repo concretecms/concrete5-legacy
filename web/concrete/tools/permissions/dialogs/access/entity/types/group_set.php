@@ -1,4 +1,4 @@
-<?
+<?php
 
 defined('C5_EXECUTE') or die("Access Denied.");
 
@@ -22,32 +22,32 @@ if (!$tp->canAccessGroupSearch()) {
 	?>
 	<div id="ccm-list-wrapper">
 	
-	<? if ($gl->getTotal() > 0) { 
+	<?php if ($gl->getTotal() > 0) { 
 	
 		foreach ($gl->get() as $gs) { ?>
 	
 		<div class="ccm-group">
-			<div style="background-image: url(<?=ASSETS_URL_IMAGES?>/icons/group.png)" class="ccm-group-inner-indiv">
-				<a class="ccm-group-inner-atag" id="g<?=$g['gID']?>" href="javascript:void(0)" onclick="ccm_selectGroupSet(<?=$gs->getGroupSetID()?>)"><?=$gs->getGroupSetDisplayName()?></a>
+			<div style="background-image: url(<?php echo ASSETS_URL_IMAGES?>/icons/group.png)" class="ccm-group-inner-indiv">
+				<a class="ccm-group-inner-atag" id="g<?php echo $g['gID']?>" href="javascript:void(0)" onclick="ccm_selectGroupSet(<?php echo $gs->getGroupSetID()?>)"><?php echo $gs->getGroupSetDisplayName()?></a>
 			</div>
 		</div>
 	
-	<? } ?>
+	<?php } ?>
 	
-	<?
+	<?php
 	
 	} else { ?>
 	
-		<p><?=t('No group sets found.')?></p>
+		<p><?php echo t('No group sets found.')?></p>
 		
-	<? } ?>
+	<?php } ?>
 	
 	</div>
 	
 	<script type="text/javascript">
 	ccm_selectGroupSet = function(gsID) {	
 		$('#ccm-permissions-access-entity-form .btn-group').removeClass('open');
-		$.getJSON('<?=$url?>', {
+		$.getJSON('<?php echo $url?>', {
 			'gsID': gsID
 		}, function(r) {
 			jQuery.fn.dialog.hideLoader();			
@@ -57,4 +57,4 @@ if (!$tp->canAccessGroupSearch()) {
 		});
 	}	
 	</script>
-<? } ?>
+<?php } ?>

@@ -1,7 +1,7 @@
-<?
+<?php
 
 defined('C5_EXECUTE') or die("Access Denied.");
-class Concrete5_Model_FileStorageLocation extends Object {
+class Concrete5_Model_FileStorageLocation extends ConcreteObject {
 
 	const ALTERNATE_ID = 1;
 	

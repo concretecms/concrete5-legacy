@@ -1,6 +1,6 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
-class Concrete5_Model_AttributeKeyCategory extends Object {
+class Concrete5_Model_AttributeKeyCategory extends ConcreteObject {
 
 	const ASET_ALLOW_NONE = 0;
 	const ASET_ALLOW_SINGLE = 1;

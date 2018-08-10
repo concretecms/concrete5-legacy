@@ -1,4 +1,4 @@
-<?
+<?php
 
 defined('C5_EXECUTE') or die("Access Denied.");
 
@@ -33,11 +33,10 @@ class Concrete5_Model_Page extends Collection {
 	/**
 	 * @param int $cID Collection ID of a page
 	 * @param string $versionOrig ACTIVE or RECENT
-	 * @param string $class
 	 * @return Page
 	 */
-	public static function getByID($cID, $version = 'RECENT', $class = 'Page') {
-		
+	public static function getByID($cID, $version = 'RECENT') {
+		$class = get_called_class();
 		$c = CacheLocal::getEntry('page', $cID . ':' . $version);
 		if ($c instanceof $class) {
 			return $c;
@@ -435,7 +434,7 @@ class Concrete5_Model_Page extends Collection {
 		$data['handle'] = $this->getCollectionHandle();
 		$data['name'] = $this->getCollectionName();
 		
-		$cobj = parent::add($data);
+		$cobj = parent::addCollection($data);
 		$newCID = $cobj->getCollectionID();
 		
 		$v = array($newCID, $cParentID, $uID, $this->getCollectionID(), $cDisplayOrder);
@@ -502,7 +501,7 @@ class Concrete5_Model_Page extends Collection {
 		$data['handle'] = $handle;
 		$data['name'] = $cName;
 		
-		$cobj = parent::add($data);
+		$cobj = parent::addCollection($data);
 		$newCID = $cobj->getCollectionID();
 		
 		if ($newWindow) {
@@ -627,7 +626,7 @@ class Concrete5_Model_Page extends Collection {
 		return $pages;
 	}
 
-	public function queueForDeletionSort($a, $b) {
+	public static function queueForDeletionSort($a, $b) {
 		if ($a['level'] > $b['level']) {
 			return -1;
 		}
@@ -637,7 +636,7 @@ class Concrete5_Model_Page extends Collection {
 		return 0;
 	}
 
-	public function queueForDuplicationSort($a, $b) {
+	public static function queueForDuplicationSort($a, $b) {
 		if ($a['level'] > $b['level']) {
 			return 1;
 		}
@@ -1587,7 +1586,7 @@ class Concrete5_Model_Page extends Collection {
 			}
 		}
 		
-		$newC = $cobj->duplicate();
+		$newC = $cobj->duplicateCollection();
 		$newCID = $newC->getCollectionID();
 		
 		$v = array($newCID, $cParentID, $uID, $this->overrideTemplatePermissions(), $this->getPermissionsCollectionID(), $this->getCollectionInheritance(), $this->cFilename, $this->cPointerID, $this->cPointerExternalLink, $this->cPointerExternalLinkNewWindow, $this->cDisplayOrder, $this->pkgID, $this->cCacheFullPageContent, $this->cCacheFullPageContentOverrideLifetime, $this->cCacheFullPageContentLifetimeCustom);
@@ -2032,7 +2031,7 @@ class Concrete5_Model_Page extends Collection {
 		$data['uID'] = $uID;
 		$data['cID'] = HOME_CID;
 
-		$cobj = parent::add($data);		
+		$cobj = parent::addCollection($data);		
 		$cID = $cobj->getCollectionID();
 		
 		//$ctID = HOME_CTID;
@@ -2048,7 +2047,16 @@ class Concrete5_Model_Page extends Collection {
 		$pc = Page::getByID($cID, 'RECENT');
 		return $pc;
 	}
-	
+
+	public function __call($name, $arguments)
+	{
+		switch (strtolower($name)) {
+			case 'add':
+				return call_user_func_array(array($this, 'addChildPage'), $arguments);
+		}
+
+		trigger_error('Call to undefined method '.__CLASS__.'::' . $name . '()', E_USER_ERROR);
+	}
 	/**
 	* Adds a new page of a certain type, using a passed associate array to setup value. $data may contain any or all of the following:
 	* "uID": User ID of the page's owner
@@ -2061,7 +2069,7 @@ class Concrete5_Model_Page extends Collection {
 	* @return page
 	**/
 	
-	public function add(CollectionType $ct, $data) {
+	public function addChildPage(CollectionType $ct, $data) {
 		$db = Loader::db();
 		$txt = Loader::helper('text');
 		
@@ -2104,7 +2112,7 @@ class Concrete5_Model_Page extends Collection {
 		if ($ct->getCollectionTypeHandle() == STACKS_PAGE_TYPE) {
 			$data['cvIsNew'] = 0;
 		}
-		$cobj = parent::add($data);		
+		$cobj = parent::addCollection($data);		
 		$cID = $cobj->getCollectionID();		
 		$ctID = $ct->getCollectionTypeID();
 
@@ -2208,7 +2216,7 @@ class Concrete5_Model_Page extends Collection {
 		$uID = USER_SUPER_ID;
 		$data['uID'] = $uID;
 		$cIsSystemPage = 0;
-		$cobj = parent::add($data);		
+		$cobj = parent::addCollection($data);		
 		$cID = $cobj->getCollectionID();
 		
 		$this->rescanChildrenDisplayOrder();
@@ -2240,7 +2248,7 @@ class Concrete5_Model_Page extends Collection {
 		$db = Loader::db();
 
 		$q = "select ppID, cPath, ppIsCanonical from PagePaths where cID = {$this->cID}";
-		$r = $db->query($q, $v);
+		$r = $db->query($q);
 		$paths = array();
 		if ($r) {
 			while ($row = $r->fetchRow()) {

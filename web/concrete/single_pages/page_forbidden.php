@@ -1,9 +1,9 @@
-<? defined('C5_EXECUTE') or die("Access Denied."); ?>
+<?php defined('C5_EXECUTE') or die("Access Denied."); ?>
 
-<h1 class="error"><?=t('Page Forbidden')?></h1>
+<h1 class="error"><?php echo t('Page Forbidden')?></h1>
 
-<?=t('You are not authorized to access this page.')?>
+<?php echo t('You are not authorized to access this page.')?>
 <br/>
 <br/>
 
-<a href="<?=DIR_REL?>/"><?=t('Back to Home')?></a>.
+<a href="<?php echo DIR_REL?>/"><?php echo t('Back to Home')?></a>.

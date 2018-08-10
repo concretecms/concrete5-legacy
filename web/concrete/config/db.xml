@@ -449,7 +449,6 @@
     </field>
     <field name="avDateAdded" type="T">
       <NOTNULL/>
-      <DEFAULT value="0000-00-00 00:00:00"/>
     </field>
     <field name="uID" type="I" size="10">
       <UNSIGNED />
@@ -541,11 +540,9 @@
     <field name="bName" type="C" size="60"/>
     <field name="bDateAdded" type="T">
       <NOTNULL/>
-      <DEFAULT value="0000-00-00 00:00:00"/>
     </field>
     <field name="bDateModified" type="T">
       <NOTNULL/>
-      <DEFAULT value="0000-00-00 00:00:00"/>
     </field>
     <field name="bFilename" type="C" size="255"/>
     <field name="bIsActive" type="C" size="1">
@@ -788,7 +785,6 @@
     <field name="cvDatePublic" type="T"/>
     <field name="cvDateCreated" type="T">
       <NOTNULL/>
-      <DEFAULT value="0000-00-00 00:00:00"/>
     </field>
     <field name="cvComments" type="C" size="255"/>
     <field name="cvIsApproved" type="I1" size="1">
@@ -832,11 +828,9 @@
     </field>
     <field name="cDateAdded" type="T">
       <NOTNULL/>
-      <DEFAULT value="0000-00-00 00:00:00"/>
     </field>
     <field name="cDateModified" type="T">
       <NOTNULL/>
-      <DEFAULT value="0000-00-00 00:00:00"/>
     </field>
     <field name="cHandle" type="C" size="255"/>
     <index name="cDateModified">
@@ -2457,8 +2451,6 @@
       <UNSIGNED/>
     </field>
     <field name="ugEntered" type="T">
-      <NOTNULL/>
-      <DEFAULT value="0000-00-00 00:00:00"/>
     </field>
     <field name="type" type="C" size="64" />
     <index name="uID">
@@ -2626,7 +2618,6 @@
     </field>
     <field name="uDateAdded" type="T">
       <NOTNULL/>
-      <DEFAULT value="0000-00-00 00:00:00"/>
     </field>
     <field name="uHasAvatar" type="I1" size="1">
       <NOTNULL/>
@@ -2681,7 +2672,6 @@
     </field> 
     <field name="uDateAdded" type="T">
       <NOTNULL/>
-      <DEFAULT value="0000-00-00 00:00:00"/>
     </field>		 
   </table>   
 
@@ -2843,7 +2833,6 @@
       <UNSIGNED />
     </field>
     <field name="value" type="T">
-      <DEFAULT value="0000-00-00 00:00:00"/>
     </field>
   </table>
     <table name="atDefault">

@@ -1,4 +1,4 @@
-<?
+<?php
 	defined('C5_EXECUTE') or die("Access Denied.");
 /**
  * The controller for the Auto-Nav block.
@@ -47,6 +47,7 @@
 
 		// private variable $displayUnapproved, used by the dashboard
 		public $displayUnapproved = false;
+		public $ignoreExcludeNav = false;
 
 		// haveRetrievedSelf is a variable that stores whether or not a particular tree walking operation has retrieved the current page. We use this
 		// with subpage modes like enough and enough_plus1
@@ -313,7 +314,7 @@
 		function getNavigationArray($cParentID, $orderBy, $currentLevel) {
 			// Check if the parent page is excluded or if it has been set to exclude child pages
 			foreach ($this->navArray as $ni) {
-				if ($ni->getCollectionID() == $cParentID) {
+				if ($ni->getCollectionID() == $cParentID && $this->ignoreExcludeNav === false) {
 					if ($ni->getCollectionObject()->getAttribute('exclude_nav') == 1 || $ni->getCollectionObject()->getAttribute('exclude_subpages_from_nav') == 1) {
 						return;
 					}
@@ -554,6 +555,8 @@
 				}
 			}
 
+			$this->ignoreExcludeNav = $ignore_exclude_nav;
+
 			//Retrieve the raw "pre-processed" list of all nav items (before any custom attributes are considered)
 			$allNavItems = $this->generateNav();
 			
@@ -576,7 +579,7 @@
 					$exclude_page = false;
 				}
 
-				if (!$exclude_page || $ignore_exclude_nav) {
+				if (!$exclude_page || $this->ignoreExcludeNav) {
 					$includedNavItems[] = $ni;
 				}
 			}

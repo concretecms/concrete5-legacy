@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 $request = Request::get();
 $library = PageCache::getLibrary();

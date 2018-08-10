@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 
 class Concrete5_Controller_AttributeType_ImageFile extends AttributeTypeController  {
@@ -25,7 +25,7 @@ class Concrete5_Controller_AttributeType_ImageFile extends AttributeTypeControll
 		return $this->getDisplayValue();
 	}
 	
-	public function exportValue($akn) {
+	public function exportValue(SimpleXMLElement $akn) {
 		$av = $akn->addChild('value');
 		$file = $this->getValue();
 		if (is_object($file)) {

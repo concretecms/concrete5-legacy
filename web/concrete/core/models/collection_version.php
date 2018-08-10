@@ -1,4 +1,4 @@
-<?
+<?php
 	defined('C5_EXECUTE') or die("Access Denied.");
 /**
  * Contains the collection version object.
@@ -19,7 +19,7 @@
  * @license    http://www.concrete5.org/license/     MIT License
  *
  */
-	class Concrete5_Model_CollectionVersion extends Object {
+	class Concrete5_Model_CollectionVersion extends ConcreteObject {
 	
 		var $cvIsApproved;
 		var $cID;
@@ -357,7 +357,7 @@
  * @license    http://www.concrete5.org/license/     MIT License
  *
  */
-	class VersionList extends Object {
+	class VersionList extends ConcreteObject {
 	
 		var $vArray = array();
 		

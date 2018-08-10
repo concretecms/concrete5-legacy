@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 
 $ih = Loader::helper('concrete/interface');
@@ -36,7 +36,7 @@ if ($_REQUEST['task'] == 'edit') {
 
 ?>
 
-<?
+<?php
 if ($ctEditMode) { 
 	$ct->populateAvailableAttributeKeys();
 
@@ -47,30 +47,30 @@ if ($ctEditMode) {
 
 	?>
 	
-    <?=Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Edit Page Type').'<span class="label" style="position:relative;top:-3px;left:12px;">'.t('* required field').'</span>', false, false, false);?>
+    <?php echo Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Edit Page Type').'<span class="label" style="position:relative;top:-3px;left:12px;">'.t('* required field').'</span>', false, false, false);?>
     
-    <form class="form-horizontal" method="post" id="update_page_type" action="<?=$this->url('/dashboard/pages/types/', 'update')?>">
-	<?=$valt->output('update_page_type')?>
-    <?=$form->hidden('ctID', $_REQUEST['ctID']); ?>
-    <?=$form->hidden('task', 'edit'); ?>
-    <?=$form->hidden('update', '1'); ?>
+    <form class="form-horizontal" method="post" id="update_page_type" action="<?php echo $this->url('/dashboard/pages/types/', 'update')?>">
+	<?php echo $valt->output('update_page_type')?>
+    <?php echo $form->hidden('ctID', $_REQUEST['ctID']); ?>
+    <?php echo $form->hidden('task', 'edit'); ?>
+    <?php echo $form->hidden('update', '1'); ?>
     
 	<div class="ccm-pane-body">
 		
         <table class="table" border="0" cellspacing="0" cellpadding="0">
             <thead>
                 <tr>
-                    <th class="header"><?=t('Name')?> <span class="required">*</span></th>
-                    <th class="header"><?=t('Handle')?> <span class="required">*</span></th>
+                    <th class="header"><?php echo t('Name')?> <span class="required">*</span></th>
+                    <th class="header"><?php echo t('Handle')?> <span class="required">*</span></th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
                     <td style="width: 60%">
-                        <?=$form->text('ctName', $ctName, array('style' => 'width:100%'))?>
+                        <?php echo $form->text('ctName', $ctName, array('style' => 'width:100%'))?>
                     </td>
                     <td>
-                        <?=$form->text('ctHandle', $ctHandle, array('style' => 'width:100%'))?>
+                        <?php echo $form->text('ctHandle', $ctHandle, array('style' => 'width:100%'))?>
                     </td>
                 </tr>
 			</tbody>
@@ -80,8 +80,8 @@ if ($ctEditMode) {
             <thead>
                 <tr>
                     <th class="subheader">
-                    <?=t('Icon')?>
-                    <?
+                    <?php echo t('Icon')?>
+                    <?php
                         if (!is_object($pageTypeIconsFS)) {
                             print '<span style="margin-left: 4px; color: #aaa">';
                             print t('(To add your own page type icons, create a file set named "%s" and add files to that set)', 'Page Type Icons');
@@ -99,7 +99,7 @@ if ($ctEditMode) {
                 <tr>
                     <td>
                         
-                            <? 
+                            <?php 
                             $first = true;
                             foreach($icons as $ic) { 
                                 if(is_object($ic)) {
@@ -111,10 +111,10 @@ if ($ctEditMode) {
                                     $first = false;
                                     ?>
                                     <label class="checkbox inline">
-                                    <input type="radio" name="ctIcon" value="<?= $ic->getFileID() ?>" style="vertical-align: middle" <?=$checked?> />
-                                    <img src="<?= $fv->getRelativePath(); ?>" width="<?=COLLECTION_TYPE_ICON_WIDTH?>" height="<?=COLLECTION_TYPE_ICON_HEIGHT?>" style="vertical-align: middle" />
+                                    <input type="radio" name="ctIcon" value="<?php echo $ic->getFileID() ?>" style="vertical-align: middle" <?php echo $checked?> />
+                                    <img src="<?php echo $fv->getRelativePath(); ?>" width="<?php echo COLLECTION_TYPE_ICON_WIDTH?>" height="<?php echo COLLECTION_TYPE_ICON_HEIGHT?>" style="vertical-align: middle" />
                                     </label>
-                                <? 
+                                <?php 
                                 } else {
                                     $checked = false;
                                     if ($ct->getCollectionTypeIcon() == $ic || $first) { 
@@ -123,10 +123,10 @@ if ($ctEditMode) {
                                     $first = false;
                                     ?>
                                     <label class="checkbox inline">
-                                    <input type="radio" name="ctIcon" value="<?= $ic ?>" style="vertical-align: middle" <?=$checked?> />
-                                        <img src="<?=REL_DIR_FILES_COLLECTION_TYPE_ICONS.'/'.$ic;?>" width="<?=COLLECTION_TYPE_ICON_WIDTH?>" height="<?=COLLECTION_TYPE_ICON_HEIGHT?>" style="vertical-align: middle" />
+                                    <input type="radio" name="ctIcon" value="<?php echo $ic ?>" style="vertical-align: middle" <?php echo $checked?> />
+                                        <img src="<?php echo REL_DIR_FILES_COLLECTION_TYPE_ICONS.'/'.$ic;?>" width="<?php echo COLLECTION_TYPE_ICON_WIDTH?>" height="<?php echo COLLECTION_TYPE_ICON_HEIGHT?>" style="vertical-align: middle" />
                                     </label>
-                                <?
+                                <?php
                                 }
                             
                             } ?>
@@ -139,30 +139,30 @@ if ($ctEditMode) {
         <table class="table" border="0" cellspacing="0" cellpadding="0">
             <thead>
                 <tr>
-                    <th colspan="3" class="subheader"><?= t('Default Attributes'); ?></th>
+                    <th colspan="3" class="subheader"><?php echo t('Default Attributes'); ?></th>
                 </tr>
 			</thead>
             <tbody>
-                    <?
+                    <?php
                     $attribs = CollectionAttributeKey::getList();
                     $i = 0;
                     foreach($attribs as $ak) { 
                     if ($i == 0) { ?>
                         <tr class="inputs-list">
-                    <? } ?>
+                    <?php } ?>
                     
                             <td width="33%">
                             <label>
-                            <input type="checkbox" name="akID[]" value="<?=$ak->getAttributeKeyID()?>" <? if (($this->controller->isPost() && in_array($ak->getAttributeKeyID(), $akIDArray))) { ?> checked <? } else if ((!$this->controller->isPost()) && $ct->isAvailableCollectionTypeAttribute($ak->getAttributeKeyID())) { ?> checked <? } ?> />
-                            <span><?=$ak->getAttributeKeyDisplayName()?></span>
+                            <input type="checkbox" name="akID[]" value="<?php echo $ak->getAttributeKeyID()?>" <?php if (($this->controller->isPost() && in_array($ak->getAttributeKeyID(), $akIDArray))) { ?> checked <?php } else if ((!$this->controller->isPost()) && $ct->isAvailableCollectionTypeAttribute($ak->getAttributeKeyID())) { ?> checked <?php } ?> />
+                            <span><?php echo $ak->getAttributeKeyDisplayName()?></span>
                             </label>
                             </td>
                     
-                    <? $i++;
+                    <?php $i++;
                     
                     if ($i == 3) { ?>
                         </tr>
-                    <? 
+                    <?php 
                     $i = 0;
                     }
                     
@@ -171,61 +171,61 @@ if ($ctEditMode) {
                     if ($i < 3 && $i > 0) {
                         for ($j = $i; $j < 3; $j++) { ?>
                             <td>&nbsp;</td>
-                        <? } ?>
+                        <?php } ?>
                         </tr>
-                    <? } ?>
+                    <?php } ?>
             </tbody>
         </table>
 	</div>
 
-    <? $confirmMsg = t('Are you sure?'); ?>
+    <?php $confirmMsg = t('Are you sure?'); ?>
 	<script type="text/javascript">
 	deletePageType = function() {
-		if(confirm('<?=$confirmMsg?>')){ 
-			location.href="<?=$this->url('/dashboard/pages/types/','delete',$_REQUEST['ctID'], $valt->generate('delete_page_type'))?>";
+		if(confirm('<?php echo $confirmMsg?>')){ 
+			location.href="<?php echo $this->url('/dashboard/pages/types/','delete',$_REQUEST['ctID'], $valt->generate('delete_page_type'))?>";
 		}	
 	}
 	</script>
     
     <div class="ccm-pane-footer">
-        <? print $ih->submit(t('Save'), 'update_page_type', 'right', 'primary'); ?>
-		<? print $ih->button_js(t('Delete'), "deletePageType()", 'right', 'error'); ?>
-        <? print $ih->button(t('Cancel'), $this->url('/dashboard/pages/types'), 'left'); ?>
+        <?php print $ih->submit(t('Save'), 'update_page_type', 'right', 'primary'); ?>
+		<?php print $ih->button_js(t('Delete'), "deletePageType()", 'right', 'error'); ?>
+        <?php print $ih->button(t('Cancel'), $this->url('/dashboard/pages/types'), 'left'); ?>
     </div>
     
     </form>
     
-    <?=Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper(false)?>
+    <?php echo Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper(false)?>
     
     
-<? } else { ?>
+<?php } else { ?>
     <!-- START: Default Page Types pane -->
-    <?=Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Page Types'), false, false);?>
+    <?php echo Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Page Types'), false, false);?>
 	
 	<div class="clearfix">
-       <? print $ih->button(t('Add a Page Type'), $this->url('/dashboard/pages/types/add'), 'right'); ?>
+       <?php print $ih->button(t('Add a Page Type'), $this->url('/dashboard/pages/types/add'), 'right'); ?>
        <br/><br/>
 	</div>
 	
-	<? if (count($ctArray) == 0) { ?>
-		<br/><strong><?=t('No page types found.')?></strong><br/><br>
-	<? } else { ?>
+	<?php if (count($ctArray) == 0) { ?>
+		<br/><strong><?php echo t('No page types found.')?></strong><br/><br>
+	<?php } else { ?>
 	
 	<table border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-striped">
     	<thead>
             <tr>
-                <th width="100%"><?=t('Name')?></th>
-                <th><?=t('Handle')?></th>
-                <th><?=t('Package')?></th>
-                <th <? if ($cap->canAccessComposer()) { ?>colspan="3"<? } else { ?>colspan="2"<? } ?>></th>
+                <th width="100%"><?php echo t('Name')?></th>
+                <th><?php echo t('Handle')?></th>
+                <th><?php echo t('Package')?></th>
+                <th <?php if ($cap->canAccessComposer()) { ?>colspan="3"<?php } else { ?>colspan="2"<?php } ?>></th>
             </tr>
 		</thead>
 		<tbody>
-            <? foreach ($ctArray as $ct) { ?>
+            <?php foreach ($ctArray as $ct) { ?>
             <tr>
-                <td><?=$ct->getCollectionTypeName()?></td>
-                <td><?=$ct->getCollectionTypeHandle()?></td>
-                <td><?
+                <td><?php echo $ct->getCollectionTypeName()?></td>
+                <td><?php echo $ct->getCollectionTypeHandle()?></td>
+                <td><?php
                     $package = false;
                     if ($ct->getPackageID() > 0) {
                         $package = Package::getByID($ct->getPackageID());
@@ -237,33 +237,33 @@ if ($ctEditMode) {
                     }
                     ?></td>
                 <td>
-                <? if ($ct->getMasterCollectionID()) {?>
-                    <?
+                <?php if ($ct->getMasterCollectionID()) {?>
+                    <?php
                     $tp = new TaskPermission();
                     if ($tp->canAccessPageDefaults()) { ?>
-                        <? print $ih->button(t('Defaults'), $this->url('/dashboard/pages/types?cID=' . $ct->getMasterCollectionID() . '&task=load_master'), 'left','small')?>
-                    <? } else { 
+                        <?php print $ih->button(t('Defaults'), $this->url('/dashboard/pages/types?cID=' . $ct->getMasterCollectionID() . '&task=load_master'), 'left','small')?>
+                    <?php } else { 
                         $defaultsErrMsg = t('You do not have access to page type default content.');
                         ?>
-                        <? print $ih->button_js(t('Defaults'), "alert('" . $defaultsErrMsg . "')", 'left', 'small ccm-button-inactive', array('title'=>t('Lets you set default permissions and blocks for a particular page type.')) );?>
-                    <? } ?>
-                <? } ?>
+                        <?php print $ih->button_js(t('Defaults'), "alert('" . $defaultsErrMsg . "')", 'left', 'small ccm-button-inactive', array('title'=>t('Lets you set default permissions and blocks for a particular page type.')) );?>
+                    <?php } ?>
+                <?php } ?>
             
                 </td>
                 
-                <td><? print $ih->button(t('Settings'), $this->url('/dashboard/pages/types?ctID=' . $ct->getCollectionTypeID() . '&task=edit'), 'left','small')?></td>
-                <? if ($cap->canAccessComposer()) { ?>
-                    <td><? print $ih->button(t('Composer'), $this->url('/dashboard/pages/types/composer', 'view', $ct->getCollectionTypeID()), 'left', 'small')?></td>
-                <? } ?>	
+                <td><?php print $ih->button(t('Settings'), $this->url('/dashboard/pages/types?ctID=' . $ct->getCollectionTypeID() . '&task=edit'), 'left','small')?></td>
+                <?php if ($cap->canAccessComposer()) { ?>
+                    <td><?php print $ih->button(t('Composer'), $this->url('/dashboard/pages/types/composer', 'view', $ct->getCollectionTypeID()), 'left', 'small')?></td>
+                <?php } ?>	
             </tr>
-            <? } ?>
+            <?php } ?>
 		</tbody>
 	</table>
 	
-	<? } ?>
+	<?php } ?>
    
-    <?=Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper()?>
+    <?php echo Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper()?>
     
     <!-- END: Default Page Type pane -->
 	
-<? } ?>
+<?php } ?>

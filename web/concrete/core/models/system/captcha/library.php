@@ -1,6 +1,6 @@
-<?
+<?php
 
-class Concrete5_Model_SystemCaptchaLibrary extends Object {
+class Concrete5_Model_SystemCaptchaLibrary extends ConcreteObject {
 
 	public function getSystemCaptchaLibraryHandle() { return $this->sclHandle;}
 	public function getSystemCaptchaLibraryName() { return $this->sclName;}

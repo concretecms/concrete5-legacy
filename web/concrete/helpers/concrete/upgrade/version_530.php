@@ -1,4 +1,4 @@
-<?
+<?php
 /**
  * @access private
  * @package Helpers
@@ -46,13 +46,13 @@ class ConcreteUpgradeVersion530Helper {
 		// Add in stuff that may have gotten missed before
 		$p = Page::getByPath('/profile');
 		if ($p->isError()) {
-			$d1 = SinglePage::add('/profile');
-			$d2 = SinglePage::add('/profile/edit');
-			$d3 = SinglePage::add('/profile/avatar');				
+			$d1 = SinglePage::createSinglePage('/profile');
+			$d2 = SinglePage::createSinglePage('/profile/edit');
+			$d3 = SinglePage::createSinglePage('/profile/avatar');				
 		}
 		$p2 = Page::getByPath('/dashboard/users/registration');
 		if ($p2->isError()) {
-			$d4 = SinglePage::add('/dashboard/users/registration');
+			$d4 = SinglePage::createSinglePage('/dashboard/users/registration');
 		}
 		
 		// Move any global blocks to new scrapbook page.

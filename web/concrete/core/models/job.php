@@ -1,4 +1,4 @@
-<?
+<?php
 
 defined('C5_EXECUTE') or die("Access Denied.");
 
@@ -23,7 +23,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 * @license http://www.opensource.org/licenses/mit-license.php MIT
 *
 */
-abstract class Concrete5_Model_Job extends Object {
+abstract class Concrete5_Model_Job extends ConcreteObject {
 
 	const JOB_SUCCESS = 0;
 	const JOB_ERROR_EXCEPTION_GENERAL = 1;
@@ -224,7 +224,7 @@ abstract class Concrete5_Model_Job extends Object {
 			$path=$jobClassLocation.'/'.$jHandle.'.php';	
 			if( file_exists($path) ){ 
 				require_once($path);
-				$className=Object::camelcase( $jHandle );
+				$className=ConcreteObject::camelcase( $jHandle );
 				$j = new $className();
 				$j->jHandle=$jHandle;
 				if(intval($jobData['jID'])>0){
@@ -272,7 +272,7 @@ abstract class Concrete5_Model_Job extends Object {
 						$path=$jobClassLocation .'/'. $file;
 						require_once( $jobClassLocation .'/'. $file );
 						$jHandle = substr($file,0,strlen($file)-4);
-						$className=Object::camelcase( $jHandle );
+						$className=ConcreteObject::camelcase( $jHandle );
 						if(class_exists($className)){
 							$jobObjs[$jHandle]=new $className();
 							$jobObjs[$jHandle]->jHandle=$jHandle;
@@ -359,7 +359,7 @@ abstract class Concrete5_Model_Job extends Object {
 	public function installByPackage($jHandle, $pkg) {
 		$dir = is_dir(DIR_PACKAGES . '/' . $pkg->getPackageHandle()) ? DIR_PACKAGES . '/' . $pkg->getPackageHandle() : DIR_PACKAGES_CORE . '/' . $pkg->getPackageHandle();
 		require_once( $dir .'/'. DIRNAME_JOBS . '/' . $jHandle . '.php');
-		$className=Object::camelcase( $jHandle  );
+		$className=ConcreteObject::camelcase( $jHandle  );
 		if(class_exists($className)){
 			$j = new $className();
 			$db = Loader::db();

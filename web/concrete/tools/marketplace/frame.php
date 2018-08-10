@@ -1,4 +1,4 @@
-<?  defined('C5_EXECUTE') or die("Access Denied.");
+<?php  defined('C5_EXECUTE') or die("Access Denied.");
 $valt = Loader::helper('validation/token');
 if($valt->validate('marketplace_token', $_REQUEST['ccm_token'])) {
 	$tp = new TaskPermission();
@@ -12,20 +12,20 @@ if($valt->validate('marketplace_token', $_REQUEST['ccm_token'])) {
 
 			?>
 			<script type="text/javascript">
-				<? if ($_REQUEST['task'] == 'get') { ?>
-					parent.ccm_getMarketplaceItem({mpID: '<?=$_REQUEST['mpID']?>', token: '<?=$valt->generate('marketplace_token')?>', closeTop: true});
-				<? } else if ($_REQUEST['task'] == 'open_theme_launcher') { ?>
+				<?php if ($_REQUEST['task'] == 'get') { ?>
+					parent.ccm_getMarketplaceItem({mpID: '<?php echo $_REQUEST['mpID']?>', token: '<?php echo $valt->generate('marketplace_token')?>', closeTop: true});
+				<?php } else if ($_REQUEST['task'] == 'open_theme_launcher') { ?>
 					parent.ccm_openThemeLauncher();
-				<? } else if ($_REQUEST['task'] == 'open_addon_launcher') { ?>
+				<?php } else if ($_REQUEST['task'] == 'open_addon_launcher') { ?>
 					parent.ccm_openAddonLauncher();
-				<? } else if ($_REQUEST['task'] == 'get_item_details') { ?>
+				<?php } else if ($_REQUEST['task'] == 'get_item_details') { ?>
 					parent.jQuery.fn.dialog.closeTop();
-					parent.ccm_getMarketplaceItemDetails('<?=$_REQUEST['mpID']?>');
-				<? } ?>
+					parent.ccm_getMarketplaceItemDetails('<?php echo $_REQUEST['mpID']?>');
+				<?php } ?>
 			</script>
-		<? } else { ?>
-			<script type="text/javascript" src="<?=ASSETS_URL_JAVASCRIPT?>/jquery.postmessage.js"></script>
-			<?
+		<?php } else { ?>
+			<script type="text/javascript" src="<?php echo ASSETS_URL_JAVASCRIPT?>/jquery.postmessage.js"></script>
+			<?php
 			$completeURL = BASE_URL . REL_DIR_FILES_TOOLS_REQUIRED . '/marketplace/frame?complete=1&task=' . $_REQUEST['task'] . '&mpID=' . $_REQUEST['mpID'] . '&ccm_token=' . $valt->generate('marketplace_token');
 			print $mi->getMarketplaceFrame('100%', '100%', $completeURL);
 		}

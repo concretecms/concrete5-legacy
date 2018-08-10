@@ -1,5 +1,5 @@
-<? $form = Loader::helper('form'); ?>
-<?
+<?php $form = Loader::helper('form'); ?>
+<?php
 $attribs = array();
 
 $allowedAKIDs = $assignment->getAttributesAllowedArray();
@@ -23,24 +23,24 @@ $usedKeysCombined = array_merge($requiredKeys, $usedKeys);
 
 <div class="row">
 <div id="ccm-attributes-column" class="span3">
-	<h6><?=t("All Attributes")?></h6>
+	<h6><?php echo t("All Attributes")?></h6>
 	<div class="ccm-block-type-search-wrapper ">
 
 		<div class="ccm-block-type-search">
-		<?=$form->text('ccmSearchAttributeListField', array('tabindex' => 1, 'autocomplete' => 'off', 'style' => 'width: 155px'))?>
+		<?php echo $form->text('ccmSearchAttributeListField', array('tabindex' => 1, 'autocomplete' => 'off', 'style' => 'width: 155px'))?>
 		</div>
 		
 	</div>
 	
-	<?
+	<?php
 	$category = AttributeKeyCategory::getByHandle('collection');
 	$sets = $category->getAttributeSets();
 	?>
 
 	<ul id="ccm-page-attribute-list" class="item-select-list">
-	<? foreach($sets as $as) { ?>
-		<li class="item-select-list-header ccm-attribute-available"><span><?=$as->getAttributeSetDisplayName()?></span></li>
-		<? 
+	<?php foreach($sets as $as) { ?>
+		<li class="item-select-list-header ccm-attribute-available"><span><?php echo $as->getAttributeSetDisplayName()?></span></li>
+		<?php 
 		$setattribs = $as->getAttributeKeys();
 		foreach($setattribs as $ak) { 
 			if (!in_array($ak->getAttributeKeyID(), $allowedAKIDs)) {
@@ -48,9 +48,9 @@ $usedKeysCombined = array_merge($requiredKeys, $usedKeys);
 			}
 			?>
 			
-			<li id="sak<?=$ak->getAttributeKeyID()?>" class="ccm-attribute-key ccm-attribute-available <? if (in_array($ak->getAttributeKeyID(), $usedKeysCombined)) { ?>ccm-attribute-added<? } ?>"><a style="background-image: url('<?=$ak->getAttributeKeyIconSRC()?>')" href="javascript:void(0)" onclick="ccmShowAttributeKey(<?=$ak->getAttributeKeyID()?>)"><?=$ak->getAttributeKeyDisplayName()?></a></li>	
+			<li id="sak<?php echo $ak->getAttributeKeyID()?>" class="ccm-attribute-key ccm-attribute-available <?php if (in_array($ak->getAttributeKeyID(), $usedKeysCombined)) { ?>ccm-attribute-added<?php } ?>"><a style="background-image: url('<?php echo $ak->getAttributeKeyIconSRC()?>')" href="javascript:void(0)" onclick="ccmShowAttributeKey(<?php echo $ak->getAttributeKeyID()?>)"><?php echo $ak->getAttributeKeyDisplayName()?></a></li>	
 			
-		<? 
+		<?php 
 		} 	
 		
 	} 
@@ -58,8 +58,8 @@ $usedKeysCombined = array_merge($requiredKeys, $usedKeys);
 	$unsetattribs = $category->getUnassignedAttributeKeys();
 	
 	if (count($sets) > 0 && count($unsetattribs) > 0) { ?>
-		<li class="item-select-list-header ccm-attribute-available"><span><?=tc('AttributeSetName', 'Other')?></span></li>
-	<? }
+		<li class="item-select-list-header ccm-attribute-available"><span><?php echo tc('AttributeSetName', 'Other')?></span></li>
+	<?php }
 	
 	foreach($unsetattribs as $ak) { 
 		if (!in_array($ak->getAttributeKeyID(), $allowedAKIDs)) {
@@ -69,9 +69,9 @@ $usedKeysCombined = array_merge($requiredKeys, $usedKeys);
 	
 	?>
 		
-		<li id="sak<?=$ak->getAttributeKeyID()?>" class="ccm-attribute-key ccm-attribute-available <? if (in_array($ak->getAttributeKeyID(), $usedKeysCombined)) { ?>ccm-attribute-added<? } ?>"><a style="background-image: url('<?=$ak->getAttributeKeyIconSRC()?>')" href="javascript:void(0)" onclick="ccmShowAttributeKey(<?=$ak->getAttributeKeyID()?>)"><?=$ak->getAttributeKeyDisplayName()?></a></li>	
+		<li id="sak<?php echo $ak->getAttributeKeyID()?>" class="ccm-attribute-key ccm-attribute-available <?php if (in_array($ak->getAttributeKeyID(), $usedKeysCombined)) { ?>ccm-attribute-added<?php } ?>"><a style="background-image: url('<?php echo $ak->getAttributeKeyIconSRC()?>')" href="javascript:void(0)" onclick="ccmShowAttributeKey(<?php echo $ak->getAttributeKeyID()?>)"><?php echo $ak->getAttributeKeyDisplayName()?></a></li>	
 	
-	<? 
+	<?php 
 	} 	
 	
 	?>
@@ -79,17 +79,17 @@ $usedKeysCombined = array_merge($requiredKeys, $usedKeys);
 	
 </div>
 <div class="span5" id="ccm-page-attributes-selected">
-<h6><?=t("Selected Attributes")?></h6>
-<div id="ccm-page-attributes-none" <? if (count($usedKeysCombined) > 0) { ?>style="display: none"<? } ?>>
+<h6><?php echo t("Selected Attributes")?></h6>
+<div id="ccm-page-attributes-none" <?php if (count($usedKeysCombined) > 0) { ?>style="display: none"<?php } ?>>
 <div style="padding-top: 140px; width: 400px; text-align: center"><h3>
-	<? if ($c->isMasterCollection()) { ?>
-		<?=t('No attributes assigned. Any attributes you set here will automatically be set on pages when they are created.')?>
-	<? } else { ?>
-		<?=t('No attributes assigned.')?>
-	<? } ?></h3></div>
+	<?php if ($c->isMasterCollection()) { ?>
+		<?php echo t('No attributes assigned. Any attributes you set here will automatically be set on pages when they are created.')?>
+	<?php } else { ?>
+		<?php echo t('No attributes assigned.')?>
+	<?php } ?></h3></div>
 </div>
 
-<? 
+<?php 
 	$attribs = CollectionAttributeKey::getList();
 	ob_start();
 
@@ -101,28 +101,28 @@ $usedKeysCombined = array_merge($requiredKeys, $usedKeys);
 
 	
 		<div class="form-stacked">
-		<div class="well" id="ak<?=$ak->getAttributeKeyID()?>" <? if (!in_array($ak->getAttributeKeyID(), $usedKeysCombined)) { ?> style="display: none" <? } ?>>
+		<div class="well" id="ak<?php echo $ak->getAttributeKeyID()?>" <?php if (!in_array($ak->getAttributeKeyID(), $usedKeysCombined)) { ?> style="display: none" <?php } ?>>
 		
-		<? if (in_array($ak->getAttributeKeyID(), $allowedAKIDs)) { ?> 
-		<input type="hidden" class="ccm-meta-field-selected" id="ccm-meta-field-selected<?=$ak->getAttributeKeyID()?>" name="selectedAKIDs[]" value="<? if (!in_array($ak->getAttributeKeyID(), $usedKeysCombined)) { ?>0<? } else { ?><?=$ak->getAttributeKeyID()?><? } ?>" />
+		<?php if (in_array($ak->getAttributeKeyID(), $allowedAKIDs)) { ?> 
+		<input type="hidden" class="ccm-meta-field-selected" id="ccm-meta-field-selected<?php echo $ak->getAttributeKeyID()?>" name="selectedAKIDs[]" value="<?php if (!in_array($ak->getAttributeKeyID(), $usedKeysCombined)) { ?>0<?php } else { ?><?php echo $ak->getAttributeKeyID()?><?php } ?>" />
 		
-			<a href="javascript:void(0)" class="ccm-meta-close" ccm-meta-name="<?=$ak->getAttributeKeyDisplayName()?>" id="ccm-remove-field-ak<?=$ak->getAttributeKeyID()?>" style="display:<?=(!in_array($ak->getAttributeKeyID(), $requiredKeys) && !$ak->isAttributeKeyInternal())?'block':'none'?>"><img src="<?=ASSETS_URL_IMAGES?>/icons/remove_minus.png" width="16" height="16" alt="<?=t('remove')?>" /></a>
+			<a href="javascript:void(0)" class="ccm-meta-close" ccm-meta-name="<?php echo $ak->getAttributeKeyDisplayName()?>" id="ccm-remove-field-ak<?php echo $ak->getAttributeKeyID()?>" style="display:<?php echo (!in_array($ak->getAttributeKeyID(), $requiredKeys) && !$ak->isAttributeKeyInternal())?'block':'none'?>"><img src="<?php echo ASSETS_URL_IMAGES?>/icons/remove_minus.png" width="16" height="16" alt="<?php echo t('remove')?>" /></a>
 
-			<label><?=$ak->getAttributeKeyDisplayName()?></label>
-			<?=$ak->render('form', $caValue); ?>
-		<? } else { ?>
-			<label><?=$ak->getAttributeKeyDisplayName()?></label>
-			<?=$c->getAttribute($ak->getAttributeKeyHandle())?>
-		<? } ?>
+			<label><?php echo $ak->getAttributeKeyDisplayName()?></label>
+			<?php echo $ak->render('form', $caValue); ?>
+		<?php } else { ?>
+			<label><?php echo $ak->getAttributeKeyDisplayName()?></label>
+			<?php echo $c->getAttribute($ak->getAttributeKeyHandle())?>
+		<?php } ?>
 		</div>
 		</div>
 		
-	<? } 
+	<?php } 
 	$contents = ob_get_contents();
 	ob_end_clean(); ?>	
 	
 	<script type="text/javascript">
-	<? 
+	<?php 
 	$v = View::getInstance();
 	$headerItems = array_merge($v->getHeaderItems(), $v->getFooterItems());
 	foreach($headerItems as $item) {
@@ -132,14 +132,14 @@ $usedKeysCombined = array_merge($requiredKeys, $usedKeys);
 			} else {
 				$type = 'JAVASCRIPT';
 			} ?>
-			ccm_addHeaderItem("<?=$item->file?>", '<?=$type?>');
-			<?
+			ccm_addHeaderItem("<?php echo $item->file?>", '<?php echo $type?>');
+			<?php
 		}
 	} 
 	?>
 	</script>
 	
-	<? print $contents; ?>
+	<?php print $contents; ?>
 
 
 

@@ -1,4 +1,4 @@
-<?
+<?php
 //THIS PAGE IS DEPREICATED
 
 //Use elements/dashboard/attribute_values.php instead
@@ -12,63 +12,63 @@ function getAttributeOptionHTML($akValue="TEMPLATE"){
 		$akValueClean=TextHelper::filterNonAlphaNum($akValue);
 		if($akValue=='TEMPLATE') $akValueClean='TEMPLATE_CLEAN'
 		?>
-		<div id="akValueDisplay_<?=$akValueClean?>" >
+		<div id="akValueDisplay_<?php echo $akValueClean?>" >
 			<div class="rightCol">
-				<a onClick="ccmAttributesHelper.editValue('<?=addslashes($akValueClean)?>')"><?=t('Edit')?></a> |
-				<a onClick="ccmAttributesHelper.deleteValue('<?=addslashes($akValueClean)?>')"><?=t('Delete')?></a>
+				<a onClick="ccmAttributesHelper.editValue('<?php echo addslashes($akValueClean)?>')"><?php echo t('Edit')?></a> |
+				<a onClick="ccmAttributesHelper.deleteValue('<?php echo addslashes($akValueClean)?>')"><?php echo t('Delete')?></a>
 			</div>			
-			<span onClick="ccmAttributesHelper.editValue('<?=addslashes($akValueClean)?>')" id="akValueStatic_<?=$akValueClean?>" class="leftCol"><?=$akValue ?></span>
+			<span onClick="ccmAttributesHelper.editValue('<?php echo addslashes($akValueClean)?>')" id="akValueStatic_<?php echo $akValueClean?>" class="leftCol"><?php echo $akValue ?></span>
 		</div>
-		<div id="akValueEdit_<?=$akValueClean?>" style="display:none">
+		<div id="akValueEdit_<?php echo $akValueClean?>" style="display:none">
 			<div class="rightCol">
-				<a onClick="ccmAttributesHelper.editValue('<?=addslashes($akValueClean)?>')"><?=t('Cancel')?></a> | 
-				<a onClick="ccmAttributesHelper.changeValue('<?=addslashes($akValueClean)?>')"><?=t('Save')?></a>
+				<a onClick="ccmAttributesHelper.editValue('<?php echo addslashes($akValueClean)?>')"><?php echo t('Cancel')?></a> | 
+				<a onClick="ccmAttributesHelper.changeValue('<?php echo addslashes($akValueClean)?>')"><?php echo t('Save')?></a>
 			</div>		
 			<span class="leftCol">
-				<input name="akValueOriginal_<?=$akValueClean?>" type="hidden" value="<?=$akValue?>" />
-				<input id="akValueField_<?=$akValueClean?>" name="akValue_<?=$akValueClean?>" type="text" value="<?=$akValue?>" size="20" 
-				  onkeypress="ccmAttributesHelper.addEnterClick(event,function(){ccmAttributesHelper.changeValue('<?=addslashes($akValueClean)?>')})" />
+				<input name="akValueOriginal_<?php echo $akValueClean?>" type="hidden" value="<?php echo $akValue?>" />
+				<input id="akValueField_<?php echo $akValueClean?>" name="akValue_<?php echo $akValueClean?>" type="text" value="<?php echo $akValue?>" size="20" 
+				  onkeypress="ccmAttributesHelper.addEnterClick(event,function(){ccmAttributesHelper.changeValue('<?php echo addslashes($akValueClean)?>')})" />
 			</span>		
 		</div>	
 		<div class="ccm-spacer">&nbsp;</div>
-<? } ?>
+<?php } ?>
 
-<div id="attributeValuesOffMsg" style="display:<?=($akType != 'SELECT' && $akType != 'SELECT_MULTIPLE')?'block':'none' ?>">
-	<?=t('(Not Applicable)')?>
+<div id="attributeValuesOffMsg" style="display:<?php echo ($akType != 'SELECT' && $akType != 'SELECT_MULTIPLE')?'block':'none' ?>">
+	<?php echo t('(Not Applicable)')?>
 </div>
 
-<div id="attributeValuesInterface" style="display:<?=($akType != 'SELECT' && $akType != 'SELECT_MULTIPLE')?'none':'block' ?>">
+<div id="attributeValuesInterface" style="display:<?php echo ($akType != 'SELECT' && $akType != 'SELECT_MULTIPLE')?'none':'block' ?>">
 
 	<div id="attributeValuesWrap">
-	<?
+	<?php
 	Loader::helper('text');
 	if(!is_array($akValues)) $akValues=explode("\n",$akValues);
 	foreach($akValues as $akValue){ 
 		if(!strlen(trim($akValue))) continue;
 		?>
-		<div id="akValueWrap_<?=$akValue?>" class="akValueWrap">
-			<?=getAttributeOptionHTML( $akValue )?>
+		<div id="akValueWrap_<?php echo $akValue?>" class="akValueWrap">
+			<?php echo getAttributeOptionHTML( $akValue )?>
 		</div>
-	<? } ?>
+	<?php } ?>
 	</div>
 	<div class="ccm-spacer"></div>
 	
 	<div id="akValueWrapTemplate" class="akValueWrap" style="display:none">
-		<?=getAttributeOptionHTML() ?>
+		<?php echo getAttributeOptionHTML() ?>
 	</div>
 	<div class="ccm-spacer"></div>
 	
 	<div id="addAttributeValueWrap"> 
-		<input id="akValueFieldNew" name="akValueNew" type="text" value="<?=$defaultNewOptionNm ?>" size="40" class="faint" 
-		onfocus="ccmAttributesHelper.clrInitTxt(this,'<?=$defaultNewOptionNm ?>','faint',0)" 
-		onblur="ccmAttributesHelper.clrInitTxt(this,'<?=$defaultNewOptionNm ?>','faint',1)"
+		<input id="akValueFieldNew" name="akValueNew" type="text" value="<?php echo $defaultNewOptionNm ?>" size="40" class="faint" 
+		onfocus="ccmAttributesHelper.clrInitTxt(this,'<?php echo $defaultNewOptionNm ?>','faint',0)" 
+		onblur="ccmAttributesHelper.clrInitTxt(this,'<?php echo $defaultNewOptionNm ?>','faint',1)"
 		onkeypress="ccmAttributesHelper.addEnterClick(event,function(){ccmAttributesHelper.saveNewOption()})"
 		 /> 
-		<a onClick="ccmAttributesHelper.saveNewOption()"><?=t('Add') ?> +</a>
+		<a onClick="ccmAttributesHelper.saveNewOption()"><?php echo t('Add') ?> +</a>
 	</div>
 	
-	<div id="allowOtherValuesWrap" style="display:<?=($akType != 'SELECT' && $akType != 'SELECT_MULTIPLE')?'none':'block' ?>">
-		<input type="checkbox" name="akAllowOtherValues" style="vertical-align: middle" <? if ($akAllowOtherValues) { ?> checked <? } ?> /> <?=t('Allow users to add to this list.')?>
+	<div id="allowOtherValuesWrap" style="display:<?php echo ($akType != 'SELECT' && $akType != 'SELECT_MULTIPLE')?'none':'block' ?>">
+		<input type="checkbox" name="akAllowOtherValues" style="vertical-align: middle" <?php if ($akAllowOtherValues) { ?> checked <?php } ?> /> <?php echo t('Allow users to add to this list.')?>
 	</div>
 
 </div>

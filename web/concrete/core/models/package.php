@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 /**
  *
@@ -9,7 +9,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
  * @license http://www.opensource.org/licenses/mit-license.php MIT
  *
  */
-class Concrete5_Model_PackageList extends Object {
+class Concrete5_Model_PackageList extends ConcreteObject {
 	
 	protected $packages = array();
 	
@@ -88,7 +88,7 @@ class Concrete5_Model_PackageList extends Object {
  * @license http://www.opensource.org/licenses/mit-license.php MIT
  *
  */
-class Concrete5_Model_Package extends Object {
+class Concrete5_Model_Package extends ConcreteObject {
 
 	protected $DIR_PACKAGES_CORE = DIR_PACKAGES_CORE;
 	protected $DIR_PACKAGES = DIR_PACKAGES;

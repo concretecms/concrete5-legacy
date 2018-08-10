@@ -1,7 +1,7 @@
-<?
+<?php
 
 defined('C5_EXECUTE') or die("Access Denied.");
-class Concrete5_Model_PileContent extends Object {
+class Concrete5_Model_PileContent extends ConcreteObject {
 
 	var $p, $pID, $pcID, $itemID, $itemType, $quantity, $timestamp, $displayOrder;
 

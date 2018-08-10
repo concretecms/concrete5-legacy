@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 /**
  * @package Workflow
@@ -7,7 +7,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
  * @license    http://www.concrete5.org/license/     MIT License
  *
  */
-abstract class Concrete5_Model_Workflow extends Object {  
+abstract class Concrete5_Model_Workflow extends ConcreteObject {  
 	
 	protected $wfID = 0;
 	protected $allowedTasks = array('cancel', 'approve');

@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 ini_set('display_errors', 1);
 if (!ini_get('safe_mode')) {
@@ -26,6 +26,26 @@ define('DIR_FILES_UPLOADED_THUMBNAILS_LEVEL2', DIR_FILES_UPLOADED . '/thumbnails
 define('DIR_FILES_UPLOADED_THUMBNAILS_LEVEL3', DIR_FILES_UPLOADED . '/thumbnails/level3');
 define('DIR_FILES_AVATARS', DIR_FILES_UPLOADED . '/avatars');
 define('ENABLE_TRANSLATE_LOCALE_EN_US', false);
+if (!defined('ENABLE_BLOCK_CACHE')) {
+	define('ENABLE_BLOCK_CACHE', true);
+}
+if (!defined('DIRNAME_LANGUAGES_SITE_INTERFACE')) {
+	define('DIRNAME_LANGUAGES_SITE_INTERFACE', 'site');
+}
+define('DIRNAME_LANGUAGES_SITE_INTERFACE', 'site');
+if (!defined('DIR_LANGUAGES_SITE_INTERFACE')) {
+	define('DIR_LANGUAGES_SITE_INTERFACE', DIR_LANGUAGES . '/' . DIRNAME_LANGUAGES_SITE_INTERFACE);
+}
+
+if (!defined('ENABLE_USER_TIMEZONES')) {
+	define('ENABLE_USER_TIMEZONES', true);
+}
+if (!defined('JOB_QUEUE_BATCH_SIZE')) {
+	define('JOB_QUEUE_BATCH_SIZE', 10);
+}
+if (!defined('ENABLE_JOB_SCHEDULING')) {
+	define('ENABLE_JOB_SCHEDULING', true);
+}
 
 class Concrete5_Controller_Install extends Controller {
 
@@ -103,7 +123,7 @@ class Concrete5_Controller_Install extends Controller {
 		$this->set('mysqlTest', function_exists('mysql_connect') || function_exists('mysqli_connect'));
 		$this->set('xmlTest', function_exists('xml_parse') && function_exists('simplexml_load_file'));
 		$this->set('fileWriteTest', $this->testFileWritePermissions());
-		$phpVmin = '5.2.4';
+		$phpVmin = '5.3.2';
 		if (version_compare(PHP_VERSION, $phpVmin, '>=')) {
 			$phpVtest = true;
 		} else {

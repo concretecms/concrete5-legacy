@@ -1,7 +1,7 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 
-class Concrete5_Model_CustomStyleRule extends Object {
+class Concrete5_Model_CustomStyleRule extends ConcreteObject {
 	
 	protected static $headerStylesAdded = false;
 	public static $fontFamilies = array( 
@@ -173,7 +173,7 @@ class Concrete5_Model_CustomStyleRule extends Object {
 	
 }
 
-class Concrete5_Model_CustomStylePreset extends Object {
+class Concrete5_Model_CustomStylePreset extends ConcreteObject {
 
 	public function getList() {
 		$db = Loader::db();

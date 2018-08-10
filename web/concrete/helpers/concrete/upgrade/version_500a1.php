@@ -1,4 +1,4 @@
-<?
+<?php
 /**
  * @access private
  * @package Helpers
@@ -32,7 +32,7 @@ class ConcreteUpgradeVersion500a1Helper {
 		Loader::model("job");
 		Loader::model('single_page');
 		Job::installByHandle('index_search');
-		$d11 = SinglePage::add('/dashboard/jobs');
+		$d11 = SinglePage::createSinglePage('/dashboard/jobs');
 		if (is_object($d11)) {
 			$d11->update(array('cName'=>t('Maintenance'), 'cDescription'=>t('Run common cleanup tasks.')));
 		}

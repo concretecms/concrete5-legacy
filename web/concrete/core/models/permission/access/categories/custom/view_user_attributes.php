@@ -1,10 +1,10 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 
 class Concrete5_Model_ViewUserAttributesUserPermissionAccess extends UserPermissionAccess {
 
 	public function save($args) {
-		parent::save();
+		parent::save($args);
 		$db = Loader::db();
 		$db->Execute('delete from UserPermissionViewAttributeAccessList where paID = ?', array($this->getPermissionAccessID()));
 		$db->Execute('delete from UserPermissionViewAttributeAccessListCustom where paID = ?', array($this->getPermissionAccessID()));

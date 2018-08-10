@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 class Concrete5_Model_FilePermissionAssignment extends PermissionAssignment {
 
@@ -59,7 +59,10 @@ class Concrete5_Model_FilePermissionAssignment extends PermissionAssignment {
 		}
 	}
 
-	public function setPermissionObject(File $f) {
+	/**
+	 * @param File $f
+	 */
+	public function setPermissionObject($f) {
 		$this->permissionObject = $f;
 		
 		if ($f->overrideFileSetPermissions()) {

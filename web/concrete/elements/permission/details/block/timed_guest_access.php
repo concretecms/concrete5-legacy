@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 $c = $b->getBlockCollectionObject();
 $arHandle = $b->getAreaHandle();
@@ -21,21 +21,21 @@ foreach($list as $pa) {
 
 ?>
 <div class="ccm-ui" id="ccm-permissions-access-entity-wrapper">
-<form id="ccm-permissions-timed-guest-access-form" class="form-stacked" method="post" action="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/permissions/categories/block">
+<form id="ccm-permissions-timed-guest-access-form" class="form-stacked" method="post" action="<?php echo REL_DIR_FILES_TOOLS_REQUIRED?>/permissions/categories/block">
 <input type="hidden" name="task" value="set_timed_guest_access" />
-<?=Loader::helper('validation/token')->output('set_timed_guest_access');?>
-<input type="hidden" name="cID" value="<?=$c->getCollectionID()?>" />
-<input type="hidden" name="bID" value="<?=$b->getBlockID()?>" />
-<input type="hidden" name="arHandle" value="<?=$arHandle?>" />
+<?php echo Loader::helper('validation/token')->output('set_timed_guest_access');?>
+<input type="hidden" name="cID" value="<?php echo $c->getCollectionID()?>" />
+<input type="hidden" name="bID" value="<?php echo $b->getBlockID()?>" />
+<input type="hidden" name="arHandle" value="<?php echo $arHandle?>" />
 
 
-<p><?=t('When should guests be able to view this block?')?></p>
+<p><?php echo t('When should guests be able to view this block?')?></p>
 
-<?=Loader::element('permission/duration', array('pd' => $pd)); ?>
+<?php echo Loader::element('permission/duration', array('pd' => $pd)); ?>
 
 <div class="dialog-buttons">
-	<input type="button" onclick="jQuery.fn.dialog.closeTop()" value="<?=t('Cancel')?>" class="btn" />
-	<input type="submit" onclick="$('#ccm-permissions-timed-guest-access-form').submit()" value="<?=t('Save')?>" class="btn primary ccm-button-right" />
+	<input type="button" onclick="jQuery.fn.dialog.closeTop()" value="<?php echo t('Cancel')?>" class="btn" />
+	<input type="submit" onclick="$('#ccm-permissions-timed-guest-access-form').submit()" value="<?php echo t('Save')?>" class="btn primary ccm-button-right" />
 </div>
 
 </form>

@@ -1,4 +1,4 @@
-<?
+<?php
 /**
  * @package Helpers
  * @subpackage Validation

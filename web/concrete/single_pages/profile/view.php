@@ -1,25 +1,25 @@
-<? defined('C5_EXECUTE') or die("Access Denied."); ?>
+<?php defined('C5_EXECUTE') or die("Access Denied."); ?>
 <div id="ccm-profile-wrapper">
-    <? Loader::element('profile/sidebar', array('profile'=> $profile)); ?>    
+    <?php Loader::element('profile/sidebar', array('profile'=> $profile)); ?>    
     <div id="ccm-profile-body">	
     	<div id="ccm-profile-body-attributes">
     	<div class="ccm-profile-body-item">
     	
-        <h1><?=$profile->getUserName()?></h1>
-        <?
+        <h1><?php echo $profile->getUserName()?></h1>
+        <?php
         $uaks = UserAttributeKey::getPublicProfileList();
         foreach($uaks as $ua) { ?>
             <div>
-                <label><?=$ua->getAttributeKeyDisplayName()?></label>
-                <?=$profile->getAttribute($ua, 'displaySanitized', 'display'); ?>
+                <label><?php echo $ua->getAttributeKeyDisplayName()?></label>
+                <?php echo $profile->getAttribute($ua, 'displaySanitized', 'display'); ?>
             </div>
-        <? } ?>		
+        <?php } ?>		
         
         </div>
 
 		</div>
 		
-		<? 
+		<?php 
 			$a = new Area('Main'); 
 			$a->setAttribute('profile', $profile); 
 			$a->setBlockWrapperStart('<div class="ccm-profile-body-item">');

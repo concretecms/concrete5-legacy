@@ -1,6 +1,6 @@
-<?
+<?php
 
-	class Concrete5_Model_GroupList extends Object {
+	class Concrete5_Model_GroupList extends ConcreteObject {
 
 		public $gArray = array();
 
@@ -70,7 +70,7 @@
 
 	}
 
-	class Concrete5_Model_Group extends Object {
+	class Concrete5_Model_Group extends ConcreteObject {
 	
 		var $ctID;
 		var $permissionSet;

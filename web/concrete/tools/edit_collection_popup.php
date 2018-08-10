@@ -1,4 +1,4 @@
-<?
+<?php
 
 defined('C5_EXECUTE') or die("Access Denied.");
 
@@ -97,14 +97,14 @@ if (!$canViewPane) {
 
 ?>
 
-<? if ($_REQUEST['toppane'] == 1) {
+<?php if ($_REQUEST['toppane'] == 1) {
 	Loader::element('pane_header', array('c'=>$c));
 }
 ?>
 
-<div id="<?=$divID?>">
+<div id="<?php echo $divID?>">
 
-<? if (!$_GET['close']) {
+<?php if (!$_GET['close']) {
 
 	if (!$c->isEditMode() && (!in_array($_GET['ctask'], array('add', 'edit_external', 'delete_external')))) {
 		// first, we attempt to check the user in as editing the collection
@@ -135,6 +135,6 @@ if ($error) {
 
 </div>
 
-<? if ($_REQUEST['toppane'] == 1) { ?>
-	<? Loader::element('pane_footer', array('c'=>$c)); ?>
-<? } ?>
+<?php if ($_REQUEST['toppane'] == 1) { ?>
+	<?php Loader::element('pane_footer', array('c'=>$c)); ?>
+<?php } ?>

@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 
 /**
@@ -7,7 +7,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
  * @package Pages
  * @subpackage Themes
  */
-class Concrete5_Model_PageThemeEditableStyle extends Object {
+class Concrete5_Model_PageThemeEditableStyle extends ConcreteObject {
 	
 	const TSTYPE_COLOR = 1;
 	const TSTYPE_FONT = 10;
@@ -154,7 +154,7 @@ class Concrete5_Model_PageThemeFile {
 * @package Pages and Collections
 * @subpackages Themes
 */
-class Concrete5_Model_PageTheme extends Object {
+class Concrete5_Model_PageTheme extends ConcreteObject {
 
 	protected $ptName;
 	protected $ptID;

@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 /**
  * Controller for the guestbook block, which allows site owners to add comments onto any concrete page.

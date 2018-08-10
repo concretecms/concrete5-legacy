@@ -1,4 +1,4 @@
-<?
+<?php
 
 defined('C5_EXECUTE') or die("Access Denied.");
 class ConcreteInterfaceMenuHelper {
@@ -58,7 +58,7 @@ class ConcreteInterfaceHelperMenuItem {
 		if (isset($this->controller)) {
 			return $this->controller;
 		} else {
-			$class = Object::camelcase($this->handle . 'ConcreteInterfaceMenuItemController');
+			$class = ConcreteObject::camelcase($this->handle . 'ConcreteInterfaceMenuItemController');
 			if (!class_exists($class)) {
 				$file1 = DIR_FILES_ELEMENTS . '/' . DIRNAME_ELEMENTS_HEADER_MENU . '/' . $this->handle . '/' . FILENAME_MENU_ITEM_CONTROLLER;
 				if ($this->pkgHandle) {

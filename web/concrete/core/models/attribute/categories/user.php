@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 /**
  * An object that represents metadata added to users.
@@ -34,7 +34,7 @@ class Concrete5_Model_UserAttributeKey extends AttributeKey {
 	public function getAttributeKeyDisplayOrder() {return $this->displayOrder;}
 
 	
-	public function load($akID) {
+	public function load($akID, /* unused, added for LSP */ $loadBy = 'akID') {
 		parent::load($akID);
 		$db = Loader::db();
 		$row = $db->GetRow("select uakProfileDisplay, uakMemberListDisplay, displayOrder, uakProfileEdit, uakProfileEditRequired, uakRegisterEdit, uakRegisterEditRequired, uakIsActive from UserAttributeKeys where akID = ?", array($akID));
@@ -140,7 +140,7 @@ class Concrete5_Model_UserAttributeKey extends AttributeKey {
 		return $this->uakIsActive;
 	}
 	
-	public function sortListByDisplayOrder($a, $b) {
+	public static function sortListByDisplayOrder($a, $b) {
 		if ($a->getAttributeKeyDisplayOrder() == $b->getAttributeKeyDisplayOrder()) {
 			return 0;
 		} else {
@@ -161,7 +161,7 @@ class Concrete5_Model_UserAttributeKey extends AttributeKey {
 	}
 
 	public static function getList() {
-		$list = parent::getList('user');	
+		$list = parent::getCategoryList('user');	
 		usort($list, array('UserAttributeKey', 'sortListByDisplayOrder'));
 		return $list;
 	}
@@ -195,7 +195,7 @@ class Concrete5_Model_UserAttributeKey extends AttributeKey {
 
 		CacheLocal::delete('user_attribute_key_by_handle', $args['akHandle']);
 
-		$ak = parent::add('user', $type, $args, $pkg);
+		$ak = parent::addAttributeKey('user', $type, $args, $pkg);
 		
 		extract($args);
 		
@@ -280,19 +280,19 @@ class Concrete5_Model_UserAttributeKey extends AttributeKey {
 	}
 
 	public static function getColumnHeaderList() {
-		return parent::getList('user', array('akIsColumnHeader' => 1));	
+		return parent::getCategoryList('user', array('akIsColumnHeader' => 1));	
 	}
 	public static function getEditableList() {
-		return parent::getList('user', array('akIsEditable' => 1));	
+		return parent::getCategoryList('user', array('akIsEditable' => 1));	
 	}
 	public static function getSearchableList() {
-		return parent::getList('user', array('akIsSearchable' => 1));	
+		return parent::getCategoryList('user', array('akIsSearchable' => 1));	
 	}
 	public static function getSearchableIndexedList() {
-		return parent::getList('user', array('akIsSearchableIndexed' => 1));	
+		return parent::getCategoryList('user', array('akIsSearchableIndexed' => 1));	
 	}
 	public static function getImporterList() {
-		return parent::getList('user', array('akIsAutoCreated' => 1));	
+		return parent::getCategoryList('user', array('akIsAutoCreated' => 1));	
 	}
 	
 	public static function getPublicProfileList() {
@@ -348,7 +348,7 @@ class Concrete5_Model_UserAttributeKey extends AttributeKey {
 	}
 	
 	public static function getUserAddedList() {
-		return parent::getList('user', array('akIsAutoCreated' => 0));	
+		return parent::getCategoryList('user', array('akIsAutoCreated' => 0));	
 	}
 
 

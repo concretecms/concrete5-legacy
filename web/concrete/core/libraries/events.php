@@ -1,4 +1,4 @@
-<?
+<?php
 
 /**
  * @package Core
@@ -69,7 +69,7 @@ class Concrete5_Library_Events {
 			Events::extendPageType($ctHandle, 'on_composer_delete_draft', $params);
 		} else {
 			$ce = Events::getInstance();
-			$class = Object::camelcase($ctHandle) . 'PageTypeController';
+			$class = ConcreteObject::camelcase($ctHandle) . 'PageTypeController';
 			$method = $event;
 			$filename = Loader::pageTypeControllerPath($ctHandle);
 			$ce->registeredEvents[$event][] = array(

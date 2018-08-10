@@ -1,4 +1,4 @@
-<?
+<?php
 
 defined('C5_EXECUTE') or die("Access Denied.");
 
@@ -12,7 +12,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
  *
  */
 
-class Concrete5_Model_UsersFriends extends Object {  
+class Concrete5_Model_UsersFriends extends ConcreteObject {  
 	/**
 	* Get data from a users friends
 	* @param int $uID

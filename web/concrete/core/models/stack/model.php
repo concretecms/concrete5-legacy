@@ -1,4 +1,4 @@
-<?
+<?php
 
 defined('C5_EXECUTE') or die("Access Denied.");
 
@@ -54,7 +54,7 @@ class Concrete5_Model_Stack extends Page {
 			$data['name'] = t('No Name');
 		}
 		$pagetype = CollectionType::getByHandle(STACKS_PAGE_TYPE);
-		$page = $parent->add($pagetype, $data);	
+		$page = $parent->addChildPage($pagetype, $data);	
 
 		// we have to do this because we need the area to exist before we try and add something to it.
 		$a = Area::getOrCreate($page, STACKS_AREA_NAME);

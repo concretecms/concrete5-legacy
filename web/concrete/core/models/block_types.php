@@ -1,4 +1,4 @@
-<?
+<?php
 
 defined('C5_EXECUTE') or die("Access Denied.");
 
@@ -23,7 +23,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 * @category Concrete
 */
 
-	class Concrete5_Model_BlockTypeList extends Object {
+	class Concrete5_Model_BlockTypeList extends ConcreteObject {
 
 		/**
 		 * array of BlockType objects - should likely be considered a protected property
@@ -275,7 +275,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 * @package Blocks
 * @category Concrete
 */
-	class Concrete5_Model_BlockType extends Object {
+	class Concrete5_Model_BlockType extends ConcreteObject {
 
 		/**
 		 * @var array $addBTUArray

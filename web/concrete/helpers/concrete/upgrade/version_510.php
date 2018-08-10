@@ -1,4 +1,4 @@
-<?
+<?php
 /**
  * @access private
  * @package Helpers
@@ -36,14 +36,14 @@ class ConcreteUpgradeVersion510Helper {
 		$p = SinglePage::getByID($p->getCollectionID());
 		$p->refresh();
 
-		$d3a = SinglePage::add('/dashboard/reports/forms');
-		$d3b = SinglePage::add('/dashboard/reports/logs');
-		$d3c = SinglePage::add('/dashboard/reports/database');
+		$d3a = SinglePage::createSinglePage('/dashboard/reports/forms');
+		$d3b = SinglePage::createSinglePage('/dashboard/reports/logs');
+		$d3c = SinglePage::createSinglePage('/dashboard/reports/database');
 		
 		$d4 = Page::getByPath('/dashboard/users');
-		$d4a = SinglePage::add('/dashboard/users/search');
-		$d4b = SinglePage::add('/dashboard/users/add');
-		$d4c = SinglePage::add('/dashboard/users/groups');
+		$d4a = SinglePage::createSinglePage('/dashboard/users/search');
+		$d4b = SinglePage::createSinglePage('/dashboard/users/add');
+		$d4c = SinglePage::createSinglePage('/dashboard/users/groups');
 		$d4d = Page::getByPath("/dashboard/users/attributes");
 		
 		$db = Loader::db();
@@ -64,14 +64,14 @@ class ConcreteUpgradeVersion510Helper {
 		$p = Page::getByPath('/dashboard/pages/attributes');
 		$p->delete();
 		
-		$d7a = SinglePage::add('/dashboard/pages/themes');
-		$d7b = SinglePage::add('/dashboard/pages/themes/add');
-		$d7c = SinglePage::add('/dashboard/pages/themes/inspect');
-		$d7d = SinglePage::add('/dashboard/pages/themes/customize');
-		$d7e = SinglePage::add('/dashboard/pages/themes/marketplace');
-		$d7f = SinglePage::add('/dashboard/pages/types');
-		$d7g = SinglePage::add('/dashboard/pages/types/attributes');
-		$d7h = SinglePage::add('/dashboard/pages/single');
+		$d7a = SinglePage::createSinglePage('/dashboard/pages/themes');
+		$d7b = SinglePage::createSinglePage('/dashboard/pages/themes/add');
+		$d7c = SinglePage::createSinglePage('/dashboard/pages/themes/inspect');
+		$d7d = SinglePage::createSinglePage('/dashboard/pages/themes/customize');
+		$d7e = SinglePage::createSinglePage('/dashboard/pages/themes/marketplace');
+		$d7f = SinglePage::createSinglePage('/dashboard/pages/types');
+		$d7g = SinglePage::createSinglePage('/dashboard/pages/types/attributes');
+		$d7h = SinglePage::createSinglePage('/dashboard/pages/single');
 
 		$p = Page::getByPath('/dashboard/themes');
 		$p->delete();

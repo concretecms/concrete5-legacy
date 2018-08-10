@@ -1,10 +1,10 @@
-<? defined('C5_EXECUTE') or die("Access Denied."); ?>
+<?php defined('C5_EXECUTE') or die("Access Denied."); ?>
 
 <script type="text/javascript">
 //<![CDATA[
-var ccmSlideShowHelper<?=intval($bID)?> = {
+var ccmSlideShowHelper<?php echo intval($bID)?> = {
 
-	bID:<?=intval($bID)?>,
+	bID:<?php echo intval($bID)?>,
 	imgNum:0,
 	
 	init:function(){
@@ -36,7 +36,7 @@ var ccmSlideShowHelper<?=intval($bID)?> = {
 		this.imgEls[this.imgNum].css('opacity',0);
 		this.imgEls[this.imgNum].css('display','block');
 		this.imgEls[this.imgNum].animate({opacity:1},
-			this.imgInfos[this.imgNum].fadeDuration*1000,'',function(){ccmSlideShowHelper<?=intval($bID)?>.preparefadeOut()});
+			this.imgInfos[this.imgNum].fadeDuration*1000,'',function(){ccmSlideShowHelper<?php echo intval($bID)?>.preparefadeOut()});
 		var prevNum=this.imgNum-1;
 		if(prevNum<0) prevNum=this.imgInfos.length-1;
 		if(this.imgInfos.length==1) return;
@@ -46,7 +46,7 @@ var ccmSlideShowHelper<?=intval($bID)?> = {
 		if(this.imgInfos.length==1) return;
 		var milisecDuration=parseInt(this.imgInfos[this.imgNum].duration)*1000;
 		this.imgEls[this.imgNum].css('z-index',2);
-		setTimeout('ccmSlideShowHelper'+<?=intval($bID)?>+'.nextImg();',milisecDuration);
+		setTimeout('ccmSlideShowHelper'+<?php echo intval($bID)?>+'.nextImg();',milisecDuration);
 		this.imgNum++;
 	},
 	maxHeight:0,
@@ -57,13 +57,13 @@ var ccmSlideShowHelper<?=intval($bID)?> = {
 		el.className="slideImgWrap"; 
 		if(this.imgInfos[num].fullFilePath.length>0)
 			 imgURL=this.imgInfos[num].fullFilePath;
-		else imgURL='<?=REL_DIR_FILES_UPLOADED?>/'+this.imgInfos[num].fileName; 
+		else imgURL='<?php echo REL_DIR_FILES_UPLOADED?>/'+this.imgInfos[num].fileName; 
 		//el.innerHTML='<img src="'+imgURL+'" >';
 		el.innerHTML='<div style="height:'+this.imgInfos[num].imgHeight+'px; background:url(\''+escape(imgURL)+'\') center no-repeat">&nbsp;</div>';
 		//alert(imgURL);
 		if(this.imgInfos[num].url.length>0) {
 			//el.linkURL=this.imgInfos[num].url;
-			var clickEvent='onclick="return ccmSlideShowHelper<?=intval($bID)?>.imgClick( this.href  );"';
+			var clickEvent='onclick="return ccmSlideShowHelper<?php echo intval($bID)?>.imgClick( this.href  );"';
 			el.innerHTML='<a href="'+this.imgInfos[num].url+'" '+clickEvent+' >'+el.innerHTML+'</a>';			
 		}
 		el.style.display='none';
@@ -75,7 +75,7 @@ var ccmSlideShowHelper<?=intval($bID)?> = {
 		//override for custom behavior
 	},
 	imgInfos:[
-	<? 
+	<?php 
 	$notFirst=1;
 	foreach($images as $imgInfo) {
 		$f = File::getByID($imgInfo['fID']);
@@ -85,23 +85,23 @@ var ccmSlideShowHelper<?=intval($bID)?> = {
 			$notFirst=0
 			?>
 			{
-				fileName:"<?=$f->getFileName()?>",
-				fullFilePath:"<?=$f->getRelativePath()?>",
-				duration:<?=intval($imgInfo['duration'])?>,
-				fadeDuration:<?=intval($imgInfo['fadeDuration'])?>,		
-				url:"<?=$imgInfo['url']?>",
-				groupSet:<?=intval($imgInfo['groupSet'])?>,
-				imgHeight:<?=intval($imgInfo['imgHeight'])?>
+				fileName:"<?php echo $f->getFileName()?>",
+				fullFilePath:"<?php echo $f->getRelativePath()?>",
+				duration:<?php echo intval($imgInfo['duration'])?>,
+				fadeDuration:<?php echo intval($imgInfo['fadeDuration'])?>,		
+				url:"<?php echo $imgInfo['url']?>",
+				groupSet:<?php echo intval($imgInfo['groupSet'])?>,
+				imgHeight:<?php echo intval($imgInfo['imgHeight'])?>
 			}
-		<? }
+		<?php }
 		} ?>
 	]
 }
-$(function(){ccmSlideShowHelper<?=intval($bID)?>.init();}); 
+$(function(){ccmSlideShowHelper<?php echo intval($bID)?>.init();}); 
 //]]>
 </script>
 
-<div id="ccm-SlideshowBlock-display<?=intval($bID)?>" style="height:<?php echo $maxHeight?>px" class="ccm-SlideshowBlock-display">
-<div id="ccm-SlideshowBlock-heightSetter<?=intval($bID)?>" class="ccm-SlideshowBlock-heightSetter"></div>
+<div id="ccm-SlideshowBlock-display<?php echo intval($bID)?>" style="height:<?php echo $maxHeight?>px" class="ccm-SlideshowBlock-display">
+<div id="ccm-SlideshowBlock-heightSetter<?php echo intval($bID)?>" class="ccm-SlideshowBlock-heightSetter"></div>
 <div class="ccm-SlideshowBlock-clear" ></div>
 </div>

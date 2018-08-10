@@ -1,4 +1,4 @@
-<?
+<?php
 
 defined('C5_EXECUTE') or die("Access Denied.");
 
@@ -21,7 +21,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
  * @license    http://www.concrete5.org/license/     MIT License
  *
  */
-class Concrete5_Model_Area extends Object {
+class Concrete5_Model_Area extends ConcreteObject {
 
 	public $cID, $arID, $arHandle;
 	public $c;
@@ -563,8 +563,13 @@ class Concrete5_Model_Area extends Object {
 	 * @param Block[] $alternateBlockArray optional array of blocks to render instead of default behavior
 	 * @return void
 	 */
-	function display(&$c, $alternateBlockArray = null) {
-
+	function display($c = null, $alternateBlockArray = null) {
+		if (!is_object($c)) {
+			$c = Page::getCurrentPage();
+		}
+		if ($this instanceof GlobalArea || $this instanceof Concrete5_Model_GlobalArea) {
+			$this->getOrCreate($c, $this->arHandle, 1);
+		}
 		if(!intval($c->cID)){
 			//Invalid Collection
 			return false;

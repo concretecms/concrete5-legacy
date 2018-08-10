@@ -1,13 +1,13 @@
-<? defined('C5_EXECUTE') or die("Access Denied."); ?>
+<?php defined('C5_EXECUTE') or die("Access Denied."); ?>
 
-<? if ($this->controller->getTask() == 'view_details') { 
+<?php if ($this->controller->getTask() == 'view_details') { 
 	$sv = CollectionVersion::get($stack, 'ACTIVE');
 	?>
 
 	<script type="text/javascript">
 	
 	ccm_stacksAddBlock = function() {
-		ccm_openAreaAddBlock("<?=STACKS_AREA_NAME?>", true, <?=$stack->getCollectionID()?>);
+		ccm_openAreaAddBlock("<?php echo STACKS_AREA_NAME?>", true, <?php echo $stack->getCollectionID()?>);
 	}
 	
 	ccm_parseBlockResponsePost = function(r) {
@@ -36,39 +36,39 @@
 	div#ccm-stack-status-bar div#ccm-page-status-bar div.ccm-page-status-bar-buttons {display: block; margin-top: 10px; position: static;}
 	</style>
 	
-	<?=Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper($sv->getVersionName(), false, 'span10 offset1', false)?>
+	<?php echo Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper($sv->getVersionName(), false, 'span10 offset1', false)?>
 	<div class="ccm-pane-options">
 		<div class="btn-group" style="float:left; margin-right: 4px;">
-			<a class="btn dropdown-toggle" data-toggle="dropdown" href="#"><?=t('Add')?> <span class="caret"></span></a>
+			<a class="btn dropdown-toggle" data-toggle="dropdown" href="#"><?php echo t('Add')?> <span class="caret"></span></a>
 			<ul class="dropdown-menu">
-				<li><a href="javascript:void(0)" onclick="ccm_stacksAddBlock()"><?=t('Block')?></a></li>
-				<li><a dialog-modal="false" dialog-width="550" dialog-height="380" dialog-title="<?=t('Paste From Clipboard')?>" id="stackAddClipboard" href="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/edit_area_popup.php?cID=<?=$stack->getCollectionID()?>&arHandle=<?=STACKS_AREA_NAME?>&atask=paste&addOnly=0"><?=t('Paste From Clipboard')?></a></li>
+				<li><a href="javascript:void(0)" onclick="ccm_stacksAddBlock()"><?php echo t('Block')?></a></li>
+				<li><a dialog-modal="false" dialog-width="550" dialog-height="380" dialog-title="<?php echo t('Paste From Clipboard')?>" id="stackAddClipboard" href="<?php echo REL_DIR_FILES_TOOLS_REQUIRED?>/edit_area_popup.php?cID=<?php echo $stack->getCollectionID()?>&arHandle=<?php echo STACKS_AREA_NAME?>&atask=paste&addOnly=0"><?php echo t('Paste From Clipboard')?></a></li>
 			</ul>
 		</div>
 		
-		<? $cpc = new Permissions($stack); ?>
+		<?php $cpc = new Permissions($stack); ?>
 		
-		<? if ($cpc->canEditPageProperties()) { ?>
-			<a class="btn small ccm-main-nav-edit-option"href="<?=$this->action('rename', $stack->getCollectionID())?>"><?=t('Rename')?></a>
-		<? } ?>
+		<?php if ($cpc->canEditPageProperties()) { ?>
+			<a class="btn small ccm-main-nav-edit-option"href="<?php echo $this->action('rename', $stack->getCollectionID())?>"><?php echo t('Rename')?></a>
+		<?php } ?>
 		
-		<a class="btn small ccm-main-nav-edit-option" dialog-width="640" dialog-height="340" id="stackVersions" dialog-title="<?=t('Version History')?>" href="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/versions.php?rel=SITEMAP&cID=<?=$stack->getCollectionID()?>"><?=t('Version History')?></a>
+		<a class="btn small ccm-main-nav-edit-option" dialog-width="640" dialog-height="340" id="stackVersions" dialog-title="<?php echo t('Version History')?>" href="<?php echo REL_DIR_FILES_TOOLS_REQUIRED?>/versions.php?rel=SITEMAP&cID=<?php echo $stack->getCollectionID()?>"><?php echo t('Version History')?></a>
 
-		<? $cpc = new Permissions($stack); ?>
+		<?php $cpc = new Permissions($stack); ?>
 		
-		<? if ($cpc->canEditPagePermissions() && PERMISSIONS_MODEL == 'advanced') { ?>
-			<a class="btn small ccm-main-nav-edit-option" dialog-width="580" dialog-append-buttons="true" dialog-height="420" dialog-title="<?=t('Stack Permissions')?>" id="stackPermissions" href="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/edit_area_popup.php?cID=<?=$stack->getCollectionID()?>&arHandle=<?=STACKS_AREA_NAME?>&atask=groups"><?=t('Permissions')?></a>
-		<? } ?>
+		<?php if ($cpc->canEditPagePermissions() && PERMISSIONS_MODEL == 'advanced') { ?>
+			<a class="btn small ccm-main-nav-edit-option" dialog-width="580" dialog-append-buttons="true" dialog-height="420" dialog-title="<?php echo t('Stack Permissions')?>" id="stackPermissions" href="<?php echo REL_DIR_FILES_TOOLS_REQUIRED?>/edit_area_popup.php?cID=<?php echo $stack->getCollectionID()?>&arHandle=<?php echo STACKS_AREA_NAME?>&atask=groups"><?php echo t('Permissions')?></a>
+		<?php } ?>
 
-		<? if ($cpc->canDeletePage()) { ?>
-			<a class="btn ccm-button-v2-right small ccm-main-nav-edit-option error" href="javascript:void(0)" onclick="if (confirm('<?=t('Are you sure you want to remove this stack?')?>')) { window.location.href='<?=$this->url('/dashboard/blocks/stacks/', 'delete', $stack->getCollectionID(), Loader::helper('validation/token')->generate('delete'))?>' }"><?=t('Delete Stack')?></a>
-		<? } ?>
+		<?php if ($cpc->canDeletePage()) { ?>
+			<a class="btn ccm-button-v2-right small ccm-main-nav-edit-option error" href="javascript:void(0)" onclick="if (confirm('<?php echo t('Are you sure you want to remove this stack?')?>')) { window.location.href='<?php echo $this->url('/dashboard/blocks/stacks/', 'delete', $stack->getCollectionID(), Loader::helper('validation/token')->generate('delete'))?>' }"><?php echo t('Delete Stack')?></a>
+		<?php } ?>
 		
-		<? if ($cpc->canMoveOrCopyPage()) { ?>
-			<a class="btn ccm-button-v2-right small ccm-main-nav-edit-option" href="<?=$this->action('duplicate', $stack->getCollectionID())?>" style="margin-right: 4px;"><?=t('Duplicate Stack')?></a>
-		<? } ?>
+		<?php if ($cpc->canMoveOrCopyPage()) { ?>
+			<a class="btn ccm-button-v2-right small ccm-main-nav-edit-option" href="<?php echo $this->action('duplicate', $stack->getCollectionID())?>" style="margin-right: 4px;"><?php echo t('Duplicate Stack')?></a>
+		<?php } ?>
 		
-		<?
+		<?php
 		$hasPendingPageApproval = false;
 		$workflowList = PageWorkflowProgress::getList($stack);
 		foreach($workflowList as $wl) {
@@ -99,64 +99,64 @@
 					}
 				}
 
-				if (count($workflows > 0) && !$canApproveWorkflow) {
+				if (count($workflows) > 0 && !$canApproveWorkflow) {
 					$publishTitle = t('Submit to Workflow');
 				}
 
 				$token = '&' . Loader::helper('validation/token')->getParameter(); ?>
-				<a style="margin-right: 8px; <? if ($vo->isApproved()) { ?> display: none; <? } ?>" href="javascript:void(0)" onclick="window.location.href='<?=DIR_REL . "/" . DISPATCHER_FILENAME . "?cID=" . $stack->getCollectionID() . "&ctask=approve-recent" . $token?>'" class="btn btn-success small ccm-main-nav-edit-option ccm-button-v2-right"><?=$publishTitle?></a>
-			<?
+				<a style="margin-right: 8px; <?php if ($vo->isApproved()) { ?> display: none; <?php } ?>" href="javascript:void(0)" onclick="window.location.href='<?php echo DIR_REL . "/" . DISPATCHER_FILENAME . "?cID=" . $stack->getCollectionID() . "&ctask=approve-recent" . $token?>'" class="btn btn-success small ccm-main-nav-edit-option ccm-button-v2-right"><?php echo $publishTitle?></a>
+			<?php
 			}		
 		}
 		?>
 	</div>
 	<div class="ccm-pane-body ccm-pane-body-footer clearfix" id="ccm-stack-container">
-		<?
+		<?php
 			if (count($workflowList) > 0) { ?>
 			<div id="ccm-stack-status-bar"></div>
 
 			<script type="text/javascript">
 			$(function() {
 
-			<? foreach($workflowList as $wl) { ?>
-				<? $wr = $wl->getWorkflowRequestObject(); 
+			<?php foreach($workflowList as $wl) { ?>
+				<?php $wr = $wl->getWorkflowRequestObject(); 
 				$wrk = $wr->getWorkflowRequestPermissionKeyObject(); 
 				if ($wrk->getPermissionKeyHandle() == 'approve_page_versions') {
 					$hasPendingPageApproval = true;
 				}
 				?>
-				<? $wf = $wl->getWorkflowObject(); ?>
+				<?php $wf = $wl->getWorkflowObject(); ?>
 				sbitem = new ccm_statusBarItem();
-				sbitem.setCSSClass('<?=$wr->getWorkflowRequestStyleClass()?>');
-				sbitem.setDescription('<?=$wf->getWorkflowProgressCurrentDescription($wl)?>');
-				sbitem.setAction('<?=$wl->getWorkflowProgressFormAction()?>');
+				sbitem.setCSSClass('<?php echo $wr->getWorkflowRequestStyleClass()?>');
+				sbitem.setDescription('<?php echo $wf->getWorkflowProgressCurrentDescription($wl)?>');
+				sbitem.setAction('<?php echo $wl->getWorkflowProgressFormAction()?>');
 				sbitem.enableAjaxForm();
-				<? $actions = $wl->getWorkflowProgressActions(); ?>
-				<? foreach($actions as $act) { ?>
+				<?php $actions = $wl->getWorkflowProgressActions(); ?>
+				<?php foreach($actions as $act) { ?>
 					btn = new ccm_statusBarItemButton();
-					btn.setLabel('<?=$act->getWorkflowProgressActionLabel()?>');
-					btn.setCSSClass('<?=$act->getWorkflowProgressActionStyleClass()?>');
-					btn.setInnerButtonLeftHTML('<?=$act->getWorkflowProgressActionStyleInnerButtonLeftHTML()?>');
-					btn.setInnerButtonRightHTML('<?=$act->getWorkflowProgressActionStyleInnerButtonRightHTML()?>');
-					<? if ($act->getWorkflowProgressActionURL() != '') { ?>
-						btn.setURL('<?=$act->getWorkflowProgressActionURL()?>');
-					<? } else { ?>
-						btn.setAction('<?=$act->getWorkflowProgressActionTask()?>');
-					<? } ?>
-					<? if (count($act->getWorkflowProgressActionExtraButtonParameters()) > 0) { ?>
-						<? foreach($act->getWorkflowProgressActionExtraButtonParameters() as $key => $value) { ?>
-							btn.addAttribute('<?=$key?>', '<?=$value?>');
-						<? } ?>
-					<? } ?>
+					btn.setLabel('<?php echo $act->getWorkflowProgressActionLabel()?>');
+					btn.setCSSClass('<?php echo $act->getWorkflowProgressActionStyleClass()?>');
+					btn.setInnerButtonLeftHTML('<?php echo $act->getWorkflowProgressActionStyleInnerButtonLeftHTML()?>');
+					btn.setInnerButtonRightHTML('<?php echo $act->getWorkflowProgressActionStyleInnerButtonRightHTML()?>');
+					<?php if ($act->getWorkflowProgressActionURL() != '') { ?>
+						btn.setURL('<?php echo $act->getWorkflowProgressActionURL()?>');
+					<?php } else { ?>
+						btn.setAction('<?php echo $act->getWorkflowProgressActionTask()?>');
+					<?php } ?>
+					<?php if (count($act->getWorkflowProgressActionExtraButtonParameters()) > 0) { ?>
+						<?php foreach($act->getWorkflowProgressActionExtraButtonParameters() as $key => $value) { ?>
+							btn.addAttribute('<?php echo $key?>', '<?php echo $value?>');
+						<?php } ?>
+					<?php } ?>
 					sbitem.addButton(btn);
-				<? } ?>
+				<?php } ?>
 				ccm_statusBar.addItem(sbitem);
-			<? } ?>
+			<?php } ?>
 				ccm_statusBar.activate('ccm-stack-status-bar');
 			});
 			</script>
 
-			<? }  
+			<?php }  
 
 
 		$a = Area::get($stack, STACKS_AREA_NAME);
@@ -179,71 +179,71 @@
 		print '</div>'; // instead  of loading block area footer view
 	?>	
 	</div>
-	<?=Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper(false); ?>
+	<?php echo Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper(false); ?>
 
-<? } else if ($this->controller->getTask() == 'duplicate') {
+<?php } else if ($this->controller->getTask() == 'duplicate') {
 	$sv = CollectionVersion::get($stack, 'ACTIVE');
 	?>
 
-	<?=Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t("Duplicate %s", $sv->getVersionName()), false, 'span10 offset1', false)?>
-	<form name="duplicate_form" action="<?=$this->action('duplicate', $stack->getCollectionID())?>" method="POST">
-		<?=Loader::helper("validation/token")->output('duplicate_stack')?>
+	<?php echo Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t("Duplicate %s", $sv->getVersionName()), false, 'span10 offset1', false)?>
+	<form name="duplicate_form" action="<?php echo $this->action('duplicate', $stack->getCollectionID())?>" method="POST">
+		<?php echo Loader::helper("validation/token")->output('duplicate_stack')?>
 		<div class="ccm-pane-body ccm-pane-body">
 			<div class="clearfix">
-				<?=$form->label('stackName', t("Name"))?>
+				<?php echo $form->label('stackName', t("Name"))?>
 				<div class="input">
-					<?=$form->text('stackName')?>
+					<?php echo $form->text('stackName')?>
 				</div>
 			</div>
 		</div>
 		<div class="ccm-pane-footer">
-			<?=$interface->button(t("Cancel"), $this->action('view_details', $stack->getCollectionID()), 'left')?>
-			<?=$interface->submit(t("Duplicate Stack"), 'duplicate_form', 'right', 'primary')?>
+			<?php echo $interface->button(t("Cancel"), $this->action('view_details', $stack->getCollectionID()), 'left')?>
+			<?php echo $interface->submit(t("Duplicate Stack"), 'duplicate_form', 'right', 'primary')?>
 		</div>
 	</form>
-	<?=Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper(false);?>
+	<?php echo Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper(false);?>
 
-<? } else if ($this->controller->getTask() == 'rename') {
+<?php } else if ($this->controller->getTask() == 'rename') {
 	$sv = CollectionVersion::get($stack, 'ACTIVE');
 	?>
 
-	<?=Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t("Rename %s", $sv->getVersionName()), false, 'span10 offset1', false)?>
-	<form name="duplicate_form" action="<?=$this->action('rename', $stack->getCollectionID())?>" method="POST">
-		<?=Loader::helper("validation/token")->output('rename_stack')?>
+	<?php echo Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t("Rename %s", $sv->getVersionName()), false, 'span10 offset1', false)?>
+	<form name="duplicate_form" action="<?php echo $this->action('rename', $stack->getCollectionID())?>" method="POST">
+		<?php echo Loader::helper("validation/token")->output('rename_stack')?>
 		<div class="ccm-pane-body ccm-pane-body">
 			<div class="clearfix">
-				<?=$form->label('stackName', t("Name"))?>
+				<?php echo $form->label('stackName', t("Name"))?>
 				<div class="input">
-					<?=$form->text('stackName', $stack->getStackName())?>
+					<?php echo $form->text('stackName', $stack->getStackName())?>
 				</div>
 			</div>
 		</div>
 		<div class="ccm-pane-footer">
-			<?=$interface->button(t("Cancel"), $this->action('view_details', $stack->getCollectionID()), 'left')?>
-			<?=$interface->submit(t("Rename"), 'duplicate_form', 'right', 'primary')?>
+			<?php echo $interface->button(t("Cancel"), $this->action('view_details', $stack->getCollectionID()), 'left')?>
+			<?php echo $interface->submit(t("Rename"), 'duplicate_form', 'right', 'primary')?>
 		</div>
 	</form>
-	<?=Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper(false);?>
+	<?php echo Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper(false);?>
 
-<? } else { ?>
+<?php } else { ?>
 
-	<?=Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Stacks'), t('Stacks give you a central place to stash blocks, where you can control their order, permissions, and even version them.<br><br>Add stacks to your site and you can update them in one place.'), 'span10 offset1');?>
+	<?php echo Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Stacks'), t('Stacks give you a central place to stash blocks, where you can control their order, permissions, and even version them.<br><br>Add stacks to your site and you can update them in one place.'), 'span10 offset1');?>
 		
-	<h4><?=t('Global Areas')?></h4>
+	<h4><?php echo t('Global Areas')?></h4>
 	<div class="ccm-stack-content-wrapper">
 	
-	<?
+	<?php
 	if (count($globalareas) > 0) { 
 		foreach($globalareas as $st) {
 			$sv = CollectionVersion::get($st, 'ACTIVE');
 			?>
 
-			<div class="ccm-stack ccm-group" id="stID_<?=$st->getCollectionID()?>">
-				<? if ($canMoveStacks) { ?><img class="ccm-group-sort" src="<?=ASSETS_URL_IMAGES?>/icons/up_down.png" width="14" height="14" /><? } ?>
-				<a href="<?=$this->url('/dashboard/blocks/stacks', 'view_details', $st->getCollectionID())?>"><?=$sv->getVersionName()?></a>
+			<div class="ccm-stack ccm-group" id="stID_<?php echo $st->getCollectionID()?>">
+				<?php if ($canMoveStacks) { ?><img class="ccm-group-sort" src="<?php echo ASSETS_URL_IMAGES?>/icons/up_down.png" width="14" height="14" /><?php } ?>
+				<a href="<?php echo $this->url('/dashboard/blocks/stacks', 'view_details', $st->getCollectionID())?>"><?php echo $sv->getVersionName()?></a>
 			</div>
 		
-		<?
+		<?php
 		}
 	} else {
 		print '<p>';
@@ -254,20 +254,20 @@
 	
 	</div>
 		
-	<h4><?=t('Other Stacks')?></h4>
+	<h4><?php echo t('Other Stacks')?></h4>
 	<div class="ccm-stack-content-wrapper">
-	<?
+	<?php
 	if (count($useradded) > 0) { 
 		foreach($useradded as $st) { 
 			$sv = CollectionVersion::get($st, 'ACTIVE');
 			?>
 
-			<div class="ccm-stack ccm-group" id="stID_<?=$st->getCollectionID()?>">
-				<? if ($canMoveStacks) { ?><img class="ccm-group-sort" src="<?=ASSETS_URL_IMAGES?>/icons/up_down.png" width="14" height="14" /><? } ?>
-				<a href="<?=$this->url('/dashboard/blocks/stacks', 'view_details', $st->getCollectionID())?>"><?=$sv->getVersionName()?></a>
+			<div class="ccm-stack ccm-group" id="stID_<?php echo $st->getCollectionID()?>">
+				<?php if ($canMoveStacks) { ?><img class="ccm-group-sort" src="<?php echo ASSETS_URL_IMAGES?>/icons/up_down.png" width="14" height="14" /><?php } ?>
+				<a href="<?php echo $this->url('/dashboard/blocks/stacks', 'view_details', $st->getCollectionID())?>"><?php echo $sv->getVersionName()?></a>
 			</div>
 		
-		<?
+		<?php
 		}
 	} else {
 		print '<p>';
@@ -276,19 +276,19 @@
 	}
 	?>
 	</div>
-		<h3><?=t('Add Stack')?></h3>
-		<form method="post" class="form-stacked" style="padding-left: 0px" action="<?=$this->action('add_stack')?>">
-		<?=Loader::helper("validation/token")->output('add_stack')?>
+		<h3><?php echo t('Add Stack')?></h3>
+		<form method="post" class="form-stacked" style="padding-left: 0px" action="<?php echo $this->action('add_stack')?>">
+		<?php echo Loader::helper("validation/token")->output('add_stack')?>
 		<div class="clearfix">
-			<?=Loader::helper("form")->label('stackName', t('Name'))?>
+			<?php echo Loader::helper("form")->label('stackName', t('Name'))?>
 			<div class="input">
-				<?=Loader::helper('form')->text('stackName')?>
-				<?=Loader::helper("form")->submit('add', t('Add'))?>
+				<?php echo Loader::helper('form')->text('stackName')?>
+				<?php echo Loader::helper("form")->submit('add', t('Add'))?>
 		</div>
 		</div>
 		
 		</form>
 		
-	<?=Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper()?>
+	<?php echo Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper()?>
 
-<? } ?>
+<?php } ?>

@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 
 class Concrete5_Model_BlockPermissionAssignment extends PermissionAssignment {
@@ -23,8 +23,11 @@ class Concrete5_Model_BlockPermissionAssignment extends PermissionAssignment {
 		'schedule_guest_access' => 'schedule_page_contents_guest_access',
 		'delete_block' => 'edit_page_contents'		
 	);
-	
-	public function setPermissionObject(Block $b) {
+
+	/**
+	 * @param Block $b
+	 */
+	public function setPermissionObject($b) {
 		$this->permissionObject = $b;
 		
 		// if the area overrides the collection permissions explicitly (with a one on the override column) we check

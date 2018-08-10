@@ -1,32 +1,32 @@
-<? defined('C5_EXECUTE') or die("Access Denied.");
+<?php defined('C5_EXECUTE') or die("Access Denied.");
 $dh = Loader::helper('date');
 /* @var $dh DateHelper */
 ?>
 
-<?=Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Recent Activity'))?>
+<?php echo Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Recent Activity'))?>
 
 <div class="row">
 
 
 <div class="span-pane-half">
 
-<h3><?=t('Recent Page Views')?></h3>
+<h3><?php echo t('Recent Page Views')?></h3>
 
 <table class="table" id="ccm-site-statistics-visits" style="display: none">
 <thead>
 <tr>
 	<td></td>
-	<? foreach($pageViews as $day => $total) { ?>
-		<th><?=$day?></th>
-	<? } ?>
+	<?php foreach($pageViews as $day => $total) { ?>
+		<th><?php echo $day?></th>
+	<?php } ?>
 </tr>
 </thead>
 <tbody>
 <tr>
-	<th><?=t('Page Views')?></th>
-	<? foreach($pageViews as $total) { ?>
-		<td><?=$total?></td>
-	<? } ?>
+	<th><?php echo t('Page Views')?></th>
+	<?php foreach($pageViews as $total) { ?>
+		<td><?php echo $total?></td>
+	<?php } ?>
 </tr>
 </table>
 
@@ -34,23 +34,23 @@ $dh = Loader::helper('date');
 
 <div class="span-pane-half">
 
-<h3><?=t('Recent Registrations')?></h3>
+<h3><?php echo t('Recent Registrations')?></h3>
 
 <table class="table"  id="ccm-site-statistics-registrations" style="display: none">
 <thead>
 <tr>
 	<td></td>
-	<? foreach($userRegistrations as $day => $total) { ?>
-		<th><?=$day?></th>
-	<? } ?>
+	<?php foreach($userRegistrations as $day => $total) { ?>
+		<th><?php echo $day?></th>
+	<?php } ?>
 </tr>
 </thead>
 <tbody>
 <tr>
-	<th><?=t('User Registrations')?></th>
-	<? foreach($userRegistrations as $total) { ?>
-		<td><?=$total?></td>
-	<? } ?>
+	<th><?php echo t('User Registrations')?></th>
+	<?php foreach($userRegistrations as $total) { ?>
+		<td><?php echo $total?></td>
+	<?php } ?>
 </tr>
 </table>
 
@@ -66,23 +66,23 @@ $dh = Loader::helper('date');
 
 <br/><br/>
 
-<h3><?=t('Pages Created')?></h3>
+<h3><?php echo t('Pages Created')?></h3>
 
 <table class="table"  id="ccm-site-statistics-new-pages" style="display: none">
 <thead>
 <tr>
 	<td></td>
-	<? foreach($newPages as $day => $total) { ?>
-		<th><?=$day?></th>
-	<? } ?>
+	<?php foreach($newPages as $day => $total) { ?>
+		<th><?php echo $day?></th>
+	<?php } ?>
 </tr>
 </thead>
 <tbody>
 <tr>
-	<th><?=t('Pages Created')?></th>
-	<? foreach($newPages as $total) { ?>
-		<td><?=$total?></td>
-	<? } ?>
+	<th><?php echo t('Pages Created')?></th>
+	<?php foreach($newPages as $total) { ?>
+		<td><?php echo $total?></td>
+	<?php } ?>
 </tr>
 </table>
 
@@ -98,23 +98,23 @@ $dh = Loader::helper('date');
 
 <br/><br/>
 
-<h3><?=t('Five Most Recent Downloads')?></h3>
+<h3><?php echo t('Five Most Recent Downloads')?></h3>
 
 <table class="table"  id="ccm-site-statistics-downloads">
 <thead>
 <tr>
-	<th><?=t('File')?></th>
-	<th><?=t('User')?></th>
-	<th><?=t('Downloaded On')?></th>
+	<th><?php echo t('File')?></th>
+	<th><?php echo t('User')?></th>
+	<th><?php echo t('Downloaded On')?></th>
 </tr>
 </thead>
 <tbody>
-<? if (count($downloads) == 0) { ?>
+<?php if (count($downloads) == 0) { ?>
 	<tr>
-		<td colspan="3" style="text-align: center"><?=t('No files have been downloaded.')?></td>
+		<td colspan="3" style="text-align: center"><?php echo t('No files have been downloaded.')?></td>
 	</tr>
-<? } else { ?>
-<?
+<?php } else { ?>
+<?php
 	foreach($downloads as $download) {
 		$f = File::getByID($download['fID']);
 		if (!is_object($f)) {
@@ -122,7 +122,7 @@ $dh = Loader::helper('date');
 		}
 		?>
 	<tr>
-		<td class='ccm-site-statistics-downloads-title'><a href="<?=$f->getDownloadURL()?>" title="<?=$f->getTitle();?>"><?php
+		<td class='ccm-site-statistics-downloads-title'><a href="<?php echo $f->getDownloadURL()?>" title="<?php echo $f->getTitle();?>"><?php
 		$title = $f->getTitle();
 		$maxlen = 20;
 		if (strlen($title) > ($maxlen-4)) {
@@ -133,7 +133,7 @@ $dh = Loader::helper('date');
 		echo $title;
 		?></a></td>
 		<td>
-			<?
+			<?php
 			$uID=intval($download['uID']);
 			if(!$uID){
 				echo t('Anonymous');
@@ -147,10 +147,10 @@ $dh = Loader::helper('date');
 			}
 			?>
 		</td>
-		<td><?=$dh->formatDateTime($download['timestamp'], false, false)?></td>
+		<td><?php echo $dh->formatDateTime($download['timestamp'], false, false)?></td>
 	</tr>
-	<? } ?>
-<? } ?>
+	<?php } ?>
+<?php } ?>
 </table>
 
 
@@ -182,4 +182,4 @@ $(function() {
 });
 </script>
 
-<?=Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper();?>
+<?php echo Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper();?>

@@ -1,4 +1,4 @@
-<?
+<?php
 /**
  * @access private
  * @package Helpers
@@ -87,20 +87,20 @@ class ConcreteUpgradeVersion520Helper {
 
 		$p = Page::getByPath('/dashboard/files');
 		if ($p->isError()) {
-			$d2 = SinglePage::add('/dashboard/files');
-			$d2a = SinglePage::add('/dashboard/files/search');
-			$d2b = SinglePage::add('/dashboard/files/attributes');
-			$d2c = SinglePage::add('/dashboard/files/sets');
-			$d2d = SinglePage::add('/dashboard/files/access');						
+			$d2 = SinglePage::createSinglePage('/dashboard/files');
+			$d2a = SinglePage::createSinglePage('/dashboard/files/search');
+			$d2b = SinglePage::createSinglePage('/dashboard/files/attributes');
+			$d2c = SinglePage::createSinglePage('/dashboard/files/sets');
+			$d2d = SinglePage::createSinglePage('/dashboard/files/access');						
 			$d2->update(array('cName'=>t('File Manager'), 'cDescription'=>t('All documents and images.')));
-			$d3b = SinglePage::add('/dashboard/reports/surveys');
+			$d3b = SinglePage::createSinglePage('/dashboard/reports/surveys');
 		}
 
 		$p = Page::getByPath('/dashboard/scrapbook');
 		if ($p->isError()) {
-			$d3 = SinglePage::add('/dashboard/scrapbook');
-			$d3b = SinglePage::add('/dashboard/scrapbook/user');
-			$d3a = SinglePage::add('/dashboard/scrapbook/global');
+			$d3 = SinglePage::createSinglePage('/dashboard/scrapbook');
+			$d3b = SinglePage::createSinglePage('/dashboard/scrapbook/user');
+			$d3a = SinglePage::createSinglePage('/dashboard/scrapbook/global');
 			$d3->update(array('cName'=>t('Scrapbook'), 'cDescription'=>t('Share content across your site.')));
 		}
 			
@@ -124,7 +124,7 @@ class ConcreteUpgradeVersion520Helper {
 
 		$p = Page::getByPath('/dashboard/reports/surveys');
 		if ($p->isError()) {
-			$p = SinglePage::add('/dashboard/reports/surveys');
+			$p = SinglePage::createSinglePage('/dashboard/reports/surveys');
 		}
 	}
 	

@@ -1,4 +1,4 @@
-<?
+<?php
 
 defined('C5_EXECUTE') or die("Access Denied.");
 
@@ -22,7 +22,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
  *
  */
  
-	class Concrete5_Model_Collection extends Object {
+	class Concrete5_Model_Collection extends ConcreteObject {
 		
 		public $cID;
 		protected $attributes = array();
@@ -179,13 +179,16 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			$this->reindex();
 		}
 		
-		public static function reindexPendingPages() {
+		public static function reindexPendingPages($index = null) {
 			$num = 0;
 			$db = Loader::db();
 			$r = $db->Execute("select cID from PageSearchIndex where cRequiresReindex = 1");
+			if ($index === null) {
+				$index = isset($this) ? $this : false;
+			}
 			while ($row = $r->FetchRow()) { 
 				$pc = Page::getByID($row['cID']);
-				$pc->reindex($this, true);
+				$pc->reindex($index, true);
 				$num++;
 			}
 			Config::save('DO_PAGE_REINDEX_CHECK', false);
@@ -719,7 +722,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 				// there is nothing in the collections table for this page, so we create and grab
 
 				$data['handle'] = $handle;
-				$cObj = Collection::add($data);
+				$cObj = Collection::addCollection($data);
 
 			} else {
 				$row = $r->fetchRow();
@@ -873,8 +876,26 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			
 			return Block::getByID($nb->getBlockID(), $this, $a);
 		}
+	
+		public function __call($name, $arguments) {
+			switch (strtolower($name)) {
+				case 'add':
+					return $this->addCollection($arguments[0]);
+				case 'duplicate':
+					return $this->duplicateCollection();
+			}
+			trigger_error('Call to undefined method '.__CLASS__.'::' . $name . '()', E_USER_ERROR);
+		}
 		
-		public function add($data) {
+		public static function __callStatic($name, $arguments) {
+			switch (strtolower($name)) {
+				case 'add':
+					return self::addCollection($arguments[0]);
+			}
+			trigger_error('Call to undefined static method '.__CLASS__.'::' . $name . '()', E_USER_ERROR);
+		}
+
+		public function addCollection($data) {
 			$db = Loader::db();
 			$dh = Loader::helper('date');
 			$cDate = $dh->getSystemDateTime(); 
@@ -897,7 +918,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 				$cvIsNew = $data['cvIsNew'];
 			}
 			$data['name'] = Loader::helper('text')->sanitize($data['name']);
-			if (is_object($this)) {
+			if (isset($this) && ($this instanceof Concrete5_Model_Page || $this instanceof Page)) {
 				$ptID = $this->getCollectionThemeID();
 			} else {
 				$ptID = 0;
@@ -958,7 +979,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			}
 		}
 		
-		public function duplicate() {
+		public function duplicateCollection() {
 			$db = Loader::db();
 			$dh = Loader::helper('date');
 			$cDate = $dh->getSystemDateTime();

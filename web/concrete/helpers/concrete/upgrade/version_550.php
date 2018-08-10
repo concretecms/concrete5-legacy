@@ -1,4 +1,4 @@
-<?
+<?php
 /**
  * @access private
  * @package Helpers
@@ -89,17 +89,17 @@ class ConcreteUpgradeVersion550Helper {
 	
 	public function installSinglePages() {
 		Loader::model('single_page');
-		$spl = SinglePage::add(TRASH_PAGE_PATH);
+		$spl = SinglePage::createSinglePage(TRASH_PAGE_PATH);
 		if (is_object($spl)) {
 			$spl->update(array('cName' => t('Trash')));
 			$spl->moveToRoot();
 		}
-		$spl = SinglePage::add(STACKS_PAGE_PATH);
+		$spl = SinglePage::createSinglePage(STACKS_PAGE_PATH);
 		if (is_object($spl)) {
 			$spl->update(array('cName' => t('Stacks')));
 			$spl->moveToRoot();
 		}
-		$spl = SinglePage::add(COMPOSER_DRAFTS_PAGE_PATH);
+		$spl = SinglePage::createSinglePage(COMPOSER_DRAFTS_PAGE_PATH);
 		if (is_object($spl)) {
 			$spl->update(array('cName' => t('Drafts')));
 			$spl->moveToRoot();

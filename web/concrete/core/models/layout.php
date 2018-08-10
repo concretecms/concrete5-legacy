@@ -1,4 +1,4 @@
-<? 
+<?php 
 
 /**
  * @package Users
@@ -20,7 +20,7 @@
  
  
  
- class Concrete5_Model_Layout extends Object {
+ class Concrete5_Model_Layout extends ConcreteObject {
 	 
 	public static $tableName='Layout';
 	

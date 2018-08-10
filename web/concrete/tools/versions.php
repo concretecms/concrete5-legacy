@@ -1,4 +1,4 @@
-<?
+<?php
 	defined('C5_EXECUTE') or die("Access Denied.");
 
 	if (!Loader::helper('validation/numbers')->integer($_GET['cID'])) {
@@ -24,7 +24,7 @@
 		
 		<div class="ccm-ui" style="height: 100%">
 		
-		<? 
+		<?php 
 		$ih = Loader::helper('concrete/interface');
 		$display = 'block';
 		$i = 0;
@@ -44,11 +44,11 @@
 ?>
 			
 		
-		<div id="ccm-tab-content-view-version-<?=$cvID?>" style="display: <?=$display?>; height: 100%">
-		<iframe border="0" id="v<?=time()?>" frameborder="0" height="100%" width="100%" src="<?=BASE_URL . DIR_REL?>/<?=DISPATCHER_FILENAME?>?cvID=<?=$cvID?>&cID=<?=$_REQUEST['cID']?>&vtask=view_versions" />
+		<div id="ccm-tab-content-view-version-<?php echo $cvID?>" style="display: <?php echo $display?>; height: 100%">
+		<iframe border="0" id="v<?php echo time()?>" frameborder="0" height="100%" width="100%" src="<?php echo BASE_URL . DIR_REL?>/<?php echo DISPATCHER_FILENAME?>?cvID=<?php echo $cvID?>&cID=<?php echo $_REQUEST['cID']?>&vtask=view_versions" />
 		</div>
 		
-		<? if ($display == 'block') {
+		<?php if ($display == 'block') {
 			$display = 'none';
 		}
 		
@@ -58,7 +58,7 @@
 		</div>
 		
 	
-	<? 
+	<?php 
 		exit;
 	}
 	
@@ -129,12 +129,12 @@
 
 if (!$_GET['versions_reloaded']) { ?>
 	<div id="ccm-versions-container">
-	<? if ($_REQUEST['deferred']) { ?>
+	<?php if ($_REQUEST['deferred']) { ?>
 		<div class="alert alert-info">
-			<?=t('<strong>Request Saved.</strong> You must complete the workflow before this change is active.')?>
+			<?php echo t('<strong>Request Saved.</strong> You must complete the workflow before this change is active.')?>
 		</div>
-	<? } ?>
-<? } ?>
+	<?php } ?>
+<?php } ?>
 
 <div class="ccm-pane-controls ccm-ui">
 
@@ -163,9 +163,9 @@ $(function() {
 		
 	});
 	
-	<? if ($_REQUEST['forcereload']) { ?>
+	<?php if ($_REQUEST['forcereload']) { ?>
 		ccm_versionsMustReload = true;
-	<? } ?>
+	<?php } ?>
 
 });
 
@@ -252,7 +252,7 @@ $("button[name=vCompare]").click(function() {
 	});
 	$.fn.dialog.open({
 		title: ccmi18n.compareVersions,
-		href: CCM_TOOLS_PATH + '/versions.php?cID=<?=$c->getCollectionID()?>' + cvidstr + '&vtask=view_versions',
+		href: CCM_TOOLS_PATH + '/versions.php?cID=<?php echo $c->getCollectionID()?>' + cvidstr + '&vtask=view_versions',
 		width: '85%',
 		modal: false,
 		height: '80%'
@@ -263,7 +263,7 @@ $("button[name=vApprove]").click(function() {
 	
 	var cvID = $("table#ccm-versions-list input[type=checkbox]:checked").get(0).value;
 	jQuery.fn.dialog.showLoader();
-	$.get(CCM_TOOLS_PATH + '/versions.php?versions_reloaded=1&cID=<?=$c->getCollectionID()?>&cvID=' + cvID + '&vtask=approve<?=$token?>', function(r) {	
+	$.get(CCM_TOOLS_PATH + '/versions.php?versions_reloaded=1&cID=<?php echo $c->getCollectionID()?>&cvID=' + cvID + '&vtask=approve<?php echo $token?>', function(r) {	
 		jQuery.fn.dialog.replaceTop(r);
 		jQuery.fn.dialog.hideLoader();
 	});
@@ -274,7 +274,7 @@ $("button[name=vCopy]").click(function() {
 	
 	var cvID = $("table#ccm-versions-list input[type=checkbox]:checked").get(0).value;
 	jQuery.fn.dialog.showLoader();
-	$.get(CCM_TOOLS_PATH + '/versions.php?versions_reloaded=1&cID=<?=$c->getCollectionID()?>&cvID=' + cvID + '&vtask=copy_version<?=$token?>', function(r) {	
+	$.get(CCM_TOOLS_PATH + '/versions.php?versions_reloaded=1&cID=<?php echo $c->getCollectionID()?>&cvID=' + cvID + '&vtask=copy_version<?php echo $token?>', function(r) {	
 		jQuery.fn.dialog.replaceTop(r);
 		jQuery.fn.dialog.hideLoader();
 	});
@@ -283,7 +283,7 @@ $("button[name=vCopy]").click(function() {
 
 ccm_goToVersionPage = function(p, url) {
 	jQuery.fn.dialog.showLoader();
-	var dest = CCM_TOOLS_PATH + '/versions.php?versions_reloaded=1&cID=<?=$c->getCollectionID()?>&<?php echo PAGING_STRING?>' + p;
+	var dest = CCM_TOOLS_PATH + '/versions.php?versions_reloaded=1&cID=<?php echo $c->getCollectionID()?>&<?php echo PAGING_STRING?>' + p;
 	$.get(dest, function(r) {
 		jQuery.fn.dialog.replaceTop(r);
 		jQuery.fn.dialog.hideLoader();
@@ -310,8 +310,8 @@ $("button[name=vRemove]").click(function() {
 	//ccm_showTopbarLoader();
 	var params = {
 		'vtask': 'remove_group',
-		'ccm_token': '<?=$valt->generate()?>',
-		'cID': <?=$c->getCollectionID()?>,
+		'ccm_token': '<?php echo $valt->generate()?>',
+		'cID': <?php echo $c->getCollectionID()?>,
 		'cvIDs': cvIDStr
 	}
 	
@@ -327,15 +327,15 @@ $("button[name=vRemove]").click(function() {
 
 </script>
 
-<div class="dialog-help"><?=t("Here are earlier versions of this page. The bold line is the live version.<br/><br/>Anyone who can't edit this page sees this active version if permissions allow. Your edits are always made to the latest version. If you'd like to start editing from an old version, copy that version.")?></div>
+<div class="dialog-help"><?php echo t("Here are earlier versions of this page. The bold line is the live version.<br/><br/>Anyone who can't edit this page sees this active version if permissions allow. Your edits are always made to the latest version. If you'd like to start editing from an old version, copy that version.")?></div>
 
 <br/>
 
 
 
-	<? if ($isCheckedOut) { ?> 
-		<?=t('Someone has already checked out this page for editing.')?>
-	<? } else { ?>
+	<?php if ($isCheckedOut) { ?> 
+		<?php echo t('Someone has already checked out this page for editing.')?>
+	<?php } else { ?>
 
 	<table border="0" cellspacing="0" width="100%" class="table table-striped" cellpadding="0" id="ccm-versions-list">
 	<tr>
@@ -344,30 +344,30 @@ $("button[name=vRemove]").click(function() {
 		<span class="caret"></span>
   		</a>
 		<ul class="dropdown-menu">
-		<li><a id="ccm-version-select-none" href="#"><?=t('None')?></a></li>
-		<li><a id="ccm-version-select-old" href="#"><?=t('Old Versions')?></a></li>
+		<li><a id="ccm-version-select-none" href="#"><?php echo t('None')?></a></li>
+		<li><a id="ccm-version-select-old" href="#"><?php echo t('Old Versions')?></a></li>
 		</ul>
 	</div>
 	</th>
-		<th style="vertical-align: middle"><?=t('ID')?></th>
-		<th style="vertical-align: middle"><?=t('Comments')?></th>
-		<th style="vertical-align: middle"><?=t('Creator')?></th>
-		<th style="vertical-align: middle"><?=t('Approver')?></th>
-		<th style="vertical-align: middle"><?=t('Created')?></th>
+		<th style="vertical-align: middle"><?php echo t('ID')?></th>
+		<th style="vertical-align: middle"><?php echo t('Comments')?></th>
+		<th style="vertical-align: middle"><?php echo t('Creator')?></th>
+		<th style="vertical-align: middle"><?php echo t('Approver')?></th>
+		<th style="vertical-align: middle"><?php echo t('Created')?></th>
 		<th style="white-space: nowrap; width: 145px;">
 	<div class="btn-group" style="float: right; white-space: nowrap">
-	<?
+	<?php
 	$ih = Loader::helper("concrete/dashboard");
-	if (!$ih->inDashboard($c)) { ?><button class="btn" name="vCompare" title="<?=t('Compare')?>" disabled><i class="icon-zoom-in"></i></button><? } ?>
-	<button class="btn" name="vApprove" title="<?=t('Approve')?>" disabled><i class="icon-thumbs-up"></i></button>
-	<button class="btn" name="vCopy" value="<?=t('Copy')?>" title="<?=t('Copy Version')?>" disabled><i class="icon-plus-sign"></i></button>
-	<? if ($cp->canDeletePageVersions()) { ?>
-		<button class="btn" name="vRemove" value="<?=t('Remove')?>" disabled><i class="icon-trash"></i></button>
-	<? } ?>
+	if (!$ih->inDashboard($c)) { ?><button class="btn" name="vCompare" title="<?php echo t('Compare')?>" disabled><i class="icon-zoom-in"></i></button><?php } ?>
+	<button class="btn" name="vApprove" title="<?php echo t('Approve')?>" disabled><i class="icon-thumbs-up"></i></button>
+	<button class="btn" name="vCopy" value="<?php echo t('Copy')?>" title="<?php echo t('Copy Version')?>" disabled><i class="icon-plus-sign"></i></button>
+	<?php if ($cp->canDeletePageVersions()) { ?>
+		<button class="btn" name="vRemove" value="<?php echo t('Remove')?>" disabled><i class="icon-trash"></i></button>
+	<?php } ?>
 	</div>
 		</th>
 	</tr>
-	<? 
+	<?php 
 	$dh = Loader::helper('date');
 	/* @var $dh DateHelper */
 	$vIsPending = true;
@@ -391,41 +391,41 @@ $("button[name=vRemove]").click(function() {
 		}
 		
 	?> 
-	<tr id="ccm-version-row<?=$v->getVersionID()?>" class="<?=$class?>">
-		<td style="text-align: center"><input type="checkbox" <? if ($vIsPending) { ?> class="cb-version-pending"<? } else if ($v->isApproved()) { ?> class="cb-version-active"<? } else { ?> class="cb-version-old" <? } ?> id="cb<?=$v->getVersionID()?>" name="vID[]" value="<?=$v->getVersionID()?>" /></td>
-		<td><?=$v->getVersionID()?></td>
-		<td><a dialog-width="85%" dialog-height="80%" title="<?=t('View Versions')?>" class="ccm-version" dialog-title="<?=t('View Versions')?>" dialog-modal="false" href="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/versions.php?cID=<?=$cID?>&cvID[]=<?=$v->getVersionID()?>&vtask=view_versions"><?=$v->getVersionComments()?></a></td>
-		<td><?
+	<tr id="ccm-version-row<?php echo $v->getVersionID()?>" class="<?php echo $class?>">
+		<td style="text-align: center"><input type="checkbox" <?php if ($vIsPending) { ?> class="cb-version-pending"<?php } else if ($v->isApproved()) { ?> class="cb-version-active"<?php } else { ?> class="cb-version-old" <?php } ?> id="cb<?php echo $v->getVersionID()?>" name="vID[]" value="<?php echo $v->getVersionID()?>" /></td>
+		<td><?php echo $v->getVersionID()?></td>
+		<td><a dialog-width="85%" dialog-height="80%" title="<?php echo t('View Versions')?>" class="ccm-version" dialog-title="<?php echo t('View Versions')?>" dialog-modal="false" href="<?php echo REL_DIR_FILES_TOOLS_REQUIRED?>/versions.php?cID=<?php echo $cID?>&cvID[]=<?php echo $v->getVersionID()?>&vtask=view_versions"><?php echo $v->getVersionComments()?></a></td>
+		<td><?php
 			print $v->getVersionAuthorUserName();
 			
 			?></td>
-		<td><?
+		<td><?php
 			print $v->getVersionApproverUserName();
 			
 			?></td>
-		<td colspan="2"><?=$dh->formatSpecial('PAGE_VERSIONS', $v->getVersionDateCreated())?></td>
+		<td colspan="2"><?php echo $dh->formatSpecial('PAGE_VERSIONS', $v->getVersionDateCreated())?></td>
 	</tr>	
-	<? } ?>
+	<?php } ?>
 	</table>
-	<? if ($total > 20 ) { ?>
+	<?php if ($total > 20 ) { ?>
 	<div class="ccm-ui">
 		<div class="pagination ccm-pagination">
 		<ul>
-			<li class="prev"><?=$ph->getPrevious()?></li>
-			<?=$ph->getPages('li'); ?>
-			<li class="next"><?=$ph->getNext()?></li>
+			<li class="prev"><?php echo $ph->getPrevious()?></li>
+			<?php echo $ph->getPages('li'); ?>
+			<li class="next"><?php echo $ph->getNext()?></li>
 		</ul>
 		</div>
 	</div>
-	<? } ?>
+	<?php } ?>
 	<br>
 	
-<? 	}
+<?php 	}
 
 ?>
 
 </div>
 
-<? if (!$_GET['versions_reloaded']) { ?>
+<?php if (!$_GET['versions_reloaded']) { ?>
 </div>
-<? } ?>
+<?php } ?>

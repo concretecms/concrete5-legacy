@@ -88,10 +88,10 @@ $dh = Loader::helper('date');
 			});
 		});
 		</script>
-<form action="<?=$this->action('view')?>">
+<form action="<?php echo $this->action('view')?>">
 	<div class="ccm-pane-options">
-			<label style="width: auto; margin-right: 1em; margin-left: 20px;"><?=t('Keywords'); ?></label><?php echo $form->text('keywords', '', array('style' => 'width: 130px')); ?><span style="margin-left: 30px;"><?=t(' # Per Page'); ?></span>
-			<?=$form->select('numResults', array(
+			<label style="width: auto; margin-right: 1em; margin-left: 20px;"><?php echo t('Keywords'); ?></label><?php echo $form->text('keywords', '', array('style' => 'width: 130px')); ?><span style="margin-left: 30px;"><?php echo t(' # Per Page'); ?></span>
+			<?php echo $form->select('numResults', array(
 				'10' => '10',
 				'25' => '25',
 				'50' => '50',
@@ -106,13 +106,13 @@ $dh = Loader::helper('date');
 			<?php print $pageSelector->selectPage('cParentIDSearchField', 'ccm_selectSitemapNode');?>
 			</div>
 			<div id="searchOptionHolder" style="width: 400px; margin-left: 65px; float: left; margin-top: 15px;">
-				<br/><strong style="display: block;"><?=t('How Many Levels Below Parent?')?></strong><br/>
+				<br/><strong style="display: block;"><?php echo t('How Many Levels Below Parent?')?></strong><br/>
 				<ul class="inputs-list" style="width: 130px; float: left;">
-					<li><label><?=$form->radio('cParentAll', 0, false)?> <span><?=t('First Level')?></span></label></li>
-					<li><label><?=$form->radio('cParentAll', 1, false)?> <span><?=t('All Levels')?></span></label></li>
+					<li><label><?php echo $form->radio('cParentAll', 0, false)?> <span><?php echo t('First Level')?></span></label></li>
+					<li><label><?php echo $form->radio('cParentAll', 1, false)?> <span><?php echo t('All Levels')?></span></label></li>
 				</ul>
-				<div class="pageChecks"><label class="checkbox"> <?php echo $form->checkbox('noDescription', 1, $descCheck);  ?> <span><?=t(' No Meta Description'); ?></span></label></div>
-				<div class="pageChecks"><label class="checkbox"> <?php echo $form->checkbox('noKeywords', 1, $keywordCheck);  ?> <span><?=t(' No Meta Keywords'); ?></span></label></div>
+				<div class="pageChecks"><label class="checkbox"> <?php echo $form->checkbox('noDescription', 1, $descCheck);  ?> <span><?php echo t(' No Meta Description'); ?></span></label></div>
+				<div class="pageChecks"><label class="checkbox"> <?php echo $form->checkbox('noKeywords', 1, $keywordCheck);  ?> <span><?php echo t(' No Meta Keywords'); ?></span></label></div>
 			</div>
 				<div style="clear: both;"></div>
 			</div>
@@ -174,10 +174,10 @@ if (count($pages) > 0) {
 									$autoTitle = sprintf(PAGE_TITLE_FORMAT, SITE, $pageTitle);
 									$titleInfo = array('title' => $cID);
 									if(strlen($cobj->getAttribute('meta_title')) <= 0) {
-										 $titleInfo[style] = 'background: whiteSmoke'; 
+										$titleInfo['style'] = 'background: whiteSmoke'; 
 									}
 									echo $form->text('meta_title', $cobj->getAttribute('meta_title') ? $cobj->getAttribute('meta_title') : $autoTitle, $titleInfo); 
-									echo $titleInfo[style] ? '<br /><span class="help-inline">' . t('Default value. Click to edit.') . '</span>' : '' ?>
+									echo $titleInfo['style'] ? '<br /><span class="help-inline">' . t('Default value. Click to edit.') . '</span>' : '' ?>
 								</div>
 							</div>
 								
@@ -189,10 +189,10 @@ if (count($pages) > 0) {
 									$autoDesc = htmlspecialchars($pageDescription, ENT_COMPAT, APP_CHARSET);
 									$descInfo = array('title' => $cID); 
 									if(strlen($cobj -> getAttribute('meta_description')) <= 0) {
-										$descInfo[style] = 'background: whiteSmoke'; 
+										$descInfo['style'] = 'background: whiteSmoke'; 
 									}
 									echo $form->textarea('meta_description', $cobj->getAttribute('meta_description') ? $cobj->getAttribute('meta_description') : $autoDesc, $descInfo); 
-									echo $descInfo[style] ? '<br /><span class="help-inline">' . t('Default value. Click to edit.') . '</span>' : '';
+									echo $descInfo['style'] ? '<br /><span class="help-inline">' . t('Default value. Click to edit.') . '</span>' : '';
 									 ?>
 								</div>
 							</div>
@@ -213,7 +213,6 @@ if (count($pages) > 0) {
 								<?php echo $form->text('collection_handle', $cobj->getCollectionHandle(), array('title' => $cID, 'class' => 'collectionHandle')); ?>
 								<br />
 								<?php
-									Page::rescanCollectionPath($cID);
 									$path = $cobj->getCollectionPath();
 									$tokens = explode('/', $path);
 									$lastkey = array_pop(array_keys($tokens));
@@ -222,7 +221,7 @@ if (count($pages) > 0) {
 									?><a class="help-inline url-path" href="<?php echo $nh->getLinkToCollection($cobj); ?>" target="_blank"><?php echo BASE_URL . DIR_REL . $untokens; ?></a><?php
 								?>
 							</div>
-							<? } ?>
+							<?php } ?>
 									
 							<div class="updateButton">
 								<br />

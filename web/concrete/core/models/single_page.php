@@ -1,4 +1,4 @@
-<?
+<?php
 
 defined('C5_EXECUTE') or die("Access Denied.");
 
@@ -116,14 +116,21 @@ class Concrete5_Model_SinglePage extends Page {
 		$c->populatePage($cID, $where, $version);
 		return $c;
 	}
-	
+
+	public static function __callStatic($name, $arguments) {
+		switch (strtolower($name)) {
+			case 'add':
+				return static::createSinglePage(isset($arguments[0]) ? $arguments[0] : null, isset($arguments[1]) ? $arguments[1] : null);
+		}
+		trigger_error('Call to undefined static method '.__CLASS__.'::' . $name . '()', E_USER_ERROR);
+	}
 	/* 
 	 * Adds a new single page at the given path, optionally specify a Package
 	 * @param string $cPath
 	 * @param Package $pkg
 	 * @return Page
 	 */
-	public function add($cPath, $pkg = null) {
+	public static function createSinglePage($cPath, $pkg = null) {
 		// if we get to this point, we create a special collection 
 		// without a specific type. This collection has a special cFilename that
 		// points to the passed node

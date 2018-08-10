@@ -1,4 +1,4 @@
-<?
+<?php
 
 defined('C5_EXECUTE') or die("Access Denied.");
 class ConcreteUpgradeVersion561Helper {
@@ -13,7 +13,7 @@ class ConcreteUpgradeVersion561Helper {
 	public function run() {
 		$sp = Page::getByPath('/dashboard/system/seo/excluded');
 		if (!is_object($sp) || $sp->isError()) {
-			$sp = SinglePage::add('/dashboard/system/seo/excluded');
+			$sp = SinglePage::createSinglePage('/dashboard/system/seo/excluded');
 			$sp->update(array('cName'=>t('Excluded URL Word List')));
 			$sp->setAttribute('meta_keywords', 'pretty, slug');
 		}

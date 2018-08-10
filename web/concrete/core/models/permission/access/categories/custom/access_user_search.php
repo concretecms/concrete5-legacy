@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 
 class Concrete5_Model_AccessUserSearchUserPermissionAccess extends PermissionAccess {
@@ -46,7 +46,7 @@ class Concrete5_Model_AccessUserSearchUserPermissionAccess extends PermissionAcc
 	protected $dbTableAccessListCustom = 'UserPermissionUserSearchAccessListCustom';
 
 	public function save($args) {
-		parent::save();
+		parent::save($args);
 		$db = Loader::db();
 		$db->Execute('delete from ' . $this->dbTableAccessList . ' where paID = ?', array($this->getPermissionAccessID()));
 		$db->Execute('delete from ' . $this->dbTableAccessListCustom . ' where paID = ?', array($this->getPermissionAccessID()));

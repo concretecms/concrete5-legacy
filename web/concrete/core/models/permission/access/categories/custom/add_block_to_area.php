@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 
 
@@ -49,7 +49,7 @@ class Concrete5_Model_AddBlockToAreaAreaPermissionAccess extends AreaPermissionA
 
 	public function save($args) {
 		$db = Loader::db();
-		parent::save();
+		parent::save($args);
 		$db->Execute('delete from AreaPermissionBlockTypeAccessList where paID = ?', array($this->getPermissionAccessID()));
 		$db->Execute('delete from AreaPermissionBlockTypeAccessListCustom where paID = ?', array($this->getPermissionAccessID()));
 		if (is_array($args['blockTypesIncluded'])) { 

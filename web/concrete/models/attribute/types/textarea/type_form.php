@@ -1,10 +1,10 @@
 <fieldset>
-<legend><?=t('Text Area Options')?></legend>
+<legend><?php echo t('Text Area Options')?></legend>
 
 <div class="clearfix">
-<?=$form->label('akTextareaDisplayMode', t('Input Format'))?>
+<?php echo $form->label('akTextareaDisplayMode', t('Input Format'))?>
 <div class="input">
-	<? 
+	<?php 
 	$akTextareaDisplayModeOptions = array(
 		'text' => t('Plain Text'),
 		'rich_text' => t('Rich Text - Simple (Default Setting)'),
@@ -14,7 +14,7 @@
 		'rich_text_custom' => t('Rich Text - Custom')
 	);
 	?>
-	<?=$form->select('akTextareaDisplayMode', $akTextareaDisplayModeOptions, $akTextareaDisplayMode)?>
+	<?php echo $form->select('akTextareaDisplayMode', $akTextareaDisplayModeOptions, $akTextareaDisplayMode)?>
 </div>
 </div>
 </fieldset>

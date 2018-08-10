@@ -1,17 +1,30 @@
 language: php
 
 php:
-  - 5.3
   - 5.4
   - 5.5
+  - 5.6
+  - 7.0
+  - 7.1
+  - 7.2
+  - nightly
 
+matrix:
+  include:
+    - php: 5.3
+      dist: precise
+  allow_failures:
+    - php: 7.2
+    - php: nightly
+    
 before_script:
+  - wget --no-verbose --output-document=tests/phpunit.phar https://phar.phpunit.de/phpunit-4.8.phar
   - echo 'short_open_tag = On' >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
   - mysql -e 'CREATE DATABASE concrete5_tests;'
   - ./cli/install-concrete5.php --db-server=localhost --db-username=travis --db-database=concrete5_tests --admin-email=webmaster@example.org --admin-password=password --target=../web --starting-point=standard
   - cd tests
 
-script: phpunit
+script: php phpunit.phar
 
 notifications:
   email: false

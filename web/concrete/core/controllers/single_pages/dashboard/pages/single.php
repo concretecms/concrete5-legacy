@@ -21,7 +21,7 @@ class Concrete5_Controller_Dashboard_Pages_Single extends DashboardBaseControlle
 					// now we check to see if this is already added
 					$pc = Page::getByPath('/' . $path, 'RECENT');
 					if ($pc->getError() == COLLECTION_NOT_FOUND) {
-						SinglePage::add($path);
+						SinglePage::createSinglePage($path);
 						$this->redirect('/dashboard/pages/single', 'single_page_added');
 					}
 					else {

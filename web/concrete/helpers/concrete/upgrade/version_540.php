@@ -1,4 +1,4 @@
-<?
+<?php
 /**
  * @access private
  * @package Helpers
@@ -84,24 +84,24 @@ class ConcreteUpgradeVersion540Helper {
 	protected function updateDashboard() {
 		$sp = Page::getByPath('/dashboard/sitemap/full');
 		if ($sp->isError()) {
-			$d1a = SinglePage::add('/dashboard/sitemap/full');
+			$d1a = SinglePage::createSinglePage('/dashboard/sitemap/full');
 			$d1a->update(array('cName'=>t('Full Sitemap')));
 		}
 		
 		$sp = Page::getByPath('/dashboard/sitemap/explore');
 		if ($sp->isError()) {
-			$d1b = SinglePage::add('/dashboard/sitemap/explore');
+			$d1b = SinglePage::createSinglePage('/dashboard/sitemap/explore');
 			$d1b->update(array('cName'=>t('Flat View')));
 		}
 		$sp = Page::getByPath('/dashboard/sitemap/search');
 		if ($sp->isError()) {
-			$d1c = SinglePage::add('/dashboard/sitemap/search');
+			$d1c = SinglePage::createSinglePage('/dashboard/sitemap/search');
 			$d1c->update(array('cName'=>t('Page Search')));
 		}
 		
 		$sp = Page::getByPath('/dashboard/sitemap/access');
 		if ($sp->isError()) {
-			$d1d = SinglePage::add('/dashboard/sitemap/access');
+			$d1d = SinglePage::createSinglePage('/dashboard/sitemap/access');
 		}
 		
 		// refresh the sitemap page so it points to sitemap/view.php rather than sitemap.php
@@ -114,7 +114,7 @@ class ConcreteUpgradeVersion540Helper {
 		// move dashboard attributes
 		$sp = Page::getByPath('/dashboard/pages/attributes');
 		if ($sp->isError()) { 
-			$d7f = SinglePage::add('/dashboard/pages/attributes');
+			$d7f = SinglePage::createSinglePage('/dashboard/pages/attributes');
 		}
 		
 		$d7p = Page::getByPath('/dashboard/pages/types/attributes');
@@ -124,29 +124,29 @@ class ConcreteUpgradeVersion540Helper {
 
 		$sp = Page::getByPath('/dashboard/system');
 		if ($sp->isError()) {
-			$d9 = SinglePage::add('/dashboard/system');
+			$d9 = SinglePage::createSinglePage('/dashboard/system');
 			$d9->update(array('cName'=>t('System & Maintenance'), 'cDescription'=>t('Backup, cleanup and update.')));
 		}
 		
 		$sp = Page::getByPath('/dashboard/system/jobs');
 		if ($sp->isError()) {
-			$d9a = SinglePage::add('/dashboard/system/jobs');
+			$d9a = SinglePage::createSinglePage('/dashboard/system/jobs');
 		}
 		
 		$sp = Page::getByPath('/dashboard/system/backup');
 		if ($sp->isError()) {
-			$d9b = SinglePage::add('/dashboard/system/backup');
+			$d9b = SinglePage::createSinglePage('/dashboard/system/backup');
 			$d9b->update(array('cName'=>t('Backup & Restore')));
 		}
 		
 		$sp = Page::getByPath('/dashboard/system/update');
 		if ($sp->isError()) {
-			$d9c = SinglePage::add('/dashboard/system/update');
+			$d9c = SinglePage::createSinglePage('/dashboard/system/update');
 		}
 		
 		$sp = Page::getByPath('/dashboard/system/notifications');
 		if ($sp->isError()) {
-			$d9d = SinglePage::add('/dashboard/system/notifications');
+			$d9d = SinglePage::createSinglePage('/dashboard/system/notifications');
 		}
 
 		$oldJobsPage = Page::getByPath('/dashboard/jobs');
@@ -156,7 +156,7 @@ class ConcreteUpgradeVersion540Helper {
 
 		$sp = Page::getByPath('/dashboard/settings/marketplace');
 		if ($sp->isError()) {
-			$d12 = SinglePage::add('/dashboard/settings/marketplace');
+			$d12 = SinglePage::createSinglePage('/dashboard/settings/marketplace');
 		}
 		
 	}

@@ -10,6 +10,8 @@ $ek = PermissionKey::getByHandle('activate_user');
 
 $form = Loader::helper('form');
 $ih = Loader::helper('concrete/interface');
+$token = Loader::helper('validation/token');
+
 $tp = new TaskPermission();
 if (!$tp->canActivateUser()) {
 	die(t("Access Denied."));
@@ -49,7 +51,7 @@ if ($_POST['task'] == 'deactivate') {
 
 if (!isset($_REQUEST['reload'])) { ?>
 	<div id="ccm-user-bulk-deactivate-wrapper">
-<? } ?>
+<?php } ?>
 
 	<div id="ccm-user-deactivate" class="ccm-ui">
 		<form method="post" id="ccm-user-bulk-deactivate" action="<?php echo REL_DIR_FILES_TOOLS_REQUIRED ?>/users/bulk_deactivate">
@@ -70,13 +72,13 @@ if (!isset($_REQUEST['reload'])) { ?>
 		</form>
 	</div>
 	<div class="dialog-buttons">
-		<?=$ih->button_js(t('Cancel'), 'jQuery.fn.dialog.closeTop()', 'left', 'btn')?>
-		<?=$ih->button_js(t('Deactivate'), 'ccm_userBulkDeactivate()', 'right', 'btn primary')?>
+		<?php echo $ih->button_js(t('Cancel'), 'jQuery.fn.dialog.closeTop()', 'left', 'btn')?>
+		<?php echo $ih->button_js(t('Deactivate'), 'ccm_userBulkDeactivate()', 'right', 'btn primary')?>
 	</div>
-<?
+<?php
 if (!isset($_REQUEST['reload'])) { ?>
 </div>
-<? } ?>
+<?php } ?>
 
 <script type="text/javascript">
 ccm_userBulkDeactivate = function() {
@@ -85,10 +87,10 @@ ccm_userBulkDeactivate = function() {
 		jQuery.fn.dialog.closeTop();
 		jQuery.fn.dialog.showLoader();
 		jQuery.fn.dialog.hideLoader();
-		ccm_deactivateSearchResults('<?=$searchInstance?>');
+		ccm_deactivateSearchResults('<?php echo $searchInstance?>');
 		ccmAlert.hud(ccmi18n.saveUserSettingsMsg, 2000, 'success', ccmi18n.user_deactivate);
-		$("#ccm-<?=$searchInstance?>-advanced-search").ajaxSubmit(function(r) {
-		       ccm_parseAdvancedSearchResponse(r, '<?=$searchInstance?>');
+		$("#ccm-<?php echo $searchInstance?>-advanced-search").ajaxSubmit(function(r) {
+		       ccm_parseAdvancedSearchResponse(r, '<?php echo $searchInstance?>');
 		});
 	});
 

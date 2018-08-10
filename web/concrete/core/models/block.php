@@ -1,4 +1,4 @@
-<?
+<?php
 
 defined('C5_EXECUTE') or die("Access Denied.");
 
@@ -22,7 +22,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 * @package Blocks
 * @category Concrete
 */
-class Concrete5_Model_Block extends Object {
+class Concrete5_Model_Block extends ConcreteObject {
 
 	var $cID;
 	var $arHandle;

@@ -1,4 +1,4 @@
-<?
+<?php
 /**
  * @access private
  * @package Helpers
@@ -24,12 +24,12 @@ class ConcreteUpgradeVersion551Helper {
 		Loader::model('single_page');
 		$sp = Page::getByPath('/dashboard/system/basics/interface');
 		if ($sp->isError()) {
-			$d1a = SinglePage::add('/dashboard/system/basics/interface');
+			$d1a = SinglePage::createSinglePage('/dashboard/system/basics/interface');
 			$d1a->update(array('cName'=>t('Interface Preferences')));
 		}
 		$sp = Page::getByPath('/dashboard/news');
 		if ($sp->isError()) {
-			$d1a = SinglePage::add('/dashboard/news');
+			$d1a = SinglePage::createSinglePage('/dashboard/news');
 			$d1a->update(array('cName'=>t('Newsflow')));
 			$d1a->setAttribute('exclude_nav', 1);
 			$d1a->setAttribute('exclude_search_index', 1);

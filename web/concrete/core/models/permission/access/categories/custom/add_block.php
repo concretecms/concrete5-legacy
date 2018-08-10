@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 class Concrete5_Model_AddBlockBlockTypePermissionAccess extends BlockTypePermissionAccess {
 
@@ -19,7 +19,7 @@ class Concrete5_Model_AddBlockBlockTypePermissionAccess extends BlockTypePermiss
 	}
 
 	public function save($args) {
-		parent::save();
+		parent::save($args);
 		$db = Loader::db();
 		$db->Execute('delete from BlockTypePermissionBlockTypeAccessList where paID = ?', array($this->getPermissionAccessID()));
 		$db->Execute('delete from BlockTypePermissionBlockTypeAccessListCustom where paID = ?', array($this->getPermissionAccessID()));

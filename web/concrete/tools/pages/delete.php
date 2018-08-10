@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 $u = new User();
 $form = Loader::helper('form');
@@ -79,34 +79,34 @@ $dh = Loader::helper('date');
 ?>
 <div class="ccm-ui">
 
-<? if ($pcnt == 0) { ?>
-	<?=t("You do not have permission to delete any of the selected pages."); ?>
-<? } else { ?>
+<?php if ($pcnt == 0) { ?>
+	<?php echo t("You do not have permission to delete any of the selected pages."); ?>
+<?php } else { ?>
 
-	<?=t('Are you sure you want to delete the following pages?')?><br/><br/>
+	<?php echo t('Are you sure you want to delete the following pages?')?><br/><br/>
 
-	<form id="ccm-<?=$searchInstance?>-delete-form" method="post" action="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/pages/delete">
-	<?=$form->hidden('task', 'delete_pages')?>
+	<form id="ccm-<?php echo $searchInstance?>-delete-form" method="post" action="<?php echo REL_DIR_FILES_TOOLS_REQUIRED?>/pages/delete">
+	<?php echo $form->hidden('task', 'delete_pages')?>
 	<table border="0" cellspacing="0" cellpadding="0" width="100%" class="table table-striped">
 	<tr>
-		<th><?=t('Name')?></th>
-		<th><?=t('Page Type')?></th>
-		<th><?=t('Date Added')?></th>
-		<th><?=t('Author')?></th>
+		<th><?php echo t('Name')?></th>
+		<th><?php echo t('Page Type')?></th>
+		<th><?php echo t('Date Added')?></th>
+		<th><?php echo t('Author')?></th>
 	</tr>
 	
-	<? foreach($pages as $c) { 
+	<?php foreach($pages as $c) { 
 		$cp = new Permissions($c);
 		$c->loadVersionObject();
 		if ($cp->canDeletePage() && $c->getCollectionID() > 1) { ?>
 		
-		<?=$form->hidden('cID[]', $c->getCollectionID())?>		
+		<?php echo $form->hidden('cID[]', $c->getCollectionID())?>		
 		
 		<tr>
-			<td class="ccm-page-list-name"><?=$c->getCollectionName()?></td>
-			<td><?=$c->getCollectionTypeName()?></td>
-			<td><?=$dh->formatSpecial('DASHBOARD_SEARCH_RESULTS_PAGES', $c->getCollectionDatePublic())?></td>
-			<td><?
+			<td class="ccm-page-list-name"><?php echo $c->getCollectionName()?></td>
+			<td><?php echo $c->getCollectionTypeName()?></td>
+			<td><?php echo $dh->formatSpecial('DASHBOARD_SEARCH_RESULTS_PAGES', $c->getCollectionDatePublic())?></td>
+			<td><?php
 				$ui = UserInfo::getByID($c->getCollectionUserID());
 				if (is_object($ui)) {
 					print $ui->getUserName();
@@ -115,16 +115,16 @@ $dh = Loader::helper('date');
 		
 		</tr>
 		
-		<? }  ?>
+		<?php }  ?>
 	</table>
 	</form>
 	<div class="dialog-buttons">
-	<? $ih = Loader::helper('concrete/interface')?>
-	<?=$ih->button_js(t('Cancel'), 'jQuery.fn.dialog.closeTop()', 'left', 'btn')?>	
-	<?=$ih->button_js(t('Delete'), 'ccm_sitemapDeletePages(\'' . $searchInstance . '\')', 'right', 'btn error')?>
+	<?php $ih = Loader::helper('concrete/interface')?>
+	<?php echo $ih->button_js(t('Cancel'), 'jQuery.fn.dialog.closeTop()', 'left', 'btn')?>	
+	<?php echo $ih->button_js(t('Delete'), 'ccm_sitemapDeletePages(\'' . $searchInstance . '\')', 'right', 'btn error')?>
 	</div>		
 		
-	<?
+	<?php
 	
 }
 ?>

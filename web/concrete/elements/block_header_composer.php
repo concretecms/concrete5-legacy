@@ -1,6 +1,6 @@
-<? defined('C5_EXECUTE') or die("Access Denied."); ?>
+<?php defined('C5_EXECUTE') or die("Access Denied."); ?>
 
-<? $bt = BlockType::getByID($b->getBlockTypeID());
+<?php $bt = BlockType::getByID($b->getBlockTypeID());
 $ci = Loader::helper("concrete/urls");
 $btIcon = $ci->getBlockTypeIconURL($bt); 			 
 $cont = $bt->getController();
@@ -9,11 +9,11 @@ $cont = $bt->getController();
 
 <script type="text/javascript">
 
-<? $ci = Loader::helper("concrete/urls"); ?>
-<? $url = $ci->getBlockTypeJavaScriptURL($bt); 
+<?php $ci = Loader::helper("concrete/urls"); ?>
+<?php $url = $ci->getBlockTypeJavaScriptURL($bt); 
 if ($url != '') { ?>
-	ccm_addHeaderItem("<?=$url?>", 'JAVASCRIPT');
-<? } 
+	ccm_addHeaderItem("<?php echo $url?>", 'JAVASCRIPT');
+<?php } 
 
 $identifier = strtoupper('BLOCK_CONTROLLER_' . $btHandle);
 if (is_array($headerItems[$identifier])) {
@@ -24,8 +24,8 @@ if (is_array($headerItems[$identifier])) {
 			$type = 'JAVASCRIPT';
 		}
 		?>
-		ccm_addHeaderItem("<?=$item->file?>", '<?=$type?>');
-	<?
+		ccm_addHeaderItem("<?php echo $item->file?>", '<?php echo $type?>');
+	<?php
 	}
 }
 ?>
@@ -38,7 +38,7 @@ $(function() {
 
 </script>
 
-<?
+<?php
 if ($b->getBlockName() != '') { 
 	$btName = $b->getBlockName();
 } else {
@@ -46,11 +46,11 @@ if ($b->getBlockName() != '') {
 }
 ?>
 
-<? if ($displayEditLink) { ?>
-	<label class="control-label"><a href="javascript:void(0)" onclick="ccm_composerEditBlock(<?=$b->getBlockCollectionID()?>, <?=$b->getBlockID()?>, '<?=$b->getAreaHandle()?>', <?=$bt->getBlockTypeInterfaceWidth()?> , <?=$bt->getBlockTypeInterfaceHeight()?> )" ><?=$btName?></a></label>
-<? } else { ?>
-	<label class="control-label"><?=$btName?></label>
-<? } ?>
+<?php if ($displayEditLink) { ?>
+	<label class="control-label"><a href="javascript:void(0)" onclick="ccm_composerEditBlock(<?php echo $b->getBlockCollectionID()?>, <?php echo $b->getBlockID()?>, '<?php echo $b->getAreaHandle()?>', <?php echo $bt->getBlockTypeInterfaceWidth()?> , <?php echo $bt->getBlockTypeInterfaceHeight()?> )" ><?php echo $btName?></a></label>
+<?php } else { ?>
+	<label class="control-label"><?php echo $btName?></label>
+<?php } ?>
 
 <div class="controls">
-<? Loader::element('block_header', array('b' => $b))?>
+<?php Loader::element('block_header', array('b' => $b))?>

@@ -1,64 +1,64 @@
-<? defined('C5_EXECUTE') or die("Access Denied."); ?> 
+<?php defined('C5_EXECUTE') or die("Access Denied."); ?> 
 
 <div class="control-group">
-<?=$form->label('title', t('Title'))?>
+<?php echo $form->label('title', t('Title'))?>
 <div class="controls">
-	<input type="text" name="title" value="<?=$title?>" />
+	<input type="text" name="title" value="<?php echo $title?>" />
 </div>
 </div>
-<?
+<?php
 if (!$dateFormat) {
 	$dateFormat = t('M jS, Y');
 }
 ?>
 
 <div class="control-group">
-<?=$form->label('dateFormat', t('Date Format'))?>
+<?php echo $form->label('dateFormat', t('Date Format'))?>
 <div class="controls">
-<input type="text" name="dateFormat" value="<?=$dateFormat?>" />
-<div class="help-block">(<?=t('Enter a <a href="%s" target="_blank">PHP date string</a> here.', 'http://www.php.net/date')?>)</div>
+<input type="text" name="dateFormat" value="<?php echo $dateFormat?>" />
+<div class="help-block">(<?php echo t('Enter a <a href="%s" target="_blank">PHP date string</a> here.', 'http://www.php.net/date')?>)</div>
 </div>
 </div>
 
 <div class="control-group">
-<?=$form->label('displayGuestBookForm', t('Comments enabled.'))?>
+<?php echo $form->label('displayGuestBookForm', t('Comments enabled.'))?>
 <div class="controls">
-	<label class="radio"><input type="radio" name="displayGuestBookForm" value="1" <?=($displayGuestBookForm?"checked=\"checked\"":"") ?> /> <span><?=t('Yes')?></span></label>
-	<label class="radio"><input type="radio" name="displayGuestBookForm" value="0" <?=($displayGuestBookForm?"":"checked=\"checked\"") ?> /> <span><?=t('No')?></span></label>
-
-</div>
-</div>
-
-<div class="control-group">
-<?=$form->label('requireApproval', t('Comments require approval.'))?>
-<div class="controls">
-	<label class="radio"><input type="radio" name="requireApproval" value="1" <?=($requireApproval?"checked=\"checked\"":"") ?> /> <span><?=t('Yes')?></span></label>
-	<label class="radio"><input type="radio" name="requireApproval" value="0" <?=($requireApproval?"":"checked=\"checked\"") ?> /> <span><?=t('No')?></span></label>
+	<label class="radio"><input type="radio" name="displayGuestBookForm" value="1" <?php echo ($displayGuestBookForm?"checked=\"checked\"":"") ?> /> <span><?php echo t('Yes')?></span></label>
+	<label class="radio"><input type="radio" name="displayGuestBookForm" value="0" <?php echo ($displayGuestBookForm?"":"checked=\"checked\"") ?> /> <span><?php echo t('No')?></span></label>
 
 </div>
 </div>
 
 <div class="control-group">
-<?=$form->label('authenticationRequired', t('Authentication required.'))?>
+<?php echo $form->label('requireApproval', t('Comments require approval.'))?>
 <div class="controls">
-	<label class="radio"><input type="radio" name="authenticationRequired" value="0" <?=($authenticationRequired?"":"checked=\"checked\"") ?> /> <span><?=t('Email Only')?></span></label>
-	<label class="radio"><input type="radio" name="authenticationRequired" value="1" <?=($authenticationRequired?"checked=\"checked\"":"") ?> /> <span><?=t('Users must login')?></span></label>
+	<label class="radio"><input type="radio" name="requireApproval" value="1" <?php echo ($requireApproval?"checked=\"checked\"":"") ?> /> <span><?php echo t('Yes')?></span></label>
+	<label class="radio"><input type="radio" name="requireApproval" value="0" <?php echo ($requireApproval?"":"checked=\"checked\"") ?> /> <span><?php echo t('No')?></span></label>
 
 </div>
 </div>
 
 <div class="control-group">
-<?=$form->label('displayCaptcha', t('CAPTCHA Required.'))?>
+<?php echo $form->label('authenticationRequired', t('Authentication required.'))?>
 <div class="controls">
-	<label class="radio"><input type="radio" name="displayCaptcha" value="1" <?php echo ($displayCaptcha?"checked=\"checked\"":"") ?> /> <span><?=t('Yes')?></span></label>
-	<label class="radio"><input type="radio" name="displayCaptcha" value="0" <?php echo ($displayCaptcha?"":"checked=\"checked\"") ?> /> <span><?=t('No')?></span></label>
+	<label class="radio"><input type="radio" name="authenticationRequired" value="0" <?php echo ($authenticationRequired?"":"checked=\"checked\"") ?> /> <span><?php echo t('Email Only')?></span></label>
+	<label class="radio"><input type="radio" name="authenticationRequired" value="1" <?php echo ($authenticationRequired?"checked=\"checked\"":"") ?> /> <span><?php echo t('Users must login')?></span></label>
 
 </div>
 </div>
 
 <div class="control-group">
-<?=$form->label('notifyEmail', t('Notify Email on Comment'))?>
+<?php echo $form->label('displayCaptcha', t('CAPTCHA Required.'))?>
 <div class="controls">
-<input type="text" name="notifyEmail" value="<?=$notifyEmail?>" />
+	<label class="radio"><input type="radio" name="displayCaptcha" value="1" <?php echo ($displayCaptcha?"checked=\"checked\"":"") ?> /> <span><?php echo t('Yes')?></span></label>
+	<label class="radio"><input type="radio" name="displayCaptcha" value="0" <?php echo ($displayCaptcha?"":"checked=\"checked\"") ?> /> <span><?php echo t('No')?></span></label>
+
+</div>
+</div>
+
+<div class="control-group">
+<?php echo $form->label('notifyEmail', t('Notify Email on Comment'))?>
+<div class="controls">
+<input type="text" name="notifyEmail" value="<?php echo $notifyEmail?>" />
 </div>
 </div>

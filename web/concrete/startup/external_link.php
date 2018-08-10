@@ -1,4 +1,4 @@
-<?
+<?php
 	defined('C5_EXECUTE') or die("Access Denied.");
 	$req = Request::get();
 	if (($req->getRequestCollectionPath() != '') && ($req->getRequestCollectionPath() != rawurldecode($c->getCollectionPath()))) {

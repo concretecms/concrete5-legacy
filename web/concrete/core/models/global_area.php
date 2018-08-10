@@ -1,16 +1,10 @@
-<?
+<?php
 
 defined('C5_EXECUTE') or die("Access Denied.");
 
 class Concrete5_Model_GlobalArea extends Area {
 
 	protected $arIsGlobal = 1;
-	
-	public function display() {
-		$c = Page::getCurrentPage();
-		parent::getOrCreate($c, $this->arHandle, 1);		
-		parent::display($c);
-	}
 	
 	/**
 	 * Note that this function does not delete the global area's stack.

@@ -81,15 +81,43 @@
 		 */
 		public function element($_file, $args = null, $_pkgHandle= null) {
 			if (is_array($args)) {
-				$collisions = array_intersect(array('_file', '_pkgHandle'), array_keys($args));
+				$collisions = array_intersect(array('_file', '__file', '__function', '_pkgHandle'), array_keys($args));
 				if ($collisions) {
 					throw new Exception(t("Illegal variable name '%s' in element args.", implode(', ', $collisions)));
 				}
 				$collisions = null;
-				extract($args);
+			} else {
+				$args = array();
 			}
-
-			include(Environment::get()->getPath(DIRNAME_ELEMENTS . '/' . $_file . '.php', $_pkgHandle));
+			$__file = Environment::get()->getPath(DIRNAME_ELEMENTS . '/' . $_file . '.php', $_pkgHandle);
+			if (isset($this)) {
+				extract($args);
+				include $__file;
+			} else {
+				$thisObject = null;
+				foreach (debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT | DEBUG_BACKTRACE_IGNORE_ARGS) as $backtrace) {
+					if (isset($backtrace['object'])) {
+						$thisObject = $backtrace['object'];
+						break;
+					}
+				}
+				unset($backtrace);
+				if ($thisObject === null) {
+					unset($thisObject);
+					extract($args);
+					include $__file;
+				} else {
+					$closure = Closure::bind(
+						function() use ($_file, $args, $_pkgHandle, $__file) {
+							extract($args);
+							include $__file;
+							
+						},
+						$thisObject
+					);
+					$closure();
+				}
+			}
 		}
 
 		 /**
@@ -130,13 +158,13 @@
 					$file = '';
 					for ($i = 0; $i < count($path); $i++) {
 						$p = $path[$i];
-						$file .= Object::uncamelcase($p);
+						$file .= ConcreteObject::uncamelcase($p);
 						if (($i + 1) < count($path)) {
 							$file .= '/';
 						}							
 					}
 				} else {
-					$file = Object::uncamelcase($file);				
+					$file = ConcreteObject::uncamelcase($file);				
 				}
 			}
 			return $file;
@@ -189,15 +217,15 @@
 				/* lets handle some things slightly more dynamically */				
 				if (strpos($class, 'BlockController') > 0) {
 					$class = substr($class, 0, strpos($class, 'BlockController'));
-					$handle = Object::uncamelcase($class);
+					$handle = ConcreteObject::uncamelcase($class);
 					self::block($handle);
 				} else if (strpos($class, 'AttributeType') > 0) {
 					$class = substr($class, 0, strpos($class, 'AttributeType'));
-					$handle = Object::uncamelcase($class);
+					$handle = ConcreteObject::uncamelcase($class);
 					$at = AttributeType::getByHandle($handle);
 				} else 	if (strpos($class, 'Helper') > 0) {
 					$class = substr($class, 0, strpos($class, 'Helper'));
-					$handle = Object::uncamelcase($class);
+					$handle = ConcreteObject::uncamelcase($class);
 					$handle = preg_replace('/^site_/', '', $handle);
 					self::helper($handle);
 				}
@@ -258,7 +286,26 @@
 							}
 							$_dba->Execute($names);
 						}
-						
+						 try {
+							$sqlMode = $_dba->GetOne('select @@SESSION.sql_mode');
+							if (is_string($sqlMode)) {
+								$sqlMode = preg_split('/\s*,\s*'.'/', $sqlMode);
+								foreach (array(
+									'ONLY_FULL_GROUP_BY',
+									'NO_ENGINE_SUBSTITUTION',
+									'STRICT_TRANS_TABLES',
+									'STRICT_ALL_TABLES',
+								) as $stripSqlMode) {
+									$i = array_search($stripSqlMode, $sqlMode);
+									if ($i !== false) {
+										unset($sqlMode[$i]);
+									}
+								}
+								$sqlMode = implode(',', $sqlMode);
+								$_dba->Execute('SET sql_mode=' . $_dba->qstr($sqlMode));
+							}
+						} catch (Exception $foo) {
+						}
 						ADOdb_Active_Record::SetDatabaseAdapter($_dba);
 					} else if (defined('DB_SERVER')) {
 						$v = View::getInstance();
@@ -283,8 +330,8 @@
 		
 			static $instances = array();
 
-			$class = Object::camelcase($file) . "Helper";
-			$siteclass = "Site" . Object::camelcase($file) . "Helper";
+			$class = ConcreteObject::camelcase($file) . "Helper";
+			$siteclass = "Site" . ConcreteObject::camelcase($file) . "Helper";
 
 			if (array_key_exists($class, $instances)) {
             	$instance = $instances[$class];
@@ -300,7 +347,7 @@
 						$class = $siteclass;
 					}
 				} else if ($pkgHandle) {
-					$pkgclass = Object::camelcase($pkgHandle . '_' . $file) . "Helper";
+					$pkgclass = ConcreteObject::camelcase($pkgHandle . '_' . $file) . "Helper";
 					if (class_exists($pkgclass, false)) {
 						$class = $pkgclass;
 					}
@@ -335,7 +382,7 @@
 				Log::addEntry($msg, 'packages');
 			}
 
-			$class = Object::camelcase($pkgHandle) . "Package";
+			$class = ConcreteObject::camelcase($pkgHandle) . "Package";
 			if (class_exists($class)) {
 				$cl = new $class;
 				return $cl;
@@ -359,7 +406,7 @@
 			$dir = (is_dir(DIR_STARTING_POINT_PACKAGES . '/' . $pkgHandle)) ? DIR_STARTING_POINT_PACKAGES : DIR_STARTING_POINT_PACKAGES_CORE;
 			if (file_exists($dir . '/' . $pkgHandle . '/' . FILENAME_PACKAGE_CONTROLLER)) {
 				require_once($dir . '/' . $pkgHandle . '/' . FILENAME_PACKAGE_CONTROLLER);
-				$class = Object::camelcase($pkgHandle) . "StartingPointPackage";
+				$class = ConcreteObject::camelcase($pkgHandle) . "StartingPointPackage";
 				if (class_exists($class)) {
 					$cl = new $class;
 					return $cl;
@@ -417,7 +464,7 @@
 					$path = self::pageTypeControllerPath($ctHandle, $item->getPackageHandle());
 					if ($path != false) {
 						require_once($path);
-						$class = Object::camelcase($ctHandle) . 'PageTypeController';
+						$class = ConcreteObject::camelcase($ctHandle) . 'PageTypeController';
 					}
 				} else if ($c->isGeneratedCollection()) {
 					$file = $c->getCollectionFilename();
@@ -432,7 +479,7 @@
 				}
 			} else if ($item instanceof Block || $item instanceof BlockType) {
 				
-				$class = Object::camelcase($item->getBlockTypeHandle()) . 'BlockController';
+				$class = ConcreteObject::camelcase($item->getBlockTypeHandle()) . 'BlockController';
 				if ($item instanceof BlockType) {
 					$controller = new $class($item);
 				}
@@ -463,7 +510,7 @@
 				}
 				
 				if ($include) {
-					$class = Object::camelcase($path) . 'Controller';
+					$class = ConcreteObject::camelcase($path) . 'Controller';
 				}
 			}
 			

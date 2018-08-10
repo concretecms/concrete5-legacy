@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 /**
  * Controller for the survey block, which allows site owners to add surveys and uses Google's graphing web service to display results.
@@ -182,6 +182,13 @@ class Concrete5_Controller_Block_Survey extends BlockController {
 	}	
 	
 	public function displayChart($bID, $cID) {
+		$data = $this->prepareChart($bID, $cID);
+		foreach ($data as $key => $value) {
+			$this->set($key, $value);
+		}
+	}
+
+	public static function prepareChart($bID, $cID) {
 		// Prepare the database query
 		$db = Loader::db();
 		
@@ -212,46 +219,45 @@ class Concrete5_Controller_Block_Survey extends BlockController {
 			}
 			$i++;
 		}
-		
+		$result = array();
 		if ($total_results <= 0) { 
 			$chart_options = '<div style="text-align: center; margin-top: 15px;">' . t('No data is available yet.') . '</div>';
-			$this->set('chart_options', $chart_options);
-			return;
-		}		
-		
-		// Convert option counts to percentages, initiate colors
-		$availableChartColors=array('00CCdd','cc3333','330099','FF6600','9966FF','dd7700','66DD00','6699FF','FFFF33','FFCC33','00CCdd','cc3333','330099','FF6600','9966FF','dd7700','66DD00','6699FF','FFFF33','FFCC33');
-		$percentage_value_string = '';
-		foreach ($options as $option) {
-			$option['amount'] /= $total_results;
-			$percentage_value_string .= round($option['amount'], 3) . ',';
-			$graphColors[]=array_pop($availableChartColors);
+		} else {
+			// Convert option counts to percentages, initiate colors
+			$availableChartColors=array('00CCdd','cc3333','330099','FF6600','9966FF','dd7700','66DD00','6699FF','FFFF33','FFCC33','00CCdd','cc3333','330099','FF6600','9966FF','dd7700','66DD00','6699FF','FFFF33','FFCC33');
+			$percentage_value_string = '';
+			foreach ($options as $option) {
+				$option['amount'] /= $total_results;
+				$percentage_value_string .= round($option['amount'], 3) . ',';
+				$graphColors[]=array_pop($availableChartColors);
+			}
+			
+			// Strip off trailing comma
+			$percentage_value_string = substr_replace($percentage_value_string,'',-1);
+			
+			// Get Google Charts API image
+			$img_src = '<img class="surveyChart" style="margin-bottom:10px;" border="" src="//chart.apis.google.com/chart?cht=p&chd=t:' . $percentage_value_string . '&chs=180x180&chco=' . join(',',$graphColors) . '" />';
+			$result['pie_chart'] = $img_src;
+			
+			// Build human-readable option list
+			$i = 1;
+			$chart_options = '<table class="zebra-striped"><tbody>';
+			foreach($options as $option) {
+				$chart_options .= '<tr>'; 
+				$chart_options .= '<td>'; 
+				$chart_options .= '<strong>' . $options[$i - 1]['name'] . '</strong>';
+				$chart_options .= '</td>';
+				$chart_options .= '<td width="60" style="text-align:right;">';
+				$chart_options .= ($option['amount'] > 0) ? round($option['amount'] / $total_results * 100) : 0;
+				$chart_options .= '%';
+				$chart_options .= '<div class="surveySwatch" style="border-radius: 3px; margin-left: 6px; width:18px; height:18px; float:right; background:#' . $graphColors[$i - 1] . '"></div>';
+				$chart_options .= '</td>';
+				$chart_options .= '</tr>';
+				$i++;
+			}
+			$chart_options .= '</tbody></table>';
 		}
-		
-		// Strip off trailing comma
-		$percentage_value_string = substr_replace($percentage_value_string,'',-1);
-		
-		// Get Google Charts API image
-		$img_src = '<img class="surveyChart" style="margin-bottom:10px;" border="" src="//chart.apis.google.com/chart?cht=p&chd=t:' . $percentage_value_string . '&chs=180x180&chco=' . join(',',$graphColors) . '" />';
-		$this->set('pie_chart', $img_src);
-		
-		// Build human-readable option list
-		$i = 1;
-		$chart_options = '<table class="zebra-striped"><tbody>';
-		foreach($options as $option) {
-			$chart_options .= '<tr>'; 
-			$chart_options .= '<td>'; 
-			$chart_options .= '<strong>' . $options[$i - 1]['name'] . '</strong>';
-			$chart_options .= '</td>';
-			$chart_options .= '<td width="60" style="text-align:right;">';
-			$chart_options .= ($option['amount'] > 0) ? round($option['amount'] / $total_results * 100) : 0;
-			$chart_options .= '%';
-			$chart_options .= '<div class="surveySwatch" style="border-radius: 3px; margin-left: 6px; width:18px; height:18px; float:right; background:#' . $graphColors[$i - 1] . '"></div>';
-			$chart_options .= '</td>';
-			$chart_options .= '</tr>';
-			$i++;
-		}
-		$chart_options .= '</tbody></table>';
-		$this->set('chart_options', $chart_options);
+		$result['chart_options'] = $chart_options;
+		return $result;
 	}
 }

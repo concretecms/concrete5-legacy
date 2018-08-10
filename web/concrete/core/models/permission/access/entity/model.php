@@ -1,6 +1,6 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
-abstract class Concrete5_Model_PermissionAccessEntity extends Object {
+abstract class Concrete5_Model_PermissionAccessEntity extends ConcreteObject {
 	
 	public function getAccessEntityTypeID() {return $this->petID;}
 	public function getAccessEntityTypeObject() {

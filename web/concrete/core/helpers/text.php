@@ -244,7 +244,7 @@ class Concrete5_Helper_Text
      */
     public function camelcase($string)
     {
-        return Object::camelcase($string);
+    	return ConcreteObject::camelcase($string);
     }
 
     /**
@@ -331,7 +331,7 @@ class Concrete5_Helper_Text
      */
     public function uncamelcase($string)
     {
-        return Object::uncamelcase($string);
+    	return ConcreteObject::uncamelcase($string);
     }
 
     /**

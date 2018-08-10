@@ -1,4 +1,4 @@
-<?
+<?php
 /**
 *
 * @package Utilities
@@ -98,7 +98,9 @@ class Concrete5_Library_ItemList {
 	/** 
 	 * Returns an array of object by "page"
 	 */
-	public function getPage($page = false) {
+	public function getPage(/* Removed for LSP: $page = false */) {
+		$args = func_get_args();
+		$page = array_shift($args);
 		$this->setCurrentPage($page);
 		$offset = 0;
 		if ($this->currentPage > 1) {

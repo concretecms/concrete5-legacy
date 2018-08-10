@@ -5,55 +5,55 @@
 		<table class="ccm-style-property-table table" border="0" cellspacing="0" cellpadding="0">
 			<tr>
 				<td>
-				<?=t('Face')?>:
+				<?php echo t('Face')?>:
 				</td>
 				<td>  
 				<select name="font_family"> 
-					<option <?=($cssData['font_family']=='inherit')?'selected':'' ?> value="inherit"><?=t('Inherit') ?></option>
-					<option <?=($cssData['font_family']=='Arial')?'selected':'' ?> value="Arial">Arial</option>
-					<option <?=($cssData['font_family']=='Times New Roman')?'selected':'' ?> value="Times New Roman">Times New Roman</option>
-					<option <?=($cssData['font_family']=='Courier')?'selected':'' ?> value="Courier">Courier</option>
-					<option <?=($cssData['font_family']=='Georgia')?'selected':'' ?> value="Georgia">Georgia</option>
-					<option <?=($cssData['font_family']=='Verdana')?'selected':'' ?> value="Verdana">Verdana</option>
+					<option <?php echo ($cssData['font_family']=='inherit')?'selected':'' ?> value="inherit"><?php echo t('Inherit') ?></option>
+					<option <?php echo ($cssData['font_family']=='Arial')?'selected':'' ?> value="Arial">Arial</option>
+					<option <?php echo ($cssData['font_family']=='Times New Roman')?'selected':'' ?> value="Times New Roman">Times New Roman</option>
+					<option <?php echo ($cssData['font_family']=='Courier')?'selected':'' ?> value="Courier">Courier</option>
+					<option <?php echo ($cssData['font_family']=='Georgia')?'selected':'' ?> value="Georgia">Georgia</option>
+					<option <?php echo ($cssData['font_family']=='Verdana')?'selected':'' ?> value="Verdana">Verdana</option>
 				</select>
 				</td>
 			</tr>
 			<tr>
 				<td> 
-				<?=t('Size')?>:
+				<?php echo t('Size')?>:
 				</td>
 				<td>
-					<input name="font_size" type="text" value="<?=htmlentities( $cssData['font_size'], ENT_COMPAT, APP_CHARSET) ?>" size=2 />	
+					<input name="font_size" type="text" value="<?php echo htmlentities( $cssData['font_size'], ENT_COMPAT, APP_CHARSET) ?>" size=2 />	
 				</td>
 			</tr>
 			<tr>
 				<td> 
-					<?=t('Line Height')?>:
+					<?php echo t('Line Height')?>:
 				</td>
 				<td>
-					<input name="line_height" type="text" value="<?=htmlentities( $cssData['line_height'], ENT_COMPAT, APP_CHARSET) ?>" size=2 />	
+					<input name="line_height" type="text" value="<?php echo htmlentities( $cssData['line_height'], ENT_COMPAT, APP_CHARSET) ?>" size=2 />	
 				</td>
 			</tr>
 			<tr>
 				<td> 
-					<?=t('Color')?>:
+					<?php echo t('Color')?>:
 				</td>
 				<td>
-					<?=$fh->output( 'color', '', $cssData['color']) ?> 
+					<?php echo $fh->output( 'color', '', $cssData['color']) ?> 
 				</td>
 
 			</tr>											
 			<tr>
 				<td> 
-				<?=t('Alignment')?>:
+				<?php echo t('Alignment')?>:
 				</td>
 				<td> 
 				<select name="text_align"> 
-					<option <?=($cssData['text_align']=='')?'selected':'' ?> value=""><?=t('Default')?></option>
-					<option <?=($cssData['text_align']=='left')?'selected':'' ?> value="left"><?=t('Left')?></option>
-					<option <?=($cssData['text_align']=='center')?'selected':'' ?> value="center"><?=t('Center')?></option>
-					<option <?=($cssData['text_align']=='right')?'selected':'' ?> value="right"><?=t('Right')?></option>
-					<option <?=($cssData['text_align']=='justify')?'selected':'' ?> value="justify"><?=t('Justify')?></option>
+					<option <?php echo ($cssData['text_align']=='')?'selected':'' ?> value=""><?php echo t('Default')?></option>
+					<option <?php echo ($cssData['text_align']=='left')?'selected':'' ?> value="left"><?php echo t('Left')?></option>
+					<option <?php echo ($cssData['text_align']=='center')?'selected':'' ?> value="center"><?php echo t('Center')?></option>
+					<option <?php echo ($cssData['text_align']=='right')?'selected':'' ?> value="right"><?php echo t('Right')?></option>
+					<option <?php echo ($cssData['text_align']=='justify')?'selected':'' ?> value="justify"><?php echo t('Justify')?></option>
 				</select>
 				</td>
 			</tr>

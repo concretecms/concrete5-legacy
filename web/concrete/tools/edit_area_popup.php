@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 
 if (!Loader::helper('validation/numbers')->integer($_REQUEST['cID'])) {
@@ -94,6 +94,6 @@ if (!$canViewPane) {
 
 ?>
 
-<? Loader::element($toolSection, $args);
+<?php Loader::element($toolSection, $args);
 
  Loader::element("dialog_footer"); ?>

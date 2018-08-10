@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 
 class Concrete5_Controller_AttributeType_Address extends AttributeTypeController  {
@@ -137,7 +137,10 @@ class Concrete5_Controller_AttributeType_Address extends AttributeTypeController
 		print "'";
 	}
 	
-	public function validateKey($data) {
+	public function validateKey($data = false) {
+		if ($args == false) {
+			$args =  $this->post();
+		}
 		$e = parent::validateKey($data);
 		
 		// additional validation for select type
@@ -185,7 +188,7 @@ class Concrete5_Controller_AttributeType_Address extends AttributeTypeController
 		return $akey;
 	}
 
-	public function exportValue($akn) {
+	public function exportValue(SimpleXMLElement $akn) {
 		$avn = $akn->addChild('value');
 		$address = $this->getValue();
 		$avn->addAttribute('address1', $address->getAddress1());
@@ -295,7 +298,7 @@ class Concrete5_Controller_AttributeType_Address extends AttributeTypeController
 
 }
 
-class Concrete5_Model_AddressAttributeTypeValue extends Object {
+class Concrete5_Model_AddressAttributeTypeValue extends ConcreteObject {
 	
 	public static function getByID($avID) {
 		$db = Loader::db();

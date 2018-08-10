@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 /**
  * @package Workflow
@@ -7,7 +7,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
  * @license    http://www.concrete5.org/license/     MIT License
  *
  */
-class Concrete5_Model_WorkflowProgressHistory extends Object {  
+class Concrete5_Model_WorkflowProgressHistory extends ConcreteObject {  
 
 	public function getWorkflowProgressHistoryTimestamp() {return $this->timestamp;}
 	public function getWorkflowProgressHistoryID() {return $this->wphID;}

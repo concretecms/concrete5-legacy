@@ -1,6 +1,6 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
-class Concrete5_Model_WorkflowProgressCategory extends Object {
+class Concrete5_Model_WorkflowProgressCategory extends ConcreteObject {
 
 	public static function getByID($wpCategoryID) {
 		$db = Loader::db();

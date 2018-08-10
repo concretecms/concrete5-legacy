@@ -1,7 +1,7 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 
-class Concrete5_Model_PermissionAccessListItem extends Object {
+class Concrete5_Model_PermissionAccessListItem extends ConcreteObject {
 
 	public $duration;
 	public $accessType;

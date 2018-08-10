@@ -1,6 +1,6 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
-class Concrete5_Model_WorkflowType extends Object {
+class Concrete5_Model_WorkflowType extends ConcreteObject {
 
 	public function getWorkflowTypeID() {return $this->wftID;}
 	public function getWorkflowTypeHandle() {return $this->wftHandle;}

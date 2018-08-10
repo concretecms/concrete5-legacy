@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 $u = new User();
 $form = Loader::helper('form');
@@ -54,33 +54,33 @@ $dh = Loader::helper('date');
 
 <div class="ccm-ui">
 <br/>
-<? if ($fcnt == 0) { ?>
-	<p><?=t("You do not have permission to delete any of the selected files."); ?><p>
-<? } else { ?>
+<?php if ($fcnt == 0) { ?>
+	<p><?php echo t("You do not have permission to delete any of the selected files."); ?><p>
+<?php } else { ?>
 
-	<p><?=t('Are you sure you want to delete the following files?')?></p>
+	<p><?php echo t('Are you sure you want to delete the following files?')?></p>
 
-	<form id="ccm-<?=$searchInstance?>-delete-form" method="post" action="<?=REL_DIR_FILES_TOOLS_REQUIRED?>/files/delete">
-	<?=$form->hidden('task', 'delete_files')?>
+	<form id="ccm-<?php echo $searchInstance?>-delete-form" method="post" action="<?php echo REL_DIR_FILES_TOOLS_REQUIRED?>/files/delete">
+	<?php echo $form->hidden('task', 'delete_files')?>
 	<table border="0" cellspacing="0" cellpadding="0" width="100%" class="table table-bordered">
 	
-	<? foreach($files as $f) { 
+	<?php foreach($files as $f) { 
 		$fp = new Permissions($f);
 		if ($fp->canDeleteFile()) {
 			$fv = $f->getApprovedVersion();
 			if (is_object($fv)) { ?>
 			
-			<?=$form->hidden('fID[]', $f->getFileID())?>		
+			<?php echo $form->hidden('fID[]', $f->getFileID())?>		
 			
 			<tr>
-				<td><?=$fv->getType()?></td>
-				<td class="ccm-file-list-filename" width="100%"><div style="word-wrap: break-word; width: 150px"><?=$fv->getTitle()?></div></td>
-				<td><?=$dh->formatSpecial('DASHBOARD_SEARCH_RESULTS_FILES', $f->getDateAdded())?></td>
-				<td><?=$fv->getSize()?></td>
-				<td><?=$fv->getAuthorName()?></td>
+				<td><?php echo $fv->getType()?></td>
+				<td class="ccm-file-list-filename" width="100%"><div style="word-wrap: break-word; width: 150px"><?php echo $fv->getTitle()?></div></td>
+				<td><?php echo $dh->formatSpecial('DASHBOARD_SEARCH_RESULTS_FILES', $f->getDateAdded())?></td>
+				<td><?php echo $fv->getSize()?></td>
+				<td><?php echo $fv->getAuthorName()?></td>
 			</tr>
 			
-			<? }
+			<?php }
 		}
 		
 	} ?>
@@ -88,15 +88,15 @@ $dh = Loader::helper('date');
 	</form>
 	<br/>
 	
-	<? $ih = Loader::helper('concrete/interface')?>
+	<?php $ih = Loader::helper('concrete/interface')?>
 	<div class="dialog-buttons">
-	<?=$ih->button_js(t('Delete'), 'ccm_alDeleteFiles(\'' . $searchInstance . '\')', 'right', 'error')?>
-	<?=$ih->button_js(t('Cancel'), 'jQuery.fn.dialog.closeTop()', 'left')?>	
+	<?php echo $ih->button_js(t('Delete'), 'ccm_alDeleteFiles(\'' . $searchInstance . '\')', 'right', 'error')?>
+	<?php echo $ih->button_js(t('Cancel'), 'jQuery.fn.dialog.closeTop()', 'left')?>	
 	</div>
 	
 </div>
 		
-	<?
+	<?php
 	
 }
 	

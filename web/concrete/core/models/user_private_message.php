@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 
 /**
@@ -12,7 +12,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
  *
  */
 
-	class Concrete5_Model_UserPrivateMessage extends Object {
+	class Concrete5_Model_UserPrivateMessage extends ConcreteObject {
 		
 		protected $authorName = false;
 		protected $mailbox;
@@ -168,7 +168,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		public function getMessageBody() {return $this->msgBody;}
 	}
 	
-	class Concrete5_Model_UserPrivateMessageMailbox extends Object {
+	class Concrete5_Model_UserPrivateMessageMailbox extends ConcreteObject {
 
 		const MBTYPE_INBOX = -1;
 		const MBTYPE_SENT = -2;

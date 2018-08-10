@@ -1,4 +1,4 @@
-<?
+<?php
 
 /**
  * @package Core
@@ -88,7 +88,7 @@ class Concrete5_Library_Content_Importer {
 		if (isset($sx->singlepages)) {
 			foreach($sx->singlepages->page as $p) {
 				$pkg = ContentImporter::getPackageObject($p['package']);
-				$spl = SinglePage::add($p['path'], $pkg);
+				$spl = SinglePage::createSinglePage($p['path'], $pkg);
 				if (is_object($spl)) { 
 					if (isset($p['root']) && $p['root'] == true) {
 						$spl->moveToRoot();
@@ -120,7 +120,7 @@ class Concrete5_Library_Content_Importer {
 		}
 	}
 
-	public function setupPageNodeOrder($pageNodeA, $pageNodeB) {
+	public static function setupPageNodeOrder($pageNodeA, $pageNodeB) {
 		$pathA = (string) $pageNodeA['path'];
 		$pathB = (string) $pageNodeB['path'];
 		$numA = count(explode('/', $pathA));
@@ -218,7 +218,7 @@ class Concrete5_Library_Content_Importer {
 						} else {
 							$parent = Page::getByPath($parentPath);
 						}
-						$page = $parent->add($ct, $data);
+						$page = $parent->addChildPage($ct, $data);
 
 					}
 				}

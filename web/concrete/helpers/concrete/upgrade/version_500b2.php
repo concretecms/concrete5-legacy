@@ -1,4 +1,4 @@
-<?
+<?php
 /**
  * @access private
  * @package Helpers
@@ -29,11 +29,11 @@ class ConcreteUpgradeVersion500b2Helper {
 		Loader::model("job");
 		Loader::model('single_page');
 		Job::installByHandle('generate_sitemap');
-		$d1 = SinglePage::add('/download_file');
+		$d1 = SinglePage::createSinglePage('/download_file');
 		if (is_object($d1)) {
 			$d1->update(array('cName'=>'Download File'));
 		}
-		$d2 = SinglePage::add('/dashboard/logs');
+		$d2 = SinglePage::createSinglePage('/dashboard/logs');
 		if (is_object($d2)) {
 			$d2->update(array('cName'=>'Logging', 'cDescription' => 'Keep tabs on your site.'));
 		}

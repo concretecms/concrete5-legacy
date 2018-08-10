@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 /**
  * An object corresponding to a particular view of an attribute.
@@ -14,7 +14,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		protected function getValue() {return $this->attributeValue;}
 		protected function getAttributeKey() {return $this->attributeKey;}
 
-		public function action($action) {
+		public function action($action, $foo = NULL) {
 			$uh = Loader::helper('concrete/urls');
 			$a = func_get_args();
 			$args = '';

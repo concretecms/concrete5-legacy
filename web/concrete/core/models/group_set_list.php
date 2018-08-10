@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 class Concrete5_Model_GroupSetList extends DatabaseItemList {
 
@@ -7,8 +7,8 @@ class Concrete5_Model_GroupSetList extends DatabaseItemList {
 		$this->sortBy('gsName', 'asc');
 	}
 	
-	public function get() {
-		$r = parent::get(0, 0);
+	public function get($itemsToGet = 0, $offset = 0) {
+		$r = parent::get($itemsToGet, $offset);
 		$groupsets = array();
 		foreach($r as $row) {
 			$groupsets[] = GroupSet::getByID($row['gsID']);	

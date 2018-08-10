@@ -1,4 +1,4 @@
-<?
+<?php
 	defined('C5_EXECUTE') or die("Access Denied.");
 	class Concrete5_Library_Localization {
 
@@ -81,7 +81,12 @@
 			elseif (is_dir(DIR_LANGUAGES_CORE . '/' . $locale)) {
 				$languageDir = DIR_LANGUAGES_CORE . '/' . $locale;
 			}
-
+			
+			// don't try to load translations that don't exist
+			if (!file_exists($languageDir)) {
+				return;
+			}
+			
 			$options = array(
 				'adapter' => 'gettext',
 				'content' => $languageDir,
@@ -111,6 +116,10 @@
 				global $config_check_failed;
 				if(!(isset($config_check_failed) && $config_check_failed)) {
 					foreach(PackageList::get(1)->getPackages() as $p) {
+						// skip packages that have been removed on the file system to avoid an endless loop					
+						if (!file_exists($p->getPackagePath())) {
+							continue;
+						}
 						$pkg = Loader::package($p->getPackageHandle());
 						if (is_object($pkg)) {
 							$pkg->setupPackageLocalization($locale, null, $this->translate);

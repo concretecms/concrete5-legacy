@@ -1,6 +1,6 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
-abstract class Concrete5_Model_PermissionKey extends Object {
+abstract class Concrete5_Model_PermissionKey extends ConcreteObject {
 	
 	const ACCESS_TYPE_INCLUDE = 10;
 	const ACCESS_TYPE_EXCLUDE = -1;

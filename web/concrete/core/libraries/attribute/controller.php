@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 
 	class Concrete5_Library_AttributeTypeController extends Controller {
@@ -86,7 +86,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			$this->set('controller', $this);
 		}
 		
-		public function post($field = false) {
+		public function post($field = false, $defaultValue = null) {
 			// the only post that matters is the one for this attribute's name space
 			$req = ($this->requestArray == false) ? $_POST : $this->requestArray;
 			if (is_object($this->attributeKey) && is_array($req['akID'])) {
@@ -96,10 +96,10 @@ defined('C5_EXECUTE') or die("Access Denied.");
 				}
 				return $p;
 			}			
-			return parent::post($field);
+			return parent::post($field, $defaultValue);
 		}
 
-		public function request($field = false) {
+		public function request($field = false, $defaultValue = null) {
 			$req = ($this->requestArray == false) ? $_REQUEST : $this->requestArray;
 			
 			if (is_object($this->attributeKey) && is_array($req['akID'])) {
@@ -110,7 +110,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 				return $p;
 			}
 			
-			return parent::request($field);
+			return parent::request($field, $defaultValue);
 		}
 		
 		public function getView() {
@@ -122,9 +122,9 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			return $this->searchIndexFieldDefinition;
 		}
 		
-		public function setupAndRun($method) {
+		public function setupAndRun(/* Removed for LSP $method */) {
 			$args = func_get_args();
-			$args = array_slice($args, 1);
+			$method = array_shift($args);
 			if ($method) {
 				$this->task = $method;
 			}
@@ -144,16 +144,16 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			}
 		}
 
-		public function saveKey() {
+		public function saveKey($data) {
 		
 		}
 		
-		public function duplicateKey() {
+		public function duplicateKey($newAK) {
 		
 		}
 		
 		// return a string we can use to search by
-		public function searchKeywords($keywords, $list = false) {
+		public function searchKeywords($keywords) {
 			$db = Loader::db();
 			$qkeywords = $db->quote('%' . $keywords . '%');
 			return 'ak_' . $this->attributeKey->getAttributeKeyHandle() . ' like '.$qkeywords.' ';

@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 class Concrete5_Library_IndexedSearch {
 	
@@ -143,7 +143,7 @@ class Concrete5_Library_IndexedSearch {
 			unset($c);
 		}
 		
-		$pnum = Collection::reindexPendingPages();
+		$pnum = Collection::reindexPendingPages($this);
 		$num = $num + $pnum;
 		
 		Cache::enableLocalCache();

@@ -1,6 +1,6 @@
-<?
+<?php
 
-class Concrete5_Model_File extends Object { 
+class Concrete5_Model_File extends ConcreteObject { 
 
 	const CREATE_NEW_VERSION_THRESHOLD = 300; // in seconds (5 minutes)
 	const F_ERROR_INVALID_FILE = 1;
@@ -26,12 +26,25 @@ class Concrete5_Model_File extends Object {
 		return $f;
 	}	
 	
-	/** 
-	 * For all methods that file does not implement, we pass through to the currently active file version object 
-	 */
 	public function __call($nm, $a) {
+		switch (strtolower($nm)) {
+			case 'getdownloadstatistics':
+				return $this->getFileDownloadStatistics(isset($a[0]) ? $a[0] : 20);
+		}
+		/*
+		 * For all methods that file does not implement, we pass through to the currently active file version object
+		 */
 		$fv = $this->getApprovedVersion();
 		return call_user_func_array(array($fv, $nm), $a);
+	}
+
+	public static function __callStatic($name, $arguments) {
+		switch (strtolower(name)) {
+			case 'getdownloadstatistics':
+				return self::getGlobalDownloadStatistics(isset($arguments[0]) ? $arguments[0] : 20);
+			default:
+				trigger_error('Call to undefined static method '.__CLASS__.'::' . $name . '()', E_USER_ERROR);
+		}
 	}
 
 	public function getPermissionObjectIdentifier() {
@@ -479,6 +492,26 @@ class Concrete5_Model_File extends Object {
 	public function getTotalDownloads() {
 		$db = Loader::db();
 		return $db->GetOne('select count(*) from DownloadStatistics where fID = ?', array($this->getFileID()));
+	}
+	
+	public static function getGlobalDownloadStatistics($limit = 20) {
+		$db = Loader::db();
+		$limitString = '';
+		if ($limit != false) {
+			$limitString = 'limit ' . intval($limit);
+		}
+
+		return $db->getAll("SELECT * FROM DownloadStatistics ORDER BY timestamp desc {$limitString}");
+	}
+
+	public function getFileDownloadStatistics($limit = 20) {
+		$db = Loader::db();
+		$limitString = '';
+		if ($limit != false) {
+			$limitString = 'limit ' . intval($limit);
+		}
+		
+		return $db->getAll("SELECT * FROM DownloadStatistics WHERE fID = ? ORDER BY timestamp desc {$limitString}", array($this->getFileID()));
 	}
 	
 	public function getDownloadStatistics($limit = 20){

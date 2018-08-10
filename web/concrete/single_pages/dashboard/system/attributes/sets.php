@@ -8,7 +8,7 @@ $txt = Loader::helper('text');?>
 		<div class="clearfix">
 		<div class="row">
 		<div class="span-pane-half">
-		<h3><?=t('Update Set Details')?></h3>
+		<h3><?php echo t('Update Set Details')?></h3>
 	
 		<?php if ($set->isAttributeSetLocked()) { ?>
 			<div class="info block-message alert-message">
@@ -46,7 +46,7 @@ $txt = Loader::helper('text');?>
 		</form>
 
 		<?php if (!$set->isAttributeSetLocked()) { ?>	
-			<h3><?=t('Delete Set')?></h3>
+			<h3><?php echo t('Delete Set')?></h3>
 			<p><?php echo t('Warning, this cannot be undone. No attributes will be deleted but they will no longer be grouped together.')?></p>
 			<form method="post" action="<?php echo $this->action('delete_set')?>" class="">
 				<input type="hidden" name="asID" value="<?php echo $set->getAttributeSetID()?>" />
@@ -60,7 +60,7 @@ $txt = Loader::helper('text');?>
 		</div>
 
 		<div class="span-pane-half">
-		<h3><?=t('Add Attributes to Set')?></h3>
+		<h3><?php echo t('Add Attributes to Set')?></h3>
 	
 		<form class="" method="post" action="<?php echo $this->action('update_set_attributes')?>">
 			<input type="hidden" name="asID" value="<?php echo $set->getAttributeSetID()?>" />
@@ -68,7 +68,7 @@ $txt = Loader::helper('text');?>
 	
 			<?php 
 			$cat = AttributeKeyCategory::getByID($set->getAttributeSetKeyCategoryID());
-			$list = AttributeKey::getList($cat->getAttributeKeyCategoryHandle());
+			$list = AttributeKey::getCategoryList($cat->getAttributeKeyCategoryHandle());
 			$unassigned = $cat->getUnassignedAttributeKeys();
 			if (count($list) > 0) { ?>
 	
@@ -153,7 +153,7 @@ $txt = Loader::helper('text');?>
 
 	<br/>
 	
-	<h3><?=t('Add Set')?></h3>
+	<h3><?php echo t('Add Set')?></h3>
 
 	<?php echo $form->hidden('categoryID', intval($categoryID)); ?>
 	<?php echo Loader::helper('validation/token')->output('add_set')?>

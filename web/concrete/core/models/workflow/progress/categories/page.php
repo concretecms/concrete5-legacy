@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 /**
  * @package Workflow
@@ -12,7 +12,7 @@ class Concrete5_Model_PageWorkflowProgress extends WorkflowProgress {
 	protected $cID;
 
 	public static function add(Workflow $wf, PageWorkflowRequest $wr) {
-		$wp = parent::add('page', $wf, $wr);
+		$wp = parent::addWorkflowProgress('page', $wf, $wr);
 		$db = Loader::db();
 		$db->Replace('PageWorkflowProgress', array('cID' => $wr->getRequestedPageID(), 'wpID' => $wp->getWorkflowProgressID()), array('cID', 'wpID'), true);
 		$wp->cID = $wr->getRequestedPageID();

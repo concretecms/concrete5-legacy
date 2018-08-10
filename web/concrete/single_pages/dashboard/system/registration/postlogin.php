@@ -1,5 +1,5 @@
-<? defined('C5_EXECUTE') or die("Access Denied.");?>
-<?=Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Login Destination'), false, 'span8 offset2', false);?>
+<?php defined('C5_EXECUTE') or die("Access Denied.");?>
+<?php echo Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Login Destination'), false, 'span8 offset2', false);?>
 <?php
 $h = Loader::helper('concrete/interface');
 ?>
@@ -63,10 +63,10 @@ $h = Loader::helper('concrete/interface');
 	 	</div>
 	</div>
 <div class="ccm-pane-footer">
-<?
+<?php
 print $h->submit(t('Save'), 'login-redirect-form', 'right', 'primary');
 ?>
 </div>
 </form> 	
 
-<?=Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper(false);?>
+<?php echo Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper(false);?>

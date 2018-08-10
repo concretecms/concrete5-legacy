@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 /**
  * Contains the file attribute key and value objects.
@@ -100,18 +100,18 @@ class Concrete5_Model_FileAttributeKey extends AttributeKey {
 	
 
 	public static function getList() {
-		return parent::getList('file');	
+		return parent::getCategoryList('file');	
 	}
 
 	public static function getSearchableList() {
-		return parent::getList('file', array('akIsSearchable' => 1));	
+		return parent::getCategoryList('file', array('akIsSearchable' => 1));	
 	}
 	public static function getSearchableIndexedList() {
-		return parent::getList('file', array('akIsSearchableIndexed' => 1));	
+		return parent::getCategoryList('file', array('akIsSearchableIndexed' => 1));	
 	}
 
 	public static function getImporterList($fv = false) {
-		$list = parent::getList('file', array('akIsAutoCreated' => 1));	
+		$list = parent::getCategoryList('file', array('akIsAutoCreated' => 1));	
 		if ($fv == false) {
 			return $list;
 		}
@@ -127,7 +127,7 @@ class Concrete5_Model_FileAttributeKey extends AttributeKey {
 	}
 
 	public static function getUserAddedList() {
-		return parent::getList('file', array('akIsAutoCreated' => 0));	
+		return parent::getCategoryList('file', array('akIsAutoCreated' => 0));	
 	}
 	
 	/** 
@@ -160,12 +160,12 @@ class Concrete5_Model_FileAttributeKey extends AttributeKey {
 
 	public function add($at, $args, $pkg = false) {
 		CacheLocal::delete('file_attribute_key_by_handle', $args['akHandle']);
-		$ak = parent::add('file', $at, $args, $pkg);
+		$ak = parent::addAttributeKey('file', $at, $args, $pkg);
 		return $ak;
 	}
 	
 	public static function getColumnHeaderList() {
-		return parent::getList('file', array('akIsColumnHeader' => 1));	
+		return parent::getCategoryList('file', array('akIsColumnHeader' => 1));	
 	}
 
 	

@@ -197,7 +197,7 @@ if (!$cnt->get('xmlTest')) {
 	$e->add(t('SimpleXML and DOM must be enabled to install concrete5.'));
 }
 if (!$cnt->get('phpVtest')) {
-	$e->add(t('concrete5 requires PHP 5.2 or greater.'));
+	$e->add(t('concrete5 requires PHP 5.3.2 or greater.'));
 }
 
 if (is_object($fileWriteErrors)) {

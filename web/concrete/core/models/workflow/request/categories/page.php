@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 /**
  * @package Workflow
@@ -46,7 +46,7 @@ abstract class Concrete5_Model_PageWorkflowRequest extends WorkflowRequest {
 		$page = Page::getByID($this->cID);
 		$pk = PermissionKey::getByID($this->pkID);
 		$pk->setPermissionObject($page);
-		return parent::trigger($pk);
+		return parent::triggerWorkflowRequest($pk);
 	}
 
 	public function cancel(WorkflowProgress $wp) {

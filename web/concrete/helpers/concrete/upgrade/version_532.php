@@ -1,4 +1,4 @@
-<?
+<?php
 /**
  * @access private
  * @package Helpers
@@ -128,17 +128,17 @@ class ConcreteUpgradeVersion532Helper {
 		Loader::model('single_page');
 		$friendsPage=Page::getByPath('/profile/friends');
 		if( !intval($friendsPage->cID)) {
-			SinglePage::add('/profile/friends');
+			SinglePage::createSinglePage('/profile/friends');
 		}
 
 		$membersPage =Page::getByPath('/members');
 		if( !intval($membersPage->cID)) {
-			SinglePage::add('/members');
+			SinglePage::createSinglePage('/members');
 		}
 
 		$messagesPage =Page::getByPath('/profile/messages');
 		if( !intval($messagesPage->cID)) {
-			SinglePage::add('/profile/messages');
+			SinglePage::createSinglePage('/profile/messages');
 		}
 		
 		$ppme = UserAttributeKey::getByHandle('profile_private_messages_enabled');
@@ -158,7 +158,7 @@ class ConcreteUpgradeVersion532Helper {
 		
 		$em1=Page::getByPath('/dashboard/settings/mail');
 		if ($em1->isError()) {
-			$em1 = SinglePage::add('/dashboard/settings/mail');
+			$em1 = SinglePage::createSinglePage('/dashboard/settings/mail');
 			$em1->update(array('cName'=>t('Email'), 'cDescription'=>t('Enable post via email and other settings.')));
 		}
 

@@ -1,4 +1,4 @@
-<?
+<?php
 function getNotificationClassName($n) {
 	switch($n->getSystemNotificationTypeID()) {
 		case SystemNotification::SN_TYPE_CORE_MESSAGE_HELP:
@@ -31,7 +31,7 @@ function getNotificationClassName($n) {
 
 
 <ul id="ccm-dashboard-notification-list">
-<? 
+<?php 
 $lastDate = false;
 $txt = Loader::helper('text');
 $dh = Loader::helper('date');
@@ -41,16 +41,16 @@ foreach($notifications as $n) {
 	$time = $dh->formatTime($n->getSystemNotificationDateTime(), false);
 	
 	if ($date != $lastDate) {
-		?><li class="ccm-dashboard-notification-list-date"><h2><?=$date?></h2></li><?
+		?><li class="ccm-dashboard-notification-list-date"><h2><?php echo $date?></h2></li><?php
 		$lastDate = $date;
 	} ?>
 	
-	<li class="<?=getNotificationClassName($n)?>">
+	<li class="<?php echo getNotificationClassName($n)?>">
 	
-	<h3><?=$n->getSystemNotificationTitle()?> <span class="ccm-dashboard-notification-time"><?=$time?></span></h3>
-	<p><?=$n->getSystemNotificationDescription()?></p>
+	<h3><?php echo $n->getSystemNotificationTitle()?> <span class="ccm-dashboard-notification-time"><?php echo $time?></span></h3>
+	<p><?php echo $n->getSystemNotificationDescription()?></p>
 	
-	<? 
+	<?php 
 	if ($n->getSystemNotificationTypeID() == SystemNotification::SN_TYPE_CORE_UPDATE || $n->getSystemNotificationTypeID() == SystemNotification::SN_TYPE_CORE_UPDATE_CRITICAL) {
 		$bodyReadMore = t('Full Release Notes');
 		$readMore = t('Update concrete5');
@@ -63,20 +63,20 @@ foreach($notifications as $n) {
 	}
 
 	if ($n->getSystemNotificationBody() != '' && $n->getSystemNotificationBody() != $n->getSystemNotificationDescription()) { ?>		
-		<div id="ccmSystenNotificationBody<?=$n->getSystemNotificationID()?>" style="display: none"><?=$n->getSystemNotificationBody()?></div>
-		<a href="javascript:void(0)" class="ccm-dashboard-notification-read-more" onclick="ccmDisplayNotificationBody('<?=$n->getSystemNotificationID()?>')"><?=$bodyReadMore?></a> | 
-	<? } ?>
+		<div id="ccmSystenNotificationBody<?php echo $n->getSystemNotificationID()?>" style="display: none"><?php echo $n->getSystemNotificationBody()?></div>
+		<a href="javascript:void(0)" class="ccm-dashboard-notification-read-more" onclick="ccmDisplayNotificationBody('<?php echo $n->getSystemNotificationID()?>')"><?php echo $bodyReadMore?></a> | 
+	<?php } ?>
 	
 	
-	<a class="ccm-dashboard-notification-read-more" href="<?=$n->getSystemNotificationURL()?>"><?=$readMore?></a>	
+	<a class="ccm-dashboard-notification-read-more" href="<?php echo $n->getSystemNotificationURL()?>"><?php echo $readMore?></a>	
 	
-	<? if ($n->getSystemNotificationAlternateURL() != '') { ?>|
-		<a class="ccm-dashboard-notification-read-more" href="<?=$n->getSystemNotificationAlternateURL()?>"><?=$bodyReadMore?></a>	
-	<? } ?>
+	<?php if ($n->getSystemNotificationAlternateURL() != '') { ?>|
+		<a class="ccm-dashboard-notification-read-more" href="<?php echo $n->getSystemNotificationAlternateURL()?>"><?php echo $bodyReadMore?></a>	
+	<?php } ?>
 	
 	</li>
 
-	<? 
+	<?php 
 	if ($n->isSystemNotificationNew()) {
 		$n->markSystemNotificationAsRead();
 	}
@@ -85,6 +85,6 @@ foreach($notifications as $n) {
 
 <script type="text/javascript">
 ccmDisplayNotificationBody = function(snID) {
-	jQuery.fn.dialog.open({modal: false, title: "<?=t('More Information')?>", width: 500, height: 400, element: $('#ccmSystenNotificationBody' + snID)});
+	jQuery.fn.dialog.open({modal: false, title: "<?php echo t('More Information')?>", width: 500, height: 400, element: $('#ccmSystenNotificationBody' + snID)});
 }
 </script>

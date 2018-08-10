@@ -1,4 +1,4 @@
-<?
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 
 /**
@@ -104,9 +104,12 @@ class Concrete5_Library_Archive {
 	 * Installs a zip file from the passed directory
 	 * @todo This is theme-specific - it really ought to be moved to the page_theme_archive class, at least most it. 
 	 * @param string $zipfile
+	 * @param bool $inplace
 	 * @return base directory into which the zipfile was unzipped
 	 */
-	protected function install($file, $inplace=false) {
+	protected function install($file) {
+		$args = func_get_args();
+		$inplace = !empty($args[1]);
 		if (!$inplace) {
 			$directory = $this->uploadZipToTemp($file);
 		} else {

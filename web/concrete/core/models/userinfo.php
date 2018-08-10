@@ -19,7 +19,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
  *
  */
 
-	class Concrete5_Model_UserInfo extends Object { 
+	class Concrete5_Model_UserInfo extends ConcreteObject { 
 
 		public function __toString() {
 			return 'UserInfo: ' . $this->getUserID();
@@ -255,16 +255,17 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			$subject = ($subject == '') ? t('(No Subject)') : $subject;
 			$db = Loader::db();
 			$dt = Loader::helper('date');
-			$v = array($this->getUserID(), $dt->getLocalDateTime(), $subject, $text, $recipient->getUserID());
+			$msgDateCreated = $dt->getLocalDateTime();
+			$v = array($this->getUserID(), $msgDateCreated, $subject, $text, $recipient->getUserID());
 			$db->Execute('insert into UserPrivateMessages (uAuthorID, msgDateCreated, msgSubject, msgBody, uToID) values (?, ?, ?, ?, ?)', $v);
 			
 			$msgID = $db->Insert_ID();
 			
 			if ($msgID > 0) {
 				// we add the private message to the sent box of the sender, and the inbox of the recipient
-				$v = array($db->Insert_ID(), $this->getUserID(), $this->getUserID(), UserPrivateMessageMailbox::MBTYPE_SENT, 0, 1);
+				$v = array($msgID, $this->getUserID(), $this->getUserID(), UserPrivateMessageMailbox::MBTYPE_SENT, 0, 1);
 				$db->Execute('insert into UserPrivateMessagesTo (msgID, uID, uAuthorID, msgMailboxID, msgIsNew, msgIsUnread) values (?, ?, ?, ?, ?, ?)', $v);
-				$v = array($db->Insert_ID(), $recipient->getUserID(), $this->getUserID(), UserPrivateMessageMailbox::MBTYPE_INBOX, 1, 1);
+				$v = array($msgID, $recipient->getUserID(), $this->getUserID(), UserPrivateMessageMailbox::MBTYPE_INBOX, 1, 1);
 				$db->Execute('insert into UserPrivateMessagesTo (msgID, uID, uAuthorID, msgMailboxID, msgIsNew, msgIsUnread) values (?, ?, ?, ?, ?, ?)', $v);
 			}
 			

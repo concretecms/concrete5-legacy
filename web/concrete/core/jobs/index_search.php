@@ -1,4 +1,4 @@
-<?
+<?php
 /**
 *
 * Responsible for loading the indexed search class and initiating the reindex command.
