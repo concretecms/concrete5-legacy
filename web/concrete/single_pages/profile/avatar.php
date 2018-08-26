@@ -6,7 +6,7 @@
         <h2><?php echo t('User Avatar')?></h2>
         <p><?php echo t('Change the picture attached to my posts.')?></p>
                             
-        <div style="position:relative; width:100%; height:500px ;">		
+        <div style="position:relative; width:100%; height:auto;">		
 
           <script language="javascript">
             <?php if(strlen($error)) { ?>
@@ -20,7 +20,8 @@
 		  
             <script type="text/javascript">
               var pic_real_width, pic_real_height;
-              function checkCoords(){
+              function checkCoords()
+			  {
                 if (parseInt($('#w').val())) return true;
                 alert("<?php echo t('Please select a crop region then press submit.'); ?>");
                 return false;
@@ -43,8 +44,8 @@
                   onChange: updatePreview,
                   onSelect: updatePreview,
                   aspectRatio: xsize / ysize,
-                  minSize: [xsize/pic_real_width*loaded_xsize,ysize/pic_real_height*loaded_ysize],
-                  setSelect: [0,0,xsize/pic_real_width*loaded_xsize,ysize/pic_real_height*loaded_ysize],
+                  //minSize: [xsize/pic_real_width*loaded_xsize,ysize/pic_real_height*loaded_ysize],
+                  //setSelect: [0,0,xsize/pic_real_width*loaded_xsize,ysize/pic_real_height*loaded_ysize],
                   bgColor: ''
                 },function(){
                   // Use the API to get the real image size
@@ -60,19 +61,20 @@
                 $('#real_w').val(pic_real_width);
                 $('#real_h').val(pic_real_height);
                 function updatePreview(c){
-                  if (parseInt(c.w) > 0){
-                    $.each($preview, function($index, $avatar){
-                      var rx = $($avatar).parent().width() / c.w;
-                      var ry = $($avatar).parent().height() / c.h;
-                      $($avatar).css("width",Math.round(rx * boundx) + 'px')
-                        .css("height",Math.round(ry * boundy) + 'px')
-                        .css("marginLeft",-Math.round(rx * c.x) + 'px')
-                        .css("marginTop",-Math.round(ry * c.y) + 'px');
-                    });
-                  }
+                  //if (parseInt(c.w) > 0){
+                    //$.each($preview, function($index, $avatar){
+                      //var rx = $($avatar).parent().width() / c.w;
+                      //var ry = $($avatar).parent().height() / c.h;
+                      //$($avatar).css("width",Math.round(rx * boundx) + 'px')
+                        //.css("height",Math.round(ry * boundy) + 'px');
+                        //.css("marginLeft",-Math.round(rx * c.x) + 'px')
+                        //.css("marginTop",-Math.round(ry * c.y) + 'px');
+                    //});
+                  //}
                   updateCoords(c);
                 };
-                function updateCoords(c){
+                function updateCoords(c)
+				{
                   $('#x').val(c.x);
                   $('#y').val(c.y);
                   $('#w').val(c.w);
@@ -80,10 +82,10 @@
                 };
                 function prepareAvatarsOnPage($avatarList){
                   $.each($avatarList, function($index, $avatar){
-                    $($avatar).after("<div class='avatar_placeholder' style='width:"+$avatar.width+"px;height:"+$avatar.height+"px;'></div>");
-                    $($avatar).wrap("<div class='avatar_preview' style='width:"+$avatar.width+"px;height:"+$avatar.height+"px;'></div>");
-                    $($avatar).removeClass("u-avatar").addClass("p-avatar");
-                    $($avatar).attr('src',$('#avatarCropArea').attr("src"));
+                    //$($avatar).after("<div class='avatar_placeholder' style='width:"+$avatar.width+"px;height:"+$avatar.height+"px;'></div>");
+                    //$($avatar).wrap("<div class='avatar_preview' style='width:"+$avatar.width+"px;height:"+$avatar.height+"px;'></div>");
+                    $($avatar).removeClass("u-avatar").addClass("p-avatar").addClass("jcrop-avatar");
+                    //$($avatar).attr('src',$('#avatarCropArea').attr("src"));
                   });
                 }
               });
@@ -93,7 +95,7 @@
               <div>
                 <form method="post" enctype="multipart/form-data" action="<?php echo $this->action('upload_avatar')?>" class="ccm-file-manager-submit-single">
                   <input type="file" name="Filedata" class="ccm-al-upload-single-file"  />
-                  <input class="ccm-al-upload-single-submit btn" type="submit" value="<?php echo t('Upload File')?>" />
+                  <input class="ccm-al-upload-single-submit" type="submit" value="<?php echo t('Upload File')?>" />
                   <?php echo $valt->output('upload');?>
                 </form>
               </div>
@@ -129,10 +131,11 @@
             <div>
               <form method="post" enctype="multipart/form-data" action="<?php echo $this->action('upload_avatar')?>" class="ccm-file-manager-submit-single">
                 <input type="file" name="Filedata" class="ccm-al-upload-single-file"  />
-                <input class="ccm-al-upload-single-submit btn" type="submit" value="<?php echo t('Upload File')?>" />
+                <input class="ccm-al-upload-single-submit" type="submit" value="<?php echo t('Upload File')?>" />
                 <?php echo $valt->output('upload');?>
               </form>
             </div>
+			<br/>
           <?php } ?>
 
         </div>
@@ -140,3 +143,7 @@
 	
 	<div class="ccm-spacer"></div>
 </div>
+
+<br/>
+
+<style>.jcrop-avatar { max-width: <?php echo AVATAR_WIDTH; ?>px; min-height: <?php echo AVATAR_HEIGHT; ?>px; }</style>
