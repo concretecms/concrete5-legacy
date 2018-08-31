@@ -33,19 +33,16 @@
                 var jcrop_api,
                   boundx,
                   boundy,
-                // Grab some information about the preview pane
-                  $preview = $("img[src|='<?php echo $av->getImagePath($ui,false)?>'], img[src|='<?php echo AVATAR_NONE;?>']"),
+
                   xsize = <?php echo AVATAR_WIDTH?>,
                   ysize = <?php echo AVATAR_HEIGHT?>,
                   loaded_xsize = $('#avatarCropArea').width(),
                   loaded_ysize = $('#avatarCropArea').height();
-                prepareAvatarsOnPage($preview);
+
                 $('#avatarCropArea').Jcrop({
-                  onChange: updatePreview,
-                  onSelect: updatePreview,
+                  onChange: updateCoords,
+                  onSelect: updateCoords,
                   aspectRatio: xsize / ysize,
-                  //minSize: [xsize/pic_real_width*loaded_xsize,ysize/pic_real_height*loaded_ysize],
-                  //setSelect: [0,0,xsize/pic_real_width*loaded_xsize,ysize/pic_real_height*loaded_ysize],
                   bgColor: ''
                 },function(){
                   // Use the API to get the real image size
@@ -60,34 +57,15 @@
                 $('#shown_h').val($('#avatarCropArea').height());
                 $('#real_w').val(pic_real_width);
                 $('#real_h').val(pic_real_height);
-                function updatePreview(c){
-                  //if (parseInt(c.w) > 0){
-                    //$.each($preview, function($index, $avatar){
-                      //var rx = $($avatar).parent().width() / c.w;
-                      //var ry = $($avatar).parent().height() / c.h;
-                      //$($avatar).css("width",Math.round(rx * boundx) + 'px')
-                        //.css("height",Math.round(ry * boundy) + 'px');
-                        //.css("marginLeft",-Math.round(rx * c.x) + 'px')
-                        //.css("marginTop",-Math.round(ry * c.y) + 'px');
-                    //});
-                  //}
-                  updateCoords(c);
-                };
+
                 function updateCoords(c)
-				{
+		{
                   $('#x').val(c.x);
                   $('#y').val(c.y);
                   $('#w').val(c.w);
                   $('#h').val(c.h);
                 };
-                function prepareAvatarsOnPage($avatarList){
-                  $.each($avatarList, function($index, $avatar){
-                    //$($avatar).after("<div class='avatar_placeholder' style='width:"+$avatar.width+"px;height:"+$avatar.height+"px;'></div>");
-                    //$($avatar).wrap("<div class='avatar_preview' style='width:"+$avatar.width+"px;height:"+$avatar.height+"px;'></div>");
-                    $($avatar).removeClass("u-avatar").addClass("p-avatar").addClass("jcrop-avatar");
-                    //$($avatar).attr('src',$('#avatarCropArea').attr("src"));
-                  });
-                }
+
               });
             </script>
 
@@ -100,7 +78,7 @@
                 </form>
               </div>
 			  <br/>
-              <img src="<?php echo $targetImage;?>" style="max-width:100%; max-height:400px;" id="avatarCropArea"/>
+              <img src="<?php echo $targetImage;?>" style="max-width:100%; max-height:auto;" id="avatarCropArea"/>
               <br/>
 			  <div>
                 <form method="post" enctype="multipart/form-data" action="<?php echo $this->action('crop_and_save_avatar')?>" onsubmit="return checkCoords();">
@@ -145,5 +123,3 @@
 </div>
 
 <br/>
-
-<style>.jcrop-avatar { max-width: <?php echo AVATAR_WIDTH; ?>px; min-height: <?php echo AVATAR_HEIGHT; ?>px; }</style>
