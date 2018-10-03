@@ -251,6 +251,7 @@ class Concrete5_Controller_Block_Form extends BlockController {
 
 		$txt = Loader::helper('text');
 		$db = Loader::db();
+		$errors = array();
 		
 		//question set id
 		$qsID=intval($_POST['qsID']); 
