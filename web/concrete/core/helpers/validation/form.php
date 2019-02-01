@@ -91,7 +91,7 @@
 		 */
 		public function addRequired($field, $errorMsg = null, $validate = ValidationFormHelper::VALID_NOT_EMPTY) {
 			$obj = new stdClass;
-			$obj->message = ($errorMsg == null) ? 'Field "' . $field . '" is invalid' : $errorMsg;
+			$obj->message = ($errorMsg == null) ? t('Field "%s" is invalid', $field) : $errorMsg;
 			$obj->field = $field;
 			$obj->validate = $validate;
 			$this->fields[] = $obj;
