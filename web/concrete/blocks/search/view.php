@@ -23,7 +23,7 @@
 <?php 
 $tt = Loader::helper('text');
 if ($do_search) {
-	if(count($results)==0){ ?>
+	if(empty($results)){ ?>
 		<h4 style="margin-top:32px"><?php echo t('There were no results found. Please try another keyword or phrase.')?></h4>	
 	<?php }else{ ?>
 		<div id="searchResults">
