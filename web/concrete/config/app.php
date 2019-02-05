@@ -54,8 +54,8 @@ if (!defined('URL_REWRITING')) {
 if (!defined('ENABLE_MARKETPLACE_SUPPORT')){  
 	$marketplace_enabled=Config::get('ENABLE_MARKETPLACE_SUPPORT');
 	if( $marketplace_enabled==NULL ){ 
-		Config::save('ENABLE_MARKETPLACE_SUPPORT', 1 );
-		$marketplace_enabled==true;
+		Config::save('ENABLE_MARKETPLACE_SUPPORT', 0 );
+		$marketplace_enabled==false;
 	} 
 	define('MARKETPLACE_CONFIG_OVERRIDE',false);
 	define('ENABLE_MARKETPLACE_SUPPORT',$marketplace_enabled); 
@@ -65,7 +65,7 @@ if (!defined('ENABLE_MARKETPLACE_SUPPORT')){
 }
 
 if (!defined('ENABLE_INTELLIGENT_SEARCH_HELP')) {
-	Config::getOrDefine('ENABLE_INTELLIGENT_SEARCH_HELP', true);
+	Config::getOrDefine('ENABLE_INTELLIGENT_SEARCH_HELP', false);
 }
 
 if (!defined('ENABLE_INTELLIGENT_SEARCH_MARKETPLACE')) {
@@ -77,7 +77,7 @@ if (!defined('ENABLE_INTELLIGENT_SEARCH_MARKETPLACE')) {
 }
 
 if (!defined('ENABLE_NEWSFLOW_OVERLAY')) {
-	Config::getOrDefine('ENABLE_NEWSFLOW_OVERLAY', true);
+	Config::getOrDefine('ENABLE_NEWSFLOW_OVERLAY', false);
 }
 
 if (!defined('WHITE_LABEL_LOGO_SRC')) {

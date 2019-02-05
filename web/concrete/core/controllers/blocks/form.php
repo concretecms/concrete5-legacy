@@ -251,6 +251,7 @@ class Concrete5_Controller_Block_Form extends BlockController {
 
 		$txt = Loader::helper('text');
 		$db = Loader::db();
+		$errors = array();
 		
 		//question set id
 		$qsID=intval($_POST['qsID']); 
@@ -359,7 +360,7 @@ class Concrete5_Controller_Block_Form extends BlockController {
 			
 			$questionAnswerPairs=array();
 
-			if( strlen(FORM_BLOCK_SENDER_EMAIL)>1 && strstr(FORM_BLOCK_SENDER_EMAIL,'@') ){
+			if(defined('FORM_BLOCK_SENDER_EMAIL') && strlen(FORM_BLOCK_SENDER_EMAIL)>1 && strstr(FORM_BLOCK_SENDER_EMAIL,'@') ){
 				$formFormEmailAddress = FORM_BLOCK_SENDER_EMAIL;
 			}else{
 				$adminUserInfo=UserInfo::getByID(USER_SUPER_ID);
@@ -442,7 +443,7 @@ class Concrete5_Controller_Block_Form extends BlockController {
 			}
 			
 			if(intval($this->notifyMeOnSubmission)>0 && !$foundSpam){	
-				if( strlen(FORM_BLOCK_SENDER_EMAIL)>1 && strstr(FORM_BLOCK_SENDER_EMAIL,'@') ){
+				if(defined('FORM_BLOCK_SENDER_EMAIL') && strlen(FORM_BLOCK_SENDER_EMAIL)>1 && strstr(FORM_BLOCK_SENDER_EMAIL,'@') ){
 					$formFormEmailAddress = FORM_BLOCK_SENDER_EMAIL;  
 				}else{ 
 					$adminUserInfo=UserInfo::getByID(USER_SUPER_ID);
