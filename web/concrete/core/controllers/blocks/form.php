@@ -308,7 +308,7 @@ class Concrete5_Controller_Block_Form extends BlockController {
 		
 		//try importing the file if everything else went ok	
 		$tmpFileIds=array();	
-		if(!count($errors))	foreach($rows as $row){
+		if(empty($errors))	foreach($rows as $row){
 			if( $row['inputType']!='fileupload' ) continue;
 			$questionName='Question'.$row['msqID']; 			
 			if	( !intval($row['required']) && 
@@ -343,7 +343,7 @@ class Concrete5_Controller_Block_Form extends BlockController {
 			}
 		}
 		
-		if(count($errors)){			
+		if(!empty($errors)){			
 			$this->set('formResponse', t('Please correct the following errors:') );
 			$this->set('errors',$errors);
 		}else{ //no form errors			
