@@ -27,7 +27,7 @@ class Concrete5_Model_EditPagePropertiesPagePermissionAccess extends PagePermiss
 	}
 
 	public function save($args) {
-		parent::save();
+		parent::save($args);
 		$db = Loader::db();
 		$db->Execute('delete from PagePermissionPropertyAccessList where paID = ?', array($this->getPermissionAccessID()));
 		$db->Execute('delete from PagePermissionPropertyAttributeAccessListCustom where paID = ?', array($this->getPermissionAccessID()));
