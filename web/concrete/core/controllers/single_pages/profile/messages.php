@@ -123,6 +123,16 @@ class Concrete5_Controller_Profile_Messages extends ProfileEditController {
 		$msg = UserPrivateMessage::getByID($msgID);
 		$uID = $msg->getMessageRelevantUserID();
 		$this->validateUser($uID);
+
+        // Make sure we are allowed to view this
+        $viewingUser = new User();
+        $viewingUserInfo = UserInfo::getByID($viewingUser->getUserID());
+        $isSentToUser = (int) $msg->getMessageUserToID() == (int) $viewingUserInfo->getUserID();
+        if (!$isSentToUser && !$viewingUserInfo->canReadPrivateMessage($msg)) {
+            $this->redirect('/profile/messages');
+            return;
+        }
+
 		$this->set('backURL', View::url('/profile/messages', 'view_message', $boxID, $msgID));
 		$this->set('msgID', $msgID);
 		$this->set('box', $boxID);

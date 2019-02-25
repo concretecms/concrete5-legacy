@@ -74,7 +74,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			$db = Loader::db();
 			if ($this->uID != $this->uAuthorID) {
 				Events::fire('on_private_message_marked_as_read', $this);
-				$db->Execute('update UserPrivateMessagesTo set msgIsUnread = 0 where msgID = ?', array($this->msgID, $this->msgMailboxID, $this->uID));
+				$db->Execute('update UserPrivateMessagesTo set msgIsUnread = 0 where msgID = ?', array($this->msgID));
 			}
 		}
 		
