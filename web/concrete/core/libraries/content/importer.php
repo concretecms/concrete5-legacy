@@ -573,6 +573,20 @@ class Concrete5_Library_Content_Importer {
 		}
 	}
 
+	protected static function getImportFileIDValue($input) {
+		$db = Loader::db();
+		$fID = null;
+		if (strpos($input, ':') > -1) {
+			list($fvPrefix, $fvFilename) = explode(':', $input);
+			$fID = $db->GetOne('select fID from FileVersions where fvPrefix = ? and fvFilename = ?', array($fvPrefix, $fvFilename));
+		}
+
+		if (!$fID) {
+			$fID = $db->GetOne('select fID from FileVersions where fvFilename = ?', array($input));
+		}
+		return $fID;
+	}
+
 	public static function getValue($value) {
 		if (preg_match('/\{ccm:export:page:(.*)\}|\{ccm:export:file:(.*)\}|\{ccm:export:image:(.*)\}|\{ccm:export:pagetype:(.*)\}/i', $value, $matches)) {
 			if ($matches[1]) {
@@ -580,14 +594,10 @@ class Concrete5_Library_Content_Importer {
 				return $c->getCollectionID();
 			}
 			if ($matches[2]) {
-				$db = Loader::db();
-				$fID = $db->GetOne('select fID from FileVersions where fvFilename = ?', array($matches[2]));
-				return $fID;
+				return self::getImportFileIDValue($matches[2]);
 			}
 			if ($matches[3]) {
-				$db = Loader::db();
-				$fID = $db->GetOne('select fID from FileVersions where fvFilename = ?', array($matches[3]));
-				return $fID;
+				return self::getImportFileIDValue($matches[3]);
 			}
 			if ($matches[4]) {
 				$ct = CollectionType::getByHandle($matches[4]);
