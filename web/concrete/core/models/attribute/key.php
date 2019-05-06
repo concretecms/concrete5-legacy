@@ -150,7 +150,6 @@ class Concrete5_Model_AttributeKey extends ConcreteObject {
 		foreach($filters as $key => $value) {
 			$q .= ' and ' . $key . ' = ' . $value . ' ';
 		}
-		$q .= ' ORDER BY (s.asID IS NULL), s.asDisplayorder, sk.displayOrder';
 		$r = $db->Execute($q, array($akCategoryHandle));
 		$list = array();
 		$txt = Loader::helper('text');
@@ -164,11 +163,43 @@ class Concrete5_Model_AttributeKey extends ConcreteObject {
 			$c1 = $className . 'AttributeKey';
 			$c1a = call_user_func(array($c1, 'getByID'), $row['akID']);
 			if (is_object($c1a)) {
-				$list[] = $c1a;
+				$row['object'] = $c1a; 
+				$list[] = $row;
 			}
 		}
 		$r->Close();
-		return $list;
+		usort($list, array(__CLASS__, 'getList_sorter'));
+		$result = array();
+		foreach($list as $row) {
+			$result[] = $row['object'];
+		}
+		return $result;
+	}
+	
+	protected static function getList_sorter($a, $b) {
+		// php implementation for ORDER BY (s.asID IS NULL)
+		if(empty($a['asID']) !== empty($b['asID'])) {
+			return empty($a['asID']) ? 1 : -1;
+		}
+		// php implementation for ORDER BY s.asDisplayOrder, sk.displayOrder
+		foreach(array('asDisplayOrder', 'displayOrder') as $field) {
+			if(is_null($a[$field])) {
+				if(!is_null($b[$field])) {
+					return -1;
+				}
+			}
+			elseif(is_null($b[$field])) {
+				return 1;
+			}
+			else {
+				$delta = intval($a[$field]) - intval($b[$field]);
+				if($delta !== 0) {
+					return $delta;
+				}
+			}
+		}
+		// finally let's sort by the display name
+		return strcasecmp($a['object']->getAttributeKeyDisplayName('text'), $b['object']->getAttributeKeyDisplayName('text'));
 	}
 
 	public function export($axml/* Removed from definition because of LSP , $exporttype = 'full'*/) {
