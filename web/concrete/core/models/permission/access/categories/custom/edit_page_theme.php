@@ -19,7 +19,7 @@ class Concrete5_Model_EditPageThemePagePermissionAccess extends PagePermissionAc
 	}
 
 	public function save($args) {
-		parent::save();
+		parent::save($args);
 		$db = Loader::db();
 		$db->Execute('delete from PagePermissionThemeAccessList where paID = ?', array($this->getPermissionAccessID()));
 		$db->Execute('delete from PagePermissionThemeAccessListCustom where paID = ?', array($this->getPermissionAccessID()));
