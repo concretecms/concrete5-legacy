@@ -65,12 +65,14 @@
 									// we're not done yet. Now we have to check to see whether this user has permission to add
 									// a block of this type to the destination area.
 									$b = Block::getByID($_REQUEST['sourceBlockID'], $nvc, $arHandle);
-									$bt = $b->getBlockTypeObject();
-									if (!$destAP->canAddBlock($bt)) {
-										$doProcessArrangement = false;
-										$r = new stdClass;
-										$r->error = true;
-										$r->message = t('You may not add %s to area %s.', t($bt->getBlockTypeName()), $destAreaHandle);
+									if ($b) {
+										$bt = $b->getBlockTypeObject();
+										if (!$destAP->canAddBlock($bt)) {
+											$doProcessArrangement = false;
+											$r = new stdClass;
+											$r->error = true;
+											$r->message = t('You may not add %s to area %s.', t($bt->getBlockTypeName()), $destAreaHandle);
+										}
 									}
 								}
 							}							
