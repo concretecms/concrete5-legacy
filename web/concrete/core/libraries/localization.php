@@ -69,7 +69,7 @@
 		*/
 		public function setLocale($locale, $coreOnly = false) {
 			$localeNeededLoading = false;
-			if (($locale == 'en_US') && (!ENABLE_TRANSLATE_LOCALE_EN_US)) {
+			if (($locale == 'en_US') && (!defined('ENABLE_TRANSLATE_LOCALE_EN_US') || !ENABLE_TRANSLATE_LOCALE_EN_US)) {
 				if(isset($this->translate)) {
 					unset($this->translate);
 				}
