@@ -23,6 +23,7 @@
 		protected $btCacheBlockOutputOnPost = true;
 		protected $btCacheBlockOutputForRegisteredUsers = true;
 		protected $btWrapperClass = 'ccm-ui';
+		protected $btExportPageColumns = array('internalLinkCID');
 		protected $btExportFileColumns = array('fID','fOnstateID');
 
 		/** 
