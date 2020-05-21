@@ -195,8 +195,10 @@ $(function() {
 				});
 			
 				$("#ccm-check-in-discard").click(function() {
-					$("#ccm-approve-field").val('DISCARD');
+                                    if(confirm(ccmi18n.discard_my_edits)){
+                                        $("#ccm-approve-field").val('DISCARD');
 					$("#ccm-check-in").submit();
+                                    }
 				});
 			
 				$("#ccm-check-in-publish").click(function() {
