@@ -11,7 +11,7 @@
 			if ($getAllGroups) {
 				$db = Loader::db();
 				$minGID = ($omitRequiredGroups) ? 2 : 0;
-				$q = "select gID from Groups where gID > $minGID order by gID asc";	
+				$q = "select gID from `Groups` where gID > $minGID order by gID asc";
 				$r = $db->Execute($q);
 				while ($row = $r->FetchRow()) {
 					$g = Group::getByID($row['gID']);
@@ -88,7 +88,7 @@
 				return $g;
 			}
 
-			$row = $db->getRow("select * from Groups where gID = ?", array($gID));
+			$row = $db->getRow("select * from `Groups` where gID = ?", array($gID));
 			if (isset($row['gID'])) {
 				$g = new Group;
 				$g->setPropertiesFromArray($row);
@@ -104,7 +104,7 @@
 		*/
 		public static function getByName($gName) {
 			$db = Loader::db();
-			$row = $db->getRow("select * from Groups where gName = ?", array($gName));
+			$row = $db->getRow("select * from `Groups` where gName = ?", array($gName));
 			if (isset($row['gID'])) {
 				$g = new Group;
 				$g->setPropertiesFromArray($row);
@@ -179,7 +179,7 @@
 			
 			$db = Loader::db(); 
 			$r = $db->query("DELETE FROM UserGroups WHERE gID = ?",array(intval($this->gID)) );
-			$r = $db->query("DELETE FROM Groups WHERE gID = ?",array(intval($this->gID)) );
+			$r = $db->query("DELETE FROM `Groups` WHERE gID = ?",array(intval($this->gID)) );
 		}
 
 		function inGroup() {
@@ -302,7 +302,7 @@
 			$db = Loader::db();
 			if ($this->gID) {
 				$v = array($gName, $gDescription, $this->gID);
-				$r = $db->prepare("update Groups set gName = ?, gDescription = ? where gID = ?");
+				$r = $db->prepare("update `Groups` set gName = ?, gDescription = ? where gID = ?");
 				$res = $db->Execute($r, $v);
 				$group = Group::getByID($this->gID);
 		        Events::fire('on_group_update', $this);
@@ -319,7 +319,7 @@
 		public static function add($gName, $gDescription, $gID=null) {
 			$db = Loader::db();
 			$v = array($gID, $gName, $gDescription);
-			$r = $db->prepare("insert into Groups (gID, gName, gDescription) values (?, ?, ?)");
+			$r = $db->prepare("insert into `Groups` (gID, gName, gDescription) values (?, ?, ?)");
 			$res = $db->Execute($r, $v);
 			
 			if ($res) {
@@ -331,18 +331,18 @@
 		
 		public function removeGroupExpiration() {
 			$db = Loader::db();
-			$db->Execute('update Groups set gUserExpirationIsEnabled = 0, gUserExpirationMethod = null, gUserExpirationSetDateTime = null, gUserExpirationInterval = 0, gUserExpirationAction = null where gID = ?', array($this->getGroupID()));
+			$db->Execute('update `Groups` set gUserExpirationIsEnabled = 0, gUserExpirationMethod = null, gUserExpirationSetDateTime = null, gUserExpirationInterval = 0, gUserExpirationAction = null where gID = ?', array($this->getGroupID()));
 		}
 		
 		public function setGroupExpirationByDateTime($datetime, $action) {
 			$db = Loader::db();
-			$db->Execute('update Groups set gUserExpirationIsEnabled = 1, gUserExpirationMethod = \'SET_TIME\', gUserExpirationInterval = 0, gUserExpirationSetDateTime = ?, gUserExpirationAction = ? where gID = ?', array($datetime, $action, $this->gID));
+			$db->Execute('update `Groups` set gUserExpirationIsEnabled = 1, gUserExpirationMethod = \'SET_TIME\', gUserExpirationInterval = 0, gUserExpirationSetDateTime = ?, gUserExpirationAction = ? where gID = ?', array($datetime, $action, $this->gID));
 		}
 
 		public function setGroupExpirationByInterval($days, $hours, $minutes, $action) {
 			$db = Loader::db();
 			$interval = $minutes + ($hours * 60) + ($days * 1440);
-			$db->Execute('update Groups set gUserExpirationIsEnabled = 1, gUserExpirationMethod = \'INTERVAL\', gUserExpirationSetDateTime = null, gUserExpirationInterval = ?, gUserExpirationAction = ? where gID = ?', array($interval, $action, $this->gID));
+			$db->Execute('update `Groups` set gUserExpirationIsEnabled = 1, gUserExpirationMethod = \'INTERVAL\', gUserExpirationSetDateTime = null, gUserExpirationInterval = ?, gUserExpirationAction = ? where gID = ?', array($interval, $action, $this->gID));
 		}
 					
 		
