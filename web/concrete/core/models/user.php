@@ -386,7 +386,7 @@
 					//$_SESSION['uGroups'][REGISTERED_GROUP_ID] = REGISTERED_GROUP_NAME;
 
 					$uID = $this->uID;
-					$q = "select Groups.gID, Groups.gName, Groups.gUserExpirationIsEnabled, Groups.gUserExpirationSetDateTime, Groups.gUserExpirationInterval, Groups.gUserExpirationAction, Groups.gUserExpirationMethod, UserGroups.ugEntered from UserGroups inner join Groups on (UserGroups.gID = Groups.gID) where UserGroups.uID = '$uID'";
+					$q = "select `Groups`.gID, `Groups`.gName, `Groups`.gUserExpirationIsEnabled, `Groups`.gUserExpirationSetDateTime, `Groups`.gUserExpirationInterval, `Groups`.gUserExpirationAction, `Groups`.gUserExpirationMethod, UserGroups.ugEntered from UserGroups inner join `Groups` on (UserGroups.gID = `Groups`.gID) where UserGroups.uID = '$uID'";
 					$r = $db->query($q);
 					if ($r) {
 						while ($row = $r->fetchRow()) {

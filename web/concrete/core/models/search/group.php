@@ -31,10 +31,10 @@ class Concrete5_Model_GroupSearch extends DatabaseItemList {
 			$reverseLookup[$locale] = false;
 			if((Localization::activeLocale() != 'en_US') || ENABLE_TRANSLATE_LOCALE_EN_US) {
 				$limit = defined('GROUPNAME_REVERSELOOKUP_LIMIT') ? GROUPNAME_REVERSELOOKUP_LIMIT : 100;
-				$count = $db->GetOne('select count(*) from Groups');
+				$count = $db->GetOne('select count(*) from `Groups`');
 				if(($count > 0) && ($count <= $limit)) {
 					$reverseLookup[$locale] = array();
-					$rs = $db->Query('select gID, gName, gDescription from Groups');
+					$rs = $db->Query('select gID, gName, gDescription from `Groups`');
 					while($row = $rs->FetchRow()) {
 						$reverseLookup[$locale][$row['gID']] = array('name' => tc('GroupName', $row['gName']), 'description' => tc('GroupDescription', $row['gDescription']));
 					}
@@ -50,11 +50,11 @@ class Concrete5_Model_GroupSearch extends DatabaseItemList {
 				}
 			}
 			if(count($foundIDs)) {
-				$this->filter(false, '(Groups.gID in (' . implode(', ', $foundIDs) . '))');
+				$this->filter(false, '(`Groups`.gID in (' . implode(', ', $foundIDs) . '))');
 				return;
 			}
 		}
-		$this->filter(false, "(Groups.gName like " . $db->qstr('%' . $kw . '%') . " or Groups.gDescription like " . $db->qstr('%' . $kw . '%') . ")");
+		$this->filter(false, "(`Groups`.gName like " . $db->qstr('%' . $kw . '%') . " or `Groups`.gDescription like " . $db->qstr('%' . $kw . '%') . ")");
 	}
 	
 	public function filterByAllowedPermission($pk) {
@@ -72,7 +72,7 @@ class Concrete5_Model_GroupSearch extends DatabaseItemList {
 	}
 	
 	function __construct() {
-		$this->setQuery("select Groups.gID, Groups.gName, Groups.gDescription from Groups");
+		$this->setQuery("select `Groups`.gID, `Groups`.gName, `Groups`.gDescription from `Groups`");
 		$this->sortBy('gName', 'asc');
 	}
 	
