@@ -50,7 +50,7 @@ $.fn.ajaxSubmit = function(options) {
 		return this;
 	}
 	
-	var method, action, url, $form = this;
+	var method, action, url, isMsie, iframeSrc, $form = this;
 
 	if (typeof options == 'function') {
 		options = { success: options };
@@ -65,11 +65,15 @@ $.fn.ajaxSubmit = function(options) {
 		url = (url.match(/^([^#]+)/)||[])[1];
 	}
 
+	// Instead of using javascript:false always, let's only apply it for IE.
+	isMsie = /(MSIE|Trident)/.test(navigator.userAgent || '');
+	iframeSrc = (isMsie && /^https/i.test(window.location.href || '')) ? 'javascript:false' : 'about:blank';
+
 	options = $.extend(true, {
 		url:  url,
 		success: $.ajaxSettings.success,
 		type: method || 'GET',
-		iframeSrc: 'about:blank'
+		iframeSrc: iframeSrc
 	}, options);
 
 	// hook for manipulating the form data before it is extracted;
