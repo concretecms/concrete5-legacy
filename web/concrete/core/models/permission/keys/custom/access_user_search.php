@@ -14,7 +14,7 @@ class Concrete5_Model_AccessUserSearchUserPermissionKey extends UserPermissionKe
 		
 		$db = Loader::db();
 		$dsh = Loader::helper('concrete/dashboard');
-		$allgIDs = $db->GetCol('select gID from Groups');
+		$allgIDs = $db->GetCol('select gID from `Groups`');
 		$gIDs = array();
 		foreach($list as $l) {
 			if ($l->getGroupsAllowedPermission() == 'N') {
