@@ -31,6 +31,8 @@ class Concrete5_Controller_Login extends Controller {
 		$this->set('locales', $locales);
 
 		$this->openIDReturnTo = BASE_URL . View::url("/login", "complete_openid");
+
+		$this->set('vt', Loader::helper('validation/token'));
 	}
 
 	// automagically run by the controller once we're done with the current method
@@ -121,6 +123,7 @@ class Concrete5_Controller_Login extends Controller {
 	public function do_login() {
 		$ip = Loader::helper('validation/ip');
 		$vs = Loader::helper('validation/strings');
+		$vt = Loader::helper('validation/token');
 
 		$loginData['success']=0;
 
@@ -132,6 +135,12 @@ class Concrete5_Controller_Login extends Controller {
 			if (!$ip->check()) {
 				throw new Exception($ip->getErrorMessage());
 			}
+
+            // check the security token
+            if ( !$vt->validate( 'login_form' ) ) {
+                throw new Exception( $vt->getErrorMessage() );
+            }
+
 			if (OpenIDAuth::isEnabled() && $vs->notempty($this->post('uOpenID'))) {
 				$oa = new OpenIDAuth();
 				$oa->setReturnURL($this->openIDReturnTo);
@@ -283,6 +292,23 @@ class Concrete5_Controller_Login extends Controller {
 			}
 		}
 
+		// adding missing URL parameters
+        $attributes = $this->post('attr') != '' ? unserialize( base64_decode( $this->post('attr') ) ) : '';
+
+        if ( $loginData['redirectURL'] != ''
+             && is_array( $attributes )
+             && !empty( $attributes )
+        ) {
+            // adding a trailing slash if it is missing
+            $loginData['redirectURL'] .= preg_match( '/\/$/', $loginData['redirectURL'] ) ? '' : '/';
+
+            // adding properties into URL
+            // two variants - associative array (HTTP GET query) or simple array of elements (friendly URL)
+            $loginData['redirectURL'] .= array_values( $attributes ) === $attributes
+                                       ? implode( '/', $attributes ) . '/'
+                                       : '?' . http_build_query( $attributes );
+        }
+
 		/*
 		//full page login redirect (non-ajax login)
 		if( strlen($loginData['redirectURL']) && $_REQUEST['format']!='JSON' ) {
@@ -353,10 +379,11 @@ class Concrete5_Controller_Login extends Controller {
 		$this->redirect('/');
 	}
 
-	public function forward($cID = 0) {
+	public function forward($cID = 0, $attributes = false ) {
 		$nh = Loader::helper('validation/numbers');
 		if ($nh->integer($cID) && intval($cID) > 0) {
 			$this->set('rcID', intval($cID));
+			$this->set( 'attr', ( $attributes != false ? base64_encode( serialize( $attributes ) ) : '' ) );
 		}
 	}
 

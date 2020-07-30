@@ -229,8 +229,14 @@ $(function() {
 					<div class="control-group">
 						<label class="checkbox"><?php echo $form->checkbox('uMaintainLogin', 1); ?> <span><?php echo t('Remain logged in to website.'); ?></span></label>
 					</div>
-					<?php $rcID = isset($_REQUEST['rcID']) ? Loader::helper('text')->entities($_REQUEST['rcID']) : $rcID; ?>
+					<?php
+					$rcID = isset( $rcID ) ? $rcID : null;
+					$rcID = isset($_REQUEST['rcID']) ? Loader::helper('text')->entities($_REQUEST['rcID']) : $rcID;
+					$attr = isset( $attr ) ? $attr : '';
+					$attr = isset($_REQUEST['attr']) ? Loader::helper('text')->entities($_REQUEST['attr']) : $attr; ?>
 					<input type="hidden" name="rcID" value="<?php echo $rcID; ?>" />
+					<input type="hidden" name="attr" value="<?php echo $attr; ?>" />
+					<?php echo $vt->output( 'login_form' ); ?>
 				</fieldset>
 			</div>
 		</div>
