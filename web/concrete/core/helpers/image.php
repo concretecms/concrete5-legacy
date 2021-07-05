@@ -173,12 +173,21 @@ class Concrete5_Helper_Image {
 					}
 				}
 				if($imageRead) {
-					if($image->getCompression() == imagick::COMPRESSION_JPEG) {
-						$image->setCompressionQuality($this->jpegCompression);
-					}
-					if($image->writeImage($newPath) === true) {
-						$processed = true;
-					}
+				    $ext = pathinfo($originalPath, PATHINFO_EXTENSION);
+				
+				    if($ext === 'jpg' || $ext === 'jpeg') {
+				        $jpegCompression = $this->jpegCompression;
+				        if ($jpegCompression < 1) {
+				                $jpegCompression = 1;
+				        }
+				        $image->setImageCompression(Imagick::COMPRESSION_JPEG);
+				        $image->setImageCompressionQuality($jpegCompression); // must be 1-100
+				        $image->stripImage(); // remove color profiles and comments
+				     }
+				     
+				     if($image->writeImage($newPath) === true) {
+				            $processed = true;
+				     }
 				}
 			}
 			catch(Exception $x) {
