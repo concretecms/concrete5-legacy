@@ -72,14 +72,14 @@ class Concrete5_Model_CustomStyleRule extends ConcreteObject {
 					
 				case 'line_height':	
 				case 'font_size':	
-					if( !strlen(trim($val)) || !$val ) continue; 
+					if( !strlen(trim($val)) || !$val ) break; 
 					if( strlen(trim($val))==strlen(intval($val)) && intval($val) )
 						$val=intval($val).'px';					
 					$stylesStr.=str_replace('_','-',$key).':'.$val.'; ';
 					break;
 				
 				case 'font_family':						
-					if( $val=='inherit' ) continue;
+					if( $val=='inherit' ) break;
 					$val=self::$fontFamilies[$val];
 					$stylesStr.=str_replace('_','-',$key).':'.$val.'; ';
 					break;
@@ -90,7 +90,7 @@ class Concrete5_Model_CustomStyleRule extends ConcreteObject {
 					}
 					break;
 				default:
-					if( !strlen(trim($val)) ) continue;
+					if( !strlen(trim($val)) ) break;
 					$stylesStr.=str_replace('_','-',$key).':'.$val.'; ';
 			}
 		}
