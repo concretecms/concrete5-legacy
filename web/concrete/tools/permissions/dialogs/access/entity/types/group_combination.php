@@ -31,7 +31,7 @@ $url = $type->getAccessEntityTypeToolsURL(); ?>
 
 </form>
 
-<input type="button" class="btn ccm-button-right small dialog-launch" dialog-width="500" dialog-height="400" id="ccm-permissions-access-entity-members-add-group" href="<?php echo REL_DIR_FILES_TOOLS_REQUIRED?>/select_group?cID=<?php echo $_REQUEST['cID']?>&include_core_groups=1&callback=ccm_triggerSelectCombinationGroup" dialog-modal="false" dialog-title="<?php echo t('Add Group')?>" value="<?php echo t('Add Group')?>" />
+<input type="button" class="btn ccm-button-right small dialog-launch" dialog-width="500" dialog-height="400" id="ccm-permissions-access-entity-members-add-group" href="<?php echo REL_DIR_FILES_TOOLS_REQUIRED?>/select_group?cID=<?php echo h($_REQUEST['cID'])?>&include_core_groups=1&callback=ccm_triggerSelectCombinationGroup" dialog-modal="false" dialog-title="<?php echo t('Add Group')?>" value="<?php echo t('Add Group')?>" />
 
 </div>
 
