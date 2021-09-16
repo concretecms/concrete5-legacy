@@ -43,7 +43,7 @@ if ($plID == 0) {
 <form method="post" name="ccmThemeForm" action="<?php echo $c->getCollectionAction()?>">
 	<input type="hidden" name="plID" value="<?php echo $c->getCollectionThemeID()?>" />
 	<input type="hidden" name="ctID" value="<?php echo $c->getCollectionTypeID()?>" />
-	<input type="hidden" name="rel" value="<?php echo $_REQUEST['rel']?>" />
+	<input type="hidden" name="rel" value="<?php echo h($_REQUEST['rel'])?>" />
 
 
 	<?php 

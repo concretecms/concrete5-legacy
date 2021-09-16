@@ -12,9 +12,9 @@ $dh = Loader::helper('date');
 <?php if ($_REQUEST['ctID']) { ?>
 
 	<form method="post" action="<?php echo $c->getCollectionAction()?>" id="ccmAddPage" class="dialog-form">		
-	<input type="hidden" name="rel" value="<?php echo $_REQUEST['rel']?>" />
-	<input type="hidden" name="ctID" value="<?php echo $_REQUEST['ctID']?>" />
-	<input type="hidden" name="mode" value="<?php echo $_REQUEST['mode']?>" />
+	<input type="hidden" name="rel" value="<?php echo h($_REQUEST['rel'])?>" />
+	<input type="hidden" name="ctID" value="<?php echo h($_REQUEST['ctID'])?>" />
+	<input type="hidden" name="mode" value="<?php echo h($_REQUEST['mode'])?>" />
 
 	<div id="ccm-add-page-information">
 		
