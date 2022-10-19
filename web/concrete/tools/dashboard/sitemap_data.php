@@ -63,8 +63,7 @@ if (!$_REQUEST['keywords']) { // if there ARE keywords then we don't want to cac
 		}
 	}
 }
-
-$node = (isset($_REQUEST['node'])) ? $_REQUEST['node'] : 0;
+$node = (isset($_REQUEST['node'])&&!empty($_REQUEST['node'])) ? $_REQUEST['node'] : 0;
 
 if ($_REQUEST['mode'] == 'move_copy_delete') {
 	$nodes = $dh->getSubNodes($node, $_REQUEST['level'], $_REQUEST['keywords'], false);
