@@ -130,6 +130,7 @@ class Concrete5_Helper_File {
 		header('Content-type: ' . $mimeType);
 		*/
 		
+		ob_end_clean();
 	
 		$buffer = '';
 		$chunk = 1024*1024;
