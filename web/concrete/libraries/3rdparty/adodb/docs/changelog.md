@@ -5,6 +5,50 @@ Older changelogs:
 [v3.x](changelog_v3.x.md),
 [v2.x](changelog_v2.x.md).
 
+## 5.21.0 - ??-???-2016
+
+- adodb: Remove useless constructors. #171
+- adodb: Define default constructor in ADOConnection base class. #172
+- adodb: Reimplement base methods charMax() and textMax(). #183
+- adodb: fix potential SQL injection vector in SelectLimit(). #190
+- adodb: addColumnSQL datadict function now supports ENUM data types. See #26
+- adodb: introduce user-defined default Metatype. #165
+- adodb: AutoExecute validates empty fields array. #154
+- adodb: fix getAssoc(). #189, #198, #204
+- adodb: Improve array identification in ADOrecordset::getAssoc(). #101
+- adodb: MetaColumns() consistently returns Actual Type by default in all drivers. #184, #133
+- adodb: Add new value defaulting mode for getInsertSQL(). #214
+- adodb: Added portable substring method. #219
+- adodb: New helper methods: day(), month(), year(). #225
+- adodb: Remove references to obsolete ADOdb Extension. #270
+- adodb: add Occitan translation. #285
+- adodb-time: Fix 'Q' (quarter of year) format in adodb_date(). #222
+- adodb-time: Add 'W' (week of year) format support in adodb_date(). #223
+- firebird: updated driver, thanks to Lester Caine. #201
+- mssql: Add charMax() and textMax() methods. #220
+- mssqlnative: Query not returning id. #185
+- mssqlnative: support SQL Server 2014 databases. #186
+- mssqlnative: add support for 'l' (day of week) format in sqlDate(). #232
+- mysql: setConnectionParameter() now allows multiple parameters with the same key value. #187
+- mysqli: Deprecate $optionFlags property in favor of standard setConnectionParameter() method. #188
+- mysqli: Insert_ID() did not return correct value after executing stored procedure. #166
+- mysqli: method failed if $associative set true. #181
+- mysqli: return fields as ADOFieldObject objects. #175
+- odbc/mssql: fix null strings concatenation issue with SQL server 2012. #148
+- odbc: MetaColumns() can optionally be set to return MetaType for backwards compatibility. #184
+- pdo: allow loading of subclassed recordset. #245
+- pdo: add setConnectionParameter support. #247
+- pdo: fix PHP notice. #248
+- pdo: ADORecordSet class loading. #250
+- pdo/sqlsrv: fix fetchField() method. #251, #234
+- pgsql: add CIDR data type to MetaType(). #281
+- sqlite: _createSuffix is now compatible with parent. #178
+- sqlite: metaIndexes could not locate indexes on uppercase table name. #176
+- sqlite: Fix Metataypes mapping. #177
+- sqlite: driver did not support metaForeignKeys. #179
+- session: add 'httponly' flag to cookie. #190
+- xml: support table 'opt' attribute with mysqli. #267
+
 ## 5.20.9 - 21-Dec-2016
 
 - mssql: fix syntax error in version matching regex #305

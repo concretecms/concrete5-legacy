@@ -3,7 +3,7 @@
 ADOdb Date Library, part of the ADOdb abstraction library
 Download: http://adodb.sourceforge.net/#download
 
-@version   v5.20.9  21-Dec-2016
+@version   v5.21.0-dev  ??-???-2016
 @copyright (c) 2000-2013 John Lim (jlim#natsoft.com). All rights reserved.
 @copyright (c) 2014      Damien Regad, Mark Newnham and the ADOdb community
 
@@ -816,7 +816,7 @@ global $_month_table_normal,$_month_table_leaf;
 
 	if ($marr[$m] < $d) return false;
 
-	if ($y < 1000 && $y > 3000) return false;
+	if ($y < 1000 || $y > 3000) return false;
 
 	return true;
 }
@@ -1071,7 +1071,6 @@ static $daylight;
 global $ADODB_DATETIME_CLASS;
 static $jan1_1971;
 
-
 	if (!isset($daylight)) {
 		$daylight = function_exists('adodb_daylight_sv');
 		if (empty($jan1_1971)) $jan1_1971 = mktime(0,0,0,1,1,1971); // we only use date() when > 1970 as adodb_mktime() only uses mktime() when > 1970
@@ -1079,7 +1078,15 @@ static $jan1_1971;
 
 	if ($d === false) return ($is_gmt)? @gmdate($fmt): @date($fmt);
 	if (!defined('ADODB_TEST_DATES')) {
-		if ((abs($d) <= 0x7FFFFFFF)) { // check if number in 32-bit signed range
+
+		/*
+		* Format 'Q' is an ADOdb custom format, not supported in PHP
+		* so if there is a 'Q' in the format, we force it to use our
+		* function. There is a trivial overhead in this
+		*/
+
+		if ((abs($d) <= 0x7FFFFFFF) && strpos($fmt,'Q') === false)
+		{ // check if number in 32-bit signed range
 
 			if (!defined('ADODB_NO_NEGATIVE_TS') || $d >= $jan1_1971) // if windows, must be +ve integer
 				return ($is_gmt)? @gmdate($fmt,$d): @date($fmt,$d);
@@ -1145,7 +1152,9 @@ static $jan1_1971;
 		case 'y': $dates .= substr($year,strlen($year)-2,2); break;
 		// MONTH
 		case 'm': if ($month<10) $dates .= '0'.$month; else $dates .= $month; break;
-		case 'Q': $dates .= ($month+3)>>2; break;
+		case 'Q':
+			$dates .= ceil($month / 3);
+			break;
 		case 'n': $dates .= $month; break;
 		case 'M': $dates .= date('M',mktime(0,0,0,$month,2,1971)); break;
 		case 'F': $dates .= date('F',mktime(0,0,0,$month,2,1971)); break;
@@ -1153,6 +1162,9 @@ static $jan1_1971;
 		case 't': $dates .= $arr['ndays']; break;
 		case 'z': $dates .= $arr['yday']; break;
 		case 'w': $dates .= adodb_dow($year,$month,$day); break;
+		case 'W':
+			$dates .= sprintf('%02d',ceil( $arr['yday'] / 7) - 1);
+			break;
 		case 'l': $dates .= gmdate('l',$_day_power*(3+adodb_dow($year,$month,$day))); break;
 		case 'D': $dates .= gmdate('D',$_day_power*(3+adodb_dow($year,$month,$day))); break;
 		case 'j': $dates .= $day; break;

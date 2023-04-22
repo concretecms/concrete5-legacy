@@ -1,6 +1,6 @@
 <?php
 /*
-@version   v5.20.9  21-Dec-2016
+@version   v5.21.0-dev  ??-???-2016
 @copyright (c) 2000-2013 John Lim (jlim#natsoft.com). All rights reserved.
 @copyright (c) 2014      Damien Regad, Mark Newnham and the ADOdb community
   Released under both BSD license and Lesser GPL library license.
@@ -32,10 +32,6 @@ class ADODB_sqlite extends ADOConnection {
 	var $sysDate = "adodb_date('Y-m-d')";
 	var $sysTimeStamp = "adodb_date('Y-m-d H:i:s')";
 	var $fmtTimeStamp = "'Y-m-d H:i:s'";
-
-	function __construct()
-	{
-	}
 
 	function ServerInfo()
 	{
@@ -353,6 +349,63 @@ class ADODB_sqlite extends ADOConnection {
 		return $indexes;
 	}
 
+	/**
+	* Returns the maximum size of a MetaType C field. Because of the
+	* database design, sqlite places no limits on the size of data inserted
+	*
+	* @return int
+	*/
+	function charMax()
+	{
+		return ADODB_STRINGMAX_NOLIMIT;
+	}
+
+	/**
+	* Returns the maximum size of a MetaType X field. Because of the
+	* database design, sqlite places no limits on the size of data inserted
+	*
+	* @return int
+	*/
+	function textMax()
+	{
+		return ADODB_STRINGMAX_NOLIMIT;
+	}
+
+	/*
+	 * Converts a date to a month only field and pads it to 2 characters
+	 *
+	 * @param 	str		$fld	The name of the field to process
+	 * @return	str				The SQL Statement
+	 */
+	function month($fld)
+	{
+		$x = "strftime('%m',$fld)";
+
+		return $x;
+	}
+
+	/*
+	 * Converts a date to a day only field and pads it to 2 characters
+	 *
+	 * @param 	str		$fld	The name of the field to process
+	 * @return	str				The SQL Statement
+	 */
+	function day($fld) {
+		$x = "strftime('%d',$fld)";
+		return $x;
+	}
+
+	/*
+	 * Converts a date to a year only field
+	 *
+	 * @param 	str		$fld	The name of the field to process
+	 * @return	str				The SQL Statement
+	 */
+	function year($fld) {
+		$x = "strftime('%Y',$fld)";
+
+		return $x;
+	}
 }
 
 /*--------------------------------------------------------------------------------------

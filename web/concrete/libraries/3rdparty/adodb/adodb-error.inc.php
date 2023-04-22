@@ -1,6 +1,6 @@
 <?php
 /**
- * @version   v5.20.9  21-Dec-2016
+ * @version   v5.21.0-dev  ??-???-2016
  * @copyright (c) 2000-2013 John Lim (jlim#natsoft.com). All rights reserved.
  * @copyright (c) 2014      Damien Regad, Mark Newnham and the ADOdb community
  * Released under both BSD license and Lesser GPL library license.
@@ -70,6 +70,10 @@ function adodb_error($provider,$dbType,$errno)
 	case 'oracle':
 	case 'oci8': $map = adodb_error_oci8(); break;
 
+	// As discussed in https://github.com/ADOdb/ADOdb/issues/201#issuecomment-188154980
+	// firebird uses the ibase error handler for now. This may change if and
+	// when the PHP driver is updated to use the new SQLSTATE error codes
+	case 'firebird':
 	case 'ibase': $map = adodb_error_ibase(); break;
 
 	case 'odbc': $map = adodb_error_odbc(); break;
@@ -111,7 +115,7 @@ function adodb_error_pg($errormsg)
 			'could not serialize access due to'   => DB_ERROR_SERIALIZATION_FAILURE
 		);
 	reset($error_regexps);
-	while (list($regexp,$code) = each($error_regexps)) {
+	foreach ($error_regexps as $regexp => $code) {
 		if (preg_match("/$regexp/mi", $errormsg)) {
 			return $code;
 		}
