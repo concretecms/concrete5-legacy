@@ -69,7 +69,7 @@
 			$html = Loader::helper('html');
 			$c = Page::getCurrentPage();
 			if (!$c->isEditMode()) {
-				$this->addFooterItem('<script type="text/javascript" src="//maps.google.com/maps/api/js?sensor=true&language=' . rawurlencode(str_replace('_', '-', Localization::activeLocale())) . '"></script>');
+				$this->addFooterItem('<script type="text/javascript" src="//maps.google.com/maps/api/js?key=' . Config::get('GOOGLE_MAPS_API_KEY') . '&sensor=true&language=' . rawurlencode(str_replace('_', '-', Localization::activeLocale())) . '"></script>');
 				$this->addFooterItem('<script type="text/javascript"> 
 				function googleMapInit' . $this->bID . '() { 
 				   try{
@@ -116,7 +116,14 @@
 			}
 		}
 		
-		
+		public function edit() {
+			$this->set('apiKey', Config::get('GOOGLE_MAPS_API_KEY'));            
+		}
+
+		public function add() {
+			$this->set('apiKey', Config::get('GOOGLE_MAPS_API_KEY'));            
+		}
+
 		public function view(){ 
 			$this->set('bID', $this->bID);	
 			$this->set('title', $this->title);
@@ -124,12 +131,17 @@
 			$this->set('latitude', $this->latitude);
 			$this->set('longitude', $this->longitude);
 			$this->set('zoom', $this->zoom);
+			$this->set('apiKey', Config::get('GOOGLE_MAPS_API_KEY'));
 		}
 		
 		public function save($data) { 
 			$args['title'] = isset($data['title']) ? trim($data['title']) : '';
 			$args['location'] = isset($data['location']) ? trim($data['location']) : '';
 			$args['zoom'] = (intval($data['zoom'])>=0 && intval($data['zoom'])<=21) ? intval($data['zoom']) : 14;
+            
+			// get key and safe in config so that it's saved globally
+			$apiKey = $data['api_key'];
+			Config::save('GOOGLE_MAPS_API_KEY', $apiKey);
 			
 			if( strlen($args['location'])>0 ){
 				$coords = $this->lookupLatLong($args['location']);

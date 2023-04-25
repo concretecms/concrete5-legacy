@@ -33,6 +33,17 @@
 						<div class="ccm-note"><?php echo t('Enter a number from 0 to 21, with 21 being the most zoomed in.')?> </div>
 					</td>
 				</tr>
+				<tr>
+					<th><?=t('API Key')?>:</th>
+					<td>
+					<input id="ccm_googlemap_block_api_key" name="api_key" type="text" value="<?php echo $apiKey?>" />
+						<div class="ccm-note">
+							<a href="https://developers.google.com/maps/documentation/javascript/get-api-key" target="_blank">
+								<?=t('Get your API key here.')?>
+							</a>		
+						</div>
+					</td>
+				</tr>
 			</tbody>
 		</table>
 	</div>
