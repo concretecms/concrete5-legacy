@@ -25,11 +25,20 @@ class Concrete5_Model_AttributeType extends ConcreteObject {
 	}
 
 	public static function getByID($atID) {
-		$db = Loader::db();
-		$row = $db->GetRow('select atID, pkgID, atHandle, atName from AttributeTypes where atID = ?', array($atID));
-		$at = new AttributeType();
-		$at->setPropertiesFromArray($row);
-		$at->loadController();
+        $at = CacheLocal::getEntry('attribute_type', $atID);
+
+        if (!$at) {
+            $db = Loader::db();
+            $row = $db->GetRow('select atID, pkgID, atHandle, atName from AttributeTypes where atID = ?', array($atID));
+            $at = new AttributeType();
+            $at->setPropertiesFromArray($row);
+
+            CacheLocal::set('attribute_type', $atID, $at);
+        }
+
+        // for some reason we can't cache the controller
+        $at->loadController();
+
 		return $at;
 	}
 	
@@ -232,7 +241,11 @@ class Concrete5_Model_AttributeType extends ConcreteObject {
 		$atHandle = $this->atHandle;
 		$txt = Loader::helper('text');
 		$className = $txt->camelcase($this->atHandle) . 'AttributeTypeController';
-		$file = $this->mapAttributeTypeFilePath(FILENAME_ATTRIBUTE_CONTROLLER);
+        $file = CacheLocal::getEntry('attribute_type_controller', $atHandle);
+        if (!$file) {
+            $file = $this->mapAttributeTypeFilePath(FILENAME_ATTRIBUTE_CONTROLLER);
+            CacheLocal::set('attribute_type_controller', $atHandle, $file);
+        }
 		if (!$file) {
 			$cont = DIR_MODELS_CORE . '/' . DIRNAME_ATTRIBUTES . '/' .  DIRNAME_ATTRIBUTE_TYPES . '/default/' . FILENAME_ATTRIBUTE_CONTROLLER;
 			$className = 'DefaultAttributeTypeController';

@@ -60,6 +60,19 @@ class Concrete5_Model_AttributeValue extends ConcreteObject {
 			return $av;
 		}
 	}
+    
+    /**
+     * Sets all necessary values for an AttributeValue object. Only useful
+     * when all parameter are already known. Used by AttributeKey when adding
+     * a new attribute value
+     */
+    public function setValues($avID, $values) {
+        $this->avID = $avID;
+        $this->setPropertiesFromArray($values);
+        $this->attributeType = $this->getAttributeTypeObject();
+        $this->attributeType->controller->setAttributeKey($this->getAttributeKey());
+        $this->attributeType->controller->setAttributeValue($this);
+    }
 	
 	protected function load($avID) {
 		$db = Loader::db();

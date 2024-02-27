@@ -571,7 +571,11 @@ class Concrete5_Model_AttributeKey extends ConcreteObject {
 		$v = array($this->atID, $this->akID, $uID, $avDate);
 		$db->Execute('insert into AttributeValues (atID, akID,  uID, avDateAdded) values (?, ?, ?, ?)', $v);
 		$avID = $db->Insert_ID();
-		return AttributeValue::getByID($avID);
+        
+        $av = new AttributeValue();
+        $av->setValues($avID, $v);
+
+        return $av;
 	}
 	
 	public function getAttributeKeyIconSRC() {
